@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Implementation · OPDA Knowledge Base</title>
+  <meta name="description" content="How to build with PDTF: install the schemas package, compose overlays, validate transactions, work with verified claims.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Section overview</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Implementation</h1>
+      <p class="lead">
+        How to actually <em>build</em> with PDTF. The Modelling section covers what
+        the vocabulary <em>is</em>; this section covers what to do with it: install
+        the schemas package, compose the overlays your use case needs, run validation,
+        produce and verify claims, and emit interoperable JSON-LD.
+      </p>
+
+      <h2 id="getting-started">Getting started</h2>
+      <p>From zero to a validating transaction in a few minutes.</p>
+      <div class="card-grid">
+        <a class="card" href="pages/60-implementation-overview.html">
+          <div class="pill pill--brand">Start here</div>
+          <h3>Implementation overview</h3>
+          <p>The five-piece stack: schemas package, OpenAPI spec, accreditation, trust-framework runtime, verified-claims wrapper.</p>
+        </a>
+        <a class="card" href="pages/61-quickstart.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Quickstart</h3>
+          <p>Install <code>@pdtf/schemas</code>, fetch a schema with one overlay, validate a transaction. ~3 minutes.</p>
+        </a>
+      </div>
+
+      <h2 id="working-with-schemas">Working with schemas</h2>
+      <p>The bread-and-butter operations every PDTF integration needs.</p>
+      <div class="card-grid">
+        <a class="card" href="pages/62-schema-composition.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Schema composition</h3>
+          <p>How <code>getTransactionSchema(id, overlays[])</code> merges base + overlays via <code>deepmerge</code>. Worked examples for estate agents, conveyancers, and lenders.</p>
+        </a>
+        <a class="card" href="pages/63-validation.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Validation</h3>
+          <p>Using Ajv, <code>getValidator</code>, validating verified claims with <code>validateVerifiedClaims</code>, error decoding.</p>
+        </a>
+        <a class="card" href="pages/64-verified-claims.html">
+          <div class="pill pill--warn">Stub</div>
+          <h3>Verified claims</h3>
+          <p>Wrapping transaction fields as W3C Verifiable Credentials with PDTF-specific claim shapes.</p>
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <script src="ui/site.js"></script>
+  <script>OPDA.init({ page: 'implementation', section: 'implementation' });</script>
+</body>
+</html>

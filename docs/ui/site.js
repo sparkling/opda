@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  // Two top-level sections + a small Reference group surfaced in the footer area.
+  // Seven top-level sections + a small Reference group surfaced in the footer area.
   // Each item's `loc` is 'root' (docs/) or 'pages' (docs/pages/).
   const SECTIONS = {
     governance: {
@@ -51,6 +51,79 @@
           { id: 'ontology',             file: '31-ontology.html',             title: 'Ontology (OWL)' },
           { id: 'shacl-shapes',         file: '32-shacl-shapes.html',         title: 'SHACL shapes' },
           { id: 'jsonld-mappings',      file: '33-jsonld-mappings.html',      title: 'JSON-LD mappings' },
+        ]},
+      ],
+    },
+    engagement: {
+      title: 'Engagement',
+      summary: 'Where the work happens: working groups, steering group meetings, member updates, video content, and the activity log of the programme.',
+      groups: [
+        { heading: 'Activity', items: [
+          { id: 'engagement-overview',  file: '40-engagement-overview.html',  title: 'Overview' },
+          { id: 'meetings-decisions',   file: '41-meetings-decisions.html',   title: 'Meetings & decisions' },
+          { id: 'working-groups',       file: '42-working-groups.html',       title: 'DPMSG working groups' },
+        ]},
+        { heading: 'Content', items: [
+          { id: 'video-library',        file: '43-video-library.html',        title: 'Video library' },
+          { id: 'transcripts',          file: '44-transcripts.html',          title: 'Transcripts index' },
+        ]},
+      ],
+    },
+    adoption: {
+      title: 'Adoption',
+      summary: 'Who is implementing PDTF, what they have built, lessons learned, and the public evidence that the framework works in practice.',
+      groups: [
+        { heading: 'Pilots & implementations', items: [
+          { id: 'adoption-overview',    file: '50-adoption-overview.html',    title: 'Overview' },
+          { id: 'member-implementations', file: '51-member-implementations.html', title: 'Member implementations' },
+          { id: 'sandbox-pilots',       file: '54-sandbox-pilots.html',       title: 'Sandbox pilots' },
+        ]},
+        { heading: 'Programmes', items: [
+          { id: 'smart-data-challenge', file: '52-smart-data-challenge.html', title: 'Smart Data Challenge' },
+          { id: 'hmlr-llc',             file: '53-hmlr-llc.html',             title: 'HMLR LLC programme' },
+        ]},
+      ],
+    },
+    implementation: {
+      title: 'Implementation',
+      summary: 'How to build with PDTF: install the schemas package, compose overlays, validate transactions, work with verified claims and JSON-LD.',
+      groups: [
+        { heading: 'Getting started', items: [
+          { id: 'impl-overview',        file: '60-implementation-overview.html', title: 'Overview' },
+          { id: 'quickstart',           file: '61-quickstart.html',           title: 'Quickstart' },
+        ]},
+        { heading: 'Working with schemas', items: [
+          { id: 'schema-composition',   file: '62-schema-composition.html',   title: 'Schema composition' },
+          { id: 'validation',           file: '63-validation.html',           title: 'Validation' },
+          { id: 'verified-claims',      file: '64-verified-claims.html',      title: 'Verified claims' },
+        ]},
+      ],
+    },
+    strategy: {
+      title: 'Strategy',
+      summary: 'The strategic context — UK Industrial Strategy, Smart Data Scheme sequencing, OPDA programme phases, and the project roadmap.',
+      groups: [
+        { heading: 'Plans', items: [
+          { id: 'strategy-overview',    file: '70-strategy-overview.html',    title: 'Overview' },
+          { id: 'project-roadmap',      file: '09-project-roadmap.html',      title: 'Project roadmap' },
+          { id: 'programme-phases',     file: '71-programme-phases.html',     title: 'Programme phases' },
+        ]},
+        { heading: 'Wider context', items: [
+          { id: 'industrial-strategy',  file: '72-industrial-strategy.html',  title: 'UK Industrial Strategy' },
+        ]},
+      ],
+    },
+    library: {
+      title: 'Library',
+      summary: 'A curated index of every document, transcript, recording, and external reference held in the project archive.',
+      groups: [
+        { heading: 'Holdings', items: [
+          { id: 'library-overview',     file: '80-library-overview.html',     title: 'Overview' },
+          { id: 'documents',            file: '81-document-archive.html',     title: 'Document archive' },
+          { id: 'transcripts-archive',  file: '82-transcript-archive.html',   title: 'Transcript archive' },
+        ]},
+        { heading: 'External', items: [
+          { id: 'external-references',  file: '83-external-references.html',  title: 'External references' },
         ]},
       ],
     },
@@ -97,8 +170,13 @@
           '<span class="brand-sub">Knowledge base</span>' +
         '</a>' +
         '<nav class="global-nav">' +
-          '<a href="' + hrefForSection('governance', currentLoc) + '"' + cls('governance') + '>Governance</a>' +
-          '<a href="' + hrefForSection('modelling',  currentLoc) + '"' + cls('modelling')  + '>Modelling</a>' +
+          '<a href="' + hrefForSection('governance',     currentLoc) + '"' + cls('governance')     + '>Governance</a>' +
+          '<a href="' + hrefForSection('modelling',      currentLoc) + '"' + cls('modelling')      + '>Modelling</a>' +
+          '<a href="' + hrefForSection('engagement',     currentLoc) + '"' + cls('engagement')     + '>Engagement</a>' +
+          '<a href="' + hrefForSection('adoption',       currentLoc) + '"' + cls('adoption')       + '>Adoption</a>' +
+          '<a href="' + hrefForSection('implementation', currentLoc) + '"' + cls('implementation') + '>Implementation</a>' +
+          '<a href="' + hrefForSection('strategy',       currentLoc) + '"' + cls('strategy')       + '>Strategy</a>' +
+          '<a href="' + hrefForSection('library',        currentLoc) + '"' + cls('library')        + '>Library</a>' +
         '</nav>' +
         '<button class="menu-toggle" aria-label="Toggle sidebar" id="menu-toggle">' +
           '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>' +

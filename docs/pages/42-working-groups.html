@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DPMSG working groups · OPDA Knowledge Base</title>
+  <meta name="description" content="The six DPMSG working groups — remit, OPDA involvement, and where their materials live in the archive.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Engagement</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>DPMSG working groups</h1>
+      <p class="lead">
+        The Digital Property Market Steering Group does its substantive work through
+        six working groups. OPDA leads or co-leads four of them. Each group has a
+        remit and a folder of materials in the archive.
+      </p>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart TB
+  classDef wg   fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef sg   fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+  SG[Steering Group<br/>monthly governance]:::sg
+  CP["Comms &amp; PR<br/>Working Group"]:::wg
+  EN[Engagement<br/>Working Group]:::wg
+  PO[Policy<br/>Working Group]:::wg
+  RE[Regulator<br/>Working Group]:::wg
+  TE[Technical<br/>Working Group]:::wg
+
+  SG --> CP
+  SG --> EN
+  SG --> PO
+  SG --> RE
+  SG --> TE
+        </div>
+        <div class="diagram-caption">Six DPMSG working groups feed Steering. OPDA-led groups are highlighted in the table below.</div>
+      </div>
+
+      <h2 id="six-groups">The six groups</h2>
+
+      <table>
+        <thead>
+          <tr><th>Group</th><th>Remit</th><th>OPDA role</th><th>Materials</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Steering</strong></td>
+            <td>Governance body — meets monthly, takes formal decisions, allocates work to the other five groups.</td>
+            <td>OPDA Chair (Maria Harris) sits on it.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/steering-group/materials/"><code>steering-group/materials/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Comms &amp; PR</strong></td>
+            <td>External narrative, press, member-facing communications, Smart Data report contributions.</td>
+            <td>OPDA-led. Output includes the DPMSG Data Standards Interoperability Spring 2025 report.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/comms-pr/"><code>working-groups/comms-pr/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Engagement</strong></td>
+            <td>Stakeholder management — members, government, industry. Runs the monthly all-member update.</td>
+            <td>OPDA-led. Produces the monthly all-member update slide decks.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/engagement/"><code>working-groups/engagement/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Policy</strong></td>
+            <td>Public-policy positioning — DMCC implementation, MHCLG consultation responses, Smart Data Scheme design submissions.</td>
+            <td>OPDA contributes; chaired in rotation.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/policy/"><code>working-groups/policy/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Regulator</strong></td>
+            <td>Engagement with regulators — FCA, ICO, NTSELAT (and its successor), CLC, SRA, RICS, CILEx Regulation.</td>
+            <td>OPDA participates; CLC takes the lead given its sandbox role.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/regulator/"><code>working-groups/regulator/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Technical</strong></td>
+            <td>The substantive standards work — schemas, OpenAPI, accreditation criteria, conformance test suites.</td>
+            <td>OPDA-led. Owns the <code>@pdtf/schemas</code> package and the trust-framework spec repo.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/technical/"><code>working-groups/technical/</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="output">Notable working-group output</h2>
+
+      <ul>
+        <li><strong>Comms &amp; PR:</strong>
+          <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf"><code>DPMSG Data Standards Interoperability Spring 2025 Report</code></a> — the most cited public output of the DPMSG to date.</li>
+        <li><strong>Comms &amp; PR:</strong>
+          <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/comms-pr/data_standards_for_smart_data.pdf"><code>data_standards_for_smart_data.pdf</code></a> — companion explainer.</li>
+        <li><strong>Engagement:</strong> three monthly member-update decks (Feb / Apr / May 2026) — see <a href="41-meetings-decisions.html">Meetings &amp; decisions</a>.</li>
+        <li><strong>Technical:</strong>
+          <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/technical/Smart Property Data Trust Framework Project Plan.md"><code>Smart Property Data Trust Framework Project Plan.md</code></a> — the live cross-WG plan.</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="41-meetings-decisions.html">← Meetings &amp; decisions</a>
+        <a href="43-video-library.html">Video library →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'working-groups' });</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcripts index · OPDA Knowledge Base</title>
+  <meta name="description" content="Every transcript on file — videos, all-member updates, DPMSG sessions.">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Engagement</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Transcripts index</h1>
+      <p class="lead">
+        Every transcribed session in the archive — public video transcripts, Sandbox
+        monthly updates, DPMSG Trust &amp; Interoperability Steering Group sessions.
+        Useful for full-text search and for AI summarisation against the corpus.
+      </p>
+
+      <h2 id="videos">Public videos</h2>
+      <p>15 OPDA YouTube transcripts + 1 Vimeo (Smart Data Challenge prize). Full catalogue at <a href="43-video-library.html">Video library</a>.</p>
+
+      <p>Location: <a class="resource-link" href="../resource.html?path=source/05-engagement/videos-youtube/transcripts/"><code>source/05-engagement/videos-youtube/transcripts/</code></a> · embedded video transcripts (Vimeo &amp; auto-detected YouTube): <a class="resource-link" href="../resource.html?path=source/05-engagement/videos-youtube/embedded/"><code>source/05-engagement/videos-youtube/embedded/</code></a></p>
+
+      <h2 id="sandbox-updates">OPDA Sandbox monthly all-member updates</h2>
+      <p>Four transcribed sessions covering Feb – May 2026. Each is the project status briefing OPDA gives its members at the start of each month.</p>
+      <ul>
+        <li><strong>February 2026</strong> — <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/engagement/transcripts/2026-02-update.txt"><code>2026-02-update.txt</code></a> (if transcribed)</li>
+        <li><strong>March 2026</strong> — corresponding deck and recording</li>
+        <li><strong>April 2026</strong> — <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/engagement/OPDA all member update Apr 2026.pdf"><code>OPDA all member update Apr 2026.pdf</code></a></li>
+        <li><strong>May 2026</strong> — <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/engagement/OPDA all member update May 2026.pdf"><code>OPDA all member update May 2026.pdf</code></a></li>
+      </ul>
+
+      <h2 id="dpmsg-sessions">DPMSG Trust &amp; Interoperability Steering Group</h2>
+      <p>
+        Five steering-group session transcripts on record (where transcription has been
+        completed). Each session corresponds to one meeting date in the
+        <a href="41-meetings-decisions.html">Meetings &amp; decisions</a> log.
+      </p>
+      <p>Location: <a class="resource-link" href="../resource.html?path=source/04-governance-bodies/steering-group/transcripts/"><code>source/04-governance-bodies/steering-group/transcripts/</code></a></p>
+
+      <h2 id="external-presentations">External presentations &amp; demos</h2>
+      <p>
+        OPDA pitches, demos at industry events, partner conferences — each archived
+        when a transcript or recording is available.
+      </p>
+      <p>Location: <a class="resource-link" href="../resource.html?path=source/05-engagement/presentations/"><code>source/05-engagement/presentations/</code></a></p>
+
+      <h2 id="usage">Notes for downstream use</h2>
+      <ul>
+        <li>All transcripts are plain UTF-8 text. No timestamps in the YouTube auto-captions but speaker breaks usually appear as newlines.</li>
+        <li>Where the canonical recording is on Vimeo (the SDC prize video), captions were captured manually from the player UI — slightly less complete than YouTube's auto-transcript.</li>
+        <li>For corpus-level analysis, the JSON wrappers under <a class="resource-link" href="../resource.html?path=docs/data/resources/"><code>docs/data/resources/</code></a> only cover schema files; transcripts are not pre-bundled (they're small enough to fetch lazily).</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="43-video-library.html">← Video library</a>
+        <a href="../engagement.html">Back to Engagement</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'transcripts' });</script>
+</body>
+</html>

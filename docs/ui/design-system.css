@@ -55,22 +55,27 @@ a:hover { color: var(--color-link-hover); text-decoration: underline; text-under
   font-weight: 400; font-size: var(--text-sm); color: var(--color-brand-300);
   letter-spacing: 0.01em;
 }
-/* Horizontal global menu — two top-level sections */
+/* Horizontal global menu — seven top-level sections */
 .app-header .global-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  margin-left: var(--space-6);
+  gap: var(--space-1);
+  margin-left: var(--space-5);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.app-header .global-nav::-webkit-scrollbar { display: none; }
 .app-header .global-nav a {
   display: inline-flex;
   align-items: center;
-  padding: var(--space-2) var(--space-5);
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   color: var(--color-brand-100);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: -0.005em;
+  white-space: nowrap;
   transition: background var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease);
 }

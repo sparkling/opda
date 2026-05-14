@@ -30,15 +30,14 @@
     }
     .home-sections {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-6);
-      max-width: 76rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      max-width: 96rem;
       margin: 0 auto;
       padding: 0 var(--space-6) var(--space-8);
     }
-    @media (max-width: 900px) {
-      .home-sections { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 1200px) { .home-sections { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 720px)  { .home-sections { grid-template-columns: 1fr; } }
     .home-section-card {
       display: flex;
       flex-direction: column;
@@ -69,9 +68,12 @@
       height: 6px;
       background: linear-gradient(90deg, var(--color-brand-700), var(--color-brand-500));
     }
-    .home-section-card.modelling::before {
-      background: linear-gradient(90deg, var(--color-accent-700), var(--color-accent-500));
-    }
+    .home-section-card.modelling::before     { background: linear-gradient(90deg, #b45309, #f59e0b); }
+    .home-section-card.engagement::before    { background: linear-gradient(90deg, #166534, #22c55e); }
+    .home-section-card.adoption::before      { background: linear-gradient(90deg, #6b21a8, #a855f7); }
+    .home-section-card.implementation::before{ background: linear-gradient(90deg, #115e59, #14b8a6); }
+    .home-section-card.strategy::before      { background: linear-gradient(90deg, #b91c1c, #ef4444); }
+    .home-section-card.library::before       { background: linear-gradient(90deg, #475569, #94a3b8); }
     .home-section-card h2 {
       font-size: var(--text-3xl);
       font-weight: 800;
@@ -103,10 +105,12 @@
       color: var(--color-brand-900);
       font-weight: 500;
     }
-    .home-section-card.modelling .topics li {
-      background: var(--color-accent-100);
-      color: var(--color-accent-700);
-    }
+    .home-section-card.modelling     .topics li { background: var(--color-accent-100);  color: var(--color-accent-700); }
+    .home-section-card.engagement    .topics li { background: #dcfce7; color: #166534; }
+    .home-section-card.adoption      .topics li { background: #f3e8ff; color: #6b21a8; }
+    .home-section-card.implementation .topics li { background: #ccfbf1; color: #115e59; }
+    .home-section-card.strategy      .topics li { background: #fee2e2; color: #b91c1c; }
+    .home-section-card.library       .topics li { background: #e2e8f0; color: #475569; }
     .home-section-card .cta {
       margin-top: auto;
       padding-top: var(--space-4);
@@ -156,49 +160,96 @@
     <section class="home-hero">
       <h1>OPDA Knowledge Base</h1>
       <p>
-        Two workstreams for the Property Data Trust Framework — the governance that
-        makes the standard authoritative, and the modelling that makes it usable.
+        Seven workstreams for the Property Data Trust Framework — from the governance
+        that makes the standard authoritative to the implementation guides that get
+        you building today.
       </p>
     </section>
 
     <div class="home-sections">
       <a class="home-section-card governance" href="governance.html">
         <h2>Governance</h2>
-        <p>
-          How OPDA is governed, who governs it, the UK government initiative it sits
-          inside (DPMSG, DMCC Act 2024, Smart Data Scheme), and the Trust Over IP
-          model PDTF follows.
-        </p>
+        <p>How OPDA is governed, the UK government initiative it sits inside, and the published rules that make the standard authoritative.</p>
         <ul class="topics">
           <li>UK initiative</li>
-          <li>DPMSG</li>
-          <li>ToIP layers</li>
-          <li>Conformance</li>
-          <li>Change management</li>
-          <li>Lifecycle & versioning</li>
-          <li>Risk & liability</li>
+          <li>DPMSG · ToIP layers</li>
+          <li>Conformance · change management</li>
+          <li>Lifecycle · risk &amp; liability</li>
         </ul>
         <span class="cta">Open Governance </span>
       </a>
 
       <a class="home-section-card modelling" href="modelling.html">
         <h2>Modelling</h2>
-        <p>
-          The technical semantic-modelling work: PDTF schemas, bounded contexts, data
-          dictionary, business glossary, the OWL ontology, SHACL shapes, and JSON-LD
-          mappings.
-        </p>
+        <p>The technical semantic-modelling work — schemas, bounded contexts, data dictionary, business glossary, ontology, SHACL, JSON-LD.</p>
         <ul class="topics">
-          <li>Standards stack</li>
-          <li>Bounded contexts (DDD)</li>
-          <li>Data dictionary (8,458 properties, interactive)</li>
-          <li>Business glossary (554 concepts, interactive)</li>
-          <li>SKOS taxonomy</li>
-          <li>OWL ontology</li>
-          <li>SHACL shapes</li>
-          <li>JSON-LD mappings</li>
+          <li>Standards stack · Bounded contexts</li>
+          <li>PDTF overlays</li>
+          <li>Data dictionary (8,458 properties)</li>
+          <li>Business glossary (554 concepts)</li>
+          <li>OWL · SHACL · JSON-LD</li>
         </ul>
         <span class="cta">Open Modelling </span>
+      </a>
+
+      <a class="home-section-card engagement" href="engagement.html">
+        <h2>Engagement</h2>
+        <p>Where the work happens — DPMSG, working groups, monthly all-member updates, the YouTube channel and transcripts.</p>
+        <ul class="topics">
+          <li>8 Steering Group meetings</li>
+          <li>6 working groups</li>
+          <li>15 YouTube videos + transcripts</li>
+          <li>Monthly all-member updates</li>
+        </ul>
+        <span class="cta">Open Engagement </span>
+      </a>
+
+      <a class="home-section-card adoption" href="adoption.html">
+        <h2>Adoption</h2>
+        <p>Member implementations, Sandbox pilots, Smart Data Challenge prize entry, the HMLR Local Land Charges programme.</p>
+        <ul class="topics">
+          <li>13 OPDA founding members</li>
+          <li>200+ councils on HMLR LLC</li>
+          <li>SDCP Innovators prize 2025</li>
+          <li>Live CLC + OPDA + Raidiam Sandbox</li>
+        </ul>
+        <span class="cta">Open Adoption </span>
+      </a>
+
+      <a class="home-section-card implementation" href="implementation.html">
+        <h2>Implementation</h2>
+        <p>How to build — install <code>@pdtf/schemas</code>, compose overlays, validate, work with verified claims and JSON-LD.</p>
+        <ul class="topics">
+          <li>Quickstart (~3 min)</li>
+          <li>Schema composition</li>
+          <li>Validation (Ajv)</li>
+          <li>Verified claims (W3C VC)</li>
+        </ul>
+        <span class="cta">Open Implementation </span>
+      </a>
+
+      <a class="home-section-card strategy" href="strategy.html">
+        <h2>Strategy</h2>
+        <p>Why OPDA exists, the UK Industrial Strategy backdrop, the three programme phases (Sandbox → Live → National) and the live project roadmap.</p>
+        <ul class="topics">
+          <li>Project roadmap</li>
+          <li>Programme phases</li>
+          <li>UK Industrial Strategy</li>
+          <li>Smart Data Scheme context</li>
+        </ul>
+        <span class="cta">Open Strategy </span>
+      </a>
+
+      <a class="home-section-card library" href="library.html">
+        <h2>Library</h2>
+        <p>The curated reading list — every document, transcript, recording and external reference held in the project archive.</p>
+        <ul class="topics">
+          <li>500 MB source archive</li>
+          <li>5 cloned upstream repos</li>
+          <li>16 OPDA website pages · 70 blog posts</li>
+          <li>NTS Material Info recovery archive</li>
+        </ul>
+        <span class="cta">Open Library </span>
       </a>
     </div>
 
