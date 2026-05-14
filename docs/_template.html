@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Title · OPDA Knowledge Base</title>
+  <meta name="description" content="One-line description for SEO and previews.">
+
+  <!-- Tailwind via CDN (utility classes alongside our custom design system) -->
+  <!-- Mermaid for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- OPDA design system -->
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Page content goes here. site.js wraps this in header + sidebar. -->
+    <article class="prose">
+      <div class="page-meta">
+        <span class="pill pill--brand">Section / kind</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Page Title</h1>
+      <p class="lead">A one-paragraph lede that introduces the page in plain language.</p>
+
+      <h2 id="section-1">Section heading</h2>
+      <p>Body copy. Use <strong>strong</strong> for emphasis. <a href="#">Links</a> look like this.</p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Key point</div>
+        <p>Important takeaway in a coloured box.</p>
+      </div>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  A[Input] --> B[Process] --> C[Output]
+        </div>
+        <div class="diagram-caption">Caption.</div>
+      </div>
+
+      <div class="page-footer">
+        <a href="prev.html">← Previous</a>
+        <a href="next.html">Next →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'page-id' });</script>
+</body>
+</html>

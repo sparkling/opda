@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OPDA Knowledge Base</title>
+  <meta name="description" content="Two workstreams: Governance (UK initiative, ToIP, conformance) and Modelling (PDTF schemas, ontology, SHACL, JSON-LD).">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="ui/design-system.css">
+  <style>
+    .home-hero {
+      text-align: center;
+      padding: var(--space-10) var(--space-6) var(--space-8);
+      max-width: 60rem;
+      margin: 0 auto;
+    }
+    .home-hero h1 {
+      font-size: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--color-ink-900);
+      margin: 0 0 var(--space-4);
+    }
+    .home-hero p {
+      font-size: var(--text-xl);
+      color: var(--color-ink-600);
+      line-height: var(--leading-snug);
+      margin: 0;
+    }
+    .home-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      max-width: 76rem;
+      margin: 0 auto;
+      padding: 0 var(--space-6) var(--space-8);
+    }
+    @media (max-width: 900px) {
+      .home-sections { grid-template-columns: 1fr; }
+    }
+    .home-section-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      padding: var(--space-7);
+      border-radius: var(--radius-xl);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--duration-normal) var(--ease),
+                  box-shadow var(--duration-normal) var(--ease),
+                  border-color var(--duration-normal) var(--ease);
+    }
+    .home-section-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-brand-500);
+      text-decoration: none;
+    }
+    .home-section-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--color-brand-700), var(--color-brand-500));
+    }
+    .home-section-card.modelling::before {
+      background: linear-gradient(90deg, var(--color-accent-700), var(--color-accent-500));
+    }
+    .home-section-card h2 {
+      font-size: var(--text-3xl);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--color-ink-900);
+      border: 0;
+      padding: 0;
+    }
+    .home-section-card p {
+      font-size: var(--text-base);
+      color: var(--color-ink-600);
+      line-height: var(--leading-normal);
+      margin: 0;
+    }
+    .home-section-card .topics {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-3) 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .home-section-card .topics li {
+      font-size: var(--text-sm);
+      padding: var(--space-1) var(--space-3);
+      border-radius: 999px;
+      background: var(--color-brand-100);
+      color: var(--color-brand-900);
+      font-weight: 500;
+    }
+    .home-section-card.modelling .topics li {
+      background: var(--color-accent-100);
+      color: var(--color-accent-700);
+    }
+    .home-section-card .cta {
+      margin-top: auto;
+      padding-top: var(--space-4);
+      font-weight: 600;
+      color: var(--color-brand-700);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .home-section-card.modelling .cta { color: var(--color-accent-700); }
+    .home-section-card:hover .cta::after {
+      transform: translateX(4px);
+    }
+    .home-section-card .cta::after {
+      content: "→";
+      transition: transform var(--duration-fast) var(--ease);
+    }
+
+    .home-footer {
+      max-width: 60rem;
+      margin: var(--space-7) auto 0;
+      padding: var(--space-6) var(--space-6) var(--space-10);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+    .home-footer h3 {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-ink-500);
+      font-weight: 700;
+      margin: 0 var(--space-3) 0 0;
+    }
+    .home-footer a {
+      font-size: var(--text-sm);
+      color: var(--color-ink-700);
+      margin-right: var(--space-4);
+    }
+    .home-footer a:hover { color: var(--color-brand-700); }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <section class="home-hero">
+      <h1>OPDA Knowledge Base</h1>
+      <p>
+        Two workstreams for the Property Data Trust Framework — the governance that
+        makes the standard authoritative, and the modelling that makes it usable.
+      </p>
+    </section>
+
+    <div class="home-sections">
+      <a class="home-section-card governance" href="governance.html">
+        <h2>Governance</h2>
+        <p>
+          How OPDA is governed, who governs it, the UK government initiative it sits
+          inside (DPMSG, DMCC Act 2024, Smart Data Scheme), and the Trust Over IP
+          model PDTF follows.
+        </p>
+        <ul class="topics">
+          <li>UK initiative</li>
+          <li>DPMSG</li>
+          <li>ToIP layers</li>
+          <li>Conformance</li>
+          <li>Change management</li>
+          <li>Lifecycle & versioning</li>
+          <li>Risk & liability</li>
+        </ul>
+        <span class="cta">Open Governance </span>
+      </a>
+
+      <a class="home-section-card modelling" href="modelling.html">
+        <h2>Modelling</h2>
+        <p>
+          The technical semantic-modelling work: PDTF schemas, bounded contexts, data
+          dictionary, business glossary, the OWL ontology, SHACL shapes, and JSON-LD
+          mappings.
+        </p>
+        <ul class="topics">
+          <li>Standards stack</li>
+          <li>Bounded contexts (DDD)</li>
+          <li>Data dictionary (8,458 properties, interactive)</li>
+          <li>Business glossary (554 concepts, interactive)</li>
+          <li>SKOS taxonomy</li>
+          <li>OWL ontology</li>
+          <li>SHACL shapes</li>
+          <li>JSON-LD mappings</li>
+        </ul>
+        <span class="cta">Open Modelling </span>
+      </a>
+    </div>
+
+    <footer class="home-footer">
+      <h3>Reference</h3>
+      <a href="pages/09-project-roadmap.html">Project roadmap</a>
+      <a href="pages/10-glossary.html">Glossary (acronyms)</a>
+      <a href="design-system.html">Design system</a>
+      <a href="resource.html?path=source/INVENTORY.md">Source inventory</a>
+    </footer>
+  </div>
+
+  <script src="ui/site.js"></script>
+  <script>OPDA.init({ page: 'index', section: null });</script>
+</body>
+</html>

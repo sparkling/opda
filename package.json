@@ -1,0 +1,17 @@
+{
+  "name": "opda-kb",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "OPDA Knowledge Base — Astro shell over a static HTML/CSS/JS docs site for the Property Data Trust Framework.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "bash deploy.sh"
+  },
+  "dependencies": {
+    "astro": "^4.16.0"
+  }
+}

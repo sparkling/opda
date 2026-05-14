@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business glossary · OPDA Knowledge Base</title>
+  <meta name="description" content="Merged PDTF business glossary — 554 SKOS concepts (54 OPDA terms + 500 schema-derived). Sourced from the OPDA Glossary spreadsheets and PDTF v3 schema annotations.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--info">Modelling</span>
+        <span>Generated 2026-05-14</span>
+      </div>
+
+      <h1>Business glossary</h1>
+      <p class="lead">
+        The merged PDTF business glossary — the curated dictionary of business terms
+        plus the controlled vocabulary harvested from schema annotations. It is the
+        seed of the SKOS taxonomy and, in turn, the OWL ontology.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">What's in here</div>
+        <ul style="margin:0;">
+          <li><strong>54</strong> curated business terms — merged from the two OPDA <code>Glossary.xlsx</code> sources (Trust Framework PoC + Technical Working Group), deduplicated.</li>
+          <li><strong>500</strong> schema concepts — labels and definitions harvested from the <code>title</code> / <code>description</code> annotations on every node of the PDTF v3 schemas.</li>
+          <li>Total: <strong>554</strong> SKOS concepts in <code>pdtf:GlossaryScheme</code>.</li>
+        </ul>
+      </div>
+
+      <h2 id="provenance">Where the terms came from</h2>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
+
+  G1[Glossary.xlsx<br/>Trust Framework PoC<br/><i>~54 business terms</i>]:::src
+  G2[Glossary.xlsx<br/>Technical Working Group<br/><i>same set, refined</i>]:::src
+  S[PDTF v3 schemas<br/><i>title / description<br/>annotations</i>]:::src
+  PROC[Glossary merger<br/>+ SKOS generator]:::proc
+  TTL[business-glossary.ttl<br/>SKOS · 554 concepts]:::out
+
+  G1 --> PROC
+  G2 --> PROC
+  S  --> PROC
+  PROC --> TTL
+        </div>
+        <div class="diagram-caption">Two human-curated spreadsheets + schema-annotation harvester → one SKOS concept scheme.</div>
+      </div>
+
+      <h2 id="two-kinds">Two kinds of entries</h2>
+
+      <table>
+        <thead>
+          <tr><th>Kind</th><th>Count</th><th>Origin</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Business term</strong></td>
+            <td>54</td>
+            <td>OPDA Glossary spreadsheets (Trust Framework PoC + Technical WG)</td>
+            <td>Authoritative business definitions. Use as <code>skos:prefLabel</code> + <code>skos:definition</code> in the ontology.</td>
+          </tr>
+          <tr>
+            <td><strong>Schema concept</strong></td>
+            <td>500</td>
+            <td>Harvested from JSON Schema <code>title</code> / <code>description</code> on PDTF v3 nodes</td>
+            <td>Working vocabulary. Needs an editorial pass with the Technical WG before becoming canonical.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="browse">Browse the glossary</h2>
+      <p>
+        Search the labels, definitions and IRIs. Filter by <em>Kind</em> (business term vs
+        schema concept) or by <em>Area</em> (which top-level branch of the schema the term
+        was harvested from). Click a column header to sort.
+      </p>
+
+      <div id="entities-browser" class="data-browser">
+        <div class="db-status-loading">Loading 554 concepts…</div>
+      </div>
+
+      <p class="muted tiny">
+        Tip: set <em>Kind</em> = <code>Business term</code> to see only the 54 curated
+        entries; the rest are working definitions extracted from schema annotations.
+      </p>
+
+      <h2 id="next">Where this is heading</h2>
+      <ol>
+        <li>
+          <strong>Editorial pass with the Technical Working Group</strong> — reconcile the
+          54 OPDA terms (open-banking-flavoured) with the 500 schema concepts
+          (property-flavoured) so the glossary reads as one coherent vocabulary.
+        </li>
+        <li>
+          <strong>Promote to SKOS taxonomy</strong> — group concepts under broader categories
+          (Transaction · Property · Participant · Claim · Document · Form · Search) with
+          <code>skos:broader</code> / <code>skos:narrower</code>. See the
+          <a href="30-concept-taxonomy.html">Concept taxonomy</a> page (stub).
+        </li>
+        <li>
+          <strong>Then OWL classes</strong> — promote the top-level branches into ontology
+          classes with W3C-VC alignment. See <a href="31-ontology.html">Ontology (OWL)</a>.
+        </li>
+      </ol>
+
+      <h2 id="sources">Source files</h2>
+      <ul>
+        <li><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json"><code>source/00-deliverables/semantic-models/glossary-merged.json</code></a> — the 54 OPDA terms as JSON.</li>
+        <li><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.md"><code>source/00-deliverables/semantic-models/business-glossary.md</code></a> — human-readable tri-source glossary.</li>
+        <li><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl"><code>source/00-deliverables/semantic-models/business-glossary.ttl</code></a> — SKOS Concept Scheme (Turtle).</li>
+        <li><a class="resource-link" href="../resource.html?path=source/06-research/trust-framework-poc/Glossary.xlsx"><code>source/06-research/trust-framework-poc/Glossary.xlsx</code></a></li>
+        <li><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/technical/Glossary.xlsx"><code>source/04-governance-bodies/working-groups/technical/Glossary.xlsx</code></a></li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="13-data-dictionary.html">← Data dictionary</a>
+        <a href="30-concept-taxonomy.html">Concept taxonomy (SKOS) →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../data/entities.js"></script>
+  <script src="../ui/data-browser.js"></script>
+  <script>
+    OPDA.init({ page: 'business-glossary' });
+
+    (function () {
+      function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
+      var mountEl = document.getElementById('entities-browser');
+      var data = window.OPDA_ENTITIES || [];
+      if (!mountEl) return;
+      if (!data.length) {
+        mountEl.innerHTML = '<div class="db-empty">Could not load <code>../data/entities.js</code>.</div>';
+        return;
+      }
+      OPDA.DataBrowser.mount({
+        mount: mountEl,
+        data: data,
+        itemLabel: 'concepts',
+        searchPlaceholder: 'Search label, definition or id…',
+        searchKeys: ['label','definition','id','path'],
+        pageSize: 50,
+        defaultSort: { key:'label', dir:'asc' },
+        facets: [
+          { key:'kind',  label:'Kind' },
+          { key:'group', label:'Area' },
+        ],
+        columns: [
+          { key:'label', label:'Label', sortable:true, width:'15%',
+            render:function(v){return '<strong>'+esc(v)+'</strong>';}},
+          { key:'definition', label:'Definition', sortable:true, width:'28%',
+            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
+          { key:'kind', label:'Kind', sortable:true, width:'10%',
+            render:function(v){
+              if (!v) return '<span class="muted tiny">—</span>';
+              var cls = v === 'Business term' ? 'pill--brand' : 'pill--info';
+              return '<span class="pill '+cls+'">'+esc(v)+'</span>';
+            }},
+          { key:'group', label:'Area', sortable:true, width:'12%',
+            render:function(v){return v?'<span class="pill pill--accent">'+esc(v)+'</span>':'<span class="muted tiny">—</span>';}},
+          { key:'id', label:'IRI fragment', sortable:true, width:'14%',
+            render:function(v){return '<code>pdtf:'+esc(v)+'</code>';}},
+          { key:'path', label:'Schema path', sortable:true, width:'21%',
+            render:function(v){return v?'<code>'+esc(v)+'</code>':'<span class="muted tiny">—</span>';}},
+        ],
+      });
+    })();
+  </script>
+</body>
+</html>

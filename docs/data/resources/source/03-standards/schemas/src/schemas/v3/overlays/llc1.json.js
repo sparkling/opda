@@ -1,0 +1,2 @@
+window.__OPDA_RESOURCE=window.__OPDA_RESOURCE||{};
+window.__OPDA_RESOURCE["source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"]={"$schema":"http://json-schema.org/draft-07/schema#","$id":"https://trust.propdata.org.uk/schemas/v3/overlays/llc1.json","properties":{"propertyPack":{"properties":{"localSearches":{"properties":{"localLandCharges":{"items":{"required":["hmlrReference","registrationDate","category","location","locationDominantBuilding"]}}}}}}}};

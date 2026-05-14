@@ -1,0 +1,22 @@
+# Node / Astro
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+
+# Local research archive — too large to push (≈ 500 MB, hosts cloned repos)
+# The deployed site only needs /docs/. See README.
+# Leading slash anchors to repo root so docs/data/resources/source/ is still tracked.
+/source/
+
+# Local environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS junk
+Thumbs.db

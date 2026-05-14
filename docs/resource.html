@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resource · OPDA Knowledge Base</title>
+  <meta name="description" content="Unified viewer for any file in the OPDA Knowledge Base. Accepts ?path=… and renders the resource inline within the site chrome.">
+  <link rel="stylesheet" href="ui/design-system.css">
+  <style>
+    /* Resource viewer — local styles */
+    .res-meta {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: var(--space-2) var(--space-4);
+      font-size: var(--text-sm);
+      margin: var(--space-3) 0 var(--space-5);
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-ink-50);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+    .res-meta dt { color: var(--color-text-muted); font-weight: 600; margin: 0; }
+    .res-meta dd { color: var(--color-text); margin: 0; }
+    .res-meta dd code { word-break: break-all; }
+    .res-actions {
+      display: flex; flex-wrap: wrap; gap: var(--space-2);
+      margin: 0 0 var(--space-4);
+    }
+    .res-actions a {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 0.4rem 0.85rem;
+      background: var(--color-brand-100);
+      color: var(--color-brand-900);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+    .res-actions a:hover {
+      background: var(--color-brand-200);
+      text-decoration: none;
+    }
+    .res-frame-wrap {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .res-frame {
+      display: block;
+      width: 100%;
+      height: 80vh;
+      border: 0;
+      background: white;
+    }
+    .res-image-wrap {
+      padding: var(--space-4);
+      background: var(--color-ink-50);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .res-image-wrap img { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+    .res-error {
+      padding: var(--space-5);
+      background: var(--color-warning-100);
+      border: 1px solid var(--color-warning-700);
+      color: var(--color-warning-700);
+      border-radius: var(--radius-md);
+    }
+    .res-error code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 3px; }
+    .res-binary {
+      padding: var(--space-5);
+      background: var(--color-ink-50);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+    }
+    /* JSON viewer toggle + JSON Crack frame */
+    .res-json-modes {
+      display: inline-flex;
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-surface);
+      margin: 0 0 var(--space-3);
+    }
+    .res-json-modes button {
+      padding: 0.45rem 0.9rem;
+      border: 0;
+      background: transparent;
+      color: var(--color-ink-700);
+      font-size: var(--text-sm);
+      font-family: inherit;
+      cursor: pointer;
+      border-right: 1px solid var(--color-border);
+    }
+    .res-json-modes button:last-child { border-right: 0; }
+    .res-json-modes button.active {
+      background: var(--color-brand-700);
+      color: white;
+    }
+    .res-json-modes button:not(.active):hover {
+      background: var(--color-brand-100);
+      color: var(--color-brand-900);
+    }
+    .res-jsoncrack-wrap {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .res-jsoncrack-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 80vh;
+      border: 0;
+      background: white;
+    }
+    .res-jsoncrack-status {
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-ink-50);
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .res-jsoncrack-status code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 3px; }
+    .res-breadcrumb {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+      word-break: break-all;
+    }
+    .res-breadcrumb a, .res-breadcrumb span { color: inherit; }
+    .res-breadcrumb a:hover { color: var(--color-brand-700); }
+    .res-breadcrumb .sep { margin: 0 0.25em; color: var(--color-ink-400); }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Resource viewer</span>
+        <span id="res-mode-label" class="muted tiny">—</span>
+      </div>
+
+      <div class="res-breadcrumb" id="res-breadcrumb">—</div>
+      <h1 id="res-title">Loading…</h1>
+
+      <dl class="res-meta">
+        <dt>Path</dt>           <dd><code id="res-path">—</code></dd>
+        <dt>Type</dt>           <dd id="res-type">—</dd>
+        <dt>Rendered as</dt>    <dd id="res-rendered">—</dd>
+      </dl>
+
+      <div class="res-actions">
+        <a id="res-open" href="#" target="_blank" rel="noopener">Open original ↗</a>
+        <a id="res-download" href="#" download>Download</a>
+      </div>
+
+      <div id="res-body">
+        <div class="muted">Loading…</div>
+      </div>
+    </article>
+  </div>
+
+  <script src="ui/site.js"></script>
+  <script>
+    OPDA.init({ page: 'resource' });
+
+    (function () {
+      'use strict';
+
+      // ─── Parse ?path= from URL ──────────────────────────────────────────
+      function getParam(name) {
+        var m = window.location.search.match(new RegExp('[?&]' + name + '=([^&]*)'));
+        return m ? decodeURIComponent(m[1].replace(/\+/g,' ')) : '';
+      }
+      var rawPath = getParam('path');
+
+      // Sanitise: strip any ../ traversal, leading slashes.
+      function sanitisePath(p) {
+        if (!p) return '';
+        p = String(p).replace(/\\/g, '/');
+        // Strip any '..' segments, query strings, fragments
+        p = p.split(/[?#]/)[0];
+        p = p.split('/').filter(function (s) { return s && s !== '..' && s !== '.'; }).join('/');
+        return p;
+      }
+      var path = sanitisePath(rawPath);
+
+      // ─── Resolve resource location ─────────────────────────────────────
+      // Resource pages are at docs/resource.html; project root is one level up.
+      // So '../<path>' is the actual URL of the file.
+      var resourceUrl = path ? '../' + path : '';
+      var basename = path.split('/').pop() || '(none)';
+      var ext      = (basename.match(/\.([a-z0-9]+)$/i) || [,''])[1].toLowerCase();
+
+      // ─── Determine render mode ─────────────────────────────────────────
+      var TEXT_LIKE  = ['md','txt','json','ttl','rdf','xml','yml','yaml','csv','tsv','log','js','ts','tsx','jsx','css','scss','py','sh','bash','rs','go','java','c','cpp','h','hpp'];
+      var IMG_EXT    = ['png','jpg','jpeg','gif','svg','webp','bmp','avif','ico'];
+      var IFRAME_EXT = ['html','htm','pdf'];
+      var VIDEO_EXT  = ['mp4','webm','mov','m4v'];
+      var AUDIO_EXT  = ['mp3','wav','ogg','m4a','flac'];
+      var DL_ONLY    = ['xlsx','xls','docx','doc','pptx','ppt','zip','tar','gz','7z','dmg','exe','bin'];
+
+      var renderMode;
+      if (!path)                                       renderMode = 'missing';
+      else if (ext === 'json')                         renderMode = 'jsoncrack';   // graph view via JSON Crack widget
+      else if (IMG_EXT.indexOf(ext) > -1)              renderMode = 'image';
+      else if (IFRAME_EXT.indexOf(ext) > -1)           renderMode = 'iframe';
+      else if (VIDEO_EXT.indexOf(ext) > -1)            renderMode = 'video';
+      else if (AUDIO_EXT.indexOf(ext) > -1)            renderMode = 'audio';
+      else if (DL_ONLY.indexOf(ext) > -1)              renderMode = 'binary';
+      else if (TEXT_LIKE.indexOf(ext) > -1 || ext==='') renderMode = 'iframe';   // text — browser renders as plain text in an iframe
+      else                                              renderMode = 'iframe';
+
+      // ─── Populate header / metadata ────────────────────────────────────
+      function $(id) { return document.getElementById(id); }
+      function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
+
+      var modeLabel = renderMode === 'jsoncrack' ? 'graph view (JSON Crack)' : renderMode;
+      $('res-mode-label').textContent = path ? 'rendered as ' + modeLabel : 'no resource specified';
+      $('res-title').textContent      = basename;
+      $('res-path').textContent       = path || '(no path supplied)';
+      $('res-type').textContent       = ext ? '.' + ext : '(no extension)';
+      $('res-rendered').textContent   = renderMode;
+      $('res-open').href              = resourceUrl || '#';
+      $('res-download').href          = resourceUrl || '#';
+      $('res-download').setAttribute('download', basename);
+
+      // Breadcrumb: each path segment as a span (no nav action — purely informational)
+      var bc = $('res-breadcrumb');
+      if (path) {
+        var parts = path.split('/');
+        bc.innerHTML = parts.map(function(p, i){
+          var sep = i < parts.length - 1 ? '<span class="sep">/</span>' : '';
+          return '<span>' + esc(p) + '</span>' + sep;
+        }).join('');
+      } else {
+        bc.textContent = '(no path)';
+      }
+
+      // ─── Render body ──────────────────────────────────────────────────
+      var body = $('res-body');
+      body.innerHTML = '';
+
+      if (renderMode === 'missing') {
+        body.innerHTML =
+          '<div class="res-error">' +
+            '<strong>No <code>?path=</code> parameter supplied.</strong><br>' +
+            'This page expects a query string like <code>resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl</code>.' +
+          '</div>';
+        return;
+      }
+
+      if (renderMode === 'image') {
+        body.innerHTML =
+          '<div class="res-image-wrap">' +
+            '<img alt="' + esc(basename) + '" src="' + esc(resourceUrl) + '">' +
+          '</div>';
+        return;
+      }
+
+      if (renderMode === 'video') {
+        body.innerHTML =
+          '<video class="res-frame" controls preload="metadata">' +
+            '<source src="' + esc(resourceUrl) + '">' +
+            'Your browser does not support inline video. ' +
+            '<a href="' + esc(resourceUrl) + '">Download the file</a>.' +
+          '</video>';
+        return;
+      }
+
+      if (renderMode === 'audio') {
+        body.innerHTML =
+          '<audio controls style="width:100%;">' +
+            '<source src="' + esc(resourceUrl) + '">' +
+            'Your browser does not support inline audio. ' +
+            '<a href="' + esc(resourceUrl) + '">Download the file</a>.' +
+          '</audio>';
+        return;
+      }
+
+      if (renderMode === 'binary') {
+        body.innerHTML =
+          '<div class="res-binary">' +
+            'This file type (<code>.' + esc(ext) + '</code>) can\'t be rendered inline. ' +
+            'Use <a href="' + esc(resourceUrl) + '" download="' + esc(basename) + '">Download</a> ' +
+            'or <a href="' + esc(resourceUrl) + '" target="_blank" rel="noopener">Open original</a> instead.' +
+          '</div>';
+        return;
+      }
+
+      // ─── JSON Crack: graph view for .json files ────────────────────────
+      if (renderMode === 'jsoncrack') {
+        // Mode toggle: Graph (JSON Crack) | Raw
+        body.innerHTML =
+          '<div class="res-json-modes">' +
+            '<button id="res-mode-graph" class="active" type="button">Graph (JSON Crack)</button>' +
+            '<button id="res-mode-raw"   type="button">Raw text</button>' +
+          '</div>' +
+          '<div id="res-json-mount"></div>';
+
+        var mount   = $('res-json-mount');
+        var btnGr   = $('res-mode-graph');
+        var btnRaw  = $('res-mode-raw');
+
+        function renderRaw() {
+          btnGr.classList.remove('active');
+          btnRaw.classList.add('active');
+          mount.innerHTML =
+            '<div class="res-frame-wrap">' +
+              '<iframe class="res-frame" src="' + esc(resourceUrl) + '" title="' + esc(basename) + '"></iframe>' +
+            '</div>';
+        }
+
+        function renderGraph() {
+          btnRaw.classList.remove('active');
+          btnGr.classList.add('active');
+          mount.innerHTML =
+            '<div class="res-jsoncrack-wrap">' +
+              '<div class="res-jsoncrack-status" id="res-jc-status">Loading <code>' + esc(basename) + '</code> into JSON Crack…</div>' +
+              '<iframe id="res-jc-frame" src="https://jsoncrack.com/widget" title="JSON Crack — ' + esc(basename) + '"></iframe>' +
+            '</div>';
+
+          var iframe = document.getElementById('res-jc-frame');
+          var status = document.getElementById('res-jc-status');
+
+          // Post the JSON content into the JSON Crack widget once we have it.
+          function sendToWidget(txt, source) {
+            try { JSON.parse(txt); } catch (e) {
+              status.textContent = 'File is not valid JSON: ' + e.message;
+              return;
+            }
+            var post = function () {
+              try {
+                iframe.contentWindow.postMessage({ json: txt }, '*');
+                status.innerHTML = 'Rendered <code>' + esc(basename) + '</code> via JSON Crack widget' +
+                                   (source ? ' <span class="muted tiny">(' + source + ')</span>' : '') +
+                                   '. <a href="https://jsoncrack.com/editor" target="_blank" rel="noopener">Open the full editor ↗</a>';
+              } catch (e) {
+                status.textContent = 'JSON Crack widget refused the message: ' + e.message;
+              }
+            };
+            if (iframe.contentWindow) post();
+            iframe.addEventListener('load', post);
+            setTimeout(post, 1500);
+          }
+
+          // Strategy A — fetch(): works on http://, blocked on file://
+          // Strategy B — script-tag fallback: loads docs/data/resources/<path>.js
+          //              which sets window.__OPDA_RESOURCE[<path>] = <parsed JSON>.
+          //              Works on file:// because <script src> is allowed.
+          function tryScriptFallback(reasonForRetry) {
+            var bundleUrl = 'data/resources/' + path + '.js';
+            var s = document.createElement('script');
+            s.src = bundleUrl;
+            s.onload = function () {
+              var bag = window.__OPDA_RESOURCE || {};
+              var val = bag[path];
+              if (val === undefined) {
+                status.innerHTML = '<strong>Bundle loaded but content missing for path:</strong> <code>' + esc(path) + '</code>';
+                return;
+              }
+              sendToWidget(JSON.stringify(val), 'loaded from <code>data/resources/</code> bundle');
+            };
+            s.onerror = function () {
+              var isFileProtocol = window.location.protocol === 'file:';
+              if (isFileProtocol) {
+                var port = 8000;
+                var httpEquivalent =
+                  'http://localhost:' + port + '/docs/resource.html?path=' + encodeURIComponent(path);
+                status.innerHTML =
+                  '<strong>This JSON file has no pre-built bundle and the browser is on <code>file://</code>.</strong>' +
+                  '<br><br>To enable graph view either:' +
+                  '<ol style="margin: var(--space-2) 0 var(--space-2) var(--space-5);">' +
+                    '<li>Regenerate bundles: <code>python3 scripts/build-json-bundles.py</code> (then reload)</li>' +
+                    '<li>Or start a local HTTP server: <code>./serve.sh</code> and open ' +
+                        '<a class="resource-link" href="' + esc(httpEquivalent) + '">the http:// version of this page ↗</a></li>' +
+                  '</ol>' +
+                  'Otherwise click <strong>Raw text</strong> above for inline viewing.';
+              } else {
+                status.innerHTML =
+                  '<strong>Could not load JSON.</strong> ' + esc(reasonForRetry) +
+                  ' &nbsp;·&nbsp; try the <strong>Raw text</strong> tab above.';
+              }
+            };
+            document.head.appendChild(s);
+          }
+
+          fetch(resourceUrl)
+            .then(function (r) {
+              if (!r.ok) throw new Error('HTTP ' + r.status);
+              return r.text();
+            })
+            .then(function (txt) { sendToWidget(txt, 'fetched live'); })
+            .catch(function (err) {
+              // fetch() blocked (file://) or other failure — try the pre-built wrapper
+              tryScriptFallback(err.message || 'fetch failed');
+            });
+        }
+
+        btnGr.addEventListener('click', renderGraph);
+        btnRaw.addEventListener('click', renderRaw);
+        renderGraph();
+
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // Default (iframe — covers html, pdf, and any text-like type)
+      body.innerHTML =
+        '<div class="res-frame-wrap">' +
+          '<iframe class="res-frame" src="' + esc(resourceUrl) + '"' +
+            ' title="' + esc(basename) + '"' +
+            ' onerror="document.getElementById(\'res-iframe-fallback\').style.display=\'block\';">' +
+          '</iframe>' +
+        '</div>' +
+        '<div id="res-iframe-fallback" class="res-binary" style="display:none;margin-top:var(--space-3);">' +
+          'The browser could not load this file inline. ' +
+          '<a href="' + esc(resourceUrl) + '" target="_blank" rel="noopener">Open original ↗</a>' +
+        '</div>';
+
+      // Update <title> with file basename
+      document.title = basename + ' · OPDA Knowledge Base';
+    })();
+  </script>
+</body>
+</html>

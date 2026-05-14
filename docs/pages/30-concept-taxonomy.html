@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concept taxonomy (SKOS) · OPDA Knowledge Base</title>
+  <meta name="description" content="The hierarchical organisation of PDTF concepts — what falls under what. Expressed in SKOS for tool interoperability.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--info">Modelling</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>Concept taxonomy (SKOS)</h1>
+      <p class="lead">The hierarchical organisation of PDTF concepts — what falls under what. Expressed in SKOS for tool interoperability.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="what-exists">What already exists</h2>
+      <ul>
+        <li><strong>Initial SKOS seed</strong> — <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl"><code>source/00-deliverables/semantic-models/business-glossary.ttl</code></a> (554 concepts, generated from merged OPDA Glossary + PDTF schema annotations).</li>
+        <li><strong>1,557 unique leaf property names</strong> from the schemas (see <a href="13-data-dictionary.html">Data dictionary &amp; glossary</a>).</li>
+        <li><strong>54 business terms</strong> from the OPDA Glossary spreadsheets.</li>
+      </ul>
+
+      <h2 id="proposed-top-level">Proposed top-level concept scheme</h2>
+      <div class="diagram">
+        <div class="mermaid">
+flowchart TB
+  classDef root fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+  classDef l1 fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+
+  PDTF[PDTF Concept Scheme]:::root
+  TX[Transaction lifecycle]:::l1
+  PROP[Property]:::l1
+  PART[Participant]:::l1
+  CLAIM[Claim & Evidence]:::l1
+  DOC[Document]:::l1
+  FORM[Form]:::l1
+  SRCH[Search]:::l1
+  FIN[Financial]:::l1
+  LEGAL[Legal]:::l1
+
+  PDTF --> TX
+  PDTF --> PROP
+  PDTF --> PART
+  PDTF --> CLAIM
+  PDTF --> DOC
+  PDTF --> FORM
+  PDTF --> SRCH
+  PDTF --> FIN
+  PDTF --> LEGAL
+        </div>
+        <div class="diagram-caption">Top-level SKOS concepts. Each branch is a tree of more specific concepts.</div>
+      </div>
+
+      <h2 id="next">Next work</h2>
+      <ol>
+        <li>Map each of the 1,557 leaf names to one of the 9 branches</li>
+        <li>Build the second-level hierarchy (e.g. <em>Property → Tenure → Leasehold</em>)</li>
+        <li>Cross-reference with BASPI / TA6 / NTS taxonomies where they exist</li>
+        <li>Reconcile context-specific synonyms via <code>skos:exactMatch</code> / <code>skos:closeMatch</code></li>
+      </ol>
+        
+
+      <div class="page-footer">
+        <a href="14-business-glossary.html">← Business glossary</a>
+        <a href="31-ontology.html">Ontology (OWL) →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'concept-taxonomy' });</script>
+</body>
+</html>

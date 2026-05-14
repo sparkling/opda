@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lifecycle & versioning policy · OPDA Knowledge Base</title>
+  <meta name="description" content="Semantic versioning rules, deprecation timelines, and retirement policy — including how to handle external regulatory withdrawals (the NTS situation).">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>Lifecycle & versioning policy</h1>
+      <p class="lead">Semantic versioning rules, deprecation timelines, and retirement policy — including how to handle external regulatory withdrawals (the NTS situation).</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="what-exists">What already exists</h2>
+      <ul>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>source/03-standards/trust-framework/docs/release-version-register.md</code></a> — version log</li>
+        <li>Schemas use <strong>semantic versioning</strong> (MAJOR.MINOR.PATCH). Currently <strong>v3.4 stable</strong>, <strong>v3.6 in development</strong>.</li>
+        <li>Older overlay versions kept for backward compat in <code>v3/overlays/</code>: <code>baspi4</code>, <code>nts</code>, <code>ntsl</code>.</li>
+      </ul>
+
+      <h2 id="policy-questions">Policy questions to resolve</h2>
+      <ol>
+        <li><strong>How long is N-1 supported?</strong> When v4 ships, how long does v3 stay supported?</li>
+        <li><strong>Deprecation marking</strong> — JSON Schema deprecation keyword + machine-readable sunset date</li>
+        <li><strong>What happens when an upstream form is withdrawn?</strong> (the NTS case — successor is months away from MHCLG)</li>
+        <li><strong>Major-version cadence</strong> — how often? Annual? Driven by demand?</li>
+        <li><strong>Per-overlay vs whole-framework versioning</strong> — overlays evolve independently from the base</li>
+      </ol>
+
+      <h2 id="nts-case-study">Worked case study: NTS overlay retirement</h2>
+      <p>
+        NTS withdrew the Material Information v1.0 guidance in late 2025 (DMCC Act 2024 superseded the underlying regulation). OPDA's <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> and <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a> overlays implement guidance that is no longer authoritative — but firms using them are still operating compliantly under the transitional arrangements.
+      </p>
+      <p>
+        The lifecycle policy needs to define:
+      </p>
+      <ul>
+        <li>Mark <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> as <strong>deprecated</strong> in the schema (not yet retired)</li>
+        <li>Track MHCLG's successor publication (Oct 2025 consultation)</li>
+        <li>When MHCLG publishes, ship a new <code>mhclg-material-info.json</code> overlay</li>
+        <li>Sunset date for the old NTS overlay: 6 months after MHCLG go-live</li>
+      </ul>
+      <p>
+        See <a href="../../source/08-external-references/nts/README.md">source/08-external-references/nts/README.md</a> for the full context.
+      </p>
+        
+
+      <div class="page-footer">
+        <a href="21-change-management.html">← Change management</a>
+        <a href="23-risk-liability.html">Risk & liability →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'lifecycle-versioning' });</script>
+</body>
+</html>

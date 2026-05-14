@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Change management process · OPDA Knowledge Base</title>
+  <meta name="description" content="How a schema, overlay, or rule changes — from proposal through impact assessment, consultation, and release.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>Change management process</h1>
+      <p class="lead">How a schema, overlay, or rule changes — from proposal through impact assessment, consultation, and release.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="what-exists">What already exists (templates)</h2>
+      <p>OPDA already has the templates — they just need to be consolidated under a single process document:</p>
+      <ul>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/proposal.md"><code>source/03-standards/trust-framework/docs/proposal.md</code></a> — change proposal template</li>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md"><code>source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md</code></a> — impact assessment</li>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/change-notification-template.md"><code>source/03-standards/trust-framework/docs/change-notification-template.md</code></a> — non-breaking change notice</li>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/breaking-change-notification-template.md"><code>source/03-standards/trust-framework/docs/breaking-change-notification-template.md</code></a> — breaking change notice</li>
+        <li><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md</code></a> — pre-release checklist</li>
+      </ul>
+
+      <h2 id="proposed-flow">Proposed flow</h2>
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef step fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  P[Proposal raised]:::step
+  IA[Impact assessment]:::step
+  WG[Working group review]:::step
+  CS[Public consultation]:::step
+  SG[Steering Group sign-off]:::step
+  REL[Release + notification]:::step
+  REG[Trust Registry update]:::step
+  P --> IA --> WG --> CS --> SG --> REL --> REG
+        </div>
+        <div class="diagram-caption">Each step has clear owners under the DPMSG working-group structure.</div>
+      </div>
+
+      <h2 id="cadence">Cadence</h2>
+      <ul>
+        <li><strong>Minor</strong> (additive / backward-compatible) — monthly release window</li>
+        <li><strong>Major</strong> (breaking) — twice-yearly, with 6-month migration window</li>
+        <li><strong>Regulatory-driven</strong> (e.g. MHCLG publishes successor to NTS) — fast-track, no consultation needed if conformist with the regulatory text</li>
+      </ul>
+        
+
+      <div class="page-footer">
+        <a href="20-conformance-scheme.html">← Conformance & certification</a>
+        <a href="22-lifecycle-versioning.html">Lifecycle & versioning →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'change-management' });</script>
+</body>
+</html>

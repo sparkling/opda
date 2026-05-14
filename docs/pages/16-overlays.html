@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDTF overlays · OPDA Knowledge Base</title>
+  <meta name="description" content="What overlays are, the full catalogue (18 main + 16 extension), how they're defined in JSON Schema, how getTransactionSchema merges them, and how they relate to bounded contexts.">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--info">Modelling</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>PDTF overlays</h1>
+      <p class="lead">
+        An overlay is a JSON-Schema artefact that adds one form, search or document
+        to the base PDTF transaction schema. Overlays are the unit of composition
+        the schema package ships in — pick the ones your use case needs, merge them
+        on top of the base, and you get a complete validating schema.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Headline numbers</div>
+        <ul style="margin: 0;">
+          <li><strong>1</strong> base transaction schema — <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> (not an overlay)</li>
+          <li><strong>18</strong> main overlays in <code>v3/overlays/*.json</code></li>
+          <li><strong>16</strong> extension overlays in <code>v3/overlays/extensions/*.json</code> (modular NTS2 pieces)</li>
+          <li><strong>34</strong> overlay files total in PDTF v3</li>
+        </ul>
+        <p class="muted tiny" style="margin-top: var(--space-2);">
+          <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/combined.json" title="source/03-standards/schemas/src/schemas/v3/combined.json"><code>combined.json</code></a> and <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/skeleton.json" title="source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>skeleton.json</code></a> at the v3 root aren't
+          overlays — the first is a pre-merged convenience view, the second is a starter
+          template for empty transactions.
+        </p>
+      </div>
+
+      <h2 id="what-is-an-overlay">What an overlay is — and is not</h2>
+
+      <p>
+        An overlay is a draft-07 JSON Schema that mirrors the shape of the base
+        transaction but only specifies what it <em>adds or constrains</em>. The merge
+        function turns the base + overlays into a complete schema.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Dimension</th><th>Overlay</th><th>Bounded context (DDD)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Layer</strong></td><td>Schema layer — JSON Schema files</td><td>Domain layer — language and rules of a business function</td></tr>
+          <tr><td><strong>Granularity</strong></td><td>One form, search or document (BASPI, TA6, CON29R …)</td><td>An entire industry function (Estate Agency, Conveyancing …)</td></tr>
+          <tr><td><strong>Lives in</strong></td><td><code>v3/overlays/*.json</code> in the schemas repo</td><td>Architecture documentation (see <a href="12-bounded-contexts.html">Bounded contexts</a>)</td></tr>
+          <tr><td><strong>Who picks it</strong></td><td>Developer assembling a runtime schema</td><td>Business architect modelling the domain</td></tr>
+          <tr><td><strong>Cardinality</strong></td><td>Many overlays per bounded context</td><td>One bounded context owns several overlays</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        Overlays predate the DDD analysis — the bounded-context model is a retrofit
+        onto a partition that was already there. So the answer to "are overlays the
+        same as bounded contexts?" is: <strong>no, but they map cleanly onto them</strong>.
+      </p>
+
+      <h2 id="catalogue">The catalogue</h2>
+
+      <h3 id="main">Main overlays (18)</h3>
+
+      <p>
+        <strong>Bounded context</strong> is the business domain the overlay belongs to (one
+        of six). <strong>Status</strong> is the lifecycle state of the overlay file:
+        <em>active</em> means current, <em>superseded</em> / <em>legacy</em> means a newer
+        overlay covers the same form but the older one is still shipped in v3 for backward
+        compatibility. The two are orthogonal — every legacy overlay still belongs to its
+        original bounded context.
+      </p>
+
+      <h4 id="cat-property-info">Property information forms</h4>
+      <p>What the seller declares about the property.</p>
+      <table class="overlay-catalogue">
+        <colgroup>
+          <col style="width:34%">
+          <col style="width:14%">
+          <col style="width:10%">
+          <col style="width:18%">
+          <col style="width:24%">
+        </colgroup>
+        <thead>
+          <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>v5.0</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td><td>v4.0</td><td>Estate Agency</td><td>superseded by <code>baspi5</code></td></tr>
+          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>nts2</code></td></tr>
+          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>ntsl2</code></td></tr>
+          <tr><td>Property Information Questionnaire</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>v3</td><td>Surveying</td><td>active</td></tr>
+        </tbody>
+      </table>
+
+      <h4 id="cat-legal">Legal forms (Law Society)</h4>
+      <p>What the conveyancer asks for.</p>
+      <table class="overlay-catalogue">
+        <colgroup>
+          <col style="width:34%">
+          <col style="width:14%">
+          <col style="width:10%">
+          <col style="width:18%">
+          <col style="width:24%">
+        </colgroup>
+        <thead>
+          <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Property Information Form</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Leasehold Information Form</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Fittings and Contents Form</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
+        </tbody>
+      </table>
+
+      <h4 id="cat-search-survey">Search and survey forms</h4>
+      <p>What the third-party data providers return.</p>
+      <table class="overlay-catalogue">
+        <colgroup>
+          <col style="width:34%">
+          <col style="width:14%">
+          <col style="width:10%">
+          <col style="width:18%">
+          <col style="width:24%">
+        </colgroup>
+        <thead>
+          <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Local Authority Search</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>2019</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Drainage and Water Search</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>current</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Leasehold Property Enquiries</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Freehold Management Enquiries</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Edition 2</td><td>Mortgage Lending</td><td>active</td></tr>
+          <tr><td>Local Land Charges Search</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>v2</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Optional Enquiries of Local Authority</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>v21</td><td>Property Data Services</td><td>active</td></tr>
+        </tbody>
+      </table>
+
+      <h4 id="cat-specialist">Specialist</h4>
+      <p>Newer overlays covering domain-specific data.</p>
+      <table class="overlay-catalogue">
+        <colgroup>
+          <col style="width:34%">
+          <col style="width:14%">
+          <col style="width:10%">
+          <col style="width:18%">
+          <col style="width:24%">
+        </colgroup>
+        <thead>
+          <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Residential Development Survey</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>v3.3.3</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Sustainability Report 2024</td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>2024</td><td>Property Data Services</td><td>active</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="extensions">Extension overlays (16)</h3>
+
+      <p>
+        Modular sub-pieces of NTS2 — opt into them individually on top of an NTS 2023
+        base. Each adds one specific feature so adopters can stage their migration
+        from NTS → NTS2 without committing to the entire 2025 spec at once.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Group</th><th>Key</th><th>Description</th><th>NTS2 ref</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="5"><strong>Specialist issues</strong></td>
+              <td><code>as</code></td><td>Asbestos</td><td>A5.2</td></tr>
+          <tr><td><code>dr</code></td><td>Dry-rot treatment</td><td>A5.1</td></tr>
+          <tr><td><code>jk</code></td><td>Japanese knotweed</td><td>A5.3</td></tr>
+          <tr><td><code>sb</code></td><td>Subsidence / structural faults</td><td>A5.4</td></tr>
+          <tr><td><code>hs</code></td><td>Health &amp; safety issues</td><td>A5.5</td></tr>
+
+          <tr><td rowspan="4"><strong>Property features</strong></td>
+              <td><code>oa</code></td><td>Outside areas (garden / balcony / communal)</td><td>—</td></tr>
+          <tr><td><code>la</code></td><td>Loft access &amp; insulation</td><td>A4.1</td></tr>
+          <tr><td><code>sf</code></td><td>Spray-foam insulation</td><td>A4.2</td></tr>
+          <tr><td><code>mc</code></td><td>Main construction type</td><td>—</td></tr>
+
+          <tr><td rowspan="3"><strong>Ownership &amp; financial</strong></td>
+              <td><code>er</code></td><td>Estate rentcharges (freehold)</td><td>A3.2</td></tr>
+          <tr><td><code>ma</code></td><td>Managing agent (leasehold)</td><td>A1.5.4</td></tr>
+          <tr><td><code>tf</code></td><td>Transfer fees</td><td>A3.5.1.1</td></tr>
+
+          <tr><td rowspan="3"><strong>Utilities &amp; services</strong></td>
+              <td><code>sl</code></td><td>Solar-panel ownership</td><td>B3.7.1</td></tr>
+          <tr><td><code>hi</code></td><td>Heating installation date</td><td>B3.4.3.2</td></tr>
+          <tr><td><code>fd</code></td><td>Flood defences</td><td>—</td></tr>
+
+          <tr><td><strong>Transaction</strong></td>
+              <td><code>oc</code></td><td>Other property chain dependency</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="definition">How an overlay is defined</h2>
+
+      <p>
+        Every overlay is a draft-07 JSON Schema with this skeletal shape:
+      </p>
+
+      <pre><code>{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trust.propdata.org.uk/schemas/v3/overlays/baspi5.json",
+  "required": ["participants", "propertyPack"],
+  "properties": {
+    "propertyPack": {
+      "baspi5Ref": "B",
+      "required": ["priceInformation", "ownership", "..."],
+      "properties": {
+        "priceInformation": {
+          "baspi5Ref": "B.1",
+          "properties": { /* … */ }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+      <p>The pieces that make an overlay an overlay:</p>
+      <ul>
+        <li><strong>Form reference attributes</strong> — <code>baspi5Ref</code>,
+          <code>ntsRef</code>, <code>nts2Ref</code>, <code>ta6Ref</code>,
+          <code>ta7Ref</code>, <code>ta10Ref</code>, <code>lpe1Ref</code>,
+          <code>fme1Ref</code>, <code>con29RRef</code>, <code>con29DWRef</code>,
+          <code>rdsRef</code>, <code>piqRef</code>. Each schema node carries the
+          paper-form section number it traces back to.</li>
+        <li><strong><code>required</code> arrays</strong> — fields the form mandates.
+          Different overlays make different things required.</li>
+        <li><strong><code>title</code> / <code>description</code> annotations</strong>
+          — form-specific wording (often different from the base or another overlay).</li>
+        <li><strong><code>oneOf</code> discriminators</strong> — the canonical
+          pattern is the <code>yesNo</code> discriminator: when
+          <code>yesNo</code> = "Yes", a <code>details</code> field becomes required.</li>
+      </ul>
+
+      <h2 id="usage">How overlays are used at runtime</h2>
+
+      <p>
+        Composition happens via the library entrypoint
+        <code>getTransactionSchema(schemaId, overlays[])</code> in <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a>:
+      </p>
+
+      <pre><code>const { getTransactionSchema } = require('@pdtf/schemas');
+
+// Estate-agency product:
+const eaSchema = getTransactionSchema(
+  "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  ["baspi5", "nts2"]
+);
+
+// Conveyancer product:
+const cnvSchema = getTransactionSchema(
+  "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  ["ta6", "ta7", "ta10", "lpe1"]
+);
+
+// Selective NTS → NTS2 migration:
+const stagedSchema = getTransactionSchema(
+  "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  ["nts2023", "jk", "tf"]  // NTS 2023 + Japanese knotweed + transfer fees
+);</code></pre>
+
+      <p>Under the hood, the merge pipeline is:</p>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
+
+  BASE[pdtf-transaction.json<br/><i>base transaction schema</i>]:::src
+  O1[Overlay 1<br/>e.g. baspi5]:::src
+  O2[Overlay 2<br/>e.g. nts2]:::src
+  O3[Overlay n …]:::src
+
+  MERGE["deepmerge( base, O1, O2, … )<br/>+ custom arrayMerge for<br/>required &amp; oneOf"]:::proc
+
+  RESULT[Merged schema<br/><i>complete and validatable</i>]:::out
+
+  BASE --> MERGE
+  O1 --> MERGE
+  O2 --> MERGE
+  O3 --> MERGE
+  MERGE --> RESULT
+        </div>
+        <div class="diagram-caption">
+          <code>deepmerge</code> with a custom <code>arrayMerge</code>: <code>required</code> arrays are unioned, <code>oneOf</code> arrays are concatenated, and the rest follows ordinary object-merge rules.
+        </div>
+      </div>
+
+      <h3 id="aliases">Names and aliases</h3>
+
+      <p>
+        Overlays are registered in <code>overlaysMap[schemaId]</code> in <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a> under versioned aliases as well as the plain filename stem. Both work:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Alias in <code>overlaysMap</code></th><th>File</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>baspiV4</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td></tr>
+          <tr><td><code>baspiV5</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td></tr>
+          <tr><td><code>ta6ed4</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td></tr>
+          <tr><td><code>ta7ed3</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td></tr>
+          <tr><td><code>ta10ed3</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td></tr>
+          <tr><td><code>lpe1ed4</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td></tr>
+          <tr><td><code>fme1ed2</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td></tr>
+          <tr><td><code>llc1v2</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td></tr>
+          <tr><td><code>nts2023</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td></tr>
+          <tr><td><code>ntsl2023</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td></tr>
+          <tr><td><code>nts2025</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td></tr>
+          <tr><td><code>ntsl2025</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td></tr>
+          <tr><td><code>con29R2019</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td></tr>
+          <tr><td><code>con29DW</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td></tr>
+          <tr><td><code>rdsV333</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td></tr>
+          <tr><td><code>oc1v21</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td></tr>
+          <tr><td><code>piqV3</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td></tr>
+          <tr><td><code>sr24</code></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="bounded-context-map">Bounded-context map</h2>
+
+      <p>Each overlay belongs to exactly one bounded context:</p>
+
+      <table>
+        <thead>
+          <tr><th>Bounded context</th><th>Main overlays</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Estate Agency</strong></td>
+            <td><code>baspi4</code> (legacy) · <code>baspi5</code> · <code>nts</code> (legacy) · <code>nts2</code> · <code>ntsl</code> (legacy) · <code>ntsl2</code></td>
+          </tr>
+          <tr>
+            <td><strong>Conveyancing</strong></td>
+            <td><code>ta6</code> · <code>ta7</code> · <code>ta10</code> · <code>lpe1</code></td>
+          </tr>
+          <tr>
+            <td><strong>Mortgage Lending</strong></td>
+            <td><code>fme1</code></td>
+          </tr>
+          <tr>
+            <td><strong>Surveying</strong></td>
+            <td><code>piq</code></td>
+          </tr>
+          <tr>
+            <td><strong>Property Data Services</strong></td>
+            <td><code>rds</code> · <code>oc1</code> · <code>llc1</code> · <code>con29R</code> · <code>con29DW</code> · <code>sr24</code></td>
+          </tr>
+          <tr>
+            <td><strong>Property Tech</strong></td>
+            <td>The base <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper (no overlays of its own)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The extension overlays (<code>jk</code>, <code>tf</code>, …) are all sub-pieces
+        of NTS2, so they belong to Estate Agency.
+      </p>
+
+      <h2 id="sources">Where this lives</h2>
+
+      <ul>
+        <li>Overlay JSON files: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/"><code>source/03-standards/schemas/src/schemas/v3/overlays/</code></a></li>
+        <li>Extension overlays: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/extensions/"><code>source/03-standards/schemas/src/schemas/v3/overlays/extensions/</code></a></li>
+        <li>Upstream README: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/README.md"><code>source/03-standards/schemas/src/schemas/v3/overlays/README.md</code></a></li>
+        <li>Merge entrypoint: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/index.js"><code>source/03-standards/schemas/index.js</code></a> (function <code>getTransactionSchema</code> at line 170)</li>
+        <li>Bounded-context mapping rationale: <a href="12-bounded-contexts.html">Bounded contexts (DDD)</a></li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="12-bounded-contexts.html">← Bounded contexts</a>
+        <a href="13-data-dictionary.html">Data dictionary →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script>OPDA.init({ page: 'overlays' });</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+/* OPDA Knowledge Base — Design Tokens
+ * Single source of truth for colours, typography, spacing, radii.
+ * Imported by every doc page via design-system.css.
+ * Inspired by OPDA brand (deep blue/teal palette).
+ */
+
+:root {
+  /* === Brand palette === */
+  --color-brand-900: #0b2545;   /* deepest navy — headings, key actions */
+  --color-brand-800: #13315c;
+  --color-brand-700: #1a4d80;   /* OPDA primary blue */
+  --color-brand-600: #2a6caa;
+  --color-brand-500: #4a90c2;   /* mid blue — links, accents */
+  --color-brand-400: #7aaecf;
+  --color-brand-300: #b8d4e3;
+  --color-brand-200: #d8e6ed;
+  --color-brand-100: #eef4f8;   /* surface tint */
+  --color-brand-50:  #f7fafc;
+
+  --color-accent-700: #b45309;  /* warm amber — call-outs, status warnings */
+  --color-accent-500: #f59e0b;
+  --color-accent-100: #fef3c7;
+
+  --color-success-700: #166534;
+  --color-success-500: #22c55e;
+  --color-success-100: #dcfce7;
+
+  --color-info-700:   #1e40af;
+  --color-info-500:   #3b82f6;
+  --color-info-100:   #dbeafe;
+
+  --color-warning-700: #92400e;
+  --color-warning-500: #f59e0b;
+  --color-warning-100: #fef3c7;
+
+  --color-danger-700:  #991b1b;
+  --color-danger-500:  #ef4444;
+  --color-danger-100:  #fee2e2;
+
+  /* === Neutrals (slate) === */
+  --color-ink-900: #0f172a;   /* body text */
+  --color-ink-800: #1e293b;
+  --color-ink-700: #334155;
+  --color-ink-600: #475569;   /* secondary text */
+  --color-ink-500: #64748b;
+  --color-ink-400: #94a3b8;
+  --color-ink-300: #cbd5e1;
+  --color-ink-200: #e2e8f0;
+  --color-ink-100: #f1f5f9;   /* faint surface */
+  --color-ink-50:  #f8fafc;
+  --color-ink-0:   #ffffff;
+
+  /* === Semantic tokens === */
+  --color-surface: var(--color-ink-0);
+  --color-surface-alt: var(--color-ink-50);
+  --color-surface-tint: var(--color-brand-100);
+  --color-border: var(--color-ink-200);
+  --color-border-strong: var(--color-ink-300);
+  --color-text: var(--color-ink-900);
+  --color-text-muted: var(--color-ink-600);
+  --color-link: var(--color-brand-700);
+  --color-link-hover: var(--color-brand-900);
+
+  /* === Typography === */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Charter', 'Iowan Old Style', Georgia, serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --text-xs:   0.75rem;     /* 12 */
+  --text-sm:   0.875rem;    /* 14 */
+  --text-base: 1rem;        /* 16 */
+  --text-lg:   1.125rem;    /* 18 */
+  --text-xl:   1.25rem;     /* 20 */
+  --text-2xl:  1.5rem;      /* 24 */
+  --text-3xl:  1.875rem;    /* 30 */
+  --text-4xl:  2.25rem;     /* 36 */
+  --text-5xl:  3rem;        /* 48 */
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.4;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* === Spacing scale (rem) === */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+
+  /* === Radii === */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* === Shadows === */
+  --shadow-sm: 0 1px 2px 0 rgba(15,23,42,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15,23,42,0.08), 0 2px 4px -1px rgba(15,23,42,0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15,23,42,0.08), 0 4px 6px -2px rgba(15,23,42,0.04);
+
+  /* === Layout === */
+  --content-max: 112.5rem;  /* 1800px */
+  --content-narrow: 48rem;
+  --sidebar-width: 18rem;
+  --header-height: 4rem;
+
+  /* === Motion === */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+}
+
+/* === Dark mode === Two activation paths:
+   1. user explicitly toggled (data-theme="dark")
+   2. system preference is dark AND user hasn't pinned light (no data-theme="light")
+   The values are duplicated below — same content, two selectors. */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* === Surfaces & semantic tokens === */
+  --color-surface:        #0b1220;
+  --color-surface-alt:    #0f1729;
+  --color-surface-tint:   #142340;
+  --color-border:         #1e293b;
+  --color-border-strong:  #334155;
+  --color-text:           #e2e8f0;
+  --color-text-muted:     #94a3b8;
+  --color-link:           #7aaecf;
+  --color-link-hover:     #b8d4e3;
+
+  /* === Brand scale — inverted === */
+  --color-brand-50:  #0b2545;
+  --color-brand-100: #13315c;
+  --color-brand-200: #1a4d80;
+  --color-brand-300: #2a6caa;
+  --color-brand-400: #4a90c2;
+  --color-brand-500: #7aaecf;
+  --color-brand-600: #b8d4e3;
+  --color-brand-700: #d8e6ed;
+  --color-brand-800: #eef4f8;
+  --color-brand-900: #f7fafc;
+
+  /* === Ink (neutral) scale — inverted === */
+  --color-ink-0:   #0b1220;
+  --color-ink-50:  #0f1729;
+  --color-ink-100: #1e293b;
+  --color-ink-200: #334155;
+  --color-ink-300: #475569;
+  --color-ink-400: #64748b;
+  --color-ink-500: #94a3b8;
+  --color-ink-600: #cbd5e1;
+  --color-ink-700: #e2e8f0;
+  --color-ink-800: #f1f5f9;
+  --color-ink-900: #f8fafc;
+
+  /* === Tinted backgrounds === */
+  --color-info-100:    #1e3a8a;
+  --color-info-500:    #60a5fa;
+  --color-info-700:    #bfdbfe;
+
+  --color-accent-100:  #7c2d12;
+  --color-accent-500:  #f59e0b;
+  --color-accent-700:  #fde68a;
+
+  --color-success-100: #14532d;
+  --color-success-500: #4ade80;
+  --color-success-700: #bbf7d0;
+
+  --color-warning-100: #78350f;
+  --color-warning-500: #f59e0b;
+  --color-warning-700: #fde68a;
+
+  --color-danger-100:  #7f1d1d;
+  --color-danger-500:  #f87171;
+  --color-danger-700:  #fecaca;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+
+    /* === Surfaces & semantic tokens === */
+    --color-surface:        #0b1220;
+    --color-surface-alt:    #0f1729;
+    --color-surface-tint:   #142340;
+    --color-border:         #1e293b;
+    --color-border-strong:  #334155;
+    --color-text:           #e2e8f0;
+    --color-text-muted:     #94a3b8;
+    --color-link:           #7aaecf;
+    --color-link-hover:     #b8d4e3;
+
+    /* === Brand scale — inverted ===
+       Components pair "100" backgrounds with "900" text. By flipping the
+       scale, every such pair (.pill--brand, .prose th, .callout--key,
+       sidebar hover, etc.) becomes dark-tinted bg + light text without
+       touching the component CSS. */
+    --color-brand-50:  #0b2545;
+    --color-brand-100: #13315c;   /* deep navy tint for surfaces */
+    --color-brand-200: #1a4d80;
+    --color-brand-300: #2a6caa;
+    --color-brand-400: #4a90c2;
+    --color-brand-500: #7aaecf;
+    --color-brand-600: #b8d4e3;
+    --color-brand-700: #d8e6ed;   /* used by many headings/borders — keep readable */
+    --color-brand-800: #eef4f8;
+    --color-brand-900: #f7fafc;   /* near-white text on dark brand bgs */
+
+    /* === Ink (neutral) scale — inverted === */
+    --color-ink-0:   #0b1220;
+    --color-ink-50:  #0f1729;     /* faint surface */
+    --color-ink-100: #1e293b;
+    --color-ink-200: #334155;     /* borders */
+    --color-ink-300: #475569;
+    --color-ink-400: #64748b;
+    --color-ink-500: #94a3b8;
+    --color-ink-600: #cbd5e1;
+    --color-ink-700: #e2e8f0;
+    --color-ink-800: #f1f5f9;
+    --color-ink-900: #f8fafc;     /* body-text-strong */
+
+    /* === Tinted backgrounds for callouts / pills ===
+       Same pattern: deep tinted bg + lighter complementary fg. */
+    --color-info-100:    #1e3a8a;
+    --color-info-500:    #60a5fa;
+    --color-info-700:    #bfdbfe;
+
+    --color-accent-100:  #7c2d12;
+    --color-accent-500:  #f59e0b;
+    --color-accent-700:  #fde68a;
+
+    --color-success-100: #14532d;
+    --color-success-500: #4ade80;
+    --color-success-700: #bbf7d0;
+
+    --color-warning-100: #78350f;
+    --color-warning-500: #f59e0b;
+    --color-warning-700: #fde68a;
+
+    --color-danger-100:  #7f1d1d;
+    --color-danger-500:  #f87171;
+    --color-danger-700:  #fecaca;
+  }
+}

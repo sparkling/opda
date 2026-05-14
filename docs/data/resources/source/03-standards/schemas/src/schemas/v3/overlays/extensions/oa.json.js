@@ -1,0 +1,2 @@
+window.__OPDA_RESOURCE=window.__OPDA_RESOURCE||{};
+window.__OPDA_RESOURCE["source/03-standards/schemas/src/schemas/v3/overlays/extensions/oa.json"]={"properties":{"propertyPack":{"properties":{"residentialPropertyFeatures":{"properties":{"outsideAreas":{"ntsRef":"B5.1","type":"array"}},"required":["outsideAreas"]}}}},"$schema":"http://json-schema.org/draft-07/schema#","$id":"https://trust.propdata.org.uk/schemas/v3/overlays/extensions/oa.json","$comment":"Outside areas extension for NTS"};

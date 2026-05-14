@@ -1,0 +1,63 @@
+---
+const SITE = 'OPDA Knowledge Base';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — Page not found · {SITE}</title>
+  <link rel="stylesheet" href="/ui/design-system.css">
+  <style>
+    .not-found {
+      max-width: 40rem;
+      margin: 6rem auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    .not-found h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--color-brand-900);
+      margin: 0 0 1rem;
+    }
+    .not-found p {
+      font-size: 1.125rem;
+      color: var(--color-text-muted);
+      margin: 0 0 2rem;
+    }
+    .not-found .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .not-found .actions a {
+      padding: 0.6rem 1.25rem;
+      background: var(--color-brand-700);
+      color: white;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .not-found .actions a:hover { background: var(--color-brand-800); }
+    .not-found .actions a.secondary {
+      background: var(--color-surface);
+      color: var(--color-brand-700);
+      border: 1px solid var(--color-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="not-found">
+    <h1>404</h1>
+    <p>The page you were looking for isn't here. It may have been moved, renamed, or never existed.</p>
+    <div class="actions">
+      <a href="/">Back to home</a>
+      <a class="secondary" href="/governance.html">Governance</a>
+      <a class="secondary" href="/modelling.html">Modelling</a>
+    </div>
+  </div>
+</body>
+</html>
