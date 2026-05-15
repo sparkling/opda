@@ -5,7 +5,9 @@
   "type": "module",
   "description": "OPDA Knowledge Base — Astro shell over a static HTML/CSS/JS docs site for the Property Data Trust Framework.",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/dev.mjs",
+    "dev:bare": "astro dev",
+    "start": "node scripts/dev.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · OPDA Knowledge Base</title>
+  <meta name="description" content="The physical architecture of the PDTF schema codebase — three repositories, the base transaction schema, overlays and extensions, the merge engine, the exchange API, and the verifiable-credential trust layer.">
+  <link rel="stylesheet" href="ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Section overview</span>
+        <span>Updated 2026-05-15</span>
+      </div>
+
+      <h1>Schema</h1>
+      <p class="lead">
+        The physical architecture of the PDTF schema codebase — the actual repositories,
+        files, packages and engines that turn the data standard into something software
+        can validate against. Where <a href="modelling.html">Modelling</a> covers the
+        semantic layer — glossaries, taxonomies, the ontology — this section covers the
+        concrete artefacts that layer is built on.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Three repositories</div>
+        <ul style="margin: 0;">
+          <li><strong><code>@pdtf/schemas</code></strong> v3.5.0 — the base transaction schema, 18 form overlays, 16 extension overlays, the verified-claims wrapper, and the merge &amp; validation engine.</li>
+          <li><strong><code>@pdtf/api</code></strong> — the OpenAPI exchange specification, currently up to v2.0.0.</li>
+          <li><strong><code>@pdtf/trust-framework</code></strong> v0.3.0 — the W3C Verifiable Credential schema, JSON-LD contexts and DID-based registry for PDTF&nbsp;v2.</li>
+        </ul>
+      </div>
+
+      <h2 id="architecture">Architecture</h2>
+      <p>How the schema artefacts physically fit together, end to end.</p>
+      <div class="card-grid">
+        <a class="card" href="pages/34-physical-architecture.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Physical architecture</h3>
+          <p>The three repositories, the base transaction schema, the overlay and extension layer, the merge engine, the exchange API and the verifiable-credential trust layer — with ER diagrams and architecture diagrams throughout.</p>
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <script src="ui/site.js"></script>
+  <script>OPDA.init({ page: 'schema', section: 'schema' });</script>
+</body>
+</html>

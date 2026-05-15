@@ -54,6 +54,15 @@
         ]},
       ],
     },
+    schema: {
+      title: 'Schema',
+      summary: 'The physical architecture of the PDTF schema codebase — the three repositories, the base transaction schema, the overlay and extension files, the merge and validation engine, the exchange API, and the verifiable-credential trust layer.',
+      groups: [
+        { heading: 'Architecture', items: [
+          { id: 'physical-architecture', file: '34-physical-architecture.html', title: 'Physical architecture' },
+        ]},
+      ],
+    },
     engagement: {
       title: 'Engagement',
       summary: 'Where the work happens: working groups, steering group meetings, member updates, video content, and the activity log of the programme.',
@@ -170,12 +179,14 @@
           '<span class="brand-sub">Knowledge base</span>' +
         '</a>' +
         '<nav class="global-nav">' +
-          '<a href="' + hrefForSection('governance',     currentLoc) + '"' + cls('governance')     + '>Governance</a>' +
-          '<a href="' + hrefForSection('modelling',      currentLoc) + '"' + cls('modelling')      + '>Modelling</a>' +
-          '<a href="' + hrefForSection('engagement',     currentLoc) + '"' + cls('engagement')     + '>Engagement</a>' +
-          '<a href="' + hrefForSection('adoption',       currentLoc) + '"' + cls('adoption')       + '>Adoption</a>' +
-          '<a href="' + hrefForSection('implementation', currentLoc) + '"' + cls('implementation') + '>Implementation</a>' +
+          // Logical flow: Why → Authority → Activity → What → How → Evidence → Archive
           '<a href="' + hrefForSection('strategy',       currentLoc) + '"' + cls('strategy')       + '>Strategy</a>' +
+          '<a href="' + hrefForSection('governance',     currentLoc) + '"' + cls('governance')     + '>Governance</a>' +
+          '<a href="' + hrefForSection('engagement',     currentLoc) + '"' + cls('engagement')     + '>Engagement</a>' +
+          '<a href="' + hrefForSection('modelling',      currentLoc) + '"' + cls('modelling')      + '>Modelling</a>' +
+          '<a href="' + hrefForSection('schema',         currentLoc) + '"' + cls('schema')         + '>Schema</a>' +
+          '<a href="' + hrefForSection('implementation', currentLoc) + '"' + cls('implementation') + '>Implementation</a>' +
+          '<a href="' + hrefForSection('adoption',       currentLoc) + '"' + cls('adoption')       + '>Adoption</a>' +
           '<a href="' + hrefForSection('library',        currentLoc) + '"' + cls('library')        + '>Library</a>' +
         '</nav>' +
         '<button class="menu-toggle" aria-label="Toggle sidebar" id="menu-toggle">' +
@@ -374,8 +385,97 @@
     }
   }
 
+  // Lazy-load Mermaid 11 + the ELK layout engine from CDN, once per page.
+  // Mermaid 11 ships as an ESM module, so it's imported on demand rather than
+  // via a <script> tag. registerLayoutLoaders wires in ELK, letting any diagram
+  // opt into the ELK layout engine with `config: { layout: elk }` frontmatter.
+  // Returns a Promise that resolves once window.mermaid is usable.
+  function ensureMermaid() {
+    if (window.mermaid) return Promise.resolve();
+    if (!document.querySelector('.mermaid')) return Promise.resolve();   // page has no diagrams
+    if (window.__mermaidLoading) return window.__mermaidLoading;
+
+    window.__mermaidLoading = Promise.all([
+      import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'),
+      import('https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0/dist/mermaid-layout-elk.esm.min.mjs'),
+    ]).then(function (mods) {
+      var mermaid = mods[0].default;
+      mermaid.registerLayoutLoaders(mods[1].default);
+      window.mermaid = mermaid;
+    }).catch(function (e) {
+      throw new Error('Mermaid CDN failed to load: ' + e.message);
+    });
+    return window.__mermaidLoading;
+  }
+
   function runMermaid() {
-    if (!window.mermaid) return;
+    return ensureMermaid().then(function () {
+      if (!window.mermaid) return;
+      // Wait one paint frame so the surrounding grid (sidebar / TOC / main)
+      // has finished its first layout pass — otherwise Mermaid measures a
+      // zero/tiny container and pins the SVG max-width to that value.
+      return new Promise(function (resolve) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            _runMermaidInner();
+            installMermaidResizeObserver();
+            resolve();
+          });
+        });
+      });
+    }).catch(function (err) {
+      console.warn('[OPDA] mermaid load failed:', err);
+    });
+  }
+
+  // Re-render Mermaid blocks whose container width changes meaningfully.
+  // Guards against Gantt + large flowcharts that get squashed when measured
+  // during page load — a later resize fixes them automatically.
+  function installMermaidResizeObserver() {
+    if (window.__mermaidResizeObserved) return;
+    window.__mermaidResizeObserved = true;
+    if (typeof ResizeObserver === 'undefined') return;
+
+    var lastWidth = new WeakMap();
+    var debounce = null;
+    function scheduleRerun() {
+      clearTimeout(debounce);
+      debounce = setTimeout(function () {
+        document.querySelectorAll('.mermaid').forEach(function (el) {
+          if (el.dataset.mermaidSrc) {
+            el.textContent = el.dataset.mermaidSrc;
+            el.removeAttribute('data-processed');
+          }
+        });
+        _runMermaidInner();
+      }, 200);
+    }
+
+    var ro = new ResizeObserver(function (entries) {
+      var rerunNeeded = false;
+      entries.forEach(function (e) {
+        var w = Math.round(e.contentRect.width);
+        var prev = lastWidth.get(e.target) || 0;
+        // Re-render on any meaningful change OR when starting from a tiny value
+        if (Math.abs(w - prev) >= 30 || (prev < 200 && w >= 200)) rerunNeeded = true;
+        lastWidth.set(e.target, w);
+      });
+      if (rerunNeeded) scheduleRerun();
+    });
+
+    document.querySelectorAll('.mermaid').forEach(function (el) {
+      lastWidth.set(el, el.getBoundingClientRect().width);
+      ro.observe(el);
+    });
+
+    // Also re-run on window load (full resource load) — guards against initial
+    // mermaid render happening while images/fonts/grid are still settling.
+    if (document.readyState !== 'complete') {
+      window.addEventListener('load', scheduleRerun, { once: true });
+    }
+  }
+
+  function _runMermaidInner() {
     // Theme: explicit data-theme attribute wins; fall back to system preference.
     const themeAttr = document.documentElement.getAttribute('data-theme');
     const isDark = themeAttr
@@ -400,26 +500,27 @@
       fontFamily, fontSize,
     };
     const darkTheme = {
-      // Node fills, borders, text
-      primaryColor:        '#1a4d80',
-      primaryBorderColor:  '#7aaecf',
+      // Node fills, borders, text — pushed darker so boxes don't feel "bright"
+      // against the page background.
+      primaryColor:        '#0b2545',
+      primaryBorderColor:  '#4a90c2',
       primaryTextColor:    '#eef4f8',
       // Secondary cluster (used in subgraph classDefs / accent nodes)
-      secondaryColor:      '#7c2d12',
+      secondaryColor:      '#431407',
       secondaryBorderColor:'#fcd34d',
       secondaryTextColor:  '#fde68a',
-      tertiaryColor:       '#13315c',
-      tertiaryTextColor:   '#e2e8f0',
+      tertiaryColor:       '#052e16',
+      tertiaryTextColor:   '#dcfce7',
       // Lines, labels, background
       lineColor:           '#94a3b8',
       textColor:           '#e2e8f0',
-      mainBkg:             '#1a4d80',
-      nodeBorder:          '#7aaecf',
-      clusterBkg:          '#0f1729',
+      mainBkg:             '#0b2545',
+      nodeBorder:          '#4a90c2',
+      clusterBkg:          '#0b1220',
       clusterBorder:       '#334155',
       defaultLinkColor:    '#94a3b8',
       titleColor:          '#e2e8f0',
-      edgeLabelBackground: '#0f1729',
+      edgeLabelBackground: '#0b1220',
       fontFamily, fontSize,
     };
 
@@ -439,12 +540,289 @@
         sequence:  { useMaxWidth: true },
         gantt:     { useMaxWidth: true },
       });
-      window.mermaid.run({ querySelector: '.mermaid' }).catch(function (err) {
-        console.warn('[OPDA] mermaid.run error:', err);
-      });
+      window.mermaid.run({ querySelector: '.mermaid' })
+        .then(function () { applyMermaidClassDefOverrides(isDark); })
+        .catch(function (err) { console.warn('[OPDA] mermaid.run error:', err); });
     } catch (err) {
       console.warn('[OPDA] mermaid failed:', err);
     }
+  }
+
+  // Mermaid renders per-classDef styles inside each SVG with a selector like
+  //   #mermaid-{id} .primary > * { fill:#eef4f8 !important; }
+  // The #id raises specificity above anything we can write in our external CSS
+  // file, so the only reliable override is inline style — which is what this
+  // walker does. Runs once after each mermaid.run() completes.
+  function applyMermaidClassDefOverrides(isDark) {
+    if (!isDark) {
+      // Light mode: strip any inline fills + text colours we set in a previous dark render
+      document.querySelectorAll('.mermaid svg .node, .mermaid svg .cluster').forEach(function (n) {
+        n.querySelectorAll('rect, polygon, circle, ellipse, path').forEach(function (s) {
+          s.style.removeProperty('fill');
+          s.style.removeProperty('stroke');
+        });
+        n.querySelectorAll('foreignObject *, .nodeLabel, .cluster-label, .cluster-label *, text, tspan').forEach(function (t) {
+          t.style.removeProperty('color');
+          t.style.removeProperty('fill');
+        });
+      });
+      return;
+    }
+    // Mapping of classDef name → dark-mode fill (and optional stroke).
+    var DARK_FILL = {
+      // government / policy / forum
+      gov: '#172554', act: '#172554', policy: '#172554', forum: '#172554',
+      body: '#172554', regulator: '#172554',
+      // outputs / delivery
+      out: '#052e16', del: '#052e16', ops: '#052e16', tech: '#052e16',
+      // forms / process — deep amber
+      form: '#431407', proc: '#431407', step: '#431407',
+      // phase clusters (project roadmap subgraphs) + their task children
+      phase: '#13315c', task: '#0b1220', milestone: '#431407',
+      // primary / source / std / etc.
+      src: '#0b2545', std: '#0b2545', ext: '#0b2545', primary: '#0b2545',
+      proptech: '#0b2545', conv: '#0b2545', portal: '#0b2545', search: '#0b2545',
+      root: '#0b2545', strat: '#0b2545', tier: '#0b2545', sg: '#0b2545',
+      wg: '#0b2545', lender: '#0b2545',
+      // accents
+      opda: '#13315c', pl: '#13315c', l4: '#13315c',
+      l1: '#0b2545', l2: '#13315c', l3: '#1a4d80',
+      // schema physical-architecture page
+      base: '#0b2545', overlay: '#431407', engine: '#134e4a',
+      api: '#1e1b4b', trust: '#3b0764',
+    };
+    var DARK_STROKE = {
+      opda: '#7aaecf', pl: '#7aaecf', l4: '#7aaecf',
+      phase: '#4a90c2', task: '#475569',
+    };
+
+    // Walk both nodes AND clusters (subgraphs render as .cluster, not .node).
+    document.querySelectorAll('.mermaid svg .node, .mermaid svg .cluster').forEach(function (node) {
+      var classes = (node.getAttribute('class') || '').split(/\s+/);
+      var fill = null, stroke = null;
+      for (var i = 0; i < classes.length; i++) {
+        if (DARK_FILL[classes[i]])   { fill   = DARK_FILL[classes[i]]; }
+        if (DARK_STROKE[classes[i]]) { stroke = DARK_STROKE[classes[i]]; }
+        if (fill) break;
+      }
+      if (!fill) return;
+      node.querySelectorAll('rect, polygon, circle, ellipse, path').forEach(function (shape) {
+        // Must use setProperty(name, value, 'important') — Mermaid's internal
+        // .className > * { fill: X !important; } rule beats inline styles
+        // unless our inline style also carries !important.
+        shape.style.setProperty('fill', fill, 'important');
+        if (stroke) shape.style.setProperty('stroke', stroke, 'important');
+      });
+      // Also force a readable label colour. The classDef's `color:` is set on
+      // the parent .label element via Mermaid's internal !important CSS, so we
+      // need !important inline on every text-bearing descendant.
+      var TEXT = '#eef4f8';
+      node.querySelectorAll('foreignObject *, .nodeLabel, .cluster-label, .cluster-label *').forEach(function (t) {
+        t.style.setProperty('color', TEXT, 'important');
+      });
+      node.querySelectorAll('text, tspan').forEach(function (t) {
+        t.style.setProperty('fill', TEXT, 'important');
+      });
+    });
+  }
+
+  // Click any rendered diagram to open a fullscreen pan/zoom viewer.
+  // Ported from the diagramming-skill markdown-export HTML viewer, adapted for
+  // inline SVG (so the .mermaid-scoped dark-mode CSS still applies to the clone).
+  // Controls: wheel = zoom centred on cursor, drag = pan, dbl-click = fit/1:1,
+  //           Esc / × button / Close button = close, +/-/0/1 keys mirror the
+  //           control bar. Pinch + drag for touch.
+  function bindDiagramLightbox() {
+    let overlay, canvas, label, content;
+    let scale = 1, panX = 0, panY = 0;
+    let isDragging = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
+    let natW = 0, natH = 0;
+    let lastTouches = null;
+
+    function build() {
+      if (overlay) return;
+      overlay = document.createElement('div');
+      overlay.className = 'diagram-lightbox';
+      overlay.innerHTML =
+        '<button type="button" class="viewer-close" aria-label="Close (Esc)" title="Close (Esc)">&times;</button>' +
+        '<div class="viewer-canvas"></div>' +
+        '<div class="viewer-controls">' +
+          '<button type="button" data-act="out" title="Zoom out (-)">&minus;</button>' +
+          '<button type="button" data-act="fit" title="Fit to screen (0)">Fit</button>' +
+          '<span class="viewer-zoom-label">100%</span>' +
+          '<button type="button" data-act="in"  title="Zoom in (+)">+</button>' +
+          '<button type="button" data-act="one" title="Actual size (1)">1:1</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      canvas = overlay.querySelector('.viewer-canvas');
+      label  = overlay.querySelector('.viewer-zoom-label');
+
+      overlay.querySelector('.viewer-close').addEventListener('click', close);
+      overlay.querySelector('.viewer-controls').addEventListener('click', function (e) {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const a = btn.getAttribute('data-act');
+        if (a === 'out') zoom(-1);
+        else if (a === 'in') zoom(1);
+        else if (a === 'fit') reset();
+        else if (a === 'one') setZoom(1);
+      });
+      canvas.addEventListener('mousedown', onDown);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+      canvas.addEventListener('wheel', onWheel, { passive: false });
+      canvas.addEventListener('dblclick', function () {
+        if (Math.abs(scale - 1) < 0.01) reset(); else setZoom(1);
+      });
+      canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+      canvas.addEventListener('touchmove',  onTouchMove,  { passive: false });
+      canvas.addEventListener('touchend',   onTouchEnd);
+    }
+    function update() {
+      if (!content) return;
+      content.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')';
+      if (label) label.textContent = Math.round(scale * 100) + '%';
+    }
+    function open(svg) {
+      build();
+      canvas.querySelectorAll('.mermaid').forEach(function (m) { m.remove(); });
+      // Read the rendered size BEFORE cloning so pan/zoom has a stable base.
+      const r = svg.getBoundingClientRect();
+      natW = r.width  || 800;
+      natH = r.height || 600;
+      // Wrap in .mermaid so the dark-mode CSS rules (row-rect overrides etc.)
+      // still match inside the lightbox.
+      const wrap = document.createElement('div');
+      wrap.className = 'mermaid';
+      const clone = svg.cloneNode(true);
+      clone.removeAttribute('width');
+      clone.removeAttribute('height');
+      clone.style.display = 'block';
+      // Pin the clone to the natural rendered size so transform: scale() is
+      // multiplicative on a known base.
+      wrap.style.width  = natW + 'px';
+      wrap.style.height = natH + 'px';
+      wrap.appendChild(clone);
+      canvas.appendChild(wrap);
+      content = wrap;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Defer fit until after layout so canvas.clientWidth/Height are populated.
+      requestAnimationFrame(reset);
+    }
+    function close() {
+      if (!overlay) return;
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if (canvas) canvas.querySelectorAll('.mermaid').forEach(function (m) { m.remove(); });
+      content = null;
+    }
+    function reset() {
+      if (!canvas || !content) return;
+      const vw = canvas.clientWidth, vh = canvas.clientHeight;
+      // SVGs are vector — allow scaling above 1.0 to fill the viewport.
+      const fitScale = Math.min(vw / natW, vh / natH) * 0.95;
+      scale = fitScale;
+      panX  = (vw - natW * scale) / 2;
+      panY  = (vh - natH * scale) / 2;
+      update();
+    }
+    function zoom(dir) {
+      const cx = canvas.clientWidth / 2, cy = canvas.clientHeight / 2;
+      const factor = dir > 0 ? 1.25 : 0.8;
+      const newScale = Math.min(Math.max(scale * factor, 0.05), 20);
+      panX = cx - (cx - panX) * (newScale / scale);
+      panY = cy - (cy - panY) * (newScale / scale);
+      scale = newScale;
+      update();
+    }
+    function setZoom(z) {
+      const cx = canvas.clientWidth / 2, cy = canvas.clientHeight / 2;
+      panX = cx - (cx - panX) * (z / scale);
+      panY = cy - (cy - panY) * (z / scale);
+      scale = z;
+      update();
+    }
+    function onDown(e) {
+      if (e.button !== 0) return;
+      isDragging = true;
+      startX = e.clientX; startY = e.clientY;
+      startPanX = panX; startPanY = panY;
+      canvas.classList.add('dragging');
+      e.preventDefault();
+    }
+    function onMove(e) {
+      if (!isDragging) return;
+      panX = startPanX + (e.clientX - startX);
+      panY = startPanY + (e.clientY - startY);
+      update();
+    }
+    function onUp() {
+      isDragging = false;
+      if (canvas) canvas.classList.remove('dragging');
+    }
+    function onWheel(e) {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      const factor = e.deltaY < 0 ? 1.15 : 0.87;
+      const newScale = Math.min(Math.max(scale * factor, 0.05), 20);
+      panX = mx - (mx - panX) * (newScale / scale);
+      panY = my - (my - panY) * (newScale / scale);
+      scale = newScale;
+      update();
+    }
+    function onTouchStart(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+        startPanX = panX; startPanY = panY;
+      }
+      lastTouches = Array.from(e.touches);
+      e.preventDefault();
+    }
+    function onTouchMove(e) {
+      if (e.touches.length === 1 && isDragging) {
+        panX = startPanX + (e.touches[0].clientX - startX);
+        panY = startPanY + (e.touches[0].clientY - startY);
+        update();
+      } else if (e.touches.length === 2 && lastTouches && lastTouches.length === 2) {
+        const oldDist = Math.hypot(lastTouches[0].clientX - lastTouches[1].clientX, lastTouches[0].clientY - lastTouches[1].clientY);
+        const newDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        const factor = newDist / oldDist;
+        let mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        let my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        const rect = canvas.getBoundingClientRect();
+        mx -= rect.left; my -= rect.top;
+        const newScale = Math.min(Math.max(scale * factor, 0.05), 20);
+        panX = mx - (mx - panX) * (newScale / scale);
+        panY = my - (my - panY) * (newScale / scale);
+        scale = newScale;
+        update();
+        lastTouches = Array.from(e.touches);
+      }
+      e.preventDefault();
+    }
+    function onTouchEnd() {
+      isDragging = false;
+      lastTouches = null;
+    }
+    // Delegated click on diagram SVGs
+    document.body.addEventListener('click', function (e) {
+      const svg = e.target.closest && e.target.closest('.diagram .mermaid svg');
+      if (!svg) return;
+      if (overlay && overlay.classList.contains('open')) return;
+      e.preventDefault();
+      open(svg);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!overlay || !overlay.classList.contains('open')) return;
+      if (e.key === 'Escape')                         close();
+      else if (e.key === '+' || e.key === '=')        zoom(1);
+      else if (e.key === '-')                         zoom(-1);
+      else if (e.key === '0')                         reset();
+      else if (e.key === '1')                         setZoom(1);
+    });
   }
 
   // Helper: auto-detect section from active page id
@@ -475,6 +853,7 @@
           if (!el.dataset.mermaidSrc) el.dataset.mermaidSrc = el.textContent.trim();
         });
         runMermaid();
+        bindDiagramLightbox();
       } catch (err) {
         console.error('[OPDA] init failed:', err);
       }

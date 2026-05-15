@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Project roadmap · OPDA Knowledge Base</title>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 <body>
@@ -142,32 +141,63 @@
 
       <div class="diagram">
         <div class="mermaid">
-gantt
-    title Project sequence
-    dateFormat YYYY-MM-DD
-    axisFormat %b %d
-    section Phase 1 — Foundations
-      Read SoW + synthesis          :p1a, 2026-05-15, 3d
-      Plan + roadmap doc            :p1b, after p1a, 4d
-      Merged glossary v0.1          :p1c, after p1a, 7d
-      Stakeholder map               :p1d, after p1a, 5d
-    section Phase 2 — Semantic model
-      Concept taxonomy (SKOS)       :p2a, after p1c, 7d
-      Data dictionary               :p2b, after p1c, 10d
-      Ontology skeleton (OWL)       :p2c, after p2a, 7d
-      First mapping (BASPI v5)      :p2d, after p2c, 7d
-    section Phase 3 — Governance docs
-      L4 Ecosystem doc              :p3a, after p1b, 14d
-      L3 Credential trust fw        :p3b, after p3a, 10d
-      L2 Comms governance           :p3c, after p3a, 7d
-      L1 Utility governance         :p3d, after p3a, 7d
-      Conformance scheme            :p3e, after p3a, 14d
-    section Phase 4 — Presentations
-      Approach deck                 :p4a, after p1b, 10d
-      Governance deck               :p4b, after p3a, 10d
-      Technology deck               :p4c, after p2c, 10d
+flowchart LR
+  classDef phase fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
+  classDef task  fill:#f7fafc,stroke:#94a3b8,color:#0f172a;
+  classDef milestone fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
+
+  subgraph P1["Phase 1 — Foundations<br/><i>2 weeks</i>"]
+    direction TB
+    p1a["Read SoW + synthesis<br/>3d"]:::task
+    p1b["Plan + roadmap doc<br/>4d"]:::task
+    p1c["Merged glossary v0.1<br/>7d"]:::task
+    p1d["Stakeholder map<br/>5d"]:::task
+    p1a --> p1b
+    p1a --> p1c
+    p1a --> p1d
+  end
+
+  subgraph P2["Phase 2 — Semantic model<br/><i>3 weeks</i>"]
+    direction TB
+    p2a["Concept taxonomy<br/>SKOS · 7d"]:::task
+    p2b["Data dictionary<br/>10d"]:::task
+    p2c["Ontology skeleton<br/>OWL · 7d"]:::task
+    p2d["First mapping<br/>BASPI v5 · 7d"]:::task
+    p2a --> p2c
+    p2c --> p2d
+  end
+
+  subgraph P3["Phase 3 — Governance docs<br/><i>5 weeks</i>"]
+    direction TB
+    p3a["L4 Ecosystem doc<br/>14d"]:::task
+    p3b["L3 Credential trust fw<br/>10d"]:::task
+    p3c["L2 Comms governance<br/>7d"]:::task
+    p3d["L1 Utility governance<br/>7d"]:::task
+    p3e["Conformance scheme<br/>14d"]:::task
+    p3a --> p3b
+    p3a --> p3c
+    p3a --> p3d
+    p3a --> p3e
+  end
+
+  subgraph P4["Phase 4 — Presentations<br/><i>2 weeks</i>"]
+    direction TB
+    p4a["Approach deck<br/>10d"]:::task
+    p4b["Governance deck<br/>10d"]:::task
+    p4c["Technology deck<br/>10d"]:::task
+  end
+
+  class P1,P2,P3,P4 phase;
+
+  %% Cross-phase dependencies
+  p1c --> p2a
+  p1c --> p2b
+  p1b --> p3a
+  p1b --> p4a
+  p3a --> p4b
+  p2c --> p4c
         </div>
-        <div class="diagram-caption">Approximate sequence — gantt mermaid renders the dependencies.</div>
+        <div class="diagram-caption">Phase sequence with cross-phase dependencies. Each task box shows duration in days; arrows show what blocks what.</div>
       </div>
 
       <h2 id="dependencies">External dependencies</h2>

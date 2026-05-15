@@ -42,6 +42,11 @@ a:hover { color: var(--color-link-hover); text-decoration: underline; text-under
   color: white;
   border-bottom: 1px solid #13315c;
   box-shadow: var(--shadow-md);
+  /* Background is pinned, so pin the brand tints the header text depends on:
+     otherwise dark mode inverts them to dark-on-dark and the nav disappears. */
+  --color-brand-100: #eef4f8;
+  --color-brand-200: #d8e6ed;
+  --color-brand-300: #b8d4e3;
 }
 .app-header .brand-link {
   display: flex; align-items: baseline; gap: var(--space-3);
@@ -574,6 +579,85 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   font-style: italic;
 }
 
+/* Click a rendered diagram to open a fullscreen pan/zoom viewer. Wired in site.js.
+   Ported from the diagramming-skill markdown-export HTML viewer, adapted for
+   inline SVG. */
+.diagram .mermaid svg { cursor: zoom-in; }
+.diagram-lightbox {
+  display: none;
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.diagram-lightbox.open { display: block; }
+.diagram-lightbox .viewer-canvas {
+  width: 100%; height: 100%;
+  cursor: grab;
+  overflow: hidden;
+  position: relative;
+}
+.diagram-lightbox .viewer-canvas.dragging { cursor: grabbing; }
+.diagram-lightbox .viewer-canvas .mermaid {
+  position: absolute;
+  transform-origin: 0 0;
+  top: 0; left: 0;
+}
+.diagram-lightbox .viewer-canvas .mermaid > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.diagram-lightbox .viewer-controls {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 8px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 8px;
+  padding: 8px 12px;
+  z-index: 10000;
+}
+.diagram-lightbox .viewer-controls button {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  min-width: 36px; height: 36px;
+  border-radius: 6px;
+  font-size: 14px; font-weight: 500;
+  font-family: inherit;
+  padding: 0 12px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.diagram-lightbox .viewer-controls button:hover { background: rgba(255,255,255,0.3); }
+.diagram-lightbox .viewer-zoom-label {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  line-height: 36px;
+  min-width: 52px;
+  text-align: center;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.diagram-lightbox .viewer-close {
+  position: fixed; top: 16px; right: 16px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  font-size: 22px; line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000;
+  transition: background 0.15s;
+}
+.diagram-lightbox .viewer-close:hover { background: rgba(255,255,255,0.2); }
+
 /* ─────────────────────────────────────────────────────────────
    PAGE META + FOOTER
    ───────────────────────────────────────────────────────────── */
@@ -923,8 +1007,10 @@ a.card:hover .card-arrow { transform: translateX(3px); }
    The few rules below cover elements that should look the SAME in both
    modes — they're pinned to fixed colours rather than tokens.
    ───────────────────────────────────────────────────────────── */
-/* Inline code — pin to dark navy tint for consistent legibility */
-.prose code { background: #13315c; color: #eef4f8; }
+/* Inline code is driven by --color-brand-100 / --color-brand-900 (see .prose code
+   above). Both tokens flip via design-tokens.css when data-theme="dark" is set,
+   so light mode → light bg + dark text, dark mode → dark bg + light text. No
+   pinning needed. */
 /* Mermaid: surface frame uses the live tokens so it adapts to mode */
 .diagram { background: var(--color-surface); border: 1px solid var(--color-border); }
 .mermaid svg { background: transparent; }
@@ -948,30 +1034,30 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 :root[data-theme="dark"] .mermaid g.node path {
   stroke: var(--color-brand-400) !important;
 }
-/* "Government / policy / forum" group — was light blue → deep blue */
+/* "Government / policy / forum" group — deep navy-blue */
 :root[data-theme="dark"] .mermaid g.node.gov     rect,
 :root[data-theme="dark"] .mermaid g.node.act     rect,
 :root[data-theme="dark"] .mermaid g.node.policy  rect,
 :root[data-theme="dark"] .mermaid g.node.forum   rect,
 :root[data-theme="dark"] .mermaid g.node.body    rect,
 :root[data-theme="dark"] .mermaid g.node.regulator rect {
-  fill: #1e3a8a !important;
+  fill: #172554 !important;
 }
-/* "Outputs / delivery / ops" group — was light green → deep green */
+/* "Outputs / delivery / ops" group — deep forest green */
 :root[data-theme="dark"] .mermaid g.node.out     rect,
 :root[data-theme="dark"] .mermaid g.node.del     rect,
 :root[data-theme="dark"] .mermaid g.node.ops     rect,
 :root[data-theme="dark"] .mermaid g.node.tech    rect {
-  fill: #14532d !important;
+  fill: #052e16 !important;
 }
-/* "Form / amber / process" group — was light yellow → deep amber */
+/* "Form / process / phase" group — very deep amber */
 :root[data-theme="dark"] .mermaid g.node.form    rect,
 :root[data-theme="dark"] .mermaid g.node.proc    rect,
 :root[data-theme="dark"] .mermaid g.node.step    rect,
 :root[data-theme="dark"] .mermaid g.node.phase   rect {
-  fill: #78350f !important;
+  fill: #431407 !important;
 }
-/* "Source / std / primary / proptech" — was light brand tint → deep navy */
+/* "Source / std / primary / proptech" — very deep navy */
 :root[data-theme="dark"] .mermaid g.node.src     rect,
 :root[data-theme="dark"] .mermaid g.node.std     rect,
 :root[data-theme="dark"] .mermaid g.node.ext     rect,
@@ -986,19 +1072,19 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 :root[data-theme="dark"] .mermaid g.node.sg      rect,
 :root[data-theme="dark"] .mermaid g.node.wg      rect,
 :root[data-theme="dark"] .mermaid g.node.lender  rect {
-  fill: #13315c !important;
+  fill: #0b2545 !important;
 }
-/* OPDA / "pl" highlighted node — already dark navy in source; just brighten the border */
+/* OPDA / "pl" highlighted node — slightly lighter than other dark fills + bright border */
 :root[data-theme="dark"] .mermaid g.node.opda    rect,
 :root[data-theme="dark"] .mermaid g.node.pl      rect,
 :root[data-theme="dark"] .mermaid g.node.l4      rect {
-  fill: #1a4d80 !important;
+  fill: #13315c !important;
   stroke: #7aaecf !important;
 }
-/* Mid-tier (l1/l2/l3 layered diagrams) — shade each level distinctly */
-:root[data-theme="dark"] .mermaid g.node.l1 rect { fill: #13315c !important; }
-:root[data-theme="dark"] .mermaid g.node.l2 rect { fill: #1a4d80 !important; }
-:root[data-theme="dark"] .mermaid g.node.l3 rect { fill: #2a6caa !important; }
+/* Mid-tier (l1/l2/l3 layered diagrams) — each level slightly darker than before */
+:root[data-theme="dark"] .mermaid g.node.l1 rect { fill: #0b2545 !important; }
+:root[data-theme="dark"] .mermaid g.node.l2 rect { fill: #13315c !important; }
+:root[data-theme="dark"] .mermaid g.node.l3 rect { fill: #1a4d80 !important; }
 /* Text inside any dark-mode node — force light so the new dark fills are legible */
 :root[data-theme="dark"] .mermaid g.node .nodeLabel,
 :root[data-theme="dark"] .mermaid g.node foreignObject div,
@@ -1006,6 +1092,18 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   color: #eef4f8 !important;
   fill:  #eef4f8 !important;
 }
+/* ER attribute rows — Mermaid 11 derives the odd/even stripe from primaryColor
+   by lightening one row roughly 75% (near-white in dark mode). The row group
+   is a <g class="row-rect-odd"> wrapping two <path>s; the *first* path is the
+   filled rectangle whose fill attribute we need to override. */
+:root[data-theme="dark"] .mermaid .row-rect-odd  > path:first-child { fill: #0f1729 !important; }
+:root[data-theme="dark"] .mermaid .row-rect-even > path:first-child { fill: #0b1220 !important; }
+/* Schema physical-architecture classDef groups */
+:root[data-theme="dark"] .mermaid g.node.base    rect { fill: #0b2545 !important; }
+:root[data-theme="dark"] .mermaid g.node.overlay rect { fill: #431407 !important; }
+:root[data-theme="dark"] .mermaid g.node.engine  rect { fill: #134e4a !important; }
+:root[data-theme="dark"] .mermaid g.node.api     rect { fill: #1e1b4b !important; }
+:root[data-theme="dark"] .mermaid g.node.trust   rect { fill: #3b0764 !important; }
 /* Resource viewer iframes — file content is almost always light-on-light, so keep iframe surface white */
 .res-frame, .res-jsoncrack-wrap iframe { background: #ffffff; }
 /* Index home cards: pin gradient bars to original colours in both modes */

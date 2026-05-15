@@ -11,6 +11,12 @@ export default defineConfig({
   build: {
     format: 'file',
   },
+  server: {
+    // 4321 conflicts with other tools on this machine — use 4330 instead.
+    // dev.sh probes 4330-4339 and picks the first free one if 4330 is busy too.
+    port: 4330,
+    host: false,
+  },
   vite: {
     server: {
       // Don't auto-open browser when running `astro dev`

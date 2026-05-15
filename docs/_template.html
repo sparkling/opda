@@ -6,11 +6,8 @@
   <title>Page Title · OPDA Knowledge Base</title>
   <meta name="description" content="One-line description for SEO and previews.">
 
-  <!-- Tailwind via CDN (utility classes alongside our custom design system) -->
-  <!-- Mermaid for diagrams -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-
-  <!-- OPDA design system -->
+  <!-- OPDA design system. site.js also lazy-loads Mermaid 11 + ELK for any
+       .mermaid blocks on the page — no per-page script tag needed. -->
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 
