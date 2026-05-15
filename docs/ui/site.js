@@ -265,7 +265,6 @@
 
     return '<aside class="app-sidebar" id="app-sidebar">' +
              '<nav class="sidebar-nav">' +
-               '<div class="sidebar-section-title">' + escape(section.title) + '</div>' +
                groupsHtml +
              '</nav>' +
            '</aside>';

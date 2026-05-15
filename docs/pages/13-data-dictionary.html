@@ -3,55 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Data dictionary &amp; business glossary · OPDA Knowledge Base</title>
-  <meta name="description" content="Generated from PDTF Schemas v3 + OPDA glossaries — 14,287 property entries, 54 business terms, 554 SKOS concepts.">
+  <title>Data dictionary · OPDA Knowledge Base</title>
+  <meta name="description" content="PDTF data dictionary — 1,538 deduplicated data elements (708 entities + 848 properties) with RDF URI suggestions, sourced from PDTF Schemas v3 and the OPDA Glossary.">
   <link rel="stylesheet" href="../ui/design-system.css">
+  <style>
+    /* Data dictionary: show the table at full height (no scroll container). */
+    #elements-browser .db-table-wrap {
+      max-height: none;
+      overflow-x: visible;
+      overflow-y: visible;
+    }
+    /* Deliverables table: right-align the size column. */
+    #deliverables-table th:nth-child(2),
+    #deliverables-table td:nth-child(2) {
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
     <article class="prose wide">
       <div class="page-meta">
         <span class="pill pill--info">Modelling</span>
-        <span>Generated 2026-05-14</span>
+        <span>Generated 2026-05-15</span>
       </div>
 
-      <h1>Data dictionary &amp; business glossary</h1>
+      <h1>Data dictionary</h1>
       <p class="lead">
-        Programmatically extracted from PDTF Schemas v3 (the base transaction +
-        <a href="16-overlays.html">18 main overlays</a> — extension overlays not yet
-        included) and merged with the two OPDA Glossary spreadsheets. The first
-        deliverable of the semantic-modelling workstream.
+        Deduplicated and enriched from PDTF Schemas v3 (base transaction +
+        <a href="16-overlays.html">16 canonical overlays</a>) and the OPDA Glossary spreadsheets.
+        Each entry carries a suggested RDF URI for use in the ontology workstream.
       </p>
 
       <div class="callout callout--key">
-        <div class="callout__label">Headline numbers (after audit / deduplication)</div>
+        <div class="callout__label">Headline numbers</div>
         <ul style="margin: 0;">
-          <li><strong>16</strong> canonical schemas (5 redundant ones excluded — see below)</li>
-          <li><strong>8,458</strong> property-path entries across canonical schemas</li>
-          <li><strong>1,557</strong> unique leaf property names — the actual PDTF vocabulary</li>
-          <li><strong>389</strong> cross-context concepts (appear in 3+ schemas — need ontology reconciliation)</li>
-          <li><strong>754</strong> context-specific concepts (appear in 1 schema only)</li>
-          <li><strong>54</strong> business terms in the merged OPDA Glossary</li>
+          <li><strong>16</strong> canonical schemas (5 redundant ones excluded)</li>
+          <li><strong>1,538</strong> unique data elements — one entry per unique concept name, deduplicated across all schemas</li>
+          <li><strong>699</strong> entities — objects and arrays (things that exist in the model)</li>
+          <li><strong>840</strong> properties — scalar fields (attributes of entities)</li>
+          <li><strong>54</strong> business terms from the merged OPDA Glossary</li>
           <li><strong>554</strong> concepts in the generated SKOS scheme</li>
         </ul>
       </div>
 
-      <h2 id="browse-properties">Browse all properties</h2>
-      <p>
-        All <strong>8,458</strong> property-path entries from the canonical schemas.
-        Search by name or path, filter by bounded context, source schema, or JSON type.
-        Click any column header to sort.
-      </p>
+      <h2 id="browse">Browse all data elements</h2>
 
-      <div id="properties-browser" class="data-browser">
-        <div class="db-status-loading">Loading 8,458 properties…</div>
+      <div id="elements-browser" class="data-browser">
+        <div class="db-status-loading">Loading data elements…</div>
       </div>
-
-      <p class="muted tiny">
-        Tip: try <code>tenure</code>, <code>EPC</code> or <code>address</code> in the search box;
-        or pin a single overlay (e.g. <code>ta6</code>) with the source filter to see exactly
-        what it adds.
-      </p>
 
       <h2 id="files">Deliverables</h2>
 
@@ -59,43 +59,50 @@
         All files generated to <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/"><code>source/00-deliverables/semantic-models/</code></a>.
       </p>
 
-      <table>
+      <table id="deliverables-table">
         <thead>
-          <tr><th>File</th><th>What it is</th><th>Audience</th></tr>
+          <tr><th style="width: 16%;">File</th><th style="width: 8%; white-space: nowrap;">Size</th><th>What it is</th><th style="width: 18%;">Audience</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary-canonical.json" title="source/00-deliverables/semantic-models/data-dictionary-canonical.json"><code>data-dictionary-canonical.json</code></a> (≈ 1.8 MB)</td>
-            <td>Machine-readable: 8,458 property-path entries across the 16 canonical schemas. Use this for headline counts.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary-canonical.json" title="source/00-deliverables/semantic-models/data-dictionary-canonical.json"><code>data-dictionary-canonical.json</code></a></td>
+            <td>≈ 1.8 MB</td>
+            <td>Machine-readable: 8,458 property-path entries across the 16 canonical schemas (one row per schema×path occurrence, not deduplicated). The browser above shows the 1,538 deduplicated concepts.</td>
             <td>Engineers, code generators</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary.json" title="source/00-deliverables/semantic-models/data-dictionary.json"><code>data-dictionary.json</code></a> (3.0 MB)</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary.json" title="source/00-deliverables/semantic-models/data-dictionary.json"><code>data-dictionary.json</code></a></td>
+            <td>3.0 MB</td>
             <td>Original extraction including derived/superseded schemas (14,287 entries). Kept for transparency — do <strong>not</strong> use for counts.</td>
             <td>Audit only</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary.md" title="source/00-deliverables/semantic-models/data-dictionary.md"><code>data-dictionary.md</code></a> (≈ 110 KB)</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary.md" title="source/00-deliverables/semantic-models/data-dictionary.md"><code>data-dictionary.md</code></a></td>
+            <td>≈ 110 KB</td>
             <td>Human-readable: per-schema tables, deduplicated to unique leaf names, organised by bounded context.</td>
             <td>Engineers, BAs, reviewers</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/audit.json" title="source/00-deliverables/semantic-models/audit.json"><code>audit.json</code></a> (≈ 2 KB)</td>
-            <td>What the inflation was, why, and the corrected figures. Read this to understand the count discrepancy.</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/audit.json" title="source/00-deliverables/semantic-models/audit.json"><code>audit.json</code></a></td>
+            <td>≈ 2 KB</td>
+            <td>What the inflation was, why, and the corrected figures.</td>
             <td>Anyone reviewing numbers</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json" title="source/00-deliverables/semantic-models/glossary-merged.json"><code>glossary-merged.json</code></a> (20 KB)</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json" title="source/00-deliverables/semantic-models/glossary-merged.json"><code>glossary-merged.json</code></a></td>
+            <td>20 KB</td>
             <td>Merged of the two OPDA <code>Glossary.xlsx</code> files (PoC + Technical WG), deduplicated to 54 unique terms.</td>
             <td>Engineers, modelling</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.md" title="source/00-deliverables/semantic-models/business-glossary.md"><code>business-glossary.md</code></a> (23 KB)</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.md" title="source/00-deliverables/semantic-models/business-glossary.md"><code>business-glossary.md</code></a></td>
+            <td>23 KB</td>
             <td>Three-section human glossary: OPDA Glossary terms A–Z, top-level PDTF concepts from schema annotations, external vocabulary (W3C VC, DID, ToIP).</td>
             <td>Stakeholders, working groups, new joiners</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl" title="source/00-deliverables/semantic-models/business-glossary.ttl"><code>business-glossary.ttl</code></a> (164 KB)</td>
+            <td><a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl" title="source/00-deliverables/semantic-models/business-glossary.ttl"><code>business-glossary.ttl</code></a></td>
+            <td>164 KB</td>
             <td>SKOS Concept Scheme — 554 concepts. Loads directly into Protégé / GraphDB / TopBraid for the ontology work.</td>
             <td>Ontology engineers</td>
           </tr>
@@ -106,33 +113,27 @@
 
       <table>
         <thead>
-          <tr><th>Schema</th><th>Bounded context</th><th>Unique leaves</th></tr>
+          <tr><th>Schema</th><th>File</th><th>Bounded context</th><th>Unique leaves</th></tr>
         </thead>
         <tbody>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a></td><td>Base — spans all contexts</td><td>1,557</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>Estate Agency</td><td>318</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>Property Data Services</td><td>196</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>Surveying</td><td>184</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Conveyancing</td><td>178</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>Estate Agency</td><td>160</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Conveyancing</td><td>136</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>Property Data Services</td><td>125</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>Estate Agency</td><td>124</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Conveyancing</td><td>98</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Conveyancing</td><td>90</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Mortgage Lending</td><td>78</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>Property Data Services</td><td>68</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>Property Data Services</td><td>34</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>Property Data Services</td><td>7</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>Property Data Services</td><td>3</td></tr>
+          <tr><td><strong>Base Transaction</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a></td><td>Base — spans all contexts</td><td>1,557</td></tr>
+          <tr><td><strong>BASPI v5</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>Estate Agency</td><td>318</td></tr>
+          <tr><td><strong>Residential Data Schema</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>Property Data Services</td><td>196</td></tr>
+          <tr><td><strong>Property Info Questionnaire</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>Surveying</td><td>184</td></tr>
+          <tr><td><strong>Property Information Form</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Conveyancing</td><td>178</td></tr>
+          <tr><td><strong>NTS Sales v2</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>Estate Agency</td><td>160</td></tr>
+          <tr><td><strong>Leasehold Property Enquiry</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Conveyancing</td><td>136</td></tr>
+          <tr><td><strong>Local Authority Search</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>Property Data Services</td><td>125</td></tr>
+          <tr><td><strong>NTS Lettings v2</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>Estate Agency</td><td>124</td></tr>
+          <tr><td><strong>Leasehold Information Form</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Conveyancing</td><td>98</td></tr>
+          <tr><td><strong>Fittings &amp; Contents</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Conveyancing</td><td>90</td></tr>
+          <tr><td><strong>Mortgage Enquiries</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Mortgage Lending</td><td>78</td></tr>
+          <tr><td><strong>Office Copy</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>Property Data Services</td><td>68</td></tr>
+          <tr><td><strong>Drainage &amp; Water</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>Property Data Services</td><td>34</td></tr>
+          <tr><td><strong>SR24</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>Property Data Services</td><td>7</td></tr>
+          <tr><td><strong>Local Land Charges</strong></td><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>Property Data Services</td><td>3</td></tr>
         </tbody>
       </table>
-
-      <p class="muted tiny">
-        Excluded as redundant: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/combined.json" title="source/03-standards/schemas/src/schemas/v3/combined.json"><code>combined.json</code></a> (derived merge), <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/skeleton.json" title="source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>skeleton.json</code></a> (template),
-        <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a> (superseded by baspi5), <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> (superseded by nts2),
-        <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a> (superseded by ntsl2).
-      </p>
 
       <h2 id="how-built">How it was built</h2>
 
@@ -144,15 +145,15 @@ flowchart LR
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
   S1[v3 base schema<br/>pdtf-transaction.json]:::src
-  S2[18 v3 overlays<br/>BASPI · TA6/7/10 · NTS<br/>CON29R/DW · PIQ · OC1 · LLC1<br/>LPE1 · FME1 · RDS]:::src
+  S2[16 canonical v3 overlays<br/>BASPI · TA6/7/10 · NTS<br/>CON29R/DW · PIQ · OC1 · LLC1<br/>LPE1 · FME1 · RDS · SR24]:::src
   G1[Glossary.xlsx<br/>Trust Framework PoC]:::src
   G2[Glossary.xlsx<br/>Technical Working Group]:::src
   EXT[W3C VCDM 2.0<br/>W3C DID 1.0<br/>ToIP Foundation]:::src
 
-  PROC[Property walker<br/>+ glossary merger<br/>+ SKOS generator]:::proc
+  PROC[Schema walker<br/>+ deduplication<br/>+ title enrichment<br/>+ RDF URI generator<br/>+ glossary merger<br/>+ SKOS generator]:::proc
 
-  D1[data-dictionary.json<br/>14,287 entries]:::out
-  D2[data-dictionary.md<br/>per-source tables]:::out
+  D1[properties.js<br/>1,538 unique concepts<br/>entity + property kinds<br/>+ RDF URI per entry]:::out
+  D2[entities.js<br/>54 glossary terms<br/>+ 470 schema entities]:::out
   D3[glossary-merged.json<br/>54 terms deduplicated]:::out
   D4[business-glossary.md<br/>tri-source glossary]:::out
   D5[business-glossary.ttl<br/>SKOS · 554 concepts]:::out
@@ -171,69 +172,47 @@ flowchart LR
         <div class="diagram-caption">Build pipeline. Deterministic — re-runnable any time the schemas or glossaries change.</div>
       </div>
 
+      <h2 id="rdf-uris">Suggested RDF URIs</h2>
+
+      <p>
+        Every data element carries a <strong>suggested RDF URI</strong> using the
+        <code>https://w3id.org/opda/pdtf/</code> base namespace — not yet registered or
+        dereferenced, but stable enough to use in draft ontology work.
+      </p>
+      <ul>
+        <li>Entities (objects / classes): <code>https://w3id.org/opda/pdtf/class/<em>ClassName</em></code></li>
+        <li>Properties (scalar attributes): <code>https://w3id.org/opda/pdtf/vocab/<em>propertyName</em></code></li>
+      </ul>
+      <p>
+        These will be refined when the upper ontology is defined (see step 2 under
+        <a href="#next-steps">What to do with these deliverables</a>). Cross-context concepts
+        (e.g., <code>address</code>, <code>name</code>) share a single URI — disambiguation
+        into context-specific sub-properties is deferred to that step.
+      </p>
+
       <h2 id="sources-cited">Source citations</h2>
 
       <p>
-        Every entry in <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/data-dictionary.json" title="source/00-deliverables/semantic-models/data-dictionary.json"><code>data-dictionary.json</code></a> carries the <code>source</code>
-        field naming the schema file it was extracted from. Every entry in
-        <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json" title="source/00-deliverables/semantic-models/glossary-merged.json"><code>glossary-merged.json</code></a> carries a <code>sources</code> array naming
-        which of the two <code>Glossary.xlsx</code> files contributed.
+        Every entry in the browser carries a <strong>source</strong> field (primary schema) and a
+        <strong>sources</strong> array listing all schemas that define that path. Use the
+        Sources facet to explore which overlays contribute a given element.
       </p>
 
       <p>The primary sources, with paths:</p>
 
       <ul>
         <li><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json</code></a> (base transaction schema)</li>
-        <li><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/combined.json"><code>source/03-standards/schemas/src/schemas/v3/combined.json</code></a> (base + overlays merged)</li>
-        <li><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>source/03-standards/schemas/src/schemas/v3/skeleton.json</code></a> (skeleton for new transactions)</li>
-        <li><code>source/03-standards/schemas/src/schemas/v3/overlays/*.json</code> (BASPI v4 + v5, TA6, TA7, TA10, NTS, NTS2, NTSL, NTSL2, CON29R, CON29DW, PIQ, RDS, OC1, LLC1, LPE1, FME1, sr24)</li>
+        <li><code>source/03-standards/schemas/src/schemas/v3/overlays/*.json</code> (BASPI v5, TA6, TA7, TA10, NTS2, NTSL2, CON29R, CON29DW, PIQ, RDS, OC1, LLC1, LPE1, FME1, SR24)</li>
         <li><a class="resource-link" href="../resource.html?path=source/06-research/trust-framework-poc/Glossary.xlsx"><code>source/06-research/trust-framework-poc/Glossary.xlsx</code></a></li>
         <li><a class="resource-link" href="../resource.html?path=source/04-governance-bodies/working-groups/technical/Glossary.xlsx"><code>source/04-governance-bodies/working-groups/technical/Glossary.xlsx</code></a></li>
         <li>External: <a href="https://www.w3.org/TR/vc-data-model-2.0/" target="_blank" rel="noopener">W3C VCDM 2.0</a>, <a href="https://www.w3.org/TR/did-1.0/" target="_blank" rel="noopener">W3C DID 1.0</a>, <a href="https://trustoverip.org/" target="_blank" rel="noopener">Trust Over IP Foundation</a></li>
       </ul>
 
-      <h2 id="schema-coverage">Schema coverage</h2>
+      <h2 id="cross-context">Cross-context concepts</h2>
 
       <p>
-        The 21 v3 root-level + main-overlay JSON files the extractor reads, and the
-        bounded context each one serves. (The 16 NTS2 extension overlays under
-        <code>overlays/extensions/</code> are documented separately on the
-        <a href="16-overlays.html">PDTF overlays</a> page and not yet processed by
-        this generator.)
-      </p>
-
-      <table>
-        <thead>
-          <tr><th>Schema</th><th>Bounded context</th><th>What it adds to the base</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a></td><td>Base (all contexts)</td><td>The core transaction object — participants, property, claims, lifecycle</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/combined.json" title="source/03-standards/schemas/src/schemas/v3/combined.json"><code>combined.json</code></a></td><td>Combined view</td><td>Base + all overlays merged for tooling</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/skeleton.json" title="source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>skeleton.json</code></a></td><td>Bootstrapping</td><td>Skeleton structure for a new empty transaction</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a> / <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>Estate Agency</td><td>BASPI v4 + v5 (HBSG)</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> / <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>Estate Agency</td><td>NTS Material Info Sales (v1 + v2 successor)</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a> / <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>Estate Agency</td><td>NTS Material Info Lettings (v1 + v2)</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Conveyancing</td><td>Law Society TA6 Property Information Form</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Conveyancing</td><td>Law Society TA7 Leasehold Information Form</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Conveyancing</td><td>Law Society TA10 Fittings &amp; Contents Form</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Conveyancing</td><td>LPE1 Leasehold Property Enquiry</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Mortgage Lending</td><td>Form for Mortgage Enquiries</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>Surveying</td><td>Property Information Questionnaire</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>Property Data Services</td><td>Residential Data Schema</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>Property Data Services</td><td>CON29R Residential local-authority search</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>Property Data Services</td><td>CON29 Drainage &amp; Water search</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>Property Data Services</td><td>OC1 Office Copy entries (HMLR title)</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>Property Data Services</td><td>LLC1 Local Land Charges search</td></tr>
-          <tr><td><a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>Property Data Services</td><td>sr24 (small overlay)</td></tr>
-        </tbody>
-      </table>
-
-      <h2 id="cross-context">The 313 cross-context concepts</h2>
-
-      <p>
-        313 property names appear in three or more overlays — these are the
-        <strong>cross-context vocabulary</strong> that needs explicit reconciliation in
-        the ontology (same word, possibly different meanings in different contexts).
+        Many paths appear in three or more overlays — these are the <strong>cross-context
+        vocabulary</strong> that needs explicit reconciliation in the ontology.
         Top examples (sorted by spread):
       </p>
 
@@ -256,30 +235,29 @@ flowchart LR
       <ol>
         <li>
           <strong>Have an editorial pass over <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.md" title="source/00-deliverables/semantic-models/business-glossary.md"><code>business-glossary.md</code></a></strong>
-          with the Technical Working Group — reconcile the OPDA Glossary terms (which
-          are open-banking/trust-framework-flavoured) with the property-data terms
-          extracted from the schemas. The mix today is asymmetric.
+          with the Technical Working Group — reconcile the OPDA Glossary terms with the
+          property-data terms extracted from the schemas.
         </li>
         <li>
           <strong>Define the upper ontology</strong> — pick the core classes (Transaction,
           Property, Participant, Claim, Document, Form, Search) and align with W3C VC.
-          Use <a class="resource-link" href="../resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl" title="source/00-deliverables/semantic-models/business-glossary.ttl"><code>business-glossary.ttl</code></a> as the seed.
+          Register the <code>https://w3id.org/opda/pdtf/</code> namespace and replace the
+          suggested URIs with resolvable ones.
         </li>
         <li>
           <strong>Per-overlay JSON-LD contexts</strong> — for each of the
-          <a href="16-overlays.html">18 main overlays</a> (and eventually the 16
-          extension overlays), author a <code>@context</code> that maps the JSON
-          property names to ontology terms. Start with <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a> as
-          the worked example.
+          <a href="16-overlays.html">16 canonical overlays</a>, author a <code>@context</code>
+          that maps JSON property names to ontology terms. Start with
+          <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a> as the worked example.
         </li>
         <li>
           <strong>Generate SHACL shapes</strong> from the JSON Schema validation rules.
           Most rules (required, enum, pattern, type) translate mechanically.
         </li>
         <li>
-          <strong>Disambiguate the 313 cross-context names</strong> — for each, decide
-          whether they refer to the same concept (single ontology class) or to
-          context-specific concepts (separate classes with mapping).
+          <strong>Disambiguate cross-context names</strong> — for each name appearing in
+          multiple overlays, decide whether it refers to the same concept (single URI) or
+          to context-specific concepts (separate URIs with mapping).
         </li>
       </ol>
 
@@ -292,53 +270,103 @@ flowchart LR
 
   <script src="../ui/site.js"></script>
   <script src="../data/properties.js"></script>
+  <script src="../data/entities.js"></script>
   <script src="../ui/data-browser.js"></script>
   <script>
     OPDA.init({ page: 'data-dictionary' });
 
     (function () {
-      function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
-      var mountEl = document.getElementById('properties-browser');
+      function esc(s) { return String(s == null ? '' : s).replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c])); }
+
       var data = window.OPDA_PROPERTIES || [];
+      var mountEl = document.getElementById('elements-browser');
       if (!mountEl) return;
       if (!data.length) {
         mountEl.innerHTML = '<div class="db-empty">Could not load <code>../data/properties.js</code>.</div>';
         return;
       }
+
+      var sourceLabels = {
+        'pdtf-transaction': 'Base Transaction',
+        'baspi5':    'BASPI v5',
+        'rds':       'Residential Data Schema',
+        'piq':       'Property Info Questionnaire',
+        'ta6':       'Property Information Form',
+        'ta7':       'Leasehold Information Form',
+        'ta10':      'Fittings & Contents',
+        'nts2':      'NTS Sales v2',
+        'ntsl2':     'NTS Lettings v2',
+        'lpe1':      'Leasehold Property Enquiry',
+        'con29R':    'Local Authority Search',
+        'con29DW':   'Drainage & Water',
+        'fme1':      'Mortgage Enquiries',
+        'oc1':       'Office Copy',
+        'llc1':      'Local Land Charges',
+        'sr24':      'SR24',
+      };
+
       OPDA.DataBrowser.mount({
         mount: mountEl,
         data: data,
-        itemLabel: 'properties',
-        searchPlaceholder: 'Search path, name, title or description…',
-        searchKeys: ['path','name','title','description'],
-        pageSize: 50,
-        defaultSort: { key:'path', dir:'asc' },
+        itemLabel: 'data elements',
+        searchPlaceholder: 'Search name, title or description…',
+        searchKeys: ['name', 'title', 'description', 'examplePath'],
+        pageSize: 25,
+        defaultSort: { key: 'examplePath', dir: 'asc' },
         facets: [
-          { key:'context', label:'Bounded context' },
-          { key:'source',  label:'Source schema'  },
-          { key:'type',    label:'JSON type'      },
+          { key: 'sources', label: 'Source schema', valueLabels: sourceLabels },
+          { key: 'kind',    label: 'Kind' },
+          { key: 'contexts', label: 'Bounded context' },
+          { key: 'type',    label: 'JSON type' },
         ],
         columns: [
-          { key:'path',  label:'Path',  sortable:true, width:'21%',
-            render:function(v){return '<code>'+esc(v)+'</code>';}},
-          { key:'name',  label:'Name',  sortable:true, width:'9%',
-            render:function(v){return '<code>'+esc(v)+'</code>';}},
-          { key:'title', label:'Title', sortable:true, width:'14%',
-            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
-          { key:'description', label:'Description', sortable:true, width:'18%',
-            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
-          { key:'type',  label:'Type',  sortable:true, width:'6%',
-            render:function(v){return v?'<span class="pill pill--brand">'+esc(v)+'</span>':'<span class="muted tiny">—</span>';}},
-          { key:'context', label:'Context', sortable:true, width:'10%',
-            render:function(v){return v?'<span class="pill pill--accent">'+esc(v)+'</span>':'<span class="muted tiny">—</span>';}},
-          { key:'source', label:'Source', sortable:true, width:'8%',
-            render:function(v){return v?'<code>'+esc(v)+'</code>':'<span class="muted tiny">—</span>';}},
-          { key:'enum',  label:'Enum values', width:'14%',
-            render:function(v){
+          { key: 'kind', label: 'Kind', sortable: true, width: '4%',
+            render: function (v) {
               if (!v) return '<span class="muted tiny">—</span>';
-              if (Array.isArray(v)) return v.map(function(x){return '<span class="enum-pill">'+esc(x)+'</span>';}).join('');
-              return '<span class="muted tiny">'+esc(v)+'</span>';
-            }},
+              // Bootstrap Icons: bi-braces for entities (JSON object syntax), bi-tag-fill for properties
+              if (v === 'entity') {
+                return '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-label="entity"><title>Entity (object/array)</title><path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.76 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6zM13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6Z"/></svg>';
+              }
+              return '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-label="property"><title>Property (scalar)</title><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm3.5 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/></svg>';
+            }
+          },
+          { key: 'title', label: 'Title', sortable: true, width: '15%',
+            render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+          },
+          { key: 'description', label: 'Description', sortable: false, width: '22%',
+            render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+          },
+          { key: 'type', label: 'Type', sortable: true, width: '6%',
+            render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+          },
+          { key: 'sources', label: 'In schemas', sortable: false, width: '12%',
+            render: function (v, row) {
+              if (!v || !v.length) return '<span class="muted tiny">—</span>';
+              var primary = row.source || v[0];
+              var label = sourceLabels[primary] || primary;
+              var extra = v.length > 1 ? ' <span class="muted tiny">+' + (v.length - 1) + '</span>' : '';
+              return '<span title="' + esc(v.join(', ')) + '">' + esc(label) + extra + '</span>';
+            }
+          },
+          { key: 'name', label: 'Name', sortable: true, width: '9%',
+            render: function (v) { return v ? '<code>' + esc(v) + '</code>' : '<span class="muted tiny">—</span>'; }
+          },
+          { key: 'examplePath', label: 'Example path', sortable: true, width: '14%',
+            render: function (v, row) {
+              if (!v) return '<span class="muted tiny">—</span>';
+              var suffix = row.pathCount > 1
+                ? ' <span class="muted tiny" title="appears at ' + row.pathCount + ' paths">×' + row.pathCount + '</span>'
+                : '';
+              return '<code>' + esc(v) + '</code>' + suffix;
+            }
+          },
+          { key: 'uri', label: 'Suggested URI', sortable: false, width: '15%',
+            render: function (v) {
+              if (!v) return '<span class="muted tiny">—</span>';
+              var short = v.replace('https://w3id.org/opda/pdtf/', 'pdtf:');
+              return '<code title="' + esc(v) + '">' + esc(short) + '</code>';
+            }
+          },
         ],
       });
     })();

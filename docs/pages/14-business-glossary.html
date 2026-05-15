@@ -6,6 +6,14 @@
   <title>Business glossary · OPDA Knowledge Base</title>
   <meta name="description" content="Merged PDTF business glossary — 554 SKOS concepts (54 OPDA terms + 500 schema-derived). Sourced from the OPDA Glossary spreadsheets and PDTF v3 schema annotations.">
   <link rel="stylesheet" href="../ui/design-system.css">
+  <style>
+    /* Business glossary: show the table at full height (no scroll container). */
+    #entities-browser .db-table-wrap {
+      max-height: none;
+      overflow-x: visible;
+      overflow-y: visible;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -26,8 +34,8 @@
         <div class="callout__label">What's in here</div>
         <ul style="margin:0;">
           <li><strong>54</strong> curated business terms — merged from the two OPDA <code>Glossary.xlsx</code> sources (Trust Framework PoC + Technical Working Group), deduplicated.</li>
-          <li><strong>500</strong> schema concepts — labels and definitions harvested from the <code>title</code> / <code>description</code> annotations on every node of the PDTF v3 schemas.</li>
-          <li>Total: <strong>554</strong> SKOS concepts in <code>pdtf:GlossaryScheme</code>.</li>
+          <li><strong>698</strong> schema entities — deduplicated object / class concepts harvested from the PDTF v3 schemas, with labels in singular form.</li>
+          <li>Total: <strong>752</strong> concepts (down from a pre-dedup count of 1,024).</li>
         </ul>
       </div>
 
@@ -77,14 +85,9 @@ flowchart LR
       </table>
 
       <h2 id="browse">Browse the glossary</h2>
-      <p>
-        Search the labels, definitions and IRIs. Filter by <em>Kind</em> (business term vs
-        schema concept) or by <em>Area</em> (which top-level branch of the schema the term
-        was harvested from). Click a column header to sort.
-      </p>
 
       <div id="entities-browser" class="data-browser">
-        <div class="db-status-loading">Loading 554 concepts…</div>
+        <div class="db-status-loading">Loading 752 concepts…</div>
       </div>
 
       <p class="muted tiny">
@@ -148,7 +151,7 @@ flowchart LR
         itemLabel: 'concepts',
         searchPlaceholder: 'Search label, definition or id…',
         searchKeys: ['label','definition','id','path'],
-        pageSize: 50,
+        pageSize: 25,
         defaultSort: { key:'label', dir:'asc' },
         facets: [
           { key:'kind',  label:'Kind' },
@@ -160,13 +163,9 @@ flowchart LR
           { key:'definition', label:'Definition', sortable:true, width:'28%',
             render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
           { key:'kind', label:'Kind', sortable:true, width:'10%',
-            render:function(v){
-              if (!v) return '<span class="muted tiny">—</span>';
-              var cls = v === 'Business term' ? 'pill--brand' : 'pill--info';
-              return '<span class="pill '+cls+'">'+esc(v)+'</span>';
-            }},
+            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
           { key:'group', label:'Area', sortable:true, width:'12%',
-            render:function(v){return v?'<span class="pill pill--accent">'+esc(v)+'</span>':'<span class="muted tiny">—</span>';}},
+            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
           { key:'id', label:'IRI fragment', sortable:true, width:'14%',
             render:function(v){return '<code>pdtf:'+esc(v)+'</code>';}},
           { key:'path', label:'Schema path', sortable:true, width:'21%',
