@@ -624,10 +624,13 @@
       // schema physical-architecture page
       base: '#0b2545', overlay: '#431407', engine: '#134e4a',
       api: '#1e1b4b', trust: '#3b0764',
+      // overlays page: bounded context, main overlay, extension overlay, done
+      ctx: '#13315c', ovl: '#2b2925', extn: '#5f342a', done: '#052e16',
     };
     var DARK_STROKE = {
       opda: '#7aaecf', pl: '#7aaecf', l4: '#7aaecf',
       phase: '#4a90c2', task: '#475569',
+      ctx: '#7aaecf', ovl: '#a8a39a', extn: '#d4877a', done: '#7aaecf',
     };
 
     // Walk both nodes AND clusters (subgraphs render as .cluster, not .node).

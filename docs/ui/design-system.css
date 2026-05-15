@@ -439,12 +439,11 @@ a:hover {
   letter-spacing: var(--tracking-meta);
 }
 :root[data-theme="dark"] .prose th { background: var(--surface-dark-tint); }
-.prose tbody tr:hover { background: var(--cream-50); }
 .prose tbody tr:nth-child(2n) { background: var(--cream-200); }
-.prose tbody tr:nth-child(2n):hover { background: var(--cream-50); }
 :root[data-theme="dark"] .prose tbody tr:nth-child(2n) { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .prose tbody tr:hover,
-:root[data-theme="dark"] .prose tbody tr:nth-child(2n):hover { background: var(--surface-dark-tint); }
+.prose ul.plain { list-style: none; padding: 0; margin: 0; }
+.prose ul.plain > li + li { margin-top: 0.25rem; }
+.prose table.ext-table { width: auto; table-layout: fixed; }
 
 /* ─────────────────────────────────────────────────────────────
    CALLOUTS — editorial: thin border, no fill on default, soft tint on emphasis
@@ -463,6 +462,18 @@ a:hover {
   border-color: var(--terracotta-500);
   background: linear-gradient(180deg, var(--terracotta-50), transparent 80%);
   padding: var(--space-4) var(--space-6);
+}
+:root[data-theme="dark"] .callout--key {
+  background: linear-gradient(180deg, rgba(204,120,92,0.12), transparent 80%);
+}
+:root[data-theme="dark"] .callout--warn {
+  background: linear-gradient(180deg, rgba(232,165,90,0.14), transparent 80%);
+}
+:root[data-theme="dark"] .callout--success {
+  background: linear-gradient(180deg, rgba(93,184,166,0.14), transparent 80%);
+}
+:root[data-theme="dark"] .callout--danger {
+  background: linear-gradient(180deg, rgba(184,90,68,0.14), transparent 80%);
 }
 .callout--key > * + * { margin-top: var(--space-2); }
 .callout--key p {
@@ -842,6 +853,12 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   border-radius: var(--radius-md);
   overflow-x: auto;
 }
+.diagram .mermaid svg {
+  max-height: 75vh;
+  height: auto;
+  max-width: 100%;
+  width: auto;
+}
 :root[data-theme="dark"] .diagram { background: var(--surface-dark-alt); }
 .diagram .mermaid {
   display: flex;
@@ -857,6 +874,83 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   border-top: 1px dashed var(--color-border-strong);
 }
 .diagram .mermaid svg { cursor: zoom-in; }
+
+/* Fullscreen pan/zoom lightbox for diagram SVGs (opened by site.js click handler). */
+.diagram-lightbox { display: none; }
+.diagram-lightbox.open {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 16, 0.94);
+  z-index: 9999;
+}
+.diagram-lightbox .viewer-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+}
+.diagram-lightbox .viewer-canvas:active { cursor: grabbing; }
+.diagram-lightbox .viewer-canvas .mermaid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+}
+.diagram-lightbox .viewer-canvas svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: inherit;
+}
+.diagram-lightbox .viewer-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+.diagram-lightbox .viewer-close:hover { background: rgba(255, 255, 255, 0.24); }
+.diagram-lightbox .viewer-controls {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  z-index: 1;
+}
+.diagram-lightbox .viewer-controls button {
+  border: 0;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font: 500 0.875rem / 1 var(--font-sans);
+  min-width: 2rem;
+}
+.diagram-lightbox .viewer-controls button:hover { background: rgba(255, 255, 255, 0.24); }
+.diagram-lightbox .viewer-zoom-label {
+  min-width: 3.5em;
+  text-align: center;
+  font: 500 0.875rem / 1 var(--font-mono);
+}
 
 /* ─────────────────────────────────────────────────────────────
    PAGE META + PAGE FOOTER
@@ -1168,12 +1262,8 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   color: var(--color-text);
   font: 400 var(--text-sm) / 1.45 var(--font-sans);
 }
-.db-table tbody tr:hover td { background: var(--cream-50); }
 .db-table tbody tr:nth-child(2n) td { background: var(--cream-200); }
-.db-table tbody tr:nth-child(2n):hover td { background: var(--terracotta-50); }
 :root[data-theme="dark"] .db-table tbody tr:nth-child(2n) td { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .db-table tbody tr:hover td,
-:root[data-theme="dark"] .db-table tbody tr:nth-child(2n):hover td { background: var(--surface-dark-tint); }
 .db-table code {
   font: 400 0.85em / 1.4 var(--font-mono);
   padding: 1px 5px;
@@ -1310,9 +1400,7 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 }
 :root[data-theme="dark"] .glossary-table th { background: var(--surface-dark-tint); }
 .glossary-table tbody tr:nth-child(2n) { background: var(--cream-200); }
-.glossary-table tbody tr:hover { background: var(--cream-50); }
 :root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .glossary-table tbody tr:hover { background: var(--surface-dark-tint); }
 .glossary-table td:first-child {
   font: 600 var(--text-sm) / 1.4 var(--font-mono);
   color: var(--terracotta-700);

@@ -430,12 +430,8 @@ a:hover {
   letter-spacing: var(--tracking-meta);
 }
 :root[data-theme="dark"] .prose th { background: var(--surface-dark-tint); }
-.prose tbody tr:hover { background: var(--cream-50); }
 .prose tbody tr:nth-child(2n) { background: var(--cream-200); }
-.prose tbody tr:nth-child(2n):hover { background: var(--cream-50); }
 :root[data-theme="dark"] .prose tbody tr:nth-child(2n) { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .prose tbody tr:hover,
-:root[data-theme="dark"] .prose tbody tr:nth-child(2n):hover { background: var(--surface-dark-tint); }
 
 /* ─────────────────────────────────────────────────────────────
    CALLOUTS — editorial: thin border, no fill on default, soft tint on emphasis
@@ -1029,12 +1025,8 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   color: var(--color-text);
   font: 400 var(--text-sm) / 1.45 var(--font-sans);
 }
-.db-table tbody tr:hover td { background: var(--cream-50); }
 .db-table tbody tr:nth-child(2n) td { background: var(--cream-200); }
-.db-table tbody tr:nth-child(2n):hover td { background: var(--terracotta-50); }
 :root[data-theme="dark"] .db-table tbody tr:nth-child(2n) td { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .db-table tbody tr:hover td,
-:root[data-theme="dark"] .db-table tbody tr:nth-child(2n):hover td { background: var(--surface-dark-tint); }
 .db-table code {
   font: 400 0.85em / 1.4 var(--font-mono);
   padding: 1px 5px;
@@ -1155,9 +1147,7 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 }
 :root[data-theme="dark"] .glossary-table th { background: var(--surface-dark-tint); }
 .glossary-table tbody tr:nth-child(2n) { background: var(--cream-200); }
-.glossary-table tbody tr:hover { background: var(--cream-50); }
 :root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--surface-dark-alt); }
-:root[data-theme="dark"] .glossary-table tbody tr:hover { background: var(--surface-dark-tint); }
 .glossary-table td:first-child {
   font: 600 var(--text-sm) / 1.4 var(--font-mono);
   color: var(--terracotta-700);
