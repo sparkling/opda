@@ -40,7 +40,7 @@
         { heading: 'Foundations', items: [
           { id: 'standards-stack',      file: '06-standards-stack.html',      title: 'Standards stack' },
           { id: 'bounded-contexts',     file: '12-bounded-contexts.html',     title: 'Bounded contexts (DDD)' },
-          { id: 'overlays',             file: '16-overlays.html',             title: 'PDTF overlays' },
+          { id: 'overlays',             file: '16-overlays.html',             title: 'Overlays' },
         ]},
         { heading: 'Vocabulary & dictionary', items: [
           { id: 'data-dictionary',      file: '13-data-dictionary.html',      title: 'Data dictionary' },
