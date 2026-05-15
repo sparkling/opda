@@ -488,39 +488,73 @@
     const fontSize   = '14px';
 
     // Theme variables for light + dark — Mermaid uses the same key names.
+    // Warm-canvas palette aligned with docs/ui/design-tokens.css.
+    // Cream surface + terracotta borders + ink text (light); espresso surface
+    // + cream-on-dark text + terracotta accent (dark).
     const lightTheme = {
-      primaryColor:       '#eef4f8',
-      primaryBorderColor: '#1a4d80',
-      primaryTextColor:   '#0b2545',
-      lineColor:          '#475569',
-      secondaryColor:     '#fef3c7',
-      secondaryTextColor: '#7c2d12',
-      tertiaryColor:      '#f7fafc',
-      tertiaryTextColor:  '#0f172a',
+      /* Core fills */
+      primaryColor:        '#EFE9DE',  /* surface-card */
+      primaryBorderColor:  '#CC785C',  /* terracotta-500 */
+      primaryTextColor:    '#141413',  /* ink */
+      secondaryColor:      '#F5F0E8',  /* surface-soft */
+      tertiaryColor:       '#E8E0D2',  /* cream-strong */
+      /* Edges + decorations */
+      lineColor:           '#6C6A64',  /* stone-700 */
+      arrowheadColor:      '#6C6A64',
+      edgeLabelBackground: '#FAF9F5',  /* canvas — match page bg */
+      /* Cluster (subgraph) */
+      clusterBkg:          '#FAF9F5',
+      clusterBorder:       '#E6DFD0',
+      /* Notes */
+      noteBkgColor:        '#FBF3EE',  /* terracotta-50 */
+      noteBorderColor:     '#CC785C',
+      noteTextColor:       '#141413',
+      /* Typography */
+      titleColor:          '#141413',
+      labelColor:          '#3D3D3A',
+      nodeTextColor:       '#141413',
+      /* Sequence / flow specifics */
+      actorBkg:            '#EFE9DE',
+      actorBorder:         '#CC785C',
+      actorTextColor:      '#141413',
+      actorLineColor:      '#6C6A64',
+      signalColor:         '#3D3D3A',
+      signalTextColor:     '#141413',
+      sectionBkgColor:     '#F5F0E8',
+      sectionBkgColor2:    '#E8E0D2',
+      /* ER */
+      attributeBackgroundColorOdd:  '#FAF9F5',
+      attributeBackgroundColorEven: '#F4F1E8',
       fontFamily, fontSize,
     };
     const darkTheme = {
-      // Node fills, borders, text — pushed darker so boxes don't feel "bright"
-      // against the page background.
-      primaryColor:        '#0b2545',
-      primaryBorderColor:  '#4a90c2',
-      primaryTextColor:    '#eef4f8',
-      // Secondary cluster (used in subgraph classDefs / accent nodes)
-      secondaryColor:      '#431407',
-      secondaryBorderColor:'#fcd34d',
-      secondaryTextColor:  '#fde68a',
-      tertiaryColor:       '#052e16',
-      tertiaryTextColor:   '#dcfce7',
-      // Lines, labels, background
-      lineColor:           '#94a3b8',
-      textColor:           '#e2e8f0',
-      mainBkg:             '#0b2545',
-      nodeBorder:          '#4a90c2',
-      clusterBkg:          '#0b1220',
-      clusterBorder:       '#334155',
-      defaultLinkColor:    '#94a3b8',
-      titleColor:          '#e2e8f0',
-      edgeLabelBackground: '#0b1220',
+      /* Espresso surface, on-dark text, terracotta accent stays warm. */
+      primaryColor:        '#211F1C',  /* surface-dark-alt */
+      primaryBorderColor:  '#CC785C',  /* terracotta-500 (accent in dark too) */
+      primaryTextColor:    '#F7F3E9',  /* on-dark */
+      secondaryColor:      '#2B2925',  /* surface-dark-tint */
+      tertiaryColor:       '#34302B',
+      lineColor:           '#A8A097',  /* on-dark muted */
+      arrowheadColor:      '#A8A097',
+      edgeLabelBackground: '#181715',  /* surface-dark — match canvas */
+      clusterBkg:          '#181715',
+      clusterBorder:       '#34302B',
+      noteBkgColor:        '#3A261D',  /* terracotta-100 (dark-flipped) */
+      noteBorderColor:     '#CC785C',
+      noteTextColor:       '#F7F3E9',
+      titleColor:          '#F7F3E9',
+      labelColor:          '#E8E2D4',
+      nodeTextColor:       '#F7F3E9',
+      actorBkg:            '#211F1C',
+      actorBorder:         '#CC785C',
+      actorTextColor:      '#F7F3E9',
+      actorLineColor:      '#A8A097',
+      signalColor:         '#E8E2D4',
+      signalTextColor:     '#F7F3E9',
+      sectionBkgColor:     '#211F1C',
+      sectionBkgColor2:    '#2B2925',
+      attributeBackgroundColorOdd:  '#211F1C',
+      attributeBackgroundColorEven: '#181715',
       fontFamily, fontSize,
     };
 
@@ -537,8 +571,9 @@
           nodeSpacing: 36,
           rankSpacing: 50,
         },
-        sequence:  { useMaxWidth: true },
+        sequence:  { useMaxWidth: true, mirrorActors: false },
         gantt:     { useMaxWidth: true },
+        er:        { useMaxWidth: true },
       });
       window.mermaid.run({ querySelector: '.mermaid' })
         .then(function () { applyMermaidClassDefOverrides(isDark); })
