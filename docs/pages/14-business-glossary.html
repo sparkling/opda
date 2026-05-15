@@ -62,7 +62,7 @@ flowchart LR
         <div class="diagram-caption">Two human-curated spreadsheets + schema-annotation harvester → one SKOS concept scheme.</div>
       </div>
 
-      <h2 id="two-kinds">Two kinds of entries</h2>
+      <h2 id="twoKinds">Two kinds of entries</h2>
 
       <table>
         <thead>
@@ -145,6 +145,37 @@ flowchart LR
         mountEl.innerHTML = '<div class="db-empty">Could not load <code>../data/entities.js</code>.</div>';
         return;
       }
+      var OVERLAY_NAMES={
+        'baspi5':   'Buyers & Sellers Property Info',
+        'ta6':      'Property Information Form',
+        'ta7':      'Leasehold Information Form',
+        'ta10':     'Fittings & Contents Form',
+        'nts2':     'NTS Material Info (Sales)',
+        'ntsl2':    'NTS Material Info (Lettings)',
+        'piq':      'Property Info Questionnaire',
+        'con29R':   'Local Authority Search',
+        'con29DW':  'Drainage & Water Search',
+        'lpe1':     'Leasehold Property Enquiries',
+        'fme1':     'Freehold Management Enquiries',
+        'llc1':     'Local Land Charges Search',
+        'oc1':      'Optional Enquiries of Local Authority',
+        'rds':      'Residential Development Survey',
+        'sr24':     'Sustainability Report 2024',
+      };
+      var PROVENANCE_KEYS=['trust-framework-poc','technical-working-group'];
+      var PROVENANCE_NAMES={
+        'trust-framework-poc':     'Trust Framework PoC',
+        'technical-working-group': 'Technical Working Group',
+      };
+      var NON_OVERLAY=['pdtf-transaction'].concat(PROVENANCE_KEYS);
+      data = data.map(function(e) {
+        var src=Array.isArray(e.sources)?e.sources:[];
+        return Object.assign({}, e, {
+          source: e.kind === 'Business term' ? 'Glossary' : 'Schema',
+          sources: src.filter(function(s){return NON_OVERLAY.indexOf(s)===-1;}),
+          provenance: src.filter(function(s){return PROVENANCE_KEYS.indexOf(s)!==-1;})
+        });
+      });
       OPDA.DataBrowser.mount({
         mount: mountEl,
         data: data,
@@ -154,22 +185,36 @@ flowchart LR
         pageSize: 25,
         defaultSort: { key:'label', dir:'asc' },
         facets: [
-          { key:'kind',  label:'Kind' },
-          { key:'group', label:'Area' },
+          { key:'sources',    label:'Overlay',         valueLabels: OVERLAY_NAMES },
+          { key:'source',     label:'Source' },
+          { key:'provenance', label:'Glossary source', valueLabels: PROVENANCE_NAMES, hideKey:true },
         ],
         columns: [
           { key:'label', label:'Label', sortable:true, width:'15%',
             render:function(v){return '<strong>'+esc(v)+'</strong>';}},
-          { key:'definition', label:'Definition', sortable:true, width:'28%',
+          { key:'definition', label:'Definition', sortable:true, width:'24%',
             render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
-          { key:'kind', label:'Kind', sortable:true, width:'10%',
+          { key:'source', label:'Source', sortable:true, width:'7%',
             render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
-          { key:'group', label:'Area', sortable:true, width:'12%',
-            render:function(v){return v?esc(v):'<span class="muted tiny">—</span>';}},
-          { key:'id', label:'IRI fragment', sortable:true, width:'14%',
+          { key:'sources', label:'Glossary / Overlay', sortable:false, width:'22%',
+            render:function(v,row){
+              if(row.source==='Glossary'){
+                var p=Array.isArray(row.provenance)?row.provenance:[];
+                if(!p.length) return '<span class="muted tiny">—</span>';
+                return '<div style="white-space:nowrap">'+p.map(function(s){
+                  return esc(PROVENANCE_NAMES[s]||s);
+                }).join('<br>')+'</div>';
+              }
+              if(!Array.isArray(v)||!v.length) return '<span class="muted tiny">base only</span>';
+              return '<div style="white-space:nowrap">'+v.map(function(s){
+                var name=OVERLAY_NAMES[s]||s;
+                return esc(name)+' <span class="muted tiny">('+esc(s)+')</span>';
+              }).join('<br>')+'</div>';
+            }},
+          { key:'id', label:'IRI fragment', sortable:true, width:'15%',
             render:function(v){return '<code>pdtf:'+esc(v)+'</code>';}},
-          { key:'path', label:'Schema path', sortable:true, width:'21%',
-            render:function(v){return v?'<code>'+esc(v)+'</code>':'<span class="muted tiny">—</span>';}},
+          { key:'path', label:'Schema path', sortable:true, width:'15%',
+            render:function(v){return v?'<code class="tiny">'+esc(v)+'</code>':'<span class="muted tiny">—</span>';}},
         ],
       });
     })();

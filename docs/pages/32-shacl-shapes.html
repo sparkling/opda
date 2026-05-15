@@ -24,7 +24,7 @@
       </div>
 
       
-      <h2 id="why-shacl">Why SHACL alongside JSON Schema?</h2>
+      <h2 id="whyShacl">Why SHACL alongside JSON Schema?</h2>
       <p>
         JSON Schema validates JSON documents. SHACL validates RDF graphs. PDTF v2.0 is built on W3C VC, which is fundamentally graph-shaped. Both tools serve different audiences:
       </p>
@@ -55,7 +55,7 @@ flowchart LR
         <div class="diagram-caption">Mechanical translation of JSON Schema constraints + hand-authored cross-property rules.</div>
       </div>
 
-      <h2 id="auto-translatable">What translates mechanically</h2>
+      <h2 id="autoTranslatable">What translates mechanically</h2>
       <p>Most JSON Schema constraints have direct SHACL equivalents:</p>
       <table>
         <thead><tr><th>JSON Schema</th><th>SHACL</th></tr></thead>
@@ -69,7 +69,7 @@ flowchart LR
         </tbody>
       </table>
 
-      <h2 id="hand-authored">What needs hand-authoring</h2>
+      <h2 id="handAuthored">What needs hand-authoring</h2>
       <ul>
         <li>Cross-property dependencies (e.g. <em>if tenure = leasehold, then groundRent is required</em>)</li>
         <li>Cross-claim rules (e.g. <em>BASPI v5 disclosure and TA6 answer must be consistent</em>)</li>

@@ -64,7 +64,7 @@ flowchart LR
 
       <h2 id="examples">Worked examples</h2>
 
-      <h3 id="example-estate-agent">Estate-agency product</h3>
+      <h3 id="exampleEstateAgent">Estate-agency product</h3>
       <pre><code>const schema = getTransactionSchema(BASE_ID, ['baspi5', 'nts2']);</code></pre>
       <p>Composition:</p>
       <ul>
@@ -74,7 +74,7 @@ flowchart LR
         <li>+ <code>baspi5Ref</code> + <code>nts2Ref</code> annotations on every leaf for traceability</li>
       </ul>
 
-      <h3 id="example-conveyancer">Conveyancer product</h3>
+      <h3 id="exampleConveyancer">Conveyancer product</h3>
       <pre><code>const schema = getTransactionSchema(BASE_ID, ['ta6', 'ta7', 'ta10', 'lpe1']);</code></pre>
       <p>Composition:</p>
       <ul>
@@ -85,7 +85,7 @@ flowchart LR
         <li>+ LPE1 Leasehold Property Enquiries</li>
       </ul>
 
-      <h3 id="example-nts-staged">Staged NTS → NTS2 migration</h3>
+      <h3 id="exampleNtsStaged">Staged NTS → NTS2 migration</h3>
       <p>If you already produce NTS-2023 data and want to add just Japanese knotweed
       coverage from NTS2:</p>
       <pre><code>const schema = getTransactionSchema(BASE_ID, ['nts2023', 'jk']);</code></pre>

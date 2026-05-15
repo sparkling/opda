@@ -147,7 +147,7 @@
         const labelSpan = el('span');
         if (displayName) {
           labelSpan.innerHTML = ' ' + escapeHtml(displayName) +
-            ' <span class="db-filter-option-key">[' + escapeHtml(v) + ']</span>';
+            (f.hideKey ? '' : ' <span class="db-filter-option-key">[' + escapeHtml(v) + ']</span>');
         } else {
           labelSpan.textContent = ' ' + v.charAt(0).toUpperCase() + v.slice(1);
         }

@@ -616,11 +616,11 @@
       // primary / source / std / etc.
       src: '#0b2545', std: '#0b2545', ext: '#0b2545', primary: '#0b2545',
       proptech: '#0b2545', conv: '#0b2545', portal: '#0b2545', search: '#0b2545',
-      root: '#0b2545', strat: '#0b2545', tier: '#0b2545', sg: '#0b2545',
+      root: '#1a4d80', strat: '#0b2545', tier: '#0b2545', sg: '#0b2545',
       wg: '#0b2545', lender: '#0b2545',
       // accents
       opda: '#13315c', pl: '#13315c', l4: '#13315c',
-      l1: '#0b2545', l2: '#13315c', l3: '#1a4d80',
+      l1: '#13315c', l2: '#13315c', l3: '#1a4d80',
       // schema physical-architecture page
       base: '#0b2545', overlay: '#431407', engine: '#134e4a',
       api: '#1e1b4b', trust: '#3b0764',
@@ -631,6 +631,8 @@
       opda: '#7aaecf', pl: '#7aaecf', l4: '#7aaecf',
       phase: '#4a90c2', task: '#475569',
       ctx: '#7aaecf', ovl: '#a8a39a', extn: '#d4877a', done: '#7aaecf',
+      // concept-taxonomy hierarchy: root accent, l1 muted edge that echoes root fill
+      root: '#2d6494', l1: '#1a4d80',
     };
 
     // Walk both nodes AND clusters (subgraphs render as .cluster, not .node).
