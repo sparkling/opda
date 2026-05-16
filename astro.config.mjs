@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import tailwindcss from '@tailwindcss/vite';
+
 // Dev-only Vite plugin: expose project sub-trees (source/, _build/) that
 // live OUTSIDE publicDir so the resource viewer can fetch them at
 // http://localhost:4330/source/...  Production builds don't ship these.
@@ -149,7 +151,7 @@ export default defineConfig({
     host: false,
   },
   vite: {
-    plugins: [serveProjectRoots],
+    plugins: [serveProjectRoots, tailwindcss()],
     server: {
       // Don't auto-open browser when running `astro dev`
       open: false,

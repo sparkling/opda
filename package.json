@@ -8,12 +8,19 @@
     "dev": "node scripts/dev.mjs",
     "dev:bare": "astro dev",
     "start": "node scripts/dev.mjs",
-    "build": "astro build",
+    "build": "pnpm run css && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "css": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --minify",
+    "css:watch": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --watch",
     "deploy": "bash deploy.sh"
   },
   "dependencies": {
-    "astro": "^6.3.3"
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.3",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0"
   }
 }

@@ -7,8 +7,8 @@ dist/
 *.log
 
 # Local research archive — too large to push (≈ 500 MB, hosts cloned repos)
-# The deployed site only needs /docs/. See README.
-# Leading slash anchors to repo root so docs/data/resources/source/ is still tracked.
+# The deployed site only needs dist/. See README.
+# Leading slash anchors to repo root so public/data/resources/source/ is still tracked.
 /source/*
 # Schema-pipeline inputs and design docs we author + ship
 !/source/_content/
@@ -26,6 +26,7 @@ dist/
 
 # Build intermediates (regenerated; not tracked)
 /_build/
+/public/ui/tailwind.built.css
 
 # Local environment
 .env

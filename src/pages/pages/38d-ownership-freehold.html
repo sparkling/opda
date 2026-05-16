@@ -6,6 +6,7 @@
   <title>Schema · Ownership — freehold transfer · OPDA Knowledge Base</title>
   <meta name="description" content="Ownership — freehold transfer">
   <link rel="stylesheet" href="/ui/design-system.css">
+  <link rel="stylesheet" href="/ui/tailwind.built.css">
 </head>
 <body>
   <div id="app">
@@ -71,44 +72,39 @@ erDiagram
     string yesNo "yesNo"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>6</strong> objects, <strong>18</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <div class="objects-header">
-        <h2 id="objects">Object model</h2>
-        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-          <div class="db-search-group">
-            <div class="db-field db-field--grow">
-              <input type="search"
-                     id="objects-search"
-                     class="db-input"
-                     placeholder="Search title, field or path…"
-                     aria-label="Search object tables">
-            </div>
-            <div class="db-filter-wrap">
-              <button type="button"
-                      class="db-filter-btn"
-                      id="filter-overlay-btn"
-                      aria-expanded="false"
-                      aria-controls="filter-overlay-panel"
-                      title="Filter by overlay">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-                </svg>
-                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-              </button>
-            </div>
-            <div class="db-filter-wrap">
-              <button type="button"
-                      class="db-filter-btn"
-                      id="objects-config-btn"
-                      aria-expanded="false"
-                      aria-controls="objects-config-panel"
-                      title="Columns">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <div class="flex flex-1 mx-auto max-w-3xl isolate" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="db-input flex-1 min-w-0 rounded-r-none! -mr-px focus:relative focus:z-10"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  class="db-filter-btn rounded-none! focus:relative focus:z-10 aria-expanded:relative aria-expanded:z-10"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel"
+                  title="Filter by overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <button type="button"
+                  class="db-filter-btn rounded-l-none! -ml-px focus:relative focus:z-10 aria-expanded:relative aria-expanded:z-10"
+                  id="objects-config-btn"
+                  aria-expanded="false"
+                  aria-controls="objects-config-panel"
+                  title="Columns">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
         </div>
       </div>      <h3 id="own_summary">Ownership · summary</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">

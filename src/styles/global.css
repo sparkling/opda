@@ -1,0 +1,23 @@
+/* Tailwind v4 utilities layered ALONGSIDE the existing design system.
+   Preflight (the Normalize-based reset) is intentionally NOT imported —
+   the hand-authored design-system.css owns base typography, .prose, the
+   .db-table family, and theme tokens. Tailwind is here for utility
+   classes only (flex, gap-*, p-*, bg-*, etc.) on new or refactored
+   components.
+
+   Output: public/ui/tailwind.built.css (built via `pnpm run css` / kept
+   in sync by `pnpm run css:watch`). Pages include it via
+   <link rel="stylesheet" href="/ui/tailwind.built.css"> AFTER
+   design-system.css so utilities can override component CSS when
+   intentionally applied. */
+
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css"     layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Tell Tailwind where to scan for utility class usage. */
+@source "../pages/**/*.html";
+@source "../pages/**/*.astro";
+@source "../../public/ui/*.js";
+@source "../../scripts/templates/**/*.j2";
