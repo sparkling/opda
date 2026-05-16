@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Schema · Local context &amp; searches · OPDA Knowledge Base</title>
-  <meta name="description" content="Local context &amp; searches">
+  <meta name="description" content="Everything outside the property boundary that affects what&#39;s inside it. Local authority searches (CON29R, CON29DW), local land charges (LLC1), planning history, environmental flags (flood, mining, radon, contamination), transport proposals, neighbourhood data. These are returned ">
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 <body>
@@ -27,8 +27,14 @@
   <span>207 in overlays</span>
   <span>0 with worked example</span></div>
 
-      
-      
+      <p>Everything outside the property boundary that affects what's inside it. Local authority searches (CON29R, CON29DW), local land charges (LLC1), planning history, environmental flags (flood, mining, radon, contamination), transport proposals, neighbourhood data. These are returned by external authorities — local councils, the Environment Agency, the Coal Authority — and arrive as sealed bundles.</p>      <p class="muted tiny"><strong>Mentioned but not owned here.</strong> This page references but does not own <code>councilTax (canonical home page 47; band is mentioned on CON29R)</code>.</p>
+      <aside class="callout callout--key" role="note">
+  <p class="callout__label">The claim</p>
+  <p>Local context is what the property does to the council, and what the council does to the property — the searches are the receipts.</p>
+</aside>      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Why this aggregate exists</p>
+        <p>Each search has the same shape — request → authority → result — and the same lifecycle: ordered during the conveyancing phase, returned once, sealed thereafter. Putting them together makes the <em>process</em> the page narrates, and lets the reader see all the gates a sale has to pass at once.</p>
+      </aside>
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -5899,7 +5905,38 @@
         <td><span class="muted">—</span>        </td>
       </tr>    </tbody>
   </table>
-</div>
+</div>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Internal mechanics: each search is a request to a specific authority
+returning specific data. The flow is causal (a conveyancer orders the
+search; the authority returns sealed data) so a flowchart fits better
+than an erDiagram here.">
+  <div class="mermaid">
+flowchart LR
+  classDef src fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+  classDef auth fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  classDef res fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+  REQ[Conveyancer<br/>orders search]:::src --> CON29R[CON29R<br/>request]
+  REQ --> CON29DW[CON29DW<br/>request]
+  REQ --> LLC1[LLC1<br/>request]
+  REQ --> ENV[Environmental<br/>request]
+
+  CON29R --> LA[Local authority]:::auth
+  CON29DW --> WC[Water company]:::auth
+  LLC1 --> LA
+  ENV --> EA[Environment Agency<br/>+ Coal Authority<br/>+ BGS]:::auth
+
+  LA --> CON29R_R[Planning<br/>roads<br/>building control<br/>council tax band]:::res
+  WC --> CON29DW_R[Drainage map<br/>water supply<br/>sewer adopted?]:::res
+  LA --> LLC1_R[Local land charges<br/>conservation<br/>tree orders]:::res
+  EA --> ENV_R[Flood risk<br/>contamination<br/>radon<br/>mining]:::res
+  </div>  <figcaption class="diagram-caption">Internal mechanics: each search is a request to a specific authority
+returning specific data. The flow is causal (a conveyancer orders the
+search; the authority returns sealed data) so a flowchart fits better
+than an erDiagram here.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+        <p class="callout__label">Gap notes</p>
+        <p>CON29 has 22 standard questions and four optional ones; the schema flattens them into named leaves rather than a numbered enquiry array. That's reader-friendly but makes round-tripping a fresh CON29 response awkward — there's no single key to look up "question 3.2".</p>
+      </aside>
       <div class="page-footer"><a href="45-utilities-energy.html">← Utilities & energy</a><a href="47-encumbrances-completion.html">Encumbrances & completion →</a>      </div>
 
     </article>

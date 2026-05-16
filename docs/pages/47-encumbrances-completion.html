@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Schema · Encumbrances &amp; completion · OPDA Knowledge Base</title>
-  <meta name="description" content="Encumbrances &amp; completion">
+  <meta name="description" content="Some facts about a property aren&#39;t really about the building — they&#39;re about what binds it. Council tax bands. Insurance. Guarantees and warranties. Outstanding obligations to occupiers. Letting information. The completion statement that resolves everything at exchange of money. ">
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 <body>
@@ -27,8 +27,14 @@
   <span>132 in overlays</span>
   <span>0 with worked example</span></div>
 
-      
-      
+      <p>Some facts about a property aren't really about the building — they're about what binds it. Council tax bands. Insurance. Guarantees and warranties. Outstanding obligations to occupiers. Letting information. The completion statement that resolves everything at exchange of money. These leaves cohere because they all <em>terminate</em> at completion — they accumulate during the conveyancing phase and either discharge, transfer, or apportion when the keys change hands.</p>      <p class="muted tiny"><strong>Mentioned but not owned here.</strong> This page references but does not own <code>sellersCapacity (canonical home page 35)</code>, <code>titleNumber (canonical home page 38)</code>.</p>
+      <aside class="callout callout--key" role="note">
+  <p class="callout__label">The claim</p>
+  <p>Completion is the moment encumbrances either follow the property or die with the seller — every leaf on this page settles in that moment.</p>
+</aside>      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Why this aggregate exists</p>
+        <p>Council tax has its canonical home here for the same reason. It looks like a property attribute (it shows up on listings, on TA6, on the search pack), but its <em>terminating</em> fact — the apportionment between seller and buyer — is a completion artefact. The band is just the input. The apportionment is the leaf that has to be right, and it can only be right at one moment, on one document, signed by both sides. That's a page-47 fact.</p>
+      </aside>
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -1345,7 +1351,41 @@
         <td><span class="muted">—</span>        </td>
       </tr>    </tbody>
   </table>
-</div>
+</div>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Internal mechanics: each encumbrance lives on the property and resolves
+at completion. Council tax is the cleanest example: the band is
+declarative, the apportionment is derivative, the completion statement
+is the artefact that closes both.">
+  <div class="mermaid">
+erDiagram
+  PROPERTY        ||--o| COUNCIL_TAX        : "banded as"
+  PROPERTY        ||--o{ INSURANCE          : "covered by"
+  PROPERTY        ||--o{ GUARANTEE          : "warranted by"
+  PROPERTY        ||--o{ OCCUPIER           : "occupied by"
+  PROPERTY        ||--o| LETTING            : "let under"
+  TRANSACTION     ||--|| COMPLETION         : "settles via"
+  COUNCIL_TAX     ||--|| APPORTIONMENT      : "split at completion"
+  INSURANCE       ||--o| ATTACHMENT         : "evidenced by"
+  GUARANTEE       ||--o| ATTACHMENT         : "evidenced by"
+  LETTING         ||--o{ TENANT             : "for"
+  COMPLETION      ||--o{ APPORTIONMENT      : "itemises"
+  COMPLETION      ||--|| MONEY_FLOW         : "settles"
+  COUNCIL_TAX {
+    string band "A · B · C · D · E · F · G · H · I"
+    integer annualCharge
+  }
+  APPORTIONMENT {
+    integer daysOwed
+    integer amount
+    date    completionDate
+  }
+  </div>  <figcaption class="diagram-caption">Internal mechanics: each encumbrance lives on the property and resolves
+at completion. Council tax is the cleanest example: the band is
+declarative, the apportionment is derivative, the completion statement
+is the artefact that closes both.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+        <p class="callout__label">Gap notes</p>
+        <p>Completion-statement totals are derivations, but the schema doesn't carry the formulas. A buyer's solicitor reading the statement can't verify the arithmetic against the schema — they have to compute it independently. SHACL or PROV-O could close this gap; today it's an honest defect.</p>
+      </aside>
       <div class="page-footer"><a href="46-local-context-searches.html">← Local context & searches</a><a href="48-evidence-documents-declarations.html">Evidence, documents & declarations →</a>      </div>
 
     </article>

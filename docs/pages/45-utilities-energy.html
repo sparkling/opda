@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Schema · Utilities &amp; energy · OPDA Knowledge Base</title>
-  <meta name="description" content="Utilities &amp; energy">
+  <meta name="description" content="What runs into and out of the building: heating, electricity, water, drainage, broadband, mobile. Plus the property&#39;s energy performance certificate (EPC). These leaves cluster because they share physics — they&#39;re all couplings between the property and an external utility network">
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 <body>
@@ -27,8 +27,14 @@
   <span>202 in overlays</span>
   <span>0 with worked example</span></div>
 
-      
-      
+      <p>What runs into and out of the building: heating, electricity, water, drainage, broadband, mobile. Plus the property's energy performance certificate (EPC). These leaves cluster because they share <strong>physics</strong> — they're all couplings between the property and an external utility network — and because they share enumerations (fuel types, meter identifiers, service grades).</p>      <p class="muted tiny"><strong>Mentioned but not owned here.</strong> This page references but does not own <code>councilTax (canonical home page 47)</code>.</p>
+      <aside class="callout callout--key" role="note">
+  <p class="callout__label">The claim</p>
+  <p>Physics, not labels, makes these leaves one aggregate — every utility has a meter, a fuel, and a supplier.</p>
+</aside>      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Why this aggregate exists</p>
+        <p>The cohesion test is the meter and the fuel. <code>heating.centralHeating.fuelType</code>, <code>electricity.mainsElectricity.electricityMeter.mpan</code>, and <code>energyEfficiency.certificate.mainFuel</code> all reference the same physical couplings under different leaf paths. Putting these on one page keeps the fuel-type duplication visible (a gap to fix) rather than silently distributed across the schema.</p>
+      </aside>
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -3217,7 +3223,41 @@
         <td><span class="muted">—</span>        </td>
       </tr>    </tbody>
   </table>
-</div>
+</div>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Internal mechanics: each utility is metered, fuelled, and supplied.
+The EPC sits across the whole property, citing its own fuel reading —
+which is one of three independent expressions of the same fact in the
+schema. The diagram makes the duplication visible.">
+  <div class="mermaid">
+erDiagram
+  PROPERTY    ||--o| HEATING        : "heated by"
+  PROPERTY    ||--o| ELECTRICITY    : "supplied with"
+  PROPERTY    ||--o| WATER          : "supplied with"
+  PROPERTY    ||--o| DRAINAGE       : "drains to"
+  PROPERTY    ||--o| CONNECTIVITY   : "connected via"
+  PROPERTY    ||--o| EPC            : "rated by"
+  HEATING     ||--|| FUEL           : "uses"
+  HEATING     ||--o| METER          : "metered by"
+  ELECTRICITY ||--o| METER          : "metered by"
+  WATER       ||--o| METER          : "metered by"
+  EPC         ||--|| RATING         : "graded"
+  EPC         ||--o{ RECOMMENDATION : "suggests"
+  EPC         ||--|| FUEL           : "primary"
+  FUEL {
+    string value "Mains gas · Electricity · Oil · LPG · Biomass · Solid fuel"
+  }
+  RATING {
+    string current "A–G"
+    string potential "A–G"
+    integer score
+  }
+  </div>  <figcaption class="diagram-caption">Internal mechanics: each utility is metered, fuelled, and supplied.
+The EPC sits across the whole property, citing its own fuel reading —
+which is one of three independent expressions of the same fact in the
+schema. The diagram makes the duplication visible.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+        <p class="callout__label">Gap notes</p>
+        <p><code>fuelType</code> appears in at least three branches — heating, EPC, fixturesAndFittings.stockOfFuel — with three different enums and no cross-reference. The schema admits this; downstream consumers pay for it. A unified <code>pdtf-fuel:Scheme</code> SKOS code list would resolve it without changing leaf paths.</p>
+      </aside>
       <div class="page-footer"><a href="39-built-form-condition-valuation.html">← Built form, condition & valuation</a><a href="46-local-context-searches.html">Local context & searches →</a>      </div>
 
     </article>

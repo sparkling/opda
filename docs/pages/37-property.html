@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Schema · Property · OPDA Knowledge Base</title>
-  <meta name="description" content="Property">
+  <meta name="description" content="Property identity is the schema&#39;s most-referenced concept and its biggest defect. A physical building, a parcel of land, a flat in a block — call it the property — is referred to from address, UPRN, INSPIRE ID, title-linked address, and several embedded propertyPack sub-objects. ">
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 <body>
@@ -27,8 +27,14 @@
   <span>12 in overlays</span>
   <span>13 with worked example</span></div>
 
-      
-      
+      <p>Property identity is the schema's most-referenced concept and its biggest defect. A physical building, a parcel of land, a flat in a block — call it the <em>property</em> — is referred to from address, UPRN, INSPIRE ID, title-linked address, and several embedded propertyPack sub-objects. None of those four identity surfaces is canonical, and the schema offers no relation between them. This page names that gap explicitly.</p>      <p class="muted tiny"><strong>Mentioned but not owned here.</strong> This page references but does not own <code>address (London/Manchester examples populate this)</code>, <code>titleNumber (canonical home page 38)</code>.</p>
+      <aside class="callout callout--key" role="note">
+  <p class="callout__label">The claim</p>
+  <p>The Property is the schema's load-bearing entity — and the one it never names.</p>
+</aside>      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Why this aggregate exists</p>
+        <p>Four leaves point at the same physical thing and no leaf points at those four. UPRN appears in <code>propertyPack.uprn</code>, in <code>energyEfficiency.certificate.uprn</code>, in <code>chain.onwardPurchase[].uprn</code>, and in <code>valuationComparisonData.propertyDetails[].uprn</code> — four leaves, one physical referent, zero schema-level joins. Address has the same problem with extra mess (marketing address vs registered title address vs CON29 address). This page reconstructs the implicit Property entity from those scattered identity surfaces and flags it as a known issue.</p>
+      </aside>
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -337,7 +343,48 @@
         <td><span class="muted">—</span>        </td>
       </tr>    </tbody>
   </table>
-</div>
+</div>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="The four identity surfaces (Address, UPRN, INSPIRE ID, Title link)
+plus the two attribute surfaces (Location coordinates, Residential
+features) collectively describe the Property. None of these is
+declared canonical in the schema — this diagram is a documentation
+patch over that gap.">
+  <div class="mermaid">
+erDiagram
+  PROPERTY ||--|| ADDRESS         : "located at"
+  PROPERTY ||--o| UPRN            : "identified by"
+  PROPERTY ||--o| INSPIRE_ID      : "or by"
+  PROPERTY ||--o{ TITLE_LINK      : "registered as"
+  PROPERTY ||--|| LOCATION        : "at coordinates"
+  PROPERTY ||--|| FEATURES        : "with features"
+  ADDRESS {
+    string line1
+    string line2
+    string town
+    string postcode
+    string countryCode
+  }
+  UPRN {
+    integer value "Unique Property Reference Number"
+    string  source "OS · LA"
+  }
+  LOCATION {
+    number latitude
+    number longitude
+  }
+  FEATURES {
+    string propertyType
+    integer numberOfBedrooms
+    integer numberOfBathrooms
+  }
+  </div>  <figcaption class="diagram-caption">The four identity surfaces (Address, UPRN, INSPIRE ID, Title link)
+plus the two attribute surfaces (Location coordinates, Residential
+features) collectively describe the Property. None of these is
+declared canonical in the schema — this diagram is a documentation
+patch over that gap.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+        <p class="callout__label">Gap notes</p>
+        <p>The defect is structural, not editorial. Fixing it requires either (a) a top-level <code>property</code> aggregate with an <code>id</code> that the other surfaces reference, or (b) a SHACL shape declaring <code>propertyPack.uprn</code> as the canonical key with the others as foreign keys. Neither has been written. Until it is, the page is honest about what it documents: the schema as-built, not the schema-as-it-should-be.</p>
+      </aside>
       <div class="page-footer"><a href="36-chain-milestones-contracts.html">← Chain, milestones & contracts</a><a href="38-legal-estate-title.html">Legal estate & title →</a>      </div>
 
     </article>
