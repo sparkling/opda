@@ -53,6 +53,44 @@ regions:
     The EPC sits across the whole property, citing its own fuel reading —
     which is one of three independent expressions of the same fact in the
     schema. The diagram makes the duplication visible.
+  diagrams:
+    - type: sequence
+      source: |
+        sequenceDiagram
+          autonumber
+          participant Seller
+          participant Assessor as Accredited<br/>energy assessor
+          participant EPBR as EPC Register<br/>(EPB)
+          participant Buyer
+
+          Seller->>Assessor: book inspection
+          Assessor->>Assessor: inspect (fabric · heating · lighting · ventilation)
+          Assessor->>Assessor: model in RdSAP / SAP
+          Assessor->>EPBR: lodge certificate
+          EPBR-->>Assessor: certificate ID + 10-year validity
+          Assessor-->>Seller: certificate (band A-G + recommendations)
+          Seller->>Buyer: provide EPC ref on listing
+          Buyer->>EPBR: lookup certificate by ref
+          EPBR-->>Buyer: signed JSON-LD + PDF
+      caption: |
+        EPC issuance and retrieval. The certificate is issued by an
+        accredited assessor, lodged on the EPB Register, and retrievable
+        by reference for 10 years. PDTF captures the lodged values
+        (current/potential rating, fuel, cost projections, recommendations).
+    - type: pie
+      source: |
+        pie title Typical EPC rating distribution (England & Wales, post-2018 stock)
+          "A (92+)" : 1
+          "B (81-91)" : 8
+          "C (69-80)" : 38
+          "D (55-68)" : 32
+          "E (39-54)" : 15
+          "F (21-38)" : 5
+          "G (1-20)" : 1
+      caption: |
+        Indicative distribution of EPC ratings. The London flat in our
+        example sits in band D (62); the Manchester semi in band C (71).
+        Most existing stock is C–E; new-build typically B.
 mentioned_but_not_owned:
   - "councilTax (canonical home page 47)"
 ---

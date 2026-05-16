@@ -55,6 +55,35 @@ regions:
     proprietors, leases, charges, restrictions and notices. Leasehold
     titles additionally carry ground rent and service charge schedules.
     All of these flow from one HMLR seal and re-issue together.
+  diagrams:
+    - type: sequence
+      source: |
+        sequenceDiagram
+          autonumber
+          participant Conv as Buyer's<br/>conveyancer
+          participant HMLR as HMLR<br/>(Land Registry)
+          participant Seller
+          participant Lender
+
+          Conv->>HMLR: order OC1 (Office Copy)
+          HMLR-->>Conv: official copy + filed plan (PDF + JSON-LD)
+          Conv->>Conv: parse OC summary + register entries
+          Conv->>Seller: enquiries on restrictions / charges
+          Seller-->>Conv: replies to enquiries
+          alt Charge to be discharged
+            Conv->>Lender: request redemption statement
+            Lender-->>Conv: redemption figure
+            Conv->>HMLR: file AP1 (transfer + DS1) at completion
+            HMLR-->>Conv: title updated; new official copy
+          else No subsisting charge
+            Conv->>HMLR: file AP1 at completion
+            HMLR-->>Conv: title updated; new official copy
+          end
+      caption: |
+        Title evidence flow: ordering an OC1, parsing the register,
+        resolving charges, and re-registering after completion. The
+        schema captures the OC artefact and the AP1 outcome; this
+        diagram makes the conveyancer's process between them visible.
 mentioned_but_not_owned:
   - "councilTax (canonical home page 47)"
   - "sellersCapacity (canonical home page 35)"

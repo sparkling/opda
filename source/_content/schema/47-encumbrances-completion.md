@@ -55,6 +55,54 @@ regions:
     at completion. Council tax is the cleanest example: the band is
     declarative, the apportionment is derivative, the completion statement
     is the artefact that closes both.
+  diagrams:
+    - type: flowchart
+      source: |
+        flowchart TB
+          classDef input fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+          classDef derive fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+          classDef result fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+          A[Council tax band<br/>Declared]:::input --> F[Annual charge<br/>£ × band × LA]:::derive
+          B[Completion date<br/>Agreed]:::input --> G[Days in year<br/>before completion]:::derive
+          C[Service charge<br/>schedule]:::input --> H[Period attributable<br/>to seller]:::derive
+          D[Ground rent<br/>schedule]:::input --> H
+          F --> X[Seller's share<br/>days × daily-rate]:::derive
+          G --> X
+          F --> Y[Buyer's share<br/>days × daily-rate]:::derive
+          G --> Y
+          H --> Z[Apportionment<br/>line items]:::result
+          X --> Z
+          Y --> Z
+          Z --> S[Completion statement<br/>total]:::result
+      caption: |
+        Apportionment math: declared inputs (band, completion date,
+        schedule) feed deterministic derivations (daily-rate × days);
+        the derivations sum into completion-statement line items. The
+        schema captures the inputs and outputs but not the formulas —
+        a SHACL constraint could enforce the arithmetic.
+    - type: gantt
+      source: |
+        gantt
+          title  Completion-day money flow
+          dateFormat HH:mm
+          axisFormat %H:%M
+          section Morning
+          Buyer's funds in solicitor account     :crit,    a1, 09:00, 30m
+          Mortgage drawdown to solicitor         :         a2, 09:30, 30m
+          section Midday
+          Funds transferred to seller solicitor  :crit,    a3, 12:00, 30m
+          Apportionment received                 :         a4, 12:00, 60m
+          Title transfer (TR1) signed            :         a5, 12:30, 15m
+          section Afternoon
+          Keys released                          :milestone, m1, 13:30, 0
+          AP1 lodged with HMLR                   :         a6, 14:00, 60m
+          Discharge of charge (DS1)              :         a7, 14:00, 60m
+      caption: |
+        Completion day timeline. Apportionment, transfer, key release
+        and registration all converge in a four-hour window. The
+        schema captures most artefacts (TR1, AP1, DS1) but the
+        money-flow timestamps are typically tracked outside it.
 mentioned_but_not_owned:
   - "sellersCapacity (canonical home page 35)"
   - "titleNumber (canonical home page 38)"

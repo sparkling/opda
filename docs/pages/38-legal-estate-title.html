@@ -9331,7 +9331,37 @@ erDiagram
   </div>  <figcaption class="diagram-caption">Internal mechanics: a Title carries a sealed Official Copy with
 proprietors, leases, charges, restrictions and notices. Leasehold
 titles additionally carry ground rent and service charge schedules.
-All of these flow from one HMLR seal and re-issue together.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+All of these flow from one HMLR seal and re-issue together.</figcaption></figure>      <h2 id="diagram-1">Sequence</h2>
+      <figure class="diagram" role="figure" aria-label="Title evidence flow: ordering an OC1, parsing the register,
+resolving charges, and re-registering after completion. The
+schema captures the OC artefact and the AP1 outcome; this
+diagram makes the conveyancer&#39;s process between them visible.">
+  <div class="mermaid">
+sequenceDiagram
+  autonumber
+  participant Conv as Buyer's<br/>conveyancer
+  participant HMLR as HMLR<br/>(Land Registry)
+  participant Seller
+  participant Lender
+
+  Conv->>HMLR: order OC1 (Office Copy)
+  HMLR-->>Conv: official copy + filed plan (PDF + JSON-LD)
+  Conv->>Conv: parse OC summary + register entries
+  Conv->>Seller: enquiries on restrictions / charges
+  Seller-->>Conv: replies to enquiries
+  alt Charge to be discharged
+    Conv->>Lender: request redemption statement
+    Lender-->>Conv: redemption figure
+    Conv->>HMLR: file AP1 (transfer + DS1) at completion
+    HMLR-->>Conv: title updated; new official copy
+  else No subsisting charge
+    Conv->>HMLR: file AP1 at completion
+    HMLR-->>Conv: title updated; new official copy
+  end
+  </div>  <figcaption class="diagram-caption">Title evidence flow: ordering an OC1, parsing the register,
+resolving charges, and re-registering after completion. The
+schema captures the OC artefact and the AP1 outcome; this
+diagram makes the conveyancer's process between them visible.</figcaption></figure>      <aside class="callout callout--warn" role="note">
         <p class="callout__label">Gap notes</p>
         <p>The Official Copy is an evidence document, but the schema exposes it as a deeply nested object structure rather than as an attached PDF with a signed hash. Today every leaf under <code>ocSummaryData</code> and <code>ocRegisterData</code> could be transcribed inaccurately and the schema has no way to detect the mismatch. A future revision should attach the original sealed document alongside the parsed structure.</p>
       </aside>
