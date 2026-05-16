@@ -161,25 +161,44 @@ erDiagram
     string yesNo "yesNo"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>25</strong> objects, <strong>66</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="boundaries">Legal boundaries</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -187,15 +206,107 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundaries" data-display-id="legalboundaries">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackrightsandinformalarrangements" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights And Informal Arrangements</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundaries" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Legal Boundaries</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundaries" data-display-id="legalboundaries">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklegalboundaries" class="object-block__title" data-display-id="legalboundaries">
         <span class="object-block__display">Legal Boundaries</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacklegalboundariespartoutsidelegalownership" class="object-block__child-link">Part Outside Legal Ownership</a>,         <a href="#propertypacklegalboundariespartonseparatesiteordeed" class="object-block__child-link">Part On Separate Site Or Deed</a>,         <a href="#propertypacklegalboundariesboundariesdifferfromtitleplan" class="object-block__child-link">Boundaries Differ From Title Plan</a>,         <a href="#propertypacklegalboundariesboundaryalterationproposal" class="object-block__child-link">Boundary Alteration Proposal</a>,         <a href="#propertypacklegalboundariesownership" class="object-block__child-link">Ownership</a>,         <a href="#propertypacklegalboundarieshaveboundaryfeaturesmoved" class="object-block__child-link">Have Boundary Features Moved</a>,         <a href="#propertypacklegalboundariesadjacentlandincluded" class="object-block__child-link">Adjacent Land Included</a>,         <a href="#propertypacklegalboundariesflyingfreehold" class="object-block__child-link">Flying Freehold</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesAdjacentLandIncluded" data-display-id="adjacentlandincluded">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklegalboundariespartoutsidelegalownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Part Outside Legal Ownership</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariespartonseparatesiteordeed" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Part On Separate Site Or Deed</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariesboundariesdifferfromtitleplan" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Boundaries Differ From Title Plan</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariesboundaryalterationproposal" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Boundary Alteration Proposal</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariesownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownership</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundarieshaveboundaryfeaturesmoved" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Have Boundary Features Moved</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariesadjacentlandincluded" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Adjacent Land Included</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklegalboundariesflyingfreehold" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Flying Freehold</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesAdjacentLandIncluded" data-display-id="adjacentlandincluded">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesadjacentlandincluded" class="object-block__title" data-display-id="adjacentlandincluded">
@@ -207,18 +318,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -228,6 +341,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -237,6 +351,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -257,18 +372,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -278,6 +395,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.details"
             data-overlays="baspi5">
           <td>Please provide details of how they differ and why they changed and provide a plan showing where you believe the boundaries are</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -287,6 +405,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -296,6 +415,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -316,18 +436,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.details"
             data-overlays="baspi5,piq">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -337,6 +459,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -346,6 +469,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -366,18 +490,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -387,6 +513,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -396,6 +523,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -416,18 +544,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.details"
             data-overlays="baspi5,piq,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -437,6 +567,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -446,6 +577,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -460,25 +592,34 @@ erDiagram
       <h4 id="propertypacklegalboundariesownership" class="object-block__title" data-display-id="ownership">
         <span class="object-block__display">Ownership</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.ownership</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacklegalboundariesownershipuniformboundaries" class="object-block__child-link">Uniform Boundaries</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklegalboundariesownershipuniformboundaries" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Uniform Boundaries</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.legalBoundaries.ownership"
        data-field-count="5">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
+          <td>Are the boundary uniform?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>areBoundariesUniform</code>          </td>
@@ -488,6 +629,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
+          <td>Are the boundary uniform?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>areBoundariesUniform</code>          </td>
@@ -497,6 +639,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
+          <td>Are the boundary uniform?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>areBoundariesUniform</code>          </td>
@@ -506,6 +649,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.attachments"
             data-overlays="baspi5,ta6">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -515,6 +659,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.details"
             data-overlays="baspi5,ta6">
           <td>Please indicate ownership or those you have repaired by written description or marking them on a plan of the property</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -535,18 +680,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -556,6 +703,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -565,6 +713,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -585,18 +734,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.details"
             data-overlays="baspi5,piq">
           <td>Please provide details. E.g. parking, garden, outbuilding, accessway, etc</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -606,6 +757,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -615,6 +767,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -635,18 +788,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.front"
             data-overlays="baspi5,piq,rds,ta6">
           <td>At the front</td>
+          <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>front</code>          </td>
@@ -656,6 +811,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.left"
             data-overlays="baspi5,piq,rds,ta6">
           <td>On the left</td>
+          <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>left</code>          </td>
@@ -665,6 +821,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.rear"
             data-overlays="baspi5,piq,rds,ta6">
           <td>At the rear</td>
+          <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>rear</code>          </td>
@@ -674,6 +831,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.right"
             data-overlays="baspi5,piq,rds,ta6">
           <td>On the right</td>
+          <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>right</code>          </td>
@@ -688,8 +846,39 @@ erDiagram
       <h4 id="propertypackrightsandinformalarrangements" class="object-block__title" data-display-id="rightsandinformalarrangements">
         <span class="object-block__display">Rights And Informal Arrangements</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackrightsandinformalarrangementssharedcontributions" class="object-block__child-link">Shared Contributions</a>,         <a href="#propertypackrightsandinformalarrangementsneighbouringlandrights" class="object-block__child-link">Neighbouring Land Rights</a>,         <a href="#propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__child-link">Access Restriction Attempts</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__child-link">Rights Or Arrangements</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsAccessRestrictionAttempts" data-display-id="accessrestrictionattempts">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackrightsandinformalarrangementssharedcontributions" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Shared Contributions</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsneighbouringlandrights" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Neighbouring Land Rights</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Access Restriction Attempts</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights Or Arrangements</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsAccessRestrictionAttempts" data-display-id="accessrestrictionattempts">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__title" data-display-id="accessrestrictionattempts">
@@ -701,18 +890,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.details"
             data-overlays="baspi5,piq,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -722,6 +913,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -731,6 +923,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -751,18 +944,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -772,6 +967,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.details"
             data-overlays="baspi5,piq,ta6">
           <td>Please give details and provide a plan showing the route of the access, parking etc</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -781,6 +977,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -790,6 +987,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -804,8 +1002,71 @@ erDiagram
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__title" data-display-id="rightsorarrangements">
         <span class="object-block__display">Rights Or Arrangements</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofway" class="object-block__child-link">Public Right Of Way</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflight" class="object-block__child-link">Rights Of Light</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupport" class="object-block__child-link">Rights Of Support</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustom" class="object-block__child-link">Rights Created Through Custom</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromland" class="object-block__child-link">Rights To Take From Land</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsminesandminerals" class="object-block__child-link">Mines And Minerals</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementschurchchancel" class="object-block__child-link">Church Chancel</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsotherrights" class="object-block__child-link">Other Rights</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsSharedContributions" data-display-id="sharedcontributions">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofway" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Public Right Of Way</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflight" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights Of Light</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupport" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights Of Support</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights Created Through Custom</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromland" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rights To Take From Land</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsminesandminerals" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Mines And Minerals</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementschurchchancel" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Church Chancel</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsotherrights" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Rights</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsSharedContributions" data-display-id="sharedcontributions">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementssharedcontributions" class="object-block__title" data-display-id="sharedcontributions">
@@ -817,18 +1078,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.details"
             data-overlays="baspi5,piq,ta6">
           <td>Please give details including who collects payments and organises the work, the amount of the payments in the last year and whether they are regular payments or only when maintenance work is required</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -838,6 +1101,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -847,6 +1111,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -867,18 +1132,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -888,6 +1155,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -897,6 +1165,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -917,18 +1186,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -938,6 +1209,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -947,6 +1219,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -967,18 +1240,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -988,6 +1263,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -997,6 +1273,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1017,18 +1294,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.attachments"
             data-overlays="baspi5">
           <td>Please mark the route on a plan of the property</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -1038,6 +1317,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.details"
             data-overlays="baspi5,nts2,ntsl2,piq,ta6">
           <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1047,6 +1327,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1056,6 +1337,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1076,18 +1358,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1097,6 +1381,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1106,6 +1391,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1126,18 +1412,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1147,6 +1435,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1156,6 +1445,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1176,18 +1466,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.details"
             data-overlays="baspi5">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1197,6 +1489,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1206,6 +1499,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1226,18 +1520,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1247,6 +1543,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1256,6 +1553,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>

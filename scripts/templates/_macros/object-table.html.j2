@@ -26,14 +26,19 @@
       <code class="object-block__path">{{ obj.path or 'transaction (root)' }}</code>
     </div>
     {%- if obj.children %}
-    <p class="object-block__children muted tiny">
-      Contains:
+    <ul class="object-block__children">
       {%- for c in obj.children %}
-        <a href="#{{ c.id|lower }}" class="object-block__child-link">
-          {{- c.display }}{% if c.is_array %}[]{% endif -%}
-        </a>{% if not loop.last %}, {% endif %}
+      <li>
+        <a href="{{ c.href or ('#' ~ (c.id|lower)) }}" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>{{- c.display }}{% if c.is_array %}[]{% endif -%}</span>
+        </a>
+      </li>
       {%- endfor %}
-    </p>
+    </ul>
     {%- endif %}
   </header>
 
@@ -44,13 +49,14 @@
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>
@@ -59,6 +65,7 @@
             data-overlays="{{ (f.overlays or [])|map(attribute='key')|join(',') }}"
             {%- if f.is_envelope %} data-envelope="1" style="opacity: 0.6;"{% endif %}>
           <td>{{ f.title|default('', true) }}</td>
+          <td>{% if f.description %}{{ f.description }}{% else %}<span class="muted">—</span>{% endif %}</td>
           <td><code>{{ f.type }}</code></td>
           <td>
             {%- if f.is_envelope -%}envelope

@@ -114,25 +114,44 @@ erDiagram
     string yesNo "yesNo"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>15</strong> objects, <strong>42</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="guarantees">Guarantees, warranties & indemnities</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -140,32 +159,150 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurances" data-display-id="guaranteeswarrantiesandindemnityinsurances">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurances" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Guarantees Warranties And Indemnity Insurances</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurances" data-display-id="guaranteeswarrantiesandindemnityinsurances">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackguaranteeswarrantiesandindemnityinsurances" class="object-block__title" data-display-id="guaranteeswarrantiesandindemnityinsurances">
         <span class="object-block__display">Guarantees Warranties And Indemnity Insurances</span>      </h4>
       <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesnewhomewarranty" class="object-block__child-link">New Home Warranty</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesroofingwork" class="object-block__child-link">Roofing Work</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdampproofingtreatment" class="object-block__child-link">Damp Proofing Treatment</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestimberrotorinfestationtreatment" class="object-block__child-link">Timber Rot Or Infestation Treatment</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancescentralheatingandorplumbing" class="object-block__child-link">Central Heating Andor Plumbing</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdoubleglazing" class="object-block__child-link">Double Glazing</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsuranceselectricalrepairorinstallation" class="object-block__child-link">Electrical Repair Or Installation</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessubsidencework" class="object-block__child-link">Subsidence Work</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessolarpanels" class="object-block__child-link">Solar Panels</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesotherguarantees" class="object-block__child-link">Other Guarantees</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesoutstandingclaimsorapplications" class="object-block__child-link">Outstanding Claims Or Applications</a>,         <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestitledefectinsurance" class="object-block__child-link">Title Defect Insurance</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesnewhomewarranty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>New Home Warranty</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesroofingwork" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Roofing Work</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdampproofingtreatment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Damp Proofing Treatment</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestimberrotorinfestationtreatment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Timber Rot Or Infestation Treatment</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancescentralheatingandorplumbing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Central Heating Andor Plumbing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdoubleglazing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Double Glazing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsuranceselectricalrepairorinstallation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electrical Repair Or Installation</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessubsidencework" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Subsidence Work</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessolarpanels" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Solar Panels</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesotherguarantees" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Guarantees</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesoutstandingclaimsorapplications" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Outstanding Claims Or Applications</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestitledefectinsurance" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Title Defect Insurance</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances"
        data-field-count="2">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties"
             data-overlays="baspi5,piq,rds,ta6">
           <td>hasValidGuaranteesOrWarranties</td>
+          <td>Are there any valid guarantees, warranty or indemnity insurance relating to this property?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasValidGuaranteesOrWarranties</code>          </td>
@@ -175,6 +312,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties"
             data-overlays="baspi5,piq,rds,ta6">
           <td>hasValidGuaranteesOrWarranties</td>
+          <td>Are there any valid guarantees, warranty or indemnity insurance relating to this property?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasValidGuaranteesOrWarranties</code>          </td>
@@ -195,18 +333,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -216,6 +356,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -225,6 +366,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -245,18 +387,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -266,6 +410,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -275,6 +420,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -295,18 +441,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -316,6 +464,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -325,6 +474,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -345,18 +495,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -366,6 +518,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -375,6 +528,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -395,18 +549,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -416,6 +572,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.details"
             data-overlays="baspi5,ta6">
           <td>Please confirm the name of the warranty provider and the date of the warranty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -425,6 +582,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -434,6 +592,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -454,18 +613,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.attachments"
             data-overlays="ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -475,6 +636,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.details"
             data-overlays="baspi5,ta6">
           <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -484,6 +646,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -493,6 +656,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -513,18 +677,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -534,6 +700,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.details"
             data-overlays="baspi5,ta6">
           <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -543,6 +710,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -552,6 +720,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -572,18 +741,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -593,6 +764,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -602,6 +774,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -622,18 +795,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.attachments"
             data-overlays="baspi5">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -643,6 +818,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -652,6 +828,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -672,18 +849,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -693,6 +872,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -702,6 +882,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -722,18 +903,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.attachments"
             data-overlays="baspi5,ta6">
           <td>attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -743,6 +926,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -752,6 +936,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -772,18 +957,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.attachments"
             data-overlays="baspi5">
           <td>Policy</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -793,6 +980,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.details"
             data-overlays="baspi5">
           <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -802,6 +990,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -811,6 +1000,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>

@@ -184,25 +184,44 @@ erDiagram
     string yesNo "yesNo"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>32</strong> objects, <strong>72</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="la_other_planning_notices">Other · planning notices & enforcement</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -210,15 +229,117 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersConservationArea" data-display-id="conservationarea">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearches" data-display-id="localsearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearches" class="object-block__title" data-display-id="localsearches">
+        <span class="object-block__display">Local Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearches" data-display-id="localauthoritysearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearches" class="object-block__title" data-display-id="localauthoritysearches">
+        <span class="object-block__display">Local Authority Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatters" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Matters</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMatters" data-display-id="othermatters">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatters" class="object-block__title" data-display-id="othermatters">
+        <span class="object-block__display">Other Matters</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnotices" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Outstanding Notices</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscontraventionofbuildingregulations" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contravention Of Building Regulations</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningacts" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Notices Orders Directions And Proceedings Under Planning Acts</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersconservationarea" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Conservation Area</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersConservationArea" data-display-id="conservationarea">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersconservationarea" class="object-block__title" data-display-id="conservationarea">
         <span class="object-block__display">Conservation Area</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersconservationareamakingoftheareaaconservationareabefore31august1974" class="object-block__child-link">Making Of The AreaA Conservation Area Before31 August1974</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersconservationareaunimplementedresolutiontodesignatetheareaaconservationarea" class="object-block__child-link">Unimplemented Resolution To Designate The AreaA Conservation Area</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContraventionOfBuildingRegulations" data-display-id="contraventionofbuildingregulations">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersconservationareamakingoftheareaaconservationareabefore31august1974" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Making Of The AreaA Conservation Area Before31 August1974</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersconservationareaunimplementedresolutiontodesignatetheareaaconservationarea" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Unimplemented Resolution To Designate The AreaA Conservation Area</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContraventionOfBuildingRegulations" data-display-id="contraventionofbuildingregulations">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontraventionofbuildingregulations" class="object-block__title" data-display-id="contraventionofbuildingregulations">
@@ -230,18 +351,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -251,6 +374,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -260,6 +384,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -274,15 +399,181 @@ erDiagram
       <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningacts" class="object-block__title" data-display-id="noticesordersdirectionsandproceedingsunderplanningacts">
         <span class="object-block__display">Notices Orders Directions And Proceedings Under Planning Acts</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsenforcementnotice" class="object-block__child-link">Enforcement Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsstopnotice" class="object-block__child-link">Stop Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactslistedbuildingenforcementnotice" class="object-block__child-link">Listed Building Enforcement Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsbreachofconditionnotice" class="object-block__child-link">Breach Of Condition Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsplanningcontraventionnotice" class="object-block__child-link">Planning Contravention Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsanothernoticerelatingtobreachofplanningcontrol" class="object-block__child-link">Another Notice Relating To Breach Of Planning Control</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactslistedbuildingrepairsnotice" class="object-block__child-link">Listed Building Repairs Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsinthecaseofalistedbuildingdeliberatelyallowedtofallintodisrepairacompulsorypurchaseorderwithadirectionforminimumcompensation" class="object-block__child-link">In The Case OfA Listed Building Deliberately Allowed To Fall Into DisrepairA Compulsory Purchase Order WithA Direction For Minimum Compensation</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsbuildingpreservationnotice" class="object-block__child-link">Building Preservation Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsdirectionrestrictingpermitteddevelopment" class="object-block__child-link">Direction Restricting Permitted Development</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsorderrevokingormodifyingplanningpermission" class="object-block__child-link">Order Revoking Or Modifying Planning Permission</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsorderrequiringdiscontinuanceofuseoralterationorremovalofbuildingorworks" class="object-block__child-link">Order Requiring Discontinuance Of Use Or Alteration Or Removal Of Building Or Works</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactstreepreservationorder" class="object-block__child-link">Tree Preservation Order</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsproceedingstoenforceaplanningagreementorplanningcontribution" class="object-block__child-link">Proceedings To EnforceA Planning Agreement Or Planning Contribution</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersOutstandingNotices" data-display-id="outstandingnotices">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsenforcementnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Enforcement Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsstopnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Stop Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactslistedbuildingenforcementnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listed Building Enforcement Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsbreachofconditionnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Breach Of Condition Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsplanningcontraventionnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Planning Contravention Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsanothernoticerelatingtobreachofplanningcontrol" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Another Notice Relating To Breach Of Planning Control</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactslistedbuildingrepairsnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listed Building Repairs Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsinthecaseofalistedbuildingdeliberatelyallowedtofallintodisrepairacompulsorypurchaseorderwithadirectionforminimumcompensation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>In The Case OfA Listed Building Deliberately Allowed To Fall Into DisrepairA Compulsory Purchase Order WithA Direction For Minimum Compensation</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsbuildingpreservationnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Preservation Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsdirectionrestrictingpermitteddevelopment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Direction Restricting Permitted Development</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsorderrevokingormodifyingplanningpermission" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Order Revoking Or Modifying Planning Permission</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsorderrequiringdiscontinuanceofuseoralterationorremovalofbuildingorworks" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Order Requiring Discontinuance Of Use Or Alteration Or Removal Of Building Or Works</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactstreepreservationorder" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Tree Preservation Order</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersnoticesordersdirectionsandproceedingsunderplanningactsproceedingstoenforceaplanningagreementorplanningcontribution" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Proceedings To EnforceA Planning Agreement Or Planning Contribution</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersOutstandingNotices" data-display-id="outstandingnotices">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnotices" class="object-block__title" data-display-id="outstandingnotices">
         <span class="object-block__display">Outstanding Notices</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesbuildingworks" class="object-block__child-link">Building Works</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesenvironment" class="object-block__child-link">Environment</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshealthandsafety" class="object-block__child-link">Health And Safety</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshousing" class="object-block__child-link">Housing</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshighways" class="object-block__child-link">Highways</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticespublichealth" class="object-block__child-link">Public Health</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesfloodandcoastalerosionriskmanagement" class="object-block__child-link">Flood And Coastal Erosion Risk Management</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersConservationAreaMakingOfTheAreaAConservationAreaBefore31August1974" data-display-id="makingoftheareaaconservationareabefore31august1974">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesbuildingworks" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Works</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesenvironment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Environment</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshealthandsafety" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Health And Safety</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshousing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Housing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticeshighways" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Highways</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticespublichealth" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Public Health</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersoutstandingnoticesfloodandcoastalerosionriskmanagement" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Flood And Coastal Erosion Risk Management</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersConservationAreaMakingOfTheAreaAConservationAreaBefore31August1974" data-display-id="makingoftheareaaconservationareabefore31august1974">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersconservationareamakingoftheareaaconservationareabefore31august1974" class="object-block__title" data-display-id="makingoftheareaaconservationareabefore31august1974">
@@ -294,18 +585,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.makingOfTheAreaAConservationAreaBefore31August1974.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -315,6 +608,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.makingOfTheAreaAConservationAreaBefore31August1974.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -324,6 +618,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.makingOfTheAreaAConservationAreaBefore31August1974.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -344,18 +639,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.unimplementedResolutionToDesignateTheAreaAConservationArea.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -365,6 +662,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.unimplementedResolutionToDesignateTheAreaAConservationArea.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -374,6 +672,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea.unimplementedResolutionToDesignateTheAreaAConservationArea.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -394,18 +693,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.anotherNoticeRelatingToBreachOfPlanningControl.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -415,6 +716,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.anotherNoticeRelatingToBreachOfPlanningControl.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -424,6 +726,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.anotherNoticeRelatingToBreachOfPlanningControl.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -444,18 +747,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.breachOfConditionNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -465,6 +770,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.breachOfConditionNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -474,6 +780,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.breachOfConditionNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -494,18 +801,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.buildingPreservationNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -515,6 +824,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.buildingPreservationNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -524,6 +834,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.buildingPreservationNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -544,18 +855,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.directionRestrictingPermittedDevelopment.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -565,6 +878,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.directionRestrictingPermittedDevelopment.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -574,6 +888,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.directionRestrictingPermittedDevelopment.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -594,18 +909,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.enforcementNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -615,6 +932,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.enforcementNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -624,6 +942,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.enforcementNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -644,18 +963,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.inTheCaseOfAListedBuildingDeliberatelyAllowedToFallIntoDisrepairACompulsoryPurchaseOrderWithADirectionForMinimumCompensation.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -665,6 +986,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.inTheCaseOfAListedBuildingDeliberatelyAllowedToFallIntoDisrepairACompulsoryPurchaseOrderWithADirectionForMinimumCompensation.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -674,6 +996,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.inTheCaseOfAListedBuildingDeliberatelyAllowedToFallIntoDisrepairACompulsoryPurchaseOrderWithADirectionForMinimumCompensation.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -694,18 +1017,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingEnforcementNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -715,6 +1040,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingEnforcementNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -724,6 +1050,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingEnforcementNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -744,18 +1071,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingRepairsNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -765,6 +1094,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingRepairsNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -774,6 +1104,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingRepairsNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -794,18 +1125,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRequiringDiscontinuanceOfUseOrAlterationOrRemovalOfBuildingOrWorks.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -815,6 +1148,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRequiringDiscontinuanceOfUseOrAlterationOrRemovalOfBuildingOrWorks.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -824,6 +1158,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRequiringDiscontinuanceOfUseOrAlterationOrRemovalOfBuildingOrWorks.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -844,18 +1179,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRevokingOrModifyingPlanningPermission.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -865,6 +1202,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRevokingOrModifyingPlanningPermission.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -874,6 +1212,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRevokingOrModifyingPlanningPermission.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -894,18 +1233,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.planningContraventionNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -915,6 +1256,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.planningContraventionNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -924,6 +1266,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.planningContraventionNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -944,18 +1287,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.proceedingsToEnforceAPlanningAgreementOrPlanningContribution.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -965,6 +1310,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.proceedingsToEnforceAPlanningAgreementOrPlanningContribution.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -974,6 +1320,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.proceedingsToEnforceAPlanningAgreementOrPlanningContribution.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -994,18 +1341,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.stopNotice.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1015,6 +1364,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.stopNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1024,6 +1374,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.stopNotice.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1044,18 +1395,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.treePreservationOrder.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1065,6 +1418,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.treePreservationOrder.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1074,6 +1428,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.treePreservationOrder.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1094,18 +1449,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.buildingWorks.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1115,6 +1472,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.buildingWorks.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1124,6 +1482,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.buildingWorks.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1144,18 +1503,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.environment.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1165,6 +1526,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.environment.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1174,6 +1536,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.environment.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1194,18 +1557,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.floodAndCoastalErosionRiskManagement.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1215,6 +1580,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.floodAndCoastalErosionRiskManagement.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1224,6 +1590,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.floodAndCoastalErosionRiskManagement.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1244,18 +1611,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.healthAndSafety.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1265,6 +1634,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.healthAndSafety.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1274,6 +1644,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.healthAndSafety.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1294,18 +1665,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.highways.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1315,6 +1688,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.highways.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1324,6 +1698,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.highways.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1344,18 +1719,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.housing.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1365,6 +1742,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.housing.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1374,6 +1752,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.housing.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1394,18 +1773,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.publicHealth.details"
             data-overlays="">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>details</code>          </td>
@@ -1415,6 +1796,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.publicHealth.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>
@@ -1424,6 +1806,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.publicHealth.yesNo"
             data-overlays="con29R">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>yesNo</code>          </td>

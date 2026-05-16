@@ -99,25 +99,44 @@ erDiagram
     string visibility "visibility"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>39</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="surv_inside_features">Inside · floors, fireplaces, built-in fittings</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -125,32 +144,106 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysInsideBuiltinFittings" data-display-id="builtinfittings">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurvey" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Surveys[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
+        <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysinside" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Inside</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysInside" data-display-id="inside">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysinside" class="object-block__title" data-display-id="inside">
+        <span class="object-block__display">Inside</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].inside</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysinsidefloors" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Floors</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysinsidefireplaces" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fireplaces</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysinsidebuiltinfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Builtin Fittings</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysInsideBuiltinFittings" data-display-id="builtinfittings">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacksurveysinsidebuiltinfittings" class="object-block__title" data-display-id="builtinfittings">
         <span class="object-block__display">Builtin Fittings</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].inside.builtinFittings</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacksurveysinsidebuiltinfittingsphotos" class="object-block__child-link">Photos</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysinsidebuiltinfittingsphotos" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.surveys[].inside.builtinFittings"
        data-field-count="10">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.advice"
             data-overlays="">
           <td>advice</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>advice</code>          </td>
@@ -160,6 +253,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.advisories"
             data-overlays="">
           <td>advisories</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>advisories</code>          </td>
@@ -169,6 +263,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.condition"
             data-overlays="">
           <td>condition</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>condition</code>          </td>
@@ -178,6 +273,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.defectDetail"
             data-overlays="">
           <td>defectDetail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>defectDetail</code>          </td>
@@ -187,6 +283,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.defects"
             data-overlays="">
           <td>defects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>defects</code>          </td>
@@ -196,6 +293,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -205,6 +303,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>inspectionLimitations</code>          </td>
@@ -214,6 +313,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.notes"
             data-overlays="">
           <td>notes</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>notes</code>          </td>
@@ -223,6 +323,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.restrictions"
             data-overlays="">
           <td>restrictions</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>restrictions</code>          </td>
@@ -232,6 +333,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.visibility"
             data-overlays="">
           <td>visibility</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>visibility</code>          </td>
@@ -246,25 +348,34 @@ erDiagram
       <h4 id="propertypacksurveysinsidefireplaces" class="object-block__title" data-display-id="fireplaces">
         <span class="object-block__display">Fireplaces</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].inside.fireplaces</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacksurveysinsidefireplacesphotos" class="object-block__child-link">Photos</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysinsidefireplacesphotos" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.surveys[].inside.fireplaces"
        data-field-count="9">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.advisories"
             data-overlays="">
           <td>advisories</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>advisories</code>          </td>
@@ -274,6 +385,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.condition"
             data-overlays="">
           <td>condition</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>condition</code>          </td>
@@ -283,6 +395,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.defectDetail"
             data-overlays="">
           <td>defectDetail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>defectDetail</code>          </td>
@@ -292,6 +405,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.defects"
             data-overlays="">
           <td>defects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>defects</code>          </td>
@@ -301,6 +415,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -310,6 +425,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>inspectionLimitations</code>          </td>
@@ -319,6 +435,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.notes"
             data-overlays="">
           <td>notes</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>notes</code>          </td>
@@ -328,6 +445,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.restrictions"
             data-overlays="">
           <td>restrictions</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>restrictions</code>          </td>
@@ -337,6 +455,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.visibility"
             data-overlays="">
           <td>visibility</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>visibility</code>          </td>
@@ -351,25 +470,34 @@ erDiagram
       <h4 id="propertypacksurveysinsidefloors" class="object-block__title" data-display-id="floors">
         <span class="object-block__display">Floors</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].inside.floors</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacksurveysinsidefloorsphotos" class="object-block__child-link">Photos</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysinsidefloorsphotos" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.surveys[].inside.floors"
        data-field-count="11">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.advisories"
             data-overlays="">
           <td>advisories</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>advisories</code>          </td>
@@ -379,6 +507,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.condition"
             data-overlays="">
           <td>condition</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>condition</code>          </td>
@@ -388,6 +517,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.defects"
             data-overlays="">
           <td>defects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>defects</code>          </td>
@@ -397,6 +527,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -406,6 +537,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.generalDefects"
             data-overlays="">
           <td>generalDefects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>generalDefects</code>          </td>
@@ -415,6 +547,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>inspectionLimitations</code>          </td>
@@ -424,6 +557,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.notes"
             data-overlays="">
           <td>notes</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>notes</code>          </td>
@@ -433,6 +567,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.restrictions"
             data-overlays="">
           <td>restrictions</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>restrictions</code>          </td>
@@ -442,6 +577,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.solidDefects"
             data-overlays="">
           <td>solidDefects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>solidDefects</code>          </td>
@@ -451,6 +587,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.timberDefects"
             data-overlays="">
           <td>timberDefects</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>timberDefects</code>          </td>
@@ -460,6 +597,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.visibility"
             data-overlays="">
           <td>visibility</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>visibility</code>          </td>
@@ -480,18 +618,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.photos.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -501,6 +641,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.photos.photoId"
             data-overlays="">
           <td>photoId</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>photoId</code>          </td>
@@ -510,6 +651,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.builtinFittings.photos.report"
             data-overlays="">
           <td>report</td>
+          <td><span class="muted">—</span></td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>report</code>          </td>
@@ -530,18 +672,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.photos.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -551,6 +695,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.photos.photoId"
             data-overlays="">
           <td>photoId</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>photoId</code>          </td>
@@ -560,6 +705,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.fireplaces.photos.report"
             data-overlays="">
           <td>report</td>
+          <td><span class="muted">—</span></td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>report</code>          </td>
@@ -580,18 +726,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.photos.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -601,6 +749,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.photos.photoId"
             data-overlays="">
           <td>photoId</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>photoId</code>          </td>
@@ -610,6 +759,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].inside.floors.photos.report"
             data-overlays="">
           <td>report</td>
+          <td><span class="muted">—</span></td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>report</code>          </td>

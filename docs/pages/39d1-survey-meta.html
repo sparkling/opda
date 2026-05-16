@@ -95,25 +95,44 @@ erDiagram
     string value "value"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>7</strong> objects, <strong>65</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="surv_meta">Report metadata & declaration</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -121,8 +140,51 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysDeclaration" data-display-id="declaration">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurvey" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Surveys[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
+        <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysdeclaration" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Declaration</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysmisc" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Misc</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysDeclaration" data-display-id="declaration">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypacksurveysdeclaration" class="object-block__title" data-display-id="declaration">
@@ -134,18 +196,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].declaration.clientName"
             data-overlays="">
           <td>clientName</td>
+          <td>Customer Name</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>clientName</code>          </td>
@@ -155,6 +219,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.companyAddress"
             data-overlays="">
           <td>companyAddress</td>
+          <td>Company Address</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>companyAddress</code>          </td>
@@ -164,6 +229,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.email"
             data-overlays="">
           <td>email</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>email</code>          </td>
@@ -173,6 +239,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.faxNumber"
             data-overlays="">
           <td>faxNumber</td>
+          <td>Company Fax Number</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>faxNumber</code>          </td>
@@ -182,6 +249,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.phoneNumber"
             data-overlays="">
           <td>phoneNumber</td>
+          <td>Company Phone Number</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>phoneNumber</code>          </td>
@@ -191,6 +259,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.surveyorQuals"
             data-overlays="">
           <td>surveyorQuals</td>
+          <td>Surveyor' Qualification</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>surveyorQuals</code>          </td>
@@ -200,6 +269,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].declaration.website"
             data-overlays="">
           <td>website</td>
+          <td>Company Website detail</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>website</code>          </td>
@@ -214,25 +284,42 @@ erDiagram
       <h4 id="propertypacksurveysmisc" class="object-block__title" data-display-id="misc">
         <span class="object-block__display">Misc</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].misc</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacksurveysmiscphotofront" class="object-block__child-link">Photo Front</a>,         <a href="#propertypacksurveysmiscareaofproperty" class="object-block__child-link">Area Of Property</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysmiscphotofront" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photo Front</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysmiscareaofproperty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Area Of Property</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.surveys[].misc"
        data-field-count="50">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].misc.access"
             data-overlays="">
           <td>access</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>access</code>          </td>
@@ -242,6 +329,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.accommodationLocation"
             data-overlays="">
           <td>accommodationLocation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>accommodationLocation</code>          </td>
@@ -251,6 +339,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.adjacentCommercial"
             data-overlays="">
           <td>adjacentCommercial</td>
+          <td>Boolean flag: adjacent commercial.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>adjacentCommercial</code>          </td>
@@ -260,6 +349,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.agentName"
             data-overlays="">
           <td>agentName</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>agentName</code>          </td>
@@ -269,6 +359,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.alterations"
             data-overlays="">
           <td>alterations</td>
+          <td>Data group capturing alteration information.</td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>alterations</code>          </td>
@@ -278,6 +369,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.areaDetails"
             data-overlays="">
           <td>areaDetails</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>areaDetails</code>          </td>
@@ -287,6 +379,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.btl"
             data-overlays="">
           <td>btl</td>
+          <td>Boolean flag: btl.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>btl</code>          </td>
@@ -296,6 +389,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.buildFormat"
             data-overlays="">
           <td>buildFormat</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>buildFormat</code>          </td>
@@ -305,6 +399,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.coastalLocation"
             data-overlays="">
           <td>coastalLocation</td>
+          <td>Boolean flag: coastal location.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>coastalLocation</code>          </td>
@@ -314,6 +409,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.commercialLocation"
             data-overlays="">
           <td>commercialLocation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>commercialLocation</code>          </td>
@@ -323,6 +419,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.commercialTypeAbove"
             data-overlays="">
           <td>commercialTypeAbove</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>commercialTypeAbove</code>          </td>
@@ -332,6 +429,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.commercialTypeAdjacent"
             data-overlays="">
           <td>commercialTypeAdjacent</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>commercialTypeAdjacent</code>          </td>
@@ -341,6 +439,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.communal"
             data-overlays="">
           <td>communal</td>
+          <td>Boolean flag: communal.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>communal</code>          </td>
@@ -350,6 +449,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.communalFacilities"
             data-overlays="">
           <td>communalFacilities</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>communalFacilities</code>          </td>
@@ -359,6 +459,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.conflict"
             data-overlays="">
           <td>conflict</td>
+          <td>Boolean flag: conflict.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>conflict</code>          </td>
@@ -368,6 +469,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.conflictType"
             data-overlays="">
           <td>conflictType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>conflictType</code>          </td>
@@ -377,6 +479,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.conservationArea"
             data-overlays="">
           <td>conservationArea</td>
+          <td>Do any of the following apply to the property?</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>conservationArea</code>          </td>
@@ -386,6 +489,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.constructionType"
             data-overlays="">
           <td>constructionType</td>
+          <td>What is the main construction type?</td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>constructionType</code>          </td>
@@ -395,6 +499,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.designatedDefective"
             data-overlays="">
           <td>designatedDefective</td>
+          <td>Boolean flag: designated defective.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>designatedDefective</code>          </td>
@@ -404,6 +509,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.epc"
             data-overlays="">
           <td>epc</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>epc</code>          </td>
@@ -413,6 +519,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.epcAvailable"
             data-overlays="">
           <td>epcAvailable</td>
+          <td>Boolean flag: epc available.</td>
           <td><code>boolean</code></td>
           <td>Declaration          </td>
           <td><code>epcAvailable</code>          </td>
@@ -422,6 +529,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.epcDiscrepancies"
             data-overlays="">
           <td>epcDiscrepancies</td>
+          <td>Boolean flag: epc discrepancy.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>epcDiscrepancies</code>          </td>
@@ -431,6 +539,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.epcDiscrepancyDetail"
             data-overlays="">
           <td>epcDiscrepancyDetail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>epcDiscrepancyDetail</code>          </td>
@@ -440,6 +549,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.epcReason"
             data-overlays="">
           <td>epcReason</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>epcReason</code>          </td>
@@ -449,6 +559,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.exNature"
             data-overlays="">
           <td>exNature</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>exNature</code>          </td>
@@ -458,6 +569,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.exla"
             data-overlays="">
           <td>exla</td>
+          <td>Boolean flag: exla.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>exla</code>          </td>
@@ -467,6 +579,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.floodingRisk"
             data-overlays="">
           <td>floodingRisk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>floodingRisk</code>          </td>
@@ -476,6 +589,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.floorCoverings"
             data-overlays="">
           <td>floorCoverings</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>floorCoverings</code>          </td>
@@ -485,6 +599,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.furnishings"
             data-overlays="">
           <td>furnishings</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>furnishings</code>          </td>
@@ -494,6 +609,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.groundRentType"
             data-overlays="">
           <td>groundRentType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>groundRentType</code>          </td>
@@ -503,6 +619,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.highVoltage"
             data-overlays="">
           <td>highVoltage</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>highVoltage</code>          </td>
@@ -512,6 +629,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.listedBuilding"
             data-overlays="">
           <td>listedBuilding</td>
+          <td>Boolean flag: listed building.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>listedBuilding</code>          </td>
@@ -521,6 +639,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.listedClassification"
             data-overlays="">
           <td>listedClassification</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>listedClassification</code>          </td>
@@ -530,6 +649,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.nonTradSystem"
             data-overlays="">
           <td>nonTradSystem</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>nonTradSystem</code>          </td>
@@ -539,6 +659,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.nonTradType"
             data-overlays="">
           <td>nonTradType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>nonTradType</code>          </td>
@@ -548,6 +669,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.pedestrian"
             data-overlays="">
           <td>pedestrian</td>
+          <td>Boolean flag: pedestrian.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>pedestrian</code>          </td>
@@ -557,6 +679,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.photoConsent"
             data-overlays="">
           <td>photoConsent</td>
+          <td>Boolean flag: photo consent.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>photoConsent</code>          </td>
@@ -566,6 +689,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.propertyChanges"
             data-overlays="">
           <td>propertyChanges</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>propertyChanges</code>          </td>
@@ -575,6 +699,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.propertyQuestions"
             data-overlays="">
           <td>propertyQuestions</td>
+          <td>Boolean flag: property question.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>propertyQuestions</code>          </td>
@@ -584,6 +709,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.propertyStyle"
             data-overlays="">
           <td>propertyStyle</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>propertyStyle</code>          </td>
@@ -593,6 +719,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.propertyType"
             data-overlays="">
           <td>propertyType</td>
+          <td>The type or category of the property.</td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>propertyType</code>          </td>
@@ -602,6 +729,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.reportDate"
             data-overlays="">
           <td>reportDate</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>reportDate</code>          </td>
@@ -611,6 +739,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.roadMadeUp"
             data-overlays="">
           <td>roadMadeUp</td>
+          <td>Boolean flag: road made up.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>roadMadeUp</code>          </td>
@@ -620,6 +749,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.roadType"
             data-overlays="">
           <td>roadType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>roadType</code>          </td>
@@ -629,6 +759,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.separateAccess"
             data-overlays="">
           <td>separateAccess</td>
+          <td>Boolean flag: separate access.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>separateAccess</code>          </td>
@@ -638,6 +769,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.siteRisk"
             data-overlays="">
           <td>siteRisk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>siteRisk</code>          </td>
@@ -647,6 +779,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.suspiciousActivity"
             data-overlays="">
           <td>suspiciousActivity</td>
+          <td>Boolean flag: suspiciou activity.</td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>suspiciousActivity</code>          </td>
@@ -656,6 +789,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.tenureSource"
             data-overlays="">
           <td>tenureSource</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>tenureSource</code>          </td>
@@ -665,6 +799,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.topography"
             data-overlays="">
           <td>topography</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>topography</code>          </td>
@@ -674,6 +809,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.valuationFactor"
             data-overlays="">
           <td>valuationFactor</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>valuationFactor</code>          </td>
@@ -694,18 +830,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].misc.areaOfProperty.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -715,6 +853,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.areaOfProperty.photoId"
             data-overlays="">
           <td>photoId</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>photoId</code>          </td>
@@ -724,6 +863,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.areaOfProperty.report"
             data-overlays="">
           <td>report</td>
+          <td><span class="muted">—</span></td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>report</code>          </td>
@@ -733,6 +873,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.areaOfProperty.value"
             data-overlays="">
           <td>value</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>value</code>          </td>
@@ -753,18 +894,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.surveys[].misc.photoFront.description"
             data-overlays="">
           <td>description</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>description</code>          </td>
@@ -774,6 +917,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.photoFront.photoId"
             data-overlays="">
           <td>photoId</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>photoId</code>          </td>
@@ -783,6 +927,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.photoFront.report"
             data-overlays="">
           <td>report</td>
+          <td><span class="muted">—</span></td>
           <td><code>boolean</code></td>
           <td>Evidence          </td>
           <td><code>report</code>          </td>
@@ -792,6 +937,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.surveys[].misc.photoFront.value"
             data-overlays="">
           <td>value</td>
+          <td>Market Value</td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>value</code>          </td>

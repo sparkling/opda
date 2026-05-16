@@ -98,25 +98,44 @@ erDiagram
     string yesNo "yesNo"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>33</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="own_lease_required_docs">Required documents</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -124,32 +143,128 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationRequiredDocuments" data-display-id="requireddocuments">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownership</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnership" data-display-id="ownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownership" class="object-block__title" data-display-id="ownership">
+        <span class="object-block__display">Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferred" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownerships To Be Transferred[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferred" data-display-id="ownershipstobetransferred">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferred" class="object-block__title" data-display-id="ownershipstobetransferred">
+        <span class="object-block__display">Ownerships To Be Transferred</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Leasehold Information</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformation" data-display-id="leaseholdinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformation" class="object-block__title" data-display-id="leaseholdinformation">
+        <span class="object-block__display">Leasehold Information</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocuments" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Required Documents</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationRequiredDocuments" data-display-id="requireddocuments">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationrequireddocuments" class="object-block__title" data-display-id="requireddocuments">
         <span class="object-block__display">Required Documents</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsbuildingsinsurancepolicy" class="object-block__child-link">Buildings Insurance Policy</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsnoticeofsale" class="object-block__child-link">Notice Of Sale</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsnoticeofbuildingcondition" class="object-block__child-link">Notice Of Building Condition</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsmanagementcompanydocuments" class="object-block__child-link">Management Company Documents</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsbuildingsinsurancepolicy" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Buildings Insurance Policy</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsnoticeofsale" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Notice Of Sale</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsnoticeofbuildingcondition" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Notice Of Building Condition</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationrequireddocumentsmanagementcompanydocuments" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Management Company Documents</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments"
        data-field-count="22">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.additionalRegulationsNotInLease"
             data-overlays="lpe1,ta7">
           <td>Any additional regulations or rules affecting the Property which are not contained in the lease.</td>
+          <td>Any additional regulation or rule affecting the Property which are not contained in the lease.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>additionalRegulationsNotInLease</code>          </td>
@@ -159,6 +274,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.asbestosSurvey"
             data-overlays="lpe1">
           <td>Asbestos Survey for parts of the Managed Area built or converted before 2001.</td>
+          <td>Asbesto Survey for building part of the Managed Area built or converted before 2001.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>asbestosSurvey</code>          </td>
@@ -168,6 +284,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfCompliance"
             data-overlays="lpe1">
           <td>Any Certificate of Compliance.</td>
+          <td>Any Certificate of Compliance required by a Restriction on the registered title.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>certificateOfCompliance</code>          </td>
@@ -177,6 +294,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee"
             data-overlays="lpe1">
           <td>Certificate of Compliance fee.</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>certificateOfComplianceFee</code>          </td>
@@ -185,6 +303,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.copyOfcorrespondence"
             data-overlays="ta7">
+          <td>Please supply a copy of any correspondence from the landlord, any management company and any managing agent.</td>
           <td>Please supply a copy of any correspondence from the landlord, any management company and any managing agent.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -195,6 +314,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.deedOfCovenant"
             data-overlays="lpe1">
           <td>Any required Deed of Covenant.</td>
+          <td>Enumeration: Attached, To follow, Buyer's lawyer to draft, Not applicable.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>deedOfCovenant</code>          </td>
@@ -204,6 +324,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.deedsOfVariation"
             data-overlays="lpe1,ta7">
           <td>Any Deeds of Variation or other document varying the terms of the lease of this Property.</td>
+          <td>Any Deed of Variation or other document varying the term of the lease of this Property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>deedsOfVariation</code>          </td>
@@ -213,6 +334,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.enforcementNotices"
             data-overlays="lpe1">
           <td>Known enforcement notices served on the landlord or accountable person (where the building is residential and is at least 18 meters or 7 storeys).</td>
+          <td>Known enforcement notice served on the landlord or accountable person (where the building is residential and is at least 18 meter or 7 storeys).</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>enforcementNotices</code>          </td>
@@ -222,6 +344,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.forfeitureDocumentation"
             data-overlays="lpe1">
           <td>Documentation relating to any forfeiture proceedings applicable to the Property.</td>
+          <td>Documentation relating to any forfeiture proceeding applicable to the Property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>forfeitureDocumentation</code>          </td>
@@ -231,6 +354,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.groundRent"
             data-overlays="ta7">
           <td>Please supply a copy of any invoices or demands and any statements and receipts for the payment of ground rent for the last three years.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>groundRent</code>          </td>
@@ -240,6 +364,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.lease"
             data-overlays="ta7">
           <td>Please supply a copy of the lease.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>lease</code>          </td>
@@ -248,6 +373,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.licenceToAssign"
             data-overlays="lpe1">
+          <td>Any required Licence to Assign.</td>
           <td>Any required Licence to Assign.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -258,6 +384,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managedAreaFireRiskAssessment"
             data-overlays="lpe1">
           <td>Fire Risk Assessment for the Managed Area.</td>
+          <td>Fire Risk Assessment for communal area in building forming part of the Managed Area.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>managedAreaFireRiskAssessment</code>          </td>
@@ -267,6 +394,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managedAreasBuildingsInsurancePolicy"
             data-overlays="lpe1">
           <td>Buildings insurance policy and schedule for the Managed Areas.</td>
+          <td>Building insurance policy and schedule for the Managed Areas.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>managedAreasBuildingsInsurancePolicy</code>          </td>
@@ -276,6 +404,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managementCompanyAGMMinutes"
             data-overlays="lpe1">
           <td>Minutes from the last AGM for the Management Company.</td>
+          <td>Minute from the last AGM for the Management Company.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>managementCompanyAGMMinutes</code>          </td>
@@ -285,6 +414,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticesServedOnLessee"
             data-overlays="lpe1">
           <td>Copy of any known notices served on the Lessee and documentation arising from them.</td>
+          <td>Copy of any known notice served on the Lessee and documentation arising from them.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticesServedOnLessee</code>          </td>
@@ -293,6 +423,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.permissionToAlter"
             data-overlays="lpe1">
+          <td>Copy of any permission to alter the Property which has been issued.</td>
           <td>Copy of any permission to alter the Property which has been issued.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -303,6 +434,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.proposedWorksNotices"
             data-overlays="lpe1">
           <td>Copies of any notices served on the Lessees under Section 20 in respect of any proposed works or any works which have not yet been paid for.</td>
+          <td>Copy of any notice served on the Owner in respect of any proposed work or any work which have not yet been paid for.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>proposedWorksNotices</code>          </td>
@@ -312,6 +444,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.serviceChargeAccounts"
             data-overlays="lpe1">
           <td>The last three years published Service Charge accounts.</td>
+          <td>The last three year published Service Charge accounts.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>serviceChargeAccounts</code>          </td>
@@ -321,6 +454,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.serviceChargeEstimatesCurrent"
             data-overlays="lpe1">
           <td>Service charge estimate for the current year and details of the anticipated payments on account for the Property.</td>
+          <td>Service charge estimate for the current year and detail of the anticipated payment on account for the Property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>serviceChargeEstimatesCurrent</code>          </td>
@@ -330,6 +464,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.serviceChargeEstimatesPrevious"
             data-overlays="lpe1">
           <td>Service charge estimate for the previous year for which accounts have not yet been prepared for the Property.</td>
+          <td>Service charge estimate for the previous year for which account have not yet been prepared for the Property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>serviceChargeEstimatesPrevious</code>          </td>
@@ -339,6 +474,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.serviceCharges"
             data-overlays="ta7">
           <td>Please supply a copy of any invoices or demands and any statements and receipts for the payment of maintenance or service charges for the last three years.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>serviceCharges</code>          </td>
@@ -359,17 +495,19 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.buildingsInsurancePolicy.arrangedByLandlord"
             data-overlays="ta7">
+          <td>Arranged by the landlord or management company and the schedule for the current year</td>
           <td>Arranged by the landlord or management company and the schedule for the current year</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -379,6 +517,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.buildingsInsurancePolicy.arrangedBySeller"
             data-overlays="ta7">
+          <td>Arranged by the seller and a receipt for payment of the last premium</td>
           <td>Arranged by the seller and a receipt for payment of the last premium</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -400,18 +539,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managementCompanyDocuments.companyAccounts"
             data-overlays="ta7">
           <td>Company accounts for the past three years</td>
+          <td>Company account for the past three year</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>companyAccounts</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -421,6 +562,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managementCompanyDocuments.memorandumAndArticles"
             data-overlays="lpe1,ta7">
           <td>Memorandum and Articles of Association of the Management Company.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>memorandumAndArticles</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -430,6 +572,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.managementCompanyDocuments.shareOrMembershipCertificate"
             data-overlays="ta7">
           <td>Share or membership certificate</td>
+          <td>Enumeration: Attached, To follow, Not applicable.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>shareOrMembershipCertificate</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -450,18 +593,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfBuildingCondition.attachments"
             data-overlays="ta7">
           <td>Please supply a copy.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -471,6 +616,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfBuildingCondition.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -480,6 +626,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfBuildingCondition.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -500,18 +647,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfSale.attachments"
             data-overlays="ta7">
           <td>Please supply a copy.</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -521,6 +670,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfSale.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -530,6 +680,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.noticeOfSale.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>

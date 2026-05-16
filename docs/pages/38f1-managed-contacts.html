@@ -135,25 +135,44 @@ erDiagram
     string noticeViaEmail "noticeViaEmail"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>28</strong> objects, <strong>75</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="own_managed_contacts">Contacts</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -161,31 +180,135 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetails" data-display-id="contactdetails">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownership</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnership" data-display-id="ownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownership" class="object-block__title" data-display-id="ownership">
+        <span class="object-block__display">Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferred" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownerships To Be Transferred[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferred" data-display-id="ownershipstobetransferred">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferred" class="object-block__title" data-display-id="ownershipstobetransferred">
+        <span class="object-block__display">Ownerships To Be Transferred</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Managed Freehold Or Commonhold Information</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformation" data-display-id="managedfreeholdorcommonholdinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformation" class="object-block__title" data-display-id="managedfreeholdorcommonholdinformation">
+        <span class="object-block__display">Managed Freehold Or Commonhold Information</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contact Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetails" data-display-id="contactdetails">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetails" class="object-block__title" data-display-id="contactdetails">
         <span class="object-block__display">Contact Details</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeowner" class="object-block__child-link">Rentcharge Owner</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompany" class="object-block__child-link">Management Company</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagent" class="object-block__child-link">Managing Agent</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentative" class="object-block__child-link">Legal Representative</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandcharge" class="object-block__child-link">Notice Of Transfer And Charge</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeowner" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rentcharge Owner</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompany" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Management Company</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagent" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Managing Agent</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentative" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Legal Representative</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandcharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Notice Of Transfer And Charge</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.collectsServiceCharges"
             data-overlays="fme1">
+          <td>Who collects, or will collect, the Service charge?</td>
           <td>Who collects, or will collect, the Service charge?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -196,6 +319,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea"
             data-overlays="fme1">
           <td>Who deals with, or will deal with, the day to day maintenance of the Managed Area?</td>
+          <td>Who deal with, or will deal with, the day to day maintenance of the Managed Area?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>dealsWithDayToDayMaintenanceOfManagedArea</code>          </td>
@@ -205,6 +329,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.organisesManagedAreaInsurance"
             data-overlays="fme1">
           <td>Who organises and administers the insurance for the Managed Areas?</td>
+          <td>Who organise and administer the insurance for the Managed Areas?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>organisesManagedAreaInsurance</code>          </td>
@@ -219,25 +344,34 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentative" class="object-block__title" data-display-id="legalrepresentative">
         <span class="object-block__display">Legal Representative</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentativecontact" class="object-block__child-link">Contact</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentativecontact" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative"
        data-field-count="1">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.appointedBy"
             data-overlays="">
           <td>Appointed by</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>appointedBy</code>          </td>
@@ -252,32 +386,64 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompany" class="object-block__title" data-display-id="managementcompany">
         <span class="object-block__display">Management Company</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanycontact" class="object-block__child-link">Contact</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanybankdetails" class="object-block__child-link">Bank Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsManagingAgent" data-display-id="managingagent">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanycontact" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanybankdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bank Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsManagingAgent" data-display-id="managingagent">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagent" class="object-block__title" data-display-id="managingagent">
         <span class="object-block__display">Managing Agent</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentcontact" class="object-block__child-link">Contact</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentbankdetails" class="object-block__child-link">Bank Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentcontact" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentbankdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bank Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent"
        data-field-count="1">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.appointedBy"
             data-overlays="">
           <td>Appointed by</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>appointedBy</code>          </td>
@@ -292,39 +458,110 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandcharge" class="object-block__title" data-display-id="noticeoftransferandcharge">
         <span class="object-block__display">Notice Of Transfer And Charge</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargerentchargeowner" class="object-block__child-link">Rentcharge Owner</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargemanagementcompany" class="object-block__child-link">Management Company</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargemanagingagent" class="object-block__child-link">Managing Agent</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargelegalrepresentative" class="object-block__child-link">Legal Representative</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargeother" class="object-block__child-link">Other</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargeotherdetailsrequired" class="object-block__child-link">Other Details Required</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsRentchargeOwner" data-display-id="rentchargeowner">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargerentchargeowner" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rentcharge Owner</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargemanagementcompany" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Management Company</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargemanagingagent" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Managing Agent</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargelegalrepresentative" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Legal Representative</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargeother" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsnoticeoftransferandchargeotherdetailsrequired" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Details Required</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsRentchargeOwner" data-display-id="rentchargeowner">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeowner" class="object-block__title" data-display-id="rentchargeowner">
         <span class="object-block__display">Rentcharge Owner</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownercontact" class="object-block__child-link">Contact</a>,         <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownerbankdetails" class="object-block__child-link">Bank Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsLegalRepresentativeContact" data-display-id="contact">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownercontact" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Contact</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownerbankdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bank Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationContactDetailsLegalRepresentativeContact" data-display-id="contact">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentativecontact" class="object-block__title" data-display-id="contact">
         <span class="object-block__display">Contact</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentativecontactaddress" class="object-block__child-link">Address</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailslegalrepresentativecontactaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.emailAddress"
             data-overlays="">
           <td>Email address</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>emailAddress</code>          </td>
@@ -334,6 +571,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.nameOrOrganisation"
             data-overlays="">
           <td>Name or organisation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>nameOrOrganisation</code>          </td>
@@ -343,6 +581,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.telephone"
             data-overlays="">
           <td>Telephone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>telephone</code>          </td>
@@ -363,18 +602,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountName"
             data-overlays="">
           <td>Account name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>accountName</code>          </td>
@@ -384,6 +625,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountNumber"
             data-overlays="">
           <td>Account number</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>accountNumber</code>          </td>
@@ -393,6 +635,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.feeType"
             data-overlays="">
           <td>Type of fee</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>feeType</code>          </td>
@@ -402,6 +645,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.reference"
             data-overlays="">
           <td>Reference to quote</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>reference</code>          </td>
@@ -411,6 +655,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.sortCode"
             data-overlays="">
           <td>Sort code</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>sortCode</code>          </td>
@@ -425,25 +670,34 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanycontact" class="object-block__title" data-display-id="contact">
         <span class="object-block__display">Contact</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanycontactaddress" class="object-block__child-link">Address</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagementcompanycontactaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.emailAddress"
             data-overlays="">
           <td>Email address</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>emailAddress</code>          </td>
@@ -453,6 +707,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.nameOrOrganisation"
             data-overlays="">
           <td>Name or organisation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>nameOrOrganisation</code>          </td>
@@ -462,6 +717,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.telephone"
             data-overlays="">
           <td>Telephone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>telephone</code>          </td>
@@ -482,18 +738,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountName"
             data-overlays="">
           <td>Account name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>accountName</code>          </td>
@@ -503,6 +761,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountNumber"
             data-overlays="">
           <td>Account number</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>accountNumber</code>          </td>
@@ -512,6 +771,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.feeType"
             data-overlays="">
           <td>Type of fee</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>feeType</code>          </td>
@@ -521,6 +781,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.reference"
             data-overlays="">
           <td>Reference to quote</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>reference</code>          </td>
@@ -530,6 +791,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.sortCode"
             data-overlays="">
           <td>Sort code</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>sortCode</code>          </td>
@@ -544,25 +806,34 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentcontact" class="object-block__title" data-display-id="contact">
         <span class="object-block__display">Contact</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentcontactaddress" class="object-block__child-link">Address</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsmanagingagentcontactaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.emailAddress"
             data-overlays="baspi5">
           <td>Email address</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>emailAddress</code>          </td>
@@ -572,6 +843,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.nameOrOrganisation"
             data-overlays="baspi5">
           <td>Name or organisation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>nameOrOrganisation</code>          </td>
@@ -581,6 +853,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.telephone"
             data-overlays="">
           <td>Telephone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>telephone</code>          </td>
@@ -601,18 +874,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT"
             data-overlays="">
           <td>Total Fee including VAT</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>feeIncludingVAT</code>          </td>
@@ -622,6 +897,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -631,6 +907,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -640,6 +917,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.noticeViaEmail"
             data-overlays="">
           <td>noticeViaEmail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticeViaEmail</code>          </td>
@@ -660,18 +938,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT"
             data-overlays="">
           <td>Total Fee including VAT</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>feeIncludingVAT</code>          </td>
@@ -681,6 +961,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -690,6 +971,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -699,6 +981,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.noticeViaEmail"
             data-overlays="">
           <td>noticeViaEmail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticeViaEmail</code>          </td>
@@ -719,18 +1002,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT"
             data-overlays="">
           <td>Total Fee including VAT</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>feeIncludingVAT</code>          </td>
@@ -740,6 +1025,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -749,6 +1035,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -758,6 +1045,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.noticeViaEmail"
             data-overlays="">
           <td>noticeViaEmail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticeViaEmail</code>          </td>
@@ -778,18 +1066,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.feeIncludingVAT"
             data-overlays="">
           <td>Total Fee including VAT</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>feeIncludingVAT</code>          </td>
@@ -799,6 +1089,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td>Whether applicable party.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -808,6 +1099,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.isApplicableParty"
             data-overlays="">
           <td>isApplicableParty</td>
+          <td>Whether applicable party.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -817,6 +1109,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.noticeViaEmail"
             data-overlays="">
           <td>noticeViaEmail</td>
+          <td>Enumeration: true, false.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticeViaEmail</code>          </td>
@@ -837,18 +1130,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.otherDetailsRequired.areOtherDetailsRequired"
             data-overlays="fme1">
           <td>areOtherDetailsRequired</td>
+          <td>Enumeration: Yes, No.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>areOtherDetailsRequired</code>          </td>
@@ -858,6 +1153,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.otherDetailsRequired.areOtherDetailsRequired"
             data-overlays="fme1">
           <td>areOtherDetailsRequired</td>
+          <td>Enumeration: Yes, No.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>areOtherDetailsRequired</code>          </td>
@@ -867,6 +1163,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.otherDetailsRequired.details"
             data-overlays="">
           <td>Please detail required additional information to be included with the notice of disposition</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -887,18 +1184,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT"
             data-overlays="">
           <td>Total Fee including VAT</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>feeIncludingVAT</code>          </td>
@@ -908,6 +1207,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.isApplicableParty"
             data-overlays="fme1">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -917,6 +1217,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.isApplicableParty"
             data-overlays="fme1">
           <td>isApplicableParty</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isApplicableParty</code>          </td>
@@ -926,6 +1227,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.noticeViaEmail"
             data-overlays="">
           <td>noticeViaEmail</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>noticeViaEmail</code>          </td>
@@ -946,18 +1248,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountName"
             data-overlays="">
           <td>Account name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>accountName</code>          </td>
@@ -967,6 +1271,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountNumber"
             data-overlays="">
           <td>Account number</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>accountNumber</code>          </td>
@@ -976,6 +1281,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.feeType"
             data-overlays="">
           <td>Type of fee</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>feeType</code>          </td>
@@ -985,6 +1291,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.reference"
             data-overlays="">
           <td>Reference to quote</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>reference</code>          </td>
@@ -994,6 +1301,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.sortCode"
             data-overlays="">
           <td>Sort code</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>sortCode</code>          </td>
@@ -1008,25 +1316,34 @@ erDiagram
       <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownercontact" class="object-block__title" data-display-id="contact">
         <span class="object-block__display">Contact</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownercontactaddress" class="object-block__child-link">Address</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationcontactdetailsrentchargeownercontactaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.emailAddress"
             data-overlays="baspi5">
           <td>Email address</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>emailAddress</code>          </td>
@@ -1036,6 +1353,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.nameOrOrganisation"
             data-overlays="baspi5">
           <td>Name or organisation</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>nameOrOrganisation</code>          </td>
@@ -1045,6 +1363,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.telephone"
             data-overlays="">
           <td>Telephone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>telephone</code>          </td>
@@ -1065,18 +1384,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.address.line1"
             data-overlays="">
           <td>Address line 1</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line1</code>          </td>
@@ -1086,6 +1407,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.address.line2"
             data-overlays="">
           <td>Address line 2</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line2</code>          </td>
@@ -1095,6 +1417,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.address.line3"
             data-overlays="">
           <td>Address line 3</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line3</code>          </td>
@@ -1104,6 +1427,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.address.postcode"
             data-overlays="">
           <td>Postcode</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>postcode</code>          </td>
@@ -1113,6 +1437,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.legalRepresentative.contact.address.town"
             data-overlays="">
           <td>Town</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>town</code>          </td>
@@ -1133,18 +1458,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.address.line1"
             data-overlays="">
           <td>Address line 1</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line1</code>          </td>
@@ -1154,6 +1481,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.address.line2"
             data-overlays="">
           <td>Address line 2</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line2</code>          </td>
@@ -1163,6 +1491,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.address.line3"
             data-overlays="">
           <td>Address line 3</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line3</code>          </td>
@@ -1172,6 +1501,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.address.postcode"
             data-overlays="">
           <td>Postcode</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>postcode</code>          </td>
@@ -1181,6 +1511,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.contact.address.town"
             data-overlays="">
           <td>Town</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>town</code>          </td>
@@ -1201,18 +1532,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.address.line1"
             data-overlays="baspi5">
           <td>Address line 1</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line1</code>          </td>
@@ -1222,6 +1555,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.address.line2"
             data-overlays="baspi5">
           <td>Address line 2</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line2</code>          </td>
@@ -1231,6 +1565,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.address.line3"
             data-overlays="baspi5">
           <td>Address line 3</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line3</code>          </td>
@@ -1240,6 +1575,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.address.postcode"
             data-overlays="baspi5">
           <td>Postcode</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>postcode</code>          </td>
@@ -1249,6 +1585,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.contact.address.town"
             data-overlays="baspi5">
           <td>Town</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>town</code>          </td>
@@ -1269,18 +1606,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.address.line1"
             data-overlays="baspi5">
           <td>Address line 1</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line1</code>          </td>
@@ -1290,6 +1629,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.address.line2"
             data-overlays="baspi5">
           <td>Address line 2</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line2</code>          </td>
@@ -1299,6 +1639,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.address.line3"
             data-overlays="baspi5">
           <td>Address line 3</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>line3</code>          </td>
@@ -1308,6 +1649,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.address.postcode"
             data-overlays="baspi5">
           <td>Postcode</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>postcode</code>          </td>
@@ -1317,6 +1659,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.contact.address.town"
             data-overlays="baspi5">
           <td>Town</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>town</code>          </td>

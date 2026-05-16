@@ -121,25 +121,44 @@ erDiagram
     string paymentFrequency "Payment Frequency"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>14</strong> objects, <strong>40</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="valuation">Valuation and price</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -147,15 +166,67 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>,         <a href="#valuationcomparisondata" class="object-block__child-link">Valuation Comparison Data</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ValuationComparisonData" data-display-id="valuationcomparisondata">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>      <li>
+        <a href="#valuationcomparisondata" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Valuation Comparison Data</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackpriceinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Price Information</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackvaluation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Valuations[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ValuationComparisonData" data-display-id="valuationcomparisondata">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="valuationcomparisondata" class="object-block__title" data-display-id="valuationcomparisondata">
         <span class="object-block__display">Valuation Comparison Data</span>      </h4>
       <code class="object-block__path">valuationComparisonData</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#valuationcomparisondatapropertydetail" class="object-block__child-link">Property Details[]</a>,         <a href="#valuationcomparisondatapropertypricing" class="object-block__child-link">Property Pricing</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackPriceInformation" data-display-id="priceinformation">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#valuationcomparisondatapropertydetail" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Details[]</span>
+        </a>
+      </li>      <li>
+        <a href="#valuationcomparisondatapropertypricing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pricing</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackPriceInformation" data-display-id="priceinformation">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackpriceinformation" class="object-block__title" data-display-id="priceinformation">
@@ -167,18 +238,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.priceInformation.disposal"
             data-overlays="">
           <td>Disposal</td>
+          <td>Enumeration: Auction, Formal tender, Informal tender, Modern Method of Auction….</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>disposal</code>          </td>
@@ -188,6 +261,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.priceInformation.price"
             data-overlays="nts2">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -197,6 +271,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.priceInformation.priceQualifier"
             data-overlays="nts2">
           <td>Price type</td>
+          <td>Enumeration: Price, Fixed price, Guide price, Offers in excess of….</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>priceQualifier</code>          </td>
@@ -205,6 +280,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.priceInformation.saleAtUndervalue"
             data-overlays="">
+          <td>Is the property being sold at undervalue?</td>
           <td>Is the property being sold at undervalue?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -226,18 +302,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.valuations[].capitalValue"
             data-overlays="">
           <td>capitalValue</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>capitalValue</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -247,6 +325,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].confidenceBand"
             data-overlays="">
           <td>confidenceBand</td>
+          <td>Enumeration: high, medium, low.</td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>confidenceBand</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -256,6 +335,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].confidenceLevel"
             data-overlays="">
           <td>confidenceLevel</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Evidence          </td>
           <td><code>confidenceLevel</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -265,6 +345,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationId"
             data-overlays="">
           <td>valuationId</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>valuationId</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -274,6 +355,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationTimestamp"
             data-overlays="">
           <td>valuationTimestamp</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>valuationTimestamp</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
@@ -283,6 +365,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].checkValuationResult"
             data-overlays="">
           <td>checkValuationResult</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Evidence          </td>
           <td><code>checkValuationResult</code>          </td>
@@ -292,6 +375,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].instructionType"
             data-overlays="">
           <td>instructionType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>instructionType</code>          </td>
@@ -301,6 +385,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].reinstatementCost"
             data-overlays="">
           <td>reinstatementCost</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>reinstatementCost</code>          </td>
@@ -310,6 +395,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].rentalConfidenceLevel"
             data-overlays="">
           <td>rentalConfidenceLevel</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Evidence          </td>
           <td><code>rentalConfidenceLevel</code>          </td>
@@ -319,6 +405,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].rentalValue"
             data-overlays="">
           <td>rentalValue</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Evidence          </td>
           <td><code>rentalValue</code>          </td>
@@ -328,6 +415,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationContext"
             data-overlays="">
           <td>valuationContext</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>valuationContext</code>          </td>
@@ -337,6 +425,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationType"
             data-overlays="">
           <td>valuationType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>valuationType</code>          </td>
@@ -351,25 +440,50 @@ erDiagram
       <h4 id="valuationcomparisondatapropertydetail" class="object-block__title" data-display-id="propertydetail">
         <span class="object-block__display">Property Details</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">valuationComparisonData.propertyDetails[]</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#valuationcomparisondatapropertydetailspropertylistinginfo" class="object-block__child-link">Property Listing Info</a>,         <a href="#valuationcomparisondatapropertydetailsbasicdetails" class="object-block__child-link">Basic Details</a>,         <a href="#valuationcomparisondatapropertydetailsmedia" class="object-block__child-link">Media[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#valuationcomparisondatapropertydetailspropertylistinginfo" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Listing Info</span>
+        </a>
+      </li>      <li>
+        <a href="#valuationcomparisondatapropertydetailsbasicdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Basic Details</span>
+        </a>
+      </li>      <li>
+        <a href="#valuationcomparisondatapropertydetailsmedia" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Media[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="valuationComparisonData.propertyDetails[]"
        data-field-count="4">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].marketingTenure"
             data-overlays="">
           <td>Marketing Tenure</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>marketingTenure</code>          </td>
@@ -379,6 +493,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyFullDescription"
             data-overlays="">
           <td>Property Description</td>
+          <td>A detailed description of the property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>propertyFullDescription</code>          </td>
@@ -388,6 +503,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyType"
             data-overlays="">
           <td>Type of Property</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>propertyType</code>          </td>
@@ -397,6 +513,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].uprn"
             data-overlays="">
           <td>Unique Property Reference Number (UPRN)</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>uprn</code>          </td>
@@ -411,25 +528,42 @@ erDiagram
       <h4 id="valuationcomparisondatapropertypricing" class="object-block__title" data-display-id="propertypricing">
         <span class="object-block__display">Property Pricing</span>      </h4>
       <code class="object-block__path">valuationComparisonData.propertyPricing</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#valuationcomparisondatapropertypricingrentalestimate" class="object-block__child-link">Rental Estimate</a>,         <a href="#valuationcomparisondatapropertypricingpriceestimationdetails" class="object-block__child-link">Price Estimation Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#valuationcomparisondatapropertypricingrentalestimate" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rental Estimate</span>
+        </a>
+      </li>      <li>
+        <a href="#valuationcomparisondatapropertypricingpriceestimationdetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Price Estimation Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="valuationComparisonData.propertyPricing"
        data-field-count="2">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.estimatedPrice"
             data-overlays="">
           <td>Estimated Price</td>
+          <td>Approximation of the property' current market value</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>estimatedPrice</code>          </td>
@@ -439,6 +573,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.yield"
             data-overlays="">
           <td>Yield</td>
+          <td>Return on investment (ROI) generated by an income-producing asset</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>yield</code>          </td>
@@ -453,25 +588,34 @@ erDiagram
       <h4 id="valuationcomparisondatapropertydetailsbasicdetails" class="object-block__title" data-display-id="basicdetails">
         <span class="object-block__display">Basic Details</span>      </h4>
       <code class="object-block__path">valuationComparisonData.propertyDetails[].basicDetails</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformation" class="object-block__child-link">Build Information</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Build Information</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="valuationComparisonData.propertyDetails[].basicDetails"
        data-field-count="2">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.bathrooms"
             data-overlays="">
           <td>Number of Bathrooms</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>bathrooms</code>          </td>
@@ -481,6 +625,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.bedrooms"
             data-overlays="">
           <td>Number of Bedrooms</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>bedrooms</code>          </td>
@@ -501,18 +646,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].caption"
             data-overlays="">
           <td>Caption</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>caption</code>          </td>
@@ -522,6 +669,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].mediaType"
             data-overlays="">
           <td>Type of media</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>mediaType</code>          </td>
@@ -531,6 +679,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].mediaUrl"
             data-overlays="">
           <td>Media URL</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>mediaUrl</code>          </td>
@@ -551,18 +700,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice"
             data-overlays="">
           <td>List Price</td>
+          <td>The asking price for the property currently on sale.</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>listPrice</code>          </td>
@@ -572,6 +723,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate"
             data-overlays="">
           <td>Listed Date</td>
+          <td>The date when the property was listed for sale.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>listedDate</code>          </td>
@@ -581,6 +733,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listingType"
             data-overlays="">
           <td>listingType</td>
+          <td>Type of property listing, indicating whether it was recently sold or is currently on sale.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>listingType</code>          </td>
@@ -590,6 +743,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listingType"
             data-overlays="">
           <td>listingType</td>
+          <td>Type of property listing, indicating whether it was recently sold or is currently on sale.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>listingType</code>          </td>
@@ -599,6 +753,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate"
             data-overlays="">
           <td>Sold Date</td>
+          <td>The date when the property was sold.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>soldDate</code>          </td>
@@ -608,6 +763,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice"
             data-overlays="">
           <td>Sold Price</td>
+          <td>The amount for which the property was sold.</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>soldPrice</code>          </td>
@@ -628,18 +784,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources"
             data-overlays="">
           <td>Data Sources</td>
+          <td>The source of data used for property pricing estimates.</td>
           <td><code>string[]</code></td>
           <td>Declaration          </td>
           <td><code>credibilitySources</code>          </td>
@@ -649,6 +807,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology"
             data-overlays="">
           <td>Pricing Methodology</td>
+          <td>Description of the methodology used to estimate property pricing.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>pricingMethodology</code>          </td>
@@ -669,18 +828,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount"
             data-overlays="">
           <td>Rental Estimate Amount</td>
+          <td>The estimated rental amount for the property.</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>estimatedAmount</code>          </td>
@@ -690,6 +851,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.rentalEstimate.paymentFrequency"
             data-overlays="">
           <td>Payment Frequency</td>
+          <td>The frequency at which the rental amount is calculated.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>paymentFrequency</code>          </td>
@@ -704,25 +866,34 @@ erDiagram
       <h4 id="valuationcomparisondatapropertydetailsbasicdetailsbuildinformation" class="object-block__title" data-display-id="buildinformation">
         <span class="object-block__display">Build Information</span>      </h4>
       <code class="object-block__path">valuationComparisonData.propertyDetails[].basicDetails.buildInformation</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformationinternalarea" class="object-block__child-link">Internal Area</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformationinternalarea" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Internal Area</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation"
        data-field-count="1">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.yearOfBuild"
             data-overlays="">
           <td>Year the property was built</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>yearOfBuild</code>          </td>
@@ -743,18 +914,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area"
             data-overlays="">
           <td>Internal area value</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>area</code>          </td>
@@ -764,6 +937,7 @@ erDiagram
         </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.units"
             data-overlays="">
           <td>Internal area units</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>units</code>          </td>

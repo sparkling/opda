@@ -175,25 +175,44 @@ erDiagram
     string hasSprayFoamInstalled "hasSprayFoamInstalled"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>25</strong> objects, <strong>72</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="built_form">Built form</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -201,31 +220,145 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackBuildInformation" data-display-id="buildinformation">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackmedia" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Media[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Build Information</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstruction" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Type Of Construction</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystems" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Smart Home Systems</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.summaryDescription"
+            data-overlays="">
+          <td>Summary description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>summaryDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformation" data-display-id="buildinformation">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackbuildinformation" class="object-block__title" data-display-id="buildinformation">
         <span class="object-block__display">Build Information</span>      </h4>
       <code class="object-block__path">propertyPack.buildInformation</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackbuildinformationbuilding" class="object-block__child-link">Building</a>,         <a href="#propertypackbuildinformationinternalarea" class="object-block__child-link">Internal Area</a>,         <a href="#propertypackbuildinformationisnewbuild" class="object-block__child-link">Is New Build</a>,         <a href="#propertypackbuildinformationroomdimensions" class="object-block__child-link">Room Dimensions</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationbuilding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationinternalarea" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Internal Area</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationisnewbuild" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Is New Build</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationroomdimensions" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Room Dimensions</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.buildInformation"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.isHMO"
             data-overlays="">
+          <td>Is the property a House in Multiple Occupation (HMO)?</td>
           <td>Is the property a House in Multiple Occupation (HMO)?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -236,6 +369,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.isStudentAccommodation"
             data-overlays="">
           <td>Is the property student accommodation?</td>
+          <td>Is the property student accommodation?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isStudentAccommodation</code>          </td>
@@ -245,6 +379,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.yearOfBuild"
             data-overlays="">
           <td>Year the property was built</td>
+          <td>The year when the property was constructed.</td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>yearOfBuild</code>          </td>
@@ -265,18 +400,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.media[].caption"
             data-overlays="">
           <td>Caption</td>
+          <td>A descriptive caption or label for the media content.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>caption</code>          </td>
@@ -286,6 +423,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.media[].mediaType"
             data-overlays="">
           <td>Type of media</td>
+          <td>The type of media content (e.g., images, floorplans, brochures) related to the property.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>mediaType</code>          </td>
@@ -295,6 +433,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.media[].mediaUrl"
             data-overlays="">
           <td>Media URL</td>
+          <td>The URL or link to access the media content.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>mediaUrl</code>          </td>
@@ -309,25 +448,66 @@ erDiagram
       <h4 id="propertypackparking" class="object-block__title" data-display-id="parking">
         <span class="object-block__display">Parking</span>      </h4>
       <code class="object-block__path">propertyPack.parking</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackparkingdisabledparking" class="object-block__child-link">Disabled Parking</a>,         <a href="#propertypackparkingcontrolledparking" class="object-block__child-link">Controlled Parking</a>,         <a href="#propertypackparkingvehicletyperestriction" class="object-block__child-link">Vehicle Type Restriction</a>,         <a href="#propertypackparkingelectricvehiclechargingpoint" class="object-block__child-link">Electric Vehicle Charging Point</a>,         <a href="#propertypackparkinglocatedinulez" class="object-block__child-link">Located In Ulez</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackparkingdisabledparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Disabled Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingcontrolledparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Controlled Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingvehicletyperestriction" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Vehicle Type Restriction</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingelectricvehiclechargingpoint" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electric Vehicle Charging Point</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkinglocatedinulez" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Located In Ulez</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.parking"
        data-field-count="1">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.parkingArrangements"
             data-overlays="baspi5,nts2,ntsl2,piq,ta6">
           <td>Parking arrangements</td>
+          <td>Collection of parking arrangement item.</td>
           <td><code>string[]</code></td>
           <td>Declaration          </td>
           <td><code>parkingArrangements</code>          </td>
@@ -342,25 +522,50 @@ erDiagram
       <h4 id="propertypacksmarthomesystems" class="object-block__title" data-display-id="smarthomesystems">
         <span class="object-block__display">Smart Home Systems</span>      </h4>
       <code class="object-block__path">propertyPack.smartHomeSystems</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacksmarthomesystemsheatingandpower" class="object-block__child-link">Heating And Power</a>,         <a href="#propertypacksmarthomesystemssecurity" class="object-block__child-link">Security</a>,         <a href="#propertypacksmarthomesystemsentertainment" class="object-block__child-link">Entertainment</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksmarthomesystemsheatingandpower" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Heating And Power</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystemssecurity" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Security</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystemsentertainment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entertainment</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.smartHomeSystems"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.handoverOnCompletion"
             data-overlays="baspi5">
           <td>Confirm that you will handover details on day of completion</td>
+          <td>Confirm that you will provide the buyer with the login, password and link to user instruction for the relevant system(s). [NOTE: It is recommended that you reset the password before handing it over to avoid security issue by passing on your own password]. Confirm that you will handover detail on day of completion. Confirm that you will handover detail…</td>
           <td><code>boolean</code></td>
           <td>Declaration          </td>
           <td><code>handoverOnCompletion</code>          </td>
@@ -370,6 +575,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.hasSmartHomeSystems"
             data-overlays="baspi5">
           <td>hasSmartHomeSystems</td>
+          <td>If so please indicate which are included in the sale. Are there Smart Home System at the property?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasSmartHomeSystems</code>          </td>
@@ -379,6 +585,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.hasSmartHomeSystems"
             data-overlays="baspi5">
           <td>hasSmartHomeSystems</td>
+          <td>If so please indicate which are included in the sale. Are there Smart Home System at the property?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasSmartHomeSystems</code>          </td>
@@ -393,25 +600,58 @@ erDiagram
       <h4 id="propertypacktypeofconstruction" class="object-block__title" data-display-id="typeofconstruction">
         <span class="object-block__display">Type Of Construction</span>      </h4>
       <code class="object-block__path">propertyPack.typeOfConstruction</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypacktypeofconstructionisstandardform" class="object-block__child-link">Is Standard Form</a>,         <a href="#propertypacktypeofconstructionbuildingsafety" class="object-block__child-link">Building Safety</a>,         <a href="#propertypacktypeofconstructionloft" class="object-block__child-link">Loft</a>,         <a href="#propertypacktypeofconstructionsprayfoaminsulation" class="object-block__child-link">Spray Foam Insulation</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktypeofconstructionisstandardform" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Is Standard Form</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionbuildingsafety" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Safety</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionloft" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Loft</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionsprayfoaminsulation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Spray Foam Insulation</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.typeOfConstruction"
        data-field-count="1">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.accessibilityAndAdaptations"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Are there any adaptations or features that provide easier access to, and within, the property?</td>
+          <td>Lateral living is where a property has all essential facility e.g. kitchen, bathroom and bedroom on the entrance level. Are there any adaptation or feature that provide easier access to, and within, the property?</td>
           <td><code>string[]</code></td>
           <td>Declaration          </td>
           <td><code>accessibilityAndAdaptations</code>          </td>
@@ -426,25 +666,34 @@ erDiagram
       <h4 id="propertypackbuildinformationbuilding" class="object-block__title" data-display-id="building">
         <span class="object-block__display">Building</span>      </h4>
       <code class="object-block__path">propertyPack.buildInformation.building</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackbuildinformationbuildingovercommercialpremises" class="object-block__child-link">Over Commercial Premises</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationbuildingovercommercialpremises" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Over Commercial Premises</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.buildInformation.building"
        data-field-count="6">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.building.builtForm"
             data-overlays="nts2,ntsl2">
           <td>Built form</td>
+          <td>Enumeration: Detached, Semi-detached, Mid-terrace, End-terrace….</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>builtForm</code>          </td>
@@ -454,6 +703,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.entranceFloor"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Entrance floor</td>
+          <td>Floor level of the entrance floor relative to the lowest level of the property (0 for ground floor). If there is a basement, the basement is level 0 and the other floor are from 1 upward</td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>entranceFloor</code>          </td>
@@ -462,6 +712,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.hasLift"
             data-overlays="nts2,ntsl2">
+          <td>Is the property served by a lift?</td>
           <td>Is the property served by a lift?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -472,6 +723,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.numberOfFloors"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Number of floors in the building</td>
+          <td>Number of floor in the building</td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>numberOfFloors</code>          </td>
@@ -480,6 +732,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.otherType"
             data-overlays="nts2,ntsl2">
+          <td>Please describe the other type of property build</td>
           <td>Please describe the other type of property build</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -490,6 +743,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.propertyType"
             data-overlays="baspi5,nts2,ntsl2">
           <td>propertyType</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>propertyType</code>          </td>
@@ -510,18 +764,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.internalArea.area"
             data-overlays="">
           <td>Internal area value</td>
+          <td>The numerical value of the internal floor area.</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>area</code>          </td>
@@ -531,6 +787,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.internalArea.units"
             data-overlays="">
           <td>Internal area units</td>
+          <td>The unit of measurement for the internal floor area.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>units</code>          </td>
@@ -551,18 +808,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.isNewBuild.yesNo"
             data-overlays="">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -577,25 +836,34 @@ erDiagram
       <h4 id="propertypackbuildinformationroomdimensions" class="object-block__title" data-display-id="roomdimensions">
         <span class="object-block__display">Room Dimensions</span>      </h4>
       <code class="object-block__path">propertyPack.buildInformation.roomDimensions</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackbuildinformationroomdimensionsroom" class="object-block__child-link">Rooms[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationroomdimensionsroom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rooms[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.buildInformation.roomDimensions"
        data-field-count="3">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.attachments"
             data-overlays="nts2,ntsl2">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -605,6 +873,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.hasFloorplan"
             data-overlays="nts2,ntsl2">
           <td>hasFloorplan</td>
+          <td>Is a floorplan available which include the dimension of all the rooms?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasFloorplan</code>          </td>
@@ -614,6 +883,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.hasFloorplan"
             data-overlays="nts2,ntsl2">
           <td>hasFloorplan</td>
+          <td>Is a floorplan available which include the dimension of all the rooms?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasFloorplan</code>          </td>
@@ -634,18 +904,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.controlledParking.annualCostOfPermit"
             data-overlays="baspi5">
           <td>Annual cost of permit (£)</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>annualCostOfPermit</code>          </td>
@@ -655,6 +927,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.parking.controlledParking.yesNo"
             data-overlays="baspi5,nts2,ntsl2,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -664,6 +937,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.parking.controlledParking.yesNo"
             data-overlays="baspi5,nts2,ntsl2,ta6">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -684,18 +958,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.disabledParking.yesNo"
             data-overlays="nts2,ntsl2">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -716,18 +992,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.electricVehicleChargingPoint.yesNo"
             data-overlays="baspi5,nts2,ntsl2">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -748,18 +1026,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.locatedInUlez.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -780,18 +1060,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.details"
             data-overlays="baspi5">
           <td>Please provide details of the restriction</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -801,6 +1083,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -810,6 +1093,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -830,18 +1114,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.details"
             data-overlays="baspi5">
           <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -851,6 +1137,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -860,6 +1147,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -880,18 +1168,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.details"
             data-overlays="baspi5">
           <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -901,6 +1191,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -910,6 +1201,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -930,18 +1222,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.details"
             data-overlays="baspi5">
           <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -951,6 +1245,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -960,6 +1255,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.yesNo"
             data-overlays="baspi5">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -980,17 +1276,19 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty"
             data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>Will the work impact the ability to reside at the property?</td>
           <td>Will the work impact the ability to reside at the property?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -1001,6 +1299,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.attachments"
             data-overlays="baspi5,ta7">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -1010,6 +1309,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.details"
             data-overlays="baspi5,nts2,ntsl2,ta7">
           <td>What are the defects or hazards?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1018,6 +1318,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.potentialCost"
             data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What will the potential cost be?</td>
           <td>What will the potential cost be?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -1028,6 +1329,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.workAlreadyDone"
             data-overlays="baspi5,nts2,ntsl2,ta7">
           <td>What work has already been done?</td>
+          <td>What work has already been done?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>workAlreadyDone</code>          </td>
@@ -1036,6 +1338,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.workToBeDone"
             data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What work is required to be done?</td>
           <td>What work is required to be done?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -1046,6 +1349,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.yesNo"
             data-overlays="baspi5,nts2,ntsl2,ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1055,6 +1359,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.yesNo"
             data-overlays="baspi5,nts2,ntsl2,ta7">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1075,18 +1380,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.constructionType"
             data-overlays="nts2,ntsl2">
           <td>What is the main construction type?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>constructionType</code>          </td>
@@ -1096,6 +1403,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.details"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1105,6 +1413,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1114,6 +1423,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds">
           <td>yesNo</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>yesNo</code>          </td>
@@ -1134,18 +1444,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.details"
             data-overlays="nts2,ntsl2">
           <td>Please describe how the loft is accessed</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1155,6 +1467,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftAccess"
             data-overlays="nts2,ntsl2">
           <td>loftAccess</td>
+          <td>Enumeration: Yes, No.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>loftAccess</code>          </td>
@@ -1164,6 +1477,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftAccess"
             data-overlays="nts2,ntsl2">
           <td>loftAccess</td>
+          <td>Enumeration: Yes, No.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>loftAccess</code>          </td>
@@ -1173,6 +1487,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftBoarded"
             data-overlays="nts2,ntsl2">
           <td>Is the loft space boarded?</td>
+          <td>Is the loft space boarded?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>loftBoarded</code>          </td>
@@ -1181,6 +1496,7 @@ erDiagram
           <td>example          </td>
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftInsulated"
             data-overlays="nts2,ntsl2">
+          <td>Is the loft space insulated?</td>
           <td>Is the loft space insulated?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
@@ -1202,18 +1518,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>attachments</code>          </td>
@@ -1223,6 +1541,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.details"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Please give details together with certification from BBA or KIWA and the installation warranty for the work carried out</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1232,6 +1551,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled"
             data-overlays="baspi5,nts2,ntsl2">
           <td>hasSprayFoamInstalled</td>
+          <td>Whether s spray foam installed.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasSprayFoamInstalled</code>          </td>
@@ -1241,6 +1561,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled"
             data-overlays="baspi5,nts2,ntsl2">
           <td>hasSprayFoamInstalled</td>
+          <td>Whether s spray foam installed.</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>hasSprayFoamInstalled</code>          </td>
@@ -1261,18 +1582,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.details"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>details</code>          </td>
@@ -1282,6 +1605,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises"
             data-overlays="baspi5,nts2,ntsl2">
           <td>isLocatedOverCommercialPremises</td>
+          <td>Is the property located in a building which include commercial property E.g. shops, office etc?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isLocatedOverCommercialPremises</code>          </td>
@@ -1291,6 +1615,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises"
             data-overlays="baspi5,nts2,ntsl2">
           <td>isLocatedOverCommercialPremises</td>
+          <td>Is the property located in a building which include commercial property E.g. shops, office etc?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isLocatedOverCommercialPremises</code>          </td>
@@ -1311,18 +1636,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].description"
             data-overlays="nts2,ntsl2">
           <td>Description of the room</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>description</code>          </td>
@@ -1332,6 +1659,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].dimensionDetails"
             data-overlays="nts2,ntsl2">
           <td>Any additional description or clarification of the room dimensions</td>
+          <td>Any additional description or clarification of the room dimension</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>dimensionDetails</code>          </td>
@@ -1340,6 +1668,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].length"
             data-overlays="nts2,ntsl2">
+          <td>The length of the room</td>
           <td>The length of the room</td>
           <td><code>number</code></td>
           <td>Declaration          </td>
@@ -1350,6 +1679,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].roomName"
             data-overlays="nts2,ntsl2">
           <td>The name of the room</td>
+          <td>The name of the room</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>roomName</code>          </td>
@@ -1359,6 +1689,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].units"
             data-overlays="nts2,ntsl2">
           <td>The units which the length and width of the room have been provided in</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>units</code>          </td>
@@ -1367,6 +1698,7 @@ erDiagram
           <td><span class="muted">—</span>          </td>
         </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].width"
             data-overlays="nts2,ntsl2">
+          <td>The width of the room</td>
           <td>The width of the room</td>
           <td><code>number</code></td>
           <td>Declaration          </td>

@@ -149,25 +149,44 @@ erDiagram
     number price "Price"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>20</strong> objects, <strong>65</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="fix_basic">Basic fittings</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -175,15 +194,177 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsBasicFittings" data-display-id="basicfittings">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fixtures And Fittings</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittings" data-display-id="fixturesandfittings">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittings" class="object-block__title" data-display-id="fixturesandfittings">
+        <span class="object-block__display">Fixtures And Fittings</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Basic Fittings</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsBasicFittings" data-display-id="basicfittings">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackfixturesandfittingsbasicfittings" class="object-block__title" data-display-id="basicfittings">
         <span class="object-block__display">Basic Fittings</span>      </h4>
       <code class="object-block__path">propertyPack.fixturesAndFittings.basicFittings</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackfixturesandfittingsbasicfittingsboilerimmersionheater" class="object-block__child-link">Boiler Immersion Heater</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsradiatorswallheaters" class="object-block__child-link">Radiators Wall Heaters</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsnightstorageheaters" class="object-block__child-link">Night Storage Heaters</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsfreestandingheaters" class="object-block__child-link">Free Standing Heaters</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsgasfireswithsurround" class="object-block__child-link">Gas Fires With Surround</a>,         <a href="#propertypackfixturesandfittingsbasicfittingselectricfireswithsurround" class="object-block__child-link">Electric Fires With Surround</a>,         <a href="#propertypackfixturesandfittingsbasicfittingslightswitches" class="object-block__child-link">Light Switches</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsroofinsulation" class="object-block__child-link">Roof Insulation</a>,         <a href="#propertypackfixturesandfittingsbasicfittingswindowfittings" class="object-block__child-link">Window Fittings</a>,         <a href="#propertypackfixturesandfittingsbasicfittingswindowshuttersgrilles" class="object-block__child-link">Window Shutters Grilles</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsinternaldoorfittings" class="object-block__child-link">Internal Door Fittings</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsexternaldoorfittings" class="object-block__child-link">External Door Fittings</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsdoorbellchime" class="object-block__child-link">Doorbell Chime</a>,         <a href="#propertypackfixturesandfittingsbasicfittingselectricsockets" class="object-block__child-link">Electric Sockets</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsburglaralarm" class="object-block__child-link">Burglar Alarm</a>,         <a href="#propertypackfixturesandfittingsbasicfittingsotheritem" class="object-block__child-link">Other Items[]</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsBasicFittingsBoilerImmersionHeater" data-display-id="boilerimmersionheater">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsboilerimmersionheater" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Boiler Immersion Heater</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsradiatorswallheaters" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Radiators Wall Heaters</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsnightstorageheaters" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Night Storage Heaters</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsfreestandingheaters" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Free Standing Heaters</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsgasfireswithsurround" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Gas Fires With Surround</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingselectricfireswithsurround" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electric Fires With Surround</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingslightswitches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Light Switches</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsroofinsulation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Roof Insulation</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingswindowfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Window Fittings</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingswindowshuttersgrilles" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Window Shutters Grilles</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsinternaldoorfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Internal Door Fittings</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsexternaldoorfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>External Door Fittings</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsdoorbellchime" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Doorbell Chime</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingselectricsockets" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electric Sockets</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsburglaralarm" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Burglar Alarm</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingsbasicfittingsotheritem" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Items[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsBasicFittingsBoilerImmersionHeater" data-display-id="boilerimmersionheater">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackfixturesandfittingsbasicfittingsboilerimmersionheater" class="object-block__title" data-display-id="boilerimmersionheater">
@@ -195,18 +376,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -216,6 +399,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -225,6 +409,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -234,6 +419,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -254,18 +440,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.burglarAlarm.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -275,6 +463,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.burglarAlarm.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -284,6 +473,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.burglarAlarm.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -293,6 +483,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.burglarAlarm.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -313,18 +504,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.doorbellChime.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -334,6 +527,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.doorbellChime.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -343,6 +537,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.doorbellChime.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -352,6 +547,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.doorbellChime.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -372,18 +568,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricFiresWithSurround.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -393,6 +591,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricFiresWithSurround.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -402,6 +601,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricFiresWithSurround.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -411,6 +611,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricFiresWithSurround.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -431,18 +632,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricSockets.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -452,6 +655,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricSockets.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -461,6 +665,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricSockets.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -470,6 +675,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.electricSockets.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -490,18 +696,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.externalDoorFittings.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -511,6 +719,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.externalDoorFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -520,6 +729,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.externalDoorFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -529,6 +739,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.externalDoorFittings.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -549,18 +760,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.freeStandingHeaters.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -570,6 +783,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.freeStandingHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -579,6 +793,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.freeStandingHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -588,6 +803,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.freeStandingHeaters.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -608,18 +824,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.gasFiresWithSurround.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -629,6 +847,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.gasFiresWithSurround.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -638,6 +857,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.gasFiresWithSurround.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -647,6 +867,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.gasFiresWithSurround.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -667,18 +888,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.internalDoorFittings.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -688,6 +911,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.internalDoorFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -697,6 +921,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.internalDoorFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -706,6 +931,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.internalDoorFittings.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -726,18 +952,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.lightSwitches.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -747,6 +975,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.lightSwitches.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -756,6 +985,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.lightSwitches.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -765,6 +995,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.lightSwitches.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -785,18 +1016,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.nightStorageHeaters.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -806,6 +1039,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.nightStorageHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -815,6 +1049,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.nightStorageHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -824,6 +1059,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.nightStorageHeaters.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -844,18 +1080,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.otherItems[].comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -865,6 +1103,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.otherItems[].isIncludedOrExcluded"
             data-overlays="ta10">
           <td>isIncludedOrExcluded</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedOrExcluded</code>          </td>
@@ -874,6 +1113,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.otherItems[].isIncludedOrExcluded"
             data-overlays="ta10">
           <td>isIncludedOrExcluded</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedOrExcluded</code>          </td>
@@ -883,6 +1123,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.otherItems[].itemName"
             data-overlays="ta10">
           <td>Name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>itemName</code>          </td>
@@ -892,6 +1133,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.otherItems[].price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -912,18 +1154,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.radiatorsWallHeaters.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -933,6 +1177,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.radiatorsWallHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -942,6 +1187,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.radiatorsWallHeaters.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -951,6 +1197,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.radiatorsWallHeaters.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -971,18 +1218,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.roofInsulation.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -992,6 +1241,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.roofInsulation.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1001,6 +1251,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.roofInsulation.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1010,6 +1261,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.roofInsulation.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -1030,18 +1282,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowFittings.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -1051,6 +1305,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1060,6 +1315,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowFittings.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1069,6 +1325,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowFittings.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>
@@ -1089,18 +1346,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowShuttersGrilles.comments"
             data-overlays="ta10">
           <td>Comments</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>comments</code>          </td>
@@ -1110,6 +1369,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowShuttersGrilles.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1119,6 +1379,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowShuttersGrilles.isIncludedExcludedOrNone"
             data-overlays="ta10">
           <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>isIncludedExcludedOrNone</code>          </td>
@@ -1128,6 +1389,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.basicFittings.windowShuttersGrilles.price"
             data-overlays="ta10">
           <td>Price</td>
+          <td><span class="muted">—</span></td>
           <td><code>number</code></td>
           <td>Declaration          </td>
           <td><code>price</code>          </td>

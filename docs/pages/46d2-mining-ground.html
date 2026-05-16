@@ -91,25 +91,44 @@ erDiagram
     string summary "Summary of risk"
   }
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>41</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
-      <h2 id="objects">Object model</h2>
-      <p class="muted">
-        One table per JSON object in this page's subtree. Each table shows
-        that object's direct scalar fields with their type, kind, whether
-        they're required, overlays that reference them, and a
-        worked-example link when one is bound. Nested objects link to their
-        own table further down.
-      </p>
-
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>      <h3 id="env_ground">Mining & ground stability</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
@@ -117,31 +136,91 @@ erDiagram
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackEnvironmentalIssuesCoalMining" data-display-id="coalmining">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissues" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Environmental Issues</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackEnvironmentalIssues" data-display-id="environmentalissues">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackenvironmentalissues" class="object-block__title" data-display-id="environmentalissues">
+        <span class="object-block__display">Environmental Issues</span>      </h4>
+      <code class="object-block__path">propertyPack.environmentalIssues</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissuesgroundstability" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ground Stability</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackenvironmentalissuescoalmining" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Coal Mining</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackenvironmentalissuesnoncoalmining" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Non Coal Mining</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackEnvironmentalIssuesCoalMining" data-display-id="coalmining">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackenvironmentalissuescoalmining" class="object-block__title" data-display-id="coalmining">
         <span class="object-block__display">Coal Mining</span>      </h4>
       <code class="object-block__path">propertyPack.environmentalIssues.coalMining</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackenvironmentalissuescoalminingrisksubcategorie" class="object-block__child-link">Risk Subcategories[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissuescoalminingrisksubcategorie" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Risk Subcategories[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.environmentalIssues.coalMining"
        data-field-count="7">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.actionAlertRating"
             data-overlays="">
+          <td>Action alert rating (1 is Green, 5 is Red)</td>
           <td>Action alert rating (1 is Green, 5 is Red)</td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
@@ -152,6 +231,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td>Licensing, distribution and copyright information</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -161,6 +241,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -170,6 +251,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -179,6 +261,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskIndicator"
             data-overlays="nts2,ntsl2,rds">
           <td>riskIndicator</td>
+          <td>To your knowledge, is the property at risk of flooding of any type?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -188,6 +271,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskIndicator"
             data-overlays="nts2,ntsl2,rds">
           <td>riskIndicator</td>
+          <td>To your knowledge, is the property at risk of flooding of any type?</td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -197,6 +281,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.summary"
             data-overlays="nts2,ntsl2">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>
@@ -211,32 +296,48 @@ erDiagram
       <h4 id="propertypackenvironmentalissuesgroundstability" class="object-block__title" data-display-id="groundstability">
         <span class="object-block__display">Ground Stability</span>      </h4>
       <code class="object-block__path">propertyPack.environmentalIssues.groundStability</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackenvironmentalissuesgroundstabilitygroundstabilityrisk" class="object-block__child-link">Ground Stability Risk</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackEnvironmentalIssuesNonCoalMining" data-display-id="noncoalmining">
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissuesgroundstabilitygroundstabilityrisk" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ground Stability Risk</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackEnvironmentalIssuesNonCoalMining" data-display-id="noncoalmining">
   <header class="object-block__head">
     <div class="object-block__title-row">
       <h4 id="propertypackenvironmentalissuesnoncoalmining" class="object-block__title" data-display-id="noncoalmining">
         <span class="object-block__display">Non Coal Mining</span>      </h4>
       <code class="object-block__path">propertyPack.environmentalIssues.nonCoalMining</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackenvironmentalissuesnoncoalminingrisksubcategorie" class="object-block__child-link">Risk Subcategories[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissuesnoncoalminingrisksubcategorie" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Risk Subcategories[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.environmentalIssues.nonCoalMining"
        data-field-count="7">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.actionAlertRating"
             data-overlays="">
           <td>Action alert rating (1 is Green, 5 is Red)</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>actionAlertRating</code>          </td>
@@ -246,6 +347,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -255,6 +357,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -264,6 +367,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -273,6 +377,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskIndicator"
             data-overlays="nts2,ntsl2,rds">
           <td>riskIndicator</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -282,6 +387,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskIndicator"
             data-overlays="nts2,ntsl2,rds">
           <td>riskIndicator</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -291,6 +397,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.summary"
             data-overlays="nts2,ntsl2">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>
@@ -311,18 +418,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].actionAlertRating"
             data-overlays="">
           <td>Action alert rating (1 is Green, 5 is Red)</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>actionAlertRating</code>          </td>
@@ -332,6 +441,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -341,6 +451,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -350,6 +461,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -359,6 +471,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].riskIndicator"
             data-overlays="">
           <td>Is action recommended?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -368,6 +481,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].subCategory"
             data-overlays="">
           <td>Risk sub-category name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>subCategory</code>          </td>
@@ -377,6 +491,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.coalMining.riskSubcategories[].summary"
             data-overlays="">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>
@@ -391,25 +506,34 @@ erDiagram
       <h4 id="propertypackenvironmentalissuesgroundstabilitygroundstabilityrisk" class="object-block__title" data-display-id="groundstabilityrisk">
         <span class="object-block__display">Ground Stability Risk</span>      </h4>
       <code class="object-block__path">propertyPack.environmentalIssues.groundStability.groundStabilityRisk</code>
-    </div>    <p class="object-block__children muted tiny">
-      Contains:        <a href="#propertypackenvironmentalissuesgroundstabilitygroundstabilityriskrisksubcategorie" class="object-block__child-link">Risk Subcategories[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackenvironmentalissuesgroundstabilitygroundstabilityriskrisksubcategorie" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Risk Subcategories[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
        data-object-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk"
        data-field-count="6">
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.actionAlertRating"
             data-overlays="">
           <td>Action alert rating (1 is Green, 5 is Red)</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>actionAlertRating</code>          </td>
@@ -419,6 +543,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -428,6 +553,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -437,6 +563,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -446,6 +573,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskIndicator"
             data-overlays="">
           <td>Is the property impacted?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -455,6 +583,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.summary"
             data-overlays="">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>
@@ -475,18 +604,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].actionAlertRating"
             data-overlays="">
           <td>Action alert rating (1 is Green, 5 is Red)</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>actionAlertRating</code>          </td>
@@ -496,6 +627,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -505,6 +637,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -514,6 +647,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -523,6 +657,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].riskIndicator"
             data-overlays="">
           <td>Is action recommended?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -532,6 +667,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].subCategory"
             data-overlays="">
           <td>Risk sub-category name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>subCategory</code>          </td>
@@ -541,6 +677,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.nonCoalMining.riskSubcategories[].summary"
             data-overlays="">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>
@@ -561,18 +698,20 @@ erDiagram
     <table class="db-table db-table--fixed">
       <thead>
         <tr>
-          <th style="width: 22%;">Title</th>
-          <th style="width: 7rem;">Type</th>
-          <th style="width: 8rem;">Kind</th>
-          <th style="width: 18%;">Field</th>
-          <th class="align-center" style="width: 6rem;">Required</th>
-          <th style="width: 22%;">Overlays</th>
-          <th style="width: 7rem;">Affordance</th>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
       <tbody>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].actionAlertRating"
             data-overlays="">
           <td>Action alert rating (1 is Green, 5 is Red)</td>
+          <td><span class="muted">—</span></td>
           <td><code>integer</code></td>
           <td>Declaration          </td>
           <td><code>actionAlertRating</code>          </td>
@@ -582,6 +721,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].datasetAttribution"
             data-overlays="">
           <td>Licensing, distribution and copyright information</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>datasetAttribution</code>          </td>
@@ -591,6 +731,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].recommendations"
             data-overlays="">
           <td>Recommendations</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>recommendations</code>          </td>
@@ -600,6 +741,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].result"
             data-overlays="">
           <td>Result</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>result</code>          </td>
@@ -609,6 +751,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].riskIndicator"
             data-overlays="">
           <td>Is action recommended?</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>riskIndicator</code>          </td>
@@ -618,6 +761,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].subCategory"
             data-overlays="">
           <td>Risk sub-category name</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>subCategory</code>          </td>
@@ -627,6 +771,7 @@ erDiagram
         </tr>        <tr data-leaf-path="propertyPack.environmentalIssues.groundStability.groundStabilityRisk.riskSubcategories[].summary"
             data-overlays="">
           <td>Summary of risk</td>
+          <td><span class="muted">—</span></td>
           <td><code>string</code></td>
           <td>Declaration          </td>
           <td><code>summary</code>          </td>

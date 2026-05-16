@@ -39,6 +39,7 @@ EXAMPLES_DIR = ROOT / "source/_examples"
 TEMPLATES = ROOT / "scripts/templates"
 OUT_PAGES = ROOT / "docs/pages"
 LEAVES_JSON = BUILD / "leaves.json"
+PROPERTIES_JS = ROOT / "docs/data/properties.js"
 
 OVERLAY_LABELS = {
     "baspi5": "BASPI5", "ta6": "TA6", "ta7": "TA7", "ta10": "TA10",
@@ -337,6 +338,31 @@ def load_leaves() -> list[dict]:
     return json.loads(LEAVES_JSON.read_text())
 
 
+def load_property_descriptions() -> dict[str, str]:
+    """Path → description, parsed out of docs/data/properties.js.
+
+    The file is a JS literal (`window.OPDA_PROPERTIES = [...];`) so we
+    strip the prefix and trailing semicolon and treat the array as JSON.
+    """
+    if not PROPERTIES_JS.exists():
+        return {}
+    raw = PROPERTIES_JS.read_text()
+    m = re.search(r"=\s*(\[.*\])\s*;?\s*$", raw, re.DOTALL)
+    if not m:
+        return {}
+    try:
+        rows = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return {}
+    out: dict[str, str] = {}
+    for r in rows:
+        p = r.get("examplePath")
+        d = r.get("description")
+        if p and d and p not in out:
+            out[p] = d
+    return out
+
+
 def load_overlay_membership() -> dict[str, list[str]]:
     """For each path, collect overlay sources from the canonical dictionary."""
     by_path: dict[str, set[str]] = {}
@@ -493,7 +519,9 @@ def markdown_to_html(md: str) -> str:
 
 
 def render_page(slot: str, leaves_for_page: list[dict],
-                theme: dict, examples: dict, overlay_membership: dict) -> str:
+                theme: dict, examples: dict, overlay_membership: dict,
+                obj_to_page: dict[str, str] | None = None,
+                descriptions: dict[str, str] | None = None) -> str:
     page_cfg = theme["pages"][slot]
     md_path = CONTENT_DIR / f"{slot}-{slot_filename_root(slot)}.md"
     fm, _body = parse_frontmatter(md_path.read_text()) if md_path.exists() else ({}, "")
@@ -546,6 +574,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
             **leaf,
             "overlays": overlays,
             "title": leaf.get("title") or leaf.get("name", ""),
+            "description": (descriptions or {}).get(leaf["path"], ""),
             "required": leaf.get("required", False),
             "is_envelope": leaf.get("is_envelope", False),
             "has_example": resolve_path(examples.get("london"), leaf["path"]) is not None
@@ -595,7 +624,16 @@ def render_page(slot: str, leaves_for_page: list[dict],
             if c["path"] in by_path:
                 c["display_id"] = by_path[c["path"]]["display_id"]
 
-    # Section assignment for objects (uses the same prefix rules as leaves).
+    # Section assignment for objects. Two cases beyond the obvious prefix
+    # match:
+    #   1. The empty-path root → first section (only on pages where root
+    #      has fields; otherwise suppressed by the empty-container filter
+    #      below).
+    #   2. Ancestor containers (their path is a strict PREFIX of some
+    #      section prefix, e.g. `propertyPack` on a page whose sections
+    #      start with `propertyPack.address`) → first section. This keeps
+    #      the "Contains: …" link from a parent box pointing at a real
+    #      anchor that's actually rendered on this page.
     sections_cfg = page_cfg.get("sections") or []
     sec_index: list[tuple[str, str]] = []
     for sec in sections_cfg:
@@ -610,7 +648,27 @@ def render_page(slot: str, leaves_for_page: list[dict],
             if obj_path == prefix or obj_path.startswith(prefix + ".") \
                or obj_path.startswith(prefix + "["):
                 return sec_id
+        # Ancestor container: a section prefix descends from this object.
+        for prefix, _ in sec_index:
+            if prefix.startswith(obj_path + ".") or prefix.startswith(obj_path + "["):
+                return sections_cfg[0]["id"]
         return None
+
+    # Set of object paths that will actually render on this page. Used
+    # below to resolve child hrefs to the right anchor — same page vs
+    # cross-page vs not-rendered-anywhere.
+    locally_rendered: set[str] = {
+        o["path"] for o in page_objects if section_for_object(o["path"]) is not None
+    }
+    for o in page_objects:
+        for c in o.get("children", []):
+            home = (obj_to_page or {}).get(c["path"])
+            if c["path"] in locally_rendered:
+                c["href"] = f"#{c['id'].lower()}"
+            elif home and home != slot and home in PAGE_FILES:
+                c["href"] = f"{PAGE_FILES[home]}#{c['id'].lower()}"
+            else:
+                c["href"] = f"#{c['id'].lower()}"
 
     grouped_objs: dict[str, list[dict]] = {}
     for obj in page_objects:
@@ -727,6 +785,7 @@ def main():
         "semi": json.loads((EXAMPLES_DIR / "semi-manchester.json").read_text()),
     }
     overlay_membership = load_overlay_membership()
+    descriptions = load_property_descriptions()
 
     classified = classify(leaves, pmap)
     (BUILD / "classified.json").write_text(json.dumps(classified, indent=2))
@@ -736,6 +795,36 @@ def main():
     (BUILD / "orphans.json").write_text(json.dumps(orphans, indent=2))
     print(f"classified={len(classified)} orphans={len(orphans)} pages={ {k: len(v) for k,v in by_page.items()} }")
 
+    # Global object → page map so cross-page children can render real
+    # hrefs. We only include objects that ACTUALLY render somewhere — an
+    # object's "home page" from object_model.assign_to_pages might fall
+    # outside that page's section prefixes, in which case it's invisible
+    # and we should suppress the link rather than emit a broken anchor.
+    leaf_to_page: dict[str, str] = {}
+    for slot, slot_leaves in by_page.items():
+        for leaf in slot_leaves:
+            leaf_to_page[leaf["path"]] = slot
+
+    obj_to_page: dict[str, str] = {}
+    for slot, slot_leaves in by_page.items():
+        if not slot_leaves or slot in HANDWRITTEN_SLOTS:
+            continue
+        page_cfg = theme["pages"].get(slot, {})
+        sections_cfg = page_cfg.get("sections") or []
+        prefixes = [(p, s["id"]) for s in sections_cfg for p in (s.get("prefixes") or [])]
+        prefixes.sort(key=lambda x: -len(x[0]))
+        def _matches(path: str, prefixes=prefixes, has_sections=bool(sections_cfg)) -> bool:
+            if path == "":
+                return has_sections
+            for prefix, _ in prefixes:
+                if path == prefix or path.startswith(prefix + ".") or path.startswith(prefix + "["):
+                    return True
+            return False
+        local_model = object_model.build(slot_leaves)
+        for path in local_model["by_path"]:
+            if _matches(path) and path not in obj_to_page:
+                obj_to_page[path] = slot
+
     slots = PAGE_ORDER if args.all else [args.page]
     for slot in slots:
         if slot in HANDWRITTEN_SLOTS:
@@ -744,7 +833,8 @@ def main():
         if not by_page.get(slot):
             print(f"skip {slot} (no leaves)")
             continue
-        html = render_page(slot, by_page[slot], theme, examples, overlay_membership)
+        html = render_page(slot, by_page[slot], theme, examples, overlay_membership,
+                           obj_to_page=obj_to_page, descriptions=descriptions)
         out = OUT_PAGES / PAGE_FILES[slot]
         out.write_text(html)
         print(f"wrote {out}  ({len(by_page[slot])} leaves)")
