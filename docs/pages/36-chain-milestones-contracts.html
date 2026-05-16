@@ -21,9 +21,9 @@
 
       <div class="page-meta" aria-label="Page leaf statistics">
   <span><strong>38</strong> leaves</span>
-  <span><span class="pill pill--success">Decl</span> 100.0%</span>
-  <span><span class="pill pill--info">Evid</span> 0.0%</span>
-  <span><span class="pill pill--warn">Deriv</span> 0.0%</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
   <span>0 in overlays</span>
   <span>0 with worked example</span></div>
 
@@ -34,443 +34,105 @@
 </aside>      <aside class="callout callout--note" role="note">
         <p class="callout__label">Why this aggregate exists</p>
         <p>A property doesn't have a chain; a transaction does. A property doesn't sign contracts; participants in a transaction do. A property persists across many transactions; milestones are scoped to one. Putting process on a separate page keeps the propertyPack pages focused on attributes of the asset, not progress through the sale.</p>
-      </aside>
-      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
-        <div class="db-filter-wrap">
-          <button type="button"
-                  class="db-filter-btn"
-                  id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel">
-            Filter by overlay
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
-          </button>
-        </div>
-      </div>      <h2 id="chain">Chain</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="chain"
-     data-leaf-count="14">
-  <table class="db-table db-table--fixed" id="table-chain">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="chain.onwardPurchase[].address.buildingName"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.buildingName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.buildingNumber"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.buildingNumber</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building number</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.homeNation"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.homeNation</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Home nation</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.line 3"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.line 3</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 3</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.line1"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.line1</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 1</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.line2"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.line2</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 2</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.postcode"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.postcode</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Postcode</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.street"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.street</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Street</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.subBuilding"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.subBuilding</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Sub building name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].address.town"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].address.town</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Town</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].externalIds"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].externalIds</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>externalIds</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].sellingAgent"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].sellingAgent</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Estate Agent selling the property</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].transactionId"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].transactionId</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>UUID for an onward transaction</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="chain.onwardPurchase[].uprn"
-          data-overlays="">
-        <td><code>chain.onwardPurchase[].uprn</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Unique Property Reference Number</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="milestones">Milestones</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="milestones"
-     data-leaf-count="15">
-  <table class="db-table db-table--fixed" id="table-milestones">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="milestones.completion.completed"
-          data-overlays="">
-        <td><code>milestones.completion.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.completion.expected"
-          data-overlays="">
-        <td><code>milestones.completion.expected</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>expected</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.completion.started"
-          data-overlays="">
-        <td><code>milestones.completion.started</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>started</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.enquiries.completed"
-          data-overlays="">
-        <td><code>milestones.enquiries.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.enquiries.started"
-          data-overlays="">
-        <td><code>milestones.enquiries.started</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>started</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.exchangeOfContracts.completed"
-          data-overlays="">
-        <td><code>milestones.exchangeOfContracts.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.exchangeOfContracts.expected"
-          data-overlays="">
-        <td><code>milestones.exchangeOfContracts.expected</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>expected</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.legalForms.completed"
-          data-overlays="">
-        <td><code>milestones.legalForms.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.legalForms.started"
-          data-overlays="">
-        <td><code>milestones.legalForms.started</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>started</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.listed.completed"
-          data-overlays="">
-        <td><code>milestones.listed.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.listed.expected"
-          data-overlays="">
-        <td><code>milestones.listed.expected</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>expected</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.searches.completed"
-          data-overlays="">
-        <td><code>milestones.searches.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.searches.expected"
-          data-overlays="">
-        <td><code>milestones.searches.expected</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>expected</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.searches.started"
-          data-overlays="">
-        <td><code>milestones.searches.started</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>started</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="milestones.soldSubjectToContract.completed"
-          data-overlays="">
-        <td><code>milestones.soldSubjectToContract.completed</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>completed</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="contracts">Contracts</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="contracts"
-     data-leaf-count="9">
-  <table class="db-table db-table--fixed" id="table-contracts">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="contracts[].contract.template.name"
-          data-overlays="">
-        <td><code>contracts[].contract.template.name</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].contract.template.url"
-          data-overlays="">
-        <td><code>contracts[].contract.template.url</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>url</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].contract.terms"
-          data-overlays="">
-        <td><code>contracts[].contract.terms</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>terms</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].signatures[].name"
-          data-overlays="">
-        <td><code>contracts[].signatures[].name</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].signatures[].signedOn"
-          data-overlays="">
-        <td><code>contracts[].signatures[].signedOn</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>signedOn</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].contract.template.externalIds"
-          data-overlays="">
-        <td><code>contracts[].contract.template.externalIds</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>externalIds</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].requiresAll"
-          data-overlays="">
-        <td><code>contracts[].contract.template.requiredSignatories[].requiresAll</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>boolean</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>requiresAll</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].role"
-          data-overlays="">
-        <td><code>contracts[].contract.template.requiredSignatories[].role</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>role</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="contracts[].signatures[].externalIds"
-          data-overlays="">
-        <td><code>contracts[].signatures[].externalIds</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>externalIds</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="er">Entity relationships</h2>
-      <figure class="diagram" role="figure" aria-label="Internal mechanics: chain links transactions to upstream and downstream
-deals; milestones track planned and actual dates for each lifecycle
-event; contracts carry signatures and settle at completion. Note that
-completion is both a milestone (the date) and a contract-settling event
-(the artefact) — same fact, two leaves.">
+      </aside>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;17&lt;/strong&gt; objects, &lt;strong&gt;38&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
   <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
 erDiagram
-  TRANSACTION ||--o| CHAIN          : "sits in"
-  CHAIN       ||--o{ ONWARD_TXN     : "links to"
-  TRANSACTION ||--|| MILESTONES     : "tracked by"
-  MILESTONES  ||--o{ MILESTONE      : "captures"
-  MILESTONE   ||--|| STATUS         : "in state"
-  TRANSACTION ||--o{ CONTRACT       : "signed under"
-  CONTRACT    ||--o{ SIGNATURE      : "carries"
-  CONTRACT    ||--o| COMPLETION     : "settles at"
-  MILESTONE {
-    string event "listed · offerAccepted · exchange · completion"
-    date   expected
-    date   actual
+  Transaction ||--o{ Contract : "contracts"
+  Transaction ||--o| Chain : "chain"
+  Transaction ||--o| Milestones : "milestones"
+  Chain ||--o{ OnwardPurchase : "onwardPurchase"
+  OnwardPurchase ||--o| Address : "address"
+  Contract ||--o| Contract : "contract"
+  Contract ||--o{ Signature : "signatures"
+  Contract ||--o| Template : "template"
+  Template ||--o{ RequiredSignatorie : "requiredSignatories"
+  Milestones ||--o| Listed : "listed"
+  Milestones ||--o| LegalForms : "legalForms"
+  Milestones ||--o| SoldSubjectToContract : "soldSubjectToContract"
+  Milestones ||--o| Searches : "searches"
+  Milestones ||--o| Enquiries : "enquiries"
+  Milestones ||--o| ExchangeOfContracts : "exchangeOfContracts"
+  Milestones ||--o| Completion : "completion"
+  Transaction {
   }
-  STATUS {
-    string value "pending · confirmed · superseded"
+  Chain {
   }
-  </div>  <figcaption class="diagram-caption">Internal mechanics: chain links transactions to upstream and downstream
-deals; milestones track planned and actual dates for each lifecycle
-event; contracts carry signatures and settle at completion. Note that
-completion is both a milestone (the date) and a contract-settling event
-(the artefact) — same fact, two leaves.</figcaption></figure>      <h2 id="diagram-1">Lifecycle state machine</h2>
+  OnwardPurchase {
+    object externalIds "externalIds"
+    string sellingAgent "Estate Agent selling the property"
+    string transactionId "UUID for an onward transaction"
+    integer uprn "Unique Property Reference Number"
+  }
+  Address {
+    string buildingName "Building name"
+    string buildingNumber "Building number"
+    string homeNation "Home nation"
+    string line_3 "Address 3"
+    string line1 "Address 1"
+    string line2 "Address 2"
+    string postcode "Postcode"
+    string street "Street"
+    string subBuilding "Sub building name"
+    string town "Town"
+  }
+  Contract {
+    object terms "terms"
+  }
+  Template {
+    string name "name"
+    string url "url"
+    object externalIds "externalIds"
+  }
+  RequiredSignatorie {
+    boolean requiresAll "requiresAll"
+    string role "role"
+  }
+  Signature {
+    string name "name"
+    string signedOn "signedOn"
+    object externalIds "externalIds"
+  }
+  Milestones {
+  }
+  Completion {
+    string completed "completed"
+    string expected "expected"
+    string started "started"
+  }
+  Enquiries {
+    string completed "completed"
+    string started "started"
+  }
+  ExchangeOfContracts {
+    string completed "completed"
+    string expected "expected"
+  }
+  LegalForms {
+    string completed "completed"
+    string started "started"
+  }
+  Listed {
+    string completed "completed"
+    string expected "expected"
+  }
+  Searches {
+    string completed "completed"
+    string expected "expected"
+    string started "started"
+  }
+  SoldSubjectToContract {
+    string completed "completed"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>17</strong> objects, <strong>38</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>      <h2 id="diagram-1">Lifecycle state machine</h2>
       <figure class="diagram" role="figure" aria-label="Milestone state machine, implicit in the schema today. Valid
 transitions are documented here in prose but not enforced by SHACL
 — the schema permits a Completed milestone before an Exchanged one,
@@ -518,7 +180,700 @@ gantt
   </div>  <figcaption class="diagram-caption">Indicative timeline. The schema records dates per milestone
 (`expected` vs `actual`) but does not encode dependencies. This
 Gantt shows the typical 12-week shape — exchange and completion
-are the critical path.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+are the critical path.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="chain">Chain</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#contract" class="object-block__child-link">Contracts[]</a>,         <a href="#chain" class="object-block__child-link">Chain</a>,         <a href="#milestones" class="object-block__child-link">Milestones</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-Chain" data-display-id="chain">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="chain" class="object-block__title" data-display-id="chain">
+        <span class="object-block__display">Chain</span>      </h4>
+      <code class="object-block__path">chain</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#chainonwardpurchase" class="object-block__child-link">Onward Purchase[]</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ChainOnwardPurchase" data-display-id="onwardpurchase">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="chainonwardpurchase" class="object-block__title" data-display-id="onwardpurchase">
+        <span class="object-block__display">Onward Purchase</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">chain.onwardPurchase[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#chainonwardpurchaseaddress" class="object-block__child-link">Address</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="chain.onwardPurchase[]"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="chain.onwardPurchase[].externalIds"
+            data-overlays="">
+          <td>externalIds</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>externalIds</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].sellingAgent"
+            data-overlays="">
+          <td>Estate Agent selling the property</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>sellingAgent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].transactionId"
+            data-overlays="">
+          <td>UUID for an onward transaction</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>transactionId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].uprn"
+            data-overlays="">
+          <td>Unique Property Reference Number</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>uprn</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ChainOnwardPurchaseAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="chainonwardpurchaseaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">chain.onwardPurchase[].address</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="chain.onwardPurchase[].address"
+       data-field-count="10">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="chain.onwardPurchase[].address.buildingName"
+            data-overlays="">
+          <td>Building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.buildingNumber"
+            data-overlays="">
+          <td>Building number</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.homeNation"
+            data-overlays="">
+          <td>Home nation</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>homeNation</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line 3"
+            data-overlays="">
+          <td>Address 3</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line 3</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line1"
+            data-overlays="">
+          <td>Address 1</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line1</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line2"
+            data-overlays="">
+          <td>Address 2</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line2</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.postcode"
+            data-overlays="">
+          <td>Postcode</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.street"
+            data-overlays="">
+          <td>Street</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>street</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.subBuilding"
+            data-overlays="">
+          <td>Sub building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>subBuilding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.town"
+            data-overlays="">
+          <td>Town</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>town</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="milestones">Milestones</h3>      <div class="object-block" id="obj-Milestones" data-display-id="milestones">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestones" class="object-block__title" data-display-id="milestones">
+        <span class="object-block__display">Milestones</span>      </h4>
+      <code class="object-block__path">milestones</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#milestoneslisted" class="object-block__child-link">Listed</a>,         <a href="#milestoneslegalforms" class="object-block__child-link">Legal Forms</a>,         <a href="#milestonessoldsubjecttocontract" class="object-block__child-link">Sold Subject To Contract</a>,         <a href="#milestonessearches" class="object-block__child-link">Searches</a>,         <a href="#milestonesenquiries" class="object-block__child-link">Enquiries</a>,         <a href="#milestonesexchangeofcontracts" class="object-block__child-link">Exchange Of Contracts</a>,         <a href="#milestonescompletion" class="object-block__child-link">Completion</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-MilestonesCompletion" data-display-id="completion">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestonescompletion" class="object-block__title" data-display-id="completion">
+        <span class="object-block__display">Completion</span>      </h4>
+      <code class="object-block__path">milestones.completion</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.completion"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.completion.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.completion.expected"
+            data-overlays="">
+          <td>expected</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>expected</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.completion.started"
+            data-overlays="">
+          <td>started</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>started</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesEnquiries" data-display-id="enquiries">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestonesenquiries" class="object-block__title" data-display-id="enquiries">
+        <span class="object-block__display">Enquiries</span>      </h4>
+      <code class="object-block__path">milestones.enquiries</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.enquiries"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.enquiries.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.enquiries.started"
+            data-overlays="">
+          <td>started</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>started</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesExchangeOfContracts" data-display-id="exchangeofcontracts">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestonesexchangeofcontracts" class="object-block__title" data-display-id="exchangeofcontracts">
+        <span class="object-block__display">Exchange Of Contracts</span>      </h4>
+      <code class="object-block__path">milestones.exchangeOfContracts</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.exchangeOfContracts"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.exchangeOfContracts.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.exchangeOfContracts.expected"
+            data-overlays="">
+          <td>expected</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>expected</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesLegalForms" data-display-id="legalforms">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestoneslegalforms" class="object-block__title" data-display-id="legalforms">
+        <span class="object-block__display">Legal Forms</span>      </h4>
+      <code class="object-block__path">milestones.legalForms</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.legalForms"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.legalForms.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.legalForms.started"
+            data-overlays="">
+          <td>started</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>started</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesListed" data-display-id="listed">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestoneslisted" class="object-block__title" data-display-id="listed">
+        <span class="object-block__display">Listed</span>      </h4>
+      <code class="object-block__path">milestones.listed</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.listed"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.listed.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.listed.expected"
+            data-overlays="">
+          <td>expected</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>expected</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesSearches" data-display-id="searches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestonessearches" class="object-block__title" data-display-id="searches">
+        <span class="object-block__display">Searches</span>      </h4>
+      <code class="object-block__path">milestones.searches</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.searches"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.searches.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.searches.expected"
+            data-overlays="">
+          <td>expected</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>expected</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="milestones.searches.started"
+            data-overlays="">
+          <td>started</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>started</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-MilestonesSoldSubjectToContract" data-display-id="soldsubjecttocontract">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="milestonessoldsubjecttocontract" class="object-block__title" data-display-id="soldsubjecttocontract">
+        <span class="object-block__display">Sold Subject To Contract</span>      </h4>
+      <code class="object-block__path">milestones.soldSubjectToContract</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="milestones.soldSubjectToContract"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="milestones.soldSubjectToContract.completed"
+            data-overlays="">
+          <td>completed</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>completed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="contracts">Contracts</h3>      <div class="object-block" id="obj-Contract" data-display-id="contract">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="contract" class="object-block__title" data-display-id="contract">
+        <span class="object-block__display">Contracts</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">contracts[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#contractscontract" class="object-block__child-link">Contract</a>,         <a href="#contractssignature" class="object-block__child-link">Signatures[]</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ContractsContract" data-display-id="contract">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="contractscontract" class="object-block__title" data-display-id="contract">
+        <span class="object-block__display">Contract</span>      </h4>
+      <code class="object-block__path">contracts[].contract</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#contractscontracttemplate" class="object-block__child-link">Template</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="contracts[].contract"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="contracts[].contract.terms"
+            data-overlays="">
+          <td>terms</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>terms</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ContractsSignature" data-display-id="signature">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="contractssignature" class="object-block__title" data-display-id="signature">
+        <span class="object-block__display">Signatures</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">contracts[].signatures[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="contracts[].signatures[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="contracts[].signatures[].name"
+            data-overlays="">
+          <td>name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>name</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="contracts[].signatures[].signedOn"
+            data-overlays="">
+          <td>signedOn</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>signedOn</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="contracts[].signatures[].externalIds"
+            data-overlays="">
+          <td>externalIds</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>externalIds</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ContractsContractTemplate" data-display-id="template">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="contractscontracttemplate" class="object-block__title" data-display-id="template">
+        <span class="object-block__display">Template</span>      </h4>
+      <code class="object-block__path">contracts[].contract.template</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#contractscontracttemplaterequiredsignatorie" class="object-block__child-link">Required Signatories[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="contracts[].contract.template"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="contracts[].contract.template.name"
+            data-overlays="">
+          <td>name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>name</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="contracts[].contract.template.url"
+            data-overlays="">
+          <td>url</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>url</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="contracts[].contract.template.externalIds"
+            data-overlays="">
+          <td>externalIds</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>externalIds</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ContractsContractTemplateRequiredSignatorie" data-display-id="requiredsignatorie">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="contractscontracttemplaterequiredsignatorie" class="object-block__title" data-display-id="requiredsignatorie">
+        <span class="object-block__display">Required Signatories</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">contracts[].contract.template.requiredSignatories[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="contracts[].contract.template.requiredSignatories[]"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].requiresAll"
+            data-overlays="">
+          <td>requiresAll</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>requiresAll</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].role"
+            data-overlays="">
+          <td>role</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>role</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <aside class="callout callout--warn" role="note">
         <p class="callout__label">Gap notes</p>
         <p>Milestone ordering is implicit in the schema (listed → offerAccepted → exchange → completion) but isn't expressed as a state machine. A future revision should encode valid transitions explicitly — today, a completion milestone can appear before an exchange milestone without schema-level objection.</p>
       </aside>

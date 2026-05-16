@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Other · environmental · OPDA Knowledge Base</title>
+  <meta name="description" content="Other · environmental">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 46a2f</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Other · environmental</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>24</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>16 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;15&lt;/strong&gt; objects, &lt;strong&gt;24&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| LocalSearches : "localSearches"
+  LocalSearches ||--o| LocalAuthoritySearches : "localAuthoritySearches"
+  LocalAuthoritySearches ||--o| OtherMatters : "otherMatters"
+  OtherMatters ||--o| DrainageMatters : "drainageMatters"
+  OtherMatters ||--o| ContaminatedLand : "contaminatedLand"
+  OtherMatters ||--o| RadonGas : "radonGas"
+  ContaminatedLand ||--o| ContaminatedLandNotice : "contaminatedLandNotice"
+  ContaminatedLand ||--o| InRelationToARegisterMaintainedUnderSection78R : "inRelationToARegisterMaintainedUnderSection_78R"
+  ContaminatedLand ||--o| DecisionToMakeAnEntry : "decisionToMakeAnEntry"
+  ContaminatedLand ||--o| Entry : "entry"
+  DrainageMatters ||--o| PropertyServedByASustainableUrbanDrainage : "propertyServedByASustainableUrbanDrainage"
+  DrainageMatters ||--o| SuDsFeaturesWithinTheBoundaryOfTheProperty : "suDsFeaturesWithinTheBoundaryOfTheProperty"
+  DrainageMatters ||--o| IfPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge : "ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  LocalSearches {
+  }
+  LocalAuthoritySearches {
+  }
+  OtherMatters {
+  }
+  ContaminatedLand {
+  }
+  ContaminatedLandNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DecisionToMakeAnEntry {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  Entry {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  InRelationToARegisterMaintainedUnderSection78R {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DrainageMatters {
+  }
+  IfPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  PropertyServedByASustainableUrbanDrainage {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  SuDsFeaturesWithinTheBoundaryOfTheProperty {
+    string details "Is the owner responsible for maintenance?"
+    string yesNo "yesNo"
+  }
+  RadonGas {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>15</strong> objects, <strong>24</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="la_other_environmental">Other · environmental</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContaminatedLand" data-display-id="contaminatedland">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedland" class="object-block__title" data-display-id="contaminatedland">
+        <span class="object-block__display">Contaminated Land</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandcontaminatedlandnotice" class="object-block__child-link">Contaminated Land Notice</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandinrelationtoaregistermaintainedundersection78r" class="object-block__child-link">In Relation ToA Register Maintained Under Section 78R</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlanddecisiontomakeanentry" class="object-block__child-link">Decision To Make An Entry</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandentry" class="object-block__child-link">Entry</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersDrainageMatters" data-display-id="drainagematters">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagematters" class="object-block__title" data-display-id="drainagematters">
+        <span class="object-block__display">Drainage Matters</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagematterspropertyservedbyasustainableurbandrainage" class="object-block__child-link">Property Served ByA Sustainable Urban Drainage</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagematterssudsfeatureswithintheboundaryoftheproperty" class="object-block__child-link">Su Ds Features Within The Boundary Of The Property</a>,         <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagemattersifpropertybenefitsfromasudsforwhichthereisachargewhobillsthepropertyforsurfacewaterdrainagecharge" class="object-block__child-link">If Property Benefits FromA Su Ds For Which There IsA Charge Who Bills The Property For Surface Water Drainage Charge</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersRadonGas" data-display-id="radongas">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersradongas" class="object-block__title" data-display-id="radongas">
+        <span class="object-block__display">Radon Gas</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContaminatedLandContaminatedLandNotice" data-display-id="contaminatedlandnotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandcontaminatedlandnotice" class="object-block__title" data-display-id="contaminatedlandnotice">
+        <span class="object-block__display">Contaminated Land Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.contaminatedLandNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.contaminatedLandNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.contaminatedLandNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.contaminatedLandNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.contaminatedLandNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContaminatedLandDecisionToMakeAnEntry" data-display-id="decisiontomakeanentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlanddecisiontomakeanentry" class="object-block__title" data-display-id="decisiontomakeanentry">
+        <span class="object-block__display">Decision To Make An Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.decisionToMakeAnEntry</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.decisionToMakeAnEntry"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.decisionToMakeAnEntry.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.decisionToMakeAnEntry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.decisionToMakeAnEntry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContaminatedLandEntry" data-display-id="entry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandentry" class="object-block__title" data-display-id="entry">
+        <span class="object-block__display">Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.entry</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.entry"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.entry.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.entry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.entry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersContaminatedLandInRelationToARegisterMaintainedUnderSection78R" data-display-id="inrelationtoaregistermaintainedundersection78r">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscontaminatedlandinrelationtoaregistermaintainedundersection78r" class="object-block__title" data-display-id="inrelationtoaregistermaintainedundersection78r">
+        <span class="object-block__display">In Relation ToA Register Maintained Under Section 78R</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.inRelationToARegisterMaintainedUnderSection_78R</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.inRelationToARegisterMaintainedUnderSection_78R"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.inRelationToARegisterMaintainedUnderSection_78R.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.inRelationToARegisterMaintainedUnderSection_78R.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand.inRelationToARegisterMaintainedUnderSection_78R.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersDrainageMattersIfPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge" data-display-id="ifpropertybenefitsfromasudsforwhichthereisachargewhobillsthepropertyforsurfacewaterdrainagecharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagemattersifpropertybenefitsfromasudsforwhichthereisachargewhobillsthepropertyforsurfacewaterdrainagecharge" class="object-block__title" data-display-id="ifpropertybenefitsfromasudsforwhichthereisachargewhobillsthepropertyforsurfacewaterdrainagecharge">
+        <span class="object-block__display">If Property Benefits FromA Su Ds For Which There IsA Charge Who Bills The Property For Surface Water Drainage Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersDrainageMattersPropertyServedByASustainableUrbanDrainage" data-display-id="propertyservedbyasustainableurbandrainage">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagematterspropertyservedbyasustainableurbandrainage" class="object-block__title" data-display-id="propertyservedbyasustainableurbandrainage">
+        <span class="object-block__display">Property Served ByA Sustainable Urban Drainage</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersDrainageMattersSuDsFeaturesWithinTheBoundaryOfTheProperty" data-display-id="sudsfeatureswithintheboundaryoftheproperty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersdrainagematterssudsfeatureswithintheboundaryoftheproperty" class="object-block__title" data-display-id="sudsfeatureswithintheboundaryoftheproperty">
+        <span class="object-block__display">Su Ds Features Within The Boundary Of The Property</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty.details"
+            data-overlays="">
+          <td>Is the owner responsible for maintenance?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="46a2e-la-other-road-rail.html">← Other · road & rail schemes</a><a href="46a2g-la-other-compulsory.html">Other · compulsory purchase & public works →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'la-other-environmental' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '46a2f',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

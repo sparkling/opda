@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Leasehold · transfer &amp; registration · OPDA Knowledge Base</title>
+  <meta name="description" content="Leasehold · transfer &amp; registration">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38e7d</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Leasehold · transfer & registration</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>14</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>13 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;10&lt;/strong&gt; objects, &lt;strong&gt;14&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| Ownership : "ownership"
+  Ownership ||--o{ OwnershipsToBeTransferred : "ownershipsToBeTransferred"
+  OwnershipsToBeTransferred ||--o| LeaseholdInformation : "leaseholdInformation"
+  LeaseholdInformation ||--o| TransferAndRegistration : "transferAndRegistration"
+  TransferAndRegistration ||--o| DeedOfCovenantRequired : "deedOfCovenantRequired"
+  TransferAndRegistration ||--o| LicenceToAssignRequired : "licenceToAssignRequired"
+  TransferAndRegistration ||--o| AwareOfConsents : "awareOfConsents"
+  TransferAndRegistration ||--o| RequirementsToBeMemberOfManagementCompany : "requirementsToBeMemberOfManagementCompany"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  Ownership {
+  }
+  OwnershipsToBeTransferred {
+  }
+  LeaseholdInformation {
+  }
+  TransferAndRegistration {
+    string procedureForObtainingCertificate "What is the procedure and cost for obtaining a certificat…"
+  }
+  AwareOfConsents {
+    string details "Provide details and copies of any consent"
+    string yesNo "yesNo"
+  }
+  DeedOfCovenantRequired {
+    number costsApplicableToTheDeed "Confirm the costs applicable to the Deed including VAT"
+    string personWhoDealsWithTheDeedOfCovenant "Provide details of the person who deals with the Deed of …"
+    string yesNoNotKnown "yesNoNotKnown"
+  }
+  LicenceToAssignRequired {
+    string requirements "Specify requirements e.g. references, and any costs appli…"
+    string yesNo "yesNo"
+  }
+  RequirementsToBeMemberOfManagementCompany {
+    string details "Provide details of the procedures and fees. Include detai…"
+    string yesNoNotApplicable "yesNoNotApplicable"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>14</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="own_lease_transfer">Transfer & registration</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationTransferAndRegistration" data-display-id="transferandregistration">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistration" class="object-block__title" data-display-id="transferandregistration">
+        <span class="object-block__display">Transfer And Registration</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationdeedofcovenantrequired" class="object-block__child-link">Deed Of Covenant Required</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationlicencetoassignrequired" class="object-block__child-link">Licence To Assign Required</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationawareofconsents" class="object-block__child-link">Aware Of Consents</a>,         <a href="#propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationrequirementstobememberofmanagementcompany" class="object-block__child-link">Requirements To Be Member Of Management Company</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate"
+            data-overlays="">
+          <td>What is the procedure and cost for obtaining a certificate in accordance with a restriction in the Proprietorship Register at the Land Registry, if applicable?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>procedureForObtainingCertificate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationTransferAndRegistrationAwareOfConsents" data-display-id="awareofconsents">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationawareofconsents" class="object-block__title" data-display-id="awareofconsents">
+        <span class="object-block__display">Aware Of Consents</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.awareOfConsents</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.awareOfConsents"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.awareOfConsents.details"
+            data-overlays="lpe1">
+          <td>Provide details and copies of any consent</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.awareOfConsents.yesNo"
+            data-overlays="lpe1">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.awareOfConsents.yesNo"
+            data-overlays="lpe1">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationTransferAndRegistrationDeedOfCovenantRequired" data-display-id="deedofcovenantrequired">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationdeedofcovenantrequired" class="object-block__title" data-display-id="deedofcovenantrequired">
+        <span class="object-block__display">Deed Of Covenant Required</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed"
+            data-overlays="lpe1">
+          <td>Confirm the costs applicable to the Deed including VAT</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>costsApplicableToTheDeed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant"
+            data-overlays="lpe1">
+          <td>Provide details of the person who deals with the Deed of Covenant</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>personWhoDealsWithTheDeedOfCovenant</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.yesNoNotKnown"
+            data-overlays="lpe1">
+          <td>yesNoNotKnown</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotKnown</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.yesNoNotKnown"
+            data-overlays="lpe1">
+          <td>yesNoNotKnown</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotKnown</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationTransferAndRegistrationLicenceToAssignRequired" data-display-id="licencetoassignrequired">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationlicencetoassignrequired" class="object-block__title" data-display-id="licencetoassignrequired">
+        <span class="object-block__display">Licence To Assign Required</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements"
+            data-overlays="lpe1">
+          <td>Specify requirements e.g. references, and any costs applicable to the Licence</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>requirements</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.yesNo"
+            data-overlays="lpe1">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.yesNo"
+            data-overlays="lpe1">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationTransferAndRegistrationRequirementsToBeMemberOfManagementCompany" data-display-id="requirementstobememberofmanagementcompany">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationtransferandregistrationrequirementstobememberofmanagementcompany" class="object-block__title" data-display-id="requirementstobememberofmanagementcompany">
+        <span class="object-block__display">Requirements To Be Member Of Management Company</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.details"
+            data-overlays="lpe1">
+          <td>Provide details of the procedures and fees. Include details of the person who deals with the new certificate or share.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.yesNoNotApplicable"
+            data-overlays="baspi5,lpe1">
+          <td>yesNoNotApplicable</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.yesNoNotApplicable"
+            data-overlays="baspi5,lpe1">
+          <td>yesNoNotApplicable</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38e7c-lease-building-safety.html">← Leasehold · Building Safety Act</a><a href="38e8-lease-misc.html">Leasehold · disputes, general, documents, confirmation →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'lease-transfer' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38e7d',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

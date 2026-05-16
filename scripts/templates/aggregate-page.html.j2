@@ -19,7 +19,7 @@
 -#}
 {%- import "_macros/stat-strip.html.j2" as ss -%}
 {%- import "_macros/pull-quote.html.j2" as pq -%}
-{%- import "_macros/leaf-table.html.j2" as lt -%}
+{%- import "_macros/object-table.html.j2" as ot -%}
 {%- import "_macros/er-diagram.html.j2" as er -%}
 <!doctype html>
 <html lang="en">
@@ -60,6 +60,28 @@
       </aside>
       {%- endif %}
 
+      {%- if regions.er_diagram %}
+      <h2 id="er">Entity relationships</h2>
+      {{ er.er_diagram(regions.er_diagram, regions.er_caption|default('', true)) }}
+      {%- endif %}
+
+      {%- if regions.diagrams %}
+      {%- set _diagram_titles = {'state': 'Lifecycle state machine', 'sequence': 'Sequence', 'flowchart': 'Process flow', 'gantt': 'Timeline', 'class': 'Class structure', 'er': 'Entity relationships'} %}
+      {%- for d in regions.diagrams %}
+      <h2 id="diagram-{{ loop.index }}">{{ _diagram_titles.get(d.type, 'Diagram') }}</h2>
+      {{ er.er_diagram(d.source, d.caption) }}
+      {%- endfor %}
+      {%- endif %}
+
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -74,22 +96,13 @@
       </div>
 
       {%- for section in sections %}
-      <h2 id="{{ section.id }}">{{ section.title }}</h2>
-      {{ lt.leaf_table(section, section.leaves, show_envelopes) }}
-      {%- endfor %}
-
-      {%- if regions.er_diagram %}
-      <h2 id="er">Entity relationships</h2>
-      {{ er.er_diagram(regions.er_diagram, regions.er_caption|default('', true)) }}
-      {%- endif %}
-
-      {%- if regions.diagrams %}
-      {%- set _diagram_titles = {'state': 'Lifecycle state machine', 'sequence': 'Sequence', 'flowchart': 'Process flow', 'gantt': 'Timeline', 'class': 'Class structure', 'er': 'Entity relationships'} %}
-      {%- for d in regions.diagrams %}
-      <h2 id="diagram-{{ loop.index }}">{{ _diagram_titles.get(d.type, 'Diagram') }}</h2>
-      {{ er.er_diagram(d.source, d.caption) }}
+      {%- if section.objects %}
+      <h3 id="{{ section.id }}">{{ section.title }}</h3>
+      {%- for obj in section.objects %}
+      {{ ot.object_table(obj, show_envelopes) }}
       {%- endfor %}
       {%- endif %}
+      {%- endfor %}
 
       {%- if regions.worked_example %}
       <aside class="callout callout--note" role="note">

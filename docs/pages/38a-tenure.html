@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Tenure · OPDA Knowledge Base</title>
+  <meta name="description" content="Tenure">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38a</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Tenure</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>7</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>7 in overlays</span>
+  <span>1 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;4&lt;/strong&gt; objects, &lt;strong&gt;7&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| LegalOwners : "legalOwners"
+  LegalOwners ||--o{ NamesOfLegalOwner : "namesOfLegalOwners"
+  Transaction {
+  }
+  PropertyPack {
+    string marketingTenure "What tenure is the property being marketed as?"
+  }
+  LegalOwners {
+  }
+  NamesOfLegalOwner {
+    string firstName "First name"
+    string lastName "Last name"
+    string middleNames "Middle names"
+    string organisationName "Organisation name"
+    string ownerType "ownerType"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>4</strong> objects, <strong>7</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="tenure">Tenure & marketing tenure</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalOwners" data-display-id="legalowners">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalowners" class="object-block__title" data-display-id="legalowners">
+        <span class="object-block__display">Legal Owners</span>      </h4>
+      <code class="object-block__path">propertyPack.legalOwners</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklegalownersnamesoflegalowner" class="object-block__child-link">Names Of Legal Owners[]</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalOwnersNamesOfLegalOwner" data-display-id="namesoflegalowner">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalownersnamesoflegalowner" class="object-block__title" data-display-id="namesoflegalowner">
+        <span class="object-block__display">Names Of Legal Owners</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.legalOwners.namesOfLegalOwners[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalOwners.namesOfLegalOwners[]"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].firstName"
+            data-overlays="baspi5">
+          <td>First name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>firstName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].lastName"
+            data-overlays="baspi5">
+          <td>Last name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>lastName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].middleNames"
+            data-overlays="baspi5">
+          <td>Middle names</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>middleNames</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].organisationName"
+            data-overlays="baspi5">
+          <td>Organisation name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>organisationName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].ownerType"
+            data-overlays="baspi5,piq,rds">
+          <td>ownerType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>ownerType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalOwners.namesOfLegalOwners[].ownerType"
+            data-overlays="baspi5,piq,rds">
+          <td>ownerType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>ownerType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38-legal-estate-title.html">← Legal estate & title</a><a href="38b-title-oc-summary.html">Title — Official Copy summary →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'legal-estate-tenure' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38a',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

@@ -29,27 +29,69 @@ regions:
   er_diagram: |
     erDiagram
       TRANSACTION    ||--o{ PARTICIPANT  : "involves"
-      PARTICIPANT    ||--|| IDENTITY     : "has"
-      PARTICIPANT    ||--o{ ADDRESS      : "contactable at"
-      PARTICIPANT    ||--|| ROLE         : "acts as"
+      PARTICIPANT    ||--|| NAME         : "named by"
+      PARTICIPANT    ||--o| ADDRESS      : "contactable at"
+      PARTICIPANT    ||--o| VERIFICATION : "verified by"
+      VERIFICATION   ||--o{ REPORT       : "identity + AML checks"
       PARTICIPANT    ||--o| CAPACITY     : "if seller, with capacity"
-      CAPACITY       ||--o{ ATTACHMENT   : "evidenced by"
-      ROLE {
-        string value "Seller · Buyer · Agent · Conveyancer · Surveyor · Lender"
+
+      TRANSACTION {
+        string transactionId   "UUID for the transaction"
+        object externalIds
+        string status
+      }
+      PARTICIPANT {
+        string dateOfBirth
+        string phone
+        string email
+        string organisation
+        string organisationReference
+        object externalIds
+        string participantStatus
+        string role            "Seller · Buyer · Agent · Conveyancer · Surveyor · Lender"
+      }
+      NAME {
+        string title
+        string firstName
+        string middleName
+        string lastName
+        string maidenName
+        string preferredName
+      }
+      ADDRESS {
+        string buildingNumber
+        string buildingName
+        string subBuilding
+        string street
+        string line1
+        string line2
+        string line3
+        string town
+        string postcode
+        string homeNation
+        string countryCode
+      }
+      VERIFICATION {
+        string identityResult
+        string antiMoneyLaunderingResult
+      }
+      REPORT {
+        string reportName
+        string result
+        string details
       }
       CAPACITY {
-        string value "Legal owner · PR for deceased · Attorney · Mortgagee · Other"
-      }
-      IDENTITY {
-        string firstName
-        string lastName
-        date   dateOfBirth
+        string capacity                "Legal owner · PR for deceased · Attorney · Mortgagee · Other"
+        string sellersCapacityDetails
+        string attachments             "→ Evidence & documents (page 48)"
       }
   er_caption: |
-    Internal mechanics: each participant carries identity, address, role and
-    optionally a seller capacity. Capacity is the gating fact for whether a
-    party can convey — and the only participant attribute that routinely
-    requires evidence (grant of probate, power of attorney).
+    Full reference: every schema path owned by this page surfaces in the
+    diagram. Transaction- and participant-level fields are inlined on
+    their respective entities; nested groups (name, address, verification
+    reports, seller capacity) become their own boxes. Capacity is the
+    gating fact for whether a participant can convey, and the only one
+    that routinely requires attached evidence (page 48).
 mentioned_but_not_owned:
   - "address (canonical home page 37 for property address; this page owns participant address)"
 ---

@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · OC summary · other charges &amp; restrictions · OPDA Knowledge Base</title>
+  <meta name="description" content="OC summary · other charges &amp; restrictions">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38b5</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>OC summary · other charges & restrictions</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>42</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;19&lt;/strong&gt; objects, &lt;strong&gt;42&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o{ TitlesToBeSold : "titlesToBeSold"
+  TitlesToBeSold ||--o| RegisterExtract : "registerExtract"
+  RegisterExtract ||--o| OcSummaryData : "ocSummaryData"
+  OcSummaryData ||--o| RestrictionDetails : "restrictionDetails"
+  OcSummaryData ||--o| RentCharge : "rentCharge"
+  OcSummaryData ||--o| VendorsLien : "vendorsLien"
+  OcSummaryData ||--o| DiscountCharge : "discountCharge"
+  DiscountCharge ||--o| EntryDetails : "entryDetails"
+  RentCharge ||--o| EntryDetails : "entryDetails"
+  RestrictionDetails ||--o| RestrictionEntry : "restrictionEntry"
+  RestrictionEntry ||--o| ChargeRelatedRestriction : "chargeRelatedRestriction"
+  RestrictionEntry ||--o| ChargeRestriction : "chargeRestriction"
+  RestrictionEntry ||--o| NonChargeRestriction : "nonChargeRestriction"
+  ChargeRelatedRestriction ||--o| EntryDetails : "entryDetails"
+  ChargeRestriction ||--o| EntryDetails : "entryDetails"
+  NonChargeRestriction ||--o| EntryDetails : "entryDetails"
+  VendorsLien ||--o| EntryDetails : "entryDetails"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  TitlesToBeSold {
+  }
+  RegisterExtract {
+  }
+  OcSummaryData {
+  }
+  DiscountCharge {
+  }
+  EntryDetails {
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  }
+  RentCharge {
+  }
+  RestrictionDetails {
+  }
+  RestrictionEntry {
+  }
+  ChargeRelatedRestriction {
+    string chargeID "chargeID"
+    string restrictionTypeCode "restrictionTypeCode"
+  }
+  ChargeRestriction {
+    string chargeID "chargeID"
+    string restrictionTypeCode "restrictionTypeCode"
+  }
+  NonChargeRestriction {
+    string chargeID "chargeID"
+    string restrictionTypeCode "restrictionTypeCode"
+  }
+  VendorsLien {
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>19</strong> objects, <strong>42</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="title_oc_charges_other">OC summary · other charges & restrictions</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataDiscountCharge" data-display-id="discountcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatadiscountcharge" class="object-block__title" data-display-id="discountcharge">
+        <span class="object-block__display">Discount Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatadiscountchargeentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRentCharge" data-display-id="rentcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarentcharge" class="object-block__title" data-display-id="rentcharge">
+        <span class="object-block__display">Rent Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarentchargeentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetails" data-display-id="restrictiondetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetails" class="object-block__title" data-display-id="restrictiondetails">
+        <span class="object-block__display">Restriction Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentry" class="object-block__child-link">Restriction Entry</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataVendorsLien" data-display-id="vendorslien">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatavendorslien" class="object-block__title" data-display-id="vendorslien">
+        <span class="object-block__display">Vendors Lien</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatavendorslienentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataDiscountChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatadiscountchargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRentChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarentchargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntry" data-display-id="restrictionentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentry" class="object-block__title" data-display-id="restrictionentry">
+        <span class="object-block__display">Restriction Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerelatedrestriction" class="object-block__child-link">Charge Related Restriction</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerestriction" class="object-block__child-link">Charge Restriction</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrynonchargerestriction" class="object-block__child-link">Non Charge Restriction</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataVendorsLienEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatavendorslienentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryChargeRelatedRestriction" data-display-id="chargerelatedrestriction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerelatedrestriction" class="object-block__title" data-display-id="chargerelatedrestriction">
+        <span class="object-block__display">Charge Related Restriction</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerelatedrestrictionentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.chargeID"
+            data-overlays="">
+          <td>chargeID</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeID</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.restrictionTypeCode"
+            data-overlays="">
+          <td>restrictionTypeCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictionTypeCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryChargeRestriction" data-display-id="chargerestriction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerestriction" class="object-block__title" data-display-id="chargerestriction">
+        <span class="object-block__display">Charge Restriction</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerestrictionentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.chargeID"
+            data-overlays="">
+          <td>chargeID</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeID</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.restrictionTypeCode"
+            data-overlays="">
+          <td>restrictionTypeCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictionTypeCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryNonChargeRestriction" data-display-id="nonchargerestriction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrynonchargerestriction" class="object-block__title" data-display-id="nonchargerestriction">
+        <span class="object-block__display">Non Charge Restriction</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrynonchargerestrictionentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.chargeID"
+            data-overlays="">
+          <td>chargeID</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeID</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.restrictionTypeCode"
+            data-overlays="">
+          <td>restrictionTypeCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictionTypeCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryChargeRelatedRestrictionEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerelatedrestrictionentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRelatedRestriction.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryChargeRestrictionEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrychargerestrictionentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.chargeRestriction.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataRestrictionDetailsRestrictionEntryNonChargeRestrictionEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatarestrictiondetailsrestrictionentrynonchargerestrictionentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails.restrictionEntry.nonChargeRestriction.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38b4-title-oc-charges-main.html">← OC summary · charges (main)</a><a href="38b6-title-oc-notices-main.html">OC summary · notices →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'title-oc-charges-other' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38b5',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

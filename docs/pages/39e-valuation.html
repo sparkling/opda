@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Valuation · OPDA Knowledge Base</title>
+  <meta name="description" content="Valuation">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39e</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Valuation</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>40</strong> leaves</span>
+  <span>77.5% Declaration</span>
+  <span>22.5% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>2 in overlays</span>
+  <span>4 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;14&lt;/strong&gt; objects, &lt;strong&gt;40&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  Transaction ||--o| ValuationComparisonData : "valuationComparisonData"
+  PropertyPack ||--o| PriceInformation : "priceInformation"
+  PropertyPack ||--o{ Valuation : "valuations"
+  ValuationComparisonData ||--o{ PropertyDetail : "propertyDetails"
+  ValuationComparisonData ||--o| PropertyPricing : "propertyPricing"
+  PropertyDetail ||--o| PropertyListingInfo : "propertyListingInfo"
+  PropertyDetail ||--o| BasicDetails : "basicDetails"
+  PropertyDetail ||--o{ Media : "media"
+  BasicDetails ||--o| BuildInformation : "buildInformation"
+  BuildInformation ||--o| InternalArea : "internalArea"
+  PropertyPricing ||--o| RentalEstimate : "rentalEstimate"
+  PropertyPricing ||--o| PriceEstimationDetails : "priceEstimationDetails"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  PriceInformation {
+    string disposal "Disposal"
+    number price "Price"
+    string priceQualifier "Price type"
+    string saleAtUndervalue "Is the property being sold at undervalue?"
+  }
+  Valuation {
+    integer capitalValue "capitalValue"
+    string confidenceBand "confidenceBand"
+    number confidenceLevel "confidenceLevel"
+    integer valuationId "valuationId"
+    string valuationTimestamp "valuationTimestamp"
+    string checkValuationResult "checkValuationResult"
+    string instructionType "instructionType"
+    integer reinstatementCost "reinstatementCost"
+    number rentalConfidenceLevel "rentalConfidenceLevel"
+    integer rentalValue "rentalValue"
+    string valuationContext "valuationContext"
+    string valuationType "valuationType"
+  }
+  ValuationComparisonData {
+  }
+  PropertyDetail {
+    string marketingTenure "Marketing Tenure"
+    string propertyFullDescription "Property Description"
+    string propertyType "Type of Property"
+    string uprn "Unique Property Reference Number (UPRN)"
+  }
+  BasicDetails {
+    integer bathrooms "Number of Bathrooms"
+    integer bedrooms "Number of Bedrooms"
+  }
+  BuildInformation {
+    integer yearOfBuild "Year the property was built"
+  }
+  InternalArea {
+    number area "Internal area value"
+    string units "Internal area units"
+  }
+  Media {
+    string caption "Caption"
+    string mediaType "Type of media"
+    string mediaUrl "Media URL"
+  }
+  PropertyListingInfo {
+    number listPrice "List Price"
+    string listedDate "Listed Date"
+    string listingType "listingType"
+    string soldDate "Sold Date"
+    number soldPrice "Sold Price"
+  }
+  PropertyPricing {
+    number estimatedPrice "Estimated Price"
+    number yield "Yield"
+  }
+  PriceEstimationDetails {
+    string[] credibilitySources "Data Sources"
+    string pricingMethodology "Pricing Methodology"
+  }
+  RentalEstimate {
+    number estimatedAmount "Rental Estimate Amount"
+    string paymentFrequency "Payment Frequency"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>14</strong> objects, <strong>40</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="valuation">Valuation and price</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>,         <a href="#valuationcomparisondata" class="object-block__child-link">Valuation Comparison Data</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ValuationComparisonData" data-display-id="valuationcomparisondata">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondata" class="object-block__title" data-display-id="valuationcomparisondata">
+        <span class="object-block__display">Valuation Comparison Data</span>      </h4>
+      <code class="object-block__path">valuationComparisonData</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#valuationcomparisondatapropertydetail" class="object-block__child-link">Property Details[]</a>,         <a href="#valuationcomparisondatapropertypricing" class="object-block__child-link">Property Pricing</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackPriceInformation" data-display-id="priceinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackpriceinformation" class="object-block__title" data-display-id="priceinformation">
+        <span class="object-block__display">Price Information</span>      </h4>
+      <code class="object-block__path">propertyPack.priceInformation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.priceInformation"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.priceInformation.disposal"
+            data-overlays="">
+          <td>Disposal</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>disposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.priceInformation.price"
+            data-overlays="nts2">
+          <td>Price</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.priceInformation.priceQualifier"
+            data-overlays="nts2">
+          <td>Price type</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>priceQualifier</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.priceInformation.saleAtUndervalue"
+            data-overlays="">
+          <td>Is the property being sold at undervalue?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>saleAtUndervalue</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackValuation" data-display-id="valuation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackvaluation" class="object-block__title" data-display-id="valuation">
+        <span class="object-block__display">Valuations</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.valuations[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.valuations[]"
+       data-field-count="12">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.valuations[].capitalValue"
+            data-overlays="">
+          <td>capitalValue</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>capitalValue</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].confidenceBand"
+            data-overlays="">
+          <td>confidenceBand</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>confidenceBand</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].confidenceLevel"
+            data-overlays="">
+          <td>confidenceLevel</td>
+          <td><code>number</code></td>
+          <td>Evidence          </td>
+          <td><code>confidenceLevel</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationId"
+            data-overlays="">
+          <td>valuationId</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>valuationId</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationTimestamp"
+            data-overlays="">
+          <td>valuationTimestamp</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>valuationTimestamp</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].checkValuationResult"
+            data-overlays="">
+          <td>checkValuationResult</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>checkValuationResult</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].instructionType"
+            data-overlays="">
+          <td>instructionType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>instructionType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].reinstatementCost"
+            data-overlays="">
+          <td>reinstatementCost</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>reinstatementCost</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].rentalConfidenceLevel"
+            data-overlays="">
+          <td>rentalConfidenceLevel</td>
+          <td><code>number</code></td>
+          <td>Evidence          </td>
+          <td><code>rentalConfidenceLevel</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].rentalValue"
+            data-overlays="">
+          <td>rentalValue</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>rentalValue</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationContext"
+            data-overlays="">
+          <td>valuationContext</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>valuationContext</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.valuations[].valuationType"
+            data-overlays="">
+          <td>valuationType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>valuationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetail" data-display-id="propertydetail">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetail" class="object-block__title" data-display-id="propertydetail">
+        <span class="object-block__display">Property Details</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#valuationcomparisondatapropertydetailspropertylistinginfo" class="object-block__child-link">Property Listing Info</a>,         <a href="#valuationcomparisondatapropertydetailsbasicdetails" class="object-block__child-link">Basic Details</a>,         <a href="#valuationcomparisondatapropertydetailsmedia" class="object-block__child-link">Media[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[]"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].marketingTenure"
+            data-overlays="">
+          <td>Marketing Tenure</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>marketingTenure</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyFullDescription"
+            data-overlays="">
+          <td>Property Description</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>propertyFullDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyType"
+            data-overlays="">
+          <td>Type of Property</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>propertyType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].uprn"
+            data-overlays="">
+          <td>Unique Property Reference Number (UPRN)</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>uprn</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyPricing" data-display-id="propertypricing">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertypricing" class="object-block__title" data-display-id="propertypricing">
+        <span class="object-block__display">Property Pricing</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyPricing</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#valuationcomparisondatapropertypricingrentalestimate" class="object-block__child-link">Rental Estimate</a>,         <a href="#valuationcomparisondatapropertypricingpriceestimationdetails" class="object-block__child-link">Price Estimation Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyPricing"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.estimatedPrice"
+            data-overlays="">
+          <td>Estimated Price</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>estimatedPrice</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.yield"
+            data-overlays="">
+          <td>Yield</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>yield</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetailsBasicDetails" data-display-id="basicdetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetailsbasicdetails" class="object-block__title" data-display-id="basicdetails">
+        <span class="object-block__display">Basic Details</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[].basicDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformation" class="object-block__child-link">Build Information</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[].basicDetails"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.bathrooms"
+            data-overlays="">
+          <td>Number of Bathrooms</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>bathrooms</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.bedrooms"
+            data-overlays="">
+          <td>Number of Bedrooms</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>bedrooms</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetailsMedia" data-display-id="media">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetailsmedia" class="object-block__title" data-display-id="media">
+        <span class="object-block__display">Media</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[].media[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[].media[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].caption"
+            data-overlays="">
+          <td>Caption</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>caption</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].mediaType"
+            data-overlays="">
+          <td>Type of media</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>mediaType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].media[].mediaUrl"
+            data-overlays="">
+          <td>Media URL</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>mediaUrl</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetailsPropertyListingInfo" data-display-id="propertylistinginfo">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetailspropertylistinginfo" class="object-block__title" data-display-id="propertylistinginfo">
+        <span class="object-block__display">Property Listing Info</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[].propertyListingInfo</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[].propertyListingInfo"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice"
+            data-overlays="">
+          <td>List Price</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>listPrice</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate"
+            data-overlays="">
+          <td>Listed Date</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>listedDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listingType"
+            data-overlays="">
+          <td>listingType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>listingType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.listingType"
+            data-overlays="">
+          <td>listingType</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>listingType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate"
+            data-overlays="">
+          <td>Sold Date</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>soldDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice"
+            data-overlays="">
+          <td>Sold Price</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>soldPrice</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyPricingPriceEstimationDetails" data-display-id="priceestimationdetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertypricingpriceestimationdetails" class="object-block__title" data-display-id="priceestimationdetails">
+        <span class="object-block__display">Price Estimation Details</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyPricing.priceEstimationDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyPricing.priceEstimationDetails"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources"
+            data-overlays="">
+          <td>Data Sources</td>
+          <td><code>string[]</code></td>
+          <td>Declaration          </td>
+          <td><code>credibilitySources</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology"
+            data-overlays="">
+          <td>Pricing Methodology</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>pricingMethodology</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyPricingRentalEstimate" data-display-id="rentalestimate">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertypricingrentalestimate" class="object-block__title" data-display-id="rentalestimate">
+        <span class="object-block__display">Rental Estimate</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyPricing.rentalEstimate</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyPricing.rentalEstimate"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount"
+            data-overlays="">
+          <td>Rental Estimate Amount</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>estimatedAmount</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyPricing.rentalEstimate.paymentFrequency"
+            data-overlays="">
+          <td>Payment Frequency</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>paymentFrequency</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetailsBasicDetailsBuildInformation" data-display-id="buildinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetailsbasicdetailsbuildinformation" class="object-block__title" data-display-id="buildinformation">
+        <span class="object-block__display">Build Information</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[].basicDetails.buildInformation</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#valuationcomparisondatapropertydetailsbasicdetailsbuildinformationinternalarea" class="object-block__child-link">Internal Area</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.yearOfBuild"
+            data-overlays="">
+          <td>Year the property was built</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>yearOfBuild</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ValuationComparisonDataPropertyDetailsBasicDetailsBuildInformationInternalArea" data-display-id="internalarea">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="valuationcomparisondatapropertydetailsbasicdetailsbuildinformationinternalarea" class="object-block__title" data-display-id="internalarea">
+        <span class="object-block__display">Internal Area</span>      </h4>
+      <code class="object-block__path">valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area"
+            data-overlays="">
+          <td>Internal area value</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>area</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.units"
+            data-overlays="">
+          <td>Internal area units</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>units</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="39d13-survey-advice.html">← Surveys · advice, risks & matters for legal advisers</a><a href="45-utilities-energy.html">Utilities & energy →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'built-form-valuation' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '39e',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

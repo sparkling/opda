@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Boundaries &amp; rights · OPDA Knowledge Base</title>
+  <meta name="description" content="Boundaries &amp; rights">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38g</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Boundaries & rights</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>66</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>66 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;25&lt;/strong&gt; objects, &lt;strong&gt;66&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| RightsAndInformalArrangements : "rightsAndInformalArrangements"
+  PropertyPack ||--o| LegalBoundaries : "legalBoundaries"
+  LegalBoundaries ||--o| PartOutsideLegalOwnership : "partOutsideLegalOwnership"
+  LegalBoundaries ||--o| PartOnSeparateSiteOrDeed : "partOnSeparateSiteOrDeed"
+  LegalBoundaries ||--o| BoundariesDifferFromTitlePlan : "boundariesDifferFromTitlePlan"
+  LegalBoundaries ||--o| BoundaryAlterationProposal : "boundaryAlterationProposal"
+  LegalBoundaries ||--o| Ownership : "ownership"
+  LegalBoundaries ||--o| HaveBoundaryFeaturesMoved : "haveBoundaryFeaturesMoved"
+  LegalBoundaries ||--o| AdjacentLandIncluded : "adjacentLandIncluded"
+  LegalBoundaries ||--o| FlyingFreehold : "flyingFreehold"
+  Ownership ||--o| UniformBoundaries : "uniformBoundaries"
+  RightsAndInformalArrangements ||--o| SharedContributions : "sharedContributions"
+  RightsAndInformalArrangements ||--o| NeighbouringLandRights : "neighbouringLandRights"
+  RightsAndInformalArrangements ||--o| AccessRestrictionAttempts : "accessRestrictionAttempts"
+  RightsAndInformalArrangements ||--o| RightsOrArrangements : "rightsOrArrangements"
+  RightsOrArrangements ||--o| PublicRightOfWay : "publicRightOfWay"
+  RightsOrArrangements ||--o| RightsOfLight : "rightsOfLight"
+  RightsOrArrangements ||--o| RightsOfSupport : "rightsOfSupport"
+  RightsOrArrangements ||--o| RightsCreatedThroughCustom : "rightsCreatedThroughCustom"
+  RightsOrArrangements ||--o| RightsToTakeFromLand : "rightsToTakeFromLand"
+  RightsOrArrangements ||--o| MinesAndMinerals : "minesAndMinerals"
+  RightsOrArrangements ||--o| ChurchChancel : "churchChancel"
+  RightsOrArrangements ||--o| OtherRights : "otherRights"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  LegalBoundaries {
+  }
+  AdjacentLandIncluded {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  BoundariesDifferFromTitlePlan {
+    string attachments "Attachments"
+    string details "Please provide details of how they differ and why they ch…"
+    string yesNo "yesNo"
+  }
+  BoundaryAlterationProposal {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  FlyingFreehold {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  HaveBoundaryFeaturesMoved {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  Ownership {
+    string areBoundariesUniform "areBoundariesUniform"
+    string attachments "Attachments"
+    string details "Please indicate ownership or those you have repaired by w…"
+  }
+  UniformBoundaries {
+    string front "At the front"
+    string left "On the left"
+    string rear "At the rear"
+    string right "On the right"
+  }
+  PartOnSeparateSiteOrDeed {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  PartOutsideLegalOwnership {
+    string details "Please provide details. E.g. parking, garden, outbuilding…"
+    string yesNo "yesNo"
+  }
+  RightsAndInformalArrangements {
+  }
+  AccessRestrictionAttempts {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  NeighbouringLandRights {
+    string attachments "Attachments"
+    string details "Please give details and provide a plan showing the route …"
+    string yesNo "yesNo"
+  }
+  RightsOrArrangements {
+  }
+  ChurchChancel {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  MinesAndMinerals {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  OtherRights {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  PublicRightOfWay {
+    string attachments "Please mark the route on a plan of the property"
+    string details "Please provide details"
+    string yesNo "yesNo"
+  }
+  RightsCreatedThroughCustom {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  RightsOfLight {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  RightsOfSupport {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  RightsToTakeFromLand {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  SharedContributions {
+    string details "Please give details including who collects payments and o…"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>25</strong> objects, <strong>66</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="boundaries">Legal boundaries</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundaries" data-display-id="legalboundaries">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundaries" class="object-block__title" data-display-id="legalboundaries">
+        <span class="object-block__display">Legal Boundaries</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklegalboundariespartoutsidelegalownership" class="object-block__child-link">Part Outside Legal Ownership</a>,         <a href="#propertypacklegalboundariespartonseparatesiteordeed" class="object-block__child-link">Part On Separate Site Or Deed</a>,         <a href="#propertypacklegalboundariesboundariesdifferfromtitleplan" class="object-block__child-link">Boundaries Differ From Title Plan</a>,         <a href="#propertypacklegalboundariesboundaryalterationproposal" class="object-block__child-link">Boundary Alteration Proposal</a>,         <a href="#propertypacklegalboundariesownership" class="object-block__child-link">Ownership</a>,         <a href="#propertypacklegalboundarieshaveboundaryfeaturesmoved" class="object-block__child-link">Have Boundary Features Moved</a>,         <a href="#propertypacklegalboundariesadjacentlandincluded" class="object-block__child-link">Adjacent Land Included</a>,         <a href="#propertypacklegalboundariesflyingfreehold" class="object-block__child-link">Flying Freehold</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesAdjacentLandIncluded" data-display-id="adjacentlandincluded">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesadjacentlandincluded" class="object-block__title" data-display-id="adjacentlandincluded">
+        <span class="object-block__display">Adjacent Land Included</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.adjacentLandIncluded</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.adjacentLandIncluded"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.details"
+            data-overlays="baspi5,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesBoundariesDifferFromTitlePlan" data-display-id="boundariesdifferfromtitleplan">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesboundariesdifferfromtitleplan" class="object-block__title" data-display-id="boundariesdifferfromtitleplan">
+        <span class="object-block__display">Boundaries Differ From Title Plan</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.boundariesDifferFromTitlePlan</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.attachments"
+            data-overlays="baspi5">
+          <td>Attachments</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.details"
+            data-overlays="baspi5">
+          <td>Please provide details of how they differ and why they changed and provide a plan showing where you believe the boundaries are</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesBoundaryAlterationProposal" data-display-id="boundaryalterationproposal">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesboundaryalterationproposal" class="object-block__title" data-display-id="boundaryalterationproposal">
+        <span class="object-block__display">Boundary Alteration Proposal</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.boundaryAlterationProposal</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.boundaryAlterationProposal"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.details"
+            data-overlays="baspi5,piq">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesFlyingFreehold" data-display-id="flyingfreehold">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesflyingfreehold" class="object-block__title" data-display-id="flyingfreehold">
+        <span class="object-block__display">Flying Freehold</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.flyingFreehold</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.flyingFreehold"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.details"
+            data-overlays="baspi5,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
+            data-overlays="baspi5,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
+            data-overlays="baspi5,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesHaveBoundaryFeaturesMoved" data-display-id="haveboundaryfeaturesmoved">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundarieshaveboundaryfeaturesmoved" class="object-block__title" data-display-id="haveboundaryfeaturesmoved">
+        <span class="object-block__display">Have Boundary Features Moved</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.haveBoundaryFeaturesMoved</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.details"
+            data-overlays="baspi5,piq,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesOwnership" data-display-id="ownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesownership" class="object-block__title" data-display-id="ownership">
+        <span class="object-block__display">Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.ownership</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklegalboundariesownershipuniformboundaries" class="object-block__child-link">Uniform Boundaries</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.ownership"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+            data-overlays="baspi5,rds,ta6">
+          <td>areBoundariesUniform</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>areBoundariesUniform</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+            data-overlays="baspi5,rds,ta6">
+          <td>areBoundariesUniform</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>areBoundariesUniform</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+            data-overlays="baspi5,rds,ta6">
+          <td>areBoundariesUniform</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>areBoundariesUniform</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.attachments"
+            data-overlays="baspi5,ta6">
+          <td>Attachments</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.details"
+            data-overlays="baspi5,ta6">
+          <td>Please indicate ownership or those you have repaired by written description or marking them on a plan of the property</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesPartOnSeparateSiteOrDeed" data-display-id="partonseparatesiteordeed">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariespartonseparatesiteordeed" class="object-block__title" data-display-id="partonseparatesiteordeed">
+        <span class="object-block__display">Part On Separate Site Or Deed</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.partOnSeparateSiteOrDeed</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesPartOutsideLegalOwnership" data-display-id="partoutsidelegalownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariespartoutsidelegalownership" class="object-block__title" data-display-id="partoutsidelegalownership">
+        <span class="object-block__display">Part Outside Legal Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.partOutsideLegalOwnership</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.partOutsideLegalOwnership"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.details"
+            data-overlays="baspi5,piq">
+          <td>Please provide details. E.g. parking, garden, outbuilding, accessway, etc</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesOwnershipUniformBoundaries" data-display-id="uniformboundaries">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklegalboundariesownershipuniformboundaries" class="object-block__title" data-display-id="uniformboundaries">
+        <span class="object-block__display">Uniform Boundaries</span>      </h4>
+      <code class="object-block__path">propertyPack.legalBoundaries.ownership.uniformBoundaries</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.legalBoundaries.ownership.uniformBoundaries"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.front"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>At the front</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>front</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.left"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>On the left</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>left</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.rear"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>At the rear</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>rear</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.right"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>On the right</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>right</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="rights">Rights & informal arrangements</h3>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangements" data-display-id="rightsandinformalarrangements">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangements" class="object-block__title" data-display-id="rightsandinformalarrangements">
+        <span class="object-block__display">Rights And Informal Arrangements</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypackrightsandinformalarrangementssharedcontributions" class="object-block__child-link">Shared Contributions</a>,         <a href="#propertypackrightsandinformalarrangementsneighbouringlandrights" class="object-block__child-link">Neighbouring Land Rights</a>,         <a href="#propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__child-link">Access Restriction Attempts</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__child-link">Rights Or Arrangements</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsAccessRestrictionAttempts" data-display-id="accessrestrictionattempts">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__title" data-display-id="accessrestrictionattempts">
+        <span class="object-block__display">Access Restriction Attempts</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.details"
+            data-overlays="baspi5,piq,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsNeighbouringLandRights" data-display-id="neighbouringlandrights">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsneighbouringlandrights" class="object-block__title" data-display-id="neighbouringlandrights">
+        <span class="object-block__display">Neighbouring Land Rights</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.neighbouringLandRights</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.attachments"
+            data-overlays="baspi5">
+          <td>Attachments</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.details"
+            data-overlays="baspi5,piq,ta6">
+          <td>Please give details and provide a plan showing the route of the access, parking etc</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangements" data-display-id="rightsorarrangements">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__title" data-display-id="rightsorarrangements">
+        <span class="object-block__display">Rights Or Arrangements</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofway" class="object-block__child-link">Public Right Of Way</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflight" class="object-block__child-link">Rights Of Light</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupport" class="object-block__child-link">Rights Of Support</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustom" class="object-block__child-link">Rights Created Through Custom</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromland" class="object-block__child-link">Rights To Take From Land</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsminesandminerals" class="object-block__child-link">Mines And Minerals</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementschurchchancel" class="object-block__child-link">Church Chancel</a>,         <a href="#propertypackrightsandinformalarrangementsrightsorarrangementsotherrights" class="object-block__child-link">Other Rights</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsSharedContributions" data-display-id="sharedcontributions">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementssharedcontributions" class="object-block__title" data-display-id="sharedcontributions">
+        <span class="object-block__display">Shared Contributions</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.sharedContributions</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.sharedContributions"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.details"
+            data-overlays="baspi5,piq,ta6">
+          <td>Please give details including who collects payments and organises the work, the amount of the payments in the last year and whether they are regular payments or only when maintenance work is required</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsChurchChancel" data-display-id="churchchancel">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementschurchchancel" class="object-block__title" data-display-id="churchchancel">
+        <span class="object-block__display">Church Chancel</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsMinesAndMinerals" data-display-id="minesandminerals">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsminesandminerals" class="object-block__title" data-display-id="minesandminerals">
+        <span class="object-block__display">Mines And Minerals</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsOtherRights" data-display-id="otherrights">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsotherrights" class="object-block__title" data-display-id="otherrights">
+        <span class="object-block__display">Other Rights</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.details"
+            data-overlays="baspi5,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsPublicRightOfWay" data-display-id="publicrightofway">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofway" class="object-block__title" data-display-id="publicrightofway">
+        <span class="object-block__display">Public Right Of Way</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.attachments"
+            data-overlays="baspi5">
+          <td>Please mark the route on a plan of the property</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.details"
+            data-overlays="baspi5,nts2,ntsl2,piq,ta6">
+          <td>Please provide details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsCreatedThroughCustom" data-display-id="rightscreatedthroughcustom">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustom" class="object-block__title" data-display-id="rightscreatedthroughcustom">
+        <span class="object-block__display">Rights Created Through Custom</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsOfLight" data-display-id="rightsoflight">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflight" class="object-block__title" data-display-id="rightsoflight">
+        <span class="object-block__display">Rights Of Light</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsOfSupport" data-display-id="rightsofsupport">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupport" class="object-block__title" data-display-id="rightsofsupport">
+        <span class="object-block__display">Rights Of Support</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.details"
+            data-overlays="baspi5">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsToTakeFromLand" data-display-id="rightstotakefromland">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromland" class="object-block__title" data-display-id="rightstotakefromland">
+        <span class="object-block__display">Rights To Take From Land</span>      </h4>
+      <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.details"
+            data-overlays="baspi5,ta6">
+          <td>Details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38f5-managed-disputes-docs.html">← Managed · disputes & documents</a><a href="39-built-form-condition-valuation.html">Built form, condition & valuation →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'legal-estate-boundaries-rights' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38g',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

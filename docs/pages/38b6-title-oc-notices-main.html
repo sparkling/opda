@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · OC summary · notices · OPDA Knowledge Base</title>
+  <meta name="description" content="OC summary · notices">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38b6</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>OC summary · notices</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>31</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;16&lt;/strong&gt; objects, &lt;strong&gt;31&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o{ TitlesToBeSold : "titlesToBeSold"
+  TitlesToBeSold ||--o| RegisterExtract : "registerExtract"
+  RegisterExtract ||--o| OcSummaryData : "ocSummaryData"
+  OcSummaryData ||--o| AgreedNotice : "agreedNotice"
+  OcSummaryData ||--o| DocumentDetails : "documentDetails"
+  OcSummaryData ||--o| UnilateralNoticeDetails : "unilateralNoticeDetails"
+  OcSummaryData ||--o| CreditorsNotice : "creditorsNotice"
+  AgreedNotice ||--o| AgreedNoticeEntry : "agreedNoticeEntry"
+  AgreedNoticeEntry ||--o| EntryDetails : "entryDetails"
+  CreditorsNotice ||--o| EntryDetails : "entryDetails"
+  DocumentDetails ||--o| Document : "document"
+  UnilateralNoticeDetails ||--o| UnilateralNoticeEntry : "unilateralNoticeEntry"
+  UnilateralNoticeEntry ||--o| UnilateralNotice : "unilateralNotice"
+  UnilateralNoticeEntry ||--o| UnilateralNoticeBeneficiary : "unilateralNoticeBeneficiary"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  TitlesToBeSold {
+  }
+  RegisterExtract {
+  }
+  OcSummaryData {
+  }
+  AgreedNotice {
+  }
+  AgreedNoticeEntry {
+    string agreedNoticeType "agreedNoticeType"
+  }
+  EntryDetails {
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  }
+  CreditorsNotice {
+  }
+  DocumentDetails {
+  }
+  Document {
+    string documentDate "documentDate"
+    string documentType "documentType"
+    string[] entryNumber "entryNumber"
+    string filedUnder "filedUnder"
+    boolean planOnlyIndicator "planOnlyIndicator"
+    string registerDescription "registerDescription"
+  }
+  UnilateralNoticeDetails {
+  }
+  UnilateralNoticeEntry {
+  }
+  UnilateralNotice {
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  }
+  UnilateralNoticeBeneficiary {
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>16</strong> objects, <strong>31</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="title_oc_notices_main">OC summary · notices</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataAgreedNotice" data-display-id="agreednotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataagreednotice" class="object-block__title" data-display-id="agreednotice">
+        <span class="object-block__display">Agreed Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataagreednoticeagreednoticeentry" class="object-block__child-link">Agreed Notice Entry</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataCreditorsNotice" data-display-id="creditorsnotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatacreditorsnotice" class="object-block__title" data-display-id="creditorsnotice">
+        <span class="object-block__display">Creditors Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatacreditorsnoticeentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataDocumentDetails" data-display-id="documentdetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatadocumentdetails" class="object-block__title" data-display-id="documentdetails">
+        <span class="object-block__display">Document Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydatadocumentdetailsdocument" class="object-block__child-link">Document</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataUnilateralNoticeDetails" data-display-id="unilateralnoticedetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetails" class="object-block__title" data-display-id="unilateralnoticedetails">
+        <span class="object-block__display">Unilateral Notice Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentry" class="object-block__child-link">Unilateral Notice Entry</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataAgreedNoticeAgreedNoticeEntry" data-display-id="agreednoticeentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataagreednoticeagreednoticeentry" class="object-block__title" data-display-id="agreednoticeentry">
+        <span class="object-block__display">Agreed Notice Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataagreednoticeagreednoticeentryentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.agreedNoticeType"
+            data-overlays="">
+          <td>agreedNoticeType</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>agreedNoticeType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataCreditorsNoticeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatacreditorsnoticeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataDocumentDetailsDocument" data-display-id="document">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatadocumentdetailsdocument" class="object-block__title" data-display-id="document">
+        <span class="object-block__display">Document</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentDate"
+            data-overlays="">
+          <td>documentDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>documentDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentType"
+            data-overlays="">
+          <td>documentType</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>documentType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.filedUnder"
+            data-overlays="">
+          <td>filedUnder</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>filedUnder</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.planOnlyIndicator"
+            data-overlays="">
+          <td>planOnlyIndicator</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>planOnlyIndicator</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.registerDescription"
+            data-overlays="">
+          <td>registerDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registerDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataUnilateralNoticeDetailsUnilateralNoticeEntry" data-display-id="unilateralnoticeentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentry" class="object-block__title" data-display-id="unilateralnoticeentry">
+        <span class="object-block__display">Unilateral Notice Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentryunilateralnotice" class="object-block__child-link">Unilateral Notice</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentryunilateralnoticebeneficiary" class="object-block__child-link">Unilateral Notice Beneficiary</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataAgreedNoticeAgreedNoticeEntryEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataagreednoticeagreednoticeentryentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice.agreedNoticeEntry.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataUnilateralNoticeDetailsUnilateralNoticeEntryUnilateralNotice" data-display-id="unilateralnotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentryunilateralnotice" class="object-block__title" data-display-id="unilateralnotice">
+        <span class="object-block__display">Unilateral Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNotice.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataUnilateralNoticeDetailsUnilateralNoticeEntryUnilateralNoticeBeneficiary" data-display-id="unilateralnoticebeneficiary">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataunilateralnoticedetailsunilateralnoticeentryunilateralnoticebeneficiary" class="object-block__title" data-display-id="unilateralnoticebeneficiary">
+        <span class="object-block__display">Unilateral Notice Beneficiary</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails.unilateralNoticeEntry.unilateralNoticeBeneficiary.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38b5-title-oc-charges-other.html">← OC summary · other charges & restrictions</a><a href="38b7-title-oc-notices-other.html">OC summary · cautions, bankruptcy, rights →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'title-oc-notices-main' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38b6',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

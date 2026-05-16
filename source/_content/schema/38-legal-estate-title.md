@@ -74,10 +74,10 @@ regions:
             Conv->>Lender: request redemption statement
             Lender-->>Conv: redemption figure
             Conv->>HMLR: file AP1 (transfer + DS1) at completion
-            HMLR-->>Conv: title updated; new official copy
+            HMLR-->>Conv: title updated, new official copy
           else No subsisting charge
             Conv->>HMLR: file AP1 at completion
-            HMLR-->>Conv: title updated; new official copy
+            HMLR-->>Conv: title updated, new official copy
           end
       caption: |
         Title evidence flow: ordering an OC1, parsing the register,

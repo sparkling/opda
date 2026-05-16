@@ -1,0 +1,1082 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Surveys · grounds · OPDA Knowledge Base</title>
+  <meta name="description" content="Surveys · grounds">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39d2</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Surveys · grounds</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>77</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;12&lt;/strong&gt; objects, &lt;strong&gt;77&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o{ Survey : "surveys"
+  Survey ||--o| Grounds : "grounds"
+  Grounds ||--o| Garage : "garage"
+  Grounds ||--o| PermanentOutbuildings : "permanentOutbuildings"
+  Grounds ||--o| Other : "other"
+  Garage ||--o| Photos : "photos"
+  Other ||--o| Photos : "photos"
+  Other ||--o| Boundaries : "boundaries"
+  Other ||--o| Hardscaping : "hardscaping"
+  PermanentOutbuildings ||--o| Photos : "photos"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  Survey {
+  }
+  Grounds {
+  }
+  Garage {
+    string advisories "advisories"
+    string condition "condition"
+    string defectDetail "defectDetail"
+    string defects "defects"
+    string description "description"
+    boolean hasDefects "hasDefects"
+    string inspectionLimitations "inspectionLimitations"
+    string location "location"
+    string movementStatus "movementStatus"
+    string movementType "movementType"
+    string notes "notes"
+    string restrictions "restrictions"
+    string roofConstruction "roofConstruction"
+    boolean structuralMovement "structuralMovement"
+    string visibility "visibility"
+    string wallConstruction "wallConstruction"
+  }
+  Photos {
+    string description "description"
+    string photoId "photoId"
+    boolean report "report"
+  }
+  Other {
+    string advisories "advisories"
+    boolean buildingRegs "buildingRegs"
+    string condition "condition"
+    string defects "defects"
+    string description "description"
+    boolean exceed1Acre "exceed1Acre"
+    string gardens "gardens"
+    string inspectionLimitations "inspectionLimitations"
+    string japaneseKnotweed "japaneseKnotweed"
+    string notes "notes"
+    string otherDefectDetail "otherDefectDetail"
+    boolean otherDefects "otherDefects"
+    string otherFeatures "otherFeatures"
+    string restrictions "restrictions"
+    string visibility "visibility"
+  }
+  Boundaries {
+    string fenceDefects "fenceDefects"
+    string fenceDescription "fenceDescription"
+    string fenceIssues "fenceIssues"
+    string hedgeDefects "hedgeDefects"
+    string hedgeDescription "hedgeDescription"
+    string hedgeIssues "hedgeIssues"
+    string otherBoundaryDescription "otherBoundaryDescription"
+    string wallDefects "wallDefects"
+    string wallDescription "wallDescription"
+    string wallIssues "wallIssues"
+  }
+  Hardscaping {
+    string deckingDefectDetail "deckingDefectDetail"
+    boolean deckingDefects "deckingDefects"
+    string deckingMaterial "deckingMaterial"
+    string driveDefectDetail "driveDefectDetail"
+    boolean driveDefects "driveDefects"
+    string driveMaterial "driveMaterial"
+    string drivewayLandscaping "drivewayLandscaping"
+    string pathDefectDetail "pathDefectDetail"
+    boolean pathDefects "pathDefects"
+    string pathMaterial "pathMaterial"
+    string patioDefectDetail "patioDefectDetail"
+    boolean patioDefects "patioDefects"
+    string patioMaterial "patioMaterial"
+  }
+  PermanentOutbuildings {
+    string advisories "advisories"
+    string condition "condition"
+    string defectDetail "defectDetail"
+    string defects "defects"
+    string description "description"
+    boolean hasDefects "hasDefects"
+    string inspectionLimitations "inspectionLimitations"
+    string location "location"
+    string notes "notes"
+    string restrictions "restrictions"
+    string roofConstruction "roofConstruction"
+    string type "type"
+    string visibility "visibility"
+    string wallConstruction "wallConstruction"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>12</strong> objects, <strong>77</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="surv_grounds">Grounds</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysGrounds" data-display-id="grounds">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgrounds" class="object-block__title" data-display-id="grounds">
+        <span class="object-block__display">Grounds</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacksurveysgroundsgarage" class="object-block__child-link">Garage</a>,         <a href="#propertypacksurveysgroundspermanentoutbuildings" class="object-block__child-link">Permanent Outbuildings</a>,         <a href="#propertypacksurveysgroundsother" class="object-block__child-link">Other</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsGarage" data-display-id="garage">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsgarage" class="object-block__title" data-display-id="garage">
+        <span class="object-block__display">Garage</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.garage</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacksurveysgroundsgaragephotos" class="object-block__child-link">Photos</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.garage"
+       data-field-count="16">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.defectDetail"
+            data-overlays="">
+          <td>defectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.hasDefects"
+            data-overlays="">
+          <td>hasDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>hasDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.location"
+            data-overlays="">
+          <td>location</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>location</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.movementStatus"
+            data-overlays="">
+          <td>movementStatus</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>movementStatus</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.movementType"
+            data-overlays="">
+          <td>movementType</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>movementType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.restrictions"
+            data-overlays="">
+          <td>restrictions</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.roofConstruction"
+            data-overlays="">
+          <td>roofConstruction</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>roofConstruction</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.structuralMovement"
+            data-overlays="">
+          <td>structuralMovement</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>structuralMovement</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.wallConstruction"
+            data-overlays="">
+          <td>wallConstruction</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>wallConstruction</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsOther" data-display-id="other">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsother" class="object-block__title" data-display-id="other">
+        <span class="object-block__display">Other</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.other</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacksurveysgroundsotherphotos" class="object-block__child-link">Photos</a>,         <a href="#propertypacksurveysgroundsotherboundaries" class="object-block__child-link">Boundaries</a>,         <a href="#propertypacksurveysgroundsotherhardscaping" class="object-block__child-link">Hardscaping</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.other"
+       data-field-count="15">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.buildingRegs"
+            data-overlays="">
+          <td>buildingRegs</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>buildingRegs</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.exceed1Acre"
+            data-overlays="">
+          <td>exceed1Acre</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>exceed1Acre</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.gardens"
+            data-overlays="">
+          <td>gardens</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>gardens</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.japaneseKnotweed"
+            data-overlays="">
+          <td>japaneseKnotweed</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>japaneseKnotweed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.otherDefectDetail"
+            data-overlays="">
+          <td>otherDefectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>otherDefectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.otherDefects"
+            data-overlays="">
+          <td>otherDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>otherDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.otherFeatures"
+            data-overlays="">
+          <td>otherFeatures</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>otherFeatures</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.restrictions"
+            data-overlays="">
+          <td>restrictions</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsPermanentOutbuildings" data-display-id="permanentoutbuildings">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundspermanentoutbuildings" class="object-block__title" data-display-id="permanentoutbuildings">
+        <span class="object-block__display">Permanent Outbuildings</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.permanentOutbuildings</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacksurveysgroundspermanentoutbuildingsphotos" class="object-block__child-link">Photos</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.permanentOutbuildings"
+       data-field-count="14">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.defectDetail"
+            data-overlays="">
+          <td>defectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.hasDefects"
+            data-overlays="">
+          <td>hasDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>hasDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.location"
+            data-overlays="">
+          <td>location</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>location</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.restrictions"
+            data-overlays="">
+          <td>restrictions</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.roofConstruction"
+            data-overlays="">
+          <td>roofConstruction</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>roofConstruction</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.type"
+            data-overlays="">
+          <td>type</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>type</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.wallConstruction"
+            data-overlays="">
+          <td>wallConstruction</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>wallConstruction</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsGaragePhotos" data-display-id="photos">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsgaragephotos" class="object-block__title" data-display-id="photos">
+        <span class="object-block__display">Photos</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.garage.photos</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.garage.photos"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.photos.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.photos.photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.garage.photos.report"
+            data-overlays="">
+          <td>report</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsOtherBoundaries" data-display-id="boundaries">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsotherboundaries" class="object-block__title" data-display-id="boundaries">
+        <span class="object-block__display">Boundaries</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.other.boundaries</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.other.boundaries"
+       data-field-count="10">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.fenceDefects"
+            data-overlays="">
+          <td>fenceDefects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>fenceDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.fenceDescription"
+            data-overlays="">
+          <td>fenceDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>fenceDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.fenceIssues"
+            data-overlays="">
+          <td>fenceIssues</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>fenceIssues</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.hedgeDefects"
+            data-overlays="">
+          <td>hedgeDefects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>hedgeDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.hedgeDescription"
+            data-overlays="">
+          <td>hedgeDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>hedgeDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.hedgeIssues"
+            data-overlays="">
+          <td>hedgeIssues</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>hedgeIssues</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.otherBoundaryDescription"
+            data-overlays="">
+          <td>otherBoundaryDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>otherBoundaryDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.wallDefects"
+            data-overlays="">
+          <td>wallDefects</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>wallDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.wallDescription"
+            data-overlays="">
+          <td>wallDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>wallDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.boundaries.wallIssues"
+            data-overlays="">
+          <td>wallIssues</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>wallIssues</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsOtherHardscaping" data-display-id="hardscaping">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsotherhardscaping" class="object-block__title" data-display-id="hardscaping">
+        <span class="object-block__display">Hardscaping</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.other.hardscaping</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.other.hardscaping"
+       data-field-count="13">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.deckingDefectDetail"
+            data-overlays="">
+          <td>deckingDefectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>deckingDefectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.deckingDefects"
+            data-overlays="">
+          <td>deckingDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>deckingDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.deckingMaterial"
+            data-overlays="">
+          <td>deckingMaterial</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>deckingMaterial</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.driveDefectDetail"
+            data-overlays="">
+          <td>driveDefectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>driveDefectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.driveDefects"
+            data-overlays="">
+          <td>driveDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>driveDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.driveMaterial"
+            data-overlays="">
+          <td>driveMaterial</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>driveMaterial</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.drivewayLandscaping"
+            data-overlays="">
+          <td>drivewayLandscaping</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>drivewayLandscaping</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.pathDefectDetail"
+            data-overlays="">
+          <td>pathDefectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>pathDefectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.pathDefects"
+            data-overlays="">
+          <td>pathDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>pathDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.pathMaterial"
+            data-overlays="">
+          <td>pathMaterial</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>pathMaterial</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.patioDefectDetail"
+            data-overlays="">
+          <td>patioDefectDetail</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>patioDefectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.patioDefects"
+            data-overlays="">
+          <td>patioDefects</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>patioDefects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.hardscaping.patioMaterial"
+            data-overlays="">
+          <td>patioMaterial</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>patioMaterial</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsOtherPhotos" data-display-id="photos">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundsotherphotos" class="object-block__title" data-display-id="photos">
+        <span class="object-block__display">Photos</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.other.photos</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.other.photos"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.photos.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.photos.photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.other.photos.report"
+            data-overlays="">
+          <td>report</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysGroundsPermanentOutbuildingsPhotos" data-display-id="photos">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysgroundspermanentoutbuildingsphotos" class="object-block__title" data-display-id="photos">
+        <span class="object-block__display">Photos</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].grounds.permanentOutbuildings.photos</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].grounds.permanentOutbuildings.photos"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.photos.description"
+            data-overlays="">
+          <td>description</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.photos.photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].grounds.permanentOutbuildings.photos.report"
+            data-overlays="">
+          <td>report</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="39d1-survey-meta.html">← Surveys · report metadata & declaration</a><a href="39d3-survey-inside-structure.html">Surveys · inside · roof, ceilings, walls →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'survey-grounds' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '39d2',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

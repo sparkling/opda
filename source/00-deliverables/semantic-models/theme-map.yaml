@@ -82,103 +82,495 @@ pages:
   # ────────────────────────────────────────────────────────────────
   "38":
     title: "Legal estate & title"
+    is_landing: true              # Landing page — hand-written; links to 38a–38g.
+    children: ["38a", "38b", "38c", "38d", "38e", "38f", "38g"]
+    sections: []
+
+  "38a":
+    title: "Tenure"
+    parent: "38"
     voice: "reference-prose-with-opinion"
-    er_diagram: true              # title ↔ proprietors ↔ leases ↔ restrictions.
-    stat_strip: true
     sections:
-      - { id: tenure,           title: "Tenure & marketing tenure",       prefixes: ["propertyPack.marketingTenure", "propertyPack.legalOwners"] }
-      - { id: title_number,     title: "Title · number & extents",         prefixes: ["propertyPack.titlesToBeSold[].titleNumber", "propertyPack.titlesToBeSold[].titleExtents"] }
-      - { id: title_oc_meta,    title: "Title · OC summary · metadata & property",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.officialCopyDateTime", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.editionDate", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators"] }
-      - { id: title_oc_owners,  title: "Title · OC summary · proprietorship & lease",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease"] }
-      - { id: title_oc_charges_main, title: "Title · OC summary · charges (main)",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge"] }
-      - { id: title_oc_charges_other, title: "Title · OC summary · other charges & restrictions",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails"] }
-      - { id: title_oc_notices_main, title: "Title · OC summary · notices",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails"] }
-      - { id: title_oc_notices_other, title: "Title · OC summary · cautions, bankruptcy, rights",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.bankruptcy", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.caution", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deedOfPostponement", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.greenOutEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.homeRights", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rightOfPreEmption", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unidentifiedEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.ccbiEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deathOfProprietor"] }
-      - { id: title_register_oc_full,    title: "Title · OC full register data",
-                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocRegisterData"] }
-      - { id: title_extras,     title: "Title · additional documents",     prefixes: ["propertyPack.titlesToBeSold[].additionalDocuments"] }
-      - { id: boundaries,       title: "Legal boundaries",                 prefixes: ["propertyPack.legalBoundaries"] }
-      - { id: rights,           title: "Rights & informal arrangements",   prefixes: ["propertyPack.rightsAndInformalArrangements"] }
-      - { id: own_summary,      title: "Ownership · summary",              prefixes: ["propertyPack.ownership.numberOfSellers", "propertyPack.ownership.numberOfNonUkResidentSellers", "propertyPack.ownership.hasHelpToBuyEquityLoan", "propertyPack.ownership.isFirstRegistration", "propertyPack.ownership.isLimitedCompanySale"] }
-      - { id: own_transfer_id,  title: "Ownership · transfer identity",    prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].titleNumber", "propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription", "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"] }
-      - { id: own_freehold,     title: "Ownership · freehold",             prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges", "propertyPack.ownership.ownershipsToBeTransferred[].wholeFreeholdForSale"] }
-      - { id: own_managed_contact, title: "Ownership · managed · contact & transfer",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation"] }
-      - { id: own_managed_financial, title: "Ownership · managed · service charge & insurance",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance"] }
-      - { id: own_managed_other, title: "Ownership · managed · disputes & documents",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.disputes", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.requiredDocuments"] }
-      - { id: own_lease_term,   title: "Ownership · leasehold · term & shared ownership",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm"] }
-      - { id: own_lease_contacts_list, title: "Ownership · leasehold · contact list",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts"] }
-      - { id: own_lease_contacts_roles, title: "Ownership · leasehold · service-contact roles",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments"] }
-      - { id: own_lease_mgmt,   title: "Ownership · leasehold · management",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement"] }
-      - { id: own_lease_rent,   title: "Ownership · leasehold · ground rent",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent"] }
-      - { id: own_lease_charges, title: "Ownership · leasehold · service charge & insurance",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance"] }
-      - { id: own_lease_legal,  title: "Ownership · leasehold · consents, restrictions, alterations, safety",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.consents", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseRestrictions", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.alterations", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct"] }
-      - { id: own_lease_misc,   title: "Ownership · leasehold · disputes, general, documents, confirmation",
-                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.disputes", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy"] }
-      - { id: own_other,        title: "Ownership · other",                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails"] }
+      - { id: tenure, title: "Tenure & marketing tenure", prefixes: ["propertyPack.marketingTenure", "propertyPack.legalOwners"] }
+
+  "38b":
+    title: "Title — Official Copy summary"
+    parent: "38"
+    is_landing: true
+    children: ["38b1", "38b2", "38b3", "38b4", "38b5", "38b6", "38b7"]
+    sections: []
+
+  "38b1":
+    title: "Title · number & extents"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_number, title: "Title · number & extents", prefixes: ["propertyPack.titlesToBeSold[].titleNumber", "propertyPack.titlesToBeSold[].titleExtents"] }
+
+  "38b2":
+    title: "OC summary · metadata & property"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_meta, title: "OC summary · metadata & property",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.officialCopyDateTime", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.editionDate", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators"] }
+
+  "38b3":
+    title: "OC summary · proprietorship & lease"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_owners, title: "OC summary · proprietorship & lease",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease"] }
+
+  "38b4":
+    title: "OC summary · charges (main)"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_charges_main, title: "OC summary · charges (main)",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge"] }
+
+  "38b5":
+    title: "OC summary · other charges & restrictions"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_charges_other, title: "OC summary · other charges & restrictions",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails"] }
+
+  "38b6":
+    title: "OC summary · notices"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_notices_main, title: "OC summary · notices",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails"] }
+
+  "38b7":
+    title: "OC summary · cautions, bankruptcy, rights"
+    parent: "38b"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_oc_notices_other, title: "OC summary · cautions, bankruptcy, rights",
+          prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.bankruptcy", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.caution", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deedOfPostponement", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.greenOutEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.homeRights", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rightOfPreEmption", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unidentifiedEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.ccbiEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deathOfProprietor"] }
+
+  "38c":
+    title: "Title — Official Copy full register"
+    parent: "38"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: title_register_oc_full, title: "OC full register data", prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocRegisterData"] }
+      - { id: title_extras,           title: "Additional title documents", prefixes: ["propertyPack.titlesToBeSold[].additionalDocuments"] }
+
+  "38d":
+    title: "Ownership — freehold transfer"
+    parent: "38"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_summary,     title: "Ownership · summary",           prefixes: ["propertyPack.ownership.numberOfSellers", "propertyPack.ownership.numberOfNonUkResidentSellers", "propertyPack.ownership.hasHelpToBuyEquityLoan", "propertyPack.ownership.isFirstRegistration", "propertyPack.ownership.isLimitedCompanySale"] }
+      - { id: own_transfer_id, title: "Ownership · transfer identity", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].titleNumber", "propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription", "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"] }
+      - { id: own_freehold,    title: "Freehold",                       prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges", "propertyPack.ownership.ownershipsToBeTransferred[].wholeFreeholdForSale"] }
+      - { id: own_other,       title: "Other ownership detail",        prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails"] }
+
+  "38e":
+    title: "Ownership — leasehold transfer"
+    parent: "38"
+    is_landing: true
+    children: ["38e1", "38e2", "38e3", "38e4", "38e5", "38e6", "38e7", "38e8"]
+    sections: []
+
+  "38e1":
+    title: "Leasehold · term & shared ownership"
+    parent: "38e"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_term, title: "Term & shared ownership", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm"] }
+
+  "38e2":
+    title: "Leasehold · contact list"
+    parent: "38e"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_contacts_list, title: "Contact list", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts"] }
+
+  "38e3":
+    title: "Leasehold · service-contact roles"
+    parent: "38e"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_contacts_roles, title: "Service-contact roles", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments"] }
+
+  "38e4":
+    title: "Leasehold · management"
+    parent: "38e"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_mgmt, title: "Management", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement"] }
+
+  "38e5":
+    title: "Leasehold · ground rent"
+    parent: "38e"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_rent, title: "Ground rent", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent"] }
+
+  "38e6":
+    title: "Leasehold · service charge & insurance"
+    parent: "38e"
+    is_landing: true
+    children: ["38e6a", "38e6b"]
+    sections: []
+
+  "38e6a":
+    title: "Leasehold · service charge"
+    parent: "38e6"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_service_charge, title: "Service charge", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge"] }
+
+  "38e6b":
+    title: "Leasehold · buildings insurance"
+    parent: "38e6"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_buildings_insurance, title: "Buildings insurance", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance"] }
+
+  "38e7":
+    title: "Leasehold · consents, restrictions, alterations, safety"
+    parent: "38e"
+    is_landing: true
+    children: ["38e7a", "38e7b", "38e7c", "38e7d"]
+    sections: []
+
+  "38e7a":
+    title: "Leasehold · consents & alterations"
+    parent: "38e7"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_consents_alterations, title: "Consents & alterations",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.consents", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.alterations"] }
+
+  "38e7b":
+    title: "Leasehold · restrictions & enfranchisement"
+    parent: "38e7"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_restrictions, title: "Restrictions & enfranchisement",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseRestrictions", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement"] }
+
+  "38e7c":
+    title: "Leasehold · Building Safety Act"
+    parent: "38e7"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_building_safety, title: "Building Safety Act", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct"] }
+
+  "38e7d":
+    title: "Leasehold · transfer & registration"
+    parent: "38e7"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_transfer, title: "Transfer & registration", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration"] }
+
+  "38e8":
+    title: "Leasehold · disputes, general, documents, confirmation"
+    parent: "38e"
+    is_landing: true
+    children: ["38e8a", "38e8b", "38e8c"]
+    sections: []
+
+  "38e8a":
+    title: "Leasehold · disputes"
+    parent: "38e8"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_disputes, title: "Disputes", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.disputes"] }
+
+  "38e8b":
+    title: "Leasehold · general & confirmation"
+    parent: "38e8"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_general, title: "General & confirmation",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general", "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy"] }
+
+  "38e8c":
+    title: "Leasehold · required documents"
+    parent: "38e8"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_lease_required_docs, title: "Required documents", prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments"] }
+
+  "38f":
+    title: "Ownership — managed"
+    parent: "38"
+    is_landing: true
+    children: ["38f1", "38f2", "38f3", "38f4", "38f5"]
+    sections: []
+
+  "38f1":
+    title: "Managed · contacts"
+    parent: "38f"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_managed_contacts, title: "Contacts",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails"] }
+
+  "38f2":
+    title: "Managed · transfer & confirmation"
+    parent: "38f"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_managed_transfer, title: "Transfer & confirmation",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation"] }
+
+  "38f3":
+    title: "Managed · service charge"
+    parent: "38f"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_managed_service_charge, title: "Service charge",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge"] }
+
+  "38f4":
+    title: "Managed · insurance"
+    parent: "38f"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_managed_insurance, title: "Insurance",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance"] }
+
+  "38f5":
+    title: "Managed · disputes & documents"
+    parent: "38f"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: own_managed_disputes_docs, title: "Disputes & documents",
+          prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.disputes", "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.requiredDocuments"] }
+
+  "38g":
+    title: "Boundaries & rights"
+    parent: "38"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: boundaries, title: "Legal boundaries",               prefixes: ["propertyPack.legalBoundaries"] }
+      - { id: rights,     title: "Rights & informal arrangements", prefixes: ["propertyPack.rightsAndInformalArrangements"] }
 
   # ────────────────────────────────────────────────────────────────
   # 39 — Built form, condition & valuation. Gating page (per D-Order).
   # ────────────────────────────────────────────────────────────────
   "39":
     title: "Built form, condition & valuation"
+    is_landing: true              # Landing — hand-written; links to 39a–39e.
+    children: ["39a", "39b", "39c", "39d", "39e"]
+    sections: []
+
+  "39a":
+    title: "Built form"
+    parent: "39"
     voice: "reference-prose-with-opinion"
-    er_diagram: true              # survey ↔ defects ↔ remediation.
-    stat_strip: true
     sections:
-      - { id: built_form,           title: "Built form",                  prefixes: ["propertyPack.buildInformation", "propertyPack.typeOfConstruction", "propertyPack.parking", "propertyPack.smartHomeSystems", "propertyPack.summaryDescription", "propertyPack.media"] }
-      - { id: condition,            title: "Condition",                   prefixes: ["propertyPack.alterationsAndChanges", "propertyPack.electricalWorks"] }
-      - { id: fix_summary,          title: "Fixtures · items to include / remove",
-                                    prefixes: ["propertyPack.fixturesAndFittings.itemsToInclude", "propertyPack.fixturesAndFittings.itemsToRemove", "propertyPack.fixturesAndFittings.confirmationOfAccuracy"] }
-      - { id: fix_basic,            title: "Fixtures · basic fittings",   prefixes: ["propertyPack.fixturesAndFittings.basicFittings"] }
-      - { id: fix_kitchen,          title: "Fixtures · kitchen",          prefixes: ["propertyPack.fixturesAndFittings.kitchen"] }
-      - { id: fix_bathroom,         title: "Fixtures · bathroom",         prefixes: ["propertyPack.fixturesAndFittings.bathroom"] }
-      - { id: fix_carpets,          title: "Fixtures · carpets",          prefixes: ["propertyPack.fixturesAndFittings.carpets"] }
-      - { id: fix_curtains,         title: "Fixtures · curtains & rails",  prefixes: ["propertyPack.fixturesAndFittings.curtainsAndCurtainRails"] }
-      - { id: fix_lights,           title: "Fixtures · light fittings",   prefixes: ["propertyPack.fixturesAndFittings.lightFittings"] }
-      - { id: fix_units,            title: "Fixtures · fitted units",     prefixes: ["propertyPack.fixturesAndFittings.fittedUnits"] }
-      - { id: fix_outdoor,          title: "Fixtures · outdoor",          prefixes: ["propertyPack.fixturesAndFittings.outdoorArea"] }
-      - { id: fix_services,         title: "Fixtures · TV, telephone, fuel, other items",
-                                    prefixes: ["propertyPack.fixturesAndFittings.televisionAndTelephone", "propertyPack.fixturesAndFittings.stockOfFuel", "propertyPack.fixturesAndFittings.otherItems"] }
-      - { id: surv_meta,            title: "Surveys · report metadata & declaration",
-                                    prefixes: ["propertyPack.surveys[].surveyType", "propertyPack.surveys[].dateOfInspection", "propertyPack.surveys[].dateOfReport", "propertyPack.surveys[].declaration", "propertyPack.surveys[].misc"] }
-      - { id: surv_grounds,         title: "Surveys · grounds",           prefixes: ["propertyPack.surveys[].grounds"] }
-      - { id: surv_inside_structure, title: "Surveys · inside · roof, ceilings, walls",
-                                    prefixes: ["propertyPack.surveys[].inside.roofStructure", "propertyPack.surveys[].inside.ceilings", "propertyPack.surveys[].inside.wallsPartitions"] }
-      - { id: surv_inside_features,  title: "Surveys · inside · floors, fireplaces, built-in fittings",
-                                    prefixes: ["propertyPack.surveys[].inside.floors", "propertyPack.surveys[].inside.fireplaces", "propertyPack.surveys[].inside.builtinFittings"] }
-      - { id: surv_inside_finishes,  title: "Surveys · inside · woodwork, bathroom fittings, other",
-                                    prefixes: ["propertyPack.surveys[].inside.woodwork", "propertyPack.surveys[].inside.bathroomFittings", "propertyPack.surveys[].inside.other"] }
-      - { id: surv_outside_roof,    title: "Surveys · outside · chimneys, roof, rainwater",
-                                    prefixes: ["propertyPack.surveys[].outside.chimneyStacks", "propertyPack.surveys[].outside.roofCoverings", "propertyPack.surveys[].outside.rainwaterPipesGutters"] }
-      - { id: surv_outside_envelope, title: "Surveys · outside · walls, windows, doors",
-                                    prefixes: ["propertyPack.surveys[].outside.mainWalls", "propertyPack.surveys[].outside.windows", "propertyPack.surveys[].outside.outsideDoors"] }
-      - { id: surv_outside_extras,  title: "Surveys · outside · conservatory, joinery, other",
-                                    prefixes: ["propertyPack.surveys[].outside.conservatoryPorches", "propertyPack.surveys[].outside.otherJoinery", "propertyPack.surveys[].outside.other"] }
-      - { id: surv_services_energy, title: "Surveys · services · electricity, gas/oil, heating, water-heating",
-                                    prefixes: ["propertyPack.surveys[].services.electricity", "propertyPack.surveys[].services.gasOil", "propertyPack.surveys[].services.heating", "propertyPack.surveys[].services.waterHeating"] }
-      - { id: surv_services_water,  title: "Surveys · services · water, drainage, common services",
-                                    prefixes: ["propertyPack.surveys[].services.water", "propertyPack.surveys[].services.drainage", "propertyPack.surveys[].services.commonServices"] }
-      - { id: surv_legal,           title: "Surveys · legal & guarantees", prefixes: ["propertyPack.surveys[].legalIssues"] }
-      - { id: surv_valuation_block, title: "Surveys · valuation block",   prefixes: ["propertyPack.surveys[].propertyValuation"] }
-      - { id: surv_advice,          title: "Surveys · advice, risks & matters for legal advisers",
-                                    prefixes: ["propertyPack.surveys[].advice", "propertyPack.surveys[].risks", "propertyPack.surveys[].mattersForLegalAdvisers", "propertyPack.surveys[].environmentalConsiderations", "propertyPack.surveys[].limitations"] }
-      - { id: valuation,            title: "Valuation and price",         prefixes: ["propertyPack.valuations", "propertyPack.priceInformation", "valuationComparisonData"] }
+      - { id: built_form, title: "Built form", prefixes: ["propertyPack.buildInformation", "propertyPack.typeOfConstruction", "propertyPack.parking", "propertyPack.smartHomeSystems", "propertyPack.summaryDescription", "propertyPack.media"] }
+
+  "39b":
+    title: "Condition"
+    parent: "39"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: condition, title: "Condition", prefixes: ["propertyPack.alterationsAndChanges", "propertyPack.electricalWorks"] }
+
+  "39c":
+    title: "Fixtures & fittings"
+    parent: "39"
+    is_landing: true
+    children: ["39c1", "39c2", "39c3", "39c4", "39c5", "39c6", "39c7", "39c8", "39c9", "39c10"]
+    sections: []
+
+  "39c1":
+    title: "Fixtures · items to include / remove"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_summary, title: "Items to include / remove", prefixes: ["propertyPack.fixturesAndFittings.itemsToInclude", "propertyPack.fixturesAndFittings.itemsToRemove", "propertyPack.fixturesAndFittings.confirmationOfAccuracy"] }
+
+  "39c2":
+    title: "Fixtures · basic fittings"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_basic, title: "Basic fittings", prefixes: ["propertyPack.fixturesAndFittings.basicFittings"] }
+
+  "39c3":
+    title: "Fixtures · kitchen"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_kitchen, title: "Kitchen", prefixes: ["propertyPack.fixturesAndFittings.kitchen"] }
+
+  "39c4":
+    title: "Fixtures · bathroom"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_bathroom, title: "Bathroom", prefixes: ["propertyPack.fixturesAndFittings.bathroom"] }
+
+  "39c5":
+    title: "Fixtures · carpets"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_carpets, title: "Carpets", prefixes: ["propertyPack.fixturesAndFittings.carpets"] }
+
+  "39c6":
+    title: "Fixtures · curtains & rails"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_curtains, title: "Curtains & rails", prefixes: ["propertyPack.fixturesAndFittings.curtainsAndCurtainRails"] }
+
+  "39c7":
+    title: "Fixtures · light fittings"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_lights, title: "Light fittings", prefixes: ["propertyPack.fixturesAndFittings.lightFittings"] }
+
+  "39c8":
+    title: "Fixtures · fitted units"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_units, title: "Fitted units", prefixes: ["propertyPack.fixturesAndFittings.fittedUnits"] }
+
+  "39c9":
+    title: "Fixtures · outdoor"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_outdoor, title: "Outdoor", prefixes: ["propertyPack.fixturesAndFittings.outdoorArea"] }
+
+  "39c10":
+    title: "Fixtures · TV, telephone, fuel, other items"
+    parent: "39c"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: fix_services, title: "TV, telephone, fuel, other items", prefixes: ["propertyPack.fixturesAndFittings.televisionAndTelephone", "propertyPack.fixturesAndFittings.stockOfFuel", "propertyPack.fixturesAndFittings.otherItems"] }
+
+  "39d":
+    title: "Surveys"
+    parent: "39"
+    is_landing: true
+    children: ["39d1", "39d2", "39d3", "39d4", "39d5", "39d6", "39d7", "39d8", "39d9", "39d10", "39d11", "39d12", "39d13"]
+    sections: []
+
+  "39d1":
+    title: "Surveys · report metadata & declaration"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_meta, title: "Report metadata & declaration",
+          prefixes: ["propertyPack.surveys[].surveyType", "propertyPack.surveys[].dateOfInspection", "propertyPack.surveys[].dateOfReport", "propertyPack.surveys[].declaration", "propertyPack.surveys[].misc"] }
+
+  "39d2":
+    title: "Surveys · grounds"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_grounds, title: "Grounds", prefixes: ["propertyPack.surveys[].grounds"] }
+
+  "39d3":
+    title: "Surveys · inside · roof, ceilings, walls"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_inside_structure, title: "Inside · roof, ceilings, walls",
+          prefixes: ["propertyPack.surveys[].inside.roofStructure", "propertyPack.surveys[].inside.ceilings", "propertyPack.surveys[].inside.wallsPartitions"] }
+
+  "39d4":
+    title: "Surveys · inside · floors, fireplaces, built-in fittings"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_inside_features, title: "Inside · floors, fireplaces, built-in fittings",
+          prefixes: ["propertyPack.surveys[].inside.floors", "propertyPack.surveys[].inside.fireplaces", "propertyPack.surveys[].inside.builtinFittings"] }
+
+  "39d5":
+    title: "Surveys · inside · woodwork, bathroom fittings, other"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_inside_finishes, title: "Inside · woodwork, bathroom fittings, other",
+          prefixes: ["propertyPack.surveys[].inside.woodwork", "propertyPack.surveys[].inside.bathroomFittings", "propertyPack.surveys[].inside.other"] }
+
+  "39d6":
+    title: "Surveys · outside · chimneys, roof, rainwater"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_outside_roof, title: "Outside · chimneys, roof, rainwater",
+          prefixes: ["propertyPack.surveys[].outside.chimneyStacks", "propertyPack.surveys[].outside.roofCoverings", "propertyPack.surveys[].outside.rainwaterPipesGutters"] }
+
+  "39d7":
+    title: "Surveys · outside · walls, windows, doors"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_outside_envelope, title: "Outside · walls, windows, doors",
+          prefixes: ["propertyPack.surveys[].outside.mainWalls", "propertyPack.surveys[].outside.windows", "propertyPack.surveys[].outside.outsideDoors"] }
+
+  "39d8":
+    title: "Surveys · outside · conservatory, joinery, other"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_outside_extras, title: "Outside · conservatory, joinery, other",
+          prefixes: ["propertyPack.surveys[].outside.conservatoryPorches", "propertyPack.surveys[].outside.otherJoinery", "propertyPack.surveys[].outside.other"] }
+
+  "39d9":
+    title: "Surveys · services · electricity, gas/oil, heating, water-heating"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_services_energy, title: "Services · electricity, gas/oil, heating, water-heating",
+          prefixes: ["propertyPack.surveys[].services.electricity", "propertyPack.surveys[].services.gasOil", "propertyPack.surveys[].services.heating", "propertyPack.surveys[].services.waterHeating"] }
+
+  "39d10":
+    title: "Surveys · services · water, drainage, common services"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_services_water, title: "Services · water, drainage, common services",
+          prefixes: ["propertyPack.surveys[].services.water", "propertyPack.surveys[].services.drainage", "propertyPack.surveys[].services.commonServices"] }
+
+  "39d11":
+    title: "Surveys · legal & guarantees"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_legal, title: "Legal & guarantees", prefixes: ["propertyPack.surveys[].legalIssues"] }
+
+  "39d12":
+    title: "Surveys · valuation block"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_valuation_block, title: "Valuation block", prefixes: ["propertyPack.surveys[].propertyValuation"] }
+
+  "39d13":
+    title: "Surveys · advice, risks & matters for legal advisers"
+    parent: "39d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: surv_advice, title: "Advice, risks & matters for legal advisers",
+          prefixes: ["propertyPack.surveys[].advice", "propertyPack.surveys[].risks", "propertyPack.surveys[].mattersForLegalAdvisers", "propertyPack.surveys[].environmentalConsiderations", "propertyPack.surveys[].limitations"] }
+
+  "39e":
+    title: "Valuation"
+    parent: "39"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: valuation, title: "Valuation and price", prefixes: ["propertyPack.valuations", "propertyPack.priceInformation", "valuationComparisonData"] }
 
   # ────────────────────────────────────────────────────────────────
   # 45 — Utilities & energy.
@@ -200,16 +592,175 @@ pages:
   # ────────────────────────────────────────────────────────────────
   "46":
     title: "Local context & searches"
+    is_landing: true              # Landing — hand-written; links to 46a–46d.
+    children: ["46a", "46b", "46c", "46d"]
+    sections: []
+
+  "46a":
+    title: "Local authority (CON29R)"
+    parent: "46"
+    is_landing: true
+    children: ["46a1", "46a2", "46a4"]
+    sections: []
+
+  "46a1":
+    title: "Local authority identity"
+    parent: "46a"
     voice: "reference-prose-with-opinion"
-    er_diagram: true              # search → authority → result.
-    stat_strip: true
     sections:
-      - { id: local_authority, title: "Local authority",         prefixes: ["propertyPack.localAuthority"] }
-      - { id: con29,           title: "CON29R / CON29DW / LLC1", prefixes: ["propertyPack.localSearches"] }
-      - { id: searches,        title: "Other searches",          prefixes: ["propertyPack.searches"] }
-      - { id: environmental,   title: "Environmental",           prefixes: ["propertyPack.environmentalIssues"] }
-      - { id: listing,         title: "Listing & conservation",  prefixes: ["propertyPack.listingAndConservation"] }
-      - { id: neighbourhood,   title: "Neighbourhood",           prefixes: ["propertyPack.nearbyFacilities"] }
+      - { id: local_authority, title: "Local authority", prefixes: ["propertyPack.localAuthority"] }
+
+  "46a2":
+    title: "Local authority searches"
+    parent: "46a"
+    is_landing: true
+    children: ["46a2a", "46a2b", "46a2c", "46a2d", "46a2e", "46a2f", "46a2g"]
+    sections: []
+
+  "46a2a":
+    title: "Planning & building regulations"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_planning_building, title: "Planning & building regulations",
+          prefixes: ["propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations"] }
+
+  "46a2b":
+    title: "Roads & public rights of way"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_roads, title: "Roads & public rights of way",
+          prefixes: ["propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay"] }
+
+  "46a2c":
+    title: "Other · planning notices & enforcement"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_other_planning_notices, title: "Other · planning notices & enforcement",
+          prefixes: [
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.conservationArea"
+          ] }
+
+  "46a2d":
+    title: "Other · community finance & assets"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_other_finance, title: "Other · community finance & assets",
+          prefixes: [
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue"
+          ] }
+
+  "46a2e":
+    title: "Other · road & rail schemes"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_other_road_rail, title: "Other · road & rail schemes",
+          prefixes: [
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.trafficSchemes",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRailwaySchemes",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.landToBeAcquiredForRoadWorks"
+          ] }
+
+  "46a2f":
+    title: "Other · environmental"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_other_environmental, title: "Other · environmental",
+          prefixes: [
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.contaminatedLand",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.radonGas",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters"
+          ] }
+
+  "46a2g":
+    title: "Other · compulsory purchase & public works"
+    parent: "46a2"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: la_other_compulsory, title: "Other · compulsory purchase & public works",
+          prefixes: [
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.compulsoryPurchase",
+            "propertyPack.localSearches.localAuthoritySearches.otherMatters.landRequiredForPublicPurposes"
+          ] }
+
+  "46a4":
+    title: "Listing & conservation"
+    parent: "46a"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: listing, title: "Listing & conservation", prefixes: ["propertyPack.listingAndConservation"] }
+
+  "46c":
+    title: "Local Land Charges (LLC1)"
+    parent: "46"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: llc1,            title: "LLC1",                prefixes: ["propertyPack.localSearches.llc1"] }
+      - { id: local_land_charges, title: "Local land charges register", prefixes: ["propertyPack.localSearches.localLandCharges"] }
+      - { id: searches,        title: "Other searches",       prefixes: ["propertyPack.searches"] }
+
+  "46d":
+    title: "Environmental"
+    parent: "46"
+    is_landing: true
+    children: ["46d1", "46d2", "46d3", "46d4", "46d5"]
+    sections: []
+
+  "46d1":
+    title: "Flooding"
+    parent: "46d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: env_flooding, title: "Flooding", prefixes: ["propertyPack.environmentalIssues.flooding"] }
+
+  "46d2":
+    title: "Mining & ground stability"
+    parent: "46d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: env_ground, title: "Mining & ground stability",
+          prefixes: ["propertyPack.environmentalIssues.coalMining", "propertyPack.environmentalIssues.nonCoalMining", "propertyPack.environmentalIssues.groundStability"] }
+
+  "46d3":
+    title: "Pollution & radon"
+    parent: "46d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: env_pollution, title: "Pollution & radon",
+          prefixes: ["propertyPack.environmentalIssues.contaminatedLand", "propertyPack.environmentalIssues.radon"] }
+
+  "46d4":
+    title: "Coast & climate"
+    parent: "46d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: env_coast_climate, title: "Coast & climate",
+          prefixes: ["propertyPack.environmentalIssues.coastalErosion", "propertyPack.environmentalIssues.climate"] }
+
+  "46d5":
+    title: "Infrastructure, energy, transport, planning"
+    parent: "46d"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: env_infra_policy, title: "Infrastructure, energy, transport, planning",
+          prefixes: [
+            "propertyPack.environmentalIssues.infrastructure",
+            "propertyPack.environmentalIssues.energy",
+            "propertyPack.environmentalIssues.transportation",
+            "propertyPack.environmentalIssues.planning",
+            "propertyPack.environmentalIssues.otherEnvironmental",
+            "propertyPack.nearbyFacilities"
+          ] }
 
   # ────────────────────────────────────────────────────────────────
   # 47 — Encumbrances & completion (IA page 42).
@@ -217,16 +768,41 @@ pages:
   # ────────────────────────────────────────────────────────────────
   "47":
     title: "Encumbrances & completion"
-    voice: "full-opinionated"
-    er_diagram: true              # charges ↔ encumbrances ↔ completion temporal cardinality.
-    stat_strip: true
+    is_landing: true
+    children: ["47a", "47b", "47c", "47d"]
+    sections: []
+
+  "47a":
+    title: "Council tax & insurance"
+    parent: "47"
+    voice: "reference-prose-with-opinion"
     sections:
-      - { id: council_tax,     title: "Council tax",                              prefixes: ["propertyPack.councilTax"] }
-      - { id: insurance,       title: "Insurance",                                prefixes: ["propertyPack.insurance"] }
-      - { id: guarantees,      title: "Guarantees, warranties & indemnities",    prefixes: ["propertyPack.guaranteesWarrantiesAndIndemnityInsurances"] }
-      - { id: occupiers,       title: "Occupiers & notices",                     prefixes: ["propertyPack.occupiers", "propertyPack.notices"] }
-      - { id: letting,         title: "Letting information",                     prefixes: ["propertyPack.lettingInformation"] }
-      - { id: completion,      title: "Completion & moving",                     prefixes: ["propertyPack.completionAndMoving"] }
+      - { id: council_tax, title: "Council tax", prefixes: ["propertyPack.councilTax"] }
+      - { id: insurance,   title: "Insurance",   prefixes: ["propertyPack.insurance"] }
+
+  "47b":
+    title: "Guarantees, warranties & indemnities"
+    parent: "47"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: guarantees, title: "Guarantees, warranties & indemnities",
+          prefixes: ["propertyPack.guaranteesWarrantiesAndIndemnityInsurances"] }
+
+  "47c":
+    title: "Occupiers & notices"
+    parent: "47"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: occupiers, title: "Occupiers & notices",
+          prefixes: ["propertyPack.occupiers", "propertyPack.notices"] }
+
+  "47d":
+    title: "Letting & completion"
+    parent: "47"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: letting,    title: "Letting information", prefixes: ["propertyPack.lettingInformation"] }
+      - { id: completion, title: "Completion & moving", prefixes: ["propertyPack.completionAndMoving"] }
 
   # ────────────────────────────────────────────────────────────────
   # 48 — Evidence, documents & declarations (IA page 43).
@@ -234,17 +810,48 @@ pages:
   # ────────────────────────────────────────────────────────────────
   "48":
     title: "Evidence, documents & declarations"
+    is_landing: true
+    children: ["48a", "48b", "48c", "48d", "48e"]
+    sections: []
+
+  "48a":
+    title: "Documents & attachments"
+    parent: "48"
     voice: "reference-prose-with-opinion"
-    er_diagram: true              # claim ↔ subject ↔ evidence ↔ document.
-    stat_strip: true
-    show_envelopes: true          # VC envelope rows render here (and only here).
+    show_envelopes: true
     sections:
-      - { id: documents,        title: "Documents & attachments",                 prefixes: ["propertyPack.documents"] }
-      - { id: declarations,     title: "Sale-ready declarations",                 prefixes: ["propertyPack.saleReadyDeclarations", "propertyPack.confirmationOfAccuracyByOwners", "propertyPack.consumerProtectionRegulationsDeclaration"] }
-      - { id: additional,       title: "Additional information & disclosures",   prefixes: ["propertyPack.additionalInformation"] }
-      - { id: disputes,         title: "Disputes & complaints",                   prefixes: ["propertyPack.disputesAndComplaints"] }
-      - { id: specialist,       title: "Specialist & other issues",               prefixes: ["propertyPack.specialistIssues", "propertyPack.otherIssues", "propertyPack.delayFactors"] }
-      - { id: envelope,         title: "VC envelope leaves",                      prefixes: ["*.credentialSubject"] }
+      - { id: documents, title: "Documents & attachments", prefixes: ["propertyPack.documents"] }
+      - { id: envelope,  title: "VC envelope leaves",      prefixes: ["*.credentialSubject"] }
+
+  "48b":
+    title: "Sale-ready declarations"
+    parent: "48"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: declarations, title: "Sale-ready declarations",
+          prefixes: ["propertyPack.saleReadyDeclarations", "propertyPack.confirmationOfAccuracyByOwners", "propertyPack.consumerProtectionRegulationsDeclaration"] }
+
+  "48c":
+    title: "Additional information & disclosures"
+    parent: "48"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: additional, title: "Additional information & disclosures", prefixes: ["propertyPack.additionalInformation"] }
+
+  "48d":
+    title: "Disputes & complaints"
+    parent: "48"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: disputes, title: "Disputes & complaints", prefixes: ["propertyPack.disputesAndComplaints"] }
+
+  "48e":
+    title: "Specialist & other issues"
+    parent: "48"
+    voice: "reference-prose-with-opinion"
+    sections:
+      - { id: specialist, title: "Specialist & other issues",
+          prefixes: ["propertyPack.specialistIssues", "propertyPack.otherIssues", "propertyPack.delayFactors"] }
 
   # ────────────────────────────────────────────────────────────────
   # 49 — Overlays, tasks & cross-cuts (IA page 44).

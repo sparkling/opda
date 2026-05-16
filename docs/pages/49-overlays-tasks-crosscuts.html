@@ -31,6 +31,55 @@
         <p>Aggregates organise by lifecycle. Overlays organise by form. Tasks organise by question. The schema carries one leaf-universe; this page carries the two cross-cuts that surface it differently.</p>
       </aside>
 
+      <h2 id="composition">How aggregates, overlays and tasks compose</h2>
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef leaf fill:#FFFFFF,stroke:#0277BD,stroke-width:1.5px,color:#01579B
+  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  classDef ovl  fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+  classDef tsk  fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+  L1[Leaf: cladding.material]:::leaf
+  L2[Leaf: cladding.ews1Rating]:::leaf
+  L3[Leaf: searches.con29R.notices]:::leaf
+  L4[Leaf: documents.ews1Form.url]:::leaf
+
+  A39[page 39<br/>Built form, condition &amp; valuation]:::agg
+  A46[page 46<br/>Local context &amp; searches]:::agg
+  A48[page 48<br/>Evidence, documents]:::agg
+
+  O_BASPI5[BASPI5]:::ovl
+  O_TA6[TA6]:::ovl
+  O_NTS2[NTS2]:::ovl
+  O_CON29R[CON29R]:::ovl
+
+  T_CLADDING[Task: Cladding &amp; EWS1]:::tsk
+
+  L1 --> A39
+  L2 --> A39
+  L3 --> A46
+  L4 --> A48
+
+  L1 -.-> O_BASPI5
+  L1 -.-> O_TA6
+  L1 -.-> O_NTS2
+  L3 -.-> O_CON29R
+
+  L1 ==> T_CLADDING
+  L2 ==> T_CLADDING
+  L3 ==> T_CLADDING
+  L4 ==> T_CLADDING
+        </div>
+        <div class="diagram-caption">
+          One leaf, three filters: solid arrows go to the leaf's canonical
+          aggregate page; dashed arrows go to the overlays that reference it;
+          double arrows mark task membership. Aggregates partition the leaf
+          universe (each leaf has exactly one canonical home); overlays and
+          tasks do not.
+        </div>
+      </div>
+
       <h2 id="overlayMatrix">Overlay leaf counts</h2>
       <p>
         Each leaf in the schema is referenced by zero or more overlays. The
@@ -96,55 +145,6 @@
       <p class="muted tiny">Leaves: <code>legalEstate.tenure</code> (38) · <code>legalEstate.sharedOwnership.percentage</code> (38) · <code>legalEstate.sharedOwnership.rentSchedule</code> (38) · <code>participants.housingAssociation</code> (35) · <code>encumbrances.staircase</code> (47).</p>
       <p>Shared ownership is a leasehold variant with a rent schedule on the unsold equity and a staircasing right. Pull tenure, percentage owned, rent schedule, the housing association as participant, and any prior staircase transactions. Lender criteria differ sharply; many overlays don't model shared ownership cleanly — flag known gaps.</p>
 
-      <h2 id="composition">How aggregates, overlays and tasks compose</h2>
-      <div class="diagram">
-        <div class="mermaid">
-flowchart LR
-  classDef leaf fill:#FFFFFF,stroke:#0277BD,stroke-width:1.5px,color:#01579B
-  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-  classDef ovl  fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
-  classDef tsk  fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
-
-  L1[Leaf: cladding.material]:::leaf
-  L2[Leaf: cladding.ews1Rating]:::leaf
-  L3[Leaf: searches.con29R.notices]:::leaf
-  L4[Leaf: documents.ews1Form.url]:::leaf
-
-  A39[page 39<br/>Built form, condition &amp; valuation]:::agg
-  A46[page 46<br/>Local context &amp; searches]:::agg
-  A48[page 48<br/>Evidence, documents]:::agg
-
-  O_BASPI5[BASPI5]:::ovl
-  O_TA6[TA6]:::ovl
-  O_NTS2[NTS2]:::ovl
-  O_CON29R[CON29R]:::ovl
-
-  T_CLADDING[Task: Cladding &amp; EWS1]:::tsk
-
-  L1 --> A39
-  L2 --> A39
-  L3 --> A46
-  L4 --> A48
-
-  L1 -.-> O_BASPI5
-  L1 -.-> O_TA6
-  L1 -.-> O_NTS2
-  L3 -.-> O_CON29R
-
-  L1 ==> T_CLADDING
-  L2 ==> T_CLADDING
-  L3 ==> T_CLADDING
-  L4 ==> T_CLADDING
-        </div>
-        <div class="diagram-caption">
-          One leaf, three filters: solid arrows go to the leaf's canonical
-          aggregate page; dashed arrows go to the overlays that reference it;
-          double arrows mark task membership. Aggregates partition the leaf
-          universe (each leaf has exactly one canonical home); overlays and
-          tasks do not.
-        </div>
-      </div>
-
       <h2 id="howComputed">How overlays and tasks are computed</h2>
       <ul>
         <li><strong>Overlays</strong> are derived from <code>data-dictionary-canonical.json</code> — every entry where <code>source</code> ≠ <code>pdtf-transaction</code> contributes a membership. Render-time chips in leaf tables show up to 3 overlay names plus <code>+N</code> overflow.</li>
@@ -153,7 +153,7 @@ flowchart LR
       </ul>
 
       <div class="page-footer">
-        <a href="48-evidence-documents-declarations.html">← Evidence, documents &amp; declarations</a>
+        <a href="48e-specialist.html">← Specialist &amp; other issues</a>
         <a href="../schema.html">Schema overview →</a>
       </div>
     </article>

@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · OC summary · proprietorship &amp; lease · OPDA Knowledge Base</title>
+  <meta name="description" content="OC summary · proprietorship &amp; lease">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38b3</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>OC summary · proprietorship & lease</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>55</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;48&lt;/strong&gt; objects, &lt;strong&gt;55&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o{ TitlesToBeSold : "titlesToBeSold"
+  TitlesToBeSold ||--o| RegisterExtract : "registerExtract"
+  RegisterExtract ||--o| OcSummaryData : "ocSummaryData"
+  OcSummaryData ||--o| Proprietorship : "proprietorship"
+  OcSummaryData ||--o| Lease : "lease"
+  Lease ||--o{ LeaseEntry : "leaseEntry"
+  LeaseEntry ||--o{ LeaseParty : "leaseParty"
+  LeaseEntry ||--o| EntryDetails : "entryDetails"
+  LeaseParty ||--o| PrivateIndividual : "privateIndividual"
+  LeaseParty ||--o| Organization : "organization"
+  LeaseParty ||--o| Address : "address"
+  LeaseParty ||--o| CharityDetails : "charityDetails"
+  Address ||--o| PostcodeZone : "postcodeZone"
+  Address ||--o| AddressLine : "addressLine"
+  CharityDetails ||--o| CharityAddress : "charityAddress"
+  CharityDetails ||--o| CharityType : "charityType"
+  CharityAddress ||--o| PostcodeZone : "postcodeZone"
+  CharityAddress ||--o| AddressLine : "addressLine"
+  PrivateIndividual ||--o| Name : "name"
+  PrivateIndividual ||--o| Alias : "alias"
+  Proprietorship ||--o| CautionerParty : "cautionerParty"
+  Proprietorship ||--o| RegisteredProprietorParty : "registeredProprietorParty"
+  CautionerParty ||--o| PrivateIndividual : "privateIndividual"
+  CautionerParty ||--o| Organization : "organization"
+  CautionerParty ||--o| Address : "address"
+  CautionerParty ||--o| CharityDetails : "charityDetails"
+  Address ||--o| PostcodeZone : "postcodeZone"
+  Address ||--o| AddressLine : "addressLine"
+  CharityDetails ||--o| CharityAddress : "charityAddress"
+  CharityDetails ||--o| CharityType : "charityType"
+  CharityAddress ||--o| PostcodeZone : "postcodeZone"
+  CharityAddress ||--o| AddressLine : "addressLine"
+  PrivateIndividual ||--o| Name : "name"
+  PrivateIndividual ||--o| Alias : "alias"
+  RegisteredProprietorParty ||--o| PrivateIndividual : "privateIndividual"
+  RegisteredProprietorParty ||--o| Organization : "organization"
+  RegisteredProprietorParty ||--o| Address : "address"
+  RegisteredProprietorParty ||--o| CharityDetails : "charityDetails"
+  Address ||--o| PostcodeZone : "postcodeZone"
+  Address ||--o| AddressLine : "addressLine"
+  CharityDetails ||--o| CharityAddress : "charityAddress"
+  CharityDetails ||--o| CharityType : "charityType"
+  CharityAddress ||--o| PostcodeZone : "postcodeZone"
+  CharityAddress ||--o| AddressLine : "addressLine"
+  PrivateIndividual ||--o| Name : "name"
+  PrivateIndividual ||--o| Alias : "alias"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  TitlesToBeSold {
+  }
+  RegisterExtract {
+  }
+  OcSummaryData {
+  }
+  Lease {
+  }
+  LeaseEntry {
+    string Rent "Rent"
+    string leaseDate "leaseDate"
+    string leaseTerm "leaseTerm"
+  }
+  EntryDetails {
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  }
+  LeaseParty {
+    string partyDescription "partyDescription"
+    string partyNumber "partyNumber"
+    string tradingName "tradingName"
+  }
+  Address {
+  }
+  AddressLine {
+    string[] line "line"
+  }
+  PostcodeZone {
+    string postcode "postcode"
+  }
+  CharityDetails {
+    string[] charityName "charityName"
+  }
+  CharityAddress {
+  }
+  CharityType {
+    string value "value"
+  }
+  Organization {
+    string companyRegistrationNumber "companyRegistrationNumber"
+    string name "name"
+  }
+  PrivateIndividual {
+  }
+  Alias {
+    string forenamesName "forenamesName"
+    string surnameName "surnameName"
+  }
+  Name {
+    string forenamesName "forenamesName"
+    string surnameName "surnameName"
+  }
+  Proprietorship {
+    string currentProprietorshipDate "currentProprietorshipDate"
+  }
+  CautionerParty {
+    string partyDescription "partyDescription"
+    string partyNumber "partyNumber"
+    string tradingName "tradingName"
+  }
+  RegisteredProprietorParty {
+    string partyDescription "partyDescription"
+    string partyNumber "partyNumber"
+    string tradingName "tradingName"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>48</strong> objects, <strong>55</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="title_oc_owners">OC summary · proprietorship & lease</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLease" data-display-id="lease">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatalease" class="object-block__title" data-display-id="lease">
+        <span class="object-block__display">Lease</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentry" class="object-block__child-link">Lease Entry[]</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorship" data-display-id="proprietorship">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorship" class="object-block__title" data-display-id="proprietorship">
+        <span class="object-block__display">Proprietorship</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerparty" class="object-block__child-link">Cautioner Party</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorparty" class="object-block__child-link">Registered Proprietor Party</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.currentProprietorshipDate"
+            data-overlays="">
+          <td>currentProprietorshipDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>currentProprietorshipDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntry" data-display-id="leaseentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentry" class="object-block__title" data-display-id="leaseentry">
+        <span class="object-block__display">Lease Entry</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleaseparty" class="object-block__child-link">Lease Party[]</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryentrydetails" class="object-block__child-link">Entry Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].Rent"
+            data-overlays="">
+          <td>Rent</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>Rent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseDate"
+            data-overlays="">
+          <td>leaseDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>leaseDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseTerm"
+            data-overlays="">
+          <td>leaseTerm</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>leaseTerm</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerParty" data-display-id="cautionerparty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerparty" class="object-block__title" data-display-id="cautionerparty">
+        <span class="object-block__display">Cautioner Party</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividual" class="object-block__child-link">Private Individual</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyorganization" class="object-block__child-link">Organization</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddress" class="object-block__child-link">Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetails" class="object-block__child-link">Charity Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.partyDescription"
+            data-overlays="">
+          <td>partyDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.partyNumber"
+            data-overlays="">
+          <td>partyNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.tradingName"
+            data-overlays="">
+          <td>tradingName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tradingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorParty" data-display-id="registeredproprietorparty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorparty" class="object-block__title" data-display-id="registeredproprietorparty">
+        <span class="object-block__display">Registered Proprietor Party</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividual" class="object-block__child-link">Private Individual</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyorganization" class="object-block__child-link">Organization</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddress" class="object-block__child-link">Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetails" class="object-block__child-link">Charity Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.partyDescription"
+            data-overlays="">
+          <td>partyDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.partyNumber"
+            data-overlays="">
+          <td>partyNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.tradingName"
+            data-overlays="">
+          <td>tradingName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tradingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeaseParty" data-display-id="leaseparty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleaseparty" class="object-block__title" data-display-id="leaseparty">
+        <span class="object-block__display">Lease Party</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividual" class="object-block__child-link">Private Individual</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyorganization" class="object-block__child-link">Organization</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddress" class="object-block__child-link">Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetails" class="object-block__child-link">Charity Details</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].partyDescription"
+            data-overlays="">
+          <td>partyDescription</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].partyNumber"
+            data-overlays="">
+          <td>partyNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].tradingName"
+            data-overlays="">
+          <td>tradingName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tradingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyCharityDetails" data-display-id="charitydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetails" class="object-block__title" data-display-id="charitydetails">
+        <span class="object-block__display">Charity Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddress" class="object-block__child-link">Charity Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharitytype" class="object-block__child-link">Charity Type</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityName"
+            data-overlays="">
+          <td>charityName</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>charityName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyOrganization" data-display-id="organization">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyorganization" class="object-block__title" data-display-id="organization">
+        <span class="object-block__display">Organization</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.organization</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.organization"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.organization.companyRegistrationNumber"
+            data-overlays="">
+          <td>companyRegistrationNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>companyRegistrationNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.organization.name"
+            data-overlays="">
+          <td>name</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyPrivateIndividual" data-display-id="privateindividual">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividual" class="object-block__title" data-display-id="privateindividual">
+        <span class="object-block__display">Private Individual</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividualname" class="object-block__child-link">Name</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividualalias" class="object-block__child-link">Alias</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyCharityDetails" data-display-id="charitydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetails" class="object-block__title" data-display-id="charitydetails">
+        <span class="object-block__display">Charity Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddress" class="object-block__child-link">Charity Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharitytype" class="object-block__child-link">Charity Type</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityName"
+            data-overlays="">
+          <td>charityName</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>charityName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyOrganization" data-display-id="organization">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyorganization" class="object-block__title" data-display-id="organization">
+        <span class="object-block__display">Organization</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.organization</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.organization"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.organization.companyRegistrationNumber"
+            data-overlays="">
+          <td>companyRegistrationNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>companyRegistrationNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.organization.name"
+            data-overlays="">
+          <td>name</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyPrivateIndividual" data-display-id="privateindividual">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividual" class="object-block__title" data-display-id="privateindividual">
+        <span class="object-block__display">Private Individual</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividualname" class="object-block__child-link">Name</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividualalias" class="object-block__child-link">Alias</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyCharityDetails" data-display-id="charitydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetails" class="object-block__title" data-display-id="charitydetails">
+        <span class="object-block__display">Charity Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddress" class="object-block__child-link">Charity Address</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharitytype" class="object-block__child-link">Charity Type</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityName"
+            data-overlays="">
+          <td>charityName</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>charityName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyOrganization" data-display-id="organization">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyorganization" class="object-block__title" data-display-id="organization">
+        <span class="object-block__display">Organization</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization.companyRegistrationNumber"
+            data-overlays="">
+          <td>companyRegistrationNumber</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>companyRegistrationNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization.name"
+            data-overlays="">
+          <td>name</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyPrivateIndividual" data-display-id="privateindividual">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividual" class="object-block__title" data-display-id="privateindividual">
+        <span class="object-block__display">Private Individual</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividualname" class="object-block__child-link">Name</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividualalias" class="object-block__child-link">Alias</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.address.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyCharityDetailsCharityAddress" data-display-id="charityaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddress" class="object-block__title" data-display-id="charityaddress">
+        <span class="object-block__display">Charity Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyCharityDetailsCharityType" data-display-id="charitytype">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharitytype" class="object-block__title" data-display-id="charitytype">
+        <span class="object-block__display">Charity Type</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityType</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityType"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityType.value"
+            data-overlays="">
+          <td>value</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyPrivateIndividualAlias" data-display-id="alias">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividualalias" class="object-block__title" data-display-id="alias">
+        <span class="object-block__display">Alias</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.alias</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.alias"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.alias.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.alias.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyPrivateIndividualName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartyprivateindividualname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.name"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.name.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.privateIndividual.name.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.address.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyCharityDetailsCharityAddress" data-display-id="charityaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddress" class="object-block__title" data-display-id="charityaddress">
+        <span class="object-block__display">Charity Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyCharityDetailsCharityType" data-display-id="charitytype">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharitytype" class="object-block__title" data-display-id="charitytype">
+        <span class="object-block__display">Charity Type</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityType</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityType"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityType.value"
+            data-overlays="">
+          <td>value</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyPrivateIndividualAlias" data-display-id="alias">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividualalias" class="object-block__title" data-display-id="alias">
+        <span class="object-block__display">Alias</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.alias</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.alias"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.alias.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.alias.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyPrivateIndividualName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartyprivateindividualname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.name"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.name.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.privateIndividual.name.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyCharityDetailsCharityAddress" data-display-id="charityaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddress" class="object-block__title" data-display-id="charityaddress">
+        <span class="object-block__display">Charity Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddresspostcodezone" class="object-block__child-link">Postcode Zone</a>,         <a href="#propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddressaddressline" class="object-block__child-link">Address Line</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyCharityDetailsCharityType" data-display-id="charitytype">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharitytype" class="object-block__title" data-display-id="charitytype">
+        <span class="object-block__display">Charity Type</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityType</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityType"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityType.value"
+            data-overlays="">
+          <td>value</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyPrivateIndividualAlias" data-display-id="alias">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividualalias" class="object-block__title" data-display-id="alias">
+        <span class="object-block__display">Alias</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.alias</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.alias"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.alias.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.alias.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyPrivateIndividualName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartyprivateindividualname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyCharityDetailsCharityAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipCautionerPartyCharityDetailsCharityAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipcautionerpartycharitydetailscharityaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.cautionerParty.charityDetails.charityAddress.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyCharityDetailsCharityAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataProprietorshipRegisteredProprietorPartyCharityDetailsCharityAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataproprietorshipregisteredproprietorpartycharitydetailscharityaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship.registeredProprietorParty.charityDetails.charityAddress.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyCharityDetailsCharityAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataLeaseLeaseEntryLeasePartyCharityDetailsCharityAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataleaseleaseentryleasepartycharitydetailscharityaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].charityDetails.charityAddress.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38b2-title-oc-meta.html">← OC summary · metadata & property</a><a href="38b4-title-oc-charges-main.html">OC summary · charges (main) →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'title-oc-owners' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38b3',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

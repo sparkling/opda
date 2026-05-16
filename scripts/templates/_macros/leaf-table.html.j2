@@ -1,29 +1,24 @@
 {# leaf-table.html.j2 ──────────────────────────────────────────────────
    Emits one sub-table for a section on an aggregate page.
-   Columns (desktop, per spec §6):
-     Path · Required · Type · Kind · Title · Overlays · Affordance
+   Columns (desktop):
+     Title · Type · Kind · Path · Required · Overlays · Affordance
+
+   Plain-text values: no pill spans. Kind uses descriptive words
+   (Declaration / Evidence / Derivation / envelope), not shortcuts.
 
    Inputs:
      section          — { id, title, prefixes } from theme-map.yaml.
      leaves           — list of leaf dicts (already classified, theme-assigned,
-                        example-bound) for THIS section, in spec-default sort
-                        order: (required desc, path asc).
+                        example-bound) for THIS section.
                         Each leaf carries:
                           path, name, required (bool), type, kind, title,
                           overlays (list of {key, label}), is_envelope (bool),
                           has_example (bool).
-     show_envelopes   — bool. False on pages 35–42 (where envelope rows are
-                        suppressed entirely); True only on page 48 (spec slot)
-                        per the visual contract.
+     show_envelopes   — bool. False on pages 35–42; True only on page 48.
 
    Row attributes:
-     data-leaf-path   — the schema path, used by find-a-field for deep-link flash.
-     data-overlays    — comma-separated overlay keys, used by the page-level
-                        "Filter by overlay" button.
-
-   Envelope rows render with opacity:0.6, italic path, lock glyph, no Kind pill.
-   Only the static markup is emitted here; mountLeafTable (schema-leaf-table.js)
-   wires up the expander row, sorting, and filtering on top of this skeleton.
+     data-leaf-path   — the schema path.
+     data-overlays    — comma-separated overlay keys.
 ─────────────────────────────────────────────────────────────────────── #}
 {% macro leaf_table(section, leaves, show_envelopes=false) -%}
 <div class="db-table-wrap full-bleed"
@@ -32,21 +27,36 @@
   <table class="db-table db-table--fixed" id="table-{{ section.id }}">
     <thead>
       <tr>
+        <th style="width: 22%;">Title</th>
+        <th style="width: 7rem;">Type</th>
+        <th style="width: 8rem;">Kind</th>
         <th class="sortable" style="width: 26%;">Path</th>
         <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
         <th style="width: 18%;">Overlays</th>
         <th style="width: 7rem;">Affordance</th>
       </tr>
     </thead>
     <tbody>
     {%- for leaf in leaves %}
-      {%- if leaf.is_envelope and not show_envelopes %}{# Suppressed on pages 35–42 per spec §6 / invariant 12. #}{% continue %}{% endif %}
+      {%- if leaf.is_envelope and not show_envelopes %}{# Suppressed on pages 35–42. #}{% continue %}{% endif %}
       <tr data-leaf-path="{{ leaf.path }}"
           data-overlays="{{ leaf.overlays|map(attribute='key')|join(',') }}"
           {%- if leaf.is_envelope %} data-envelope="1" style="opacity: 0.6;"{% endif %}>
+        <td>{{ leaf.title|default('', true) }}</td>
+        <td><code>{{ leaf.type }}</code></td>
+        <td>
+          {%- if leaf.is_envelope -%}
+          envelope
+          {%- elif leaf.kind == 'declaration' -%}
+          Declaration
+          {%- elif leaf.kind == 'evidence' -%}
+          Evidence
+          {%- elif leaf.kind == 'derivation' -%}
+          Derivation
+          {%- else -%}
+          <span class="muted">—</span>
+          {%- endif %}
+        </td>
         <td>
           {%- if leaf.is_envelope -%}
           <span aria-label="VC envelope leaf" title="VC envelope leaf — see page 48">🔒</span>
@@ -56,28 +66,16 @@
           {%- endif %}
         </td>
         <td class="align-center">{% if leaf.required %}yes{% else %}<span class="muted">—</span>{% endif %}</td>
-        <td><code>{{ leaf.type }}</code></td>
         <td>
-          {%- if leaf.is_envelope -%}
-          <span class="muted tiny">envelope</span>
-          {%- elif leaf.kind == 'declaration' -%}
-          <span class="pill pill--success">Decl</span>
-          {%- elif leaf.kind == 'evidence' -%}
-          <span class="pill pill--info">Evid</span>
-          {%- elif leaf.kind == 'derivation' -%}
-          <span class="pill pill--warn">Deriv</span>
+          {%- set ovs = leaf.overlays -%}
+          {%- if ovs -%}
+            {%- for o in ovs %}{{ o.label }}{% if not loop.last %}, {% endif %}{% endfor -%}
           {%- else -%}
-          <span class="pill">?</span>
+          <span class="muted">—</span>
           {%- endif %}
         </td>
-        <td>{{ leaf.title|default('', true) }}</td>
         <td>
-          {%- set ovs = leaf.overlays %}
-          {%- for o in ovs[:3] %}<span class="pill">{{ o.label }}</span>{% if not loop.last %} {% endif %}{% endfor -%}
-          {%- if ovs|length > 3 %} <span class="pill" title="{{ ovs[3:]|map(attribute='label')|join(', ') }}">+{{ ovs|length - 3 }}</span>{% endif %}
-        </td>
-        <td>
-          {%- if leaf.has_example %}<span class="pill pill--brand">example</span>{% else %}<span class="muted">—</span>{% endif %}
+          {%- if leaf.has_example %}example{% else %}<span class="muted">—</span>{% endif %}
         </td>
       </tr>
     {%- endfor %}

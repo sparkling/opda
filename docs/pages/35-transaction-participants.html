@@ -21,9 +21,9 @@
 
       <div class="page-meta" aria-label="Page leaf statistics">
   <span><strong>40</strong> leaves</span>
-  <span><span class="pill pill--success">Decl</span> 100.0%</span>
-  <span><span class="pill pill--info">Evid</span> 0.0%</span>
-  <span><span class="pill pill--warn">Deriv</span> 0.0%</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
   <span>5 in overlays</span>
   <span>2 with worked example</span></div>
 
@@ -34,7 +34,91 @@
 </aside>      <aside class="callout callout--note" role="note">
         <p class="callout__label">Why this aggregate exists</p>
         <p>Every other Schema page hangs off this one. A claim about the property has no meaning without an asserter; an evidence document has no force without an issuer; a milestone has no actor without a participant. The aggregate cohesion test holds because all of these leaves share a single lifecycle (created at instruction, updated through the transaction, closed at completion) and a single root authority (the PDTF-compliant software platform that owns the user account).</p>
-      </aside>
+      </aside>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;10&lt;/strong&gt; objects, &lt;strong&gt;40&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o{ Participant : "participants"
+  Participant ||--o| Name : "name"
+  Participant ||--o| Address : "address"
+  Participant ||--o| Verification : "verification"
+  Participant ||--o| SellersCapacity : "sellersCapacity"
+  Verification ||--o| Identity : "identity"
+  Verification ||--o| AntiMoneyLaundering : "antiMoneyLaundering"
+  AntiMoneyLaundering ||--o{ Report : "reports"
+  Identity ||--o{ Report : "reports"
+  Transaction {
+    object externalIds "externalIds"
+    string status "status"
+    string transactionId "UUID for the transaction"
+  }
+  Participant {
+    string dateOfBirth "Date of birth"
+    string email "Email address"
+    object externalIds "externalIds"
+    string organisation "Organisation"
+    string organisationReference "Reference"
+    string participantStatus "participantStatus"
+    string phone "Phone number"
+    string role "role"
+  }
+  Address {
+    string buildingName "Building name"
+    string buildingNumber "Building number"
+    string countryCode "Country code"
+    string homeNation "Home nation"
+    string line_3 "Address 3"
+    string line1 "Address 1"
+    string line2 "Address 2"
+    string postcode "Postcode"
+    string street "Street"
+    string subBuilding "Sub building name"
+    string town "Town"
+  }
+  Name {
+    string firstName "First name"
+    string lastName "lastName"
+    string maidenName "Middle name(s)"
+    string middleName "Middle name(s)"
+    string preferredName "Preferred name / known as"
+    string title "Title or honorific"
+  }
+  SellersCapacity {
+    string attachments "Attachments"
+    string capacity "capacity"
+    string sellersCapacityDetails "Please provide details if applicable"
+  }
+  Verification {
+  }
+  AntiMoneyLaundering {
+    string result "result"
+  }
+  Report {
+    string details "details"
+    string reportName "reportName"
+    string result "result"
+  }
+  Identity {
+    string result "result"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>40</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -46,430 +130,585 @@
             <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
           </button>
         </div>
-      </div>      <h2 id="transaction">Transaction</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="transaction"
-     data-leaf-count="3">
-  <table class="db-table db-table--fixed" id="table-transaction">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="externalIds"
-          data-overlays="">
-        <td><code>externalIds</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>externalIds</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="status"
-          data-overlays="">
-        <td><code>status</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>status</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="transactionId"
-          data-overlays="">
-        <td><code>transactionId</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>UUID for the transaction</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="participants">Participants</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="participants"
-     data-leaf-count="37">
-  <table class="db-table db-table--fixed" id="table-participants">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="participants[].address.buildingName"
-          data-overlays="">
-        <td><code>participants[].address.buildingName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.buildingNumber"
-          data-overlays="">
-        <td><code>participants[].address.buildingNumber</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building number</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.countryCode"
-          data-overlays="">
-        <td><code>participants[].address.countryCode</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Country code</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.homeNation"
-          data-overlays="">
-        <td><code>participants[].address.homeNation</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Home nation</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.line 3"
-          data-overlays="">
-        <td><code>participants[].address.line 3</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 3</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.line1"
-          data-overlays="">
-        <td><code>participants[].address.line1</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 1</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.line2"
-          data-overlays="">
-        <td><code>participants[].address.line2</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address 2</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.postcode"
-          data-overlays="">
-        <td><code>participants[].address.postcode</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Postcode</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.street"
-          data-overlays="">
-        <td><code>participants[].address.street</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Street</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.subBuilding"
-          data-overlays="">
-        <td><code>participants[].address.subBuilding</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Sub building name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].address.town"
-          data-overlays="">
-        <td><code>participants[].address.town</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Town</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].dateOfBirth"
-          data-overlays="">
-        <td><code>participants[].dateOfBirth</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Date of birth</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].email"
-          data-overlays="">
-        <td><code>participants[].email</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Email address</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].externalIds"
-          data-overlays="">
-        <td><code>participants[].externalIds</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>object</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>externalIds</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.firstName"
-          data-overlays="">
-        <td><code>participants[].name.firstName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>First name</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.lastName"
-          data-overlays="">
-        <td><code>participants[].name.lastName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>lastName</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.maidenName"
-          data-overlays="">
-        <td><code>participants[].name.maidenName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Middle name(s)</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.middleName"
-          data-overlays="">
-        <td><code>participants[].name.middleName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Middle name(s)</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.preferredName"
-          data-overlays="">
-        <td><code>participants[].name.preferredName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Preferred name / known as</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].name.title"
-          data-overlays="">
-        <td><code>participants[].name.title</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Title or honorific</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].organisation"
-          data-overlays="">
-        <td><code>participants[].organisation</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Organisation</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].organisationReference"
-          data-overlays="">
-        <td><code>participants[].organisationReference</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Reference</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].participantStatus"
-          data-overlays="">
-        <td><code>participants[].participantStatus</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>participantStatus</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].phone"
-          data-overlays="">
-        <td><code>participants[].phone</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Phone number</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].role"
-          data-overlays="baspi5,piq">
-        <td><code>participants[].role</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>role</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].role"
-          data-overlays="baspi5,piq">
-        <td><code>participants[].role</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>role</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].sellersCapacity.attachments"
-          data-overlays="baspi5">
-        <td><code>participants[].sellersCapacity.attachments</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Attachments</td>
-        <td><span class="pill">BASPI5</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].sellersCapacity.capacity"
-          data-overlays="baspi5,piq,rds">
-        <td><code>participants[].sellersCapacity.capacity</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>capacity</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span> <span class="pill">RDS</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].sellersCapacity.sellersCapacityDetails"
-          data-overlays="baspi5,rds">
-        <td><code>participants[].sellersCapacity.sellersCapacityDetails</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Please provide details if applicable</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">RDS</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].details"
-          data-overlays="">
-        <td><code>participants[].verification.antiMoneyLaundering.reports[].details</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>details</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].reportName"
-          data-overlays="">
-        <td><code>participants[].verification.antiMoneyLaundering.reports[].reportName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>reportName</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].result"
-          data-overlays="">
-        <td><code>participants[].verification.antiMoneyLaundering.reports[].result</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>result</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.antiMoneyLaundering.result"
-          data-overlays="">
-        <td><code>participants[].verification.antiMoneyLaundering.result</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>result</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.identity.reports[].details"
-          data-overlays="">
-        <td><code>participants[].verification.identity.reports[].details</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>details</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.identity.reports[].reportName"
-          data-overlays="">
-        <td><code>participants[].verification.identity.reports[].reportName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>reportName</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.identity.reports[].result"
-          data-overlays="">
-        <td><code>participants[].verification.identity.reports[].result</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>result</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="participants[].verification.identity.result"
-          data-overlays="">
-        <td><code>participants[].verification.identity.result</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>result</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="er">Entity relationships</h2>
-      <figure class="diagram" role="figure" aria-label="Internal mechanics: each participant carries identity, address, role and
-optionally a seller capacity. Capacity is the gating fact for whether a
-party can convey — and the only participant attribute that routinely
-requires evidence (grant of probate, power of attorney).">
-  <div class="mermaid">
-erDiagram
-  TRANSACTION    ||--o{ PARTICIPANT  : "involves"
-  PARTICIPANT    ||--|| IDENTITY     : "has"
-  PARTICIPANT    ||--o{ ADDRESS      : "contactable at"
-  PARTICIPANT    ||--|| ROLE         : "acts as"
-  PARTICIPANT    ||--o| CAPACITY     : "if seller, with capacity"
-  CAPACITY       ||--o{ ATTACHMENT   : "evidenced by"
-  ROLE {
-    string value "Seller · Buyer · Agent · Conveyancer · Surveyor · Lender"
-  }
-  CAPACITY {
-    string value "Legal owner · PR for deceased · Attorney · Mortgagee · Other"
-  }
-  IDENTITY {
-    string firstName
-    string lastName
-    date   dateOfBirth
-  }
-  </div>  <figcaption class="diagram-caption">Internal mechanics: each participant carries identity, address, role and
-optionally a seller capacity. Capacity is the gating fact for whether a
-party can convey — and the only participant attribute that routinely
-requires evidence (grant of probate, power of attorney).</figcaption></figure>      <aside class="callout callout--warn" role="note">
+      </div>      <h3 id="transaction">Transaction</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#participant" class="object-block__child-link">Participants[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path=""
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="externalIds"
+            data-overlays="">
+          <td>externalIds</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>externalIds</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="status"
+            data-overlays="">
+          <td>status</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>status</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="transactionId"
+            data-overlays="">
+          <td>UUID for the transaction</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>transactionId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="participants">Participants</h3>      <div class="object-block" id="obj-Participant" data-display-id="participant">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participant" class="object-block__title" data-display-id="participant">
+        <span class="object-block__display">Participants</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">participants[]</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#participantsname" class="object-block__child-link">Name</a>,         <a href="#participantsaddress" class="object-block__child-link">Address</a>,         <a href="#participantsverification" class="object-block__child-link">Verification</a>,         <a href="#participantssellerscapacity" class="object-block__child-link">Sellers Capacity</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[]"
+       data-field-count="9">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].dateOfBirth"
+            data-overlays="">
+          <td>Date of birth</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>dateOfBirth</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].email"
+            data-overlays="">
+          <td>Email address</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>email</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].externalIds"
+            data-overlays="">
+          <td>externalIds</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>externalIds</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].organisation"
+            data-overlays="">
+          <td>Organisation</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>organisation</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].organisationReference"
+            data-overlays="">
+          <td>Reference</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>organisationReference</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].participantStatus"
+            data-overlays="">
+          <td>participantStatus</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>participantStatus</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].phone"
+            data-overlays="">
+          <td>Phone number</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>phone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].role"
+            data-overlays="baspi5,piq">
+          <td>role</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>role</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].role"
+            data-overlays="baspi5,piq">
+          <td>role</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>role</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">participants[].address</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].address"
+       data-field-count="11">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].address.buildingName"
+            data-overlays="">
+          <td>Building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.buildingNumber"
+            data-overlays="">
+          <td>Building number</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.countryCode"
+            data-overlays="">
+          <td>Country code</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>countryCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.homeNation"
+            data-overlays="">
+          <td>Home nation</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>homeNation</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.line 3"
+            data-overlays="">
+          <td>Address 3</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line 3</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.line1"
+            data-overlays="">
+          <td>Address 1</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line1</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.line2"
+            data-overlays="">
+          <td>Address 2</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line2</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.postcode"
+            data-overlays="">
+          <td>Postcode</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.street"
+            data-overlays="">
+          <td>Street</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>street</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.subBuilding"
+            data-overlays="">
+          <td>Sub building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>subBuilding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].address.town"
+            data-overlays="">
+          <td>Town</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>town</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">participants[].name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].name"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].name.firstName"
+            data-overlays="">
+          <td>First name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>firstName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].name.lastName"
+            data-overlays="">
+          <td>lastName</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>lastName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].name.maidenName"
+            data-overlays="">
+          <td>Middle name(s)</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>maidenName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].name.middleName"
+            data-overlays="">
+          <td>Middle name(s)</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>middleName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].name.preferredName"
+            data-overlays="">
+          <td>Preferred name / known as</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>preferredName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].name.title"
+            data-overlays="">
+          <td>Title or honorific</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>title</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsSellersCapacity" data-display-id="sellerscapacity">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantssellerscapacity" class="object-block__title" data-display-id="sellerscapacity">
+        <span class="object-block__display">Sellers Capacity</span>      </h4>
+      <code class="object-block__path">participants[].sellersCapacity</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].sellersCapacity"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].sellersCapacity.attachments"
+            data-overlays="baspi5">
+          <td>Attachments</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].sellersCapacity.capacity"
+            data-overlays="baspi5,piq,rds">
+          <td>capacity</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>capacity</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].sellersCapacity.sellersCapacityDetails"
+            data-overlays="baspi5,rds">
+          <td>Please provide details if applicable</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>sellersCapacityDetails</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsVerification" data-display-id="verification">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsverification" class="object-block__title" data-display-id="verification">
+        <span class="object-block__display">Verification</span>      </h4>
+      <code class="object-block__path">participants[].verification</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#participantsverificationidentity" class="object-block__child-link">Identity</a>,         <a href="#participantsverificationantimoneylaundering" class="object-block__child-link">Anti Money Laundering</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ParticipantsVerificationAntiMoneyLaundering" data-display-id="antimoneylaundering">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsverificationantimoneylaundering" class="object-block__title" data-display-id="antimoneylaundering">
+        <span class="object-block__display">Anti Money Laundering</span>      </h4>
+      <code class="object-block__path">participants[].verification.antiMoneyLaundering</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#participantsverificationantimoneylaunderingreport" class="object-block__child-link">Reports[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].verification.antiMoneyLaundering"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.result"
+            data-overlays="">
+          <td>result</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>result</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsVerificationIdentity" data-display-id="identity">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsverificationidentity" class="object-block__title" data-display-id="identity">
+        <span class="object-block__display">Identity</span>      </h4>
+      <code class="object-block__path">participants[].verification.identity</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#participantsverificationidentityreport" class="object-block__child-link">Reports[]</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].verification.identity"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].verification.identity.result"
+            data-overlays="">
+          <td>result</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>result</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsVerificationAntiMoneyLaunderingReport" data-display-id="report">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsverificationantimoneylaunderingreport" class="object-block__title" data-display-id="report">
+        <span class="object-block__display">Reports</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">participants[].verification.antiMoneyLaundering.reports[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].verification.antiMoneyLaundering.reports[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].details"
+            data-overlays="">
+          <td>details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].reportName"
+            data-overlays="">
+          <td>reportName</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>reportName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].result"
+            data-overlays="">
+          <td>result</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>result</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-ParticipantsVerificationIdentityReport" data-display-id="report">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="participantsverificationidentityreport" class="object-block__title" data-display-id="report">
+        <span class="object-block__display">Reports</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">participants[].verification.identity.reports[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="participants[].verification.identity.reports[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="participants[].verification.identity.reports[].details"
+            data-overlays="">
+          <td>details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].verification.identity.reports[].reportName"
+            data-overlays="">
+          <td>reportName</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>reportName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="participants[].verification.identity.reports[].result"
+            data-overlays="">
+          <td>result</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>result</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <aside class="callout callout--warn" role="note">
         <p class="callout__label">Gap notes</p>
         <p>Capacity is a string enum, not a graph of authorities. An executor's grant of probate, an attorney's power of attorney, a mortgagee's repossession order — all collapse to a single <code>sellersCapacity</code> value, with attachments. A future revision should split asserted-capacity from evidenced-authority.</p>
       </aside>

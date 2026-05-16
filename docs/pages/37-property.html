@@ -21,9 +21,9 @@
 
       <div class="page-meta" aria-label="Page leaf statistics">
   <span><strong>27</strong> leaves</span>
-  <span><span class="pill pill--success">Decl</span> 100.0%</span>
-  <span><span class="pill pill--info">Evid</span> 0.0%</span>
-  <span><span class="pill pill--warn">Deriv</span> 0.0%</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
   <span>12 in overlays</span>
   <span>13 with worked example</span></div>
 
@@ -34,7 +34,75 @@
 </aside>      <aside class="callout callout--note" role="note">
         <p class="callout__label">Why this aggregate exists</p>
         <p>Four leaves point at the same physical thing and no leaf points at those four. UPRN appears in <code>propertyPack.uprn</code>, in <code>energyEfficiency.certificate.uprn</code>, in <code>chain.onwardPurchase[].uprn</code>, and in <code>valuationComparisonData.propertyDetails[].uprn</code> — four leaves, one physical referent, zero schema-level joins. Address has the same problem with extra mess (marketing address vs registered title address vs CON29 address). This page reconstructs the implicit Property entity from those scattered identity surfaces and flags it as a known issue.</p>
-      </aside>
+      </aside>      <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;7&lt;/strong&gt; objects, &lt;strong&gt;27&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| Address : "address"
+  PropertyPack ||--o| Location : "location"
+  PropertyPack ||--o| ResidentialPropertyFeatures : "residentialPropertyFeatures"
+  Location ||--o| Bng : "bng"
+  Location ||--o| GoogleStreetViewPOV : "googleStreetViewPOV"
+  Transaction {
+  }
+  PropertyPack {
+    integer uprn "Unique Property Reference Number"
+  }
+  Address {
+    string buildingName "Building name"
+    string buildingNumber "Building number"
+    string countryCode "Country code"
+    string homeNation "Home nation"
+    string line1 "Address line 1"
+    string line2 "Address line 2"
+    string line3 "Address line 3"
+    string postcode "Postcode"
+    string street "Street"
+    string subBuilding "Sub building name"
+    string town "Town"
+  }
+  Location {
+    number latitude "Latitude"
+    number longitude "Longitude"
+  }
+  Bng {
+    number easting "BNG easting"
+    number northing "BNG northing"
+  }
+  GoogleStreetViewPOV {
+    number heading "The heading for the Google Street View camera"
+    number lat "The latitude for the Google Street View camera"
+    number lng "The longitude for the Google Street View camera"
+    number pitch "The pitch for the Google Street View camera"
+    number zoom "The zoom level for the Google Street View camera"
+  }
+  ResidentialPropertyFeatures {
+    integer bathrooms "Number of bathrooms"
+    integer bedrooms "Number of bedrooms"
+    integer diningAreas "Number of dining areas"
+    integer kitchens "Number of kitchens"
+    string[] outsideAreas "What outside areas are there?"
+    integer receptions "Number of reception rooms"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>7</strong> objects, <strong>27</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
       <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
         <div class="db-filter-wrap">
           <button type="button"
@@ -46,342 +114,364 @@
             <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
           </button>
         </div>
-      </div>      <h2 id="address">Address</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="address"
-     data-leaf-count="11">
-  <table class="db-table db-table--fixed" id="table-address">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="propertyPack.address.buildingName"
-          data-overlays="">
-        <td><code>propertyPack.address.buildingName</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building name</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.buildingNumber"
-          data-overlays="">
-        <td><code>propertyPack.address.buildingNumber</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Building number</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.countryCode"
-          data-overlays="">
-        <td><code>propertyPack.address.countryCode</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Country code</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.homeNation"
-          data-overlays="">
-        <td><code>propertyPack.address.homeNation</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Home nation</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.line1"
-          data-overlays="baspi5,piq,ta10,ta6,ta7">
-        <td><code>propertyPack.address.line1</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address line 1</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span> <span class="pill">TA10</span> <span class="pill" title="TA6, TA7">+2</span>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.line2"
-          data-overlays="baspi5,piq,ta10,ta6,ta7">
-        <td><code>propertyPack.address.line2</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address line 2</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span> <span class="pill">TA10</span> <span class="pill" title="TA6, TA7">+2</span>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.line3"
-          data-overlays="baspi5,ta10,ta6,ta7">
-        <td><code>propertyPack.address.line3</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Address line 3</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">TA10</span> <span class="pill">TA6</span> <span class="pill" title="TA7">+1</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.postcode"
-          data-overlays="baspi5,piq,ta10,ta6,ta7">
-        <td><code>propertyPack.address.postcode</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Postcode</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span> <span class="pill">TA10</span> <span class="pill" title="TA6, TA7">+2</span>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.street"
-          data-overlays="">
-        <td><code>propertyPack.address.street</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Street</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.subBuilding"
-          data-overlays="">
-        <td><code>propertyPack.address.subBuilding</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Sub building name</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.address.town"
-          data-overlays="baspi5,piq,ta10,ta6,ta7">
-        <td><code>propertyPack.address.town</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Town</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">PIQ</span> <span class="pill">TA10</span> <span class="pill" title="TA6, TA7">+2</span>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="uprn">UPRN & INSPIRE</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="uprn"
-     data-leaf-count="10">
-  <table class="db-table db-table--fixed" id="table-uprn">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="propertyPack.location.bng.easting"
-          data-overlays="">
-        <td><code>propertyPack.location.bng.easting</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>BNG easting</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.bng.northing"
-          data-overlays="">
-        <td><code>propertyPack.location.bng.northing</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>        </td>
-        <td class="align-center">yes</td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>BNG northing</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.heading"
-          data-overlays="">
-        <td><code>propertyPack.location.googleStreetViewPOV.heading</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>The heading for the Google Street View camera</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.lat"
-          data-overlays="">
-        <td><code>propertyPack.location.googleStreetViewPOV.lat</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>The latitude for the Google Street View camera</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.lng"
-          data-overlays="">
-        <td><code>propertyPack.location.googleStreetViewPOV.lng</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>The longitude for the Google Street View camera</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.pitch"
-          data-overlays="">
-        <td><code>propertyPack.location.googleStreetViewPOV.pitch</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>The pitch for the Google Street View camera</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.zoom"
-          data-overlays="">
-        <td><code>propertyPack.location.googleStreetViewPOV.zoom</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>The zoom level for the Google Street View camera</td>
-        <td>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.latitude"
-          data-overlays="">
-        <td><code>propertyPack.location.latitude</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Latitude</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.location.longitude"
-          data-overlays="">
-        <td><code>propertyPack.location.longitude</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>number</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Longitude</td>
-        <td>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.uprn"
-          data-overlays="baspi5,rds">
-        <td><code>propertyPack.uprn</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Unique Property Reference Number</td>
-        <td><span class="pill">BASPI5</span> <span class="pill">RDS</span>        </td>
-        <td><span class="pill pill--brand">example</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="features">Residential features</h2>
-      <div class="db-table-wrap full-bleed"
-     data-section-id="features"
-     data-leaf-count="6">
-  <table class="db-table db-table--fixed" id="table-features">
-    <thead>
-      <tr>
-        <th class="sortable" style="width: 26%;">Path</th>
-        <th class="align-center" style="width: 6rem;">Required</th>
-        <th style="width: 7rem;">Type</th>
-        <th style="width: 6rem;">Kind</th>
-        <th style="width: 22%;">Title</th>
-        <th style="width: 18%;">Overlays</th>
-        <th style="width: 7rem;">Affordance</th>
-      </tr>
-    </thead>
-    <tbody>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.bathrooms"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.bathrooms</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Number of bathrooms</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.bedrooms"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.bedrooms</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Number of bedrooms</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.diningAreas"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.diningAreas</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Number of dining areas</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.kitchens"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.kitchens</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Number of kitchens</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.outsideAreas"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.outsideAreas</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>string[]</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>What outside areas are there?</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>      <tr data-leaf-path="propertyPack.residentialPropertyFeatures.receptions"
-          data-overlays="nts2,ntsl2">
-        <td><code>propertyPack.residentialPropertyFeatures.receptions</code>        </td>
-        <td class="align-center"><span class="muted">—</span></td>
-        <td><code>integer</code></td>
-        <td><span class="pill pill--success">Decl</span>        </td>
-        <td>Number of reception rooms</td>
-        <td><span class="pill">NTS2</span> <span class="pill">NTSL2</span>        </td>
-        <td><span class="muted">—</span>        </td>
-      </tr>    </tbody>
-  </table>
-</div>      <h2 id="er">Entity relationships</h2>
-      <figure class="diagram" role="figure" aria-label="The four identity surfaces (Address, UPRN, INSPIRE ID, Title link)
-plus the two attribute surfaces (Location coordinates, Residential
-features) collectively describe the Property. None of these is
-declared canonical in the schema — this diagram is a documentation
-patch over that gap.">
-  <div class="mermaid">
-erDiagram
-  PROPERTY ||--|| ADDRESS         : "located at"
-  PROPERTY ||--o| UPRN            : "identified by"
-  PROPERTY ||--o| INSPIRE_ID      : "or by"
-  PROPERTY ||--o{ TITLE_LINK      : "registered as"
-  PROPERTY ||--|| LOCATION        : "at coordinates"
-  PROPERTY ||--|| FEATURES        : "with features"
-  ADDRESS {
-    string line1
-    string line2
-    string town
-    string postcode
-    string countryCode
-  }
-  UPRN {
-    integer value "Unique Property Reference Number"
-    string  source "OS · LA"
-  }
-  LOCATION {
-    number latitude
-    number longitude
-  }
-  FEATURES {
-    string propertyType
-    integer numberOfBedrooms
-    integer numberOfBathrooms
-  }
-  </div>  <figcaption class="diagram-caption">The four identity surfaces (Address, UPRN, INSPIRE ID, Title link)
-plus the two attribute surfaces (Location coordinates, Residential
-features) collectively describe the Property. None of these is
-declared canonical in the schema — this diagram is a documentation
-patch over that gap.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+      </div>      <h3 id="address">Address</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.address</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.address"
+       data-field-count="11">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.address.buildingName"
+            data-overlays="">
+          <td>Building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.buildingNumber"
+            data-overlays="">
+          <td>Building number</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>buildingNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.countryCode"
+            data-overlays="">
+          <td>Country code</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>countryCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.homeNation"
+            data-overlays="">
+          <td>Home nation</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>homeNation</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.line1"
+            data-overlays="baspi5,piq,ta10,ta6,ta7">
+          <td>Address line 1</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line1</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.line2"
+            data-overlays="baspi5,piq,ta10,ta6,ta7">
+          <td>Address line 2</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line2</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.line3"
+            data-overlays="baspi5,ta10,ta6,ta7">
+          <td>Address line 3</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line3</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.postcode"
+            data-overlays="baspi5,piq,ta10,ta6,ta7">
+          <td>Postcode</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.street"
+            data-overlays="">
+          <td>Street</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>street</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.subBuilding"
+            data-overlays="">
+          <td>Sub building name</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>subBuilding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.address.town"
+            data-overlays="baspi5,piq,ta10,ta6,ta7">
+          <td>Town</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>town</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="uprn">UPRN & INSPIRE</h3>      <div class="object-block" id="obj-PropertyPackLocation" data-display-id="location">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocation" class="object-block__title" data-display-id="location">
+        <span class="object-block__display">Location</span>      </h4>
+      <code class="object-block__path">propertyPack.location</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypacklocationbng" class="object-block__child-link">Bng</a>,         <a href="#propertypacklocationgooglestreetviewpov" class="object-block__child-link">Google Street ViewPOV</a>    </p>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.location"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.location.latitude"
+            data-overlays="">
+          <td>Latitude</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>latitude</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.longitude"
+            data-overlays="">
+          <td>Longitude</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>longitude</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocationBng" data-display-id="bng">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocationbng" class="object-block__title" data-display-id="bng">
+        <span class="object-block__display">Bng</span>      </h4>
+      <code class="object-block__path">propertyPack.location.bng</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.location.bng"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.location.bng.easting"
+            data-overlays="">
+          <td>BNG easting</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>easting</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.bng.northing"
+            data-overlays="">
+          <td>BNG northing</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>northing</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocationGoogleStreetViewPOV" data-display-id="googlestreetviewpov">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocationgooglestreetviewpov" class="object-block__title" data-display-id="googlestreetviewpov">
+        <span class="object-block__display">Google Street ViewPOV</span>      </h4>
+      <code class="object-block__path">propertyPack.location.googleStreetViewPOV</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.location.googleStreetViewPOV"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.heading"
+            data-overlays="">
+          <td>The heading for the Google Street View camera</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>heading</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.lat"
+            data-overlays="">
+          <td>The latitude for the Google Street View camera</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>lat</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.lng"
+            data-overlays="">
+          <td>The longitude for the Google Street View camera</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>lng</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.pitch"
+            data-overlays="">
+          <td>The pitch for the Google Street View camera</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>pitch</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.location.googleStreetViewPOV.zoom"
+            data-overlays="">
+          <td>The zoom level for the Google Street View camera</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>zoom</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="features">Residential features</h3>      <div class="object-block" id="obj-PropertyPackResidentialPropertyFeatures" data-display-id="residentialpropertyfeatures">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackresidentialpropertyfeatures" class="object-block__title" data-display-id="residentialpropertyfeatures">
+        <span class="object-block__display">Residential Property Features</span>      </h4>
+      <code class="object-block__path">propertyPack.residentialPropertyFeatures</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.residentialPropertyFeatures"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.bathrooms"
+            data-overlays="nts2,ntsl2">
+          <td>Number of bathrooms</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>bathrooms</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.bedrooms"
+            data-overlays="nts2,ntsl2">
+          <td>Number of bedrooms</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>bedrooms</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.diningAreas"
+            data-overlays="nts2,ntsl2">
+          <td>Number of dining areas</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>diningAreas</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.kitchens"
+            data-overlays="nts2,ntsl2">
+          <td>Number of kitchens</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>kitchens</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.outsideAreas"
+            data-overlays="nts2,ntsl2">
+          <td>What outside areas are there?</td>
+          <td><code>string[]</code></td>
+          <td>Declaration          </td>
+          <td><code>outsideAreas</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.residentialPropertyFeatures.receptions"
+            data-overlays="nts2,ntsl2">
+          <td>Number of reception rooms</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>receptions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <aside class="callout callout--warn" role="note">
         <p class="callout__label">Gap notes</p>
         <p>The defect is structural, not editorial. Fixing it requires either (a) a top-level <code>property</code> aggregate with an <code>id</code> that the other surfaces reference, or (b) a SHACL shape declaring <code>propertyPack.uprn</code> as the canonical key with the others as foreign keys. Neither has been written. Until it is, the page is honest about what it documents: the schema as-built, not the schema-as-it-should-be.</p>
       </aside>

@@ -65,18 +65,145 @@
           { id: 'transaction-participants', file: '35-transaction-participants.html',     title: 'Transaction & participants' },
           { id: 'chain-milestones',         file: '36-chain-milestones-contracts.html',   title: 'Chain, milestones & contracts' },
         ]},
-        { heading: 'The Property', items: [
-          { id: 'property',                 file: '37-property.html',                     title: 'Property' },
-          { id: 'legal-estate',             file: '38-legal-estate-title.html',           title: 'Legal estate & title' },
+        { heading: 'Property', items: [
+          { id: 'property',                            file: '37-property.html',           title: 'Property identity' },
+          { title: 'Legal estate & title', children: [
+            { id: 'legal-estate',                      file: '38-legal-estate-title.html',  title: 'Overview' },
+            { id: 'legal-estate-tenure',               file: '38a-tenure.html',             title: 'Tenure' },
+            { title: 'Title', children: [
+              { title: 'OC summary', children: [
+                { id: 'legal-estate-title-oc-summary', file: '38b-title-oc-summary.html',           title: 'Overview' },
+                { id: 'title-number',                  file: '38b1-title-number.html',              title: 'Number & extents' },
+                { id: 'title-oc-meta',                 file: '38b2-title-oc-meta.html',             title: 'Metadata & property' },
+                { id: 'title-oc-owners',               file: '38b3-title-oc-owners.html',           title: 'Proprietorship & lease' },
+                { id: 'title-oc-charges-main',         file: '38b4-title-oc-charges-main.html',     title: 'Charges (main)' },
+                { id: 'title-oc-charges-other',        file: '38b5-title-oc-charges-other.html',    title: 'Other charges & restrictions' },
+                { id: 'title-oc-notices-main',         file: '38b6-title-oc-notices-main.html',     title: 'Notices' },
+                { id: 'title-oc-notices-other',        file: '38b7-title-oc-notices-other.html',    title: 'Cautions, bankruptcy, rights' },
+              ]},
+              { id: 'legal-estate-title-oc-full',      file: '38c-title-oc-full.html',              title: 'OC full register' },
+            ]},
+            { title: 'Ownership', children: [
+              { id: 'legal-estate-ownership-freehold', file: '38d-ownership-freehold.html',         title: 'Freehold' },
+              { title: 'Leasehold', children: [
+                { id: 'legal-estate-ownership-leasehold', file: '38e-ownership-leasehold.html',     title: 'Overview' },
+                { id: 'lease-term',                    file: '38e1-lease-term.html',                title: 'Term & shared ownership' },
+                { id: 'lease-contacts-list',           file: '38e2-lease-contacts-list.html',       title: 'Contact list' },
+                { id: 'lease-contacts-roles',          file: '38e3-lease-contacts-roles.html',      title: 'Service-contact roles' },
+                { id: 'lease-management',              file: '38e4-lease-management.html',          title: 'Management' },
+                { id: 'lease-rent',                    file: '38e5-lease-rent.html',                title: 'Ground rent' },
+                { title: 'Service charge & insurance', children: [
+                  { id: 'lease-charges',               file: '38e6-lease-charges.html',             title: 'Overview' },
+                  { id: 'lease-service-charge',        file: '38e6a-lease-service-charge.html',     title: 'Service charge' },
+                  { id: 'lease-buildings-insurance',   file: '38e6b-lease-buildings-insurance.html',title: 'Buildings insurance' },
+                ]},
+                { title: 'Consents, restrictions, alterations', children: [
+                  { id: 'lease-legal',                 file: '38e7-lease-legal.html',               title: 'Overview' },
+                  { id: 'lease-consents-alterations',  file: '38e7a-lease-consents-alterations.html', title: 'Consents & alterations' },
+                  { id: 'lease-restrictions-enfranchisement', file: '38e7b-lease-restrictions-enfranchisement.html', title: 'Restrictions & enfranchisement' },
+                  { id: 'lease-building-safety',       file: '38e7c-lease-building-safety.html',    title: 'Building Safety Act' },
+                  { id: 'lease-transfer',              file: '38e7d-lease-transfer.html',           title: 'Transfer & registration' },
+                ]},
+                { title: 'Disputes, general, documents', children: [
+                  { id: 'lease-misc',                  file: '38e8-lease-misc.html',                title: 'Overview' },
+                  { id: 'lease-disputes',              file: '38e8a-lease-disputes.html',           title: 'Disputes' },
+                  { id: 'lease-general',               file: '38e8b-lease-general.html',            title: 'General & confirmation' },
+                  { id: 'lease-required-docs',         file: '38e8c-lease-required-docs.html',      title: 'Required documents' },
+                ]},
+              ]},
+              { title: 'Managed', children: [
+                { id: 'legal-estate-ownership-managed', file: '38f-ownership-managed.html',         title: 'Overview' },
+                { id: 'managed-contacts',              file: '38f1-managed-contacts.html',          title: 'Contacts' },
+                { id: 'managed-transfer',              file: '38f2-managed-transfer.html',          title: 'Transfer & confirmation' },
+                { id: 'managed-service-charge',       file: '38f3-managed-service-charge.html',     title: 'Service charge' },
+                { id: 'managed-insurance',             file: '38f4-managed-insurance.html',         title: 'Insurance' },
+                { id: 'managed-disputes-docs',         file: '38f5-managed-disputes-docs.html',     title: 'Disputes & documents' },
+              ]},
+            ]},
+            { id: 'legal-estate-boundaries-rights',    file: '38g-boundaries-rights.html',          title: 'Boundaries & rights' },
+          ]},
+          { title: 'Built form, condition & valuation', children: [
+            { id: 'built-form',                        file: '39-built-form-condition-valuation.html', title: 'Overview' },
+            { id: 'built-form-form',                   file: '39a-built-form.html',                 title: 'Built form' },
+            { id: 'built-form-condition',              file: '39b-condition.html',                  title: 'Condition' },
+            { title: 'Fixtures & fittings', children: [
+              { id: 'built-form-fixtures',             file: '39c-fixtures.html',                   title: 'Overview' },
+              { id: 'fixtures-summary',                file: '39c1-fixtures-summary.html',          title: 'Items to include / remove' },
+              { id: 'fixtures-basic',                  file: '39c2-fixtures-basic.html',            title: 'Basic fittings' },
+              { id: 'fixtures-kitchen',                file: '39c3-fixtures-kitchen.html',          title: 'Kitchen' },
+              { id: 'fixtures-bathroom',               file: '39c4-fixtures-bathroom.html',         title: 'Bathroom' },
+              { id: 'fixtures-carpets',                file: '39c5-fixtures-carpets.html',          title: 'Carpets' },
+              { id: 'fixtures-curtains',               file: '39c6-fixtures-curtains.html',         title: 'Curtains & rails' },
+              { id: 'fixtures-lights',                 file: '39c7-fixtures-lights.html',           title: 'Light fittings' },
+              { id: 'fixtures-units',                  file: '39c8-fixtures-units.html',            title: 'Fitted units' },
+              { id: 'fixtures-outdoor',                file: '39c9-fixtures-outdoor.html',          title: 'Outdoor' },
+              { id: 'fixtures-services',               file: '39c10-fixtures-services.html',        title: 'TV / telephone / fuel / other' },
+            ]},
+            { title: 'Surveys', children: [
+              { id: 'built-form-surveys',              file: '39d-surveys.html',                    title: 'Overview' },
+              { id: 'survey-meta',                     file: '39d1-survey-meta.html',               title: 'Report metadata & declaration' },
+              { id: 'survey-grounds',                  file: '39d2-survey-grounds.html',            title: 'Grounds' },
+              { id: 'survey-inside-structure',         file: '39d3-survey-inside-structure.html',   title: 'Inside · structure' },
+              { id: 'survey-inside-features',          file: '39d4-survey-inside-features.html',    title: 'Inside · features' },
+              { id: 'survey-inside-finishes',          file: '39d5-survey-inside-finishes.html',    title: 'Inside · finishes' },
+              { id: 'survey-outside-roof',             file: '39d6-survey-outside-roof.html',       title: 'Outside · roof' },
+              { id: 'survey-outside-envelope',         file: '39d7-survey-outside-envelope.html',   title: 'Outside · envelope' },
+              { id: 'survey-outside-extras',           file: '39d8-survey-outside-extras.html',     title: 'Outside · extras' },
+              { id: 'survey-services-energy',          file: '39d9-survey-services-energy.html',    title: 'Services · energy' },
+              { id: 'survey-services-water',           file: '39d10-survey-services-water.html',    title: 'Services · water' },
+              { id: 'survey-legal',                    file: '39d11-survey-legal.html',             title: 'Legal & guarantees' },
+              { id: 'survey-valuation',                file: '39d12-survey-valuation.html',         title: 'Valuation block' },
+              { id: 'survey-advice',                   file: '39d13-survey-advice.html',            title: 'Advice, risks & MLA' },
+            ]},
+            { id: 'built-form-valuation',              file: '39e-valuation.html',                  title: 'Valuation' },
+          ]},
         ]},
         { heading: 'Property pack content', items: [
-          { id: 'built-form',               file: '39-built-form-condition-valuation.html', title: 'Built form, condition & valuation' },
-          { id: 'utilities-energy',         file: '45-utilities-energy.html',             title: 'Utilities & energy' },
-          { id: 'local-context',            file: '46-local-context-searches.html',       title: 'Local context & searches' },
-          { id: 'encumbrances',             file: '47-encumbrances-completion.html',      title: 'Encumbrances & completion' },
+          { id: 'utilities-energy',                    file: '45-utilities-energy.html',            title: 'Utilities & energy' },
+          { title: 'Local context & searches', children: [
+            { id: 'local-context',                     file: '46-local-context-searches.html',      title: 'Overview' },
+            { title: 'Local authority (CON29R)', children: [
+              { id: 'local-context-con29r',            file: '46a-con29r.html',                     title: 'Overview' },
+              { id: 'local-authority-identity',        file: '46a1-local-authority-identity.html',  title: 'LA identity' },
+              { title: 'LA searches', children: [
+                { id: 'local-authority-searches',      file: '46a2-local-authority-searches.html',  title: 'Overview' },
+                { id: 'la-planning-building',          file: '46a2a-la-planning-building.html',     title: 'Planning & building regs' },
+                { id: 'la-roads',                      file: '46a2b-la-roads.html',                 title: 'Roads & public rights' },
+                { id: 'la-other-planning-notices',     file: '46a2c-la-other-planning-notices.html',title: 'Other · planning notices' },
+                { id: 'la-other-finance',              file: '46a2d-la-other-finance.html',         title: 'Other · finance & assets' },
+                { id: 'la-other-road-rail',            file: '46a2e-la-other-road-rail.html',       title: 'Other · road & rail' },
+                { id: 'la-other-environmental',        file: '46a2f-la-other-environmental.html',   title: 'Other · environmental' },
+                { id: 'la-other-compulsory',           file: '46a2g-la-other-compulsory.html',      title: 'Other · compulsory & public' },
+              ]},
+              { id: 'listing-conservation',            file: '46a4-listing-conservation.html',      title: 'Listing & conservation' },
+            ]},
+            { id: 'local-context-llc1',                file: '46c-llc1.html',                       title: 'Local Land Charges (LLC1)' },
+            { title: 'Environmental', children: [
+              { id: 'local-context-environmental',     file: '46d-environmental.html',              title: 'Overview' },
+              { id: 'env-flooding',                    file: '46d1-flooding.html',                  title: 'Flooding' },
+              { id: 'env-mining-ground',               file: '46d2-mining-ground.html',             title: 'Mining & ground' },
+              { id: 'env-pollution-radon',             file: '46d3-pollution-radon.html',           title: 'Pollution & radon' },
+              { id: 'env-coast-climate',               file: '46d4-coast-climate.html',             title: 'Coast & climate' },
+              { id: 'env-infra-policy',                file: '46d5-infra-policy.html',              title: 'Infra & policy' },
+            ]},
+          ]},
+          { title: 'Encumbrances & completion', children: [
+            { id: 'encumbrances',                      file: '47-encumbrances-completion.html',     title: 'Overview' },
+            { id: 'encumbrances-council-tax-insurance',file: '47a-council-tax-insurance.html',      title: 'Council tax & insurance' },
+            { id: 'encumbrances-guarantees',           file: '47b-guarantees.html',                 title: 'Guarantees & warranties' },
+            { id: 'encumbrances-occupiers',            file: '47c-occupiers-notices.html',          title: 'Occupiers & notices' },
+            { id: 'encumbrances-letting-completion',   file: '47d-letting-completion.html',         title: 'Letting & completion' },
+          ]},
         ]},
         { heading: 'Cross-cutting', items: [
-          { id: 'evidence-documents',       file: '48-evidence-documents-declarations.html', title: 'Evidence, documents & declarations' },
+          { title: 'Evidence, documents & declarations', children: [
+            { id: 'evidence-documents',                file: '48-evidence-documents-declarations.html', title: 'Overview' },
+            { id: 'evidence-documents-attachments',    file: '48a-documents.html',                  title: 'Documents & attachments' },
+            { id: 'evidence-declarations',             file: '48b-declarations.html',               title: 'Sale-ready declarations' },
+            { id: 'evidence-additional',               file: '48c-additional.html',                 title: 'Additional info' },
+            { id: 'evidence-disputes',                 file: '48d-disputes.html',                   title: 'Disputes & complaints' },
+            { id: 'evidence-specialist',               file: '48e-specialist.html',                 title: 'Specialist & other' },
+          ]},
           { id: 'overlays-tasks',           file: '49-overlays-tasks-crosscuts.html',     title: 'Overlays, tasks & cross-cuts' },
         ]},
       ],
@@ -275,12 +402,48 @@
     const section = SECTIONS[activeSection];
     if (section.sidebar === false) return ''; // Section explicitly opts out (e.g. single-page sections)
 
+    // Tree view: each item is either a LEAF ({id, file, title}) or a
+    // FOLDER ({title, children:[...]}). Folders nest arbitrarily; we
+    // don't force a level when only one item exists. Folders that
+    // contain the active page (or any descendant active page) are
+    // open by default; the user can collapse them via the chevron.
+    function containsActive(item) {
+      if (item.id && item.id === activeId) return true;
+      if (item.children) {
+        for (const c of item.children) if (containsActive(c)) return true;
+      }
+      return false;
+    }
+    function renderItem(item) {
+      const isLeaf = !item.children;
+      if (isLeaf) {
+        const cls = item.id === activeId ? ' class="active" aria-current="page"' : '';
+        return '<li class="tree-leaf"><a href="' + hrefForPage(item.file, currentLoc) + '"' + cls + '>' +
+               escape(item.title) + '</a></li>';
+      }
+      const open = containsActive(item);
+      const childrenHtml = item.children.map(renderItem).join('');
+      // Inline Lucide chevron-right SVG. Rotates 90° via CSS when the
+      // folder is open. Uses currentColor so it inherits text colour.
+      const chevron =
+        '<svg class="tree-caret" viewBox="0 0 24 24" fill="none" ' +
+        'stroke="currentColor" stroke-width="2.25" stroke-linecap="round" ' +
+        'stroke-linejoin="round" aria-hidden="true">' +
+          '<polyline points="9 18 15 12 9 6"/>' +
+        '</svg>';
+      return '<li class="tree-folder' + (open ? ' is-open' : '') + '">' +
+               '<button type="button" class="tree-toggle" aria-expanded="' + (open ? 'true' : 'false') + '">' +
+                 chevron +
+                 '<span class="tree-label">' + escape(item.title) + '</span>' +
+               '</button>' +
+               '<ul class="tree-children">' + childrenHtml + '</ul>' +
+             '</li>';
+    }
     const groupsHtml = section.groups.map(function (group) {
-      const itemsHtml = group.items.map(function (it) {
-        const cls = it.id === activeId ? ' class="active" aria-current="page"' : '';
-        return '<li><a href="' + hrefForPage(it.file, currentLoc) + '"' + cls + '>' + escape(it.title) + '</a></li>';
-      }).join('');
-      return '<div class="nav-group"><h3>' + escape(group.heading) + '</h3><ul>' + itemsHtml + '</ul></div>';
+      return '<div class="nav-group">' +
+               '<h3>' + escape(group.heading) + '</h3>' +
+               '<ul class="tree">' + (group.items || []).map(renderItem).join('') + '</ul>' +
+             '</div>';
     }).join('');
 
     return '<aside class="app-sidebar" id="app-sidebar">' +
@@ -317,6 +480,23 @@
       toggle.addEventListener('click', function () { aside.classList.toggle('open'); });
       aside.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', function () { aside.classList.remove('open'); });
+      });
+    }
+
+    // Tree folder expand/collapse — each .tree-toggle button toggles
+    // .is-open on its parent <li.tree-folder>. Default state is set
+    // server-side by renderItem() (folders containing the active page
+    // are open; others closed).
+    if (aside) {
+      aside.querySelectorAll('.tree-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          const li = btn.closest('.tree-folder');
+          if (!li) return;
+          const opening = !li.classList.contains('is-open');
+          li.classList.toggle('is-open', opening);
+          btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+        });
       });
     }
   }
@@ -433,14 +613,23 @@
       // Wait one paint frame so the surrounding grid (sidebar / TOC / main)
       // has finished its first layout pass — otherwise Mermaid measures a
       // zero/tiny container and pins the SVG max-width to that value.
+      // We use requestAnimationFrame but fall back to setTimeout because RAF
+      // is throttled in background / automated tabs, which would block our
+      // first render entirely until the tab is focused.
       return new Promise(function (resolve) {
+        var done = false;
+        function go() {
+          if (done) return; done = true;
+          _runMermaidInner();
+          installMermaidResizeObserver();
+          resolve();
+        }
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            _runMermaidInner();
-            installMermaidResizeObserver();
-            resolve();
-          });
+          requestAnimationFrame(go);
         });
+        // Safety net: if RAF doesn't fire (background/throttled tab), run
+        // after one task tick anyway.
+        setTimeout(go, 50);
       });
     }).catch(function (err) {
       console.warn('[OPDA] mermaid load failed:', err);
@@ -494,6 +683,38 @@
     }
   }
 
+  // Build a single-line `%%{init: {...}}%%` directive from a themeVariables
+  // dict and inject it into every .mermaid element. When the diagram has a
+  // YAML frontmatter (`---\n...\n---\n`) the directive must go AFTER it —
+  // putting `%%init%%` first makes Mermaid swallow the `---` as a comment
+  // remnant and choke on the next `---`.
+  function injectInlineThemeDirective(themeVars) {
+    if (!themeVars) return;
+    var keys = Object.keys(themeVars);
+    var pairs = [];
+    for (var i = 0; i < keys.length; i++) {
+      var v = themeVars[keys[i]];
+      if (typeof v !== 'string') continue;
+      pairs.push("'" + keys[i] + "':'" + v + "'");
+    }
+    var directive = "%%{init: { 'theme':'base', 'themeVariables': { " + pairs.join(', ') + " } }}%%\n";
+    document.querySelectorAll('.mermaid').forEach(function (el) {
+      var src = (el.dataset.mermaidSrc || el.textContent || '').trim();
+      // Strip any prior init directive (could be anywhere — we may have
+      // placed it after a frontmatter on a previous theme-toggle pass).
+      src = src.replace(/%%\{init:[^}]*\}\}%%\s*\n?/g, '');
+      src = src.replace(/^\s+/, '');
+      if (!src) return;
+      var fm = src.match(/^---\s*\n[\s\S]*?\n---\s*\n/);
+      if (fm) {
+        el.textContent = fm[0] + directive + src.slice(fm[0].length);
+      } else {
+        el.textContent = directive + src;
+      }
+      el.removeAttribute('data-processed');
+    });
+  }
+
   function _runMermaidInner() {
     // Theme: explicit data-theme attribute wins; fall back to system preference.
     const themeAttr = document.documentElement.getAttribute('data-theme');
@@ -539,8 +760,34 @@
       actorLineColor:      '#6C6A64',
       signalColor:         '#3D3D3A',
       signalTextColor:     '#141413',
-      sectionBkgColor:     '#F5F0E8',
-      sectionBkgColor2:    '#E8E0D2',
+      /* Gantt — sections keep the warm site palette so the chart fits the
+         page; task states use the Cagle Status palette from the diagramming
+         skill (09-STYLING-GUIDE.md §"Gantt Chart" + Status table) so
+         done/active/crit are immediately recognisable cross-diagram. */
+      sectionBkgColor:     '#F5F0E8',  /* surface-soft */
+      sectionBkgColor2:    '#E8E0D2',  /* cream-strong */
+      altSectionBkgColor:  '#FAF9F5',  /* canvas (alt rows 1+3 fall back to this in Mermaid Gantt) */
+      excludeBkgColor:     '#F0EBE0',  /* weekends / excluded */
+      /* Task states — Cagle Light Status palette (WCAG AA, CVD-safe) */
+      taskBkgColor:        '#ECEFF1',  /* neutral (default task) */
+      taskBorderColor:     '#455A64',
+      /* All task fills in light mode are pale pastels, so every text
+         variant uses ink black. Setting taskTextLightColor to white was
+         a WCAG fail for crit tasks (white on #FFCDD2 ≈ 1.3:1). */
+      taskTextColor:       '#141413',
+      taskTextLightColor:  '#141413',
+      taskTextDarkColor:   '#141413',
+      taskTextOutsideColor:'#141413',
+      taskTextClickableColor:'#141413',
+      textColor:           '#3D3D3A',  /* axis tick + grid labels */
+      activeTaskBkgColor:  '#BBDEFB',  /* Info (skill §Gantt example) */
+      activeTaskBorderColor:'#1565C0',
+      doneTaskBkgColor:    '#C8E6C9',  /* Success (skill §Gantt example) */
+      doneTaskBorderColor: '#2E7D32',
+      critBkgColor:        '#FFCDD2',  /* Error (skill §Gantt example) */
+      critBorderColor:     '#C62828',
+      todayLineColor:      '#C62828',  /* Error stroke — high-attention */
+      gridColor:           '#ECEFF1',  /* skill default; subtle on cream */
       /* ER */
       attributeBackgroundColorOdd:  '#FAF9F5',
       attributeBackgroundColorEven: '#F4F1E8',
@@ -570,18 +817,48 @@
       actorLineColor:      '#A8A097',
       signalColor:         '#E8E2D4',
       signalTextColor:     '#F7F3E9',
-      sectionBkgColor:     '#211F1C',
-      sectionBkgColor2:    '#2B2925',
+      /* Gantt — sections keep the warm espresso palette so the chart fits
+         the page; task states use the Cagle Dark Status palette from the
+         diagramming skill (09-STYLING-GUIDE.md §"Dark Cagle Palette"
+         Status table — WCAG 2.2 AA+ audited, CVD-safe per Council 163). */
+      sectionBkgColor:     '#211F1C',  /* surface-dark-alt */
+      sectionBkgColor2:    '#2B2925',  /* surface-dark-tint */
+      altSectionBkgColor:  '#181715',  /* canvas — the deepest (overrides Mermaid's white default for sections 1+3) */
+      excludeBkgColor:     '#34302B',  /* weekends / excluded */
+      /* Task states — Cagle Dark Status palette (skill: WCAG 2.2 AA+, CVD-safe).
+         All bar fills are deep, so EVERY text variant must be light. Note
+         that Mermaid uses `taskTextDarkColor` for `.doneText*` /
+         `.activeText*` inside-bar labels regardless of fill luminance —
+         it's "the darker of the two text colors", not "for dark fills" —
+         so it must be light here too or the labels disappear. */
+      taskBkgColor:        '#1E1E1E',  /* Neutral fill — default task */
+      taskBorderColor:     '#9E9E9E',  /* Neutral stroke */
+      taskTextColor:       '#F7F3E9',  /* on-dark text — matches rest of dark theme */
+      taskTextLightColor:  '#F7F3E9',
+      taskTextDarkColor:   '#F7F3E9',  /* used for .doneText + .activeText labels on dark bars */
+      taskTextOutsideColor:'#F7F3E9',
+      taskTextClickableColor:'#90CAF9',
+      textColor:           '#E8E2D4',  /* axis tick + grid labels — matches labelColor */
+      activeTaskBkgColor:  '#0D2137',  /* Info fill */
+      activeTaskBorderColor:'#42A5F5', /* Info stroke */
+      doneTaskBkgColor:    '#0D2818',  /* Success fill */
+      doneTaskBorderColor: '#66BB6A',  /* Success stroke */
+      critBkgColor:        '#2A0A0A',  /* Error fill */
+      critBorderColor:     '#EF5350',  /* Error stroke */
+      todayLineColor:      '#EF5350',  /* Error stroke — high-attention marker */
+      gridColor:           '#3d2e6b',  /* skill: cluster-border tone, muted on canvas */
       attributeBackgroundColorOdd:  '#211F1C',
       attributeBackgroundColorEven: '#181715',
       fontFamily, fontSize,
     };
 
     try {
+      var activeTheme = isDark ? darkTheme : lightTheme;
+
       window.mermaid.initialize({
         startOnLoad: false,
         theme: 'base',
-        themeVariables: isDark ? darkTheme : lightTheme,
+        themeVariables: activeTheme,
         flowchart: {
           curve: 'basis',
           useMaxWidth: true,
@@ -594,9 +871,25 @@
         gantt:     { useMaxWidth: true },
         er:        { useMaxWidth: true },
       });
+
+      // Inject `%%{init: {…}}%%` per-diagram. Mermaid 11 has cases where
+      // themeVariables passed via initialize() don't reach the renderer
+      // (notably the Gantt section/task palette). Inline directives are
+      // honoured deterministically. See diagramming skill 09-STYLING-GUIDE.
+      injectInlineThemeDirective(activeTheme);
+
       window.mermaid.run({ querySelector: '.mermaid' })
-        .then(function () { applyMermaidClassDefOverrides(isDark); })
-        .catch(function (err) { console.warn('[OPDA] mermaid.run error:', err); });
+        .then(function () {
+          applyMermaidClassDefOverrides(isDark);
+          scheduleEnhanceDiagrams();
+        })
+        .catch(function (err) {
+          // Mermaid rejects the whole batch if ANY block fails to parse,
+          // but the others still render successfully. Run the enhancements
+          // anyway so the working SVGs get their zoom button + clicks.
+          console.warn('[OPDA] mermaid.run error (continuing):', err);
+          try { applyMermaidClassDefOverrides(isDark); scheduleEnhanceDiagrams(); } catch (_) {}
+        });
     } catch (err) {
       console.warn('[OPDA] mermaid failed:', err);
     }
@@ -684,6 +977,10 @@
       });
     });
   }
+
+  // Public-ish handle to the lightbox open() function, set during binding so
+  // the per-diagram zoom-button can trigger it without a DOM dispatch.
+  let openLightbox = null;
 
   // Click any rendered diagram to open a fullscreen pan/zoom viewer.
   // Ported from the diagramming-skill markdown-export HTML viewer, adapted for
@@ -866,14 +1163,11 @@
       isDragging = false;
       lastTouches = null;
     }
-    // Delegated click on diagram SVGs
-    document.body.addEventListener('click', function (e) {
-      const svg = e.target.closest && e.target.closest('.diagram .mermaid svg');
-      if (!svg) return;
-      if (overlay && overlay.classList.contains('open')) return;
-      e.preventDefault();
-      open(svg);
-    });
+    // Expose for the zoom-button click handler (added by enhanceDiagrams()).
+    // The lightbox is now opened *only* via that explicit button; click on
+    // the diagram body no longer triggers it (avoids conflict with the
+    // ER entity-click navigation).
+    openLightbox = open;
     document.addEventListener('keydown', function (e) {
       if (!overlay || !overlay.classList.contains('open')) return;
       if (e.key === 'Escape')                         close();
@@ -884,12 +1178,341 @@
     });
   }
 
-  // Helper: auto-detect section from active page id
+  // ── Per-diagram enhancements ────────────────────────────────────────
+  //   - Top-right zoom-icon button (explicit affordance for the lightbox).
+  //   - ER entity nodes wired up to navigate to their canonical home: a
+  //     local table (h2 with matching id) if one exists on this page,
+  //     otherwise the entity's owning page from window.OPDA_ER_REGISTRY.
+  // Called after every Mermaid render so it re-runs on theme switch /
+  // resize re-renders (previous buttons are replaced when we wipe the
+  // .mermaid container in restartMermaid).
+  //
+  // ZOOM icon SVG (Lucide "expand"): outer corner brackets.
+  const ZOOM_ICON_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<polyline points="15 3 21 3 21 9"/>' +
+    '<polyline points="9 21 3 21 3 15"/>' +
+    '<line x1="21" y1="3" x2="14" y2="10"/>' +
+    '<line x1="3" y1="21" x2="10" y2="14"/>' +
+    '</svg>';
+
+  let __erRegistryLoading = null;
+  function loadErRegistry() {
+    if (window.OPDA_ER_REGISTRY) return Promise.resolve(window.OPDA_ER_REGISTRY);
+    if (__erRegistryLoading) return __erRegistryLoading;
+    __erRegistryLoading = new Promise(function (resolve) {
+      // Resolve the registry path relative to current page depth so that
+      // it works under /docs/pages/ as well as /docs/.
+      var s = document.createElement('script');
+      var loc = detectLocation && detectLocation();
+      var prefix = (loc === 'pages' ? '../' : '');
+      s.src = prefix + 'data/schema-er-registry.js';
+      s.async = true;
+      s.onload  = function () { resolve(window.OPDA_ER_REGISTRY || {}); };
+      s.onerror = function () { window.OPDA_ER_REGISTRY = {}; resolve({}); };
+      document.head.appendChild(s);
+    });
+    return __erRegistryLoading;
+  }
+
+  // Possible id forms for a Mermaid entity name. Tries common
+  // singular/plural variants because ER entity names use UPPER_SNAKE
+  // singular forms (PARTICIPANT) while section ids are often plural
+  // (participants) or singular (transaction).
+  function entityNameForms(name) {
+    var lower = name.toLowerCase();
+    var forms = [lower, lower + 's', lower.replace(/-/g, '_')];
+    if (lower.length > 1 && lower.charAt(lower.length - 1) === 's') {
+      forms.push(lower.slice(0, -1));
+    }
+    return forms;
+  }
+
+  function findLocalSectionTarget(entityName) {
+    var forms = entityNameForms(entityName);
+    // 1) Direct id match — h2/h3/h4 anchor named exactly like the entity.
+    for (var i = 0; i < forms.length; i++) {
+      var el = document.getElementById(forms[i]);
+      if (el && /^H[1-6]$/.test(el.tagName)) return forms[i];
+    }
+    // 2) Fallback: object-table headers stamp data-display-id with the
+    // short ER box name. Multiple object tables can share that label
+    // (e.g. two "Report" objects from different paths); scroll to the
+    // first one. Return the element's own `id` so navigation works.
+    for (var j = 0; j < forms.length; j++) {
+      var el2 = document.querySelector('[data-display-id="' + forms[j] + '"]');
+      if (el2 && el2.id) return el2.id;
+    }
+    return null;
+  }
+
+  // Parse an erDiagram source into { blocks, relations }.
+  //   blocks    – Set of entity names that have an attribute block `{ … }`
+  //               on this page. These are entities "defined" here.
+  //   relations – Array of [A, B] pairs from each relation line.
+  // Robust to comments, blank lines, and `erDiagram` header.
+  function parseErDiagram(src) {
+    var blocks    = Object.create(null);
+    var relations = [];
+    var lines = (src || '').split('\n');
+    var inBlock = false;
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === '%') continue;
+      if (line === 'erDiagram' || /^erDiagram\b/.test(line)) continue;
+      if (inBlock) {
+        if (line === '}') inBlock = false;
+        continue;
+      }
+      var bm = line.match(/^([A-Z][A-Z_0-9]*)\s*\{/);
+      if (bm) { blocks[bm[1]] = true; inBlock = true; continue; }
+      // Relationship form: NAME <cardinality> NAME : "label"
+      // Cardinality is a punct cluster like ||--o{ , }o--|| , etc.
+      var rm = line.match(/^([A-Z][A-Z_0-9]+)\s+([|}{o.-]+)\s+([A-Z][A-Z_0-9]+)/);
+      if (rm) relations.push([rm[1], rm[3]]);
+    }
+    return { blocks: blocks, relations: relations };
+  }
+
+  // Walk relationships from `name` looking for a related entity that has a
+  // local section target on the current page. Returns the section id or null.
+  function findRelatedLocalSection(name, erMeta) {
+    var seen = Object.create(null);
+    var queue = [name];
+    seen[name] = true;
+    while (queue.length) {
+      var cur = queue.shift();
+      for (var i = 0; i < erMeta.relations.length; i++) {
+        var r = erMeta.relations[i];
+        var other = null;
+        if (r[0] === cur) other = r[1];
+        else if (r[1] === cur) other = r[0];
+        if (!other || seen[other]) continue;
+        seen[other] = true;
+        var local = findLocalSectionTarget(other);
+        if (local) return local;
+        queue.push(other);
+      }
+    }
+    return null;
+  }
+
+  function resolveErTarget(name, erMeta, registry) {
+    // 1) Exact local section match — covers entities whose name maps to an
+    //    h2 on this page (TRANSACTION → #transaction, PARTICIPANT → #participants).
+    var localId = findLocalSectionTarget(name);
+    if (localId) return { kind: 'local', anchor: localId };
+
+    // 2) If this entity has an attribute block on the current page (= is
+    //    "defined" here as sub-data of something), walk its relationships
+    //    to find a neighbour with a local section target. This handles
+    //    IDENTITY/ROLE/CAPACITY → the participants section they belong to.
+    if (erMeta.blocks[name]) {
+      var related = findRelatedLocalSection(name, erMeta);
+      if (related) return { kind: 'local', anchor: related };
+    }
+
+    // 3) Cross-page canonical home (ADDRESS → page 37, ATTACHMENT → page 48).
+    if (registry && registry[name]) {
+      return { kind: 'cross', page: registry[name].page, anchor: registry[name].anchor };
+    }
+    return null;
+  }
+
+  function attachZoomButton(figure) {
+    if (figure.querySelector('.diagram-zoom-btn')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'diagram-zoom-btn';
+    btn.setAttribute('aria-label', 'Open fullscreen viewer');
+    btn.title = 'Open fullscreen viewer';
+    btn.innerHTML = ZOOM_ICON_SVG;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var svg = figure.querySelector('.mermaid svg');
+      if (svg && typeof openLightbox === 'function') openLightbox(svg);
+    });
+    figure.appendChild(btn);
+  }
+
+  // Find every ER entity group in the SVG and wire a click handler.
+  // Mermaid 11 (ER + ELK layout) emits entity nodes as
+  //   <g class="node default" id="mermaid-<digits>-entity-<NAME>-<n>">
+  // Older Mermaid versions used `id="entity-<NAME>-<n>"`. We accept both.
+  // Entity name is parsed out of the id since the inner label may not be
+  // populated for entities with no attribute block.
+  function attachErEntityClicks(figure) {
+    var svg = figure.querySelector('.mermaid svg');
+    if (!svg || svg.getAttribute('class') !== 'erDiagram') return;
+    // Match both `mermaid-…-entity-NAME-N` and `entity-NAME-N` id forms.
+    var nodes = svg.querySelectorAll('g.node[id*="entity-"], g[id^="entity-"]');
+    if (!nodes.length) return;
+
+    // Parse the original Mermaid source so we know which entities have
+    // attribute blocks here and what they're connected to. The source is
+    // cached on the .mermaid container by OPDA.init().
+    var mermaidEl = figure.querySelector('.mermaid');
+    var src = (mermaidEl && (mermaidEl.dataset.mermaidSrc || mermaidEl.textContent)) || '';
+    var erMeta = parseErDiagram(src);
+
+    // Capture once; resolution is cheap (no fetch beyond the one promise)
+    loadErRegistry().then(function (registry) {
+      nodes.forEach(function (g) {
+        if (g.classList.contains('er-clickable')) return;
+        // Pull entity name out of the id — Mermaid 11 format is
+        //   `mermaid-<digits>-entity-<NAME>-<index>`, older was
+        //   `entity-<NAME>-<index>`. NAME is UPPER_SNAKE so the regex
+        //   matches `[A-Z][A-Z_0-9]*`.
+        var idMatch = (g.id || '').match(/entity-([A-Z][A-Z_0-9]*)-\d+$/);
+        var raw = idMatch ? idMatch[1] : '';
+        if (!raw) {
+          // Fallback: read text label content (older Mermaid).
+          var label = g.querySelector('text.entityLabel, .entityLabel, .label.name text, .label.name');
+          raw = label ? (label.textContent || '').trim() : '';
+        }
+        if (!raw) return;
+        // Mermaid sometimes renders underscores as spaces. Normalise.
+        var name = raw.toUpperCase().replace(/\s+/g, '_');
+
+        var target = resolveErTarget(name, erMeta, registry);
+        if (!target) return;
+
+        g.classList.add('er-clickable');
+        g.setAttribute('role', 'link');
+        g.setAttribute('tabindex', '0');
+        g.setAttribute('aria-label',
+          target.kind === 'local'
+            ? 'Jump to ' + target.anchor + ' section'
+            : 'Go to ' + target.page + (target.anchor ? '#' + target.anchor : ''));
+
+        function navigate(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (target.kind === 'local') {
+            var el = document.getElementById(target.anchor);
+            if (el) {
+              history.pushState(null, '', '#' + target.anchor);
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          } else {
+            // Resolve relative to current location depth.
+            var loc = detectLocation && detectLocation();
+            var prefix = (loc === 'pages' ? '' : 'pages/');
+            window.location.href = prefix + target.page + (target.anchor ? '#' + target.anchor : '');
+          }
+        }
+        g.addEventListener('click', navigate);
+        g.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') navigate(e);
+        });
+      });
+    });
+  }
+
+  // Schedule enhanceDiagrams() across a few short delays so the call
+  // succeeds even when mermaid.run() resolves before SVGs land in the DOM
+  // (notably under the ELK layout engine, which can take several hundred
+  // ms past the .then() resolution to actually mount each SVG). Uses
+  // setTimeout rather than requestAnimationFrame so it still runs in
+  // background / throttled tabs. Caps total wait at ~6s.
+  function scheduleEnhanceDiagrams() {
+    var attempts = 0;
+    var max = 30;
+    function tick() {
+      attempts += 1;
+      enhanceDiagrams();
+      var diagrams = document.querySelectorAll('.diagram');
+      var anyMissingButton = false;
+      diagrams.forEach(function (fig) {
+        if (fig.querySelector('.mermaid svg') && !fig.querySelector('.diagram-zoom-btn')) {
+          anyMissingButton = true;
+        }
+      });
+      if (anyMissingButton && attempts < max) {
+        setTimeout(tick, 200);
+      } else {
+        // After buttons are in place, check for mis-measured diagrams
+        // (most common: Gantt + ER under ELK rendered before the grid
+        //  column settled, so the SVG is stuck at the initial ~300px).
+        setTimeout(correctMisrenderedDiagrams, 300);
+      }
+    }
+    setTimeout(tick, 0);
+  }
+
+  // Detect diagrams whose SVG is significantly narrower than its container
+  // and re-render those once with the correct width. Runs after the initial
+  // mermaid pass has settled. Each container is re-measured at request time
+  // so a window resize or sidebar mount won't be missed.
+  var __misrenderRecheckOnce = false;
+  function correctMisrenderedDiagrams() {
+    // ONE corrective re-render per page load — full stop. Was previously a
+    // post-check that didn't actually block the re-run, so a diagram whose
+    // natural width is below the 60% threshold (now common for ER blocks
+    // that only contain pure-container objects) would loop and produce a
+    // visible flicker.
+    if (__misrenderRecheckOnce) return;
+    __misrenderRecheckOnce = true;
+
+    var toFix = [];
+    document.querySelectorAll('.mermaid').forEach(function (el) {
+      var svg = el.querySelector('svg');
+      if (!svg || !el.dataset.mermaidSrc) return;
+      var containerW = el.getBoundingClientRect().width;
+      var svgW = svg.getBoundingClientRect().width;
+      // If the container has plenty of room but the SVG is < 60% of it,
+      // mermaid mis-measured. Threshold is generous because some diagrams
+      // are legitimately narrow (e.g. a tiny state machine).
+      if (containerW >= 500 && svgW < containerW * 0.6 && svgW < 500) {
+        toFix.push(el);
+      }
+    });
+    if (!toFix.length) return;
+    toFix.forEach(function (el) {
+      el.textContent = el.dataset.mermaidSrc;
+      el.removeAttribute('data-processed');
+    });
+    if (window.mermaid && window.mermaid.run) {
+      window.mermaid.run({ querySelector: '.mermaid:not([data-processed])' })
+        .then(function () {
+          // Re-apply zoom buttons / ER click wiring on the freshly-rendered
+          // SVGs (they were thrown away when we wiped the container).
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          try { applyMermaidClassDefOverrides(isDark); } catch (_) {}
+          scheduleEnhanceDiagrams();
+        })
+        .catch(function () { /* a sibling block may fail; ignore */ });
+    }
+  }
+
+  function enhanceDiagrams() {
+    document.querySelectorAll('.diagram').forEach(function (figure) {
+      // The CSS rule sets .diagram { position: relative; } so absolute-positioned
+      // buttons land in the right corner. Skip elements without a rendered SVG
+      // (Mermaid hasn't run yet) — we'll be called again on the next tick.
+      if (!figure.querySelector('.mermaid svg')) return;
+      attachZoomButton(figure);
+      attachErEntityClicks(figure);
+    });
+  }
+
+  // Helper: auto-detect section from active page id. Walks the tree of
+  // items (each item is leaf or folder-with-children) so any nesting depth
+  // resolves to the right section.
   function sectionForPage(pageId) {
+    function itemMatch(item) {
+      if (item.id === pageId) return true;
+      if (item.children) {
+        for (const c of item.children) if (itemMatch(c)) return true;
+      }
+      return false;
+    }
     for (const key in SECTIONS) {
       for (const group of SECTIONS[key].groups) {
-        for (const item of group.items) {
-          if (item.id === pageId) return key;
+        for (const item of (group.items || [])) {
+          if (itemMatch(item)) return key;
         }
       }
     }
@@ -903,6 +1526,9 @@
       try {
         // Apply theme BEFORE mountChrome so any data-theme-aware CSS catches up
         applyTheme(resolveTheme());
+        // Stamp the page + section ids on <html> so CSS can scope per page.
+        document.documentElement.setAttribute('data-page', page);
+        if (section) document.documentElement.setAttribute('data-section', section);
         mountChrome(page, section);
         bindThemeToggle();
         renderToc();       // before enhanceHeadings so heading text is clean

@@ -190,6 +190,7 @@ a:hover {
 }
 .sidebar-nav { padding: 0 var(--space-5); }
 .nav-group + .nav-group { margin-top: var(--space-5); }
+.nav-subgroup + .nav-subgroup { margin-top: var(--space-3); }
 .app-sidebar h3,
 .sidebar-section-title {
   font: 700 0.6875rem / 1.4 var(--font-sans);
@@ -199,6 +200,85 @@ a:hover {
   margin: 0 var(--space-3) var(--space-2);
   padding-top: var(--space-1);
 }
+/* ── Tree-view nav ───────────────────────────────────────────────────
+   Sidebar items render as a tree. Leaves are plain links; folders show
+   a caret that flips on open/close. Nesting is arbitrary; only the
+   leaves get backgrounds. */
+.app-sidebar ul.tree,
+.app-sidebar ul.tree-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.app-sidebar .tree-folder { position: relative; }
+.app-sidebar .tree-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: 500 0.9375rem / 1.35 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.app-sidebar .tree-toggle:hover {
+  background: var(--cream-200);
+  color: var(--ink-1000);
+}
+:root[data-theme="dark"] .app-sidebar .tree-toggle:hover {
+  background: var(--surface-dark-tint);
+  color: var(--on-dark);
+}
+/* Chevron icon — Lucide chevron-right rotated via transform on open. */
+.app-sidebar .tree-caret {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-text-muted);
+  transition: transform 150ms ease, color 120ms ease;
+  flex-shrink: 0;
+  /* Vertical-align so the chevron sits on the label baseline cleanly. */
+  vertical-align: -0.2em;
+}
+.app-sidebar .tree-toggle:hover > .tree-caret { color: var(--color-text); }
+.app-sidebar .tree-folder.is-open > .tree-toggle > .tree-caret {
+  transform: rotate(90deg);
+  color: var(--color-brand-700);
+}
+.app-sidebar .tree-children { display: none; }
+.app-sidebar .tree-folder.is-open > .tree-children { display: block; }
+
+/* Indent: children get pushed in relative to their parent. Applies to
+   leaves and to nested folder toggles. Compounds with each nesting
+   level because `.tree-children` is added at every depth. */
+.app-sidebar .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 1rem);
+}
+.app-sidebar .tree-children .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 2rem);
+}
+.app-sidebar .tree-children .tree-children .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-children .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 3rem);
+}
+
+/* A thin guide line down the active folder's children, for that
+   "tree" feeling without committing to per-row hairlines. */
+.app-sidebar .tree-folder.is-open > .tree-children {
+  border-left: 1px solid var(--color-border);
+  margin-left: calc(var(--space-3) + 0.3rem);
+}
+.app-sidebar .tree-folder.is-open > .tree-children .tree-leaf > a,
+.app-sidebar .tree-folder.is-open > .tree-children > .tree-folder > .tree-toggle {
+  padding-left: calc(var(--space-3) + 0.7rem);
+}
+
 .app-sidebar ul { list-style: none; padding: 0; margin: 0; }
 .app-sidebar li + li { margin-top: 1px; }
 .app-sidebar a {
@@ -262,11 +342,12 @@ a:hover {
   max-width: 44rem;
   margin: 0 auto;
   background: transparent;
-  padding: var(--space-6) 0 var(--space-10);
+  padding: var(--space-6) 0 50vh;
   border-radius: 0;
   box-shadow: none;
   border: 0;
 }
+html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 /* Wide track: overview pages, schema browsers, dictionary tables, Mermaid.
    At --content-max (1800px) the 8,458-row data dictionary and full Mermaid
    diagrams render without horizontal scroll on standard desktop widths.
@@ -296,6 +377,7 @@ a:hover {
   color: var(--color-text-strong);
   margin-top: var(--space-7);
   margin-bottom: var(--space-3);
+  scroll-margin-top: calc(var(--header-height) + 1rem);
 }
 .prose h1 {
   font: var(--h1);
@@ -428,10 +510,8 @@ a:hover {
 .prose th, .prose td {
   text-align: left;
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
   vertical-align: top;
 }
-.prose tbody tr:last-child td { border-bottom: 0; }
 .prose th {
   background: var(--cream-200);
   color: var(--color-text-strong);
@@ -846,7 +926,91 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 /* ─────────────────────────────────────────────────────────────
    DIAGRAMS
    ───────────────────────────────────────────────────────────── */
+/* Object-model block — one per JSON object owned by the page. */
+.object-block {
+  margin: var(--space-5) 0 var(--space-6);
+  padding-top: var(--space-3);
+}
+.object-block__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+.object-block__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.object-block__display {
+  color: var(--color-text);
+}
+/* Heading row: h4 on the left, JSON path on the right, same baseline.
+   The path is a separate <code> sibling of the h4 (so it isn't part of
+   the heading tag itself) and stretches into the remaining row width to
+   right-align via its own text-align. */
+.object-block__title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Override the default `.prose code` chip styling and let the path push
+   to the right edge of the row. */
+.prose code.object-block__path,
+.object-block__path {
+  flex: 1 1 auto;
+  text-align: right;
+  padding: 0;
+  background: transparent;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  word-break: break-all;
+}
+:root[data-theme="dark"] .prose code.object-block__path,
+:root[data-theme="dark"] .object-block__path {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+/* The Type, Path, and Field cells in the object/field tables wrap their
+   content in <code>. Inherit `.prose code`'s monospace font but drop the
+   cream-chip background + terracotta colour — they're load-bearing
+   columns and the chip styling makes the table read as a wall of pills. */
+.db-table code,
+:root[data-theme="dark"] .db-table code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  border-radius: 0;
+}
+.object-block__cardinality {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.object-block__children {
+  margin: 0;
+}
+.object-block__children a {
+  color: var(--color-text-muted);
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+.object-block__children a:hover {
+  color: var(--color-brand-700);
+  text-decoration: underline;
+}
+
 .diagram {
+  position: relative;
   margin: var(--space-6) 0;
   padding: var(--space-5);
   background: var(--cream-200);
@@ -855,17 +1019,42 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   overflow-x: auto;
 }
 .diagram .mermaid svg {
-  max-height: 75vh;
+  /* Cap diagrams at 750px (50% over the previous 500px cap). The
+     fullscreen lightbox (zoom icon top-right of every diagram) is the
+     escape hatch for inspection. */
+  max-height: 750px;
   height: auto;
-  max-width: 100%;
+  /* Override Mermaid's inline `max-width: <Npx>` — Mermaid bakes the
+     initially-measured container width into the SVG, which is wrong for
+     Gantt charts in particular (often measured at 300px before the grid
+     has settled). The !important is required because Mermaid sets the
+     value as inline style. */
+  max-width: 100% !important;
   width: auto;
+}
+/* Same cap for inline content images in articles (icons / screenshots
+   / illustrations). */
+.prose img,
+.resource-link img {
+  max-height: 750px;
+  height: auto;
 }
 :root[data-theme="dark"] .diagram { background: var(--surface-dark-alt); }
 .diagram .mermaid {
-  display: flex;
-  justify-content: center;
+  /* display:block is REQUIRED. Mermaid's Gantt renderer reads the
+     container's measured width to compute the chart's intrinsic width;
+     a flex container reports a shrunk/intrinsic width before any child
+     SVG exists, so Mermaid renders the Gantt at ~300px and the SVG
+     never recovers. Block + width:100% gives Mermaid the correct
+     container width on the first measurement.
+
+     Diagrams whose natural width is smaller than the column are still
+     centred via `margin: 0 auto` on the SVG below. */
+  display: block;
+  width: 100%;
   font-family: var(--font-sans);
 }
+.diagram .mermaid > svg { display: block; margin: 0 auto; }
 .diagram-caption {
   font: italic 400 var(--text-sm) / 1.4 var(--font-serif);
   color: var(--color-text-muted);
@@ -874,7 +1063,68 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   padding-top: var(--space-3);
   border-top: 1px dashed var(--color-border-strong);
 }
-.diagram .mermaid svg { cursor: zoom-in; }
+/* Cursor stays default on the SVG body; the explicit zoom button below is
+   the trigger for the fullscreen lightbox. ER entity nodes set their own
+   pointer cursor via .er-clickable. */
+.diagram .mermaid svg { cursor: default; }
+
+/* Zoom-in icon overlay in the top-right of each diagram — explicit affordance
+   for the fullscreen lightbox. Click-anywhere-on-svg still works as a
+   shortcut, but the icon makes the feature discoverable. */
+.diagram-zoom-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 5;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  transition: opacity 120ms ease, background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+.diagram-zoom-btn svg { display: block; width: 1rem; height: 1rem; }
+.diagram:hover .diagram-zoom-btn { opacity: 1; }
+.diagram-zoom-btn:hover {
+  background: var(--color-brand-100);
+  color: var(--color-brand-900);
+  transform: scale(1.05);
+}
+.diagram-zoom-btn:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--color-brand-700);
+  outline-offset: 2px;
+}
+:root[data-theme="dark"] .diagram-zoom-btn {
+  background: var(--surface-dark);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+:root[data-theme="dark"] .diagram-zoom-btn:hover {
+  background: var(--color-brand-800, #884838);
+  color: #fff;
+}
+
+/* ER entity nodes are clickable for navigation. Pointer cursor on the
+   group; subtle thicker outline on hover so users see the target. */
+.diagram .mermaid svg g.er-clickable { cursor: pointer; }
+.diagram .mermaid svg g.er-clickable:hover rect,
+.diagram .mermaid svg g.er-clickable:hover > rect.er.entityBox {
+  stroke-width: 2.5px;
+  filter: brightness(1.04);
+}
+.diagram .mermaid svg g.er-clickable:focus { outline: none; }
+.diagram .mermaid svg g.er-clickable:focus-visible rect {
+  stroke-width: 3px;
+  stroke-dasharray: 4 2;
+}
 
 /* Fullscreen pan/zoom lightbox for diagram SVGs (opened by site.js click handler). */
 .diagram-lightbox { display: none; }
@@ -1204,6 +1454,12 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   color: var(--color-text-muted);
   text-transform: uppercase;
 }
+.db-filter-option-count {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85em;
+  margin-left: 0.35em;
+}
 .db-filter-option input[type="checkbox"] {
   width: 0.875rem;
   height: 0.875rem;
@@ -1229,9 +1485,9 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 }
 .db-summary strong { color: var(--color-text-strong); font-weight: 600; }
 .db-table-wrap {
-  overflow-x: auto;
-  max-height: 70vh;
-  overflow-y: auto;
+  /* No scrollbars — render the whole table on the page. The wrapping
+     table-layout: fixed + overflow-wrap: anywhere handles long paths
+     and field names without horizontal scroll. */
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-bottom: 0;
@@ -1255,6 +1511,19 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 .db-table th.align-right,  .db-table td.align-right  { text-align: right; }
 .db-table th.align-center, .db-table td.align-center { text-align: center; }
 .db-table th.align-left,   .db-table td.align-left   { text-align: left; }
+
+/* Overlays column — descriptive name per line + the short key in muted
+   text in parens after. One overlay per line; the cell wraps naturally
+   even with table-layout: fixed. */
+.db-table td.overlay-cell { line-height: 1.4; vertical-align: top; }
+.db-table .overlay-line { display: block; padding: 1px 0; }
+.db-table .overlay-line + .overlay-line { margin-top: 0.15em; }
+.db-table .overlay-key {
+  color: var(--color-text-muted);
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .db-table .db-cell--truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .db-table thead th {
@@ -1266,7 +1535,6 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   letter-spacing: var(--tracking-meta);
   text-align: left;
   padding: 0.55rem 0.85rem;
-  border-bottom: 1px solid var(--color-border-strong);
   white-space: nowrap;
 }
 :root[data-theme="dark"] .db-table thead th { background: var(--surface-dark-tint); }
@@ -1278,7 +1546,6 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 .db-table thead th.sort-desc .sort-indicator { color: var(--terracotta-700); }
 .db-table tbody td {
   padding: 0.55rem 0.85rem;
-  border-bottom: 1px solid var(--color-border);
   vertical-align: top;
   color: var(--color-text);
   font: 400 var(--text-sm) / 1.45 var(--font-sans);
@@ -1537,15 +1804,18 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 :root[data-theme="dark"] .mermaid svg.erDiagram .relationshipLine {
   stroke: #A8A097 !important;
 }
-/* Mermaid 11 places <rect class="basic label-container"> (and unclassed sibling
-   rects) on top of the entity-body paths to back the foreignObject text labels.
-   Their default fill is #ECECFF from Mermaid's scoped stylesheet. Make them
-   transparent so the alternating dark path backgrounds show through. */
-:root[data-theme="dark"] .mermaid svg.erDiagram rect.label-container,
-:root[data-theme="dark"] .mermaid svg.erDiagram rect.basic,
-:root[data-theme="dark"] .mermaid svg.erDiagram g.label rect,
-:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject + rect,
-:root[data-theme="dark"] .mermaid svg.erDiagram rect:not([fill]):not([class*="entityBox"]) {
+/* Mermaid 11 places small rects INSIDE each attribute-row label group
+   (`<g class="label">`) to back the foreignObject text. Their default
+   fill is #ECECFF and clashes with the alternating dark-mode row paths.
+   Hide them.
+
+   IMPORTANT: do NOT match `<rect class="basic label-container">`
+   directly under `<g class="node default">` — that one is the WHOLE
+   entity box for objects with empty `{}` blocks. Hiding it makes the
+   pure-container entities (Verification, LegalOwners, Transaction on a
+   tenure-only page, etc.) appear as bare floating text. */
+:root[data-theme="dark"] .mermaid svg.erDiagram g.label > rect,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject + rect {
   fill: transparent !important;
   stroke: none !important;
 }

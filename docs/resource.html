@@ -136,6 +136,174 @@
     .res-breadcrumb a, .res-breadcrumb span { color: inherit; }
     .res-breadcrumb a:hover { color: var(--color-brand-700); }
     .res-breadcrumb .sep { margin: 0 0.25em; color: var(--color-ink-400); }
+
+    /* Rendered markdown */
+    .res-prose-wrap {
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+    .res-prose-wrap > :first-child { margin-top: 0; }
+    .res-prose-wrap > :last-child  { margin-bottom: 0; }
+    .res-prose-wrap h1 { margin-top: var(--space-5); }
+    .res-prose-wrap h2 { margin-top: var(--space-5); }
+    .res-prose-wrap h3 { margin-top: var(--space-4); }
+    .res-prose-wrap pre {
+      background: var(--color-ink-50);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3) var(--space-4);
+      overflow-x: auto;
+      font-size: var(--text-sm);
+      line-height: 1.55;
+    }
+    .res-prose-wrap pre code { background: transparent; padding: 0; }
+    .res-prose-wrap code {
+      background: var(--color-ink-50);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    .res-prose-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-3) 0;
+      font-size: var(--text-sm);
+    }
+    .res-prose-wrap th, .res-prose-wrap td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+    }
+    .res-prose-wrap th { font-weight: 600; background: var(--color-ink-50); }
+    .res-prose-wrap blockquote {
+      margin: var(--space-3) 0;
+      padding: var(--space-2) var(--space-4);
+      border-left: 3px solid var(--color-brand-700);
+      background: var(--color-ink-50);
+      color: var(--color-text-muted);
+    }
+
+    /* Source code */
+    .res-code-wrap {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .res-code-wrap pre {
+      margin: 0;
+      padding: var(--space-4) var(--space-5);
+      overflow: auto;
+      max-height: 80vh;
+      font-size: var(--text-sm);
+      line-height: 1.55;
+      background: transparent;
+    }
+    .res-code-wrap code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      background: transparent;
+      padding: 0;
+      color: var(--color-text);
+    }
+
+    /* CSV / TSV tables */
+    .res-csv-wrap {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: auto;
+      background: var(--color-surface);
+      max-height: 80vh;
+      box-shadow: var(--shadow-sm);
+    }
+    .res-csv-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .res-csv-wrap thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--color-ink-50);
+      text-align: left;
+      font-weight: 600;
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+    }
+    .res-csv-wrap td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    .res-csv-wrap tbody tr:nth-child(even) td { background: var(--color-ink-50); }
+
+    .res-load-error {
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-warning-100);
+      border: 1px solid var(--color-warning-700);
+      color: var(--color-warning-700);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+    }
+    .res-load-error code { background: rgba(0,0,0,0.08); padding: 1px 4px; border-radius: 3px; }
+
+    /* Folder listing */
+    .res-folder-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-3);
+    }
+    .res-folder-crumbs { font-size: var(--text-sm); color: var(--color-text-muted); word-break: break-all; }
+    .res-folder-crumbs a { color: inherit; }
+    .res-folder-crumbs a:hover { color: var(--color-brand-700); }
+    .res-folder-crumbs .sep { margin: 0 0.25em; color: var(--color-ink-400); }
+    .res-folder-up {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      background: var(--color-brand-100);
+      color: var(--color-brand-900);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+    .res-folder-up:hover { background: var(--color-brand-200); text-decoration: none; }
+    .res-folder-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-size: var(--text-sm);
+      background: var(--color-surface);
+    }
+    .res-folder-table thead th {
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-ink-50);
+      border-bottom: 1px solid var(--color-border);
+      font-weight: 600;
+    }
+    .res-folder-table tbody td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+    }
+    .res-folder-table tbody tr:last-child td { border-bottom: 0; }
+    .res-folder-table tbody tr:hover td { background: var(--color-ink-50); }
+    .res-folder-table td:first-child { width: 60%; }
+    .res-folder-table td:nth-child(2) { width: 18%; }
+    .res-folder-table td:nth-child(3) { width: 22%; }
+    .res-folder-table a { color: var(--color-text); text-decoration: none; }
+    .res-folder-table a:hover { color: var(--color-brand-700); text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -199,29 +367,70 @@
       var ext      = (basename.match(/\.([a-z0-9]+)$/i) || [,''])[1].toLowerCase();
 
       // ─── Determine render mode ─────────────────────────────────────────
-      var TEXT_LIKE  = ['md','txt','json','ttl','rdf','xml','yml','yaml','csv','tsv','log','js','ts','tsx','jsx','css','scss','py','sh','bash','rs','go','java','c','cpp','h','hpp'];
-      var IMG_EXT    = ['png','jpg','jpeg','gif','svg','webp','bmp','avif','ico'];
-      var IFRAME_EXT = ['html','htm','pdf'];
-      var VIDEO_EXT  = ['mp4','webm','mov','m4v'];
-      var AUDIO_EXT  = ['mp3','wav','ogg','m4a','flac'];
-      var DL_ONLY    = ['xlsx','xls','docx','doc','pptx','ppt','zip','tar','gz','7z','dmg','exe','bin'];
+      var MARKDOWN_EXT = ['md','markdown','mdown','mkd'];
+      var CODE_EXT     = ['ttl','rdf','xml','yml','yaml','js','ts','tsx','jsx','css','scss','py','sh','bash','rs','go','java','c','cpp','h','hpp','sql','toml','ini','dockerfile','make','mk'];
+      var CSV_EXT      = ['csv','tsv'];
+      var IMG_EXT      = ['png','jpg','jpeg','gif','svg','webp','bmp','avif','ico'];
+      var IFRAME_EXT   = ['html','htm'];
+      var PDF_EXT      = ['pdf'];
+      var TEXT_EXT     = ['txt','log'];
+      var VIDEO_EXT    = ['mp4','webm','mov','m4v'];
+      var AUDIO_EXT    = ['mp3','wav','ogg','m4a','flac'];
+      var DL_ONLY      = ['xlsx','xls','docx','doc','pptx','ppt','zip','tar','gz','7z','dmg','exe','bin'];
 
+      // Map extensions → highlight.js language hints.
+      var CODE_LANG = {
+        ttl: 'turtle', rdf: 'xml', xml: 'xml',
+        yml: 'yaml', yaml: 'yaml',
+        js: 'javascript', ts: 'typescript', tsx: 'typescript', jsx: 'javascript',
+        css: 'css', scss: 'scss',
+        py: 'python', sh: 'bash', bash: 'bash',
+        rs: 'rust', go: 'go', java: 'java',
+        c: 'c', cpp: 'cpp', h: 'c', hpp: 'cpp',
+        sql: 'sql', toml: 'toml', ini: 'ini',
+        dockerfile: 'dockerfile', make: 'makefile', mk: 'makefile',
+      };
+
+      // Treat a trailing-slash path (or a path with no extension and no leaf
+      // basename) as a directory request — the middleware will return a JSON
+      // index and we render a folder view.
+      var isDirPath = !!(rawPath && /\/$/.test(rawPath));
       var renderMode;
-      if (!path)                                       renderMode = 'missing';
-      else if (ext === 'json')                         renderMode = 'jsoncrack';   // graph view via JSON Crack widget
-      else if (IMG_EXT.indexOf(ext) > -1)              renderMode = 'image';
-      else if (IFRAME_EXT.indexOf(ext) > -1)           renderMode = 'iframe';
-      else if (VIDEO_EXT.indexOf(ext) > -1)            renderMode = 'video';
-      else if (AUDIO_EXT.indexOf(ext) > -1)            renderMode = 'audio';
-      else if (DL_ONLY.indexOf(ext) > -1)              renderMode = 'binary';
-      else if (TEXT_LIKE.indexOf(ext) > -1 || ext==='') renderMode = 'iframe';   // text — browser renders as plain text in an iframe
+      if (!path)                                        renderMode = 'missing';
+      else if (isDirPath)                               renderMode = 'folder';
+      else if (ext === 'json')                          renderMode = 'jsoncrack';   // graph + raw toggle
+      else if (MARKDOWN_EXT.indexOf(ext) > -1)          renderMode = 'markdown';
+      else if (CODE_EXT.indexOf(ext) > -1)              renderMode = 'code';
+      else if (CSV_EXT.indexOf(ext) > -1)               renderMode = 'csv';
+      else if (PDF_EXT.indexOf(ext) > -1)               renderMode = 'pdf';
+      else if (TEXT_EXT.indexOf(ext) > -1)              renderMode = 'text';
+      else if (IMG_EXT.indexOf(ext) > -1)               renderMode = 'image';
+      else if (IFRAME_EXT.indexOf(ext) > -1)            renderMode = 'iframe';
+      else if (VIDEO_EXT.indexOf(ext) > -1)             renderMode = 'video';
+      else if (AUDIO_EXT.indexOf(ext) > -1)             renderMode = 'audio';
+      else if (DL_ONLY.indexOf(ext) > -1)               renderMode = 'binary';
+      else if (ext === '')                              renderMode = 'folder';      // bare path → try folder view
       else                                              renderMode = 'iframe';
 
       // ─── Populate header / metadata ────────────────────────────────────
       function $(id) { return document.getElementById(id); }
       function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
 
-      var modeLabel = renderMode === 'jsoncrack' ? 'graph view (JSON Crack)' : renderMode;
+      var MODE_LABEL = {
+        jsoncrack: 'graph view (JSON Crack)',
+        markdown:  'markdown',
+        code:      'syntax-highlighted source',
+        csv:       'table',
+        pdf:       'PDF document',
+        text:      'plain text',
+        folder:    'folder listing',
+        image:     'image',
+        video:     'video',
+        audio:     'audio',
+        iframe:    'inline frame',
+        binary:    'binary (download only)',
+      };
+      var modeLabel = MODE_LABEL[renderMode] || renderMode;
       $('res-mode-label').textContent = path ? 'rendered as ' + modeLabel : 'no resource specified';
       $('res-title').textContent      = basename;
       $('res-path').textContent       = path || '(no path supplied)';
@@ -407,6 +616,342 @@
         btnRaw.addEventListener('click', renderRaw);
         renderGraph();
 
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── Shared helpers for fetch-based renderers ───────────────────────
+      function showLoadError(mount, err) {
+        var isFileProtocol = window.location.protocol === 'file:';
+        var hint = '';
+        if (isFileProtocol) {
+          var port = 8000;
+          var httpEquivalent =
+            'http://localhost:' + port + '/docs/resource.html?path=' + encodeURIComponent(path);
+          hint =
+            '<br><br>The browser is on <code>file://</code> which blocks <code>fetch()</code>. ' +
+            'Start a local server (e.g. <code>./serve.sh</code>) and open ' +
+            '<a class="resource-link" href="' + esc(httpEquivalent) + '">the http:// version of this page ↗</a>.';
+        }
+        mount.innerHTML =
+          '<div class="res-load-error">' +
+            '<strong>Could not load file:</strong> ' + esc(err.message || String(err)) +
+            ' &nbsp;·&nbsp; <a href="' + esc(resourceUrl) + '" target="_blank" rel="noopener">Open original ↗</a>' +
+            hint +
+          '</div>';
+      }
+
+      function fetchText(onSuccess, mount) {
+        fetch(resourceUrl)
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+          .then(onSuccess)
+          .catch(function (err) { showLoadError(mount, err); });
+      }
+
+      function loadScriptOnce(src, onLoad, onError) {
+        var existing = document.querySelector('script[data-res-src="' + src + '"]');
+        if (existing) {
+          if (existing.dataset.loaded === '1') { onLoad(); return; }
+          existing.addEventListener('load', onLoad);
+          existing.addEventListener('error', onError);
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.dataset.resSrc = src;
+        s.onload  = function () { s.dataset.loaded = '1'; onLoad(); };
+        s.onerror = onError;
+        document.head.appendChild(s);
+      }
+
+      function loadStyleOnce(href, mediaAttr) {
+        if (document.querySelector('link[data-res-href="' + href + '"]')) return;
+        var l = document.createElement('link');
+        l.rel = 'stylesheet';
+        l.href = href;
+        if (mediaAttr) l.media = mediaAttr;
+        l.dataset.resHref = href;
+        document.head.appendChild(l);
+      }
+
+      // ─── PDF ──────────────────────────────────────────────────────────
+      // Browsers ship a built-in PDF viewer; <object> with an <iframe>
+      // fallback covers Chrome/Safari/Firefox/Edge plus the no-viewer case.
+      if (renderMode === 'pdf') {
+        body.innerHTML =
+          '<div class="res-frame-wrap">' +
+            '<object data="' + esc(resourceUrl) + '#view=FitH" type="application/pdf" class="res-frame">' +
+              '<iframe class="res-frame" src="' + esc(resourceUrl) + '" title="' + esc(basename) + '"></iframe>' +
+            '</object>' +
+          '</div>' +
+          '<p class="muted tiny" style="margin-top:var(--space-2);">' +
+            'If the PDF doesn\'t render inline, ' +
+            '<a href="' + esc(resourceUrl) + '" target="_blank" rel="noopener">open it in a new tab</a> or ' +
+            '<a href="' + esc(resourceUrl) + '" download="' + esc(basename) + '">download</a>.' +
+          '</p>';
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── Plain text (.txt, .log) ──────────────────────────────────────
+      if (renderMode === 'text') {
+        body.innerHTML =
+          '<div class="res-code-wrap" id="res-text-mount">' +
+            '<pre><code>Loading…</code></pre>' +
+          '</div>';
+        var textMount = $('res-text-mount');
+        function renderText(s) {
+          var codeEl = document.createElement('code');
+          codeEl.textContent = s;
+          var pre = document.createElement('pre');
+          pre.appendChild(codeEl);
+          textMount.innerHTML = '';
+          textMount.appendChild(pre);
+        }
+        fetchText(renderText, textMount);
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── Folder listing ───────────────────────────────────────────────
+      // The astro.config Vite middleware returns a JSON array when GET'd
+      // with `?index=1` on a directory under one of the served roots.
+      if (renderMode === 'folder') {
+        body.innerHTML = '<div id="res-folder-mount"><div class="muted">Loading…</div></div>';
+        var folderMount = $('res-folder-mount');
+        // Strip any trailing slash before composing the index URL.
+        var folderPath = path.replace(/\/+$/,'');
+        var indexUrl   = '../' + folderPath + '/?index=1';
+
+        function renderFolderError(err) {
+          showLoadError(folderMount, err);
+        }
+
+        function renderFolder(payload) {
+          if (!payload || !Array.isArray(payload.entries)) {
+            folderMount.innerHTML = '<div class="res-load-error">Folder index payload was not the expected shape.</div>';
+            return;
+          }
+          var entries = payload.entries.slice();
+          // Sort: directories first, then alphabetical
+          entries.sort(function (a, b) {
+            if (a.kind !== b.kind) return a.kind === 'dir' ? -1 : 1;
+            return a.name.localeCompare(b.name);
+          });
+
+          // Breadcrumb of parent directories (each clickable)
+          var segs = folderPath.split('/').filter(Boolean);
+          var crumbsHtml = '';
+          var cum = '';
+          for (var i = 0; i < segs.length; i++) {
+            cum += (i ? '/' : '') + segs[i];
+            var isLast = i === segs.length - 1;
+            crumbsHtml += isLast
+              ? '<span>' + esc(segs[i]) + '</span>'
+              : '<a href="resource.html?path=' + encodeURIComponent(cum) + '/">' + esc(segs[i]) + '</a>';
+            if (!isLast) crumbsHtml += '<span class="sep">/</span>';
+          }
+
+          var parentLink = '';
+          if (segs.length > 1) {
+            var parent = segs.slice(0, -1).join('/');
+            parentLink = '<a class="res-folder-up" href="resource.html?path=' + encodeURIComponent(parent) + '/">↑ parent</a>';
+          } else if (segs.length === 1) {
+            parentLink = '<span class="muted tiny">(top of <code>' + esc(segs[0]) + '/</code>)</span>';
+          }
+
+          var rowsHtml = entries.map(function (e) {
+            var childPath = folderPath + '/' + e.name;
+            var href = e.kind === 'dir'
+              ? 'resource.html?path=' + encodeURIComponent(childPath) + '/'
+              : 'resource.html?path=' + encodeURIComponent(childPath);
+            var icon = e.kind === 'dir' ? '📁' : '📄';
+            var sizeCell = '';
+            if (e.kind === 'file' && typeof e.size === 'number') {
+              sizeCell = formatBytes(e.size);
+            } else if (e.kind === 'dir') {
+              sizeCell = (e.children != null) ? (e.children + ' items') : '';
+            }
+            var modCell = e.mtime ? new Date(e.mtime).toISOString().slice(0, 10) : '';
+            return '<tr>' +
+              '<td><a href="' + esc(href) + '">' + icon + ' ' + esc(e.name) + (e.kind === 'dir' ? '/' : '') + '</a></td>' +
+              '<td class="muted">' + esc(sizeCell) + '</td>' +
+              '<td class="muted tiny">' + esc(modCell) + '</td>' +
+            '</tr>';
+          }).join('');
+
+          var nDirs = entries.filter(function (e) { return e.kind === 'dir'; }).length;
+          var nFiles = entries.length - nDirs;
+
+          folderMount.innerHTML =
+            '<div class="res-folder-head">' +
+              '<div class="res-folder-crumbs">' + crumbsHtml + '</div>' +
+              '<div class="res-folder-tools">' + parentLink + '</div>' +
+            '</div>' +
+            '<table class="res-folder-table">' +
+              '<thead><tr><th>Name</th><th>Size</th><th>Modified</th></tr></thead>' +
+              '<tbody>' + (rowsHtml || '<tr><td colspan="3" class="muted">empty</td></tr>') + '</tbody>' +
+            '</table>' +
+            '<p class="muted tiny" style="margin-top:var(--space-2);">' +
+              nDirs + ' folder' + (nDirs === 1 ? '' : 's') + ', ' +
+              nFiles + ' file' + (nFiles === 1 ? '' : 's') +
+            '</p>';
+        }
+
+        function formatBytes(n) {
+          if (n < 1024) return n + ' B';
+          if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+          if (n < 1024 * 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + ' MB';
+          return (n / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+        }
+
+        fetch(indexUrl, { headers: { 'Accept': 'application/json' } })
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          })
+          .then(renderFolder)
+          .catch(renderFolderError);
+
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── Markdown ──────────────────────────────────────────────────────
+      if (renderMode === 'markdown') {
+        body.innerHTML =
+          '<div class="res-prose-wrap" id="res-md-mount">' +
+            '<div class="muted">Loading markdown…</div>' +
+          '</div>';
+        var mdMount = $('res-md-mount');
+
+        function renderMarkdown(text) {
+          if (!window.marked) {
+            mdMount.innerHTML = '<div class="res-load-error">marked.js failed to load. <a href="' + esc(resourceUrl) + '" target="_blank">Open original ↗</a></div>';
+            return;
+          }
+          try {
+            if (typeof window.marked.setOptions === 'function') {
+              window.marked.setOptions({ gfm: true, breaks: false });
+            }
+            var parse = window.marked.parse || window.marked;
+            mdMount.innerHTML = parse(text);
+          } catch (err) {
+            mdMount.innerHTML = '<div class="res-load-error">Failed to parse markdown: ' + esc(err.message) + '</div>';
+          }
+        }
+
+        loadScriptOnce(
+          'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+          function () { fetchText(renderMarkdown, mdMount); },
+          function () {
+            mdMount.innerHTML = '<div class="res-load-error">Failed to load marked.js from CDN. <a href="' + esc(resourceUrl) + '" target="_blank">Open original ↗</a></div>';
+          }
+        );
+
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── Code (syntax-highlighted) ─────────────────────────────────────
+      if (renderMode === 'code') {
+        var lang = CODE_LANG[ext] || ext;
+        body.innerHTML =
+          '<div class="res-code-wrap" id="res-code-mount">' +
+            '<pre><code class="language-' + esc(lang) + '">Loading…</code></pre>' +
+          '</div>';
+        var codeMount = $('res-code-mount');
+
+        function renderCode(text) {
+          var codeEl = document.createElement('code');
+          codeEl.className = 'language-' + lang;
+          codeEl.textContent = text;
+          var pre = document.createElement('pre');
+          pre.appendChild(codeEl);
+          codeMount.innerHTML = '';
+          codeMount.appendChild(pre);
+          if (window.hljs) {
+            try { window.hljs.highlightElement(codeEl); } catch (e) { /* fall back to plain */ }
+          }
+        }
+
+        // Light theme + dark theme (auto-applies via prefers-color-scheme)
+        loadStyleOnce('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css', '(prefers-color-scheme: light)');
+        loadStyleOnce('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css', '(prefers-color-scheme: dark)');
+
+        function maybeLoadLangModule(after) {
+          var EXTRAS = { turtle: 1, sparql: 1, toml: 1 };
+          if (!EXTRAS[lang]) { after(); return; }
+          loadScriptOnce(
+            'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/' + lang + '.min.js',
+            after,
+            after
+          );
+        }
+
+        loadScriptOnce(
+          'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js',
+          function () { maybeLoadLangModule(function () { fetchText(renderCode, codeMount); }); },
+          function () { fetchText(renderCode, codeMount); }  // plain text without highlight
+        );
+
+        document.title = basename + ' · OPDA Knowledge Base';
+        return;
+      }
+
+      // ─── CSV / TSV ─────────────────────────────────────────────────────
+      if (renderMode === 'csv') {
+        body.innerHTML = '<div id="res-csv-mount"><div class="muted">Loading…</div></div>';
+        var csvMount  = $('res-csv-mount');
+        var delimiter = ext === 'tsv' ? '\t' : ',';
+
+        function parseDelimited(text, delim) {
+          var rows = [];
+          var row = [];
+          var field = '';
+          var inQuotes = false;
+          var i = 0;
+          var n = text.length;
+          while (i < n) {
+            var c = text.charAt(i);
+            if (inQuotes) {
+              if (c === '"') {
+                if (text.charAt(i + 1) === '"') { field += '"'; i += 2; continue; }
+                inQuotes = false; i++; continue;
+              }
+              field += c; i++; continue;
+            }
+            if (c === '"') { inQuotes = true; i++; continue; }
+            if (c === delim) { row.push(field); field = ''; i++; continue; }
+            if (c === '\r') { i++; continue; }
+            if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+            field += c; i++;
+          }
+          if (field !== '' || row.length) { row.push(field); rows.push(row); }
+          return rows;
+        }
+
+        function renderCSV(text) {
+          var rows = parseDelimited(text, delimiter);
+          if (!rows.length) { csvMount.innerHTML = '<div class="res-binary">File is empty.</div>'; return; }
+          var headers = rows[0];
+          var data    = rows.slice(1);
+          var html = '<div class="res-csv-wrap"><table><thead><tr>';
+          for (var h = 0; h < headers.length; h++) html += '<th>' + esc(headers[h]) + '</th>';
+          html += '</tr></thead><tbody>';
+          for (var r = 0; r < data.length; r++) {
+            html += '<tr>';
+            for (var k = 0; k < headers.length; k++) html += '<td>' + esc(data[r][k] == null ? '' : data[r][k]) + '</td>';
+            html += '</tr>';
+          }
+          html += '</tbody></table></div>' +
+                  '<p class="muted tiny" style="margin-top:var(--space-2);">' +
+                    data.length + ' rows × ' + headers.length + ' columns' +
+                  '</p>';
+          csvMount.innerHTML = html;
+        }
+
+        fetchText(renderCSV, csvMount);
         document.title = basename + ' · OPDA Knowledge Base';
         return;
       }

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Disputes &amp; complaints · OPDA Knowledge Base</title>
+  <meta name="description" content="Disputes &amp; complaints">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 48d</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Disputes & complaints</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>6</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>6 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure" aria-label="Physical model — every JSON object owned by this page is a node, every scalar field a row. &lt;strong&gt;5&lt;/strong&gt; objects, &lt;strong&gt;6&lt;/strong&gt; scalar fields. Generated from the schema walk; click any node to jump to its table.">
+  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| DisputesAndComplaints : "disputesAndComplaints"
+  DisputesAndComplaints ||--o| HasDisputesAndComplaints : "hasDisputesAndComplaints"
+  DisputesAndComplaints ||--o| LeadingToDisputesAndComplaints : "leadingToDisputesAndComplaints"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  DisputesAndComplaints {
+  }
+  HasDisputesAndComplaints {
+    string details "Please give details"
+    string yesNo "yesNo"
+  }
+  LeadingToDisputesAndComplaints {
+    string details "Please give details"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>5</strong> objects, <strong>6</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <h2 id="objects">Object model</h2>
+      <p class="muted">
+        One table per JSON object in this page's subtree. Each table shows
+        that object's direct scalar fields with their type, kind, whether
+        they're required, overlays that reference them, and a
+        worked-example link when one is bound. Nested objects link to their
+        own table further down.
+      </p>
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>      <h3 id="disputes">Disputes & complaints</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypack" class="object-block__child-link">Property Pack</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackDisputesAndComplaints" data-display-id="disputesandcomplaints">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackdisputesandcomplaints" class="object-block__title" data-display-id="disputesandcomplaints">
+        <span class="object-block__display">Disputes And Complaints</span>      </h4>
+      <code class="object-block__path">propertyPack.disputesAndComplaints</code>
+    </div>    <p class="object-block__children muted tiny">
+      Contains:        <a href="#propertypackdisputesandcomplaintshasdisputesandcomplaints" class="object-block__child-link">Has Disputes And Complaints</a>,         <a href="#propertypackdisputesandcomplaintsleadingtodisputesandcomplaints" class="object-block__child-link">Leading To Disputes And Complaints</a>    </p>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackDisputesAndComplaintsHasDisputesAndComplaints" data-display-id="hasdisputesandcomplaints">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackdisputesandcomplaintshasdisputesandcomplaints" class="object-block__title" data-display-id="hasdisputesandcomplaints">
+        <span class="object-block__display">Has Disputes And Complaints</span>      </h4>
+      <code class="object-block__path">propertyPack.disputesAndComplaints.hasDisputesAndComplaints</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.disputesAndComplaints.hasDisputesAndComplaints"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.disputesAndComplaints.hasDisputesAndComplaints.details"
+            data-overlays="baspi5,piq,ta6">
+          <td>Please give details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.disputesAndComplaints.hasDisputesAndComplaints.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.disputesAndComplaints.hasDisputesAndComplaints.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackDisputesAndComplaintsLeadingToDisputesAndComplaints" data-display-id="leadingtodisputesandcomplaints">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackdisputesandcomplaintsleadingtodisputesandcomplaints" class="object-block__title" data-display-id="leadingtodisputesandcomplaints">
+        <span class="object-block__display">Leading To Disputes And Complaints</span>      </h4>
+      <code class="object-block__path">propertyPack.disputesAndComplaints.leadingToDisputesAndComplaints</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.disputesAndComplaints.leadingToDisputesAndComplaints"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Title</th>
+          <th style="width: 7rem;">Type</th>
+          <th style="width: 8rem;">Kind</th>
+          <th style="width: 18%;">Field</th>
+          <th class="align-center" style="width: 6rem;">Required</th>
+          <th style="width: 22%;">Overlays</th>
+          <th style="width: 7rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.disputesAndComplaints.leadingToDisputesAndComplaints.details"
+            data-overlays="baspi5,ta6">
+          <td>Please give details</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.disputesAndComplaints.leadingToDisputesAndComplaints.yesNo"
+            data-overlays="baspi5,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.disputesAndComplaints.leadingToDisputesAndComplaints.yesNo"
+            data-overlays="baspi5,rds,ta6">
+          <td>yesNo</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="48c-additional.html">← Additional information & disclosures</a><a href="48e-specialist.html">Specialist & other issues →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'evidence-disputes' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '48d',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>
