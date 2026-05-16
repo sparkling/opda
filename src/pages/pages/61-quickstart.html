@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quickstart · OPDA Knowledge Base</title>
+  <meta name="description" content="From zero to a validating PDTF transaction in three minutes — install @pdtf/schemas, fetch a schema with an overlay, run validation.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Implementation</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Quickstart</h1>
+      <p class="lead">
+        Three minutes from a fresh terminal to a validating PDTF transaction in JavaScript.
+      </p>
+
+      <h2 id="install">1. Install</h2>
+      <pre><code>npm install @pdtf/schemas</code></pre>
+      <p>The package bundles the base transaction schema, all 18 main overlays, and the 16 NTS2 extension overlays. ~1 MB installed.</p>
+
+      <h2 id="fetch">2. Get a merged schema</h2>
+      <p>Pick the overlays your use case needs (here: BASPI v5 for an estate-agent product):</p>
+      <pre><code>const { getTransactionSchema } = require('@pdtf/schemas');
+
+const schema = getTransactionSchema(
+  'https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json',
+  ['baspi5']
+);</code></pre>
+      <p>
+        Under the hood, <code>getTransactionSchema</code> deep-merges the base
+        transaction schema with each named overlay. See
+        <a href="62-schema-composition.html">Schema composition</a> for the merge
+        rules.
+      </p>
+
+      <h2 id="validate">3. Validate</h2>
+      <pre><code>const { getValidator } = require('@pdtf/schemas');
+
+const validate = getValidator(
+  'https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json',
+  ['baspi5']
+);
+
+const transaction = require('./my-transaction.json');
+if (validate(transaction)) {
+  console.log('Valid');
+} else {
+  console.error(validate.errors);
+}</code></pre>
+      <p>
+        <code>getValidator</code> returns an Ajv-compiled validator function with
+        all the right keywords (<code>format</code>, <code>discriminator</code>,
+        etc.) configured. <code>validate.errors</code> follows the standard Ajv
+        error format.
+      </p>
+
+      <h2 id="multiple">4. Multiple overlays</h2>
+      <p>Compose several overlays — they merge cumulatively:</p>
+      <pre><code>// A conveyancer reviewing a leasehold sale
+const schema = getTransactionSchema(baseId, [
+  'baspi5', 'ta6', 'ta7', 'ta10', 'lpe1'
+]);</code></pre>
+
+      <h2 id="extensions">5. Extension overlays</h2>
+      <p>The NTS2 extension overlays let you compose specific sub-features piecemeal — for
+      a staged NTS → NTS2 migration, you can add just Japanese knotweed and transfer fees:</p>
+      <pre><code>const schema = getTransactionSchema(baseId, ['nts2023', 'jk', 'tf']);</code></pre>
+      <p>The full list of overlay aliases is in the <a href="16-overlays.html#aliases">PDTF overlays page</a>.</p>
+
+      <h2 id="examples">6. Example transactions</h2>
+      <p>
+        Sample transactions are at
+        <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/examples/v3/"><code>source/03-standards/schemas/src/examples/v3/</code></a>.
+        Worth running through your validator as a first sanity check.
+      </p>
+
+      <h2 id="next">Where next</h2>
+      <ul>
+        <li><a href="62-schema-composition.html"><strong>Schema composition</strong></a> — for the deep-merge mechanics and gotchas (custom <code>arrayMerge</code>, <code>required</code> handling, <code>oneOf</code> conditionals)</li>
+        <li><a href="63-validation.html"><strong>Validation</strong></a> — for Ajv configuration, error decoding, validating verified claims</li>
+        <li><a href="64-verified-claims.html"><strong>Verified claims</strong></a> — for signing transaction fragments as W3C VCs</li>
+        <li>The repo's <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/README.md"><code>schemas/README.md</code></a> and <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/CLAUDE.md"><code>CLAUDE.md</code></a> for developer-friendly walkthroughs</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="60-implementation-overview.html">← Overview</a>
+        <a href="62-schema-composition.html">Schema composition →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'quickstart' });</script>
+</body>
+</html>

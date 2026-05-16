@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design system · OPDA Knowledge Base</title>
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill">Reference</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Design system</h1>
+      <p class="lead">
+        Tokens, components, and prose styles shared by every doc page in this knowledge base.
+        Live examples below — open the source files to copy markup.
+      </p>
+
+      <h2 id="palette">Brand palette</h2>
+      <p>OPDA-inspired deep blue spine, with semantic colours for callouts.</p>
+      <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));">
+        <div class="card" style="border-color: #1a4d80;">
+          <div style="height: 3rem; background: #1a4d80; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
+          <strong>Brand 700</strong>
+          <p><code>#1a4d80</code></p>
+        </div>
+        <div class="card">
+          <div style="height: 3rem; background: #0b2545; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
+          <strong>Brand 900</strong>
+          <p><code>#0b2545</code></p>
+        </div>
+        <div class="card">
+          <div style="height: 3rem; background: #4a90c2; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
+          <strong>Brand 500</strong>
+          <p><code>#4a90c2</code></p>
+        </div>
+        <div class="card">
+          <div style="height: 3rem; background: #eef4f8; border-radius: 0.5rem; border: 1px solid #ccc; margin-bottom: 0.5rem;"></div>
+          <strong>Brand 100</strong>
+          <p><code>#eef4f8</code></p>
+        </div>
+        <div class="card">
+          <div style="height: 3rem; background: #f59e0b; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
+          <strong>Accent</strong>
+          <p><code>#f59e0b</code></p>
+        </div>
+      </div>
+
+      <h2 id="typography">Typography</h2>
+      <p>System font stack with serif optional. Tight headings, relaxed body.</p>
+      <div class="card" style="max-width: none;">
+        <h1 style="margin-top: 0;">H1 · 36px</h1>
+        <h2 style="border: 0; padding: 0; margin-top: 0;">H2 · 24px</h2>
+        <h3 style="margin-top: 0;">H3 · 20px</h3>
+        <h4 style="margin-top: 0;">H4 · 18px</h4>
+        <p>Body — 16px / 1.6 leading. Used for all paragraph copy.</p>
+        <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+          Small — 14px / muted colour. Used for captions and meta.
+        </p>
+        <p><code>Monospace</code> for inline code and identifiers.</p>
+      </div>
+
+      <h2 id="callouts">Callouts</h2>
+      <p>Five semantic variants. Use sparingly.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Note</div>
+        <p>Background context or aside.</p>
+      </div>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Key finding</div>
+        <p>Pull-quote-style emphasis on a load-bearing claim. Use one per page max.</p>
+      </div>
+
+      <div class="callout callout--success">
+        <div class="callout__label">Success</div>
+        <p>Confirms a positive outcome or completed milestone.</p>
+      </div>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Watch out</div>
+        <p>Something the reader should be careful about.</p>
+      </div>
+
+      <div class="callout callout--danger">
+        <div class="callout__label">Critical</div>
+        <p>Hard blocker or risk.</p>
+      </div>
+
+      <h2 id="pills">Pills &amp; badges</h2>
+      <p>
+        <span class="pill">Default</span>
+        <span class="pill pill--brand">Brand</span>
+        <span class="pill pill--info">Info</span>
+        <span class="pill pill--success">Success</span>
+        <span class="pill pill--warn">Warning</span>
+        <span class="pill pill--accent">Accent</span>
+      </p>
+
+      <h2 id="tables">Tables</h2>
+      <table>
+        <thead>
+          <tr><th>Column A</th><th>Column B</th><th>Column C</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+          <tr><td>Cell 4</td><td>Cell 5</td><td>Cell 6</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="diagrams">Diagrams (mermaid)</h2>
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  A[Source]:::brand --> B[Transform]:::brand --> C[Knowledge]:::accent
+  classDef brand fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
+  classDef accent fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
+        </div>
+        <div class="diagram-caption">All diagrams render client-side via mermaid.js.</div>
+      </div>
+
+      <h2 id="cards">Card grid</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--brand">Section</div>
+          <h3><a href="#">Card title</a></h3>
+          <p>Short description, max ~2 lines, muted.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--success">Done</div>
+          <h3><a href="#">Another card</a></h3>
+          <p>Cards lift on hover and link to deeper pages.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--warn">In progress</div>
+          <h3><a href="#">Third card</a></h3>
+          <p>Use the pill row for status / category.</p>
+        </div>
+      </div>
+
+      <h2 id="usage">Using this in a page</h2>
+      <p>
+        Copy <code>_template.html</code> as a starting point. Each page provides only
+        the <code>&lt;article class="prose"&gt;</code> contents inside
+        <code>&lt;div id="app"&gt;</code>; <code>site.js</code> wraps it with header and sidebar.
+      </p>
+      <pre><code>&lt;script src="/ui/site.js"&gt;&lt;/script&gt;
+&lt;script&gt;OPDA.init({ page: 'page-id' });&lt;/script&gt;</code></pre>
+      <p>
+        The <code>page</code> id matches one in the sidebar NAV array (in <code>site.js</code>)
+        and gets highlighted automatically.
+      </p>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'design-system' });</script>
+</body>
+</html>

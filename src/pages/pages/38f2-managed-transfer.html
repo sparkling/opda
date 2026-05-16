@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Managed · transfer &amp; confirmation · OPDA Knowledge Base</title>
+  <meta name="description" content="Managed · transfer &amp; confirmation">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38f2</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Managed · transfer & confirmation</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>13</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>11 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| Ownership : "ownership"
+  Ownership ||--o{ OwnershipsToBeTransferred : "ownershipsToBeTransferred"
+  OwnershipsToBeTransferred ||--o| ManagedFreeholdOrCommonholdInformation : "managedFreeholdOrCommonholdInformation"
+  ManagedFreeholdOrCommonholdInformation ||--o| TransferAndRegistration : "transferAndRegistration"
+  ManagedFreeholdOrCommonholdInformation ||--o| Confirmation : "confirmation"
+  TransferAndRegistration ||--o| DeedOfCovenantRequired : "deedOfCovenantRequired"
+  TransferAndRegistration ||--o| AwareOfConsents : "awareOfConsents"
+  TransferAndRegistration ||--o| RequirementsToBeMemberOfManagementCompany : "requirementsToBeMemberOfManagementCompany"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  Ownership {
+  }
+  OwnershipsToBeTransferred {
+  }
+  ManagedFreeholdOrCommonholdInformation {
+  }
+  Confirmation {
+    string capacity "Please tick as applicable below, to confirm the capacity …"
+    object response "Declaration"
+  }
+  TransferAndRegistration {
+    string procedureForObtainingCertificate "What is the procedure and cost for obtaining a certificat…"
+  }
+  AwareOfConsents {
+    string details "Provide details and copies of any consent"
+    string yesNo "yesNo"
+  }
+  DeedOfCovenantRequired {
+    number costsApplicableToTheDeed "Confirm the costs applicable to the Deed including VAT"
+    string personWhoDealsWithTheDeedOfCovenant "Provide details of the person who deals with the Deed of …"
+    string yesNoNotKnown "yesNoNotKnown"
+  }
+  RequirementsToBeMemberOfManagementCompany {
+    string details "Provide details of the procedure and fees"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>13</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      <h3 id="own_managed_transfer">Transfer & confirmation</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownership</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnership" data-display-id="ownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownership" class="object-block__title" data-display-id="ownership">
+        <span class="object-block__display">Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferred" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownerships To Be Transferred[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferred" data-display-id="ownershipstobetransferred">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferred" class="object-block__title" data-display-id="ownershipstobetransferred">
+        <span class="object-block__display">Ownerships To Be Transferred</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Managed Freehold Or Commonhold Information</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformation" data-display-id="managedfreeholdorcommonholdinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformation" class="object-block__title" data-display-id="managedfreeholdorcommonholdinformation">
+        <span class="object-block__display">Managed Freehold Or Commonhold Information</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistration" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Transfer And Registration</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationconfirmation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Confirmation</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationConfirmation" data-display-id="confirmation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationconfirmation" class="object-block__title" data-display-id="confirmation">
+        <span class="object-block__display">Confirmation</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.capacity"
+            data-overlays="">
+          <td>Please tick as applicable below, to confirm the capacity in which the answers are given.</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>capacity</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response"
+            data-overlays="">
+          <td>Declaration</td>
+          <td>I/we confirm that I am the person authorised to provide the information which I have completed in it on behalf of those party which I have selected from the list, and that a buyer may rely on the information which I have supplied without applying to any other party except where I have left a section blank because I do not have the authority to provide the information</td>
+          <td><code>object</code></td>
+          <td>Declaration          </td>
+          <td><code>response</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationTransferAndRegistration" data-display-id="transferandregistration">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistration" class="object-block__title" data-display-id="transferandregistration">
+        <span class="object-block__display">Transfer And Registration</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationdeedofcovenantrequired" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Deed Of Covenant Required</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationawareofconsents" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Aware Of Consents</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationrequirementstobememberofmanagementcompany" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Requirements To Be Member Of Management Company</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.procedureForObtainingCertificate"
+            data-overlays="fme1,lpe1">
+          <td>What is the procedure and cost for obtaining a certificate in accordance with a restriction in the Proprietorship Register at the Land Registry, if applicable?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>procedureForObtainingCertificate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationTransferAndRegistrationAwareOfConsents" data-display-id="awareofconsents">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationawareofconsents" class="object-block__title" data-display-id="awareofconsents">
+        <span class="object-block__display">Aware Of Consents</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.awareOfConsents</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.awareOfConsents"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.awareOfConsents.details"
+            data-overlays="fme1">
+          <td>Provide details and copies of any consent</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.awareOfConsents.yesNo"
+            data-overlays="fme1">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.awareOfConsents.yesNo"
+            data-overlays="fme1">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationTransferAndRegistrationDeedOfCovenantRequired" data-display-id="deedofcovenantrequired">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationdeedofcovenantrequired" class="object-block__title" data-display-id="deedofcovenantrequired">
+        <span class="object-block__display">Deed Of Covenant Required</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed"
+            data-overlays="fme1">
+          <td>Confirm the costs applicable to the Deed including VAT</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>costsApplicableToTheDeed</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant"
+            data-overlays="fme1">
+          <td>Provide details of the person who deals with the Deed of Covenant</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>personWhoDealsWithTheDeedOfCovenant</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.yesNoNotKnown"
+            data-overlays="fme1">
+          <td>yesNoNotKnown</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotKnown</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.yesNoNotKnown"
+            data-overlays="fme1">
+          <td>yesNoNotKnown</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotKnown</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredManagedFreeholdOrCommonholdInformationTransferAndRegistrationRequirementsToBeMemberOfManagementCompany" data-display-id="requirementstobememberofmanagementcompany">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredmanagedfreeholdorcommonholdinformationtransferandregistrationrequirementstobememberofmanagementcompany" class="object-block__title" data-display-id="requirementstobememberofmanagementcompany">
+        <span class="object-block__display">Requirements To Be Member Of Management Company</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.details"
+            data-overlays="fme1">
+          <td>Provide details of the procedure and fees</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.yesNo"
+            data-overlays="baspi5,fme1">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.requirementsToBeMemberOfManagementCompany.yesNo"
+            data-overlays="baspi5,fme1">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Freehold Management Enquiries <span class="overlay-key">(FME1)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38f1-managed-contacts.html">← Managed · contacts</a><a href="38f3-managed-service-charge.html">Managed · service charge →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'managed-transfer' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38f2',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

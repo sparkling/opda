@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossary · OPDA Knowledge Base</title>
+  <link rel="stylesheet" href="/ui/design-system.css">
+  <style>
+    .glossary-search {
+      width: 100%;
+      max-width: 32rem;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+      font-size: var(--text-base);
+      margin: var(--space-4) 0;
+    }
+    .glossary-search:focus {
+      outline: 2px solid var(--color-brand-500);
+      outline-offset: -1px;
+      border-color: var(--color-brand-700);
+    }
+    .glossary-table { font-size: var(--text-sm); }
+    .glossary-table tbody tr.hidden { display: none; }
+    .glossary-table td.term {
+      font-weight: 700;
+      color: var(--color-brand-900);
+      white-space: nowrap;
+    }
+    .glossary-table td.term code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      font-family: var(--font-sans);
+      font-weight: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill">Reference</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Glossary</h1>
+      <p class="lead">
+        Acronyms and key terms used across UK property data. Filter live with the search
+        box.
+      </p>
+
+      <input class="glossary-search" type="search" placeholder="Filter… (e.g. 'BASPI', 'trust', 'DSIT')" id="glossary-search" autofocus>
+
+      <h2 id="organisations">Organisations &amp; bodies</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="term">OPDA</td><td>Open Property Data Association</td><td>UK industry body for digital property data; owns PDTF.</td></tr>
+          <tr><td class="term">DPMSG</td><td>Digital Property Market Steering Group</td><td>Formed 1 Aug 2023 by HMLR. 14 founding members. Central convening body.</td></tr>
+          <tr><td class="term">HBSG</td><td>Home Buying and Selling Group</td><td>Industry coordination body. Custodian of BASPI.</td></tr>
+          <tr><td class="term">HBSC</td><td>Home Buying and Selling Council</td><td>Industry forum. Maria Harris is a member.</td></tr>
+          <tr><td class="term">NTS</td><td>National Trading Standards</td><td>UK trading standards body.</td></tr>
+          <tr><td class="term">NTSELAT</td><td>National Trading Standards Estate and Letting Agency Team</td><td>Owned (now-withdrawn) Material Information rules.</td></tr>
+          <tr><td class="term">DBT</td><td>Department for Business and Trade</td><td>Sponsors Smart Data Challenge; published Smart Data Roadmap.</td></tr>
+          <tr><td class="term">DSIT</td><td>Department for Science, Innovation and Technology</td><td>Smart Data scheme + DIATF. Hosts Smart Data Council.</td></tr>
+          <tr><td class="term">DCMS</td><td>Department for Culture, Media and Sport</td><td>Predecessor to DSIT for the data brief.</td></tr>
+          <tr><td class="term">MHCLG</td><td>Ministry of Housing, Communities and Local Government</td><td>Policy lead for housing/property.</td></tr>
+          <tr><td class="term">DLUHC</td><td>Department for Levelling Up, Housing and Communities</td><td>Predecessor to current MHCLG.</td></tr>
+          <tr><td class="term">HMLR</td><td>HM Land Registry</td><td>Operational lead. Formed DPMSG. Runs LLC programme.</td></tr>
+          <tr><td class="term">FCA</td><td>Financial Conduct Authority</td><td>Smart Data scheme regulator (precedent: Open Banking).</td></tr>
+          <tr><td class="term">ICO</td><td>Information Commissioner's Office</td><td>Data protection regulator under UK GDPR / DPA 2018.</td></tr>
+          <tr><td class="term">CLC</td><td>Council for Licensed Conveyancers</td><td>Sandbox delivery partner with OPDA + Raidiam.</td></tr>
+          <tr><td class="term">SRA</td><td>Solicitors Regulation Authority</td><td>DPMSG founding member.</td></tr>
+          <tr><td class="term">RICS</td><td>Royal Institution of Chartered Surveyors</td><td>DPMSG founding member.</td></tr>
+          <tr><td class="term">CILEX</td><td>Chartered Institute of Legal Executives</td><td>DPMSG founding member.</td></tr>
+          <tr><td class="term">COPSO</td><td>Council of Property Search Organisations</td><td>DPMSG founding member.</td></tr>
+          <tr><td class="term">BSA</td><td>Building Societies Association</td><td>DPMSG founding member.</td></tr>
+          <tr><td class="term">TPI</td><td>The Property Institute</td><td>UK industry body for property managers. Hosts NTS guidance mirror.</td></tr>
+          <tr><td class="term">Raidiam</td><td>—</td><td>Trust-framework operations firm. Sandbox partner. Built UK/Brazil Open Banking.</td></tr>
+          <tr><td class="term">EDM Council</td><td>Enterprise Data Management Council</td><td>Publishes DCAM (a framework not adopted by OPDA — see ToIP page for why).</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="legislation">Legislation &amp; policy</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="term">DMCC Act 2024</td><td>Digital Markets, Competition and Consumers Act 2024</td><td>Empowers Smart Data scheme designations.</td></tr>
+          <tr><td class="term">DUAA / DUA Act</td><td>Data (Use and Access) Act 2025</td><td>Modernises UK GDPR for data sharing.</td></tr>
+          <tr><td class="term">LFRA 2024</td><td>Leasehold and Freehold Reform Act 2024</td><td>Leaseholder reforms; Right to Manage etc.</td></tr>
+          <tr><td class="term">LRA 2002</td><td>Land Registration Act 2002</td><td>Enabled e-conveyancing in law; basis for HMLR digital programmes.</td></tr>
+          <tr><td class="term">RPF</td><td>Regulators' Pioneer Fund</td><td>UK government innovation fund. Funds the Trust Framework Sandbox.</td></tr>
+          <tr><td class="term">UK GDPR</td><td>UK General Data Protection Regulation</td><td>UK-adopted GDPR; basis for ICO data sharing rules.</td></tr>
+          <tr><td class="term">DPA 2018</td><td>Data Protection Act 2018</td><td>UK implementation of GDPR.</td></tr>
+          <tr><td class="term">MLR 2017</td><td>Money Laundering, Terrorist Financing and Transfer of Funds Regulations 2017</td><td>Identity-verification obligations on regulated participants.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="standardsAndFrameworks">Standards &amp; frameworks</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="term">PDTF</td><td>Property Data Trust Framework</td><td>OPDA's umbrella standard — JSON Schemas + OpenAPI + Trust Framework spec.</td></tr>
+          <tr><td class="term">ToIP</td><td>Trust Over IP Foundation</td><td>Linux Foundation project. 4-layer governance model PDTF follows.</td></tr>
+          <tr><td class="term">DIATF</td><td>Digital Identity and Attributes Trust Framework</td><td>UK government identity trust framework. DSIT-owned.</td></tr>
+          <tr><td class="term">VC</td><td>Verifiable Credentials</td><td>W3C data model for cryptographically verifiable claims. PDTF v2.0 is VC-based.</td></tr>
+          <tr><td class="term">DID</td><td>Decentralized Identifier</td><td>W3C standard for self-sovereign identifiers. Used for PDTF participants.</td></tr>
+          <tr><td class="term">VCDM</td><td>Verifiable Credentials Data Model</td><td>W3C VC spec, versions 1.1 and 2.0 archived locally.</td></tr>
+          <tr><td class="term">DIDComm</td><td>DID Communication</td><td>Secure-messaging protocol used between DID-identified parties.</td></tr>
+          <tr><td class="term">OIDC</td><td>OpenID Connect</td><td>Identity layer over OAuth 2.0. Used in PDTF Auth pattern.</td></tr>
+          <tr><td class="term">DCAM</td><td>Data Management Capability Assessment Model</td><td>EDM Council framework. <strong>Not</strong> the framework OPDA has chosen (ToIP is).</td></tr>
+          <tr><td class="term">DAMA-DMBOK</td><td>Data Management Body of Knowledge</td><td>Broader data management reference. Component-level usable.</td></tr>
+          <tr><td class="term">FAIR</td><td>Findable, Accessible, Interoperable, Reusable</td><td>Data sharing principles.</td></tr>
+          <tr><td class="term">SKOS</td><td>Simple Knowledge Organization System</td><td>W3C standard for taxonomies / controlled vocabularies.</td></tr>
+          <tr><td class="term">OWL</td><td>Web Ontology Language</td><td>W3C standard for ontologies.</td></tr>
+          <tr><td class="term">SHACL</td><td>Shapes Constraint Language</td><td>W3C standard for validating RDF graphs.</td></tr>
+          <tr><td class="term">DCAT</td><td>Data Catalog Vocabulary</td><td>W3C vocabulary for describing datasets.</td></tr>
+          <tr><td class="term">RDF</td><td>Resource Description Framework</td><td>W3C foundational data model for the semantic web.</td></tr>
+          <tr><td class="term">JSON-LD</td><td>JSON for Linked Data</td><td>RDF serialisation in JSON. PDTF's bridge from JSON Schema to RDF.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="formsAndDataSets">UK property forms &amp; data sets</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="term">BASPI</td><td>Buyer and Seller Property Information</td><td>HBSG's industry data set, v4 / v5. Implemented as <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v2/overlays/baspi.json" title="source/03-standards/schemas/src/schemas/v2/overlays/baspi.json"><code>baspi.json</code></a>, <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>.</td></tr>
+          <tr><td class="term">TA6</td><td>Law Society Property Information Form (6th ed, 2025)</td><td>Implemented as <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a>.</td></tr>
+          <tr><td class="term">TA7</td><td>Law Society Leasehold Information Form (5th ed, 2025)</td><td>Implemented as <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a>.</td></tr>
+          <tr><td class="term">TA10</td><td>Law Society Fittings and Contents Form</td><td>Implemented as <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a>.</td></tr>
+          <tr><td class="term">CON29R</td><td>CON29 Residential search</td><td>Standard local authority residential search. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a>.</td></tr>
+          <tr><td class="term">CON29DW</td><td>CON29 Drainage and Water</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a>.</td></tr>
+          <tr><td class="term">LPE1</td><td>Leasehold Property Enquiry</td><td>Standard leaseholder enquiry pack. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a>.</td></tr>
+          <tr><td class="term">OC1</td><td>Office Copy entries (HMLR Title)</td><td>HMLR-supplied title register copy. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a>.</td></tr>
+          <tr><td class="term">LLC1</td><td>Local Land Charges search</td><td>HMLR-provided LLC register search. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a>.</td></tr>
+          <tr><td class="term">PIQ</td><td>Property Information Questionnaire</td><td>Standard PIQ. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>.</td></tr>
+          <tr><td class="term">RDS</td><td>Residential Data Schema</td><td>UK property data schema. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a>.</td></tr>
+          <tr><td class="term">FME1</td><td>Form for Mortgage Enquiries</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a>.</td></tr>
+          <tr><td class="term">UPRN</td><td>Unique Property Reference Number</td><td>Persistent identifier for UK property addresses.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="programmes">Programmes &amp; initiatives</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Sandbox</td><td>Smart Property Data Trust Framework Sandbox</td><td>CLC + OPDA + Raidiam, RPF-funded, DPMSG-governed. Live.</td></tr>
+          <tr><td class="term">SDC</td><td>Smart Data Challenge</td><td>DBT-sponsored. Moverly+OPDA prototype won an SDCP Innovators prize.</td></tr>
+          <tr><td class="term">SDCP</td><td>Smart Data Challenge Prize</td><td>The award stream within SDC.</td></tr>
+          <tr><td class="term">LLC Programme</td><td>Local Land Charges Programme</td><td>HMLR-led migration of council LLC registers to a national digital service.</td></tr>
+          <tr><td class="term">Open Banking</td><td>—</td><td>UK precedent for sector-specific trust framework + standards body separation.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="concepts">Concepts (PDTF-internal)</h2>
+
+      <table class="glossary-table">
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td class="term">Trust Framework</td><td>Agreements + rules + technical standards by which organisations exchange verified data.</td></tr>
+          <tr><td class="term">Verified Claim</td><td>A data assertion with attached provenance — who said it, when, with what evidence.</td></tr>
+          <tr><td class="term">Overlay</td><td>An optional extension to the base PDTF transaction schema (e.g. <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>).</td></tr>
+          <tr><td class="term">Property Pack</td><td>The bundle of standardised property data that accompanies a transaction. HBSG initiative.</td></tr>
+          <tr><td class="term">Accreditation</td><td>OPDA's scheme for certifying members as trusted PDTF participants.</td></tr>
+          <tr><td class="term">Trust Registry</td><td>Authoritative list of who is authorised to do what within a trust framework.</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Original sources for the glossary entries: OPDA website, gov.uk announcements,
+        DPMSG founding statement, propdata.org.uk About page, W3C and Trust Over IP
+        Foundation specs — all archived in <code>source/</code>.
+      </p>
+
+      <div class="page-footer">
+        <a href="09-project-roadmap.html">← Project roadmap</a>
+        <a href="/index.html">Home →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>
+    OPDA.init({ page: 'glossary' });
+    // Live search across all glossary tables
+    document.getElementById('glossary-search').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.glossary-table tbody tr').forEach(tr => {
+        const text = tr.textContent.toLowerCase();
+        tr.classList.toggle('hidden', q && !text.includes(q));
+      });
+    });
+  </script>
+</body>
+</html>

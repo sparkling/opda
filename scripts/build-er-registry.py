@@ -31,7 +31,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "source/_content/schema"
 THEME_MAP = ROOT / "source/00-deliverables/semantic-models/theme-map.yaml"
-OUT = ROOT / "docs/data/schema-er-registry.js"
+OUT = ROOT / "public/data/schema-er-registry.js"
 
 PAGE_FILES = {
     "34": "34-physical-architecture.html",

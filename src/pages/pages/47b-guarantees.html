@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Guarantees, warranties &amp; indemnities · OPDA Knowledge Base</title>
+  <meta name="description" content="Guarantees, warranties &amp; indemnities">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 47b</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Guarantees, warranties & indemnities</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>42</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>42 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| GuaranteesWarrantiesAndIndemnityInsurances : "guaranteesWarrantiesAndIndemnityInsurances"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| NewHomeWarranty : "newHomeWarranty"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| RoofingWork : "roofingWork"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| DampProofingTreatment : "dampProofingTreatment"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| TimberRotOrInfestationTreatment : "timberRotOrInfestationTreatment"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| CentralHeatingAndorPlumbing : "centralHeatingAndorPlumbing"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| DoubleGlazing : "doubleGlazing"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| ElectricalRepairOrInstallation : "electricalRepairOrInstallation"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| SubsidenceWork : "subsidenceWork"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| SolarPanels : "solarPanels"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| OtherGuarantees : "otherGuarantees"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| OutstandingClaimsOrApplications : "outstandingClaimsOrApplications"
+  GuaranteesWarrantiesAndIndemnityInsurances ||--o| TitleDefectInsurance : "titleDefectInsurance"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  GuaranteesWarrantiesAndIndemnityInsurances {
+    string hasValidGuaranteesOrWarranties "hasValidGuaranteesOrWarranties"
+  }
+  CentralHeatingAndorPlumbing {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  DampProofingTreatment {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  DoubleGlazing {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  ElectricalRepairOrInstallation {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  NewHomeWarranty {
+    string attachments "attachments"
+    string details "Please confirm the name of the warranty provider and the …"
+    string yesNo "yesNo"
+  }
+  OtherGuarantees {
+    string attachments "attachments"
+    string details "Please provide details"
+    string yesNo "yesNo"
+  }
+  OutstandingClaimsOrApplications {
+    string attachments "attachments"
+    string details "Please provide details"
+    string yesNo "yesNo"
+  }
+  RoofingWork {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  SolarPanels {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  SubsidenceWork {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  TimberRotOrInfestationTreatment {
+    string attachments "attachments"
+    string yesNo "yesNo"
+  }
+  TitleDefectInsurance {
+    string attachments "Policy"
+    string details "Please provide details"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>15</strong> objects, <strong>42</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      <h3 id="guarantees">Guarantees, warranties & indemnities</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurances" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Guarantees Warranties And Indemnity Insurances</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurances" data-display-id="guaranteeswarrantiesandindemnityinsurances">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurances" class="object-block__title" data-display-id="guaranteeswarrantiesandindemnityinsurances">
+        <span class="object-block__display">Guarantees Warranties And Indemnity Insurances</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesnewhomewarranty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>New Home Warranty</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesroofingwork" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Roofing Work</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdampproofingtreatment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Damp Proofing Treatment</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestimberrotorinfestationtreatment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Timber Rot Or Infestation Treatment</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancescentralheatingandorplumbing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Central Heating Andor Plumbing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesdoubleglazing" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Double Glazing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsuranceselectricalrepairorinstallation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electrical Repair Or Installation</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessubsidencework" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Subsidence Work</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancessolarpanels" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Solar Panels</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesotherguarantees" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Guarantees</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancesoutstandingclaimsorapplications" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Outstanding Claims Or Applications</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackguaranteeswarrantiesandindemnityinsurancestitledefectinsurance" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Title Defect Insurance</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>hasValidGuaranteesOrWarranties</td>
+          <td>Are there any valid guarantees, warranty or indemnity insurance relating to this property?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasValidGuaranteesOrWarranties</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>hasValidGuaranteesOrWarranties</td>
+          <td>Are there any valid guarantees, warranty or indemnity insurance relating to this property?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasValidGuaranteesOrWarranties</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesCentralHeatingAndorPlumbing" data-display-id="centralheatingandorplumbing">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancescentralheatingandorplumbing" class="object-block__title" data-display-id="centralheatingandorplumbing">
+        <span class="object-block__display">Central Heating Andor Plumbing</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.centralHeatingAndorPlumbing.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesDampProofingTreatment" data-display-id="dampproofingtreatment">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesdampproofingtreatment" class="object-block__title" data-display-id="dampproofingtreatment">
+        <span class="object-block__display">Damp Proofing Treatment</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.dampProofingTreatment.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesDoubleGlazing" data-display-id="doubleglazing">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesdoubleglazing" class="object-block__title" data-display-id="doubleglazing">
+        <span class="object-block__display">Double Glazing</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.doubleGlazing.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesElectricalRepairOrInstallation" data-display-id="electricalrepairorinstallation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsuranceselectricalrepairorinstallation" class="object-block__title" data-display-id="electricalrepairorinstallation">
+        <span class="object-block__display">Electrical Repair Or Installation</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.electricalRepairOrInstallation.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesNewHomeWarranty" data-display-id="newhomewarranty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesnewhomewarranty" class="object-block__title" data-display-id="newhomewarranty">
+        <span class="object-block__display">New Home Warranty</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.details"
+            data-overlays="baspi5,ta6">
+          <td>Please confirm the name of the warranty provider and the date of the warranty</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.newHomeWarranty.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesOtherGuarantees" data-display-id="otherguarantees">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesotherguarantees" class="object-block__title" data-display-id="otherguarantees">
+        <span class="object-block__display">Other Guarantees</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.attachments"
+            data-overlays="ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.details"
+            data-overlays="baspi5,ta6">
+          <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.otherGuarantees.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesOutstandingClaimsOrApplications" data-display-id="outstandingclaimsorapplications">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesoutstandingclaimsorapplications" class="object-block__title" data-display-id="outstandingclaimsorapplications">
+        <span class="object-block__display">Outstanding Claims Or Applications</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.details"
+            data-overlays="baspi5,ta6">
+          <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.outstandingClaimsOrApplications.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesRoofingWork" data-display-id="roofingwork">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancesroofingwork" class="object-block__title" data-display-id="roofingwork">
+        <span class="object-block__display">Roofing Work</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.roofingWork.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesSolarPanels" data-display-id="solarpanels">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancessolarpanels" class="object-block__title" data-display-id="solarpanels">
+        <span class="object-block__display">Solar Panels</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.attachments"
+            data-overlays="baspi5">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.solarPanels.yesNo"
+            data-overlays="baspi5,piq,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesSubsidenceWork" data-display-id="subsidencework">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancessubsidencework" class="object-block__title" data-display-id="subsidencework">
+        <span class="object-block__display">Subsidence Work</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.subsidenceWork.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesTimberRotOrInfestationTreatment" data-display-id="timberrotorinfestationtreatment">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancestimberrotorinfestationtreatment" class="object-block__title" data-display-id="timberrotorinfestationtreatment">
+        <span class="object-block__display">Timber Rot Or Infestation Treatment</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.attachments"
+            data-overlays="baspi5,ta6">
+          <td>attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.timberRotOrInfestationTreatment.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackGuaranteesWarrantiesAndIndemnityInsurancesTitleDefectInsurance" data-display-id="titledefectinsurance">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackguaranteeswarrantiesandindemnityinsurancestitledefectinsurance" class="object-block__title" data-display-id="titledefectinsurance">
+        <span class="object-block__display">Title Defect Insurance</span>      </h4>
+      <code class="object-block__path">propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.attachments"
+            data-overlays="baspi5">
+          <td>Policy</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.details"
+            data-overlays="baspi5">
+          <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.guaranteesWarrantiesAndIndemnityInsurances.titleDefectInsurance.yesNo"
+            data-overlays="baspi5,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="47a-council-tax-insurance.html">← Council tax & insurance</a><a href="47c-occupiers-notices.html">Occupiers & notices →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'encumbrances-guarantees' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '47b',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

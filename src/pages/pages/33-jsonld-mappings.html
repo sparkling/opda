@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON-LD mappings · OPDA Knowledge Base</title>
+  <meta name="description" content="Per-overlay JSON-LD @context files that map each overlay's JSON property names to ontology terms. Bridges the JSON-Schema world to the RDF world.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--info">Modelling</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>JSON-LD mappings</h1>
+      <p class="lead">Per-overlay JSON-LD @context files that map each overlay's JSON property names to ontology terms. Bridges the JSON-Schema world to the RDF world.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="whatExists">What already exists</h2>
+      <p>
+        PDTF has already started JSON-LD work — see <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/public/contexts/"><code>source/03-standards/trust-framework/public/contexts/</code></a>.
+        That gives us an upstream baseline; the new work is to author overlay-specific contexts that map BASPI / TA6 / etc. property names to ontology terms.
+      </p>
+
+      <h2 id="approach">Approach</h2>
+      <ol>
+        <li>For each overlay (BASPI v5 first), author a <code>@context</code> mapping JSON property names → RDF terms.</li>
+        <li>Resolve cross-context concepts via <code>skos:exactMatch</code> when same meaning, distinct classes when different meaning.</li>
+        <li>Validate by round-tripping: JSON instance → RDF → JSON, asserting equivalence.</li>
+        <li>Publish contexts at stable URLs under <code>trust.propdata.org.uk/contexts/</code> for production use.</li>
+      </ol>
+
+      <h2 id="example">Worked example (BASPI v5 — first overlay)</h2>
+      <p>BASPI v5 is the candidate for end-to-end worked example because:</p>
+      <ul>
+        <li>Most active overlay (current HBSG standard)</li>
+        <li>Has explicit human-readable spec from HBSG (the BASPI v5 doc)</li>
+        <li>Maps to schema.org concepts cleanly for most properties</li>
+      </ul>
+
+      <h2 id="targets">Targets</h2>
+      <p>
+        Output folder: <a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/mappings/"><code>source/00-deliverables/semantic-models/mappings/</code></a>.
+      </p>
+      <ul>
+        <li><code>baspi5-context.jsonld</code> — first mapping (anchor example)</li>
+        <li><code>ta6-context.jsonld</code> — second</li>
+        <li><code>nts2-context.jsonld</code> — third (and tracks MHCLG successor)</li>
+        <li><code>...one per overlay</code></li>
+      </ul>
+        
+
+      <div class="page-footer">
+        <a href="32-shacl-shapes.html">← SHACL shapes</a>
+        <a href="09-project-roadmap.html">Project roadmap →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'jsonld-mappings' });</script>
+</body>
+</html>

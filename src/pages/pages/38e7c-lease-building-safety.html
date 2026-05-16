@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Leasehold · Building Safety Act · OPDA Knowledge Base</title>
+  <meta name="description" content="Leasehold · Building Safety Act">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38e7c</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Leasehold · Building Safety Act</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>9</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>9 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| Ownership : "ownership"
+  Ownership ||--o{ OwnershipsToBeTransferred : "ownershipsToBeTransferred"
+  OwnershipsToBeTransferred ||--o| LeaseholdInformation : "leaseholdInformation"
+  LeaseholdInformation ||--o| BuildingSafetyAct : "buildingSafetyAct"
+  BuildingSafetyAct ||--o| DeedOfCertificateServed : "deedOfCertificateServed"
+  BuildingSafetyAct ||--o| LandlordsCertificateServed : "landlordsCertificateServed"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  Ownership {
+  }
+  OwnershipsToBeTransferred {
+  }
+  LeaseholdInformation {
+  }
+  BuildingSafetyAct {
+    string isLeaseQualifying "Is the lease of the property a qualifying lease?"
+    string landlordNotifiedOfSale "Has the freeholder / landlord been notified of the intent…"
+  }
+  DeedOfCertificateServed {
+    string attachments "Leaseholder Deed of Certificate."
+    string sellerCompletedDeedOfCertificate "Did the seller (the current leaseholder) complete the dee…"
+    string yesNoNotApplicable "yesNoNotApplicable"
+  }
+  LandlordsCertificateServed {
+    string attachments "Landlord's Certificate."
+    string yesNoNotApplicable "yesNoNotApplicable"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>8</strong> objects, <strong>9</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      <h3 id="own_lease_building_safety">Building Safety Act</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownership" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownership</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnership" data-display-id="ownership">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownership" class="object-block__title" data-display-id="ownership">
+        <span class="object-block__display">Ownership</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferred" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Ownerships To Be Transferred[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferred" data-display-id="ownershipstobetransferred">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferred" class="object-block__title" data-display-id="ownershipstobetransferred">
+        <span class="object-block__display">Ownerships To Be Transferred</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Leasehold Information</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformation" data-display-id="leaseholdinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformation" class="object-block__title" data-display-id="leaseholdinformation">
+        <span class="object-block__display">Leasehold Information</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyact" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Safety Act</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationBuildingSafetyAct" data-display-id="buildingsafetyact">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyact" class="object-block__title" data-display-id="buildingsafetyact">
+        <span class="object-block__display">Building Safety Act</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyactdeedofcertificateserved" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Deed Of Certificate Served</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyactlandlordscertificateserved" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Landlords Certificate Served</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.isLeaseQualifying"
+            data-overlays="ta7">
+          <td>Is the lease of the property a qualifying lease?</td>
+          <td>Is the lease of the property a qualifying lease?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isLeaseQualifying</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale"
+            data-overlays="ta7">
+          <td>Has the freeholder / landlord been notified of the intention to sell?</td>
+          <td>Has the freeholder / landlord been notified of the intention to sell?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>landlordNotifiedOfSale</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationBuildingSafetyActDeedOfCertificateServed" data-display-id="deedofcertificateserved">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyactdeedofcertificateserved" class="object-block__title" data-display-id="deedofcertificateserved">
+        <span class="object-block__display">Deed Of Certificate Served</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.attachments"
+            data-overlays="lpe1,ta7">
+          <td>Leaseholder Deed of Certificate.</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate"
+            data-overlays="ta7">
+          <td>Did the seller (the current leaseholder) complete the deed of certificate or was it completed by a previous leaseholder?</td>
+          <td>Did the seller (the current leaseholder) complete the deed of certificate or was it completed by a previous leaseholder?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>sellerCompletedDeedOfCertificate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.yesNoNotApplicable"
+            data-overlays="lpe1,ta7">
+          <td>yesNoNotApplicable</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.yesNoNotApplicable"
+            data-overlays="lpe1,ta7">
+          <td>yesNoNotApplicable</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationBuildingSafetyActLandlordsCertificateServed" data-display-id="landlordscertificateserved">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationbuildingsafetyactlandlordscertificateserved" class="object-block__title" data-display-id="landlordscertificateserved">
+        <span class="object-block__display">Landlords Certificate Served</span>      </h4>
+      <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordsCertificateServed</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordsCertificateServed"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordsCertificateServed.attachments"
+            data-overlays="lpe1,ta7">
+          <td>Landlord's Certificate.</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordsCertificateServed.yesNoNotApplicable"
+            data-overlays="lpe1,ta7">
+          <td>yesNoNotApplicable</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordsCertificateServed.yesNoNotApplicable"
+            data-overlays="lpe1,ta7">
+          <td>yesNoNotApplicable</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNoNotApplicable</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="38e7b-lease-restrictions-enfranchisement.html">← Leasehold · restrictions & enfranchisement</a><a href="38e7d-lease-transfer.html">Leasehold · transfer & registration →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'lease-building-safety' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38e7c',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

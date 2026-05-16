@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT     = Path(__file__).resolve().parent.parent
-OUT_BASE = ROOT / "docs" / "data" / "resources"
+OUT_BASE = ROOT / "public" / "data" / "resources"
 
 # Only bundle JSON files in these subtrees — the ones the docs actually link to.
 INCLUDE_PREFIXES = [

@@ -1,0 +1,1651 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Other · community finance &amp; assets · OPDA Knowledge Base</title>
+  <meta name="description" content="Other · community finance &amp; assets">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 46a2d</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Other · community finance & assets</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>61</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>40 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| LocalSearches : "localSearches"
+  LocalSearches ||--o| LocalAuthoritySearches : "localAuthoritySearches"
+  LocalAuthoritySearches ||--o| OtherMatters : "otherMatters"
+  OtherMatters ||--o| CommunityInfrastructureLevy : "communityInfrastructureLevy"
+  OtherMatters ||--o| AssetsOfCommunityValue : "assetsOfCommunityValue"
+  AssetsOfCommunityValue ||--o| PropertyBeenNominatedAsAnAssetOfCommunityValue : "propertyBeenNominatedAsAnAssetOfCommunityValue"
+  AssetsOfCommunityValue ||--o| PropertyIsListed : "propertyIsListed"
+  PropertyBeenNominatedAsAnAssetOfCommunityValue ||--o| ListedAsAnAssetOfCommunityValue : "listedAsAnAssetOfCommunityValue"
+  PropertyBeenNominatedAsAnAssetOfCommunityValue ||--o| ExcludedAndPlacedOnTheNominatedButNotListedList : "excludedAndPlacedOnTheNominatedButNotListedList"
+  PropertyBeenNominatedAsAnAssetOfCommunityValue ||--o| ListingExpired : "listingExpired"
+  PropertyBeenNominatedAsAnAssetOfCommunityValue ||--o| LocalAuthorityReviewingOrProposingToReviewTheListing : "localAuthorityReviewingOrProposingToReviewTheListing"
+  PropertyBeenNominatedAsAnAssetOfCommunityValue ||--o| SubsistingAppealsAgainstTheListing : "subsistingAppealsAgainstTheListing"
+  PropertyIsListed ||--o| LocalAuthorityDecidedToApplyToTheLandRegistry : "localAuthorityDecidedToApplyToTheLandRegistry"
+  PropertyIsListed ||--o| TheLocalAuthorityReceivedANoticeOfDisposal : "theLocalAuthorityReceivedANoticeOfDisposal"
+  PropertyIsListed ||--o| CommunityInterestGroupRequestedToBeTreatedAsABidder : "communityInterestGroupRequestedToBeTreatedAsABidder"
+  CommunityInfrastructureLevy ||--o| CilChargingSchedule : "cilChargingSchedule"
+  CommunityInfrastructureLevy ||--o| DoAnyOfTheFollowingSubsistInRelationToTheProperty : "doAnyOfTheFollowingSubsistInRelationToTheProperty"
+  CommunityInfrastructureLevy ||--o| DemandNoticeBeenSuspended : "demandNoticeBeenSuspended"
+  CommunityInfrastructureLevy ||--o| LocalAuthorityReceivedFullOrPartPaymentOfAnyCilLiability : "localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability"
+  CommunityInfrastructureLevy ||--o| LocalAuthorityReceivedAnyAppealAgainstAnyOfTheAbove : "localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove"
+  CommunityInfrastructureLevy ||--o| DecisionBeenTakenToApplyForALiabilityOrder : "decisionBeenTakenToApplyForALiabilityOrder"
+  CommunityInfrastructureLevy ||--o| LiabilityOrderBeenGranted : "liabilityOrderBeenGranted"
+  CommunityInfrastructureLevy ||--o| OtherEnforcementMeasuresBeenTaken : "otherEnforcementMeasuresBeenTaken"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| LiabilityNotice : "liabilityNotice"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| NoticeOfChargeableDevelopment : "noticeOfChargeableDevelopment"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| DemandNotice : "demandNotice"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| DefaultLiabilityNotice : "defaultLiabilityNotice"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| AssumptionOfLiabilityNotice : "assumptionOfLiabilityNotice"
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty ||--o| CommencementNotice : "commencementNotice"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  LocalSearches {
+  }
+  LocalAuthoritySearches {
+  }
+  OtherMatters {
+  }
+  AssetsOfCommunityValue {
+  }
+  PropertyBeenNominatedAsAnAssetOfCommunityValue {
+  }
+  ExcludedAndPlacedOnTheNominatedButNotListedList {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  ListedAsAnAssetOfCommunityValue {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  ListingExpired {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LocalAuthorityReviewingOrProposingToReviewTheListing {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  SubsistingAppealsAgainstTheListing {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  PropertyIsListed {
+  }
+  CommunityInterestGroupRequestedToBeTreatedAsABidder {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LocalAuthorityDecidedToApplyToTheLandRegistry {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  TheLocalAuthorityReceivedANoticeOfDisposal {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  CommunityInfrastructureLevy {
+  }
+  CilChargingSchedule {
+    string yesNo "yesNo"
+  }
+  DecisionBeenTakenToApplyForALiabilityOrder {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DemandNoticeBeenSuspended {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DoAnyOfTheFollowingSubsistInRelationToTheProperty {
+  }
+  AssumptionOfLiabilityNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  CommencementNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DefaultLiabilityNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  DemandNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LiabilityNotice {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  NoticeOfChargeableDevelopment {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LiabilityOrderBeenGranted {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LocalAuthorityReceivedAnyAppealAgainstAnyOfTheAbove {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  LocalAuthorityReceivedFullOrPartPaymentOfAnyCilLiability {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  OtherEnforcementMeasuresBeenTaken {
+    string details "Details"
+    string yesNo "yesNo"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>31</strong> objects, <strong>61</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      <h3 id="la_other_finance">Other · community finance & assets</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearches" data-display-id="localsearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearches" class="object-block__title" data-display-id="localsearches">
+        <span class="object-block__display">Local Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearches" data-display-id="localauthoritysearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearches" class="object-block__title" data-display-id="localauthoritysearches">
+        <span class="object-block__display">Local Authority Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatters" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Matters</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMatters" data-display-id="othermatters">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatters" class="object-block__title" data-display-id="othermatters">
+        <span class="object-block__display">Other Matters</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevy" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Community Infrastructure Levy</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvalue" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Assets Of Community Value</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValue" data-display-id="assetsofcommunityvalue">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvalue" class="object-block__title" data-display-id="assetsofcommunityvalue">
+        <span class="object-block__display">Assets Of Community Value</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvalue" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Been Nominated As An Asset Of Community Value</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislisted" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Is Listed</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevy" data-display-id="communityinfrastructurelevy">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevy" class="object-block__title" data-display-id="communityinfrastructurelevy">
+        <span class="object-block__display">Community Infrastructure Levy</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevycilchargingschedule" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Cil Charging Schedule</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtotheproperty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Do Any Of The Following Subsist In Relation To The Property</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydemandnoticebeensuspended" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Demand Notice Been Suspended</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevylocalauthorityreceivedfullorpartpaymentofanycilliability" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Received Full Or Part Payment Of Any Cil Liability</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevylocalauthorityreceivedanyappealagainstanyoftheabove" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Received Any Appeal Against Any Of The Above</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydecisionbeentakentoapplyforaliabilityorder" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Decision Been Taken To Apply ForA Liability Order</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevyliabilityorderbeengranted" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Liability Order Been Granted</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevyotherenforcementmeasuresbeentaken" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Enforcement Measures Been Taken</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValue" data-display-id="propertybeennominatedasanassetofcommunityvalue">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvalue" class="object-block__title" data-display-id="propertybeennominatedasanassetofcommunityvalue">
+        <span class="object-block__display">Property Been Nominated As An Asset Of Community Value</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelistedasanassetofcommunityvalue" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listed As An Asset Of Community Value</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvalueexcludedandplacedonthenominatedbutnotlistedlist" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Excluded And Placed On The Nominated But Not Listed List</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelistingexpired" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listing Expired</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelocalauthorityreviewingorproposingtoreviewthelisting" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Reviewing Or Proposing To Review The Listing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluesubsistingappealsagainstthelisting" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Subsisting Appeals Against The Listing</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyIsListed" data-display-id="propertyislisted">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislisted" class="object-block__title" data-display-id="propertyislisted">
+        <span class="object-block__display">Property Is Listed</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedlocalauthoritydecidedtoapplytothelandregistry" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Decided To Apply To The Land Registry</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedthelocalauthorityreceivedanoticeofdisposal" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>The Local Authority ReceivedA Notice Of Disposal</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedcommunityinterestgrouprequestedtobetreatedasabidder" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Community Interest Group Requested To Be Treated AsA Bidder</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyCilChargingSchedule" data-display-id="cilchargingschedule">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevycilchargingschedule" class="object-block__title" data-display-id="cilchargingschedule">
+        <span class="object-block__display">Cil Charging Schedule</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.cilChargingSchedule</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.cilChargingSchedule"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.cilChargingSchedule.yesNo"
+            data-overlays="">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDecisionBeenTakenToApplyForALiabilityOrder" data-display-id="decisionbeentakentoapplyforaliabilityorder">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydecisionbeentakentoapplyforaliabilityorder" class="object-block__title" data-display-id="decisionbeentakentoapplyforaliabilityorder">
+        <span class="object-block__display">Decision Been Taken To Apply ForA Liability Order</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.decisionBeenTakenToApplyForALiabilityOrder</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.decisionBeenTakenToApplyForALiabilityOrder"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.decisionBeenTakenToApplyForALiabilityOrder.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.decisionBeenTakenToApplyForALiabilityOrder.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.decisionBeenTakenToApplyForALiabilityOrder.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDemandNoticeBeenSuspended" data-display-id="demandnoticebeensuspended">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydemandnoticebeensuspended" class="object-block__title" data-display-id="demandnoticebeensuspended">
+        <span class="object-block__display">Demand Notice Been Suspended</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.demandNoticeBeenSuspended</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.demandNoticeBeenSuspended"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.demandNoticeBeenSuspended.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.demandNoticeBeenSuspended.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.demandNoticeBeenSuspended.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToTheProperty" data-display-id="doanyofthefollowingsubsistinrelationtotheproperty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtotheproperty" class="object-block__title" data-display-id="doanyofthefollowingsubsistinrelationtotheproperty">
+        <span class="object-block__display">Do Any Of The Following Subsist In Relation To The Property</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertyliabilitynotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Liability Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertynoticeofchargeabledevelopment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Notice Of Chargeable Development</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertydemandnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Demand Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertydefaultliabilitynotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Default Liability Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertyassumptionofliabilitynotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Assumption Of Liability Notice</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertycommencementnotice" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Commencement Notice</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyLiabilityOrderBeenGranted" data-display-id="liabilityorderbeengranted">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevyliabilityorderbeengranted" class="object-block__title" data-display-id="liabilityorderbeengranted">
+        <span class="object-block__display">Liability Order Been Granted</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.liabilityOrderBeenGranted</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.liabilityOrderBeenGranted"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.liabilityOrderBeenGranted.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.liabilityOrderBeenGranted.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.liabilityOrderBeenGranted.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyLocalAuthorityReceivedAnyAppealAgainstAnyOfTheAbove" data-display-id="localauthorityreceivedanyappealagainstanyoftheabove">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevylocalauthorityreceivedanyappealagainstanyoftheabove" class="object-block__title" data-display-id="localauthorityreceivedanyappealagainstanyoftheabove">
+        <span class="object-block__display">Local Authority Received Any Appeal Against Any Of The Above</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedAnyAppealAgainstAnyOfTheAbove.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyLocalAuthorityReceivedFullOrPartPaymentOfAnyCilLiability" data-display-id="localauthorityreceivedfullorpartpaymentofanycilliability">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevylocalauthorityreceivedfullorpartpaymentofanycilliability" class="object-block__title" data-display-id="localauthorityreceivedfullorpartpaymentofanycilliability">
+        <span class="object-block__display">Local Authority Received Full Or Part Payment Of Any Cil Liability</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.localAuthorityReceivedFullOrPartPaymentOfAnyCilLiability.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyOtherEnforcementMeasuresBeenTaken" data-display-id="otherenforcementmeasuresbeentaken">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevyotherenforcementmeasuresbeentaken" class="object-block__title" data-display-id="otherenforcementmeasuresbeentaken">
+        <span class="object-block__display">Other Enforcement Measures Been Taken</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.otherEnforcementMeasuresBeenTaken</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.otherEnforcementMeasuresBeenTaken"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.otherEnforcementMeasuresBeenTaken.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.otherEnforcementMeasuresBeenTaken.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.otherEnforcementMeasuresBeenTaken.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValueExcludedAndPlacedOnTheNominatedButNotListedList" data-display-id="excludedandplacedonthenominatedbutnotlistedlist">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvalueexcludedandplacedonthenominatedbutnotlistedlist" class="object-block__title" data-display-id="excludedandplacedonthenominatedbutnotlistedlist">
+        <span class="object-block__display">Excluded And Placed On The Nominated But Not Listed List</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.excludedAndPlacedOnTheNominatedButNotListedList</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.excludedAndPlacedOnTheNominatedButNotListedList"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.excludedAndPlacedOnTheNominatedButNotListedList.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.excludedAndPlacedOnTheNominatedButNotListedList.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.excludedAndPlacedOnTheNominatedButNotListedList.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValueListedAsAnAssetOfCommunityValue" data-display-id="listedasanassetofcommunityvalue">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelistedasanassetofcommunityvalue" class="object-block__title" data-display-id="listedasanassetofcommunityvalue">
+        <span class="object-block__display">Listed As An Asset Of Community Value</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listedAsAnAssetOfCommunityValue</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listedAsAnAssetOfCommunityValue"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listedAsAnAssetOfCommunityValue.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listedAsAnAssetOfCommunityValue.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listedAsAnAssetOfCommunityValue.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValueListingExpired" data-display-id="listingexpired">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelistingexpired" class="object-block__title" data-display-id="listingexpired">
+        <span class="object-block__display">Listing Expired</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listingExpired</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listingExpired"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listingExpired.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listingExpired.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.listingExpired.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValueLocalAuthorityReviewingOrProposingToReviewTheListing" data-display-id="localauthorityreviewingorproposingtoreviewthelisting">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluelocalauthorityreviewingorproposingtoreviewthelisting" class="object-block__title" data-display-id="localauthorityreviewingorproposingtoreviewthelisting">
+        <span class="object-block__display">Local Authority Reviewing Or Proposing To Review The Listing</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.localAuthorityReviewingOrProposingToReviewTheListing</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.localAuthorityReviewingOrProposingToReviewTheListing"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.localAuthorityReviewingOrProposingToReviewTheListing.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.localAuthorityReviewingOrProposingToReviewTheListing.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.localAuthorityReviewingOrProposingToReviewTheListing.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyBeenNominatedAsAnAssetOfCommunityValueSubsistingAppealsAgainstTheListing" data-display-id="subsistingappealsagainstthelisting">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertybeennominatedasanassetofcommunityvaluesubsistingappealsagainstthelisting" class="object-block__title" data-display-id="subsistingappealsagainstthelisting">
+        <span class="object-block__display">Subsisting Appeals Against The Listing</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.subsistingAppealsAgainstTheListing</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.subsistingAppealsAgainstTheListing"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.subsistingAppealsAgainstTheListing.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.subsistingAppealsAgainstTheListing.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyBeenNominatedAsAnAssetOfCommunityValue.subsistingAppealsAgainstTheListing.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyIsListedCommunityInterestGroupRequestedToBeTreatedAsABidder" data-display-id="communityinterestgrouprequestedtobetreatedasabidder">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedcommunityinterestgrouprequestedtobetreatedasabidder" class="object-block__title" data-display-id="communityinterestgrouprequestedtobetreatedasabidder">
+        <span class="object-block__display">Community Interest Group Requested To Be Treated AsA Bidder</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.communityInterestGroupRequestedToBeTreatedAsABidder</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.communityInterestGroupRequestedToBeTreatedAsABidder"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.communityInterestGroupRequestedToBeTreatedAsABidder.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.communityInterestGroupRequestedToBeTreatedAsABidder.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.communityInterestGroupRequestedToBeTreatedAsABidder.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyIsListedLocalAuthorityDecidedToApplyToTheLandRegistry" data-display-id="localauthoritydecidedtoapplytothelandregistry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedlocalauthoritydecidedtoapplytothelandregistry" class="object-block__title" data-display-id="localauthoritydecidedtoapplytothelandregistry">
+        <span class="object-block__display">Local Authority Decided To Apply To The Land Registry</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.localAuthorityDecidedToApplyToTheLandRegistry</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.localAuthorityDecidedToApplyToTheLandRegistry"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.localAuthorityDecidedToApplyToTheLandRegistry.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.localAuthorityDecidedToApplyToTheLandRegistry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.localAuthorityDecidedToApplyToTheLandRegistry.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersAssetsOfCommunityValuePropertyIsListedTheLocalAuthorityReceivedANoticeOfDisposal" data-display-id="thelocalauthorityreceivedanoticeofdisposal">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermattersassetsofcommunityvaluepropertyislistedthelocalauthorityreceivedanoticeofdisposal" class="object-block__title" data-display-id="thelocalauthorityreceivedanoticeofdisposal">
+        <span class="object-block__display">The Local Authority ReceivedA Notice Of Disposal</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.theLocalAuthorityReceivedANoticeOfDisposal</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.theLocalAuthorityReceivedANoticeOfDisposal"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.theLocalAuthorityReceivedANoticeOfDisposal.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.theLocalAuthorityReceivedANoticeOfDisposal.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.assetsOfCommunityValue.propertyIsListed.theLocalAuthorityReceivedANoticeOfDisposal.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyAssumptionOfLiabilityNotice" data-display-id="assumptionofliabilitynotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertyassumptionofliabilitynotice" class="object-block__title" data-display-id="assumptionofliabilitynotice">
+        <span class="object-block__display">Assumption Of Liability Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.assumptionOfLiabilityNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.assumptionOfLiabilityNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.assumptionOfLiabilityNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.assumptionOfLiabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.assumptionOfLiabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyCommencementNotice" data-display-id="commencementnotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertycommencementnotice" class="object-block__title" data-display-id="commencementnotice">
+        <span class="object-block__display">Commencement Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.commencementNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.commencementNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.commencementNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.commencementNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.commencementNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyDefaultLiabilityNotice" data-display-id="defaultliabilitynotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertydefaultliabilitynotice" class="object-block__title" data-display-id="defaultliabilitynotice">
+        <span class="object-block__display">Default Liability Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.defaultLiabilityNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.defaultLiabilityNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.defaultLiabilityNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.defaultLiabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.defaultLiabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyDemandNotice" data-display-id="demandnotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertydemandnotice" class="object-block__title" data-display-id="demandnotice">
+        <span class="object-block__display">Demand Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.demandNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.demandNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.demandNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.demandNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.demandNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyLiabilityNotice" data-display-id="liabilitynotice">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertyliabilitynotice" class="object-block__title" data-display-id="liabilitynotice">
+        <span class="object-block__display">Liability Notice</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.liabilityNotice</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.liabilityNotice"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.liabilityNotice.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.liabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.liabilityNotice.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesOtherMattersCommunityInfrastructureLevyDoAnyOfTheFollowingSubsistInRelationToThePropertyNoticeOfChargeableDevelopment" data-display-id="noticeofchargeabledevelopment">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesothermatterscommunityinfrastructurelevydoanyofthefollowingsubsistinrelationtothepropertynoticeofchargeabledevelopment" class="object-block__title" data-display-id="noticeofchargeabledevelopment">
+        <span class="object-block__display">Notice Of Chargeable Development</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.noticeOfChargeableDevelopment</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.noticeOfChargeableDevelopment"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.noticeOfChargeableDevelopment.details"
+            data-overlays="">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.noticeOfChargeableDevelopment.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.otherMatters.communityInfrastructureLevy.doAnyOfTheFollowingSubsistInRelationToTheProperty.noticeOfChargeableDevelopment.yesNo"
+            data-overlays="con29R">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Local Authority CON29R search return <span class="overlay-key">(CON29R)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="46a2c-la-other-planning-notices.html">← Other · planning notices & enforcement</a><a href="46a2e-la-other-road-rail.html">Other · road & rail schemes →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'la-other-finance' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '46a2d',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

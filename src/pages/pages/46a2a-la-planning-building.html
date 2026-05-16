@@ -1,0 +1,1756 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Planning &amp; building regulations · OPDA Knowledge Base</title>
+  <meta name="description" content="Planning &amp; building regulations">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 46a2a</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Planning & building regulations</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>94</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| LocalSearches : "localSearches"
+  LocalSearches ||--o| LocalAuthoritySearches : "localAuthoritySearches"
+  LocalAuthoritySearches ||--o| PlanningAndBuildingRegulations : "planningAndBuildingRegulations"
+  PlanningAndBuildingRegulations ||--o| DecisionsAndPendingApplications : "decisionsAndPendingApplications"
+  PlanningAndBuildingRegulations ||--o| DesignationsAndProposals : "designationsAndProposals"
+  DecisionsAndPendingApplications ||--o{ PlanningPermission : "planningPermission"
+  DecisionsAndPendingApplications ||--o{ ListedBuildingConsent : "listedBuildingConsent"
+  DecisionsAndPendingApplications ||--o{ ConservationAreaConsent : "conservationAreaConsent"
+  DecisionsAndPendingApplications ||--o{ LawfulnessOfExistingUse : "lawfulnessOfExistingUse"
+  DecisionsAndPendingApplications ||--o{ CertificateOfLawfulnessOfProposedUse : "certificateOfLawfulnessOfProposedUse"
+  DecisionsAndPendingApplications ||--o{ LawfulnessOfProposedListedWork : "lawfulnessOfProposedListedWorks"
+  DecisionsAndPendingApplications ||--o{ HeritagePartnershipAgreement : "heritagePartnershipAgreement"
+  DecisionsAndPendingApplications ||--o{ ListedBuildingConsentOrder : "listedBuildingConsentOrder"
+  DecisionsAndPendingApplications ||--o{ LocalListedBuildingConsentOrder : "localListedBuildingConsentOrder"
+  DecisionsAndPendingApplications ||--o{ BuildingRegulationsApproval : "buildingRegulationsApproval"
+  DecisionsAndPendingApplications ||--o{ BuildingRegulationsCompletion : "buildingRegulationsCompletion"
+  DecisionsAndPendingApplications ||--o{ BuildingRegulationsSelfCertification : "buildingRegulationsSelfCertification"
+  DesignationsAndProposals ||--o{ Plan : "plans"
+  Plan ||--o{ Designation : "designations"
+  Transaction {
+  }
+  PropertyPack {
+  }
+  LocalSearches {
+  }
+  LocalAuthoritySearches {
+  }
+  PlanningAndBuildingRegulations {
+  }
+  DecisionsAndPendingApplications {
+    string buildingControlStartDate "The earliest date from which building control decisions w…"
+    string planningStartDate "The earliest date from which planning applications would …"
+  }
+  BuildingRegulationsApproval {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  BuildingRegulationsCompletion {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  BuildingRegulationsSelfCertification {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  CertificateOfLawfulnessOfProposedUse {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  ConservationAreaConsent {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  HeritagePartnershipAgreement {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  LawfulnessOfExistingUse {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  LawfulnessOfProposedListedWork {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  ListedBuildingConsentOrder {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  ListedBuildingConsent {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  LocalListedBuildingConsentOrder {
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+  }
+  PlanningPermission {
+    string address "Location of the property to which the application relates"
+    string applicationDate "On what date was the application made?"
+    string applicationType "What type of application was this?"
+    string decision "What decision was made?"
+    string decisionDate "When was the decision made?"
+    string description "Description of the application"
+    string isProposal "Is this a proposal?"
+    string refNumber "Reference number for the planning application"
+    string status "Application status"
+    string url "Link to application on council planning portal"
+  }
+  DesignationsAndProposals {
+  }
+  Plan {
+    string name "What is the name of the plan?"
+    string status "What is the current status of the plan?"
+    string statusDate "When did the plan move to this status?"
+  }
+  Designation {
+    string description "What is the description given for this designation?"
+    string designationType "What type of designation is this?"
+  }
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>21</strong> objects, <strong>94</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header">
+        <h2 id="objects">Object model</h2>
+        <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+          <div class="db-search-group">
+            <div class="db-field db-field--grow">
+              <input type="search"
+                     id="objects-search"
+                     class="db-input"
+                     placeholder="Search title, field or path…"
+                     aria-label="Search object tables">
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="filter-overlay-btn"
+                      aria-expanded="false"
+                      aria-controls="filter-overlay-panel"
+                      title="Filter by overlay">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                </svg>
+                <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+              </button>
+            </div>
+            <div class="db-filter-wrap">
+              <button type="button"
+                      class="db-filter-btn"
+                      id="objects-config-btn"
+                      aria-expanded="false"
+                      aria-controls="objects-config-panel"
+                      title="Columns">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>      <h3 id="la_planning_building">Planning & building regulations</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearches" data-display-id="localsearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearches" class="object-block__title" data-display-id="localsearches">
+        <span class="object-block__display">Local Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearches" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Authority Searches</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearches" data-display-id="localauthoritysearches">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearches" class="object-block__title" data-display-id="localauthoritysearches">
+        <span class="object-block__display">Local Authority Searches</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulations" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Planning And Building Regulations</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulations" data-display-id="planningandbuildingregulations">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulations" class="object-block__title" data-display-id="planningandbuildingregulations">
+        <span class="object-block__display">Planning And Building Regulations</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplications" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Decisions And Pending Applications</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposals" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Designations And Proposals</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplications" data-display-id="decisionsandpendingapplications">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplications" class="object-block__title" data-display-id="decisionsandpendingapplications">
+        <span class="object-block__display">Decisions And Pending Applications</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsplanningpermission" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Planning Permission[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslistedbuildingconsent" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listed Building Consent[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsconservationareaconsent" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Conservation Area Consent[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslawfulnessofexistinguse" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Lawfulness Of Existing Use[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationscertificateoflawfulnessofproposeduse" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Certificate Of Lawfulness Of Proposed Use[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslawfulnessofproposedlistedwork" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Lawfulness Of Proposed Listed Works[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsheritagepartnershipagreement" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Heritage Partnership Agreement[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslistedbuildingconsentorder" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Listed Building Consent Order[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslocallistedbuildingconsentorder" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Local Listed Building Consent Order[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationsapproval" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Regulations Approval[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationscompletion" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Regulations Completion[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationsselfcertification" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Regulations Self Certification[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate"
+            data-overlays="">
+          <td>The earliest date from which building control decisions would have been included in this list</td>
+          <td>The earliest date from which building control decision would have been included in this list</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>buildingControlStartDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate"
+            data-overlays="">
+          <td>The earliest date from which planning applications would have been included in this list</td>
+          <td>The earliest date from which planning application would have been included in this list</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>planningStartDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDesignationsAndProposals" data-display-id="designationsandproposals">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposals" class="object-block__title" data-display-id="designationsandproposals">
+        <span class="object-block__display">Designations And Proposals</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposalsplan" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Plans[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsBuildingRegulationsApproval" data-display-id="buildingregulationsapproval">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationsapproval" class="object-block__title" data-display-id="buildingregulationsapproval">
+        <span class="object-block__display">Building Regulations Approval</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsBuildingRegulationsCompletion" data-display-id="buildingregulationscompletion">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationscompletion" class="object-block__title" data-display-id="buildingregulationscompletion">
+        <span class="object-block__display">Building Regulations Completion</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsCompletion[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsBuildingRegulationsSelfCertification" data-display-id="buildingregulationsselfcertification">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsbuildingregulationsselfcertification" class="object-block__title" data-display-id="buildingregulationsselfcertification">
+        <span class="object-block__display">Building Regulations Self Certification</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsSelfCertification[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsCertificateOfLawfulnessOfProposedUse" data-display-id="certificateoflawfulnessofproposeduse">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationscertificateoflawfulnessofproposeduse" class="object-block__title" data-display-id="certificateoflawfulnessofproposeduse">
+        <span class="object-block__display">Certificate Of Lawfulness Of Proposed Use</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.certificateOfLawfulnessOfProposedUse[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsConservationAreaConsent" data-display-id="conservationareaconsent">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsconservationareaconsent" class="object-block__title" data-display-id="conservationareaconsent">
+        <span class="object-block__display">Conservation Area Consent</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.conservationAreaConsent[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsHeritagePartnershipAgreement" data-display-id="heritagepartnershipagreement">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsheritagepartnershipagreement" class="object-block__title" data-display-id="heritagepartnershipagreement">
+        <span class="object-block__display">Heritage Partnership Agreement</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.heritagePartnershipAgreement[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsLawfulnessOfExistingUse" data-display-id="lawfulnessofexistinguse">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslawfulnessofexistinguse" class="object-block__title" data-display-id="lawfulnessofexistinguse">
+        <span class="object-block__display">Lawfulness Of Existing Use</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfExistingUse[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsLawfulnessOfProposedListedWork" data-display-id="lawfulnessofproposedlistedwork">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslawfulnessofproposedlistedwork" class="object-block__title" data-display-id="lawfulnessofproposedlistedwork">
+        <span class="object-block__display">Lawfulness Of Proposed Listed Works</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.lawfulnessOfProposedListedWorks[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsListedBuildingConsentOrder" data-display-id="listedbuildingconsentorder">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslistedbuildingconsentorder" class="object-block__title" data-display-id="listedbuildingconsentorder">
+        <span class="object-block__display">Listed Building Consent Order</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsentOrder[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsListedBuildingConsent" data-display-id="listedbuildingconsent">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslistedbuildingconsent" class="object-block__title" data-display-id="listedbuildingconsent">
+        <span class="object-block__display">Listed Building Consent</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.listedBuildingConsent[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsLocalListedBuildingConsentOrder" data-display-id="locallistedbuildingconsentorder">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationslocallistedbuildingconsentorder" class="object-block__title" data-display-id="locallistedbuildingconsentorder">
+        <span class="object-block__display">Local Listed Building Consent Order</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[]"
+       data-field-count="7">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.localListedBuildingConsentOrder[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDecisionsAndPendingApplicationsPlanningPermission" data-display-id="planningpermission">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdecisionsandpendingapplicationsplanningpermission" class="object-block__title" data-display-id="planningpermission">
+        <span class="object-block__display">Planning Permission</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[]"
+       data-field-count="10">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].address"
+            data-overlays="">
+          <td>Location of the property to which the application relates</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>address</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationDate"
+            data-overlays="">
+          <td>On what date was the application made?</td>
+          <td>On what date was the application made?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationType"
+            data-overlays="">
+          <td>What type of application was this?</td>
+          <td>What type of application was this?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>applicationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decision"
+            data-overlays="">
+          <td>What decision was made?</td>
+          <td>What decision was made?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decision</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decisionDate"
+            data-overlays="">
+          <td>When was the decision made?</td>
+          <td>When was the decision made?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>decisionDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].description"
+            data-overlays="">
+          <td>Description of the application</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].isProposal"
+            data-overlays="">
+          <td>Is this a proposal?</td>
+          <td>Is this a proposal?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>isProposal</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].refNumber"
+            data-overlays="">
+          <td>Reference number for the planning application</td>
+          <td>Reference number for the planning application</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>refNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].status"
+            data-overlays="">
+          <td>Application status</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>status</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url"
+            data-overlays="">
+          <td>Link to application on council planning portal</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>url</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDesignationsAndProposalsPlan" data-display-id="plan">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposalsplan" class="object-block__title" data-display-id="plan">
+        <span class="object-block__display">Plans</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposalsplansdesignation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Designations[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].name"
+            data-overlays="">
+          <td>What is the name of the plan?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].status"
+            data-overlays="">
+          <td>What is the current status of the plan?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>status</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].statusDate"
+            data-overlays="">
+          <td>When did the plan move to this status?</td>
+          <td>When did the plan move to this status?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>statusDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalAuthoritySearchesPlanningAndBuildingRegulationsDesignationsAndProposalsPlansDesignation" data-display-id="designation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklocalsearcheslocalauthoritysearchesplanningandbuildingregulationsdesignationsandproposalsplansdesignation" class="object-block__title" data-display-id="designation">
+        <span class="object-block__display">Designations</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[]"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].description"
+            data-overlays="">
+          <td>What is the description given for this designation?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].designationType"
+            data-overlays="">
+          <td>What type of designation is this?</td>
+          <td>What type of designation is this?</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>designationType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <div class="page-footer"><a href="46a2-local-authority-searches.html">← Local authority searches</a><a href="46a2b-la-roads.html">Roads & public rights of way →</a>      </div>
+
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'la-planning-building' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '46a2a',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

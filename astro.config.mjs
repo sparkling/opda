@@ -131,13 +131,14 @@ const serveProjectRoots = {
   },
 };
 
-// The existing static docs at /docs/ are the "public" assets.
-// Astro passes them through as-is and adds a few generated routes
-// (sitemap.xml, 404.html). Output lands in /dist/ for Cloudflare Pages.
+// Standard Astro layout:
+//   src/pages/   — page routes (static HTML + a few .astro / endpoints)
+//   public/      — unprocessed assets (ui/, data/) served at /ui/, /data/
+//   source/      — research archive, dev-only via the serveProjectRoots
+//                  middleware below; not in the production bundle.
 export default defineConfig({
-  site:      'https://opda-kb.pages.dev',
-  publicDir: './docs',
-  outDir:    './dist',
+  site:    'https://opda-kb.pages.dev',
+  outDir:  './dist',
   build: {
     format: 'file',
   },

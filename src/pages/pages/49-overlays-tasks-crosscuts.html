@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · Overlays, tasks & cross-cuts · OPDA Knowledge Base</title>
+  <meta name="description" content="The two cross-cuts over the PDTF leaf universe — overlay categorical membership and task-driven questions. Both are filters, not aggregates.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 49</span>
+        <span>Generated 2026-05-16</span>
+      </div>
+
+      <h1>Overlays, tasks &amp; cross-cuts</h1>
+      <p class="lead">
+        Two cross-cuts that don't belong in any aggregate. <strong>Overlays</strong>
+        are categorical groupings of leaves by form-of-record (BASPI5, TA6, NTS2,
+        CON29R, …). <strong>Tasks</strong> are real-world questions that pull
+        leaves from across the model (cladding, knotweed, leasehold extension).
+        Both are <em>filters</em> over the same leaf universe — they don't change
+        what's there, only how you find it.
+      </p>
+
+      <aside class="callout callout--key" role="note">
+        <p class="callout__label">The claim</p>
+        <p>Aggregates organise by lifecycle. Overlays organise by form. Tasks organise by question. The schema carries one leaf-universe; this page carries the two cross-cuts that surface it differently.</p>
+      </aside>
+
+      <h2 id="composition">How aggregates, overlays and tasks compose</h2>
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef leaf fill:#FFFFFF,stroke:#0277BD,stroke-width:1.5px,color:#01579B
+  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  classDef ovl  fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+  classDef tsk  fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+  L1[Leaf: cladding.material]:::leaf
+  L2[Leaf: cladding.ews1Rating]:::leaf
+  L3[Leaf: searches.con29R.notices]:::leaf
+  L4[Leaf: documents.ews1Form.url]:::leaf
+
+  A39[page 39<br/>Built form, condition &amp; valuation]:::agg
+  A46[page 46<br/>Local context &amp; searches]:::agg
+  A48[page 48<br/>Evidence, documents]:::agg
+
+  O_BASPI5[BASPI5]:::ovl
+  O_TA6[TA6]:::ovl
+  O_NTS2[NTS2]:::ovl
+  O_CON29R[CON29R]:::ovl
+
+  T_CLADDING[Task: Cladding &amp; EWS1]:::tsk
+
+  L1 --> A39
+  L2 --> A39
+  L3 --> A46
+  L4 --> A48
+
+  L1 -.-> O_BASPI5
+  L1 -.-> O_TA6
+  L1 -.-> O_NTS2
+  L3 -.-> O_CON29R
+
+  L1 ==> T_CLADDING
+  L2 ==> T_CLADDING
+  L3 ==> T_CLADDING
+  L4 ==> T_CLADDING
+        </div>
+        <div class="diagram-caption">
+          One leaf, three filters: solid arrows go to the leaf's canonical
+          aggregate page; dashed arrows go to the overlays that reference it;
+          double arrows mark task membership. Aggregates partition the leaf
+          universe (each leaf has exactly one canonical home); overlays and
+          tasks do not.
+        </div>
+      </div>
+
+      <h2 id="overlayMatrix">Overlay leaf counts</h2>
+      <p>
+        Each leaf in the schema is referenced by zero or more overlays. The
+        counts below come from <a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/data-dictionary-canonical.json"><code>data-dictionary-canonical.json</code></a> —
+        every entry where <code>source</code> ≠ <code>pdtf-transaction</code>.
+      </p>
+      <table>
+        <thead><tr><th>Overlay</th><th style="text-align:right">Leaves referenced</th><th>Owner / use</th></tr></thead>
+        <tbody>
+          <tr><td><code>baspi5</code></td><td style="text-align:right"><strong>731</strong></td><td>Buyers &amp; Sellers Property Information v5 — seller declarations</td></tr>
+          <tr><td><code>ta10</code></td><td style="text-align:right"><strong>444</strong></td><td>Law Society Fittings &amp; Contents Form</td></tr>
+          <tr><td><code>ta6</code></td><td style="text-align:right"><strong>362</strong></td><td>Law Society Property Information Form</td></tr>
+          <tr><td><code>rds</code></td><td style="text-align:right"><strong>322</strong></td><td>Residential Disclosure Standard</td></tr>
+          <tr><td><code>piq</code></td><td style="text-align:right"><strong>307</strong></td><td>Property Information Questionnaire (surveying)</td></tr>
+          <tr><td><code>oc1</code></td><td style="text-align:right"><strong>300</strong></td><td>HMLR Official Copy data</td></tr>
+          <tr><td><code>nts2</code></td><td style="text-align:right"><strong>228</strong></td><td>National Trading Standards Material Information (sales)</td></tr>
+          <tr><td><code>lpe1</code></td><td style="text-align:right"><strong>217</strong></td><td>Leasehold Property Enquiries Form</td></tr>
+          <tr><td><code>con29R</code></td><td style="text-align:right"><strong>209</strong></td><td>Local Authority CON29R search return</td></tr>
+          <tr><td><code>ntsl2</code></td><td style="text-align:right"><strong>182</strong></td><td>NTS Material Information (lettings)</td></tr>
+          <tr><td><code>ta7</code></td><td style="text-align:right"><strong>162</strong></td><td>Law Society Leasehold Information Form</td></tr>
+          <tr><td><code>fme1</code></td><td style="text-align:right"><strong>129</strong></td><td>Freehold Management Enquiries</td></tr>
+          <tr><td><code>con29DW</code></td><td style="text-align:right"><strong>60</strong></td><td>Drainage &amp; water search return</td></tr>
+          <tr><td><code>sr24</code></td><td style="text-align:right"><strong>7</strong></td><td>Sustainability Report 2024</td></tr>
+          <tr><td><code>llc1</code></td><td style="text-align:right"><strong>3</strong></td><td>Local Land Charges search</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Total overlay references: <strong>3,463</strong> across <strong>15
+        overlays</strong>. Many leaves carry references from multiple overlays
+        (e.g. <code>propertyPack.address.postcode</code> is in 6 of them).
+        See <a href="16-overlays.html">page 16 — Overlays</a> for the full
+        catalogue and per-overlay drill-down.
+      </p>
+
+      <h2 id="taskIndex">Task index</h2>
+      <p>
+        Six task-shaped questions that pull leaves from across the aggregate
+        pages. Each task names the leaves it needs and the canonical page
+        that owns each.
+      </p>
+
+      <h3 id="task-cladding">Cladding &amp; EWS1</h3>
+      <p class="muted tiny">Leaves: <code>condition.cladding</code> (39) · <code>condition.ews1.rating</code> (39) · <code>buildingSafety.remediationStatus</code> (39) · <code>searches.con29R.planningNotices</code> (46) · <code>documents.ews1Form</code> (48).</p>
+      <p>Cladding history determines mortgageability. Pull the cladding declaration from condition, the EWS1 rating, any active remediation, and the local-authority notice for the building. Cross-check against the TA6 building-safety section. If EWS1 is B1 or B2, expect lender enquiries; if absent, expect a delay.</p>
+
+      <h3 id="task-knotweed">Japanese knotweed</h3>
+      <p class="muted tiny">Leaves: <code>condition.knotweed</code> (39) · <code>condition.knotweed.treatmentPlan</code> (39) · <code>disclosures.environmental</code> (48) · <code>searches.environmentalReport</code> (46).</p>
+      <p>Knotweed is a declaration leaf on TA6 with cascading evidence requirements. Pull the declaration, the treatment plan (if any), the warranty, and any environmental search flag. Lender appetite varies; a managed treatment plan often satisfies a high-street lender, an active untreated infestation usually does not.</p>
+
+      <h3 id="task-leasehold-extension">Leasehold extension</h3>
+      <p class="muted tiny">Leaves: <code>legalEstate.tenure</code> (38) · <code>legalEstate.lease.unexpiredTerm</code> (38) · <code>legalEstate.lease.groundRent.escalation</code> (38) · <code>encumbrances.serviceCharge</code> (47) · <code>documents.leaseDeed</code> (48).</p>
+      <p>Short leases (under 80 years) and doubling ground rents are the two leaf patterns that trigger statutory-extension or marriage-value enquiries. Pull tenure, unexpired term, ground rent escalation, and the lease deed itself. Building Safety Act and Leasehold Reform Act changes since 2024 change the maths — flag the date of valuation.</p>
+
+      <h3 id="task-probate">Probate / executor sale</h3>
+      <p class="muted tiny">Leaves: <code>participants.capacity</code> (35) · <code>participants.authority.grant</code> (35) · <code>documents.grantOfProbate</code> (48) · <code>legalEstate.proprietors</code> (38).</p>
+      <p>Capacity is a participant attribute, but in a probate sale it gates conveyancing entirely. Pull capacity, the grant of probate as evidence, the proprietor record on title (still in the deceased's name), and the executor's identity. The mismatch between proprietor and seller is normal here, not an error.</p>
+
+      <h3 id="task-new-build">New build with onward chain</h3>
+      <p class="muted tiny">Leaves: <code>property.newBuild</code> (37) · <code>chain.position</code> (36) · <code>chain.dependencies</code> (36) · <code>documents.buildWarranty</code> (39) · <code>milestones.developerCompletion</code> (36).</p>
+      <p>New-build transactions invert the usual chain. The developer's completion date drives everything downstream. Pull chain position, the developer's expected completion, the build warranty (NHBC, LABC), and the linked sale of the buyer's current home. New-build delays don't show up in the chain leaves as transaction delays.</p>
+
+      <h3 id="task-shared-ownership">Shared ownership</h3>
+      <p class="muted tiny">Leaves: <code>legalEstate.tenure</code> (38) · <code>legalEstate.sharedOwnership.percentage</code> (38) · <code>legalEstate.sharedOwnership.rentSchedule</code> (38) · <code>participants.housingAssociation</code> (35) · <code>encumbrances.staircase</code> (47).</p>
+      <p>Shared ownership is a leasehold variant with a rent schedule on the unsold equity and a staircasing right. Pull tenure, percentage owned, rent schedule, the housing association as participant, and any prior staircase transactions. Lender criteria differ sharply; many overlays don't model shared ownership cleanly — flag known gaps.</p>
+
+      <h2 id="howComputed">How overlays and tasks are computed</h2>
+      <ul>
+        <li><strong>Overlays</strong> are derived from <code>data-dictionary-canonical.json</code> — every entry where <code>source</code> ≠ <code>pdtf-transaction</code> contributes a membership. Render-time chips in leaf tables show up to 3 overlay names plus <code>+N</code> overflow.</li>
+        <li><strong>Tasks</strong> are hand-curated on this page — each task names its leaves explicitly and the canonical page each leaf lives on. Refreshing a task list is a content-author edit, not a generator change.</li>
+        <li><strong>Cross-cuts never own leaves.</strong> If a leaf belongs to a task or overlay but no aggregate, that's a coverage bug in the theme map, surfaced as CI invariant #2 (orphan coverage).</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="48e-specialist.html">← Specialist &amp; other issues</a>
+        <a href="/schema.html">Schema overview →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'overlays-tasks' });</script>
+</body>
+</html>

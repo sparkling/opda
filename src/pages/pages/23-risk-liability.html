@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Risk & liability allocation · OPDA Knowledge Base</title>
+  <meta name="description" content="Who is liable when data flowing through PDTF turns out to be wrong, late, or missing. Tested in the Sandbox; will need to be formalised before national rollout.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>Risk & liability allocation</h1>
+      <p class="lead">Who is liable when data flowing through PDTF turns out to be wrong, late, or missing. Tested in the Sandbox; will need to be formalised before national rollout.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="currentState">Current state</h2>
+      <p>
+        The Sandbox is operational and is the proving ground for liability models. From OPDA's own description:
+      </p>
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        "Regulatory gaps are identified, consumer consent and liability models are tested, and the security and governance standards required for a national rollout are developed in the open."
+      </blockquote>
+      <p>Source: <a class="resource-link" href="/resource.html?path=source/07-website/rendered/smart-property-data-trust-framework.html"><code>source/07-website/rendered/smart-property-data-trust-framework.html</code></a></p>
+
+      <h2 id="liabilityQuestions">Open liability questions</h2>
+      <ul>
+        <li>Who is liable if a <strong>Verified Claim</strong> is wrong — the issuer, the relying party, or OPDA as the standards body?</li>
+        <li>What about <strong>stale data</strong> (correct when issued, wrong now)?</li>
+        <li>What's the liability for <strong>orchestrators</strong> (Coadjute, PEXA) who pass claims between participants?</li>
+        <li>How does this interact with the <strong>professional indemnity</strong> insurance regimes of conveyancers, surveyors, valuers?</li>
+        <li>What's the <strong>consumer redress</strong> route when a transaction fails because of PDTF data?</li>
+      </ul>
+
+      <h2 id="precedents">Precedents to borrow from</h2>
+      <ul>
+        <li><strong>Open Banking</strong> — clear separation of authorised TPPs, ASPSPs, and FCA-regulated liability</li>
+        <li><strong>HMLR title guarantee</strong> — the state-backed indemnity model for registered titles</li>
+        <li><strong>Law Society practice notes</strong> — already define conveyancer due-diligence standards</li>
+      </ul>
+
+      <h2 id="contributors">Who needs to be in the room</h2>
+      <p>
+        OPDA can't decide this alone. Likely participants: FCA, ICO, SRA, CLC, RICS, UK Finance, BSA, MHCLG, plus the PII insurers of the regulated professions.
+      </p>
+        
+
+      <div class="page-footer">
+        <a href="22-lifecycle-versioning.html">← Lifecycle & versioning</a>
+        <a href="30-concept-taxonomy.html">Concept taxonomy →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'risk-liability' });</script>
+</body>
+</html>

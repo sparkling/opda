@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ToIP governance model · OPDA Knowledge Base</title>
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Trust Over IP — the governance model PDTF follows</h1>
+      <p class="lead">
+        PDTF has publicly committed to the Trust Over IP (ToIP) 4-layer governance model.
+        This is the most consequential governance decision in the project — it shapes
+        what we do not need to invent and what we do need to codify.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Quoted directly</div>
+        <p>
+          "PDTF follows the Trust Over IP (ToIP) governance model, mapping proven
+          internet trust patterns to property data."
+        </p>
+        <p style="font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-2);">
+          Source: <a class="resource-link" href="/resource.html?path=source/07-website/related-domains/propdata.org.uk/about.html"><code>source/07-website/related-domains/propdata.org.uk/about.html</code></a>
+        </p>
+      </div>
+
+      <h2 id="whyToip">Why ToIP — and why not DCAM</h2>
+
+      <p>
+        DCAM (EDM Council's Data Management Capability Assessment Model) assumes a
+        single accountable enterprise governing data inside its walls. That's not OPDA.
+        OPDA is a <strong>federated standards body</strong> — its "data" is the agreement
+        between many independent organisations on what data means, how to share it
+        verifiably, and who is allowed to issue or rely on what claims.
+      </p>
+
+      <p>
+        ToIP was built specifically for that shape: federated trust frameworks. It has
+        an explicit <strong>two-stack model</strong> at every layer — one technical stack,
+        one governance stack — and PDTF needs both.
+      </p>
+
+      <h2 id="fourLayers">The four layers</h2>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart TB
+  classDef l4 fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+  classDef l3 fill:#2a6caa,color:#fff,stroke:#1a4d80,stroke-width:2px;
+  classDef l2 fill:#4a90c2,color:#fff,stroke:#1a4d80,stroke-width:2px;
+  classDef l1 fill:#7aaecf,color:#0b2545,stroke:#1a4d80,stroke-width:2px;
+
+  L4["<b>Layer 4 — Application Ecosystems</b><br/>PDTF · OPDA · DPMSG<br/>Industry rules and standards"]:::l4
+  L3["<b>Layer 3 — Credential Exchange</b><br/>OIDC Verified Claims → VCs<br/>How claims are formatted and shared"]:::l3
+  L2["<b>Layer 2 — Secure Communication</b><br/>HTTPS · DIDComm<br/>How data is transmitted securely"]:::l2
+  L1["<b>Layer 1 — Utility / Network</b><br/>TCP/IP · IETF standards<br/>Foundation infrastructure"]:::l1
+
+  L4 --> L3 --> L2 --> L1
+        </div>
+        <div class="diagram-caption">PDTF's published mapping. Each layer has a technical stack and a governance stack.</div>
+      </div>
+
+      <h2 id="layerDetail">What each layer needs as a governance document</h2>
+
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>Tech stack (PDTF)</th><th>Governance document we need</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>L4 — Application ecosystems</strong></td>
+            <td>PDTF rules, OPDA membership, DPMSG decisions, accreditation scheme</td>
+            <td><strong>Ecosystem Governance Framework</strong> — purpose, scope, who decides what, change-management process, conformance criteria</td>
+          </tr>
+          <tr>
+            <td><strong>L3 — Credential exchange</strong></td>
+            <td>OIDC + Verified Claims → W3C VCs</td>
+            <td><strong>Credential Trust Framework</strong> — which credentials, which issuers can issue what, validity/revocation rules, presentation format</td>
+          </tr>
+          <tr>
+            <td><strong>L2 — Secure communication</strong></td>
+            <td>HTTPS, DIDComm</td>
+            <td><strong>Communication Governance</strong> — required TLS profile, DIDComm version, endpoint discovery, security audit cadence</td>
+          </tr>
+          <tr>
+            <td><strong>L1 — Utility / network</strong></td>
+            <td>DID methods (key, jwk, web), trust registry</td>
+            <td><strong>Utility Governance</strong> — which DID methods are allowed, trust-registry data structures, key rotation policy</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="orthogonal">Orthogonal governance documents</h2>
+
+      <p>
+        Cutting across all four layers, ToIP-style trust frameworks need a set of
+        cross-cutting governance documents:
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Conformance &amp; Certification</h3>
+          <p>How members prove they meet the standard. Open Banking-style scheme.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Change Management Process</h3>
+          <p>How a schema, overlay, or rule changes — proposal → impact assessment → consultation → release. Templates already exist in trust-framework/docs/.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Data Quality Framework</h3>
+          <p>Verified Claims dimensions (completeness, timeliness, authoritativeness). Maps to JSON Schema validation + VC provenance.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Lifecycle &amp; Versioning</h3>
+          <p>Semantic versioning, deprecation policy, NTS-style retirement when underlying regulation is withdrawn.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Risk &amp; Liability Allocation</h3>
+          <p>Who is liable when data is wrong. Tested in the Sandbox phase.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Cross-cutting</div>
+          <h3>Disputes &amp; Redress</h3>
+          <p>Process for raising and resolving issues between participants.</p>
+        </div>
+      </div>
+
+      <h2 id="opdaEvidence">What OPDA already has (don't reinvent)</h2>
+
+      <p>The <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/"><code>source/03-standards/trust-framework/docs/</code></a> directory already contains:</p>
+
+      <ul>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md" title="source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> — initial governance document</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/plan.md" title="source/03-standards/trust-framework/docs/plan.md"><code>plan.md</code></a> — programme plan</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/proposal.md" title="source/03-standards/trust-framework/docs/proposal.md"><code>proposal.md</code></a> — change-proposal template</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md" title="source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md"><code>proposal-impact-assessment-form.md</code></a> — impact assessment template</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/change-notification-template.md" title="source/03-standards/trust-framework/docs/change-notification-template.md"><code>change-notification-template.md</code></a> — non-breaking change notice</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/breaking-change-notification-template.md" title="source/03-standards/trust-framework/docs/breaking-change-notification-template.md"><code>breaking-change-notification-template.md</code></a> — breaking change notice</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md" title="source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a> — pre-release checklist</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/access-specification.md" title="source/03-standards/trust-framework/docs/access-specification.md"><code>access-specification.md</code></a> — access spec</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md" title="source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a> — version log</li>
+        <li><code>Draft_ Property Data Trust Framework 2 Specification.md</code> — the new spec being readied</li>
+        <li><code>Draft_ PDTF Participant DID Auth OAuth 2 Specification.md</code> — the DID auth pattern</li>
+      </ul>
+
+      <p>
+        The job isn't to write these from scratch. The job is to:
+      </p>
+      <ol>
+        <li><strong>Re-bucket</strong> them under the ToIP four layers so each layer has a clear governance doc.</li>
+        <li><strong>Fill the orthogonal gaps</strong> (conformance scheme, liability allocation, disputes &amp; redress).</li>
+        <li><strong>Map every document to the UK initiative tier</strong> it relates to (MHCLG / DSIT / DPMSG / etc.) so government partners can navigate the framework.</li>
+      </ol>
+
+      <h2 id="openBankingParallel">The Open Banking parallel</h2>
+
+      <p>
+        Worth borrowing patterns from. Open Banking's governance has matured through:
+      </p>
+
+      <ul>
+        <li><strong>OBL</strong> (Open Banking Limited) — the standards body, separate from regulators</li>
+        <li><strong>JROC</strong> (Joint Regulatory Oversight Committee) — multi-regulator coordination</li>
+        <li><strong>Conformance &amp; certification</strong> — annual re-certification, technical conformance suites</li>
+        <li><strong>Funding model</strong> — cost-recovery through participant fees</li>
+        <li><strong>Public consultation</strong> for any spec change</li>
+        <li><strong>Standards version cadence</strong> — predictable release intervals</li>
+      </ul>
+
+      <p>
+        Raidiam — one of the Sandbox delivery partners — built the Brazil and UK Open
+        Banking infrastructure. They bring the operational patterns into OPDA's Sandbox
+        directly.
+      </p>
+
+      <h2 id="proposedDocStructure">Proposed governance document set</h2>
+
+      <p>
+        The structure I'd propose for <a class="resource-link" href="/resource.html?path=source/00-deliverables/governance/"><code>source/00-deliverables/governance/</code></a>:
+      </p>
+
+      <pre><code>00-deliverables/governance/
+├── 00-context-uk-initiative.md      (links to this docs site)
+├── L1-utility-governance.md         ToIP Layer 1
+├── L2-secure-communication.md       ToIP Layer 2
+├── L3-credential-exchange.md        ToIP Layer 3
+├── L4-ecosystem-governance.md       ToIP Layer 4 — biggest doc
+├── conformance-and-certification.md cross-cutting
+├── change-management.md             cross-cutting (consolidates existing templates)
+├── data-quality-framework.md        cross-cutting
+├── lifecycle-and-versioning.md      cross-cutting
+├── risk-and-liability.md            cross-cutting
+├── disputes-and-redress.md          cross-cutting
+└── strategic-alignment.md           how this maps to HMLR/DSIT/DIATF/Open Banking</code></pre>
+
+      <p>
+        Each document follows the same structure: purpose, scope, what's already in place
+        (citing existing OPDA artefacts), gap analysis, proposed operating model, KPIs.
+      </p>
+
+      <div class="page-footer">
+        <a href="06-standards-stack.html">← Standards stack</a>
+        <a href="08-strategic-alignment.html">Strategic alignment →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'toip-governance' });</script>
+</body>
+</html>

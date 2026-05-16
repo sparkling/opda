@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Schema · {{ page.title|e }} · OPDA Knowledge Base</title>
   <meta name="description" content="{{ regions.intro_plain|default(page.title, true)|e }}">
-  <link rel="stylesheet" href="../ui/design-system.css">
+  <link rel="stylesheet" href="/ui/design-system.css">
 </head>
 <body>
   <div id="app">
@@ -145,8 +145,8 @@
     </article>
   </div>
 
-  <script src="../ui/site.js"></script>
-  <script src="../ui/schema-leaf-table.js"></script>
+  <script src="/ui/site.js"></script>
+  <script src="/ui/schema-leaf-table.js"></script>
   <script>
     if (window.OPDA && typeof OPDA.init === 'function') {
       OPDA.init({ page: '{{ page.id }}' });

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HMLR Local Land Charges · OPDA Knowledge Base</title>
+  <meta name="description" content="HM Land Registry's national Local Land Charges digital register — 200+ councils migrated, gold-status quality ratings.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Adoption</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>HMLR Local Land Charges programme</h1>
+      <p class="lead">
+        Not strictly a PDTF "adoption" story, but a parallel public-sector programme
+        with the same shape: standardise the data, run a national register, drive
+        local-authority migration. PDTF's <code>llc1.json</code> overlay aligns
+        directly to the HMLR LLC schema.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Headline numbers (latest public data)</div>
+        <ul style="margin:0;">
+          <li><strong>200+</strong> local authorities migrated to the national HMLR digital LLC register</li>
+          <li>Quarterly <strong>"gold status"</strong> ratings published per authority for register quality</li>
+          <li>Free public read access through the gov.uk Local Land Charges service</li>
+        </ul>
+      </div>
+
+      <h2 id="whatItIs">What the programme does</h2>
+      <p>
+        Local Land Charges (LLC) are statutory entries against a property — restrictions,
+        notices, listing designations — historically maintained by each local authority
+        in their own format and accessed via paper or fee-bearing search products
+        (LLC1 form). HMLR's national programme:
+      </p>
+      <ul>
+        <li>Standardises the data model for LLC entries</li>
+        <li>Provides the central digital register</li>
+        <li>Migrates each council's existing data into the standard format</li>
+        <li>Maintains the register going forward with a quality assurance regime ("gold status")</li>
+      </ul>
+
+      <h2 id="howItRelatesToPdtf">How it relates to PDTF</h2>
+      <p>
+        The PDTF overlay
+        <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a>
+        is shaped to match what the HMLR LLC search returns. A PDTF-compliant search
+        consumer can therefore use HMLR's API directly as the upstream source, with the
+        same field names, types and enumerations.
+      </p>
+      <p>
+        Conceptually this is one of the cleanest <em>upstream-as-source-of-truth</em>
+        patterns in the framework: HMLR runs the system, PDTF consumes it, no separate
+        standards body in the middle.
+      </p>
+
+      <h2 id="opdaCoverage">OPDA video coverage</h2>
+      <p>OPDA's YouTube channel includes three HMLR-LLC explainer videos:</p>
+      <ul>
+        <li><strong>Creating a national Local Land Charges Register</strong> (1:05)</li>
+        <li><strong>Local land charges: How the Data Analysis Dashboard tool works</strong> (5:15)</li>
+        <li><strong>Maintain LLC register</strong> (6:25)</li>
+      </ul>
+      <p>All three in
+        <a class="resource-link" href="/resource.html?path=source/05-engagement/videos-youtube/embedded/"><code>source/05-engagement/videos-youtube/embedded/</code></a>.
+      </p>
+
+      <h2 id="significance">Significance for the wider programme</h2>
+      <p>
+        HMLR's LLC programme is the public-sector pattern OPDA's Sandbox approach is
+        intentionally mirroring: pick one use case, standardise the schema, build the
+        central infrastructure, drive migration with quality gates. The LLC programme
+        is roughly five years ahead of OPDA on that curve, which is why DPMSG cites it
+        as a reference precedent in the
+        <a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf"><code>Spring 2025 Interoperability Report</code></a>.
+      </p>
+
+      <div class="page-footer">
+        <a href="52-smart-data-challenge.html">← Smart Data Challenge</a>
+        <a href="54-sandbox-pilots.html">Sandbox pilots →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'hmlr-llc' });</script>
+</body>
+</html>

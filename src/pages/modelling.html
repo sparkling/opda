@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modelling · OPDA Knowledge Base</title>
+  <meta name="description" content="Semantic modelling: standards stack, bounded contexts, data dictionary, glossary, taxonomy, ontology, SHACL, JSON-LD mappings.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Section overview</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Modelling</h1>
+      <p class="lead">
+        The technical semantic-modelling workstream. PDTF today is JSON Schema; the work
+        is to elevate it to a full linked-data stack — bounded contexts → controlled
+        vocabulary → SKOS taxonomy → OWL ontology → SHACL validation → JSON-LD mappings —
+        so that property data is verifiably interoperable across the UK industry.
+      </p>
+
+      <h2 id="foundations">Foundations</h2>
+      <p>The architectural decisions and domain partitioning that shape every other modelling artefact.</p>
+      <div class="card-grid">
+        <a class="card" href="/pages/06-standards-stack.html">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Standards stack</h3>
+          <p>PDTF schemas, OpenAPI, repos. The five-layer technical stack we're modelling on top of.</p>
+        </a>
+        <a class="card" href="/pages/12-bounded-contexts.html">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Bounded contexts (DDD)</h3>
+          <p>Six primary industry contexts + five supporting contexts. PDTF is the Published Language between them.</p>
+        </a>
+        <a class="card" href="/pages/16-overlays.html">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>PDTF overlays</h3>
+          <p>Full catalogue of all 18 main + 16 extension overlays — definition, merge mechanics, and how each maps to a bounded context.</p>
+        </a>
+      </div>
+
+      <h2 id="vocabulary">Vocabulary &amp; dictionary</h2>
+      <p>The shared terminology that everything else maps to.</p>
+      <div class="card-grid">
+        <a class="card" href="/pages/13-data-dictionary.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Data dictionary</h3>
+          <p>All 8,458 schema property entries, browseable inline. Headline numbers, audit, schema inventory, build pipeline and sources alongside.</p>
+        </a>
+        <a class="card" href="/pages/14-business-glossary.html">
+          <div class="pill pill--info">Built</div>
+          <h3>Business glossary</h3>
+          <p>All 554 SKOS concepts (54 curated OPDA terms + 500 schema-derived), browseable inline. Provenance, kind breakdown, and editorial roadmap alongside.</p>
+        </a>
+        <a class="card" href="/pages/30-concept-taxonomy.html">
+          <div class="pill pill--warn">Stub</div>
+          <h3>Concept taxonomy (SKOS)</h3>
+          <p>Hierarchical organisation of PDTF concepts. 9 top-level branches, deepening per overlay.</p>
+        </a>
+      </div>
+
+      <h2 id="formal-layer">Formal semantic layer</h2>
+      <p>The machine-readable specification of what the data <em>means</em> — not just what shape it has.</p>
+      <div class="card-grid">
+        <a class="card" href="/pages/31-ontology.html">
+          <div class="pill pill--warn">Stub</div>
+          <h3>Ontology (OWL)</h3>
+          <p>Classes and properties for Transaction, Property, Participant, Claim, Document, Form, Search. Reuses W3C VC, Schema.org, FOAF/ORG, GeoSPARQL.</p>
+        </a>
+        <a class="card" href="/pages/32-shacl-shapes.html">
+          <div class="pill pill--warn">Stub</div>
+          <h3>SHACL shapes</h3>
+          <p>Validation rules in RDF land. Mostly translatable from JSON Schema; hand-authored for cross-property business rules.</p>
+        </a>
+        <a class="card" href="/pages/33-jsonld-mappings.html">
+          <div class="pill pill--warn">Stub</div>
+          <h3>JSON-LD mappings</h3>
+          <p>Per-overlay <code>@context</code> files that bridge JSON property names to ontology terms. BASPI v5 first.</p>
+        </a>
+      </div>
+
+      <h2 id="status">Status at a glance</h2>
+
+      <table>
+        <thead><tr><th>Artefact</th><th>Status</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>Standards stack survey</td><td>✅ Built</td><td><a href="/pages/06-standards-stack.html">06-standards-stack.html</a></td></tr>
+          <tr><td>Bounded-context model</td><td>✅ Built</td><td><a href="/pages/12-bounded-contexts.html">12-bounded-contexts.html</a></td></tr>
+          <tr><td>PDTF overlays catalogue</td><td>✅ Built</td><td><a href="/pages/16-overlays.html">16-overlays.html</a></td></tr>
+          <tr><td>Data dictionary</td><td>✅ Built (auto-generated + interactive)</td><td><a href="/pages/13-data-dictionary.html">13-data-dictionary.html</a></td></tr>
+          <tr><td>Business glossary</td><td>✅ Built (54 terms + 554 SKOS concepts, interactive)</td><td><a href="/pages/14-business-glossary.html">14-business-glossary.html</a></td></tr>
+          <tr><td>Concept taxonomy (SKOS)</td><td>⏳ Stub — top-level only</td><td><a href="/pages/30-concept-taxonomy.html">30-concept-taxonomy.html</a></td></tr>
+          <tr><td>Ontology (OWL)</td><td>⏳ Stub — class list only</td><td><a href="/pages/31-ontology.html">31-ontology.html</a></td></tr>
+          <tr><td>SHACL shapes</td><td>⏳ Stub — pipeline designed</td><td><a href="/pages/32-shacl-shapes.html">32-shacl-shapes.html</a></td></tr>
+          <tr><td>JSON-LD mappings</td><td>⏳ Stub — BASPI v5 to be first</td><td><a href="/pages/33-jsonld-mappings.html">33-jsonld-mappings.html</a></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'modelling', section: 'modelling' });</script>
+</body>
+</html>

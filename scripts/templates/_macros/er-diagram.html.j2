@@ -8,7 +8,7 @@
 ─────────────────────────────────────────────────────────────────────── #}
 {% macro er_diagram(mermaid_src, caption='') -%}
 {%- if mermaid_src and mermaid_src|trim -%}
-<figure class="diagram" role="figure"{% if caption %} aria-label="{{ caption|e }}"{% endif %}>
+<figure class="diagram" role="figure">{# aria-label removed: figcaption below provides the accessible name and Astro's HTML plugin mishandles special chars in attribute values #}
   <div class="mermaid">
 {{ mermaid_src|trim|safe }}
   </div>

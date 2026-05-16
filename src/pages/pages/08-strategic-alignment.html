@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strategic alignment · OPDA Knowledge Base</title>
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Strategic alignment</h1>
+      <p class="lead">
+        The five external frameworks and strategies PDTF publicly aligns to. Each one
+        constrains the design space — and each one is a stakeholder relationship to
+        maintain.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Published positioning</div>
+        <p>
+          From propdata.org.uk's About page, PDTF lists five "Strategic Alignment" partners:
+          HMLR Strategy 2022+, DCMS/DSIT National Data Strategy, DIATF, W3C Verifiable
+          Credentials, and the Trust Over IP Foundation.
+        </p>
+      </div>
+
+      <h2 id="fiveAlignments">The five alignments</h2>
+
+      <div class="diagram">
+        <div class="mermaid">
+flowchart LR
+  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+  classDef strat fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+  classDef tech fill:#dcfce7,stroke:#166534,color:#14532d;
+
+  PDTF[Property Data<br/>Trust Framework]:::opda
+
+  HMLR[HMLR Strategy 2022+]:::strat
+  DSIT[DSIT National Data Strategy]:::strat
+  DIATF[DIATF<br/>Digital Identity Trust Framework]:::strat
+  VC[W3C Verifiable Credentials]:::tech
+  ToIP[Trust Over IP Foundation]:::tech
+
+  PDTF --- HMLR
+  PDTF --- DSIT
+  PDTF --- DIATF
+  PDTF --- VC
+  PDTF --- ToIP
+        </div>
+        <div class="diagram-caption">PDTF's published Strategic Alignment partners.</div>
+      </div>
+
+      <h2 id="hmlr">HMLR Strategy 2022+</h2>
+      <p>
+        HM Land Registry's published business strategy from 2022 onwards. Property
+        modernisation, digitisation of registers, Local Land Charges Programme, the
+        national LLC service that's been rolling out council-by-council since 2018.
+      </p>
+      <p>
+        PDTF aligns by:
+      </p>
+      <ul>
+        <li>Schema overlays for HMLR-managed forms (OC1, LLC1, CON29DW)</li>
+        <li>Architectural compatibility with HMLR's national LLC service</li>
+        <li>Maria Harris on the DPMSG-equivalent forums HMLR convenes</li>
+      </ul>
+
+      <h2 id="nationalDataStrategy">DCMS / DSIT National Data Strategy</h2>
+      <p>
+        The cross-government strategy for unlocking the power of data (originally
+        DCMS-published, now DSIT-owned). PDTF positions itself as a sector-specific
+        implementation of the strategy's principles — particularly around Smart Data
+        and trusted data sharing across organisational boundaries.
+      </p>
+
+      <h2 id="diatf">DIATF — Digital Identity and Attributes Trust Framework</h2>
+      <p>
+        UK government's published trust framework for identity verification services.
+        Run by DSIT. Property transactions involve heavy ID checks (estate agent,
+        conveyancer, lender — each currently does their own). DIATF's stated goal is
+        to enable "verify once, use many times" identity proofing.
+      </p>
+      <p>
+        PDTF aligns by:
+      </p>
+      <ul>
+        <li>Using W3C VCs / DIDs for participant identity — compatible model</li>
+        <li>The PDTF DID Auth OAuth 2 Specification (in trust-framework/docs/) draws on DIATF concepts</li>
+        <li>Future: PDTF accreditation could recognise DIATF-certified IDPs</li>
+      </ul>
+
+      <h2 id="vc">W3C Verifiable Credentials Data Model</h2>
+      <p>
+        The W3C standard for cryptographically verifiable claims about subjects. PDTF
+        v2.0 is being structured around VCs — every property data point is a claim,
+        with provenance, issued by an accredited participant, presented to relying
+        parties.
+      </p>
+      <p>
+        Our archive includes both VC Data Model 1.1 and 2.0 specs locally at
+        <a class="resource-link" href="/resource.html?path=source/08-external-references/related-w3c-specs/"><code>source/08-external-references/related-w3c-specs/</code></a>.
+      </p>
+
+      <h2 id="toip">Trust Over IP Foundation</h2>
+      <p>
+        Linux Foundation project. The 4-layer governance + technical stack model that
+        PDTF directly adopts. See the dedicated
+        <a href="07-toip-governance.html">ToIP governance page</a>.
+      </p>
+
+      <h2 id="implicitAlignments">Implicit alignments — not on the published list but worth tracking</h2>
+
+      <p>
+        Five more relationships that effectively shape the design space, even though
+        OPDA hasn't formalised them as "Strategic Alignment":
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Framework / standard</th><th>Why it matters</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>UK Open Banking</strong> (OBL → JROC)</td>
+            <td>The direct precedent. propdata.org.uk's own tagline: "Open Banking for Property Data". Raidiam — Sandbox partner — built it. Borrow patterns wholesale.</td>
+          </tr>
+          <tr>
+            <td><strong>EU Data Spaces / IDS-RAM</strong></td>
+            <td>European federated data ecosystem governance. Worth tracking for cross-border interoperability optionality, especially with Northern Ireland / Irish property transactions.</td>
+          </tr>
+          <tr>
+            <td><strong>Schema.org</strong></td>
+            <td>Used by Rightmove, Zoopla and most UK property listing sites. PDTF semantic model should align where they overlap (Property, Place, ResidentialAddress).</td>
+          </tr>
+          <tr>
+            <td><strong>FAIR data principles</strong></td>
+            <td>Findable, Accessible, Interoperable, Reusable. PDTF's "open" positioning maps directly onto FAIR.</td>
+          </tr>
+          <tr>
+            <td><strong>W3C Data on the Web Best Practices (DWBP)</strong></td>
+            <td>35 best practices for publishing data on the web. Practical checklist for PDTF's published artefacts (schemas, examples, contexts).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="kpis">Alignment KPIs we could propose</h2>
+
+      <p>
+        To make these alignments operational rather than nominal, each should have
+        measurable criteria. Suggested first cut:
+      </p>
+
+      <ul>
+        <li><strong>HMLR</strong> — every HMLR-published form has a PDTF overlay; LLC1 / OC1 conformance test suite passes.</li>
+        <li><strong>National Data Strategy</strong> — public data assets in PDTF have <code>dcat:</code> metadata for discoverability.</li>
+        <li><strong>DIATF</strong> — PDTF accreditation cross-recognises at least one DIATF-certified IDP.</li>
+        <li><strong>W3C VC</strong> — PDTF v2.0 conforms to VCDM 2.0 test suite.</li>
+        <li><strong>ToIP</strong> — published governance documents for all 4 layers + cross-cutting docs (per <a href="07-toip-governance.html">ToIP page</a>).</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="07-toip-governance.html">← ToIP governance</a>
+        <a href="09-project-roadmap.html">Project roadmap →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'strategic-alignment' });</script>
+</body>
+</html>

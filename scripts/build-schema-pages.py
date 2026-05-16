@@ -37,9 +37,9 @@ THEME_MAP = ROOT / "source/00-deliverables/semantic-models/theme-map.yaml"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
 TEMPLATES = ROOT / "scripts/templates"
-OUT_PAGES = ROOT / "docs/pages"
+OUT_PAGES = ROOT / "src/pages/pages"
 LEAVES_JSON = BUILD / "leaves.json"
-PROPERTIES_JS = ROOT / "docs/data/properties.js"
+PROPERTIES_JS = ROOT / "public/data/properties.js"
 
 OVERLAY_LABELS = {
     "baspi5": "BASPI5", "ta6": "TA6", "ta7": "TA7", "ta10": "TA10",

@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / "_build"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
-OUT_PAGES = ROOT / "docs/pages"
+OUT_PAGES = ROOT / "src/pages/pages"
 
 errors: list[str] = []
 warnings: list[str] = []

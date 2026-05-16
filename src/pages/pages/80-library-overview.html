@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library — overview · OPDA Knowledge Base</title>
+  <meta name="description" content="The shape of the project archive — what we hold and where to find it.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--brand">Library</span>
+        <span>Updated 2026-05-14</span>
+      </div>
+
+      <h1>Library — overview</h1>
+      <p class="lead">
+        The OPDA Knowledge Base holds roughly 500 MB of source material in
+        <code>source/</code> — cloned upstream repos, OPDA's own website mirror,
+        meeting packs, video transcripts, third-party reports and external
+        references. This section indexes it.
+      </p>
+
+      <h2 id="holdings">What's in the archive</h2>
+
+      <table>
+        <thead>
+          <tr><th>Holding</th><th>Where</th><th>Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cloned GitHub repos</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/03-standards/"><code>source/03-standards/</code></a> + <a class="resource-link" href="/resource.html?path=source/06-research/smart-data-challenge/code/"><code>source/06-research/smart-data-challenge/code/</code></a> + <a class="resource-link" href="/resource.html?path=source/07-website/source/"><code>source/07-website/source/</code></a></td>
+            <td>5 repos: <code>schemas</code> (3.9 MB), <code>api</code> (38 KB), <code>trust-framework</code> (5.5 MB), <code>web</code> (1.6 MB), <code>smart-data-challenge-2025</code> (1.7 MB). Full git history retained.</td>
+          </tr>
+          <tr>
+            <td><strong>openpropdata.org.uk mirror</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/07-website/rendered/"><code>source/07-website/rendered/</code></a></td>
+            <td>16 pages + 70 blog posts. Captured 2026-05-13.</td>
+          </tr>
+          <tr>
+            <td><strong>OPDA YouTube channel</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/05-engagement/videos-youtube/"><code>source/05-engagement/videos-youtube/</code></a></td>
+            <td>15 videos with metadata + transcripts. ~2.5 hours of recordings. <a href="43-video-library.html">Cataloguing page</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>DPMSG Steering Group materials</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/steering-group/materials/"><code>source/04-governance-bodies/steering-group/materials/</code></a></td>
+            <td>8 meeting packs (Sep 2025 → Apr 2026). <a href="41-meetings-decisions.html">Meeting log</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>DPMSG Working Groups</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/"><code>source/04-governance-bodies/working-groups/</code></a></td>
+            <td>6 working-group folders. Includes the Spring 2025 Interoperability Report. <a href="42-working-groups.html">Group catalog</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>Trust Framework PoC documents</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/06-research/trust-framework-poc/"><code>source/06-research/trust-framework-poc/</code></a></td>
+            <td>Sandbox setup &amp; technical guides, project plan, Raidiam slides, participant kick-off, glossary, cooperation agreement.</td>
+          </tr>
+          <tr>
+            <td><strong>Smart Data Challenge entries</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/06-research/smart-data-challenge/"><code>source/06-research/smart-data-challenge/</code></a></td>
+            <td>Full submission archive incl. prize entries, cost spreadsheets, member-feedback workbooks. <a href="52-smart-data-challenge.html">SDC page</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>Third-party reports</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/06-research/reports-third-party/"><code>source/06-research/reports-third-party/</code></a></td>
+            <td>Smart Data Roadmap (DBT), Innovate UK reports, consumer survey.</td>
+          </tr>
+          <tr>
+            <td><strong>NTS Material Information archive</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/08-external-references/nts/"><code>source/08-external-references/nts/</code></a></td>
+            <td>Recovered after NTS withdrew the official rules; mirrors from TPI and HousingLIN.</td>
+          </tr>
+          <tr>
+            <td><strong>UK government pages</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/08-external-references/uk-government/"><code>source/08-external-references/uk-government/</code></a></td>
+            <td>MHCLG consultations, DMCC Act news, related gov.uk pages.</td>
+          </tr>
+          <tr>
+            <td><strong>Semantic-model deliverables</strong></td>
+            <td><a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/"><code>source/00-deliverables/semantic-models/</code></a></td>
+            <td>Data dictionary, business glossary (markdown + SKOS), generated mappings.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="inventory">Master inventory</h2>
+      <p>
+        The canonical catalog with every URL, destination and status is at
+        <a class="resource-link" href="/resource.html?path=source/INVENTORY.md"><code>source/INVENTORY.md</code></a>.
+        Updated whenever new material is captured.
+      </p>
+
+      <h2 id="notInArchive">Things explicitly <em>not</em> in the archive</h2>
+      <ul>
+        <li><strong>WordPress source code</strong> for openpropdata.org.uk — the site uses commercial themes/plugins; only the rendered HTML is mirrored.</li>
+        <li><strong>Member-confidential commercial documents</strong> — none of OPDA's internal commercial agreements with members or vendors are stored here.</li>
+        <li><strong>Personal data</strong> — transcripts are heavily redacted where they touch consumer information.</li>
+      </ul>
+
+      <h2 id="howToBrowse">How to browse</h2>
+      <p>
+        The <a href="/resource.html">resource viewer</a> reads any path under
+        <code>source/</code> and renders it inline — JSON via JSON Crack, Markdown
+        and text as plain text in an iframe, PDFs in the browser's PDF viewer,
+        images natively, and so on. Pre-bundled JSON wrappers under
+        <code>docs/data/resources/</code> let it work over <code>file://</code> as
+        well as <code>http://</code>.
+      </p>
+
+      <h2 id="subPages">Sub-pages</h2>
+      <ul>
+        <li><a href="81-document-archive.html"><strong>Document archive</strong></a> — every report, deck and project document, catalogued</li>
+        <li><a href="82-transcript-archive.html"><strong>Transcript archive</strong></a> — video + meeting transcripts in one place</li>
+        <li><a href="83-external-references.html"><strong>External references</strong></a> — gov.uk, NTS, related standards</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="/library.html">← Library</a>
+        <a href="81-document-archive.html">Document archive →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'library-overview' });</script>
+</body>
+</html>

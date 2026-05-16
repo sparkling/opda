@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conformance & certification scheme · OPDA Knowledge Base</title>
+  <meta name="description" content="How members prove they meet the standard. Borrows the Open Banking pattern: technical conformance tests, annual re-certification, formal scheme owner separate from regulators.">
+  <link rel="stylesheet" href="/ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+      <div class="page-meta">
+        <span class="pill pill--accent">Governance</span>
+        <span>Stub · Updated 2026-05-14</span>
+      </div>
+
+      <h1>Conformance & certification scheme</h1>
+      <p class="lead">How members prove they meet the standard. Borrows the Open Banking pattern: technical conformance tests, annual re-certification, formal scheme owner separate from regulators.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="whatExists">What already exists</h2>
+      <ul>
+        <li><strong>OPDA Accreditation Scheme</strong> document — <code>source/01-organisation/accreditation/Open Property Data Association (OPDA) Accreditation Scheme.docx</code></li>
+        <li><strong>OPDA Technical Certification</strong> (7 of 13 founder firms hold it): Kotini, Groundsure, Inventory Base, PEXA, LMS, Sprift, United Trust Bank — per <a href="11-opda-members.html">OPDA member firms</a>.</li>
+        <li><strong>Accreditation Policy</strong> — <code>source/01-organisation/accreditation/Accreditation Policy - OPDA.docx</code></li>
+        <li><strong>Non-Compliant Member Policy</strong> — <code>source/01-organisation/accreditation/Non-Compliant Member Policy - OPDA.docx</code></li>
+      </ul>
+
+      <h2 id="proposedStructure">Proposed structure</h2>
+      <ol>
+        <li><strong>Scope</strong> — what's being conformed against (which PDTF version, which overlays, which API spec)</li>
+        <li><strong>Levels</strong> — minimum / extended / role-specific (issuer / verifier / holder / orchestrator)</li>
+        <li><strong>Test suites</strong> — schema validation, API conformance, VC issuance, DID resolution</li>
+        <li><strong>Self-assessment</strong> — questionnaire + evidence</li>
+        <li><strong>Independent audit</strong> — when required, who can perform it</li>
+        <li><strong>Annual re-certification</strong> — cadence, fees, evidence refresh</li>
+        <li><strong>Trust Registry entry</strong> — outcome: a public, machine-readable record</li>
+        <li><strong>Suspension &amp; revocation</strong> — when and how</li>
+      </ol>
+
+      <h2 id="openBankingParallel">Open Banking parallel</h2>
+      <p>
+        Raidiam — the Sandbox delivery partner — operated UK Open Banking's conformance infrastructure.
+        Worth lifting the working patterns wholesale: FAPI conformance tests, the OBL certification process,
+        directory-based participant registry. See <a href="07-toip-governance.html#openBankingParallel">ToIP governance — Open Banking parallel</a>.
+      </p>
+        
+
+      <div class="page-footer">
+        <a href="08-strategic-alignment.html">← Strategic alignment</a>
+        <a href="21-change-management.html">Change management →</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="/ui/site.js"></script>
+  <script>OPDA.init({ page: 'conformance-scheme' });</script>
+</body>
+</html>
