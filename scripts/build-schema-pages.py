@@ -55,6 +55,21 @@ PAGE_FILES = {
     "48": "48-evidence-documents-declarations.html",
     "49": "49-overlays-tasks-crosscuts.html",
 }
+# IA-defined page ids (must match docs/ui/site.js SECTIONS.schema.groups[*].items[*].id
+# for the sidebar to highlight + render on each page).
+PAGE_IDS = {
+    "34": "schema-overview",
+    "35": "transaction-participants",
+    "36": "chain-milestones",
+    "37": "property",
+    "38": "legal-estate",
+    "39": "built-form",
+    "45": "utilities-energy",
+    "46": "local-context",
+    "47": "encumbrances",
+    "48": "evidence-documents",
+    "49": "overlays-tasks",
+}
 PAGE_ORDER = ["34", "35", "36", "37", "38", "39", "45", "46", "47", "48", "49"]
 
 
@@ -327,6 +342,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
     ctx = {
         "page": {
             "slot": slot,
+            "id": PAGE_IDS.get(slot, f"schema-{slot}"),
             "title": page_cfg["title"],
             "voice": page_cfg.get("voice", "reference-prose-with-opinion"),
             "prev": prev,

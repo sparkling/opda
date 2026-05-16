@@ -117,7 +117,7 @@
   <script src="../ui/schema-leaf-table.js"></script>
   <script>
     if (window.OPDA && typeof OPDA.init === 'function') {
-      OPDA.init({ page: 'schema-{{ page.slot }}' });
+      OPDA.init({ page: '{{ page.id }}' });
     }
     if (typeof mountLeafTable === 'function') {
       mountLeafTable({
