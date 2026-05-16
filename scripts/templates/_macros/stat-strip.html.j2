@@ -1,0 +1,31 @@
+{# stat-strip.html.j2 ──────────────────────────────────────────────────
+   Per-page summary strip rendered above the first sub-table (spec §6).
+   Answers the authoring/governance question: "is this aggregate primarily
+   declared or primarily evidenced?"
+   Inputs:
+     total           — int, count of NON-envelope leaves on the page.
+     decl_pct        — int 0–100, % declaration.
+     evid_pct        — int 0–100, % evidence.
+     deriv_pct       — int 0–100, % derivation.
+     with_overlays   — int, count of leaves that appear in ≥1 overlay.
+     with_examples   — int, count of leaves whose example_path resolves in both _examples.
+     envelope_total  — int (optional), count of envelope rows EXCLUDED from percentages.
+                       Rendered as a footer line "+N envelope leaves" (spec §6).
+   Notes:
+     Uses only existing classes (.page-meta, .pill, .pill--success/info/warn,
+     .muted, .tiny). Pills carry the same colour semantics as Decl/Evid/Deriv
+     badges throughout the section.
+─────────────────────────────────────────────────────────────────────── #}
+{% macro stat_strip(total, decl_pct, evid_pct, deriv_pct, with_overlays, with_examples, envelope_total=0) -%}
+<div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>{{ total }}</strong> leaves</span>
+  <span><span class="pill pill--success">Decl</span> {{ decl_pct }}%</span>
+  <span><span class="pill pill--info">Evid</span> {{ evid_pct }}%</span>
+  <span><span class="pill pill--warn">Deriv</span> {{ deriv_pct }}%</span>
+  <span>{{ with_overlays }} in overlays</span>
+  <span>{{ with_examples }} with worked example</span>
+  {%- if envelope_total and envelope_total > 0 %}
+  <span class="muted tiny">+{{ envelope_total }} envelope leaves (excluded)</span>
+  {%- endif %}
+</div>
+{%- endmacro %}

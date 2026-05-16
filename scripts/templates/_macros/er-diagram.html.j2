@@ -1,0 +1,20 @@
+{# er-diagram.html.j2 ──────────────────────────────────────────────────
+   Wraps a Mermaid block in the site's standard .diagram container so
+   site.js picks it up for lightbox/zoom. Caller passes the raw Mermaid
+   source (already validated by drift_check.py for entity-name resolution,
+   CI invariant 7) and an optional caption.
+   The source is emitted UNESCAPED — Mermaid syntax includes characters
+   ({, |, <, >) that must remain literal for the renderer.
+─────────────────────────────────────────────────────────────────────── #}
+{% macro er_diagram(mermaid_src, caption='') -%}
+{%- if mermaid_src and mermaid_src|trim -%}
+<figure class="diagram" role="figure"{% if caption %} aria-label="{{ caption|e }}"{% endif %}>
+  <div class="mermaid">
+{{ mermaid_src|trim|safe }}
+  </div>
+  {%- if caption and caption|trim %}
+  <figcaption class="diagram-caption">{{ caption|trim|safe }}</figcaption>
+  {%- endif %}
+</figure>
+{%- endif -%}
+{%- endmacro %}

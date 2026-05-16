@@ -1,0 +1,292 @@
+{
+  "$schema": "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  "transactionId": "a2b8e4d1-9c7f-4e6a-b3d5-2f9a8c4e1b6d",
+  "status": "For sale",
+  "participants": [
+    {
+      "name": {
+        "title": "Mrs",
+        "firstName": "Margaret",
+        "lastName": "Wilson"
+      },
+      "dateOfBirth": "1962-11-23",
+      "phone": "+44 7700 900789",
+      "email": "m.wilson@example.com",
+      "address": {
+        "buildingNumber": "8",
+        "street": "Beech Lane",
+        "line1": "8 Beech Lane",
+        "town": "Stockport",
+        "postcode": "SK4 3HJ",
+        "homeNation": "England",
+        "countryCode": "GBR"
+      },
+      "role": "Seller",
+      "sellersCapacity": {
+        "capacity": "Personal Representative for a Deceased Owner",
+        "sellersCapacityDetails": "Executor of the estate of Arthur Wilson (deceased 2025-09-18); Grant of Probate dated 2026-01-22. Sale proceeds payable to the estate.",
+        "attachments": "Attached"
+      }
+    },
+    {
+      "name": {
+        "title": "Dr",
+        "firstName": "Ade",
+        "lastName": "Adeyemi"
+      },
+      "dateOfBirth": "1986-08-30",
+      "phone": "+44 7700 900321",
+      "email": "ade.adeyemi@example.com",
+      "role": "Buyer"
+    }
+  ],
+  "propertyPack": {
+    "address": {
+      "buildingNumber": "47",
+      "street": "Acacia Avenue",
+      "line1": "47 Acacia Avenue",
+      "line2": "Didsbury",
+      "town": "Manchester",
+      "postcode": "M20 4XY",
+      "homeNation": "England",
+      "countryCode": "GBR"
+    },
+    "uprn": 100012345678,
+    "location": {
+      "latitude": 53.4178,
+      "longitude": -2.2342
+    },
+    "marketingTenure": "Freehold",
+    "summaryDescription": "Three-bedroom semi-detached house in Didsbury, built 1932, brick under tiled roof, with a single-storey rear extension added in 2004. Executor sale.",
+    "priceInformation": {
+      "price": 385000,
+      "priceQualifier": "Offers in excess of",
+      "disposal": "Private treaty",
+      "saleAtUndervalue": "No"
+    },
+    "buildInformation": {
+      "building": {
+        "builtForm": "Semi-detached",
+        "propertyType": "House"
+      },
+      "internalArea": {
+        "area": 112,
+        "units": "square metres"
+      },
+      "yearOfBuild": 1932,
+      "isNewBuild": {
+        "yesNo": "No"
+      },
+      "isHMO": "No",
+      "isStudentAccommodation": "No",
+      "roomDimensions": {
+        "hasFloorplan": "Yes",
+        "attachments": "Attached"
+      }
+    },
+    "typeOfConstruction": {
+      "isStandardForm": {
+        "yesNo": "Yes",
+        "constructionType": "Brick and block"
+      },
+      "buildingSafety": {
+        "yesNo": "No"
+      },
+      "loft": {
+        "loftAccess": "Yes",
+        "details": "Hatch access from the first-floor landing; pull-down aluminium ladder.",
+        "loftBoarded": "Yes",
+        "loftInsulated": "Yes"
+      },
+      "sprayFoamInsulation": {
+        "hasSprayFoamInstalled": "No"
+      },
+      "accessibilityAndAdaptations": [
+        "None"
+      ]
+    },
+    "alterationsAndChanges": {
+      "hasStructuralAlterations": {
+        "yesNo": "Yes",
+        "details": "Single-storey rear extension (kitchen-diner), constructed 2004; brick and block to match existing, flat roof with EPDM membrane (re-covered 2019).",
+        "buildingRegApproval": {
+          "yesNo": "Yes",
+          "attachments": "Attached"
+        },
+        "planningPermission": {
+          "yesNo": "Yes",
+          "attachments": "Attached"
+        },
+        "listedBuildingConsent": {
+          "yesNo": "Not required",
+          "details": "Property is not listed and not within a conservation area."
+        },
+        "deedRestrictionConsent": {
+          "yesNo": "Not required",
+          "details": "No relevant restrictive covenants identified in the title register."
+        }
+      },
+      "changeOfUse": {
+        "yesNo": "No"
+      }
+    },
+    "electricalWorks": {
+      "testedByQualifiedElectrician": {
+        "yesNo": "Yes",
+        "yearTested": 2024,
+        "attachments": "Attached"
+      },
+      "electricalWorkSince2005": {
+        "yesNo": "Yes",
+        "yearWorkCarriedOut": 2019,
+        "details": "Full rewire and consumer-unit replacement following the roof re-cover; carried out by a NICEIC-registered contractor.",
+        "suppliedCertificate": {
+          "certificateType": "Electrical Safety Certificate (BS7671)",
+          "attachments": "Attached"
+        }
+      }
+    },
+    "fixturesAndFittings": {
+      "itemsToRemove": {
+        "yesNo": "Yes",
+        "details": "Garden shed (sentimental — to be relocated to the executor's daughter's property); freestanding bookcase in the front reception; pendant light over the dining table (family heirloom)."
+      },
+      "itemsToInclude": {
+        "yesNo": "Yes",
+        "details": "All carpets and floor coverings throughout; integrated dishwasher; fitted wardrobes in all three bedrooms; greenhouse in the rear garden; pond pump."
+      },
+      "basicFittings": {
+        "boilerImmersionHeater": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Worcester Bosch combi boiler (installed 2019, last serviced March 2026)."
+        },
+        "radiatorsWallHeaters": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "nightStorageHeaters": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "freeStandingHeaters": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "gasFiresWithSurround": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Decorative gas fire in the front reception; capped but functional, last serviced 2024."
+        },
+        "electricFiresWithSurround": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "lightSwitches": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "roofInsulation": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "270mm mineral wool installed in loft, 2019."
+        },
+        "windowFittings": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "windowShuttersGrilles": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "internalDoorFittings": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "externalDoorFittings": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "doorbellChime": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "electricSockets": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "burglarAlarm": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Yale wireless alarm; codes will be transferred at completion."
+        },
+        "otherItems": [
+          {
+            "itemName": "Garden greenhouse (8x6 timber)",
+            "isIncludedOrExcluded": "Included"
+          },
+          {
+            "itemName": "Garden shed (apex roof, 6x4)",
+            "isIncludedOrExcluded": "Excluded",
+            "comments": "To be removed by the seller prior to completion."
+          },
+          {
+            "itemName": "Pond pump and filter",
+            "isIncludedOrExcluded": "Included"
+          },
+          {
+            "itemName": "Pendant light fitting in dining room",
+            "isIncludedOrExcluded": "Excluded",
+            "comments": "Family heirloom; will be replaced with a plain bayonet fitting before completion."
+          }
+        ]
+      }
+    },
+    "surveys": [
+      {
+        "outside": {
+          "chimneyStacks": {
+            "condition": "Condition Rating 1",
+            "description": "Single brick chimney stack to the party wall; pots intact, flaunching sound.",
+            "defectsFlag": false
+          },
+          "roofCoverings": {
+            "condition": "Condition Rating 2",
+            "description": "Main pitched roof: concrete interlocking tiles, replaced in 2008. Single-storey rear extension: EPDM flat roof, re-covered 2019.",
+            "mainPitchedCovering": "Concrete interlocking tile",
+            "mainFlatCovering": "EPDM rubber membrane",
+            "advisories": "Roof in serviceable condition; routine inspection recommended every five years.",
+            "mainPitchedDefects": false,
+            "mainFlatDefects": "None observed"
+          },
+          "rainwaterPipesGutters": {
+            "condition": "Condition Rating 2",
+            "description": "Cast-iron gutters to the front and rear elevations; uPVC downpipes (post-2008 replacement).",
+            "gutterIssues": true,
+            "gutterIssueLocation": "Front elevation, eastern bay",
+            "gutterDefect": "Localised paint loss and surface rust on the cast-iron front gutter; cleaning, treatment and repainting recommended within 12 months."
+          },
+          "other": {
+            "condition": "Condition Rating 3",
+            "description": "Japanese knotweed (Reynoutria japonica) identified on the rear boundary, within approximately 4m of the house. Currently being managed under a five-year herbicide treatment plan by a PCA-accredited contractor (started 2024-04, due 2029-04). Insurance-backed guarantee in place; transferable to the buyer at completion.",
+            "defects": "Japanese knotweed within 7m of the dwelling.",
+            "advisories": "Confirm transfer of the treatment-plan guarantee at completion; some lenders require explicit confirmation of an insurance-backed warranty before drawdown.",
+            "gardens": "Front and rear gardens; rear garden bordered by a 1.8m larch-lap fence with the knotweed-affected boundary marked on the management plan.",
+            "exceed1Acre": false,
+            "boundaries": {
+              "fenceDescription": "1.8m larch-lap timber fencing to side and rear; ownership of the eastern boundary confirmed by title plan.",
+              "fenceIssues": "None"
+            }
+          }
+        },
+        "reportDate": "2026-04-22",
+        "agentName": "Northwood Building Surveyors Ltd (RICS regulated, Level 3 Home Survey)",
+        "propertyType": "Semi-detached house",
+        "buildFormat": "Traditional brick and tile",
+        "conservationArea": false,
+        "epc": "C",
+        "floodingRisk": "Low"
+      }
+    ],
+    "valuations": [
+      {
+        "valuationId": 1,
+        "valuationTimestamp": "2026-04-29T14:30:00Z",
+        "capitalValue": 385000,
+        "confidenceLevel": 5,
+        "confidenceBand": "medium",
+        "rentalValue": 18000,
+        "rentalConfidenceLevel": 4,
+        "reinstatementCost": 305000,
+        "instructionType": "Mortgage valuation",
+        "valuationContext": "Purchase",
+        "valuationType": "Market value"
+      }
+    ]
+  }
+}

@@ -9,7 +9,23 @@ dist/
 # Local research archive — too large to push (≈ 500 MB, hosts cloned repos)
 # The deployed site only needs /docs/. See README.
 # Leading slash anchors to repo root so docs/data/resources/source/ is still tracked.
-/source/
+/source/*
+# Schema-pipeline inputs and design docs we author + ship
+!/source/_content/
+!/source/_examples/
+!/source/_working/
+/source/_working/*
+!/source/_working/schema-section-ia.md
+!/source/_working/schema-content-generation-spec.md
+!/source/00-deliverables/
+/source/00-deliverables/*
+!/source/00-deliverables/semantic-models/
+/source/00-deliverables/semantic-models/*
+!/source/00-deliverables/semantic-models/provenance-map.yaml
+!/source/00-deliverables/semantic-models/theme-map.yaml
+
+# Build intermediates (regenerated; not tracked)
+/_build/
 
 # Local environment
 .env

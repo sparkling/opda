@@ -1,0 +1,124 @@
+{#- aggregate-page.html.j2 ─────────────────────────────────────────────
+    Template for the seven aggregate Schema pages: 35, 36, 37, 38, 39,
+    45, 46, 47, 48. (Page 34 uses overview-page.html.j2; page 49 uses
+    crosscut-page.html.j2.)
+
+    Context the renderer supplies:
+      page             — { slot, title, voice, prev, next }
+      regions          — { intro, why_this_exists, pull_quote, worked_example,
+                           gap_notes, er_diagram, mentioned_but_not_owned }
+      sections         — list of { id, title, leaves } (already grouped + sorted)
+      stats            — { total, decl_pct, evid_pct, deriv_pct,
+                           with_overlays, with_examples, envelope_total }
+      show_envelopes   — bool, True only when page.slot == "48"
+
+    All five regions are markdown-rendered to HTML by render_pages.py
+    BEFORE reaching the template. The template treats them as `safe`.
+    Sidecar markdown frontmatter must define every region — missing
+    regions fail CI invariant 4 (sidecar region symmetry).
+-#}
+{%- import "_macros/stat-strip.html.j2" as ss -%}
+{%- import "_macros/pull-quote.html.j2" as pq -%}
+{%- import "_macros/leaf-table.html.j2" as lt -%}
+{%- import "_macros/er-diagram.html.j2" as er -%}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema · {{ page.title|e }} · OPDA Knowledge Base</title>
+  <meta name="description" content="{{ regions.intro_plain|default(page.title, true)|e }}">
+  <link rel="stylesheet" href="../ui/design-system.css">
+</head>
+<body>
+  <div id="app">
+    <article class="prose wide">
+
+      <div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page {{ page.slot }}</span>
+        <span>Generated {{ page.generated_on }}</span>
+      </div>
+
+      <h1>{{ page.title }}</h1>
+
+      {{ ss.stat_strip(stats.total, stats.decl_pct, stats.evid_pct, stats.deriv_pct,
+                       stats.with_overlays, stats.with_examples, stats.envelope_total) }}
+
+      {{ regions.intro|safe }}
+
+      {%- if regions.mentioned_but_not_owned %}
+      <p class="muted tiny"><strong>Mentioned but not owned here.</strong> {{ regions.mentioned_but_not_owned|safe }}</p>
+      {%- endif %}
+
+      {{ pq.pull_quote(regions.pull_quote) }}
+
+      {%- if regions.why_this_exists %}
+      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Why this aggregate exists</p>
+        {{ regions.why_this_exists|safe }}
+      </aside>
+      {%- endif %}
+
+      <div class="db-toolbar" role="toolbar" aria-label="Sub-table filtering">
+        <div class="db-filter-wrap">
+          <button type="button"
+                  class="db-filter-btn"
+                  id="filter-overlay-btn"
+                  aria-expanded="false"
+                  aria-controls="filter-overlay-panel">
+            Filter by overlay
+            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+          </button>
+        </div>
+      </div>
+
+      {%- for section in sections %}
+      <h2 id="{{ section.id }}">{{ section.title }}</h2>
+      {{ lt.leaf_table(section, section.leaves, show_envelopes) }}
+      {%- endfor %}
+
+      {%- if regions.er_diagram %}
+      <h2 id="er">Entity relationships</h2>
+      {{ er.er_diagram(regions.er_diagram, regions.er_caption|default('', true)) }}
+      {%- endif %}
+
+      {%- if regions.worked_example %}
+      <aside class="callout callout--note" role="note">
+        <p class="callout__label">Worked example</p>
+        {{ regions.worked_example|safe }}
+      </aside>
+      {%- endif %}
+
+      {%- if regions.gap_notes and regions.gap_notes|trim %}
+      <aside class="callout callout--warn" role="note">
+        <p class="callout__label">Gap notes</p>
+        {{ regions.gap_notes|safe }}
+      </aside>
+      {%- endif %}
+
+      <div class="page-footer">
+        {%- if page.prev %}<a href="{{ page.prev.file }}">← {{ page.prev.title }}</a>{%- else %}<span></span>{%- endif %}
+        {%- if page.next %}<a href="{{ page.next.file }}">{{ page.next.title }} →</a>{%- else %}<span></span>{%- endif %}
+      </div>
+
+    </article>
+  </div>
+
+  <script src="../ui/site.js"></script>
+  <script src="../ui/schema-leaf-table.js"></script>
+  <script>
+    if (window.OPDA && typeof OPDA.init === 'function') {
+      OPDA.init({ page: 'schema-{{ page.slot }}' });
+    }
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '{{ page.slot }}',
+        showEnvelopes: {{ 'true' if show_envelopes else 'false' }},
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  </script>
+</body>
+</html>

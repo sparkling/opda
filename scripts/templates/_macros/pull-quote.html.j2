@@ -1,0 +1,14 @@
+{# pull-quote.html.j2 ──────────────────────────────────────────────────
+   The page's load-bearing claim. One per aggregate page (spec §6).
+   Renders as .callout--key — terracotta left rule, soft warm-tinted fill,
+   serif body type. Authored in `regions.pull_quote` in sidecar frontmatter.
+   Empty input renders nothing (the caller is responsible for omitting on 49).
+─────────────────────────────────────────────────────────────────────── #}
+{% macro pull_quote(text) -%}
+{%- if text and text|trim -%}
+<aside class="callout callout--key" role="note">
+  <p class="callout__label">The claim</p>
+  <p>{{ text|trim }}</p>
+</aside>
+{%- endif -%}
+{%- endmacro %}

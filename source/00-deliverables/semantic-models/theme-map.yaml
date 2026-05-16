@@ -1,0 +1,276 @@
+# Theme map — leaf-to-page + leaf-to-sub-section assignment for the Schema section.
+#
+# Owners:        Schema architect + content lead.
+# Edit cadence:  At IA-change events only (per spec §7).
+# Consumed by:   scripts/_lib/theme_assign.py (longest-prefix match; ties fail the build).
+# Invariants:    Every leaf has exactly one canonical home (CI invariant 1).
+#                Every leaf maps to some page (CI invariant 2).
+#                A leaf may be referenced from other pages via `mentioned_by` but is
+#                NEVER owned by more than one page.
+#
+# Slot map (Schema section uses 34, 35–39, 45–49 to avoid the Engagement section's
+# slots 40–44; the IA's logical page numbers 42, 43, 44 land in spec slots 47, 48, 49).
+#
+# Note on page 47 sub-sections. The spec §5 worked example names sub-tables
+# `charges`, `covenants`, `easements`, `groundRent`, `apportionments`. These
+# concepts exist in PDTF but NOT as top-level prefixes under propertyPack — they
+# surface as:
+#   - charges       → propertyPack.localSearches.localLandCharges[] (lives on page 46)
+#                     + propertyPack.additionalInformation.otherCharges
+#   - groundRent    → propertyPack.surveys[].misc.groundRentType (lives on page 39)
+#   - apportionments→ derivation leaves under completionAndMoving (computed)
+#   - covenants /
+#     easements     → not present as named keys in pdtf-transaction.json v3
+# The theme map below assigns by ACTUAL prefix, with mentioned_by cross-references
+# where the IA's conceptual grouping diverges from the schema's physical layout.
+# This is the schema defect the spec §13 open issues acknowledge.
+
+version: 2026-05-16
+
+pages:
+
+  # ────────────────────────────────────────────────────────────────
+  # 34 — Section overview. Lands content blocks, not leaf tables.
+  # ────────────────────────────────────────────────────────────────
+  "34":
+    title: "Section overview"
+    voice: "full-opinionated"
+    er_diagram: true              # Single top-level entity map.
+    stat_strip: "section-totals"  # Different shape: totals across all 11 pages.
+    sections: []                  # No leaf sub-sections; page is orientation.
+
+  # ────────────────────────────────────────────────────────────────
+  # 35 — Transaction & participants. Top-of-tree, transaction-level.
+  # ────────────────────────────────────────────────────────────────
+  "35":
+    title: "Transaction & participants"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # participants × authority × roles.
+    stat_strip: true
+    sections:
+      - { id: transaction,  title: "Transaction",   prefixes: [transactionId, status, externalIds] }
+      - { id: participants, title: "Participants",  prefixes: [participants] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 36 — Chain, milestones & contracts.
+  # ────────────────────────────────────────────────────────────────
+  "36":
+    title: "Chain, milestones & contracts"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # chain × transactions × milestones.
+    stat_strip: true
+    sections:
+      - { id: chain,      title: "Chain",      prefixes: [chain] }
+      - { id: milestones, title: "Milestones", prefixes: [milestones] }
+      - { id: contracts,  title: "Contracts",  prefixes: [contracts] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 37 — Property. Documents the schema defect (no clean Property aggregate).
+  # ────────────────────────────────────────────────────────────────
+  "37":
+    title: "Property"
+    voice: "full-opinionated"
+    er_diagram: true              # Four identity surfaces (address / UPRN / INSPIRE / title-linked).
+    stat_strip: true
+    sections:
+      - { id: address,  title: "Address",                  prefixes: ["propertyPack.address"] }
+      - { id: uprn,     title: "UPRN & INSPIRE",           prefixes: ["propertyPack.uprn", "propertyPack.location"] }
+      - { id: features, title: "Residential features",    prefixes: ["propertyPack.residentialPropertyFeatures"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 38 — Legal estate & title.
+  # ────────────────────────────────────────────────────────────────
+  "38":
+    title: "Legal estate & title"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # title ↔ proprietors ↔ leases ↔ restrictions.
+    stat_strip: true
+    sections:
+      - { id: tenure,           title: "Tenure & marketing tenure",       prefixes: ["propertyPack.marketingTenure", "propertyPack.legalOwners"] }
+      - { id: title_number,     title: "Title · number & extents",         prefixes: ["propertyPack.titlesToBeSold[].titleNumber", "propertyPack.titlesToBeSold[].titleExtents"] }
+      - { id: title_oc_meta,    title: "Title · OC summary · metadata & property",
+                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.officialCopyDateTime", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.editionDate", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators"] }
+      - { id: title_oc_owners,  title: "Title · OC summary · proprietorship & lease",
+                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.proprietorship", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease"] }
+      - { id: title_oc_charges, title: "Title · OC summary · charges & restrictions",
+                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.restrictionDetails", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.discountCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rentCharge", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.vendorsLien"] }
+      - { id: title_oc_notices, title: "Title · OC summary · notices & cautions",
+                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.agreedNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.bankruptcy", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.caution", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deedOfPostponement", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.greenOutEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.homeRights", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.rightOfPreEmption", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unilateralNoticeDetails", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.creditorsNotice", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.unidentifiedEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.ccbiEntry", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.deathOfProprietor", "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails"] }
+      - { id: title_register_oc_full,    title: "Title · OC full register data",
+                                prefixes: ["propertyPack.titlesToBeSold[].registerExtract.ocRegisterData"] }
+      - { id: title_extras,     title: "Title · additional documents",     prefixes: ["propertyPack.titlesToBeSold[].additionalDocuments"] }
+      - { id: boundaries,       title: "Legal boundaries",                 prefixes: ["propertyPack.legalBoundaries"] }
+      - { id: rights,           title: "Rights & informal arrangements",   prefixes: ["propertyPack.rightsAndInformalArrangements"] }
+      - { id: own_summary,      title: "Ownership · summary",              prefixes: ["propertyPack.ownership.numberOfSellers", "propertyPack.ownership.numberOfNonUkResidentSellers", "propertyPack.ownership.hasHelpToBuyEquityLoan", "propertyPack.ownership.isFirstRegistration", "propertyPack.ownership.isLimitedCompanySale"] }
+      - { id: own_transfer_id,  title: "Ownership · transfer identity",    prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].titleNumber", "propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription", "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"] }
+      - { id: own_freehold,     title: "Ownership · freehold",             prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges", "propertyPack.ownership.ownershipsToBeTransferred[].wholeFreeholdForSale"] }
+      - { id: own_managed,      title: "Ownership · managed freehold / commonhold",
+                                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation"] }
+      - { id: own_leasehold,    title: "Ownership · leasehold",            prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation"] }
+      - { id: own_other,        title: "Ownership · other",                prefixes: ["propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 39 — Built form, condition & valuation. Gating page (per D-Order).
+  # ────────────────────────────────────────────────────────────────
+  "39":
+    title: "Built form, condition & valuation"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # survey ↔ defects ↔ remediation.
+    stat_strip: true
+    sections:
+      - { id: built_form,           title: "Built form",                  prefixes: ["propertyPack.buildInformation", "propertyPack.typeOfConstruction", "propertyPack.parking", "propertyPack.smartHomeSystems", "propertyPack.summaryDescription", "propertyPack.media"] }
+      - { id: condition,            title: "Condition",                   prefixes: ["propertyPack.alterationsAndChanges", "propertyPack.electricalWorks"] }
+      - { id: fix_summary,          title: "Fixtures · items to include / remove",
+                                    prefixes: ["propertyPack.fixturesAndFittings.itemsToInclude", "propertyPack.fixturesAndFittings.itemsToRemove", "propertyPack.fixturesAndFittings.confirmationOfAccuracy"] }
+      - { id: fix_basic,            title: "Fixtures · basic fittings",   prefixes: ["propertyPack.fixturesAndFittings.basicFittings"] }
+      - { id: fix_kitchen,          title: "Fixtures · kitchen",          prefixes: ["propertyPack.fixturesAndFittings.kitchen"] }
+      - { id: fix_bathroom,         title: "Fixtures · bathroom",         prefixes: ["propertyPack.fixturesAndFittings.bathroom"] }
+      - { id: fix_carpets,          title: "Fixtures · carpets",          prefixes: ["propertyPack.fixturesAndFittings.carpets"] }
+      - { id: fix_curtains,         title: "Fixtures · curtains & rails",  prefixes: ["propertyPack.fixturesAndFittings.curtainsAndCurtainRails"] }
+      - { id: fix_lights,           title: "Fixtures · light fittings",   prefixes: ["propertyPack.fixturesAndFittings.lightFittings"] }
+      - { id: fix_units,            title: "Fixtures · fitted units",     prefixes: ["propertyPack.fixturesAndFittings.fittedUnits"] }
+      - { id: fix_outdoor,          title: "Fixtures · outdoor",          prefixes: ["propertyPack.fixturesAndFittings.outdoorArea"] }
+      - { id: fix_services,         title: "Fixtures · TV, telephone, fuel, other items",
+                                    prefixes: ["propertyPack.fixturesAndFittings.televisionAndTelephone", "propertyPack.fixturesAndFittings.stockOfFuel", "propertyPack.fixturesAndFittings.otherItems"] }
+      - { id: surv_meta,            title: "Surveys · report metadata & declaration",
+                                    prefixes: ["propertyPack.surveys[].surveyType", "propertyPack.surveys[].dateOfInspection", "propertyPack.surveys[].dateOfReport", "propertyPack.surveys[].declaration", "propertyPack.surveys[].misc"] }
+      - { id: surv_grounds,         title: "Surveys · grounds",           prefixes: ["propertyPack.surveys[].grounds"] }
+      - { id: surv_inside_structure, title: "Surveys · inside · roof, ceilings, walls",
+                                    prefixes: ["propertyPack.surveys[].inside.roofStructure", "propertyPack.surveys[].inside.ceilings", "propertyPack.surveys[].inside.wallsPartitions"] }
+      - { id: surv_inside_features,  title: "Surveys · inside · floors, fireplaces, built-in fittings",
+                                    prefixes: ["propertyPack.surveys[].inside.floors", "propertyPack.surveys[].inside.fireplaces", "propertyPack.surveys[].inside.builtinFittings"] }
+      - { id: surv_inside_finishes,  title: "Surveys · inside · woodwork, bathroom fittings, other",
+                                    prefixes: ["propertyPack.surveys[].inside.woodwork", "propertyPack.surveys[].inside.bathroomFittings", "propertyPack.surveys[].inside.other"] }
+      - { id: surv_outside_roof,    title: "Surveys · outside · chimneys, roof, rainwater",
+                                    prefixes: ["propertyPack.surveys[].outside.chimneyStacks", "propertyPack.surveys[].outside.roofCoverings", "propertyPack.surveys[].outside.rainwaterPipesGutters"] }
+      - { id: surv_outside_envelope, title: "Surveys · outside · walls, windows, doors",
+                                    prefixes: ["propertyPack.surveys[].outside.mainWalls", "propertyPack.surveys[].outside.windows", "propertyPack.surveys[].outside.outsideDoors"] }
+      - { id: surv_outside_extras,  title: "Surveys · outside · conservatory, joinery, other",
+                                    prefixes: ["propertyPack.surveys[].outside.conservatoryPorches", "propertyPack.surveys[].outside.otherJoinery", "propertyPack.surveys[].outside.other"] }
+      - { id: surv_services_energy, title: "Surveys · services · electricity, gas/oil, heating, water-heating",
+                                    prefixes: ["propertyPack.surveys[].services.electricity", "propertyPack.surveys[].services.gasOil", "propertyPack.surveys[].services.heating", "propertyPack.surveys[].services.waterHeating"] }
+      - { id: surv_services_water,  title: "Surveys · services · water, drainage, common services",
+                                    prefixes: ["propertyPack.surveys[].services.water", "propertyPack.surveys[].services.drainage", "propertyPack.surveys[].services.commonServices"] }
+      - { id: surv_legal,           title: "Surveys · legal & guarantees", prefixes: ["propertyPack.surveys[].legalIssues"] }
+      - { id: surv_valuation_block, title: "Surveys · valuation block",   prefixes: ["propertyPack.surveys[].propertyValuation"] }
+      - { id: surv_advice,          title: "Surveys · advice, risks & matters for legal advisers",
+                                    prefixes: ["propertyPack.surveys[].advice", "propertyPack.surveys[].risks", "propertyPack.surveys[].mattersForLegalAdvisers", "propertyPack.surveys[].environmentalConsiderations", "propertyPack.surveys[].limitations"] }
+      - { id: valuation,            title: "Valuation and price",         prefixes: ["propertyPack.valuations", "propertyPack.priceInformation", "valuationComparisonData"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 45 — Utilities & energy.
+  # ────────────────────────────────────────────────────────────────
+  "45":
+    title: "Utilities & energy"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # EPC ↔ recommendations ↔ ratings.
+    stat_strip: true
+    sections:
+      - { id: heating,      title: "Heating",                       prefixes: ["propertyPack.heating"] }
+      - { id: electricity,  title: "Electricity",                   prefixes: ["propertyPack.electricity"] }
+      - { id: water,        title: "Water and drainage",            prefixes: ["propertyPack.waterAndDrainage", "propertyPack.servicesCrossing"] }
+      - { id: connectivity, title: "Connectivity",                  prefixes: ["propertyPack.connectivity"] }
+      - { id: epc,          title: "Energy performance",            prefixes: ["propertyPack.energyEfficiency"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 46 — Local context & searches.
+  # ────────────────────────────────────────────────────────────────
+  "46":
+    title: "Local context & searches"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # search → authority → result.
+    stat_strip: true
+    sections:
+      - { id: local_authority, title: "Local authority",         prefixes: ["propertyPack.localAuthority"] }
+      - { id: con29,           title: "CON29R / CON29DW / LLC1", prefixes: ["propertyPack.localSearches"] }
+      - { id: searches,        title: "Other searches",          prefixes: ["propertyPack.searches"] }
+      - { id: environmental,   title: "Environmental",           prefixes: ["propertyPack.environmentalIssues"] }
+      - { id: listing,         title: "Listing & conservation",  prefixes: ["propertyPack.listingAndConservation"] }
+      - { id: neighbourhood,   title: "Neighbourhood",           prefixes: ["propertyPack.nearbyFacilities"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 47 — Encumbrances & completion (IA page 42).
+  #      councilTax is canonical home here; its lifecycle terminates at completion.
+  # ────────────────────────────────────────────────────────────────
+  "47":
+    title: "Encumbrances & completion"
+    voice: "full-opinionated"
+    er_diagram: true              # charges ↔ encumbrances ↔ completion temporal cardinality.
+    stat_strip: true
+    sections:
+      - { id: council_tax,     title: "Council tax",                              prefixes: ["propertyPack.councilTax"] }
+      - { id: insurance,       title: "Insurance",                                prefixes: ["propertyPack.insurance"] }
+      - { id: guarantees,      title: "Guarantees, warranties & indemnities",    prefixes: ["propertyPack.guaranteesWarrantiesAndIndemnityInsurances"] }
+      - { id: occupiers,       title: "Occupiers & notices",                     prefixes: ["propertyPack.occupiers", "propertyPack.notices"] }
+      - { id: letting,         title: "Letting information",                     prefixes: ["propertyPack.lettingInformation"] }
+      - { id: completion,      title: "Completion & moving",                     prefixes: ["propertyPack.completionAndMoving"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 48 — Evidence, documents & declarations (IA page 43).
+  #      Only page where VC envelope rows are visible (show_envelopes: true).
+  # ────────────────────────────────────────────────────────────────
+  "48":
+    title: "Evidence, documents & declarations"
+    voice: "reference-prose-with-opinion"
+    er_diagram: true              # claim ↔ subject ↔ evidence ↔ document.
+    stat_strip: true
+    show_envelopes: true          # VC envelope rows render here (and only here).
+    sections:
+      - { id: documents,        title: "Documents & attachments",                 prefixes: ["propertyPack.documents"] }
+      - { id: declarations,     title: "Sale-ready declarations",                 prefixes: ["propertyPack.saleReadyDeclarations", "propertyPack.confirmationOfAccuracyByOwners", "propertyPack.consumerProtectionRegulationsDeclaration"] }
+      - { id: additional,       title: "Additional information & disclosures",   prefixes: ["propertyPack.additionalInformation"] }
+      - { id: disputes,         title: "Disputes & complaints",                   prefixes: ["propertyPack.disputesAndComplaints"] }
+      - { id: specialist,       title: "Specialist & other issues",               prefixes: ["propertyPack.specialistIssues", "propertyPack.otherIssues", "propertyPack.delayFactors"] }
+      - { id: envelope,         title: "VC envelope leaves",                      prefixes: ["*.credentialSubject"] }
+
+  # ────────────────────────────────────────────────────────────────
+  # 49 — Overlays, tasks & cross-cuts (IA page 44).
+  #      Owns NO leaves; renders overlay × task matrices computed from
+  #      page-1–48 leaves. No stat-strip per D-Strip.
+  # ────────────────────────────────────────────────────────────────
+  "49":
+    title: "Overlays, tasks & cross-cuts"
+    voice: "briskest"
+    er_diagram: false
+    stat_strip: false
+    sections: []                  # All content is computed cross-cut views.
+
+
+# ─────────────────────────────────────────────────────────────────
+# overrides
+#
+# Leaf-level exceptions where the longest-prefix rule would assign
+# the wrong page. List the explicit { path → page, section } pair.
+# `theme_assign.py` checks overrides first, then falls back to prefix match.
+# ─────────────────────────────────────────────────────────────────
+overrides:
+  # Participant address is a participant attribute, NOT a property attribute.
+  "participants[].address":             { page: "35", section: participants }
+  "participants[].address.line1":       { page: "35", section: participants }
+  "participants[].address.line2":       { page: "35", section: participants }
+  "participants[].address.town":        { page: "35", section: participants }
+  "participants[].address.postcode":    { page: "35", section: participants }
+  "participants[].address.country":     { page: "35", section: participants }
+
+  # sellersCapacity is a participant attribute (page 35), not legal-estate (38).
+  "participants[].sellersCapacity":     { page: "35", section: participants }
+
+  # Completion artefacts that sit at the transaction level live on 36, not 47.
+  # (Per IA 36 — process artefacts; vs IA 42/spec 47 — encumbrance lifecycle.)
+  "contracts[].completionDate":         { page: "36", section: contracts }
+
+# ─────────────────────────────────────────────────────────────────
+# mentioned_by
+#
+# Leaves whose canonical home is page X but which should also be
+# cross-referenced from pages [Y, Z]. Render as a "Mentioned by"
+# stub link in the intro of the receiving page (per spec §5).
+# ─────────────────────────────────────────────────────────────────
+mentioned_by:
+  "propertyPack.councilTax.*":          ["36", "46"]   # completion statement, local-authority context
+  "propertyPack.fixturesAndFittings.*": ["36"]         # contract pack
+  "propertyPack.energyEfficiency.*":    ["39", "16"]   # condition references EPC band; NTS2 overlay
+  "propertyPack.alterationsAndChanges.*": ["49", "16"] # cladding task, building safety overlay
+  "participants[].address":             ["37"]         # explicit not-the-property-address disambiguation
+  "participants[].sellersCapacity":     ["38"]         # capacity governs ability to convey
+  "propertyPack.titlesToBeSold[].titleNumber": ["36", "47"]  # contracts, completion both reference

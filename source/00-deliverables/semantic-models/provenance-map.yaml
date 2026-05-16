@@ -1,0 +1,655 @@
+# provenance-map.yaml
+# Owner: Ontologist. Reviewed: 2026-05-16. Cadence: continuous.
+# Joined into the pipeline by scripts/_lib/provenance_classify.py.
+#
+# Rubric (from schema-content-generation-spec.md §8):
+#   - evidence    third-party issuer (HMLR / EPB / RICS-regulated / local-authority / lender)
+#                 seals the fact. The seller does not warrant; the issuer does.
+#   - derivation  deterministically computed from other leaves (apportionments,
+#                 totals, lease maths, comparables, SDLT, days-on-market).
+#   - declaration default. Seller's typed/clicked answer; seller bears liability.
+#   - envelope    structural fields of a Verifiable Credential wrapper
+#                 (*.proof.*, *.issuer, *.validFrom, *.validUntil,
+#                 *.credentialSubject.*). Rendered separately, no badge,
+#                 suppressed on pages 35-42, never counted in stat-strip %.
+#
+# Resolution: `patterns` are checked top-to-bottom, first match wins.
+# `explicit` overrides patterns. Patterns use glob-style matching where:
+#   `*` matches a single path segment (no dots)
+#   `**` matches any number of segments
+#   `[]` is a literal marker for array items (do NOT use `*` to skip it)
+# The build appends every unmatched leaf to `unclassified`; CI fails on non-zero.
+
+version: 2026-05-16
+default: declaration
+
+patterns:
+
+  # ---------------------------------------------------------------------------
+  # 1. VC envelope (structural, no badge, rendered separately on page 43).
+  #    Defensive: page-39 subtree carries no envelope leaves at the schema
+  #    level, but the same provenance-map will be applied to claim-wrapper
+  #    paths once later agents extend coverage. Order: most-specific first.
+  # ---------------------------------------------------------------------------
+  - match: "**.credentialSubject.**"
+    kind: envelope
+    rationale: vc-inner-claim-passthrough
+  - match: "**.proof.**"
+    kind: envelope
+    rationale: vc-proof-block
+  - match: "**.proof"
+    kind: envelope
+    rationale: vc-proof-block
+  - match: "**.issuer"
+    kind: envelope
+    rationale: vc-issuer-field
+  - match: "**.issuer.**"
+    kind: envelope
+    rationale: vc-issuer-block
+  - match: "**.validFrom"
+    kind: envelope
+    rationale: vc-validity
+  - match: "**.validUntil"
+    kind: envelope
+    rationale: vc-validity
+  - match: "**.issuanceDate"
+    kind: envelope
+    rationale: vc-validity
+
+  # ---------------------------------------------------------------------------
+  # 2. Surveys (RICS-regulated Home Survey shape - TA10 / RICS Home Survey
+  #    overlay per IA p.39). The whole report is issuer-sealed by a regulated
+  #    surveyor: every leaf inside `surveys[]` is evidence-by-inheritance.
+  #    This is the single biggest classification call on page 39 (657 leaves).
+  #
+  #    Photos inside the survey are the schema's analogue of "sealed
+  #    attachments" - the surveyor includes them as part of the report; the
+  #    seller does not. Same for testCertificate leaves under services.*.
+  #
+  #    Exceptions:
+  #      - declaration.* sub-block holds the surveyor's identity/contact
+  #        details which they themselves type (declaration kind, but issued
+  #        by the surveyor not the seller). Treated as declaration-by-issuer;
+  #        a future predicate should split surveyor-declared vs seller-declared.
+  #        (See explicit entries below for these specific leaves.)
+  #      - misc.* contains a mix: report metadata is evidence; some agent /
+  #        contact fields are declaration. Defaulted to evidence, with
+  #        explicit overrides for the agent-name-style leaves.
+  # ---------------------------------------------------------------------------
+  - match: "propertyPack.surveys[].**.photos.**"
+    kind: evidence
+    rationale: surveyor-sealed-photo-rics-regulated
+  - match: "propertyPack.surveys[].**.photos[].**"
+    kind: evidence
+    rationale: surveyor-sealed-photo-rics-regulated
+  - match: "propertyPack.surveys[].**.testCertificate"
+    kind: evidence
+    rationale: third-party-certificate-referenced-by-surveyor
+  - match: "propertyPack.surveys[].**"
+    kind: evidence
+    rationale: rics-regulated-home-survey-issuer-sealed
+
+  # ---------------------------------------------------------------------------
+  # 3. Valuations - RICS-shaped (capitalValue / confidenceLevel /
+  #    reinstatementCost / checkValuationResult). PDTF's `valuations[]` is
+  #    the regulated-valuer artefact; the estate-agent asking-price lives
+  #    separately on `priceInformation`. Therefore the whole `valuations[]`
+  #    array is evidence. (Explicit override exists for `instructionType`
+  #    and `valuationContext` which are seller-/lender-declared meta.)
+  # ---------------------------------------------------------------------------
+  - match: "propertyPack.valuations[].**"
+    kind: evidence
+    rationale: rics-regulated-valuer-issuer-sealed
+
+  # ---------------------------------------------------------------------------
+  # 4. fixturesAndFittings - seller chooses which items go with the property.
+  #    Every leaf is the seller's TA10/F&F-form selection. Declaration
+  #    by default for the whole subtree. No evidence leaves under this group
+  #    in the current schema (photos/receipts would attach via the VC layer,
+  #    not here).
+  # ---------------------------------------------------------------------------
+  - match: "propertyPack.fixturesAndFittings.**"
+    kind: declaration
+    rationale: seller-fittings-schedule-ta10
+
+  # ---------------------------------------------------------------------------
+  # 5. priceInformation - asking price / sale-at-undervalue / disposal /
+  #    qualifier. Seller-or-agent sets these. Declaration.
+  #    (`estimatedValue` style fields don't exist in the schema; if added
+  #    later, classify as derivation - see explicit reservation below.)
+  # ---------------------------------------------------------------------------
+  - match: "propertyPack.priceInformation.**"
+    kind: declaration
+    rationale: seller-or-agent-asking-price
+
+  # ---------------------------------------------------------------------------
+  # 6. TA6 seller-asserted groups: buildInformation, typeOfConstruction,
+  #    alterationsAndChanges, electricalWorks. These are the canonical
+  #    seller-questionnaire surfaces. Declaration is the right default for
+  #    every leaf; specific facts that *should* be evidenced (yearOfBuild,
+  #    EICR cert) are flagged in `explicit` so the rationale is read.
+  # ---------------------------------------------------------------------------
+  - match: "propertyPack.buildInformation.**"
+    kind: declaration
+    rationale: ta6-seller-asserts
+  - match: "propertyPack.typeOfConstruction.**"
+    kind: declaration
+    rationale: ta6-seller-asserts
+  - match: "propertyPack.alterationsAndChanges.**"
+    kind: declaration
+    rationale: ta6-seller-asserts
+  - match: "propertyPack.electricalWorks.**"
+    kind: declaration
+    rationale: ta6-seller-asserts
+
+  # --- cross-page patterns (pages 38, 46, 47, 48) ---------------------------
+
+  # Title (HMLR-sealed; page 38) — evidence wherever it appears
+  - match: "propertyPack.titlesToBeSold[].**"
+    kind: evidence
+    rationale: hmlr-title-register
+  - match: "propertyPack.titlesToBeSold[]"
+    kind: evidence
+    rationale: hmlr-title-register
+
+  # Local-authority searches (LA-issued; page 46) — evidence
+  - match: "propertyPack.localSearches.**"
+    kind: evidence
+    rationale: la-issued-search
+  - match: "propertyPack.searches[].**"
+    kind: evidence
+    rationale: third-party-search-provider
+
+  # EPC certificate (EPB-issued; page 45) — evidence
+  - match: "propertyPack.energyEfficiency.certificate.**"
+    kind: evidence
+    rationale: epb-register-issued
+  - match: "propertyPack.energyEfficiency.certificate"
+    kind: evidence
+    rationale: epb-register-issued
+
+  # Documents (page 48) — sealed third-party documents are evidence
+  - match: "propertyPack.documents[].**"
+    kind: evidence
+    rationale: sealed-document
+  - match: "propertyPack.documents[]"
+    kind: evidence
+    rationale: sealed-document
+
+  # Attachments under any leaf — evidence (sealed at the URL)
+  - match: "**.attachments[].**"
+    kind: evidence
+    rationale: sealed-attachment
+  - match: "**.attachments"
+    kind: declaration
+    rationale: seller-attachment-flag
+  - match: "**.attachments[]"
+    kind: evidence
+    rationale: sealed-attachment
+
+  # Council tax bill / evidence document if present (canonical home page 47)
+  - match: "propertyPack.councilTax.evidenceDocument.**"
+    kind: evidence
+    rationale: la-issued-bill
+  - match: "propertyPack.councilTax.evidenceDocument"
+    kind: evidence
+    rationale: la-issued-bill
+
+  # Insurance / Guarantees-Warranties attachments — evidence; main body declaration
+  - match: "propertyPack.insurance.**.attachments.**"
+    kind: evidence
+    rationale: sealed-document
+  - match: "propertyPack.guaranteesWarrantiesAndIndemnityInsurances.**.attachments.**"
+    kind: evidence
+    rationale: sealed-document
+
+  # Apportionments / completion totals — derivation (computed)
+  - match: "**.apportionments[].**"
+    kind: derivation
+    rationale: computed-at-completion
+  - match: "**.completionStatement.totals.**"
+    kind: derivation
+    rationale: computed-from-line-items
+
+# ---------------------------------------------------------------------------
+# Explicit overrides.
+# Used when patterns can't decide, when the call is contentious, or when
+# the row needs a rationale-of-record. Each entry carries `decided`. Notes
+# (`note:`) capture commentary that should ideally become a predicate in a
+# future schema revision.
+# ---------------------------------------------------------------------------
+
+explicit:
+
+  # --- buildInformation -----------------------------------------------------
+  # Hard call #10. The seller asserts year of build on TA6; HMLR / Land
+  # Registry could evidence it, but the *canonical leaf at this path* is the
+  # TA6 answer. Declaration stands.
+  "propertyPack.buildInformation.yearOfBuild":
+    kind: declaration
+    rule: ta6-q1-seller-asserts-year-built
+    decided: 2026-05-16
+    note: |
+      The brief named this leaf as `yearBuilt`; the schema actually
+      uses `yearOfBuild`. Same fact, schema spelling. Ideally we would
+      add a parallel `yearOfBuild.evidenced` leaf carrying the Land
+      Registry / HMLR title-plan date and classify *that* as evidence.
+      Two paths, two badges, two rows (D-Multi).
+
+  "propertyPack.buildInformation.isNewBuild.yesNo":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.buildInformation.isHMO":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+    note: |
+      An issued HMO licence from the local authority would *evidence*
+      this; the current schema only captures the seller's answer. Flag
+      for schema evolution alongside year-of-build.
+  "propertyPack.buildInformation.isStudentAccommodation":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.buildInformation.roomDimensions.hasFloorplan":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.buildInformation.building.builtForm":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.buildInformation.building.propertyType":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.buildInformation.internalArea.area":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+    note: |
+      Ideally derived from a RICS-IPMS measurement survey. Currently
+      seller-typed; classify as declaration until measurement leaves
+      land.
+  "propertyPack.buildInformation.internalArea.units":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+
+  # --- typeOfConstruction ---------------------------------------------------
+  "propertyPack.typeOfConstruction.buildingSafety.yesNo":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+    note: |
+      Building-safety status for cladding/EWS1 would ideally be issuer-
+      sealed (EWS1 form, regulator notice). Current schema captures only
+      the seller's yes/no. Hard-call #5 (`condition.cladding.ews1Rating`)
+      lives at this path semantically; reclassify when a structured
+      EWS1 leaf is added.
+  "propertyPack.typeOfConstruction.isStandardForm.yesNo":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.typeOfConstruction.loft.loftAccess":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.typeOfConstruction.accessibilityAndAdaptations[]":
+    kind: declaration
+    rule: ta6-seller-asserts
+    decided: 2026-05-16
+
+  # --- alterationsAndChanges ------------------------------------------------
+  # All yesNo TA6 answers. Where a buildingRegs/planning record exists at
+  # local authority, that's evidence on page 41 (search results), not here.
+  "propertyPack.alterationsAndChanges.changeOfUse.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.hasAddedConservatory.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.hasStructuralAlterations.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.planningPermissionBreaches.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.unresolvedPlanningIssues.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.windowReplacementsSince2002.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+  "propertyPack.alterationsAndChanges.worksUnfinished.yesNo":
+    kind: declaration
+    rule: ta6-q4-seller-asserts
+    decided: 2026-05-16
+
+  # --- electricalWorks ------------------------------------------------------
+  "propertyPack.electricalWorks.electricalWorkSince2005.yesNo":
+    kind: declaration
+    rule: ta6-q12-seller-asserts
+    decided: 2026-05-16
+    note: |
+      The matching evidence (EICR / NICEIC certificate) sits inside
+      `surveys[].services.electricity.testCertificate` and is correctly
+      classified there as evidence. Two paths, two badges, two rows.
+  "propertyPack.electricalWorks.testedByQualifiedElectrician.yesNo":
+    kind: declaration
+    rule: ta6-q12-seller-asserts
+    decided: 2026-05-16
+
+  # --- fixturesAndFittings (hard calls #1, #2) ------------------------------
+  # Hard call #1: itemsToInclude is declaration - the seller picks what stays.
+  "propertyPack.fixturesAndFittings.itemsToInclude.yesNo":
+    kind: declaration
+    rule: ta10-seller-fittings-schedule
+    decided: 2026-05-16
+    note: |
+      Hard call #1 from the brief. The brief paths used
+      `fixturesAndFittings.*.itemsToInclude[]`; the schema actually
+      stores this as a yes/no gate at `fixturesAndFittings.itemsToInclude
+      .yesNo` and then enumerates included items under each room/category
+      bucket as `*.isIncludedExcludedOrNone`. Same intent, schema's
+      spelling.
+  "propertyPack.fixturesAndFittings.itemsToRemove.yesNo":
+    kind: declaration
+    rule: ta10-seller-fittings-schedule
+    decided: 2026-05-16
+  "propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate":
+    kind: declaration
+    rule: ta10-seller-confirms-accuracy
+    decided: 2026-05-16
+    note: |
+      The seller's confirmation-of-accuracy attestation. Becomes the
+      load-bearing declaration when fittings disputes arise post-
+      completion.
+
+  # Hard call #2: "attachments[]" (sealed photos/receipts) do not exist
+  # under `fixturesAndFittings` in the current schema. The closest analogue
+  # (photos sealed by a third party) is `surveys[].**.photos.**` and is
+  # already classified as evidence by pattern. We record the *intent* here
+  # so the next schema revision lands the right classification immediately.
+  "propertyPack.fixturesAndFittings.attachments[]":
+    kind: evidence
+    rule: sealed-photo-or-receipt-third-party
+    decided: 2026-05-16
+    note: |
+      Hard call #2 from the brief. This leaf does not exist in the
+      current pdtf-transaction.json; recorded here as a reservation so
+      that when fixtures-attachment paths land, they classify correctly
+      on first build. Today the only sealed fittings photos route
+      through the surveys[] subtree (and are classified there).
+
+  # --- surveys (hard calls #3, #4) ------------------------------------------
+  # Hard call #3: defects severity. RICS-issued surveys = evidence. Today
+  # the schema folds defects + descriptions into a single string-typed
+  # `*.defects` / `*.defectDetail` leaf per surveyed feature; there is no
+  # standalone `severity` leaf to overlay. The whole survey subtree is
+  # evidence by pattern. We record the *predicate intent* here.
+  "propertyPack.surveys[].outside.mainWalls.defects":
+    kind: evidence
+    rule: rics-regulated-home-survey-issuer-sealed
+    decided: 2026-05-16
+    note: |
+      Hard call #3 from the brief. Brief named
+      `surveys[].defects[].severity`; the schema has no array of typed
+      defect objects (no `severity` enum). Every `*.defects` leaf is a
+      string-typed surveyor finding. Classification follows the issuer:
+      RICS-regulated surveyor seals the report - evidence. If a future
+      schema revision adds non-RICS (seller-self-declared) surveys, this
+      should become a predicate over an `issuer.regulator` leaf (also
+      flagged in hard call #4).
+  "propertyPack.surveys[].risks.buildingRisks":
+    kind: evidence
+    rule: rics-regulated-home-survey-issuer-sealed
+    decided: 2026-05-16
+  "propertyPack.surveys[].risks.peopleRisks":
+    kind: evidence
+    rule: rics-regulated-home-survey-issuer-sealed
+    decided: 2026-05-16
+  "propertyPack.surveys[].risks.groundsRisks":
+    kind: evidence
+    rule: rics-regulated-home-survey-issuer-sealed
+    decided: 2026-05-16
+  "propertyPack.surveys[].risks.otherRisks":
+    kind: evidence
+    rule: rics-regulated-home-survey-issuer-sealed
+    decided: 2026-05-16
+
+  # Hard call #4: `surveys[].issuer.regulator` does not exist as a leaf in
+  # the current schema. The schema captures the surveyor's identity via the
+  # `declaration.*` sub-block (the surveyor's own typed details). Per the
+  # brief: *the surveyor names themselves; the regulator validates* -
+  # so these are declarations-by-the-surveyor, not seller declarations.
+  # We classify them as declaration with an explicit rule and flag a
+  # future split (surveyor-declared vs seller-declared).
+  "propertyPack.surveys[].declaration.surveyorQuals":
+    kind: declaration
+    rule: surveyor-self-identifies-rics-regulator-validates
+    decided: 2026-05-16
+    note: |
+      Hard call #4 from the brief. The brief named
+      `surveys[].issuer.regulator`; the schema has no such leaf.
+      `surveyorQuals` is the closest semantic anchor: the surveyor
+      types their RICS qualification themselves; RICS then validates
+      independently. Two badges if the schema ever splits these:
+      `surveyorQuals.asserted` (declaration) vs
+      `surveyorQuals.rics-verified` (evidence).
+  "propertyPack.surveys[].declaration.clientName":
+    kind: declaration
+    rule: surveyor-records-client-name
+    decided: 2026-05-16
+  "propertyPack.surveys[].declaration.companyAddress":
+    kind: declaration
+    rule: surveyor-records-firm-details
+    decided: 2026-05-16
+  "propertyPack.surveys[].declaration.email":
+    kind: declaration
+    rule: surveyor-records-firm-details
+    decided: 2026-05-16
+  "propertyPack.surveys[].declaration.phoneNumber":
+    kind: declaration
+    rule: surveyor-records-firm-details
+    decided: 2026-05-16
+  "propertyPack.surveys[].declaration.faxNumber":
+    kind: declaration
+    rule: surveyor-records-firm-details
+    decided: 2026-05-16
+  "propertyPack.surveys[].declaration.website":
+    kind: declaration
+    rule: surveyor-records-firm-details
+    decided: 2026-05-16
+
+  # `misc.*` mostly carries surveyor-observed flags (siteRisk, floodingRisk,
+  # listedBuilding, conservationArea, ...) which ARE evidence (the surveyor
+  # is sealing the observation). But `agentName` and `reportDate` straddle:
+  # `agentName` is the estate-agent contact recorded by the surveyor =
+  # declaration; `reportDate` is the surveyor's act = evidence. Promote the
+  # ambiguous ones to explicit so reviewers see the call.
+  "propertyPack.surveys[].misc.agentName":
+    kind: declaration
+    rule: surveyor-records-estate-agent-name
+    decided: 2026-05-16
+    note: |
+      The estate agent's name is provided to the surveyor (typically
+      copy-typed from the marketing particulars); the surveyor does
+      not validate it. Declaration.
+  "propertyPack.surveys[].misc.reportDate":
+    kind: evidence
+    rule: rics-survey-issuance-date
+    decided: 2026-05-16
+  "propertyPack.surveys[].misc.epcAvailable":
+    kind: declaration
+    rule: surveyor-checks-epc-availability
+    decided: 2026-05-16
+    note: |
+      Pointer-style: the EPC itself is evidence and lives on page 40;
+      this leaf records whether the surveyor saw one. Declarative
+      meta-question about evidence.
+  "propertyPack.surveys[].misc.epcDiscrepancies":
+    kind: evidence
+    rule: surveyor-records-epc-mismatch
+    decided: 2026-05-16
+
+  # `propertyValuation.*` - the survey-report's embedded valuation. RICS-
+  # sealed. Hard call #6 (`valuations[].marketValue`) maps to this when the
+  # valuation came from the surveyor; when it came from an estate agent it
+  # lives at priceInformation.price (declaration). Confirmed evidence here.
+  "propertyPack.surveys[].propertyValuation.valuation.value":
+    kind: evidence
+    rule: rics-regulated-surveyor-valuation
+    decided: 2026-05-16
+    note: |
+      Hard call #6 from the brief, surveyor route. The brief path
+      `valuations[].marketValue` corresponds in this schema to
+      `surveys[].propertyValuation.valuation.value` when issued by a
+      RICS surveyor inside the Home Survey report, OR to
+      `valuations[].capitalValue` when issued by a standalone RICS
+      valuer. Both are evidence. The estate-agent asking-price route
+      lives at `priceInformation.price` (declaration, see below).
+  "propertyPack.surveys[].propertyValuation.valuation.valueWords":
+    kind: evidence
+    rule: rics-regulated-surveyor-valuation
+    decided: 2026-05-16
+  "propertyPack.surveys[].propertyValuation.valuation.reinstatement":
+    kind: evidence
+    rule: rics-regulated-surveyor-valuation
+    decided: 2026-05-16
+  "propertyPack.surveys[].propertyValuation.valuation.reinstatementWords":
+    kind: evidence
+    rule: rics-regulated-surveyor-valuation
+    decided: 2026-05-16
+
+  # --- valuations[] (hard calls #6, #7) -------------------------------------
+  # Hard call #6: marketValue. Schema's analogue is `capitalValue` (RICS-
+  # regulated valuer): evidence.
+  "propertyPack.valuations[].capitalValue":
+    kind: evidence
+    rule: rics-regulated-valuer-capital-value
+    decided: 2026-05-16
+    note: |
+      Hard call #6, standalone-valuer route. Brief named `marketValue`;
+      schema names it `capitalValue`. RICS-regulated; evidence. The
+      estate-agent equivalent is `propertyPack.priceInformation.price`
+      (declaration).
+  "propertyPack.valuations[].rentalValue":
+    kind: evidence
+    rule: rics-regulated-valuer-rental-value
+    decided: 2026-05-16
+  "propertyPack.valuations[].reinstatementCost":
+    kind: evidence
+    rule: rics-regulated-valuer-reinstatement
+    decided: 2026-05-16
+  "propertyPack.valuations[].confidenceLevel":
+    kind: evidence
+    rule: rics-regulated-valuer-confidence
+    decided: 2026-05-16
+  "propertyPack.valuations[].confidenceBand":
+    kind: evidence
+    rule: rics-regulated-valuer-confidence
+    decided: 2026-05-16
+  "propertyPack.valuations[].rentalConfidenceLevel":
+    kind: evidence
+    rule: rics-regulated-valuer-confidence
+    decided: 2026-05-16
+  "propertyPack.valuations[].valuationTimestamp":
+    kind: evidence
+    rule: rics-regulated-valuer-issuance-time
+    decided: 2026-05-16
+  "propertyPack.valuations[].valuationId":
+    kind: evidence
+    rule: rics-regulated-valuer-issuance-id
+    decided: 2026-05-16
+  # checkValuationResult is the lender / AVM cross-check outcome -
+  # lender-sealed when set; still evidence.
+  "propertyPack.valuations[].checkValuationResult":
+    kind: evidence
+    rule: lender-or-avm-check-result
+    decided: 2026-05-16
+  # instructionType, valuationContext, valuationType describe *why* the
+  # valuation was commissioned. These are the lender/conveyancer's
+  # instruction record - declaration by the instructing party.
+  "propertyPack.valuations[].instructionType":
+    kind: declaration
+    rule: lender-or-instructor-records-purpose
+    decided: 2026-05-16
+    note: |
+      The instructing party (typically a lender) declares why this
+      valuation was commissioned. Not part of the surveyor's seal.
+  "propertyPack.valuations[].valuationContext":
+    kind: declaration
+    rule: lender-or-instructor-records-context
+    decided: 2026-05-16
+  "propertyPack.valuations[].valuationType":
+    kind: declaration
+    rule: lender-or-instructor-records-type
+    decided: 2026-05-16
+
+  # Hard call #7: `valuations[].comparables[]` does not exist in the
+  # current schema. Brief said derivation. We reserve the path so a future
+  # schema revision lands the right classification on first build.
+  "propertyPack.valuations[].comparables[]":
+    kind: derivation
+    rule: computed-from-sold-comparables
+    decided: 2026-05-16
+    note: |
+      Hard call #7 from the brief. Path is reserved; not yet in
+      pdtf-transaction.json. When added, comparables are deterministic
+      lookups against a sold-prices index - derivation.
+
+  # --- priceInformation (hard calls #8, #9) ---------------------------------
+  # Hard call #8: askingPrice. Schema names it `price` and adds a
+  # `priceQualifier` enum (offers-over / guide-price / OIRO). Seller-or-
+  # agent sets - declaration.
+  "propertyPack.priceInformation.price":
+    kind: declaration
+    rule: seller-or-agent-sets-asking-price
+    decided: 2026-05-16
+    note: |
+      Hard call #8 from the brief. Brief named `askingPrice`; schema
+      names it `price`. Same fact. Seller/agent declaration.
+  "propertyPack.priceInformation.priceQualifier":
+    kind: declaration
+    rule: agent-sets-price-qualifier
+    decided: 2026-05-16
+  "propertyPack.priceInformation.disposal":
+    kind: declaration
+    rule: agent-records-disposal-method
+    decided: 2026-05-16
+    note: |
+      Auction / private-treaty / sealed-bids disposal method. Agent
+      declares; not a derived fact.
+  "propertyPack.priceInformation.saleAtUndervalue":
+    kind: declaration
+    rule: seller-declares-undervalue-flag
+    decided: 2026-05-16
+    note: |
+      This is the seller's TA6 / LMS undervalue disclosure - load-
+      bearing for AML and clawback. Declaration with seller liability.
+
+  # Hard call #9: estimatedValue. Not present in the current schema. If
+  # added, derivation (derived from valuations[].capitalValue or from a
+  # comparables computation). Reserved.
+  "propertyPack.priceInformation.estimatedValue":
+    kind: derivation
+    rule: derived-from-valuations
+    decided: 2026-05-16
+    note: |
+      Hard call #9 from the brief. Path is reserved; not in
+      pdtf-transaction.json today. When added, classify as derivation
+      (computed from `valuations[].capitalValue` or comparables).
+
+unclassified: []  # build fails if any leaf in scope lacks a kind

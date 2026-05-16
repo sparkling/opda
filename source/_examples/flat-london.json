@@ -1,0 +1,259 @@
+{
+  "$schema": "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  "transactionId": "f7c6e2d8-1a3b-4c5e-9d2f-8b4a6c1e5f73",
+  "status": "Sold subject to contract",
+  "participants": [
+    {
+      "name": {
+        "title": "Ms",
+        "firstName": "Priya",
+        "lastName": "Shah"
+      },
+      "dateOfBirth": "1984-07-12",
+      "phone": "+44 7700 900123",
+      "email": "priya.shah@example.com",
+      "address": {
+        "subBuilding": "Flat 12",
+        "buildingName": "Riverside Court",
+        "street": "Albert Embankment",
+        "line1": "Flat 12, Riverside Court",
+        "line2": "Albert Embankment",
+        "town": "London",
+        "postcode": "SE11 5RX",
+        "homeNation": "England",
+        "countryCode": "GBR"
+      },
+      "role": "Seller"
+    },
+    {
+      "name": {
+        "title": "Mr",
+        "firstName": "Daniel",
+        "lastName": "Okafor"
+      },
+      "dateOfBirth": "1991-03-05",
+      "phone": "+44 7700 900456",
+      "email": "daniel.okafor@example.com",
+      "role": "Buyer"
+    }
+  ],
+  "propertyPack": {
+    "address": {
+      "subBuilding": "Flat 12",
+      "buildingName": "Riverside Court",
+      "street": "Albert Embankment",
+      "line1": "Flat 12, Riverside Court",
+      "line2": "Albert Embankment",
+      "town": "London",
+      "postcode": "SE11 5RX",
+      "homeNation": "England",
+      "countryCode": "GBR"
+    },
+    "uprn": 100023456789,
+    "location": {
+      "latitude": 51.4892,
+      "longitude": -0.1239
+    },
+    "marketingTenure": "Leasehold",
+    "summaryDescription": "Two-bedroom leasehold flat on the seventh floor of Riverside Court, a 12-storey block built in 2007 with partially remediated ACM cladding and an EWS1 B2 rating.",
+    "priceInformation": {
+      "price": 625000,
+      "priceQualifier": "Guide price",
+      "disposal": "Private treaty",
+      "saleAtUndervalue": "No"
+    },
+    "buildInformation": {
+      "building": {
+        "builtForm": "Other",
+        "propertyType": "Flat",
+        "numberOfFloors": 12,
+        "entranceFloor": 7,
+        "hasLift": "Yes",
+        "overCommercialPremises": {
+          "isLocatedOverCommercialPremises": "Yes",
+          "details": "Ground-floor commercial unit (cafe) below the residential block."
+        }
+      },
+      "internalArea": {
+        "area": 72,
+        "units": "square metres"
+      },
+      "yearOfBuild": 2007,
+      "isNewBuild": {
+        "yesNo": "No"
+      },
+      "isHMO": "No",
+      "isStudentAccommodation": "No",
+      "roomDimensions": {
+        "hasFloorplan": "Yes",
+        "attachments": "Attached"
+      }
+    },
+    "typeOfConstruction": {
+      "isStandardForm": {
+        "yesNo": "No",
+        "details": "Reinforced concrete frame with curtain-wall cladding system. Original ACM (aluminium composite material) panels partially remediated in 2022; non-ACM combustible elements remain on lower-level balcony soffits, captured as a B2 rating on the EWS1 form."
+      },
+      "buildingSafety": {
+        "yesNo": "Yes",
+        "details": "Combustible cladding components on lower balcony soffits; EWS1 rating B2 (PAS 9980 assessment, 2024-03-12). Original ACM panels were removed and replaced with A2-rated material on the upper storeys in 2022.",
+        "workAlreadyDone": "Removal and replacement of ACM panels above the fourth floor (completed October 2022, freeholder-funded under the Building Safety Fund).",
+        "workToBeDone": "Replacement of combustible balcony soffits on floors 1-3; scoped at approximately £180k across the block, funded under the Building Safety Levy. Programme due to start Q4 2026.",
+        "potentialCost": "Service-charge contribution capped under the Building Safety Act 2022; leaseholder liability nil for qualifying leases.",
+        "abilityToResideAtProperty": "No impact on occupation; works are external balcony soffits accessed by scaffold.",
+        "attachments": "Attached"
+      },
+      "loft": {
+        "loftAccess": "No"
+      },
+      "sprayFoamInsulation": {
+        "hasSprayFoamInstalled": "No"
+      },
+      "accessibilityAndAdaptations": [
+        "Level access",
+        "Lift access",
+        "Wide doorways"
+      ]
+    },
+    "alterationsAndChanges": {
+      "hasStructuralAlterations": {
+        "yesNo": "No"
+      },
+      "changeOfUse": {
+        "yesNo": "No"
+      }
+    },
+    "electricalWorks": {
+      "testedByQualifiedElectrician": {
+        "yesNo": "Yes",
+        "yearTested": 2023,
+        "attachments": "Attached"
+      },
+      "electricalWorkSince2005": {
+        "yesNo": "No"
+      }
+    },
+    "fixturesAndFittings": {
+      "itemsToRemove": {
+        "yesNo": "Yes",
+        "details": "Bedroom curtains, kitchen extractor hood (replaced with a fitted unit by the buyer), and the freestanding bookshelves in the second bedroom."
+      },
+      "itemsToInclude": {
+        "yesNo": "Yes",
+        "details": "Integrated dishwasher, washer-dryer, fridge-freezer; all blinds; bathroom mirror cabinet; smart thermostat (Nest)."
+      },
+      "basicFittings": {
+        "boilerImmersionHeater": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Communal heat-pump system serving the block; the in-flat heat interface unit (HIU) is included."
+        },
+        "radiatorsWallHeaters": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "nightStorageHeaters": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "freeStandingHeaters": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "gasFiresWithSurround": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "electricFiresWithSurround": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "lightSwitches": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "roofInsulation": {
+          "isIncludedExcludedOrNone": "None",
+          "comments": "Flat within a block; roof insulation is a block-level concern, not flat-level."
+        },
+        "windowFittings": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Powered roller blinds in the living room; manual blinds elsewhere."
+        },
+        "windowShuttersGrilles": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "internalDoorFittings": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "externalDoorFittings": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "doorbellChime": {
+          "isIncludedExcludedOrNone": "Included",
+          "comments": "Video entryphone handset connected to the building intercom."
+        },
+        "electricSockets": {
+          "isIncludedExcludedOrNone": "Included"
+        },
+        "burglarAlarm": {
+          "isIncludedExcludedOrNone": "None"
+        },
+        "otherItems": [
+          {
+            "itemName": "Smart thermostat (Nest, gen 3)",
+            "isIncludedOrExcluded": "Included",
+            "comments": "Linked to the HIU; account transfer to be arranged after completion."
+          },
+          {
+            "itemName": "Bedroom wardrobes (bespoke fitted)",
+            "isIncludedOrExcluded": "Included"
+          },
+          {
+            "itemName": "Hallway artwork (limited edition print)",
+            "isIncludedOrExcluded": "Excluded"
+          }
+        ]
+      }
+    },
+    "surveys": [
+      {
+        "outside": {
+          "chimneyStacks": {
+            "condition": "Not applicable",
+            "description": "No chimney stacks; flat within a 12-storey block.",
+            "defectsFlag": false
+          },
+          "roofCoverings": {
+            "condition": "Not inspected",
+            "description": "Block-level roof; not within scope of an in-flat Level 2 inspection.",
+            "visibility": "Restricted",
+            "restriction": "Communal roof inaccessible to a Level 2 surveyor."
+          },
+          "rainwaterPipesGutters": {
+            "condition": "Condition Rating 2",
+            "description": "Communal downpipe serving the kitchen elevation shows ponding at the hopper head visible from the balcony.",
+            "defects": "Hopper-head blockage and minor staining to the cladding panel beneath; remedial cleaning recommended by the block managing agent.",
+            "advisories": "Refer to the managing agent for a roof-level inspection and gutter clearance; cost likely absorbed in cyclical service-charge works.",
+            "gutterIssues": true,
+            "gutterIssueLocation": "Kitchen elevation, level 7 hopper head."
+          }
+        },
+        "reportDate": "2026-04-08",
+        "epc": "D",
+        "agentName": "Hartwell Chartered Surveyors LLP (RICS regulated)",
+        "propertyType": "Flat",
+        "buildFormat": "Purpose-built block",
+        "conservationArea": false
+      }
+    ],
+    "valuations": [
+      {
+        "valuationId": 1,
+        "valuationTimestamp": "2026-04-15T11:00:00Z",
+        "capitalValue": 625000,
+        "confidenceLevel": 6,
+        "confidenceBand": "medium",
+        "rentalValue": 28800,
+        "rentalConfidenceLevel": 5,
+        "reinstatementCost": 215000,
+        "instructionType": "Mortgage valuation",
+        "valuationContext": "Purchase",
+        "valuationType": "Market value"
+      }
+    ]
+  }
+}

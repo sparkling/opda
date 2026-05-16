@@ -1,0 +1,80 @@
+# Shared identity table for the two canonical PDTF example transactions.
+# Both _examples/flat-london.json and _examples/semi-manchester.json
+# reference these values verbatim. Edit here; do not duplicate downstream.
+
+london_flat:
+  transactionId: "f7c6e2d8-1a3b-4c5e-9d2f-8b4a6c1e5f73"
+  address:
+    subBuilding: "Flat 12"
+    buildingName: "Riverside Court"
+    street: "Albert Embankment"
+    line1: "Flat 12, Riverside Court"
+    line2: "Albert Embankment"
+    town: "London"
+    postcode: "SE11 5RX"
+    homeNation: "England"
+    countryCode: "GBR"
+  uprn: 100023456789
+  location:
+    latitude: 51.4892
+    longitude: -0.1239
+  title:
+    titleNumber: "TGL412345"
+    tenure: "Leasehold"
+  parties:
+    seller:
+      title: "Ms"
+      firstName: "Priya"
+      lastName: "Shah"
+      dateOfBirth: "1984-07-12"
+      email: "priya.shah@example.com"
+      phone: "+44 7700 900123"
+    buyer:
+      title: "Mr"
+      firstName: "Daniel"
+      lastName: "Okafor"
+      dateOfBirth: "1991-03-05"
+      email: "daniel.okafor@example.com"
+      phone: "+44 7700 900456"
+
+manchester_semi:
+  transactionId: "a2b8e4d1-9c7f-4e6a-b3d5-2f9a8c4e1b6d"
+  address:
+    buildingNumber: "47"
+    street: "Acacia Avenue"
+    line1: "47 Acacia Avenue"
+    line2: "Didsbury"
+    town: "Manchester"
+    postcode: "M20 4XY"
+    homeNation: "England"
+    countryCode: "GBR"
+  uprn: 100012345678
+  location:
+    latitude: 53.4178
+    longitude: -2.2342
+  title:
+    titleNumber: "GM891234"
+    tenure: "Freehold"
+  parties:
+    # Executor sale: the legal seller is the executor of Mr Wilson's estate,
+    # not Mr Wilson himself (deceased). sellersCapacity captures this on page 35.
+    seller:
+      title: "Mrs"
+      firstName: "Margaret"
+      lastName: "Wilson"
+      dateOfBirth: "1962-11-23"
+      email: "m.wilson@example.com"
+      phone: "+44 7700 900789"
+      capacity: "Personal Representative for a Deceased Owner"
+      deceasedProprietor:
+        title: "Mr"
+        firstName: "Arthur"
+        lastName: "Wilson"
+        dateOfDeath: "2025-09-18"
+    buyer:
+      title: "Dr"
+      firstName: "Ade"
+      lastName: "Adeyemi"
+      dateOfBirth: "1986-08-30"
+      email: "ade.adeyemi@example.com"
+      phone: "+44 7700 900321"

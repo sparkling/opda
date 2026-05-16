@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Physical architecture · OPDA Knowledge Base</title>
-  <meta name="description" content="The physical architecture of the PDTF schema codebase — the three repositories, the base transaction schema, the overlay and extension files, the merge and validation engine, the exchange API, and the verifiable-credential trust layer. With ER and architecture diagrams throughout.">
+  <title>Schema · Section overview · OPDA Knowledge Base</title>
+  <meta name="description" content="The structured story of the PDTF data model — every leaf placed on its canonical aggregate page, with declaration / evidence / derivation badges and overlay chips throughout. Entry point and orientation for the Schema section.">
   <link rel="stylesheet" href="../ui/design-system.css">
 </head>
 
@@ -16,31 +16,136 @@
         <span>Updated 2026-05-15</span>
       </div>
 
-      <h1>Physical architecture</h1>
+      <h1>Schema</h1>
       <p class="lead">
-        The PDTF data standard exists, physically, as three Git repositories of JSON
-        Schema files, an OpenAPI specification, a small JavaScript merge engine, and a
-        set of JSON-LD and DID artefacts. This page maps those artefacts and how they
-        fit together — the concrete codebase the
-        <a href="16-overlays.html">overlays</a>,
-        <a href="13-data-dictionary.html">data dictionary</a> and
-        <a href="31-ontology.html">ontology</a> are all derived from.
+        The structured story of the PDTF data model. Every leaf in the schema lives on exactly one
+        <strong>aggregate page</strong> here — grouped by lifecycle and root authority, not by form or topic.
+        Each leaf carries a <strong>declaration / evidence / derivation</strong> badge and the <strong>overlay
+        chips</strong> that show every form-categorisation it participates in. Where the
+        <a href="13-data-dictionary.html">data dictionary</a> is a flat browser and the
+        <a href="14-business-glossary.html">business glossary</a> is a concept index, this section is the
+        narrative — what a transaction <em>is</em>, what a property pack <em>contains</em>, and where every
+        field belongs.
       </p>
 
-      <div class="callout callout--key">
-        <div class="callout__label">What "physical" means here</div>
-        <p style="margin:0;">
-          <a href="../modelling.html">Modelling</a> covers the <em>semantic</em> layer —
-          what the data <em>means</em>. This page covers the <em>physical</em> layer —
-          the files, packages, versions and engines that the data standard is actually
-          shipped as. Three repositories, all under
-          <a class="resource-link" href="../resource.html?path=source/03-standards/" title="source/03-standards/"><code>source/03-standards/</code></a>:
-          <code>@pdtf/schemas</code>, <code>@pdtf/api</code> and
-          <code>@pdtf/trust-framework</code>.
-        </p>
+      <h2 id="entityMap">Top-level entity map</h2>
+      <p>
+        A PDTF transaction is one root with five top-level limbs. Each limb gets its own aggregate page
+        below; their interrelationships are shown here.
+      </p>
+      <div class="diagram">
+        <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart LR
+  accTitle: PDTF transaction — top-level entity map
+  accDescr: A transaction has participants, sits in a chain, is tracked by milestones, carries contracts, and bundles a property pack of evidence and declarations about a property.
+
+  classDef root fill:#B3E5FC,stroke:#0277BD,stroke-width:3px,color:#01579B
+  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  classDef ext  fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+  TX["<b>Transaction</b><br/>root"]:::root
+  P["<b>Participants</b><br/>parties + roles"]:::agg
+  C["<b>Chain</b><br/>onward purchase"]:::agg
+  M["<b>Milestones</b><br/>state machine"]:::agg
+  K["<b>Contracts</b><br/>signing & terms"]:::agg
+  PP["<b>Property pack</b><br/>evidence + declarations"]:::agg
+  PROP["<b>Property</b><br/>(implicit — see page 37)"]:::ext
+
+  TX --> P
+  TX --> C
+  TX --> M
+  TX --> K
+  TX --> PP
+  PP -.->|"about"| PROP
+        </div>
+        <div class="diagram-caption">
+          Five top-level aggregates plus a sixth — <strong>Property</strong> — that the schema does not name
+          explicitly. See <a href="37-property.html">Property</a> for the documented gap.
+        </div>
       </div>
 
-      <h2 id="repos">The three repositories</h2>
+      <h2 id="threeKindsOfFact">Three kinds of fact</h2>
+      <p>
+        Every leaf in PDTF carries one of three provenance flavours. This distinction is the most important
+        thing a reader can know before walking the model — it determines who can author the field, who
+        verifies it, and how it can be invalidated. Each leaf table on every page tags every field with one of:
+      </p>
+      <table>
+        <thead><tr><th style="width:8rem">Badge</th><th style="width:12rem">Kind</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill pill--success">Decl</span></td><td><strong>Declaration</strong></td><td>The seller (or another participant) asserts this. Truth is "the seller said." Lower trust by itself; can be challenged. Most TA6 / BASPI answers are declarations.</td></tr>
+          <tr><td><span class="pill pill--info">Evid</span></td><td><strong>Evidence</strong></td><td>An authoritative third party issued this — HMLR for title, the EPB register for EPC, a local authority for CON29. Truth is "signed by the issuer." Carried as a Verifiable Credential or equivalent.</td></tr>
+          <tr><td><span class="pill pill--warn">Deriv</span></td><td><strong>Derivation</strong></td><td>Computed from other fields — e.g. tenure years remaining from a lease start date, completion apportionment from council-tax band and dates. Truth is "follows from the inputs."</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Mixing declarations with evidence inside the same JSON object is normal in PDTF (e.g. the seller's
+        declared heating fuel sits alongside the EPC's evidenced fuel rating). The badge keeps each field
+        honest about which kind it is.
+      </p>
+
+      <h2 id="personaTiles">Where to start</h2>
+      <p>Pick the persona that fits your need. Each tile suggests a reading path through this section.</p>
+      <div class="card-grid">
+        <a class="card" href="35-transaction-participants.html">
+          <div class="pill pill--info">Developer</div>
+          <h3>Build an integration</h3>
+          <p>Start with the transaction model and participants. Walk through chain &amp; milestones, then the property-pack aggregates you care about.</p>
+        </a>
+        <a class="card" href="38-legal-estate-title.html">
+          <div class="pill pill--info">Conveyancer</div>
+          <h3>Check legal coverage</h3>
+          <p>Legal estate &amp; title, then encumbrances &amp; completion, then evidence &amp; documents. Use overlay chips to see TA6 / TA7 / LPE1 coverage at a glance.</p>
+        </a>
+        <a class="card" href="39-built-form-condition-valuation.html">
+          <div class="pill pill--info">Surveyor</div>
+          <h3>Map findings to the model</h3>
+          <p>Built form, condition &amp; valuation is the entry point. Cross-link out to utilities &amp; energy for EPC and to local context for environmental searches.</p>
+        </a>
+        <a class="card" href="#entityMap">
+          <div class="pill pill--info">New to PDTF</div>
+          <h3>Get oriented</h3>
+          <p>Top-level entity map above, then transaction &amp; participants for the spine, then the property pack overview pages. About 30 minutes end-to-end.</p>
+        </a>
+      </div>
+
+      <h2 id="howThisRelates">How this section relates to the rest of the site</h2>
+      <ul>
+        <li><a href="12-bounded-contexts.html">Bounded contexts (DDD)</a> — the same schema cut by industry function (Estate Agency, Conveyancing, …). The aggregate pages here are the data-shape view; bounded contexts are the team-shape view.</li>
+        <li><a href="13-data-dictionary.html">Data dictionary</a> — the flat browser of all 8,458 paths. Use it for "where does X live?" lookups; the aggregate pages here tell you <em>what</em> X means in context.</li>
+        <li><a href="14-business-glossary.html">Business glossary</a> — the concept index. Concept-level definitions and SKOS scheme membership.</li>
+        <li><a href="16-overlays.html">Overlays</a> — form-shaped categorisations (BASPI5, TA6, NTS2, CON29R, …) referenced as chips on every leaf on every aggregate page here.</li>
+        <li><a href="30-concept-taxonomy.html">Concept scheme</a> — SKOS schemes (Core + 6 bounded contexts + code lists).</li>
+        <li><a href="31-ontology.html">Ontology (OWL)</a> — formal class definitions; aggregate pages here cite the OWL class IRI in their front-matter.</li>
+        <li><a href="32-shacl-shapes.html">SHACL shapes</a> — validation rules that enforce the aggregate boundaries and badge correctness.</li>
+        <li><a href="33-jsonld-mappings.html">JSON-LD mappings</a> — the binding from JSON paths to OWL classes and SKOS concepts.</li>
+      </ul>
+
+      <h2 id="bindings">Bindings — how the layers fit together</h2>
+      <p>
+        Each leaf in the schema has up to four bindings: its <strong>JSON Schema</strong> path (the wire shape),
+        its <strong>OWL class</strong> (what kind of thing it is), its <strong>SKOS concept</strong> (what
+        vocabulary it draws from), and its <strong>SHACL shape</strong> (what counts as a valid value).
+      </p>
+      <table>
+        <thead><tr><th>Layer</th><th>Where it lives</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>JSON Schema</strong></td><td><code>source/03-standards/schemas/src/schemas/v3/</code></td><td><code>propertyPack.councilTax.councilTaxBand</code></td></tr>
+          <tr><td><strong>OWL class</strong></td><td><a href="31-ontology.html">31 — Ontology</a></td><td><code>pdtf:CouncilTaxBand</code></td></tr>
+          <tr><td><strong>SKOS concept</strong></td><td><a href="30-concept-taxonomy.html">30 — Concept scheme</a></td><td><code>pdtf-bands:Band-D</code> (enum scheme)</td></tr>
+          <tr><td><strong>SHACL shape</strong></td><td><a href="32-shacl-shapes.html">32 — SHACL shapes</a></td><td>cardinality 0..1, value drawn from <code>pdtf-bands:Scheme</code></td></tr>
+        </tbody>
+      </table>
+      <p>
+        On every aggregate page below, the leaf tables show the JSON path; the OWL / SKOS / SHACL bindings
+        appear in the field's detail row (when defined).
+      </p>
+
+      <h2 id="repos">Where the schema lives — the two repositories</h2>
 
       <p>
         PDTF is not a single artefact. It is three repositories with distinct
@@ -64,12 +169,6 @@
             <td>The core. Base transaction schema, 18 form overlays, 16 extension overlays, the verified-claims wrapper, and the merge &amp; validation engine. JSON Schema draft-07.</td>
           </tr>
           <tr>
-            <td><a class="resource-link" href="../resource.html?path=source/03-standards/api/" title="source/03-standards/api/"><code>api</code></a></td>
-            <td><code>@pdtf/api</code></td>
-            <td>→ 2.0.0</td>
-            <td>The wire protocol. OpenAPI 3.0.3 specification for exchanging transactions, claims and subscriptions between participant services. Four spec files, 1.1.0 through 2.0.0.</td>
-          </tr>
-          <tr>
             <td><a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/" title="source/03-standards/trust-framework/"><code>trust-framework</code></a></td>
             <td><code>@pdtf/trust-framework</code></td>
             <td>0.3.0</td>
@@ -89,12 +188,10 @@ flowchart TB
   accDescr: The three PDTF repositories, the npm packages they publish, the canonical host they resolve against, and the participant software that consumes them.
 
   classDef base fill:#eef4f8,stroke:#1a4d80,stroke-width:2px,color:#0b2545
-  classDef api fill:#e0e7ff,stroke:#4338ca,stroke-width:2px,color:#1e1b4b
   classDef trust fill:#f3e8ff,stroke:#7e22ce,stroke-width:2px,color:#3b0764
   classDef out fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#14532d
 
   SCH["@pdtf/schemas v3.5.0<br/>base schema + 34 overlays<br/>+ merge engine"]:::base
-  API["@pdtf/api<br/>OpenAPI 3.0.3 — v1.1.0 to v2.0.0"]:::api
   TFW["@pdtf/trust-framework v0.3.0<br/>W3C VC schema + JSON-LD context<br/>+ DID registry"]:::trust
 
   HOST["trust.propdata.org.uk<br/><i>canonical schema and context host</i>"]:::out
@@ -102,14 +199,12 @@ flowchart TB
 
   SCH -->|"schema $id URLs resolve at"| HOST
   TFW -->|"contexts, registry, did:web"| HOST
-  API -->|"references schemas in"| SCH
-  API -->|"VC envelope from"| TFW
   HOST --> PART
   SCH -->|"npm install"| PART
         </div>
         <div class="diagram-caption">
-          Repository topology. <code>@pdtf/schemas</code> is the foundation; the API
-          references it for payload shapes, and the trust framework wraps it for PDTF v2.
+          Repository topology. <code>@pdtf/schemas</code> is the foundation; the trust
+          framework wraps it for PDTF v2.
         </div>
       </div>
 
@@ -473,64 +568,6 @@ erDiagram
         </div>
       </div>
 
-      <h2 id="api">The exchange API</h2>
-
-      <p>
-        The
-        <a class="resource-link" href="../resource.html?path=source/03-standards/api/" title="source/03-standards/api/"><code>@pdtf/api</code></a>
-        repository is the wire protocol — an OpenAPI 3.0.3 specification, shipped as four
-        files from <code>1.1.0</code> through <code>2.0.0</code>. It defines how
-        participant services exchange data, organised into four tags: managing
-        <strong>Transactions</strong>, reading and writing <strong>Claims</strong>,
-        webhook <strong>Subscriptions</strong> for real-time updates, and trust-framework
-        <strong>Discovery</strong>.
-      </p>
-
-      <div class="diagram">
-        <div class="mermaid">
----
-config:
-  layout: elk
----
-flowchart LR
-  accTitle: The PDTF exchange API surface
-  accDescr: The OpenAPI 3.0.3 endpoints of the PDTF exchange API, grouped by tag — Transactions, Claims, Subscriptions and Discovery.
-
-  classDef api fill:#e0e7ff,stroke:#4338ca,stroke-width:2px,color:#1e1b4b
-  classDef out fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#14532d
-
-  SPEC["@pdtf/api<br/>OpenAPI 3.0.3 — v1.1.0 to v2.0.0"]:::api
-
-  subgraph TXN["Transactions"]
-    T1["POST /transactions"]:::out
-    T2["GET /transactions/search"]:::out
-    T3["GET /transactions/{id}/state"]:::out
-  end
-  subgraph CLM["Claims"]
-    C1["GET /transactions/{id}/claims"]:::out
-    C2["POST /transactions/{id}/claims"]:::out
-  end
-  subgraph SUB["Subscriptions"]
-    S1["POST /transactions/{id}/subscribe"]:::out
-    S2["DELETE /transactions/{id}/subscribe"]:::out
-  end
-  subgraph DISC["Discovery"]
-    D1["GET /"]:::out
-    D2["GET /members/{did}"]:::out
-    D3["GET /schemas/{type}"]:::out
-  end
-
-  SPEC --> TXN
-  SPEC --> CLM
-  SPEC --> SUB
-  SPEC --> DISC
-        </div>
-        <div class="diagram-caption">
-          The API surface at v2.0.0, grouped by OpenAPI tag. Discovery endpoints are
-          served by the official PDTF discovery service; the rest by each participant.
-        </div>
-      </div>
-
       <h2 id="trustFramework">The trust layer (PDTF v2)</h2>
 
       <p>
@@ -649,7 +686,6 @@ erDiagram
         <li>Overlays and extensions: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/" title="source/03-standards/schemas/src/schemas/v3/overlays/"><code>src/schemas/v3/overlays/</code></a></li>
         <li>Merge engine: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a></li>
         <li>Verified-claims wrapper: <a class="resource-link" href="../resource.html?path=source/03-standards/schemas/src/schemas/verifiedClaims/pdtf-verified-claims.json" title="source/03-standards/schemas/src/schemas/verifiedClaims/pdtf-verified-claims.json"><code>src/schemas/verifiedClaims/pdtf-verified-claims.json</code></a></li>
-        <li>Exchange API: <a class="resource-link" href="../resource.html?path=source/03-standards/api/" title="source/03-standards/api/"><code>source/03-standards/api/</code></a></li>
         <li>Trust framework: <a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/" title="source/03-standards/trust-framework/"><code>source/03-standards/trust-framework/</code></a></li>
         <li>Verifiable Credential schema: <a class="resource-link" href="../resource.html?path=source/03-standards/trust-framework/public/schemas/PDTF-VerifiableCredential.json" title="source/03-standards/trust-framework/public/schemas/PDTF-VerifiableCredential.json"><code>public/schemas/PDTF-VerifiableCredential.json</code></a></li>
         <li>Related: <a href="16-overlays.html">PDTF overlays</a> · <a href="13-data-dictionary.html">Data dictionary</a> · <a href="62-schema-composition.html">Schema composition</a> · <a href="64-verified-claims.html">Verified claims (implementation)</a></li>

@@ -45,7 +45,7 @@
         { heading: 'Vocabulary & dictionary', items: [
           { id: 'data-dictionary',      file: '13-data-dictionary.html',      title: 'Data dictionary' },
           { id: 'business-glossary',    file: '14-business-glossary.html',    title: 'Business glossary' },
-          { id: 'concept-taxonomy',     file: '30-concept-taxonomy.html',     title: 'Concept taxonomy (SKOS)' },
+          { id: 'concept-taxonomy',     file: '30-concept-taxonomy.html',     title: 'Concept scheme' },
         ]},
         { heading: 'Formal semantic layer', items: [
           { id: 'ontology',             file: '31-ontology.html',             title: 'Ontology (OWL)' },
@@ -56,10 +56,28 @@
     },
     schema: {
       title: 'Schema',
-      summary: 'The physical architecture of the PDTF schema codebase — the three repositories, the base transaction schema, the overlay and extension files, the merge and validation engine, the exchange API, and the verifiable-credential trust layer.',
+      summary: 'The structured story of the PDTF data model — every leaf placed on its canonical home page, organised by aggregate (lifecycle and authority), with declaration / evidence / derivation badges and overlay chips on every field.',
       groups: [
-        { heading: 'Architecture', items: [
-          { id: 'physical-architecture', file: '34-physical-architecture.html', title: 'Physical architecture' },
+        { heading: 'Overview', items: [
+          { id: 'schema-overview',         file: '34-physical-architecture.html',         title: 'Section overview' },
+        ]},
+        { heading: 'Process', items: [
+          { id: 'transaction-participants', file: '35-transaction-participants.html',     title: 'Transaction & participants' },
+          { id: 'chain-milestones',         file: '36-chain-milestones-contracts.html',   title: 'Chain, milestones & contracts' },
+        ]},
+        { heading: 'The Property', items: [
+          { id: 'property',                 file: '37-property.html',                     title: 'Property' },
+          { id: 'legal-estate',             file: '38-legal-estate-title.html',           title: 'Legal estate & title' },
+        ]},
+        { heading: 'Property pack content', items: [
+          { id: 'built-form',               file: '39-built-form-condition-valuation.html', title: 'Built form, condition & valuation' },
+          { id: 'utilities-energy',         file: '45-utilities-energy.html',             title: 'Utilities & energy' },
+          { id: 'local-context',            file: '46-local-context-searches.html',       title: 'Local context & searches' },
+          { id: 'encumbrances',             file: '47-encumbrances-completion.html',      title: 'Encumbrances & completion' },
+        ]},
+        { heading: 'Cross-cutting', items: [
+          { id: 'evidence-documents',       file: '48-evidence-documents-declarations.html', title: 'Evidence, documents & declarations' },
+          { id: 'overlays-tasks',           file: '49-overlays-tasks-crosscuts.html',     title: 'Overlays, tasks & cross-cuts' },
         ]},
       ],
     },
@@ -255,6 +273,8 @@
     if (!activeSection || !SECTIONS[activeSection]) return ''; // No sidebar on home
 
     const section = SECTIONS[activeSection];
+    if (section.sidebar === false) return ''; // Section explicitly opts out (e.g. single-page sections)
+
     const groupsHtml = section.groups.map(function (group) {
       const itemsHtml = group.items.map(function (it) {
         const cls = it.id === activeId ? ' class="active" aria-current="page"' : '';

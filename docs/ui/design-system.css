@@ -177,6 +177,7 @@ a:hover {
 }
 .app-body.no-sidebar { grid-template-columns: 1fr; }
 .app-body.with-toc { grid-template-columns: var(--sidebar-width) 1fr 16rem; }
+.app-body.no-sidebar.with-toc { grid-template-columns: 1fr 16rem; }
 
 .app-sidebar {
   position: sticky;
@@ -896,7 +897,7 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   top: 0;
   left: 0;
   transform-origin: 0 0;
-  background: var(--cream-100);
+  background: var(--color-surface);
   border-radius: var(--radius-md);
 }
 .diagram-lightbox .viewer-canvas svg {
@@ -1489,6 +1490,79 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 .mermaid .cluster-label { font-family: var(--font-sans) !important; }
 .mermaid .nodeLabel { font-size: 14px !important; }
 .mermaid .edgeLabel { font-size: 13px !important; }
+
+/* Dark-mode ER diagram overrides — Mermaid 11 renders ER entities as <path>
+   elements with inline fill ATTRIBUTES (not CSS) and computes alternating-row
+   colours by lightening/darkening the primaryColor heuristically, which breaks
+   in dark themes (it produces an 87%-lightness pastel for the "lighter" row
+   even when primary is dark). Force every emitted variant onto the warm-dark
+   palette. */
+/* Mermaid default theme (no themeVariables applied yet) */
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill="#ECECFF"] {
+  fill: #211F1C !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill^="hsl(240, 100%, 100%"],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill="#FFFFFF"],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill="white"] {
+  fill: #181715 !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill^="hsl(240, 100%, 97"] {
+  fill: #2B2925 !important;
+}
+/* Our warm-dark theme — Mermaid derives the alternating rows by flipping
+   lightness around the primaryColor. The 87%-L variant must be remapped down. */
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill="#211F1C"] {
+  fill: #211F1C !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="86."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="87."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="88."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="89."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="90."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="91."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="92."] {
+  /* Mermaid emits this as the "alternating bright" row — must be visible against #181715 canvas */
+  fill: #34302B !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="16."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="17."],
+:root[data-theme="dark"] .mermaid svg.erDiagram path[fill*="hsl(36"][fill*="15."] {
+  fill: #2B2925 !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram circle[fill="white"],
+:root[data-theme="dark"] .mermaid svg.erDiagram circle[fill="#FFFFFF"] {
+  fill: #181715 !important;
+  stroke: #A8A097 !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram .relationshipLine {
+  stroke: #A8A097 !important;
+}
+/* Mermaid 11 places <rect class="basic label-container"> (and unclassed sibling
+   rects) on top of the entity-body paths to back the foreignObject text labels.
+   Their default fill is #ECECFF from Mermaid's scoped stylesheet. Make them
+   transparent so the alternating dark path backgrounds show through. */
+:root[data-theme="dark"] .mermaid svg.erDiagram rect.label-container,
+:root[data-theme="dark"] .mermaid svg.erDiagram rect.basic,
+:root[data-theme="dark"] .mermaid svg.erDiagram g.label rect,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject + rect,
+:root[data-theme="dark"] .mermaid svg.erDiagram rect:not([fill]):not([class*="entityBox"]) {
+  fill: transparent !important;
+  stroke: none !important;
+}
+/* Label text inside foreignObject HTML — Mermaid uses a purple background and
+   the page-default text colour, both wrong on a dark canvas. */
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject .labelBkg,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject .edgeLabel {
+  background-color: transparent !important;
+  color: #F7F3E9 !important;
+}
+:root[data-theme="dark"] .mermaid svg.erDiagram text,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject div,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject span,
+:root[data-theme="dark"] .mermaid svg.erDiagram foreignObject p {
+  fill: #F7F3E9 !important;
+  color: #F7F3E9 !important;
+}
 
 /* ─────────────────────────────────────────────────────────────
    PRINT

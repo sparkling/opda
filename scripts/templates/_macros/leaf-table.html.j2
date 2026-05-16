@@ -1,0 +1,87 @@
+{# leaf-table.html.j2 ──────────────────────────────────────────────────
+   Emits one sub-table for a section on an aggregate page.
+   Columns (desktop, per spec §6):
+     Path · Required · Type · Kind · Title · Overlays · Affordance
+
+   Inputs:
+     section          — { id, title, prefixes } from theme-map.yaml.
+     leaves           — list of leaf dicts (already classified, theme-assigned,
+                        example-bound) for THIS section, in spec-default sort
+                        order: (required desc, path asc).
+                        Each leaf carries:
+                          path, name, required (bool), type, kind, title,
+                          overlays (list of {key, label}), is_envelope (bool),
+                          has_example (bool).
+     show_envelopes   — bool. False on pages 35–42 (where envelope rows are
+                        suppressed entirely); True only on page 48 (spec slot)
+                        per the visual contract.
+
+   Row attributes:
+     data-leaf-path   — the schema path, used by find-a-field for deep-link flash.
+     data-overlays    — comma-separated overlay keys, used by the page-level
+                        "Filter by overlay" button.
+
+   Envelope rows render with opacity:0.6, italic path, lock glyph, no Kind pill.
+   Only the static markup is emitted here; mountLeafTable (schema-leaf-table.js)
+   wires up the expander row, sorting, and filtering on top of this skeleton.
+─────────────────────────────────────────────────────────────────────── #}
+{% macro leaf_table(section, leaves, show_envelopes=false) -%}
+<div class="db-table-wrap full-bleed"
+     data-section-id="{{ section.id }}"
+     data-leaf-count="{{ leaves|length }}">
+  <table class="db-table db-table--fixed" id="table-{{ section.id }}">
+    <thead>
+      <tr>
+        <th class="sortable" style="width: 26%;">Path</th>
+        <th class="align-center" style="width: 6rem;">Required</th>
+        <th style="width: 7rem;">Type</th>
+        <th style="width: 6rem;">Kind</th>
+        <th style="width: 22%;">Title</th>
+        <th style="width: 18%;">Overlays</th>
+        <th style="width: 7rem;">Affordance</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for leaf in leaves %}
+      {%- if leaf.is_envelope and not show_envelopes %}{# Suppressed on pages 35–42 per spec §6 / invariant 12. #}{% continue %}{% endif %}
+      <tr data-leaf-path="{{ leaf.path }}"
+          data-overlays="{{ leaf.overlays|map(attribute='key')|join(',') }}"
+          {%- if leaf.is_envelope %} data-envelope="1" style="opacity: 0.6;"{% endif %}>
+        <td>
+          {%- if leaf.is_envelope -%}
+          <span aria-label="VC envelope leaf" title="VC envelope leaf — see page 48">🔒</span>
+          <code><em>{{ leaf.path }}</em></code>
+          {%- else -%}
+          <code>{{ leaf.path }}</code>{% if leaf.required %}<span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>{% endif %}
+          {%- endif %}
+        </td>
+        <td class="align-center">{% if leaf.required %}yes{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td><code>{{ leaf.type }}</code></td>
+        <td>
+          {%- if leaf.is_envelope -%}
+          <span class="muted tiny">envelope</span>
+          {%- elif leaf.kind == 'declaration' -%}
+          <span class="pill pill--success">Decl</span>
+          {%- elif leaf.kind == 'evidence' -%}
+          <span class="pill pill--info">Evid</span>
+          {%- elif leaf.kind == 'derivation' -%}
+          <span class="pill pill--warn">Deriv</span>
+          {%- else -%}
+          <span class="pill">?</span>
+          {%- endif %}
+        </td>
+        <td>{{ leaf.title|default('', true) }}</td>
+        <td>
+          {%- set ovs = leaf.overlays %}
+          {%- for o in ovs[:3] %}<span class="pill">{{ o.label }}</span>{% if not loop.last %} {% endif %}{% endfor -%}
+          {%- if ovs|length > 3 %} <span class="pill" title="{{ ovs[3:]|map(attribute='label')|join(', ') }}">+{{ ovs|length - 3 }}</span>{% endif %}
+        </td>
+        <td>
+          {%- if leaf.has_example %}<span class="pill pill--brand">example</span>{% else %}<span class="muted">—</span>{% endif %}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endmacro %}
