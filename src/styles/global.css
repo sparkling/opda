@@ -1,20 +1,15 @@
-/* Tailwind v4 utilities layered ALONGSIDE the existing design system.
-   Preflight (the Normalize-based reset) is intentionally NOT imported —
-   the hand-authored design-system.css owns base typography, .prose, the
-   .db-table family, and theme tokens. Tailwind is here for utility
-   classes only (flex, gap-*, p-*, bg-*, etc.) on new or refactored
-   components.
+/* Full Tailwind v4 import (theme + Preflight + utilities).
+   Preflight is enabled — it normalises browser defaults (form-element
+   borders, list bullets, heading sizes, body margin, button reset,
+   etc.) so utility classes have full control. The hand-authored
+   design-system.css still owns .prose / .db-table / theme colours and
+   is linked AFTER this file in HTML, so its rules win where they
+   overlap. */
+@import "tailwindcss";
 
-   Output: public/ui/tailwind.built.css (built via `pnpm run css` / kept
-   in sync by `pnpm run css:watch`). Pages include it via
-   <link rel="stylesheet" href="/ui/tailwind.built.css"> AFTER
-   design-system.css so utilities can override component CSS when
-   intentionally applied. */
-
-@layer theme, base, components, utilities;
-
-@import "tailwindcss/theme.css"     layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+/* Site uses [data-theme="dark"] (not prefers-color-scheme); rewire
+   Tailwind's `dark:` variant to match. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* Tell Tailwind where to scan for utility class usage. */
 @source "../pages/**/*.html";

@@ -7,6 +7,7 @@
   <meta name="description" content="Fixtures · TV, telephone, fuel, other items">
   <link rel="stylesheet" href="/ui/design-system.css">
   <link rel="stylesheet" href="/ui/tailwind.built.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
 </head>
 <body>
   <div id="app">
@@ -110,37 +111,45 @@ erDiagram
       <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
         <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
 
-        <div class="flex flex-1 mx-auto max-w-3xl isolate" role="toolbar" aria-label="Sub-table filtering">
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
           <input type="search"
                  id="objects-search"
-                 class="db-input flex-1 min-w-0 rounded-r-none! -mr-px focus:relative focus:z-10"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 inset-ring-1 inset-ring-gray-300 focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-stone-800 dark:text-stone-100 dark:placeholder:text-stone-400 dark:inset-ring-stone-600"
                  placeholder="Search title, field or path…"
                  aria-label="Search object tables">
 
           <button type="button"
-                  class="db-filter-btn rounded-none! focus:relative focus:z-10 aria-expanded:relative aria-expanded:z-10"
                   id="filter-overlay-btn"
-                  aria-expanded="false"
-                  aria-controls="filter-overlay-panel"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-white px-2 py-2 text-gray-400 inset-ring-1 inset-ring-gray-300 hover:bg-gray-50 focus:z-10 cursor-pointer dark:bg-stone-800 dark:text-stone-400 dark:inset-ring-stone-600 dark:hover:bg-stone-700 aria-expanded:z-10 aria-expanded:bg-gray-50 dark:aria-expanded:bg-stone-700"
                   title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
             </svg>
-            <span class="db-filter-badge" id="filter-overlay-count" hidden>0</span>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
           </button>
 
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-white outline-1 outline-black/5 shadow-lg p-5 dark:bg-stone-800 dark:outline-stone-700 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
           <button type="button"
-                  class="db-filter-btn rounded-l-none! -ml-px focus:relative focus:z-10 aria-expanded:relative aria-expanded:z-10"
                   id="objects-config-btn"
-                  aria-expanded="false"
-                  aria-controls="objects-config-panel"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-white px-2 py-2 text-gray-400 inset-ring-1 inset-ring-gray-300 hover:bg-gray-50 focus:z-10 cursor-pointer dark:bg-stone-800 dark:text-stone-400 dark:inset-ring-stone-600 dark:hover:bg-stone-700 aria-expanded:z-10 aria-expanded:bg-gray-50 dark:aria-expanded:bg-stone-700"
                   title="Columns">
+            <span class="sr-only">Columns</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="3"/>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
           </button>
-        </div>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-white outline-1 outline-black/5 shadow-lg p-5 dark:bg-stone-800 dark:outline-stone-700 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
       </div>      <h3 id="fix_services">TV, telephone, fuel, other items</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
   <header class="object-block__head">
     <div class="object-block__title-row">

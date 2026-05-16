@@ -1428,47 +1428,24 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   font: 700 0.625rem / 1 var(--font-sans);
 }
 .db-filter-badge[hidden] { display: none !important; }
-.db-filter-panel {
-  position: fixed;
-  z-index: 9999;
-  width: 52rem;
-  max-width: calc(100vw - 2rem);
-  padding: var(--space-4);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+/* Object-tables popover panels are now <el-popover> elements styled
+   with Tailwind utilities on the element directly (mt-2, rounded-md,
+   bg-..., inset-ring-..., shadow-lg, p-5, transition data-closed:...).
+   These selectors target INSIDE the popover for the per-facet column
+   layout. The popover host itself uses display: flex when opened by
+   the HTML Popover API; flex-direction: column stacks the cols + clear
+   button. */
+#filter-overlay-panel,
+#objects-config-panel {
   flex-direction: column;
   gap: var(--space-4);
-  display: none;
+  min-width: 18rem;
 }
-.db-filter-panel.is-open { display: flex; }
-:root[data-theme="dark"] .db-filter-panel {
-  background: var(--surface-dark);
-  border-color: #34302b;
+#filter-overlay-panel:popover-open,
+#objects-config-panel:popover-open {
+  display: flex;
 }
 .db-filter-cols {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-5);
-}
-/* Inside the object-tables filter panel, the left column carries the
-   overlay list (long names) and needs to be wider than the right one
-   (short single-word facets). Also keep each overlay label on a single
-   line so it stays scannable. */
-/* Filter panel for object tables.
-   Two-column grid: the narrow left column holds the short single-word
-   facets (Type, Kind, Required, Affordance); the wider right column
-   holds the Overlays list. Each column is its own flex stack, so the
-   short facets queue vertically without crashing into the overlay
-   names. Width is sized to comfortable readable space, not the widest
-   overlay label. */
-#filter-overlay-panel.db-filter-panel {
-  width: auto;
-  max-width: calc(100vw - 2rem);
-  padding: var(--space-5);
-}
-#filter-overlay-panel .db-filter-cols {
   display: grid;
   grid-template-columns: max-content max-content;
   column-gap: var(--space-7);

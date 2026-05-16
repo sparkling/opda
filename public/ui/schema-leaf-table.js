@@ -149,28 +149,9 @@
     });
   }
 
-  function positionPanel(btn, panel) {
-    var rect = btn.getBoundingClientRect();
-    panel.style.top  = (rect.bottom + 6) + 'px';
-    // Measure the panel's natural width (it sizes to its content via
-    // CSS `width: max-content`). If anchoring its left edge to the button
-    // would push the right edge past the viewport, anchor the right edge
-    // to the button's right edge instead so the whole panel fits.
-    panel.style.left = '0px';
-    panel.style.width = '';
-    var natural = panel.getBoundingClientRect().width;
-    var viewportW = window.innerWidth;
-    var margin = 16;
-    var maxWidth = viewportW - margin * 2;
-    var width = Math.min(natural, maxWidth);
-    panel.style.width = width + 'px';
-    var leftIfAnchoredLeft  = rect.left;
-    var leftIfAnchoredRight = rect.right - width;
-    var left = leftIfAnchoredLeft + width <= viewportW - margin
-      ? leftIfAnchoredLeft
-      : Math.max(margin, leftIfAnchoredRight);
-    panel.style.left = left + 'px';
-  }
+  // Open/close/positioning is handled by <el-popover> + the native
+  // HTML Popover API. We only POPULATE the existing <el-popover> element
+  // emitted by aggregate-page.html.j2.
 
   // One section per facet. `facets` is { facetKey: [{key, count}, ...] }
   // and `onChange(facetKey, value, checked)` is called for each tick;
@@ -184,13 +165,10 @@
   };
   var FACET_ORDER = ['type', 'kind', 'required', 'affordance', 'overlay'];
 
-  function buildPanel(facets, btn, badge, onChange) {
-    var panel = el('div', {
-      'class':      'db-filter-panel',
-      'id':         'filter-overlay-panel',
-      'role':       'dialog',
-      'aria-label': 'Filter object tables',
-    });
+  function buildPanel(facets, onChange) {
+    var panel = document.getElementById('filter-overlay-panel');
+    if (!panel) return { panel: null, checkboxes: [] };
+    panel.innerHTML = '';
 
     // Two explicit columns: short facets (Type/Kind/Required/Affordance)
     // stacked in column 1, Overlays alone in column 2 because its labels
@@ -241,7 +219,6 @@
     });
     panel.appendChild(reset);
 
-    document.body.appendChild(panel);
     return { panel: panel, checkboxes: allCheckboxes };
   }
 
@@ -323,8 +300,8 @@
   }
 
   function wireConfig() {
-    var btn = document.getElementById('objects-config-btn');
-    if (!btn) return;
+    var panel = document.getElementById('objects-config-panel');
+    if (!panel) return;
     // Build the list of toggleable columns from the first table's thead.
     var firstThead = document.querySelector('.object-block table.db-table thead tr');
     if (!firstThead) return;
@@ -339,12 +316,7 @@
       .filter(function (c) { return !ALWAYS_VISIBLE.has(c.index); });
     var hidden = new Set();
 
-    var panel = el('div', {
-      'class':      'db-filter-panel',
-      'id':         'objects-config-panel',
-      'role':       'dialog',
-      'aria-label': 'Column options',
-    });
+    panel.innerHTML = '';
     var section = el('div', { 'class': 'db-filter-section' });
     section.appendChild(el('div', { 'class': 'db-filter-heading' }, 'Visible columns'));
     cols.forEach(function (col) {
@@ -361,32 +333,6 @@
       section.appendChild(label);
     });
     panel.appendChild(section);
-    document.body.appendChild(panel);
-
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var open = panel.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) positionPanel(btn, panel);  // measure AFTER is-open so display:flex is active
-    });
-    document.addEventListener('click', function (e) {
-      if (!panel.classList.contains('is-open')) return;
-      if (panel.contains(e.target) || btn.contains(e.target)) return;
-      panel.classList.remove('is-open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && panel.classList.contains('is-open')) {
-        panel.classList.remove('is-open');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-    window.addEventListener('resize', function () {
-      if (panel.classList.contains('is-open')) positionPanel(btn, panel);
-    });
-    window.addEventListener('scroll', function () {
-      if (panel.classList.contains('is-open')) positionPanel(btn, panel);
-    }, { passive: true });
   }
 
   function applyColumnVisibility(hiddenIdxs) {
@@ -455,34 +401,8 @@
       updateBadge();
     }
 
-    var built = buildPanel(facets, btn, badge, onCheckboxChange);
-    var panel = built.panel;
-
-    function openPanel()  { panel.classList.add('is-open'); positionPanel(btn, panel); btn.setAttribute('aria-expanded', 'true'); }
-    function closePanel() { panel.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); }
-
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (panel.classList.contains('is-open')) closePanel();
-      else openPanel();
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!panel.classList.contains('is-open')) return;
-      if (panel.contains(e.target)) return;
-      if (btn.contains(e.target)) return;
-      closePanel();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
-    });
-
-    window.addEventListener('resize', function () {
-      if (panel.classList.contains('is-open')) positionPanel(btn, panel);
-    });
-    window.addEventListener('scroll', function () {
-      if (panel.classList.contains('is-open')) positionPanel(btn, panel);
-    }, { passive: true });
+    buildPanel(facets, onCheckboxChange);
+    // Open / close / positioning / outside-click / ESC / focus are all
+    // handled by <el-popover> + the native popovertarget attribute.
   };
 })();
