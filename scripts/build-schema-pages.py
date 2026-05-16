@@ -237,9 +237,20 @@ def render_page(slot: str, leaves_for_page: list[dict],
         else:
             regions[key] = markdown_to_html(substituted)
     regions["intro_plain"] = re.sub(r"<[^>]+>", "", regions.get("intro", "")).strip()[:280]
-    # ER diagram is raw Mermaid source from frontmatter (passed through |safe in template)
+    # Diagrams. Backward-compat: keep `er_diagram` + `er_caption` as the primary
+    # ER. A `diagrams` array adds additional diagrams (state, sequence, gantt,
+    # flowchart). Each entry: { type, source, caption }.
     regions["er_diagram"] = (regions_raw.get("er_diagram") or "").strip()
     regions["er_caption"] = (regions_raw.get("er_caption") or "").strip()
+    diagrams = []
+    for d in (regions_raw.get("diagrams") or []):
+        if d.get("source"):
+            diagrams.append({
+                "type": (d.get("type") or "").strip(),
+                "source": d["source"].strip(),
+                "caption": (d.get("caption") or "").strip(),
+            })
+    regions["diagrams"] = diagrams
     regions["mentioned_but_not_owned"] = ""
     mboo = fm.get("mentioned_but_not_owned") or []
     if mboo:

@@ -55,5 +55,54 @@ regions:
     more claims about subjects, signs the bundle with a cryptographic proof,
     and optionally evidences external documents via attachments with
     content hashes. The whole thing is the unit of trust in PDTF v2.
+  diagrams:
+    - type: sequence
+      source: |
+        sequenceDiagram
+          autonumber
+          participant Seller
+          participant Issuer as Issuer<br/>(HMLR · EPB · LA)
+          participant PDTF as PDTF-compliant<br/>platform
+          participant Buyer
+          participant Verifier as Buyer's<br/>conveyancer
+
+          Seller->>PDTF: request title / EPC / search
+          PDTF->>Issuer: forward request (DID-authenticated)
+          Issuer-->>PDTF: signed Verifiable Credential
+          PDTF->>PDTF: store credential + hash attachments
+          PDTF-->>Seller: credential available
+          Seller->>Buyer: share credential reference
+          Buyer->>Verifier: forward credential
+          Verifier->>Issuer: resolve issuer DID
+          Issuer-->>Verifier: DID document + public key
+          Verifier->>Verifier: verify proof signature
+          Verifier->>Verifier: verify content hash
+          Verifier-->>Buyer: credential verified
+      caption: |
+        Issuance and verification flow for a Verifiable Credential. The
+        seller never sees the issuer's signing key; the buyer's
+        conveyancer never sees the seller's private data. The whole loop
+        is signature-anchored to public DIDs — that's the trust model.
+    - type: flowchart
+      source: |
+        flowchart LR
+          classDef src fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+          classDef trust fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+          classDef vc fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+
+          A[Seller declaration<br/>TA6 answer]:::src --> VC[VC envelope]:::vc
+          B[Authority evidence<br/>HMLR · EPB · LA]:::src --> VC
+          C[Derived value<br/>apportionment]:::src --> VC
+          VC --> P[Signed proof]:::trust
+          VC --> H[Content hashes]:::trust
+          VC --> A2[Attached docs]:::trust
+          P --> R[Verifier]
+          H --> R
+          A2 --> R
+      caption: |
+        Three kinds of fact (declaration · evidence · derivation) all
+        flow through the same VC envelope and present to a verifier as a
+        signed bundle. The envelope normalises trust; the kind tells the
+        verifier whose seal closes the challenge.
 mentioned_but_not_owned: []
 ---

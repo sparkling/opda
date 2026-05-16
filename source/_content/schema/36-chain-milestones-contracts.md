@@ -46,5 +46,50 @@ regions:
     event; contracts carry signatures and settle at completion. Note that
     completion is both a milestone (the date) and a contract-settling event
     (the artefact) — same fact, two leaves.
+  diagrams:
+    - type: state
+      source: |
+        stateDiagram-v2
+          [*]              --> Listed
+          Listed           --> OfferAccepted: "offer received & accepted"
+          OfferAccepted    --> Searches: "conveyancing starts"
+          Searches         --> Enquiries: "searches returned"
+          Enquiries        --> ContractDrafted: "enquiries resolved"
+          ContractDrafted  --> Exchanged: "contracts exchanged"
+          Exchanged        --> Completed: "completion day"
+          Completed        --> [*]
+          OfferAccepted    --> Withdrawn: "fall-through"
+          Searches         --> Withdrawn
+          Enquiries        --> Withdrawn
+          Withdrawn        --> [*]
+      caption: |
+        Milestone state machine, implicit in the schema today. Valid
+        transitions are documented here in prose but not enforced by SHACL
+        — the schema permits a Completed milestone before an Exchanged one,
+        which is a real defect this diagram makes visible.
+    - type: gantt
+      source: |
+        gantt
+          title  Typical UK residential transaction timeline (12 weeks)
+          dateFormat YYYY-MM-DD
+          axisFormat %b %d
+          section Listing
+          Listed                       :done,    a1, 2026-01-06, 14d
+          section Offer & memo
+          Offer accepted               :active,  a2, 2026-01-20, 5d
+          Memorandum of sale           :         a3, after a2, 3d
+          section Conveyancing
+          Searches ordered             :         a4, after a3, 21d
+          Mortgage offer               :         a5, after a3, 28d
+          Enquiries raised & answered  :         a6, after a4, 14d
+          section Contract
+          Contract drafted             :         a7, after a6, 7d
+          Exchange                     :crit,    a8, after a7, 1d
+          Completion                   :crit,    a9, after a8, 14d
+      caption: |
+        Indicative timeline. The schema records dates per milestone
+        (`expected` vs `actual`) but does not encode dependencies. This
+        Gantt shows the typical 12-week shape — exchange and completion
+        are the critical path.
 mentioned_but_not_owned: []
 ---

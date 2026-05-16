@@ -65,6 +65,35 @@ regions:
     feeds the valuation, which anchors the asking price and ultimately the
     completion price. This is the cohesion test answered visually — every
     leaf on this page lives somewhere on this chain.
+  diagrams:
+    - type: sequence
+      source: |
+        sequenceDiagram
+          autonumber
+          participant Buyer
+          participant Surveyor as Surveyor<br/>(RICS Level 2 / 3)
+          participant Property
+          participant Lender
+
+          Buyer->>Surveyor: instruct survey
+          Surveyor->>Property: inspect
+          Property-->>Surveyor: observed condition
+          Surveyor->>Surveyor: rate defects 1·2·3
+          Surveyor-->>Buyer: report + valuation
+          alt Defects above threshold
+            Buyer->>Surveyor: request remediation costs
+            Surveyor-->>Buyer: cost estimates
+            Buyer->>Lender: revised valuation evidence
+            Lender-->>Buyer: revised mortgage offer
+          else No material defects
+            Buyer->>Lender: proceed with valuation
+            Lender-->>Buyer: mortgage offer confirmed
+          end
+      caption: |
+        How a defect found on inspection flows through to a revised
+        valuation and (if material) a revised mortgage offer. The schema
+        captures the artefacts (survey, defect list, valuation); the
+        diagram makes the dependency between them visible.
   worked_example: |
     The London flat (12 Riverside Court, Vauxhall, SE11 5RX) reports
     `${london:propertyPack.buildInformation.building.propertyType}` of built

@@ -83,6 +83,14 @@
       {{ er.er_diagram(regions.er_diagram, regions.er_caption|default('', true)) }}
       {%- endif %}
 
+      {%- if regions.diagrams %}
+      {%- set _diagram_titles = {'state': 'Lifecycle state machine', 'sequence': 'Sequence', 'flowchart': 'Process flow', 'gantt': 'Timeline', 'class': 'Class structure', 'er': 'Entity relationships'} %}
+      {%- for d in regions.diagrams %}
+      <h2 id="diagram-{{ loop.index }}">{{ _diagram_titles.get(d.type, 'Diagram') }}</h2>
+      {{ er.er_diagram(d.source, d.caption) }}
+      {%- endfor %}
+      {%- endif %}
+
       {%- if regions.worked_example %}
       <aside class="callout callout--note" role="note">
         <p class="callout__label">Worked example</p>

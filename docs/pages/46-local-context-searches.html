@@ -5933,7 +5933,37 @@ flowchart LR
   </div>  <figcaption class="diagram-caption">Internal mechanics: each search is a request to a specific authority
 returning specific data. The flow is causal (a conveyancer orders the
 search; the authority returns sealed data) so a flowchart fits better
-than an erDiagram here.</figcaption></figure>      <aside class="callout callout--warn" role="note">
+than an erDiagram here.</figcaption></figure>      <h2 id="diagram-1">Sequence</h2>
+      <figure class="diagram" role="figure" aria-label="Searches are ordered in parallel and return on independent
+timelines (CON29R is the slowest, typically 10–28 days). The
+schema captures each return as a sealed bundle; this diagram
+shows why the *aggregate* lifecycle dominates the page.">
+  <div class="mermaid">
+sequenceDiagram
+  autonumber
+  participant Buyer as Buyer
+  participant Conv as Buyer's<br/>conveyancer
+  participant LA as Local<br/>authority
+  participant WC as Water<br/>company
+  participant Env as Env. data<br/>providers
+
+  Buyer->>Conv: instruct
+  par CON29R (mandatory)
+    Conv->>LA: order CON29R + LLC1
+    LA-->>Conv: planning · roads · charges · council-tax band
+  and CON29DW
+    Conv->>WC: order drainage & water search
+    WC-->>Conv: sewer map · supply confirmation
+  and Environmental
+    Conv->>Env: order environmental search
+    Env-->>Conv: flood · radon · contamination · mining
+  end
+  Conv->>Conv: review and raise enquiries
+  Conv-->>Buyer: report on title
+  </div>  <figcaption class="diagram-caption">Searches are ordered in parallel and return on independent
+timelines (CON29R is the slowest, typically 10–28 days). The
+schema captures each return as a sealed bundle; this diagram
+shows why the *aggregate* lifecycle dominates the page.</figcaption></figure>      <aside class="callout callout--warn" role="note">
         <p class="callout__label">Gap notes</p>
         <p>CON29 has 22 standard questions and four optional ones; the schema flattens them into named leaves rather than a numbered enquiry array. That's reader-friendly but makes round-tripping a fresh CON29 response awkward — there's no single key to look up "question 3.2".</p>
       </aside>

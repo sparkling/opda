@@ -12206,7 +12206,37 @@ erDiagram
 optionally tied to a remediation action with an estimated cost. The cost
 feeds the valuation, which anchors the asking price and ultimately the
 completion price. This is the cohesion test answered visually — every
-leaf on this page lives somewhere on this chain.</figcaption></figure>      <aside class="callout callout--note" role="note">
+leaf on this page lives somewhere on this chain.</figcaption></figure>      <h2 id="diagram-1">Sequence</h2>
+      <figure class="diagram" role="figure" aria-label="How a defect found on inspection flows through to a revised
+valuation and (if material) a revised mortgage offer. The schema
+captures the artefacts (survey, defect list, valuation); the
+diagram makes the dependency between them visible.">
+  <div class="mermaid">
+sequenceDiagram
+  autonumber
+  participant Buyer
+  participant Surveyor as Surveyor<br/>(RICS Level 2 / 3)
+  participant Property
+  participant Lender
+
+  Buyer->>Surveyor: instruct survey
+  Surveyor->>Property: inspect
+  Property-->>Surveyor: observed condition
+  Surveyor->>Surveyor: rate defects 1·2·3
+  Surveyor-->>Buyer: report + valuation
+  alt Defects above threshold
+    Buyer->>Surveyor: request remediation costs
+    Surveyor-->>Buyer: cost estimates
+    Buyer->>Lender: revised valuation evidence
+    Lender-->>Buyer: revised mortgage offer
+  else No material defects
+    Buyer->>Lender: proceed with valuation
+    Lender-->>Buyer: mortgage offer confirmed
+  end
+  </div>  <figcaption class="diagram-caption">How a defect found on inspection flows through to a revised
+valuation and (if material) a revised mortgage offer. The schema
+captures the artefacts (survey, defect list, valuation); the
+diagram makes the dependency between them visible.</figcaption></figure>      <aside class="callout callout--note" role="note">
         <p class="callout__label">Worked example</p>
         <p>The London flat (12 Riverside Court, Vauxhall, SE11 5RX) reports <code>Flat</code> of built form <code>Other</code>, built in <code>2007</code>, with building safety declared as <code>Yes</code> — the EWS1 record carries a B2 rating after partial ACM remediation in 2022. Its RICS Level 2 survey identifies one defect (rainwater goods); the resulting valuation is £<code>625000</code> at <code>medium</code> confidence, against a marketed price of £<code>625000</code>. The Manchester semi (47 Acacia Avenue, Didsbury, M20 4XY) reports <code>House</code> of built form <code>Semi-detached</code>, built in <code>1932</code> and declared as structurally altered (<code>Yes</code>) with Building Regulation approval attached. The RICS Level 3 survey flags Japanese knotweed on the rear boundary, managed under a treatment plan; the valuation reports £<code>385000</code> at <code>medium</code> confidence.</p>
       </aside>      <aside class="callout callout--warn" role="note">

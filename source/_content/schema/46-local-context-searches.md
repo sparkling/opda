@@ -48,6 +48,35 @@ regions:
     returning specific data. The flow is causal (a conveyancer orders the
     search; the authority returns sealed data) so a flowchart fits better
     than an erDiagram here.
+  diagrams:
+    - type: sequence
+      source: |
+        sequenceDiagram
+          autonumber
+          participant Buyer as Buyer
+          participant Conv as Buyer's<br/>conveyancer
+          participant LA as Local<br/>authority
+          participant WC as Water<br/>company
+          participant Env as Env. data<br/>providers
+
+          Buyer->>Conv: instruct
+          par CON29R (mandatory)
+            Conv->>LA: order CON29R + LLC1
+            LA-->>Conv: planning · roads · charges · council-tax band
+          and CON29DW
+            Conv->>WC: order drainage & water search
+            WC-->>Conv: sewer map · supply confirmation
+          and Environmental
+            Conv->>Env: order environmental search
+            Env-->>Conv: flood · radon · contamination · mining
+          end
+          Conv->>Conv: review and raise enquiries
+          Conv-->>Buyer: report on title
+      caption: |
+        Searches are ordered in parallel and return on independent
+        timelines (CON29R is the slowest, typically 10–28 days). The
+        schema captures each return as a sealed bundle; this diagram
+        shows why the *aggregate* lifecycle dominates the page.
 mentioned_but_not_owned:
   - "councilTax (canonical home page 47; band is mentioned on CON29R)"
 ---
