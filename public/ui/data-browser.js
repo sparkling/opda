@@ -84,8 +84,18 @@
     root.classList.add('data-browser');
     root.innerHTML = '';
 
-    // Toolbar
-    const toolbar = el('div', { class: 'db-toolbar' });
+    // Toolbar — when `heading: { id, text }` is supplied, the section
+    // heading is rendered inside the toolbar so it sits on the same row
+    // as the centered search input and the inline count.
+    const hasHeading = !!(opts.heading && opts.heading.text);
+    const toolbar = el('div', { class: 'db-toolbar' + (hasHeading ? ' db-toolbar--with-heading' : '') });
+    if (hasHeading) {
+      const headingAttrs = { class: 'db-heading' };
+      if (opts.heading.id) headingAttrs.id = opts.heading.id;
+      const headingEl = el('h2', headingAttrs);
+      headingEl.textContent = opts.heading.text;
+      toolbar.appendChild(headingEl);
+    }
 
     // Search field
     const searchField = el('div', { class: 'db-field db-field--grow' });

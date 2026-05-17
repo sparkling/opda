@@ -33,8 +33,10 @@
 
       <h2 id="entityMap">Top-level entity map</h2>
       <p>
-        A PDTF transaction is one root with five top-level limbs. Each limb gets its own aggregate page
-        below; their interrelationships are shown here.
+        A PDTF transaction is one root with six top-level limbs. Each limb gets its own aggregate page
+        below; their interrelationships are shown here. The schema also carries three housekeeping
+        scalars at the same level (<code>transactionId</code>, <code>externalIds</code>,
+        <code>status</code>) which the map omits.
       </p>
       <div class="diagram">
         <div class="mermaid">
@@ -42,32 +44,53 @@
 config:
   layout: elk
 ---
-flowchart LR
+flowchart TB
   accTitle: PDTF transaction — top-level entity map
-  accDescr: A transaction has participants, sits in a chain, is tracked by milestones, carries contracts, and bundles a property pack of evidence and declarations about a property.
+  accDescr: A transaction has many participants, sits in a chain, is tracked by milestones, carries many contracts, bundles a property pack of evidence and declarations, and is compared via valuation-comparison data. Both the property pack and the valuation comparison reference an implicit Property entity.
 
-  classDef root fill:#B3E5FC,stroke:#0277BD,stroke-width:3px,color:#01579B
-  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-  classDef ext  fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+  classDef txroot   fill:#f5e1d4,stroke:#a9583e,stroke-width:2.5px,color:#5f342a
+  classDef agg      fill:#f4f1e8,stroke:#d4ccb8,stroke-width:1.5px,color:#3d3d3a
+  classDef implicit fill:#fbe6c8,stroke:#b07432,stroke-width:1.5px,stroke-dasharray:5 4,color:#7a4b1f
 
-  TX["<b>Transaction</b><br/>root"]:::root
-  P["<b>Participants</b><br/>parties + roles"]:::agg
-  C["<b>Chain</b><br/>onward purchase"]:::agg
-  M["<b>Milestones</b><br/>state machine"]:::agg
-  K["<b>Contracts</b><br/>signing & terms"]:::agg
-  PP["<b>Property pack</b><br/>evidence + declarations"]:::agg
-  PROP["<b>Property</b><br/>(implicit — see page 37)"]:::ext
+  TX["`**Transaction**
+  root`"]:::txroot
+  P["`**Participants**
+  parties + roles`"]:::agg
+  C["`**Chain**
+  linked transactions`"]:::agg
+  M["`**Milestones**
+  state machine`"]:::agg
+  K["`**Contracts**
+  signing &amp; terms`"]:::agg
+  PP["`**Property pack**
+  evidence + declarations · 16 overlays`"]:::agg
+  V["`**Valuation comparison**
+  comparable properties`"]:::agg
+  PROP["`**Property**
+  _implicit — see page 37_`"]:::implicit
 
-  TX --> P
-  TX --> C
-  TX --> M
-  TX --> K
-  TX --> PP
+  TX -->|"has many"| P
+  TX -->|"sits in"| C
+  TX -->|"tracked by"| M
+  TX -->|"carries many"| K
+  TX -->|"bundles"| PP
+  TX -->|"compared via"| V
   PP -.->|"about"| PROP
+  V -.->|"about"| PROP
+
+  click TX href "35-transaction-participants.html"
+  click P href "35-transaction-participants.html"
+  click C href "36-chain-milestones-contracts.html"
+  click M href "36-chain-milestones-contracts.html"
+  click K href "36-chain-milestones-contracts.html"
+  click V href "39e-valuation.html"
+  click PROP href "37-property.html"
         </div>
         <div class="diagram-caption">
-          Five top-level aggregates plus a sixth — <strong>Property</strong> — that the schema does not name
-          explicitly. See <a href="37-property.html">Property</a> for the documented gap.
+          Six top-level aggregates plus a seventh — <strong>Property</strong> — that the schema does not
+          name explicitly. Both <strong>Property pack</strong> and <strong>Valuation comparison</strong>
+          reference the same implicit Property entity; see <a href="37-property.html">Property</a> for
+          the documented gap. Click any box to jump to its aggregate page.
         </div>
       </div>
 

@@ -49,8 +49,6 @@
         </ul>
       </div>
 
-      <h2 id="browse">Browse all data elements</h2>
-
       <div id="elements-browser" class="data-browser">
         <div class="db-status-loading">Loading data elements…</div>
       </div>
@@ -139,7 +137,7 @@
 
       <h2 id="howBuilt">How it was built</h2>
 
-      <div class="diagram">
+      <div class="diagram diagram--small">
         <div class="mermaid">
 flowchart LR
   classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
@@ -309,6 +307,7 @@ flowchart LR
 
       OPDA.DataBrowser.mount({
         mount: mountEl,
+        heading: { id: 'browse', text: 'Browse all data elements' },
         data: data,
         itemLabel: 'data elements',
         searchPlaceholder: 'Search name, title or description…',

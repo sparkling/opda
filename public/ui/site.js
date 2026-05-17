@@ -37,6 +37,9 @@
       title: 'Modelling',
       summary: 'The technical semantic modelling work: standards stack, bounded contexts, data dictionary, business glossary, ontology, SHACL shapes, and the JSON-LD mappings that link them.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'modelling', landing: 'modelling', title: 'Section overview' },
+        ]},
         { heading: 'Foundations', items: [
           { id: 'standards-stack',      file: '06-standards-stack.html',      title: 'Standards stack' },
           { id: 'bounded-contexts',     file: '12-bounded-contexts.html',     title: 'Bounded contexts (DDD)' },
@@ -418,7 +421,12 @@
       const isLeaf = !item.children;
       if (isLeaf) {
         const cls = item.id === activeId ? ' class="active" aria-current="page"' : '';
-        return '<li class="tree-leaf"><a href="' + hrefForPage(item.file, currentLoc) + '"' + cls + '>' +
+        // `landing: 'sectionKey'` items point at a section landing page at
+        // root (e.g. modelling.html), not at a pages/* sub-page.
+        const href = item.landing
+          ? hrefForSection(item.landing, currentLoc)
+          : hrefForPage(item.file, currentLoc);
+        return '<li class="tree-leaf"><a href="' + href + '"' + cls + '>' +
                escape(item.title) + '</a></li>';
       }
       const open = containsActive(item);
@@ -1363,14 +1371,19 @@
         if (g.classList.contains('er-clickable')) return;
         // Pull entity name out of the id — Mermaid 11 format is
         //   `mermaid-<digits>-entity-<NAME>-<index>`, older was
-        //   `entity-<NAME>-<index>`. NAME is UPPER_SNAKE so the regex
-        //   matches `[A-Z][A-Z_0-9]*`.
-        var idMatch = (g.id || '').match(/entity-([A-Z][A-Z_0-9]*)-\d+$/);
+        //   `entity-<NAME>-<index>`. NAME can be CamelCase (Mermaid 11
+        //   default) or UPPER_SNAKE, so accept any letter case.
+        var idMatch = (g.id || '').match(/entity-([A-Za-z][A-Za-z_0-9]*)-\d+$/);
         var raw = idMatch ? idMatch[1] : '';
         if (!raw) {
-          // Fallback: read text label content (older Mermaid).
-          var label = g.querySelector('text.entityLabel, .entityLabel, .label.name text, .label.name');
+          // Fallback: read text label content. Mermaid 11 entities with
+          // an attribute body render `<g class="label name">` for the
+          // header row; entities with an empty `{}` body render only
+          // `<g class="label">`. Match both, then fall back to the node's
+          // own text content as a last resort.
+          var label = g.querySelector('text.entityLabel, .entityLabel, .label.name text, .label.name, g.label');
           raw = label ? (label.textContent || '').trim() : '';
+          if (!raw) raw = (g.textContent || '').trim();
         }
         if (!raw) return;
         // Mermaid sometimes renders underscores as spaces. Normalise.
@@ -1425,12 +1438,23 @@
       enhanceDiagrams();
       var diagrams = document.querySelectorAll('.diagram');
       var anyMissingButton = false;
+      // Track entity nodes that still need an ER click handler. Object
+      // tables (which provide data-display-id anchors used by
+      // findLocalSectionTarget) are mounted asynchronously by
+      // schema-leaf-table.js, so a node may have no resolvable target on
+      // the first pass and acquire one on a later pass.
+      var anyMissingErClick = false;
       diagrams.forEach(function (fig) {
-        if (fig.querySelector('.mermaid svg') && !fig.querySelector('.diagram-zoom-btn')) {
-          anyMissingButton = true;
+        var svg = fig.querySelector('.mermaid svg');
+        if (svg && !fig.querySelector('.diagram-zoom-btn')) anyMissingButton = true;
+        if (svg && svg.getAttribute('class') === 'erDiagram') {
+          var nodes = svg.querySelectorAll('g.node[id*="entity-"], g[id^="entity-"]');
+          for (var i = 0; i < nodes.length; i++) {
+            if (!nodes[i].classList.contains('er-clickable')) { anyMissingErClick = true; break; }
+          }
         }
       });
-      if (anyMissingButton && attempts < max) {
+      if ((anyMissingButton || anyMissingErClick) && attempts < max) {
         setTimeout(tick, 200);
       } else {
         // After buttons are in place, check for mis-measured diagrams

@@ -43,7 +43,7 @@
 
       <h2 id="provenance">Where the terms came from</h2>
 
-      <div class="diagram">
+      <div class="diagram diagram--small">
         <div class="mermaid">
 flowchart LR
   classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
@@ -85,8 +85,6 @@ flowchart LR
           </tr>
         </tbody>
       </table>
-
-      <h2 id="browse">Browse the glossary</h2>
 
       <div id="entities-browser" class="data-browser">
         <div class="db-status-loading">Loading 752 concepts…</div>
@@ -180,6 +178,7 @@ flowchart LR
       });
       OPDA.DataBrowser.mount({
         mount: mountEl,
+        heading: { id: 'browse', text: 'Browse the glossary' },
         data: data,
         itemLabel: 'concepts',
         searchPlaceholder: 'Search label, definition or id…',
