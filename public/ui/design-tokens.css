@@ -199,6 +199,21 @@
   --color-border:         var(--cream-400);
   --color-border-strong:  var(--cream-500);
 
+  /* TailwindPlus re-skin tokens. Components adopted from Tailwind Plus
+     reference patterns reference these instead of bg-white/gray-300/
+     indigo-600 so the cream + terracotta identity is preserved and dark
+     mode flips automatically via the [data-theme="dark"] overrides
+     below. Used as `bg-[var(--button-bg)]`, `inset-ring-[var(--ring-subtle)]`,
+     `text-[var(--brand)]`, etc. in HTML templates. */
+  --button-bg:        var(--color-surface);
+  --button-bg-hover:  var(--cream-200);
+  --button-bg-active: var(--cream-300);
+  --ring-subtle:      var(--color-border);
+  --ring-strong:      var(--color-border-strong);
+  --brand:            var(--terracotta-600);
+  --brand-strong:     var(--terracotta-700);
+  --focus-ring:       var(--terracotta-500);
+
   /* Text */
   --color-text:           var(--graphite-800);
   --color-text-strong:    var(--ink-1000);
@@ -338,6 +353,13 @@
   --color-surface-inset:  var(--surface-dark-tint);
   --color-border:         #34302b;
   --color-border-strong:  #463f37;
+
+  /* Dark-mode reskin tokens — flip surfaces & hover, keep brand chain.
+     Ring + focus inherit dark --color-border / --terracotta-* set above
+     and elsewhere; only the BG flip needs explicit override here. */
+  --button-bg:        var(--surface-dark);
+  --button-bg-hover:  var(--surface-dark-tint);
+  --button-bg-active: var(--surface-dark-tint);
 
   --color-text:           #e8e2d4;
   --color-text-strong:    #f7f3e9;

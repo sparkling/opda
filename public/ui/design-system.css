@@ -529,42 +529,44 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 /* ─────────────────────────────────────────────────────────────
    CALLOUTS — editorial: thin border, no fill on default, soft tint on emphasis
    ───────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   CALLOUTS — Tailwind Plus alert pattern (Feedback.Alerts.With description
+   + With accent border) recoloured. Plus uses rounded-md with a tinted
+   background and a coloured label. Same markup as before
+   (<div class="callout callout--note"><div class="callout__label">...
+   </div><p>...</p></div>) so no HTML changes needed across pages.
+   ───────────────────────────────────────────────────────────── */
 .callout {
-  border-left: 3px solid var(--color-info-500);
-  background: transparent;
-  padding: var(--space-3) var(--space-5);
-  border-radius: 0;
+  display: block;
+  background: var(--color-info-100, var(--cream-200));
+  padding: var(--space-3) var(--space-4);                    /* Plus: p-4 */
+  border-radius: var(--radius-md);                           /* Plus: rounded-md */
   margin: var(--space-5) 0;
+  border-left: 3px solid var(--color-info-500);              /* keep accent stripe — distinguishes from cards */
   box-shadow: none;
 }
 .callout > * + * { margin-top: var(--space-2); }
-.callout--note    { border-color: var(--color-info-500);    background: transparent; }
+.callout--note    { border-color: var(--color-info-500);    background: var(--color-info-100, #e6f0fb); }
 .callout--key     {
   border-color: var(--terracotta-500);
-  background: linear-gradient(180deg, var(--terracotta-50), transparent 80%);
-  padding: var(--space-4) var(--space-6);
+  background: var(--terracotta-50);
+  padding: var(--space-4) var(--space-5);
 }
-:root[data-theme="dark"] .callout--key {
-  background: linear-gradient(180deg, rgba(204,120,92,0.12), transparent 80%);
-}
-:root[data-theme="dark"] .callout--warn {
-  background: linear-gradient(180deg, rgba(232,165,90,0.14), transparent 80%);
-}
-:root[data-theme="dark"] .callout--success {
-  background: linear-gradient(180deg, rgba(93,184,166,0.14), transparent 80%);
-}
-:root[data-theme="dark"] .callout--danger {
-  background: linear-gradient(180deg, rgba(184,90,68,0.14), transparent 80%);
-}
+:root[data-theme="dark"] .callout--note    { background: rgba(94, 134, 184, 0.16); }
+:root[data-theme="dark"] .callout--key     { background: rgba(204,120,92,0.16); }
+:root[data-theme="dark"] .callout--warn    { background: rgba(232,165,90,0.18); }
+:root[data-theme="dark"] .callout--success { background: rgba(93,184,166,0.18); }
+:root[data-theme="dark"] .callout--danger  { background: rgba(184,90,68,0.18); }
+
 .callout--key > * + * { margin-top: var(--space-2); }
 .callout--key p {
   font: 500 var(--text-lg) / 1.5 var(--font-serif);
   color: var(--color-text-strong);
   max-width: 56ch;
 }
-.callout--warn    { border-color: var(--amber-500);    background: linear-gradient(180deg, rgba(232,165,90,0.08), transparent 80%); }
-.callout--success { border-color: var(--teal-500);     background: linear-gradient(180deg, rgba(93,184,166,0.08), transparent 80%); }
-.callout--danger  { border-color: var(--crimson-500);  background: linear-gradient(180deg, rgba(184,90,68,0.08),  transparent 80%); }
+.callout--warn    { border-color: var(--amber-500);    background: rgba(232,165,90,0.10); }
+.callout--success { border-color: var(--teal-500);     background: rgba(93,184,166,0.10); }
+.callout--danger  { border-color: var(--crimson-500);  background: rgba(184,90,68,0.10); }
 
 .callout__label {
   font: 700 0.6875rem / 1.2 var(--font-sans);
@@ -580,19 +582,21 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 :root[data-theme="dark"] .callout--key .callout__label { color: var(--terracotta-300); }
 
 /* ─────────────────────────────────────────────────────────────
-   PILLS
+   BADGES — Tailwind Plus pattern (Elements.Badges.Flat) recoloured.
+   Plus uses: inline-flex items-center rounded-md bg-X-100 px-2 py-1
+              text-xs font-medium text-X-700.
+   Kept .pill as the class name so existing markup doesn't change;
+   removed uppercase + letter-spacing to match Plus's text-xs medium look.
    ───────────────────────────────────────────────────────────── */
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 0.22em 0.6em;
-  border-radius: var(--radius-sm);
-  font: 600 0.6875rem / 1.2 var(--font-sans);
-  letter-spacing: 0.04em;
+  gap: 0.375rem;                                              /* Plus: gap-x-1.5 */
+  padding: 0.25rem 0.5rem;                                    /* Plus: px-2 py-1 */
+  border-radius: var(--radius-md);                            /* Plus: rounded-md */
+  font: 500 var(--text-xs) / 1.4 var(--font-sans);            /* Plus: text-xs font-medium */
   background: var(--cream-300);
   color: var(--graphite-800);
-  text-transform: uppercase;
   white-space: nowrap;
 }
 :root[data-theme="dark"] .pill { background: var(--surface-dark-tint); color: var(--color-text); }
@@ -608,48 +612,56 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 :root[data-theme="dark"] .pill--info    { background: #1f2a37; color: #c0d0e0; }
 
 /* ─────────────────────────────────────────────────────────────
-   CTA — primary button
+   BUTTONS — Tailwind Plus pattern (Elements.Buttons.*) recoloured
+   with cream/terracotta tokens.
+
+   .btn         → Primary (Plus: bg-indigo-600 → bg-var(--brand))
+   .btn--ghost  → Secondary (Plus: bg-white inset-ring-1 inset-ring-gray-300)
+   .btn--quiet  → Soft (Plus: bg-gray-50 hover:bg-gray-100, transparent here)
+
+   shadow-xs + focus-visible:outline-2/outline-offset-2 mirror Plus
+   exactly for parity with the rest of the buttongroup work.
    ───────────────────────────────────────────────────────────── */
 .cta,
 .btn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 0.625rem 1.125rem;
+  padding: 0.5rem 0.75rem;                                   /* Plus: px-3 py-2 */
   border-radius: var(--radius-md);
-  background: var(--terracotta-500);
+  background: var(--brand);
   color: #ffffff;
-  font: 600 var(--text-sm) / 1 var(--font-sans);
-  letter-spacing: 0;
-  border: 1px solid var(--terracotta-600);
+  font: 600 var(--text-sm) / 1.4 var(--font-sans);
+  border: 0;
   cursor: pointer;
   text-decoration: none;
-  transition: background var(--duration-fast) var(--ease),
-              transform var(--duration-fast) var(--ease),
-              box-shadow var(--duration-fast) var(--ease);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);                  /* Plus: shadow-xs */
+  transition: background var(--duration-fast) var(--ease);
 }
 .cta:hover, .btn:hover {
-  background: var(--terracotta-700);
+  background: var(--brand-strong);
   color: #ffffff;
   text-decoration: none;
 }
-.cta:active, .btn:active { transform: translateY(1px); }
+.cta:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
 .btn--ghost {
-  background: transparent;
-  color: var(--terracotta-700);
-  border: 1px solid var(--color-border-strong);
+  background: var(--button-bg);
+  color: var(--color-text-strong);
+  box-shadow: inset 0 0 0 1px var(--ring-subtle);            /* Plus: inset-ring-1 inset-ring-gray-300 */
 }
 .btn--ghost:hover {
-  background: var(--cream-200);
-  color: var(--terracotta-800);
-  border-color: var(--terracotta-300);
+  background: var(--button-bg-hover);
+  color: var(--color-text-strong);
 }
 .btn--quiet {
   background: transparent;
   color: var(--color-text);
-  border: 1px solid transparent;
+  box-shadow: none;
 }
-.btn--quiet:hover { background: var(--cream-200); color: var(--color-text-strong); }
+.btn--quiet:hover { background: var(--button-bg-hover); color: var(--color-text-strong); }
 
 /* ─────────────────────────────────────────────────────────────
    CARDS — editorial. Hairline border, no fill, rule on hover.
@@ -1243,6 +1255,11 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 }
 .page-meta .pill { letter-spacing: 0.04em; }
 
+/* ─────────────────────────────────────────────────────────────
+   PAGE FOOTER — Tailwind Plus pattern (Navigation.Pagination.Simple
+   card footer). Two link buttons (Previous / Next), inset-ring border,
+   bg-white hover bg-gray-50 — cream-tone equivalents here.
+   ───────────────────────────────────────────────────────────── */
 .page-footer {
   margin-top: var(--space-8);
   padding-top: var(--space-5);
@@ -1250,26 +1267,28 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   display: flex;
   justify-content: space-between;
   gap: var(--space-3);
-  font-size: var(--text-sm);
 }
 .page-footer a {
-  font: 500 var(--text-sm) / 1.3 var(--font-sans);
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--terracotta-700);
+  padding: 0.5rem 0.75rem;                                   /* Plus: px-3 py-2 */
+  border-radius: var(--radius-md);                           /* Plus: rounded-md */
+  background: var(--button-bg);                              /* Plus: bg-white */
+  color: var(--color-text-strong);                           /* Plus: text-gray-700 */
+  font: 600 var(--text-sm) / 1.4 var(--font-sans);           /* Plus: text-sm font-semibold */
   text-decoration: none;
+  box-shadow: inset 0 0 0 1px var(--ring-subtle);            /* Plus: inset-ring inset-ring-gray-300 */
   transition: background var(--duration-fast) var(--ease);
-  border: 1px solid var(--color-border);
 }
 .page-footer a:hover {
-  background: var(--cream-200);
-  border-color: var(--terracotta-300);
-  color: var(--terracotta-800);
+  background: var(--button-bg-hover);                        /* Plus: hover:bg-gray-50 */
+  color: var(--color-text-strong);
   text-decoration: none;
+}
+.page-footer a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1327,22 +1346,24 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   color: var(--color-text-muted);
   white-space: nowrap;
 }
+/* Tailwind Plus input pattern (Forms.Input Groups.*) recoloured.
+   inset-ring instead of border so it composes cleanly in buttongroups. */
 .db-input,
 .db-select {
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-border-strong);
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--ring-subtle);            /* Plus: inset-ring-1 inset-ring-gray-300 */
   border-radius: var(--radius-md);
   font: 400 var(--text-sm) / 1.4 var(--font-sans);
-  background: var(--color-surface);
+  background: var(--button-bg);
   color: var(--color-text);
-  transition: border-color var(--duration-fast) var(--ease),
-              box-shadow var(--duration-fast) var(--ease);
+  transition: box-shadow var(--duration-fast) var(--ease);
 }
 .db-input:focus,
 .db-select:focus {
-  outline: 0;
-  border-color: var(--terracotta-500);
-  box-shadow: 0 0 0 3px rgba(204,120,92,0.18);
+  outline: 2px solid var(--focus-ring);                      /* Plus: focus:outline-2 */
+  outline-offset: -1px;
+  box-shadow: inset 0 0 0 1px var(--ring-subtle);
 }
 .db-input { min-width: 14rem; max-width: 28rem; }
 .db-reset {
@@ -1374,26 +1395,32 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   position: relative;
   flex-shrink: 0;
 }
+/* Tailwind Plus icon-button pattern (button-groups / Icon only) recoloured.
+   Inset ring instead of border, shadow-xs for slight lift, focus-visible
+   outline 2px offset 2px for a11y parity with Plus. */
 .db-filter-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   padding: 0.5rem 0.6rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
+  background: var(--button-bg);
+  box-shadow: inset 0 0 0 1px var(--ring-subtle),            /* Plus: inset-ring-1 inset-ring-gray-300 */
+              0 1px 2px 0 rgba(0,0,0,0.05);                  /* Plus: shadow-xs */
+  border: 0;
   border-radius: var(--radius-md);
   color: var(--color-text);
   font: 500 var(--text-sm) / 1.4 var(--font-sans);
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease),
-              border-color var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease);
 }
-.db-filter-btn:hover { background: var(--cream-200); }
-:root[data-theme="dark"] .db-filter-btn:hover { background: var(--surface-dark-tint); }
+.db-filter-btn:hover { background: var(--button-bg-hover); }
+.db-filter-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
 .db-filter-btn[aria-expanded="true"] {
-  background: var(--cream-300);
-  border-color: var(--color-border-strong);
+  background: var(--button-bg-active);
 }
 :root[data-theme="dark"] .db-filter-btn[aria-expanded="true"] {
   background: var(--surface-dark-tint);
