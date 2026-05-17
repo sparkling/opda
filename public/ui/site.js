@@ -23,12 +23,16 @@
           { id: 'legislation',          file: '02-legislation.html',          title: 'Legislation & policy' },
           { id: 'departments',          file: '03-departments.html',          title: 'Departments & bodies' },
           { id: 'steering-forums',      file: '04-steering-forums.html',      title: 'Steering & coordination' },
+        ]},
+        { heading: 'OPDA the organisation', items: [
           { id: 'opda-members',         file: '11-opda-members.html',         title: 'OPDA member firms' },
           { id: 'sandbox',              file: '05-sandbox.html',              title: 'Trust Framework Sandbox' },
         ]},
-        { heading: 'Governance framework', items: [
+        { heading: 'Standards landscape', items: [
           { id: 'toip-governance',      file: '07-toip-governance.html',      title: 'ToIP governance model' },
           { id: 'strategic-alignment',  file: '08-strategic-alignment.html',  title: 'Strategic alignment' },
+        ]},
+        { heading: "OPDA's own rules", items: [
           { id: 'conformance-scheme',   file: '20-conformance-scheme.html',   title: 'Conformance & certification' },
           { id: 'change-management',    file: '21-change-management.html',    title: 'Change management' },
           { id: 'lifecycle-versioning', file: '22-lifecycle-versioning.html', title: 'Lifecycle & versioning' },
