@@ -1,0 +1,270 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="OPDA member firms"
+  description="OPDA's 13 founding member firms (the launch cohort of 2023), plus association members and Technical Certification holders."
+  page="opda-members"
+>
+<PageMeta category="Governance" updated="Updated 2026-05-14" />
+
+      <h1>OPDA member firms</h1>
+      <p class="lead">
+        Who OPDA actually is — the 13 firms that launched it in 2023, the wider
+        association membership that has grown around it, and the seven firms who have
+        achieved OPDA Technical Certification by evidencing PDTF implementation.
+      </p>
+
+      <p class="muted">
+        <em>Note on terminology:</em> per <a href="https://openpropdata.org.uk/our-members/" target="_blank" rel="noopener">openpropdata.org.uk/our-members/</a>,
+        "Membership with OPDA has one simple tier" — all members get the same access,
+        voting, and decision-making rights. The
+        <em>founding / association / Technical Certification</em> split used on this
+        page is an analytical framing for the knowledge base; it is not a constitutional
+        distinction.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Two different "founding member" lists — don't confuse them</div>
+        <p>
+          OPDA's <strong>13 founding members</strong> (this page) are the proptech /
+          lender / search-data firms that operationally launched OPDA in 2023. They
+          are <strong>distinct from</strong> the 14 DPMSG founding members (the
+          government + profession + finance coalition convened by HMLR in August 2023 —
+          see the <a href="04-steering-forums.html">Steering &amp; coordination</a> page).
+          DPMSG sets the strategic direction; OPDA members do the technical work.
+        </p>
+      </div>
+
+      <h2 id="founders">The 13 founding members (launched OPDA in 2023)</h2>
+
+      <p>
+        Identified from the "Our Members → Founding Members" section of openpropdata.org.uk,
+        cross-referenced against the May–Dec 2023 press posts on the OPDA blog announcing
+        the formation. Each is mapped to its primary
+        <a href="12-bounded-contexts.html">bounded context</a> (one firm can touch
+        multiple — primary is the dominant one).
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>#</th><th>Firm</th><th>Primary bounded context</th><th>Sector / focus</th><th>Cert.</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Moverly</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Digital home-moving platform. Co-won the SDC Innovators prize with OPDA.</td><td>—</td></tr>
+          <tr><td>2</td><td><strong>OnTheMarket</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Estate Agency</a></td><td>UK property portal.</td><td>—</td></tr>
+          <tr><td>3</td><td><strong>Sprift</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Property data aggregator.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>4</td><td><strong>Coadjute</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Decentralised property-transaction network. Spans all contexts as orchestration.</td><td>—</td></tr>
+          <tr><td>5</td><td><strong>OMS</strong> (One Mortgage System)</td><td><a href="12-bounded-contexts.html#primaryIndustries">Mortgage Lending</a></td><td>Mortgage-software platform.</td><td>—</td></tr>
+          <tr><td>6</td><td><strong>Inventory Base</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Inventory + property-report platform. Also serves Lettings.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>7</td><td><strong>United Trust Bank</strong> (UTB)</td><td><a href="12-bounded-contexts.html#primaryIndustries">Mortgage Lending</a></td><td>Specialist lender — the founding lender.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>8</td><td><strong>TM Group</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Conveyancing search provider.</td><td>—</td></tr>
+          <tr><td>9</td><td><strong>PEXA</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Digital property settlement network. Touches Conveyancing + Lending.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>10</td><td><strong>LMS</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Conveyancing (Legal)</a></td><td>Conveyancing services group. Secondary: Mortgage Lending services.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>11</td><td><strong>Kotini</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Property data / packs platform. Also Property Technology.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>12</td><td><strong>Groundsure</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Environmental + property search data.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>13</td><td><strong>Homely</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Estate Agency</a></td><td>Property platform / portal.</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <p class="muted tiny">
+        ✓ = holds OPDA Technical Certification.
+      </p>
+
+      <h3 id="founderContextDistribution">Founder distribution across contexts</h3>
+      <p>How the 13 founders spread across the six primary bounded contexts:</p>
+      <ul>
+        <li><strong>Property Data Services</strong> — 5 firms (Sprift, Inventory Base, TM Group, Kotini, Groundsure)</li>
+        <li><strong>Property Technology</strong> — 3 firms (Moverly, Coadjute, PEXA)</li>
+        <li><strong>Estate Agency</strong> — 2 firms (OnTheMarket, Homely)</li>
+        <li><strong>Mortgage Lending</strong> — 2 firms (OMS, United Trust Bank)</li>
+        <li><strong>Conveyancing (Legal)</strong> — 1 firm (LMS)</li>
+        <li><strong>Surveying / Valuation</strong> — 0 founding members <em>(the most under-represented context — RICS is on DPMSG but no surveyor was an OPDA founder)</em></li>
+      </ul>
+      <p>
+        The shape of the founding coalition explains a lot about what's well-covered in
+        PDTF today (data services, listing data, lending integration) and where the
+        gaps will need new members: <strong>surveying</strong> in particular, and
+        <strong>letting-specific use cases</strong>.
+      </p>
+
+      <h2 id="sectoralShape">The shape of the founding coalition</h2>
+
+      <Diagram caption="The 13 founders represent five segments of the property-transaction chain.
+          Colour legend: blue = portals, green = proptech / network, amber = search
+          data, pink = lenders / mortgage software (UTB, OMS), purple = conveyancing (LMS).">
+flowchart LR
+  classDef portal fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+  classDef proptech fill:#dcfce7,stroke:#166534,color:#14532d;
+  classDef search fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef lender fill:#fce7f3,stroke:#9d174d,color:#831843;
+  classDef conv fill:#ede9fe,stroke:#5b21b6,color:#4c1d95;
+
+  OnTheMarket:::portal
+  Homely:::portal
+
+  Moverly:::proptech
+  Sprift:::proptech
+  Kotini:::proptech
+  Coadjute:::proptech
+  PEXA:::proptech
+  InventoryBase[Inventory Base]:::proptech
+
+  Groundsure:::search
+  TMGroup[TM Group]:::search
+
+  UnitedTrustBank[United Trust Bank]:::lender
+  OMS[OMS - One Mortgage System]:::lender
+
+  LMS:::conv
+</Diagram>
+
+      <h2 id="certification">Technical Certification (as of May 2026)</h2>
+
+      <p>
+        Seven of the 13 founding members have evidenced PDTF implementation through
+        OPDA's rigorous Technical Certification process. Per OPDA's own page, this
+        certifies that the firm's systems, data policies, and working practices align
+        with OPDA principles and enable interoperability across the property community.
+      </p>
+
+      <ul>
+        <li>Kotini</li>
+        <li>Groundsure</li>
+        <li>Inventory Base</li>
+        <li>PEXA</li>
+        <li>LMS</li>
+        <li>Sprift</li>
+        <li>United Trust Bank</li>
+      </ul>
+
+      <h2 id="association">Association members (joined after launch)</h2>
+
+      <p>
+        Membership has grown materially since the 2023 launch. Association members
+        identified from the same "Our Members" section, with press posts in our archive
+        corroborating join dates where known.
+      </p>
+
+      <h3 id="lenders">Lenders / banks</h3>
+      <ul>
+        <li><strong>HSBC UK</strong> — joined Aug 2024 ("HSBC UK joins forces with OPDA")</li>
+        <li><strong>Nationwide Building Society</strong> — joined OPDA's campaign</li>
+        <li><strong>NatWest Group</strong> — joined the OPDA campaign</li>
+        <li><strong>Atom Bank</strong> — digital lender (<a href="https://www.atombank.co.uk/" target="_blank" rel="noopener">atombank.co.uk</a>)</li>
+        <li><strong>Halifax</strong> — Lloyds Banking Group retail brand, listed separately on our-members</li>
+        <li><strong>BM Solutions</strong> — Lloyds Banking Group buy-to-let brand, listed separately on our-members</li>
+        <li><strong>Scottish Widows</strong> — Lloyds Banking Group brand, listed separately on our-members</li>
+      </ul>
+
+      <p class="muted tiny">
+        Note: "Lloyds Banking Group" (the umbrella entity) is not itself a logo on
+        <a href="https://openpropdata.org.uk/our-members/" target="_blank" rel="noopener">openpropdata.org.uk/our-members/</a> —
+        only the three sub-brands (Halifax, BM Solutions, Scottish Widows) appear.
+        <strong>Santander</strong> is not listed as an OPDA member on that page either;
+        it appears in our archive only as the author of the "Fixing the Broken Chain"
+        report (see
+        <a href="../../source/02-policy-and-positioning/opda-reports/">opda-reports</a>).
+      </p>
+
+      <h3 id="intermediariesAndTech">Intermediaries and tech</h3>
+      <ul>
+        <li><strong>Mortgage Advice Bureau</strong> (MAB) — joined as the first intermediary network member</li>
+        <li><strong>Smoove</strong></li>
+        <li><strong>Finova</strong></li>
+        <li><strong>Phoebus</strong></li>
+        <li><strong>Home Sale Pack</strong> (HSP) — upfront-information / sale-pack platform (<a href="https://homesalepack.com/" target="_blank" rel="noopener">homesalepack.com</a>)</li>
+        <li><strong>View My Chain</strong> (VMC) — transaction-chain visibility platform (<a href="https://viewmychain.com/" target="_blank" rel="noopener">viewmychain.com</a>)</li>
+        <li><strong>Lenderhive</strong></li>
+        <li><strong>Movera</strong> (formerly Mulberry)</li>
+        <li><strong>Movemnt</strong> — joined to streamline homebuying</li>
+        <li><strong>Experian</strong></li>
+        <li><strong>Houseful</strong> — property data and analytics group, parent of Zoopla and Hometrack (<a href="https://houseful.co.uk/" target="_blank" rel="noopener">houseful.co.uk</a>)</li>
+        <li><strong>Hometrack</strong></li>
+        <li><strong>Open Property</strong> — proptech platform (<a href="https://openproperty.io/" target="_blank" rel="noopener">openproperty.io</a>)</li>
+        <li><strong>Simply Conveyancing</strong> — conveyancing firm (<a href="https://www.simplyconveyancing.co.uk/" target="_blank" rel="noopener">simplyconveyancing.co.uk</a>)</li>
+        <li><strong>Survey Shack</strong> — surveying member (<a href="https://www.survey-shack.com/" target="_blank" rel="noopener">survey-shack.com</a>); fills the surveying gap noted in the founders' context distribution</li>
+        <li><strong>Connells Group</strong> — "Digital Sale Ready" pilot on propdata.org.uk</li>
+        <li><strong>L&amp;C Mortgages</strong></li>
+        <li><strong>Novus Strategy</strong></li>
+        <li><strong>Armalytix</strong></li>
+        <li><strong>Credas</strong></li>
+        <li><strong>Clozy</strong></li>
+        <li><strong>C2C</strong></li>
+        <li><strong>Property Deals Insight</strong></li>
+        <li><strong>e4</strong> (UK)</li>
+      </ul>
+
+      <p class="muted tiny">
+        Full logo wall at <a href="https://openpropdata.org.uk/our-members/" target="_blank" rel="noopener">openpropdata.org.uk/our-members/</a>.
+      </p>
+
+      <h2 id="membershipTiers">Membership tiers and fees</h2>
+
+      <p>
+        OPDA operates a single membership tier — per
+        <a href="https://openpropdata.org.uk/our-members/" target="_blank" rel="noopener">openpropdata.org.uk/our-members/</a>,
+        "Membership with OPDA has one simple tier. All members benefit from the same
+        access, decision making, influencing, and collaborative working." Annual fees
+        are banded by firm size and turnover, per OPDA's
+        <em>Membership benefits and fee structure</em> document:
+      </p>
+      <ul>
+        <li><strong>Start-ups and micro businesses</strong> (1–5 FTE and &lt;£100k turnover) — £3,000 p.a.</li>
+        <li><strong>SME businesses</strong> (5–50 FTE and &lt;£1m turnover) — £6,000 p.a.</li>
+        <li><strong>Organisations and larger businesses</strong> (50+ FTE and/or &gt;£1m turnover) — £10,000 p.a.</li>
+      </ul>
+      <p class="muted tiny">
+        Source: <code>source/01-organisation/constitution-and-policies/Membership benefits and fee structure.pdf</code>.
+        Fees are paid annually in advance; FTE and turnover are self-declared on
+        application and cross-checked against Companies House.
+      </p>
+
+      <h2 id="customPostTypes">WP custom post type — what's officially indexed</h2>
+
+      <p>
+        For reference: querying the OPDA WordPress REST API at
+        <code>/wp-json/wp/v2/member</code> returns only <strong>4 member custom posts
+        with dedicated landing pages</strong> — Moverly, OnTheMarket, PEXA, and Sprift.
+        The other 9 founders + all association members appear as logos on the
+        <code>/our-members/</code> page but don't have dedicated <code>/member/&lt;slug&gt;/</code>
+        URLs. This is a publishing decision (probably to feature key partners), not a
+        statement about membership status.
+      </p>
+
+      <h2 id="implications">Implications for the linked-data project</h2>
+
+      <p>
+        Three things worth carrying forward from the membership map:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Stakeholder engagement</strong> for the semantic-modelling work has
+          natural starting points: the seven Technical Certification holders have
+          already evidenced PDTF implementation, so they're the natural early reviewers
+          for the ontology / data dictionary / SHACL shapes.
+        </li>
+        <li>
+          <strong>Conformance scheme design</strong> (per ToIP Layer 4 governance)
+          should build on what Technical Certification already does — re-framing it in
+          the language of a ToIP-style Ecosystem Governance Framework + Trust Registry.
+        </li>
+        <li>
+          <strong>Banking representation</strong> grew materially post-launch: HSBC UK,
+          Nationwide, NatWest, Atom Bank, and the three Lloyds Banking Group sub-brands
+          (Halifax, BM Solutions, Scottish Widows) joined the founding United Trust Bank.
+          This is the proof-point that the Open Banking analogy is operationally working:
+          many of the same lenders that participated in Open Banking are joining its
+          property-data analogue.
+        </li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '10-glossary.html', label: 'Glossary' }}
+  next={{ href: '/index.html', label: 'Home' }}
+/>
+</Layout>

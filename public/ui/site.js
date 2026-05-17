@@ -222,6 +222,9 @@
       title: 'Engagement',
       summary: 'Where the work happens: working groups, steering group meetings, member updates, video content, and the activity log of the programme.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'engagement', landing: 'engagement', title: 'Section overview' },
+        ]},
         { heading: 'Activity', items: [
           { id: 'engagement-overview',  file: '40-engagement-overview.html',  title: 'Overview' },
           { id: 'meetings-decisions',   file: '41-meetings-decisions.html',   title: 'Meetings & decisions' },
@@ -237,6 +240,9 @@
       title: 'Adoption',
       summary: 'Who is implementing PDTF, what they have built, lessons learned, and the public evidence that the framework works in practice.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'adoption', landing: 'adoption', title: 'Section overview' },
+        ]},
         { heading: 'Pilots & implementations', items: [
           { id: 'adoption-overview',    file: '50-adoption-overview.html',    title: 'Overview' },
           { id: 'member-implementations', file: '51-member-implementations.html', title: 'Member implementations' },
@@ -252,6 +258,9 @@
       title: 'Implementation',
       summary: 'How to build with PDTF: install the schemas package, compose overlays, validate transactions, work with verified claims and JSON-LD.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'implementation', landing: 'implementation', title: 'Section overview' },
+        ]},
         { heading: 'Getting started', items: [
           { id: 'impl-overview',        file: '60-implementation-overview.html', title: 'Overview' },
           { id: 'quickstart',           file: '61-quickstart.html',           title: 'Quickstart' },
@@ -267,6 +276,9 @@
       title: 'Strategy',
       summary: 'The strategic context — UK Industrial Strategy, Smart Data Scheme sequencing, OPDA programme phases, and the project roadmap.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'strategy', landing: 'strategy', title: 'Section overview' },
+        ]},
         { heading: 'Plans', items: [
           { id: 'strategy-overview',    file: '70-strategy-overview.html',    title: 'Overview' },
           { id: 'project-roadmap',      file: '09-project-roadmap.html',      title: 'Project roadmap' },
@@ -281,6 +293,9 @@
       title: 'Library',
       summary: 'A curated index of every document, transcript, recording, and external reference held in the project archive.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'library', landing: 'library', title: 'Section overview' },
+        ]},
         { heading: 'Holdings', items: [
           { id: 'library-overview',     file: '80-library-overview.html',     title: 'Overview' },
           { id: 'documents',            file: '81-document-archive.html',     title: 'Document archive' },
@@ -361,15 +376,22 @@
   }
 
   // ── Theme toggle ──────────────────────────────────────────────────────────
-  // Resolves the active theme from localStorage (if user toggled) or the
-  // system preference (otherwise). Sets data-theme on <html> so CSS variables
-  // remap. Mermaid is re-rendered after a switch.
+  // Resolves the active theme from (in priority order):
+  //   1. URL param ?theme=light|dark — one-shot override, not persisted
+  //   2. localStorage opda-theme — set when user clicks the toggle button
+  //   3. Default: dark
+  // Sets data-theme on <html> so CSS variables remap. Mermaid is re-rendered
+  // after a switch.
   function resolveTheme() {
-    var stored = null;
-    try { stored = localStorage.getItem('opda-theme'); } catch (e) {}
-    if (stored === 'light' || stored === 'dark') return stored;
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ? 'dark' : 'light';
+    try {
+      const urlTheme = new URLSearchParams(window.location.search).get('theme');
+      if (urlTheme === 'light' || urlTheme === 'dark') return urlTheme;
+    } catch (e) {}
+    try {
+      const stored = localStorage.getItem('opda-theme');
+      if (stored === 'light' || stored === 'dark') return stored;
+    } catch (e) {}
+    return 'dark';
   }
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
@@ -461,7 +483,16 @@
              '</div>';
     }).join('');
 
+    const toggle =
+      '<button type="button" class="rail-collapse-toggle" id="sidebar-collapse" ' +
+      'aria-label="Collapse sidebar" title="Collapse sidebar">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<polyline points="15 18 9 12 15 6"/>' +
+        '</svg>' +
+      '</button>';
     return '<aside class="app-sidebar" id="app-sidebar">' +
+             toggle +
              '<nav class="sidebar-nav">' +
                groupsHtml +
              '</nav>' +
@@ -498,6 +529,33 @@
       });
     }
 
+    // Desktop sidebar collapse toggle. Persists state in localStorage so the
+    // user's preference survives reloads and cross-page navigation. Read state
+    // here too so the initial render reflects the persisted choice.
+    const appBody = root.querySelector('.app-body');
+    if (appBody) {
+      try {
+        if (localStorage.getItem('opda-sidebar-collapsed') === '1') {
+          appBody.classList.add('sidebar-collapsed');
+        }
+        if (localStorage.getItem('opda-toc-collapsed') === '1') {
+          appBody.classList.add('toc-collapsed');
+        }
+      } catch (e) {}
+    }
+    const sidebarCollapse = document.getElementById('sidebar-collapse');
+    if (sidebarCollapse && appBody) {
+      sidebarCollapse.addEventListener('click', function () {
+        const nowCollapsed = !appBody.classList.contains('sidebar-collapsed');
+        appBody.classList.toggle('sidebar-collapsed', nowCollapsed);
+        try { localStorage.setItem('opda-sidebar-collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
+        sidebarCollapse.setAttribute('aria-label',
+          nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+        sidebarCollapse.setAttribute('title',
+          nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+
     // Tree folder expand/collapse — each .tree-toggle button toggles
     // .is-open on its parent <li.tree-folder>. Default state is set
     // server-side by renderItem() (folders containing the active page
@@ -528,16 +586,35 @@
   }
 
   // Right-rail TOC — auto-built from h2/h3/h4 headings with ids.
-  // Sticky on wide screens; hidden under 1280px (handled by CSS).
+  // The TOC ALWAYS mounts (even with zero headings) so the right rail is the
+  // same fixed width on every page. Pages with no headings just show the
+  // "On this page" label and the collapse toggle. Sticky on wide screens;
+  // hidden under 1280px (handled by CSS).
   function renderToc() {
     const article = document.querySelector('.prose');
     if (!article) return;
     const headings = article.querySelectorAll('h2[id], h3[id], h4[id]');
-    if (headings.length < 3) return; // skip short pages
 
     const toc = document.createElement('aside');
     toc.className = 'toc';
     toc.setAttribute('aria-label', 'On this page');
+
+    const tocToggle = document.createElement('button');
+    tocToggle.type = 'button';
+    tocToggle.className = 'rail-collapse-toggle';
+    tocToggle.id = 'toc-collapse';
+    tocToggle.setAttribute('aria-label', 'Collapse table of contents');
+    tocToggle.title = 'Collapse table of contents';
+    tocToggle.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<polyline points="9 18 15 12 9 6"/>' +
+      '</svg>';
+    // Right-rail toggle starts collapsed-direction (chevron-right). When the
+    // user collapses it, the CSS rotate flips it to chevron-left.
+    tocToggle.style.marginRight = 'auto';
+    tocToggle.style.marginLeft = '0';
+    toc.appendChild(tocToggle);
 
     const titleEl = document.createElement('div');
     titleEl.className = 'toc-title';
@@ -574,6 +651,29 @@
     } else {
       // Fallback: float right inside .prose (legacy positioning)
       article.insertBefore(toc, article.firstChild);
+    }
+
+    // TOC collapse toggle — same persistence pattern as the sidebar. The
+    // toc-collapsed class on .app-body is read from localStorage in
+    // mountChrome(), but renderToc() runs after mountChrome() and may add
+    // .with-toc late, so we re-apply the persisted state here too.
+    if (body) {
+      try {
+        if (localStorage.getItem('opda-toc-collapsed') === '1') {
+          body.classList.add('toc-collapsed');
+        }
+      } catch (e) {}
+    }
+    if (tocToggle && body) {
+      tocToggle.addEventListener('click', function () {
+        const nowCollapsed = !body.classList.contains('toc-collapsed');
+        body.classList.toggle('toc-collapsed', nowCollapsed);
+        try { localStorage.setItem('opda-toc-collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
+        tocToggle.setAttribute('aria-label',
+          nowCollapsed ? 'Expand table of contents' : 'Collapse table of contents');
+        tocToggle.setAttribute('title',
+          nowCollapsed ? 'Expand table of contents' : 'Collapse table of contents');
+      });
     }
 
     // Active-section highlight via IntersectionObserver

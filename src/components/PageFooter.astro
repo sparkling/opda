@@ -1,0 +1,26 @@
+---
+/**
+ * Page footer — previous / next navigation pair at the bottom of a doc page.
+ *
+ *   <PageFooter
+ *     prev={{ href: '01-uk-initiative.html', label: 'UK initiative' }}
+ *     next={{ href: '03-departments.html', label: 'Departments & bodies' }}
+ *   />
+ *
+ * Pass only `prev` or only `next` for first/last pages in a sequence.
+ * The arrows ← / → are added by the component, not the caller.
+ */
+interface NavLink {
+  href: string;
+  label: string;
+}
+interface Props {
+  prev?: NavLink;
+  next?: NavLink;
+}
+const { prev, next } = Astro.props;
+---
+<div class="page-footer">
+  {prev && <a href={prev.href}>← {prev.label}</a>}
+  {next && <a href={next.href}>{next.label} →</a>}
+</div>

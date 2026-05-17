@@ -1,0 +1,38 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Fixtures &amp; fittings"
+  description="Landing for the Fixtures &amp; fittings cluster."
+  page="built-form-fixtures"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39c</span>
+        <span>Landing</span>
+      </div>
+      <h1>Fixtures &amp; fittings</h1>
+      <p class="lead">
+        The TA10 schedule: every item that's either included with the sale,
+        removed, or available for separate purchase, broken out room by
+        room. Ten sub-pages, one per area of the property.
+      </p>
+      <h2 id="subpages">Pages in this cluster</h2>
+      <ul class="cluster-index">
+        <li><a href="39c1-fixtures-summary.html"><strong>Items to include / remove</strong></a> — top-level inclusions and exclusions, accuracy confirmation.</li>
+        <li><a href="39c2-fixtures-basic.html"><strong>Basic fittings</strong></a> — boilers, hot-water tanks, radiators, immersions, etc.</li>
+        <li><a href="39c3-fixtures-kitchen.html"><strong>Kitchen</strong></a> — fitted units, white-goods, extractor.</li>
+        <li><a href="39c4-fixtures-bathroom.html"><strong>Bathroom</strong></a> — fittings, sanitary-ware, showers.</li>
+        <li><a href="39c5-fixtures-carpets.html"><strong>Carpets</strong></a> — by room.</li>
+        <li><a href="39c6-fixtures-curtains.html"><strong>Curtains &amp; rails</strong></a> — by room.</li>
+        <li><a href="39c7-fixtures-lights.html"><strong>Light fittings</strong></a> — by room.</li>
+        <li><a href="39c8-fixtures-units.html"><strong>Fitted units</strong></a> — wardrobes, shelving, cupboards.</li>
+        <li><a href="39c9-fixtures-outdoor.html"><strong>Outdoor</strong></a> — sheds, plants, garden furniture.</li>
+        <li><a href="39c10-fixtures-services.html"><strong>TV, telephone, fuel, other items</strong></a> — TV/telephone install, stock of fuel, other.</li>
+      </ul>
+      <PageFooter
+  prev={{ href: '39b-condition.html', label: 'Condition' }}
+  next={{ href: '39c1-fixtures-summary.html', label: 'Items to include / remove' }}
+/>
+</Layout>

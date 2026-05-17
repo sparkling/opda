@@ -1,0 +1,2088 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · OC summary · charges (main)"
+  description="OC summary · charges (main)"
+  page="title-oc-charges-main"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38b4</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>OC summary · charges (main)</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>71</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o&lbrace; TitlesToBeSold : "titlesToBeSold"
+  TitlesToBeSold ||--o| RegisterExtract : "registerExtract"
+  RegisterExtract ||--o| OcSummaryData : "ocSummaryData"
+  OcSummaryData ||--o| Charge : "charge"
+  OcSummaryData ||--o| EquitableCharge : "equitableCharge"
+  OcSummaryData ||--o| NotedCharge : "notedCharge"
+  Charge ||--o| ChargeEntry : "chargeEntry"
+  ChargeEntry ||--o| RegisteredCharge : "registeredCharge"
+  ChargeEntry ||--o| ChargeProprietor : "chargeProprietor"
+  ChargeEntry ||--o| SubCharge : "subCharge"
+  ChargeProprietor ||--o| ChargeeParty : "chargeeParty"
+  ChargeProprietor ||--o| EntryDetails : "entryDetails"
+  ChargeeParty ||--o| PrivateIndividual : "privateIndividual"
+  ChargeeParty ||--o| Organization : "organization"
+  ChargeeParty ||--o| Address : "address"
+  ChargeeParty ||--o| CharityDetails : "charityDetails"
+  Address ||--o| PostcodeZone : "postcodeZone"
+  Address ||--o| AddressLine : "addressLine"
+  CharityDetails ||--o| CharityAddress : "charityAddress"
+  CharityDetails ||--o| CharityType : "charityType"
+  CharityAddress ||--o| PostcodeZone : "postcodeZone"
+  CharityAddress ||--o| AddressLine : "addressLine"
+  PrivateIndividual ||--o| Name : "name"
+  PrivateIndividual ||--o| Alias : "alias"
+  RegisteredCharge ||--o| EntryDetails : "entryDetails"
+  SubCharge ||--o| RegisteredCharge : "registeredCharge"
+  SubCharge ||--o| ChargeProprietor : "chargeProprietor"
+  ChargeProprietor ||--o| ChargeeParty : "chargeeParty"
+  ChargeProprietor ||--o| EntryDetails : "entryDetails"
+  ChargeeParty ||--o| PrivateIndividual : "privateIndividual"
+  ChargeeParty ||--o| Organization : "organization"
+  ChargeeParty ||--o| Address : "address"
+  ChargeeParty ||--o| CharityDetails : "charityDetails"
+  Address ||--o| PostcodeZone : "postcodeZone"
+  Address ||--o| AddressLine : "addressLine"
+  CharityDetails ||--o| CharityAddress : "charityAddress"
+  CharityDetails ||--o| CharityType : "charityType"
+  CharityAddress ||--o| PostcodeZone : "postcodeZone"
+  CharityAddress ||--o| AddressLine : "addressLine"
+  PrivateIndividual ||--o| Name : "name"
+  PrivateIndividual ||--o| Alias : "alias"
+  RegisteredCharge ||--o| EntryDetails : "entryDetails"
+  EquitableCharge ||--o| EntryDetails : "entryDetails"
+  NotedCharge ||--o| EntryDetails : "entryDetails"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  TitlesToBeSold &lbrace;
+  &rbrace;
+  RegisterExtract &lbrace;
+  &rbrace;
+  OcSummaryData &lbrace;
+  &rbrace;
+  Charge &lbrace;
+  &rbrace;
+  ChargeEntry &lbrace;
+    string chargeDate "chargeDate"
+    string chargeID "chargeID"
+  &rbrace;
+  ChargeProprietor &lbrace;
+  &rbrace;
+  ChargeeParty &lbrace;
+    string partyDescription "partyDescription"
+    string partyNumber "partyNumber"
+    string tradingName "tradingName"
+  &rbrace;
+  Address &lbrace;
+  &rbrace;
+  AddressLine &lbrace;
+    string[] line "line"
+  &rbrace;
+  PostcodeZone &lbrace;
+    string postcode "postcode"
+  &rbrace;
+  CharityDetails &lbrace;
+    string[] charityName "charityName"
+  &rbrace;
+  CharityAddress &lbrace;
+  &rbrace;
+  CharityType &lbrace;
+    string value "value"
+  &rbrace;
+  Organization &lbrace;
+    string companyRegistrationNumber "companyRegistrationNumber"
+    string name "name"
+  &rbrace;
+  PrivateIndividual &lbrace;
+  &rbrace;
+  Alias &lbrace;
+    string forenamesName "forenamesName"
+    string surnameName "surnameName"
+  &rbrace;
+  Name &lbrace;
+    string forenamesName "forenamesName"
+    string surnameName "surnameName"
+  &rbrace;
+  EntryDetails &lbrace;
+    string entryNumber "entryNumber"
+    string entryText "entryText"
+    object infills "infills"
+    string registrationDate "registrationDate"
+    string scheduleCode "scheduleCode"
+    string subRegisterCode "subRegisterCode"
+  &rbrace;
+  RegisteredCharge &lbrace;
+    string multipleTitleIndicator "multipleTitleIndicator"
+  &rbrace;
+  SubCharge &lbrace;
+    string chargeDate "chargeDate"
+  &rbrace;
+  EquitableCharge &lbrace;
+  &rbrace;
+  NotedCharge &lbrace;
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>46</strong> objects, <strong>71</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="title_oc_charges_main">OC summary · charges (main)</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesold" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Titles To Be Sold[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSold" data-display-id="titlestobesold">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesold" class="object-block__title" data-display-id="titlestobesold">
+        <span class="object-block__display">Titles To Be Sold</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextract" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Register Extract</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtract" data-display-id="registerextract">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextract" class="object-block__title" data-display-id="registerextract">
+        <span class="object-block__display">Register Extract</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydata" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Oc Summary Data</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryData" data-display-id="ocsummarydata">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydata" class="object-block__title" data-display-id="ocsummarydata">
+        <span class="object-block__display">Oc Summary Data</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatacharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charge</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydataequitablecharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Equitable Charge</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatanotedcharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Noted Charge</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataCharge" data-display-id="charge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatacharge" class="object-block__title" data-display-id="charge">
+        <span class="object-block__display">Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentry" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charge Entry</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataEquitableCharge" data-display-id="equitablecharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataequitablecharge" class="object-block__title" data-display-id="equitablecharge">
+        <span class="object-block__display">Equitable Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydataequitablechargeentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataNotedCharge" data-display-id="notedcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatanotedcharge" class="object-block__title" data-display-id="notedcharge">
+        <span class="object-block__display">Noted Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatanotedchargeentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntry" data-display-id="chargeentry">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentry" class="object-block__title" data-display-id="chargeentry">
+        <span class="object-block__display">Charge Entry</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentryregisteredcharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Registered Charge</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietor" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charge Proprietor</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubcharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Sub Charge</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeDate"
+            data-overlays="">
+          <td>chargeDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeID"
+            data-overlays="">
+          <td>chargeID</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeID</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataEquitableChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydataequitablechargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.equitableCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataNotedChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatanotedchargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.notedCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietor" data-display-id="chargeproprietor">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietor" class="object-block__title" data-display-id="chargeproprietor">
+        <span class="object-block__display">Charge Proprietor</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeeparty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Chargee Party</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryRegisteredCharge" data-display-id="registeredcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentryregisteredcharge" class="object-block__title" data-display-id="registeredcharge">
+        <span class="object-block__display">Registered Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentryregisteredchargeentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.multipleTitleIndicator"
+            data-overlays="">
+          <td>multipleTitleIndicator</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>multipleTitleIndicator</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubCharge" data-display-id="subcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubcharge" class="object-block__title" data-display-id="subcharge">
+        <span class="object-block__display">Sub Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargeregisteredcharge" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Registered Charge</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietor" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charge Proprietor</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeDate"
+            data-overlays="">
+          <td>chargeDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>chargeDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeeParty" data-display-id="chargeeparty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeeparty" class="object-block__title" data-display-id="chargeeparty">
+        <span class="object-block__display">Chargee Party</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividual" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Private Individual</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyorganization" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Organization</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.partyDescription"
+            data-overlays="">
+          <td>partyDescription</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.partyNumber"
+            data-overlays="">
+          <td>partyNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.tradingName"
+            data-overlays="">
+          <td>tradingName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tradingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryRegisteredChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentryregisteredchargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.registeredCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietor" data-display-id="chargeproprietor">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietor" class="object-block__title" data-display-id="chargeproprietor">
+        <span class="object-block__display">Charge Proprietor</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeeparty" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Chargee Party</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeRegisteredCharge" data-display-id="registeredcharge">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargeregisteredcharge" class="object-block__title" data-display-id="registeredcharge">
+        <span class="object-block__display">Registered Charge</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargeregisteredchargeentrydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entry Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.multipleTitleIndicator"
+            data-overlays="">
+          <td>multipleTitleIndicator</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>multipleTitleIndicator</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddresspostcodezone" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Postcode Zone</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddressaddressline" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address Line</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyCharityDetails" data-display-id="charitydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetails" class="object-block__title" data-display-id="charitydetails">
+        <span class="object-block__display">Charity Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Address</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharitytype" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Type</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityName"
+            data-overlays="">
+          <td>charityName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>charityName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyOrganization" data-display-id="organization">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyorganization" class="object-block__title" data-display-id="organization">
+        <span class="object-block__display">Organization</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.organization</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.organization"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.organization.companyRegistrationNumber"
+            data-overlays="">
+          <td>companyRegistrationNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>companyRegistrationNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.organization.name"
+            data-overlays="">
+          <td>name</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyPrivateIndividual" data-display-id="privateindividual">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividual" class="object-block__title" data-display-id="privateindividual">
+        <span class="object-block__display">Private Individual</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividualname" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Name</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividualalias" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Alias</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeeParty" data-display-id="chargeeparty">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeeparty" class="object-block__title" data-display-id="chargeeparty">
+        <span class="object-block__display">Chargee Party</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividual" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Private Individual</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyorganization" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Organization</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetails" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Details</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.partyDescription"
+            data-overlays="">
+          <td>partyDescription</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.partyNumber"
+            data-overlays="">
+          <td>partyNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>partyNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.tradingName"
+            data-overlays="">
+          <td>tradingName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tradingName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeRegisteredChargeEntryDetails" data-display-id="entrydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargeregisteredchargeentrydetails" class="object-block__title" data-display-id="entrydetails">
+        <span class="object-block__display">Entry Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.entryNumber"
+            data-overlays="">
+          <td>entryNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.entryText"
+            data-overlays="">
+          <td>entryText</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>entryText</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.infills"
+            data-overlays="">
+          <td>infills</td>
+          <td><span class="muted">—</span></td>
+          <td><code>object</code></td>
+          <td>Evidence          </td>
+          <td><code>infills</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.registrationDate"
+            data-overlays="">
+          <td>registrationDate</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>registrationDate</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.scheduleCode"
+            data-overlays="">
+          <td>scheduleCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>scheduleCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.registeredCharge.entryDetails.subRegisterCode"
+            data-overlays="">
+          <td>subRegisterCode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>subRegisterCode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.address.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyCharityDetailsCharityAddress" data-display-id="charityaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddress" class="object-block__title" data-display-id="charityaddress">
+        <span class="object-block__display">Charity Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddresspostcodezone" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Postcode Zone</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddressaddressline" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address Line</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyCharityDetailsCharityType" data-display-id="charitytype">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharitytype" class="object-block__title" data-display-id="charitytype">
+        <span class="object-block__display">Charity Type</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityType</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityType"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityType.value"
+            data-overlays="">
+          <td>value</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyPrivateIndividualAlias" data-display-id="alias">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividualalias" class="object-block__title" data-display-id="alias">
+        <span class="object-block__display">Alias</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.alias</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.alias"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.alias.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.alias.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyPrivateIndividualName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartyprivateindividualname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.name"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.name.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.privateIndividual.name.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyAddress" data-display-id="address">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddress" class="object-block__title" data-display-id="address">
+        <span class="object-block__display">Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddresspostcodezone" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Postcode Zone</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddressaddressline" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address Line</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyCharityDetails" data-display-id="charitydetails">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetails" class="object-block__title" data-display-id="charitydetails">
+        <span class="object-block__display">Charity Details</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Address</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharitytype" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Charity Type</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityName"
+            data-overlays="">
+          <td>charityName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>charityName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyOrganization" data-display-id="organization">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyorganization" class="object-block__title" data-display-id="organization">
+        <span class="object-block__display">Organization</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.organization</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.organization"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.organization.companyRegistrationNumber"
+            data-overlays="">
+          <td>companyRegistrationNumber</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>companyRegistrationNumber</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.organization.name"
+            data-overlays="">
+          <td>name</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>name</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyPrivateIndividual" data-display-id="privateindividual">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividual" class="object-block__title" data-display-id="privateindividual">
+        <span class="object-block__display">Private Individual</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividualname" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Name</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividualalias" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Alias</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyCharityDetailsCharityAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntryChargeProprietorChargeePartyCharityDetailsCharityAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrychargeproprietorchargeepartycharitydetailscharityaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.address.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyCharityDetailsCharityAddress" data-display-id="charityaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddress" class="object-block__title" data-display-id="charityaddress">
+        <span class="object-block__display">Charity Address</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddresspostcodezone" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Postcode Zone</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddressaddressline" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Address Line</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyCharityDetailsCharityType" data-display-id="charitytype">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharitytype" class="object-block__title" data-display-id="charitytype">
+        <span class="object-block__display">Charity Type</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityType</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityType"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityType.value"
+            data-overlays="">
+          <td>value</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyPrivateIndividualAlias" data-display-id="alias">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividualalias" class="object-block__title" data-display-id="alias">
+        <span class="object-block__display">Alias</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.alias</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.alias"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.alias.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.alias.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyPrivateIndividualName" data-display-id="name">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartyprivateindividualname" class="object-block__title" data-display-id="name">
+        <span class="object-block__display">Name</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.name</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.name"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.name.forenamesName"
+            data-overlays="">
+          <td>forenamesName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>forenamesName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.privateIndividual.name.surnameName"
+            data-overlays="">
+          <td>surnameName</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>surnameName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyCharityDetailsCharityAddressAddressLine" data-display-id="addressline">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddressaddressline" class="object-block__title" data-display-id="addressline">
+        <span class="object-block__display">Address Line</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.addressLine.line"
+            data-overlays="">
+          <td>line</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string[]</code></td>
+          <td>Evidence          </td>
+          <td><code>line</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTitlesToBeSoldRegisterExtractOcSummaryDataChargeChargeEntrySubChargeChargeProprietorChargeePartyCharityDetailsCharityAddressPostcodeZone" data-display-id="postcodezone">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktitlestobesoldregisterextractocsummarydatachargechargeentrysubchargechargeproprietorchargeepartycharitydetailscharityaddresspostcodezone" class="object-block__title" data-display-id="postcodezone">
+        <span class="object-block__display">Postcode Zone</span>      </h4>
+      <code class="object-block__path">propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.charge.chargeEntry.subCharge.chargeProprietor.chargeeParty.charityDetails.charityAddress.postcodeZone.postcode"
+            data-overlays="">
+          <td>postcode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '38b3-title-oc-owners.html', label: 'OC summary · proprietorship & lease' }}
+  next={{ href: '38b5-title-oc-charges-other.html', label: 'OC summary · other charges & restrictions' }}
+/>
+</Layout>

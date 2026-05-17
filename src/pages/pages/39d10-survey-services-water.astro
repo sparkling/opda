@@ -1,0 +1,873 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Surveys · services · water, drainage, common services"
+  description="Surveys · services · water, drainage, common services"
+  page="survey-services-water"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39d10</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Surveys · services · water, drainage, common services</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>48</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o&lbrace; Survey : "surveys"
+  Survey ||--o| Services : "services"
+  Services ||--o| Water : "water"
+  Services ||--o| Drainage : "drainage"
+  Services ||--o| CommonServices : "commonServices"
+  CommonServices ||--o&lbrace; Photo : "photos"
+  Drainage ||--o&lbrace; Photo : "photos"
+  Water ||--o&lbrace; Photo : "photos"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  Survey &lbrace;
+  &rbrace;
+  Services &lbrace;
+  &rbrace;
+  CommonServices &lbrace;
+    string advisories "advisories"
+    string condition "condition"
+    string defectDetail "defectDetail"
+    string defects "defects"
+    boolean defectsPresent "defectsPresent"
+    string description "description"
+    string inspectionLimitations "inspectionLimitations"
+    string notes "notes"
+    string type "type"
+    string visibility "visibility"
+  &rbrace;
+  Photo &lbrace;
+    string description "description"
+    string photoId "photoId"
+    boolean report "report"
+  &rbrace;
+  Drainage &lbrace;
+    string advisories "advisories"
+    string condition "condition"
+    string defectDetail "defectDetail"
+    string defects "defects"
+    boolean defectsPresent "defectsPresent"
+    string description "description"
+    string features "features"
+    string inspectionLimitations "inspectionLimitations"
+    string location "location"
+    string notes "notes"
+    string privateSystem "privateSystem"
+    string restrictions "restrictions"
+    boolean runOff "runOff"
+    string system "system"
+    string visibility "visibility"
+  &rbrace;
+  Water &lbrace;
+    string advisories "advisories"
+    string condition "condition"
+    string defectDetail "defectDetail"
+    string defects "defects"
+    boolean defectsPresent "defectsPresent"
+    string description "description"
+    string distribution "distribution"
+    string inspectionLimitations "inspectionLimitations"
+    string notes "notes"
+    string restrictions "restrictions"
+    string stopTap "stopTap"
+    string storageTank "storageTank"
+    string supply "supply"
+    string visibility "visibility"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>48</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="surv_services_water">Services · water, drainage, common services</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurvey" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Surveys[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
+        <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysservices" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Services</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysServices" data-display-id="services">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysservices" class="object-block__title" data-display-id="services">
+        <span class="object-block__display">Services</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysserviceswater" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Water</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysservicesdrainage" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Drainage</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveysservicescommonservices" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Common Services</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesCommonServices" data-display-id="commonservices">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysservicescommonservices" class="object-block__title" data-display-id="commonservices">
+        <span class="object-block__display">Common Services</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.commonServices</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysservicescommonservicesphoto" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.commonServices"
+       data-field-count="10">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defectDetail"
+            data-overlays="">
+          <td>defectDetail</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defectsPresent"
+            data-overlays="">
+          <td>defectsPresent</td>
+          <td><span class="muted">—</span></td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>defectsPresent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.type"
+            data-overlays="">
+          <td>type</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>type</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesDrainage" data-display-id="drainage">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysservicesdrainage" class="object-block__title" data-display-id="drainage">
+        <span class="object-block__display">Drainage</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.drainage</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysservicesdrainagephoto" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.drainage"
+       data-field-count="15">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defectDetail"
+            data-overlays="">
+          <td>defectDetail</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defectsPresent"
+            data-overlays="">
+          <td>defectsPresent</td>
+          <td><span class="muted">—</span></td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>defectsPresent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.features"
+            data-overlays="">
+          <td>features</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>features</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.location"
+            data-overlays="">
+          <td>location</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>location</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.privateSystem"
+            data-overlays="">
+          <td>privateSystem</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>privateSystem</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.restrictions"
+            data-overlays="">
+          <td>restrictions</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.runOff"
+            data-overlays="">
+          <td>runOff</td>
+          <td>Boolean flag: run off.</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>runOff</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.system"
+            data-overlays="">
+          <td>system</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>system</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesWater" data-display-id="water">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysserviceswater" class="object-block__title" data-display-id="water">
+        <span class="object-block__display">Water</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.water</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveysserviceswaterphoto" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Photos[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.water"
+       data-field-count="14">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.water.advisories"
+            data-overlays="">
+          <td>advisories</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>advisories</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.condition"
+            data-overlays="">
+          <td>condition</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>condition</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defectDetail"
+            data-overlays="">
+          <td>defectDetail</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defectDetail</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defects"
+            data-overlays="">
+          <td>defects</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>defects</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defectsPresent"
+            data-overlays="">
+          <td>defectsPresent</td>
+          <td>Boolean flag: defect present.</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>defectsPresent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.distribution"
+            data-overlays="">
+          <td>distribution</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>distribution</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.inspectionLimitations"
+            data-overlays="">
+          <td>inspectionLimitations</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>inspectionLimitations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.notes"
+            data-overlays="">
+          <td>notes</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>notes</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.restrictions"
+            data-overlays="">
+          <td>restrictions</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>restrictions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.stopTap"
+            data-overlays="">
+          <td>stopTap</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>stopTap</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.storageTank"
+            data-overlays="">
+          <td>storageTank</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>storageTank</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.supply"
+            data-overlays="">
+          <td>supply</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>supply</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.visibility"
+            data-overlays="">
+          <td>visibility</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>visibility</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesCommonServicesPhoto" data-display-id="photo">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysservicescommonservicesphoto" class="object-block__title" data-display-id="photo">
+        <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.commonServices.photos[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.commonServices.photos[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].report"
+            data-overlays="">
+          <td>report</td>
+          <td><span class="muted">—</span></td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesDrainagePhoto" data-display-id="photo">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysservicesdrainagephoto" class="object-block__title" data-display-id="photo">
+        <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.drainage.photos[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.drainage.photos[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].report"
+            data-overlays="">
+          <td>report</td>
+          <td><span class="muted">—</span></td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesWaterPhoto" data-display-id="photo">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveysserviceswaterphoto" class="object-block__title" data-display-id="photo">
+        <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].services.water.photos[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].services.water.photos[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].description"
+            data-overlays="">
+          <td>description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].photoId"
+            data-overlays="">
+          <td>photoId</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>photoId</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].report"
+            data-overlays="">
+          <td>report</td>
+          <td><span class="muted">—</span></td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>report</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '39d9-survey-services-energy.html', label: 'Surveys · services · electricity, gas/oil, heating, water-heating' }}
+  next={{ href: '39d11-survey-legal.html', label: 'Surveys · legal & guarantees' }}
+/>
+</Layout>

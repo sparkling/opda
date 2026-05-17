@@ -1,0 +1,122 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Business glossary"
+  description="Merged PDTF business glossary — 554 SKOS concepts (54 OPDA terms + 500 schema-derived). Sourced from the OPDA Glossary spreadsheets and PDTF v3 schema annotations."
+  page="business-glossary"
+>
+<PageMeta category="Modelling" variant="info" updated="Generated 2026-05-14" />
+
+      <h1>Business glossary</h1>
+      <p class="lead">
+        The merged PDTF business glossary — the curated dictionary of business terms
+        plus the controlled vocabulary harvested from schema annotations. It is the
+        seed of the SKOS taxonomy and, in turn, the OWL ontology.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">What's in here</div>
+        <ul style="margin:0;">
+          <li><strong>54</strong> curated business terms — merged from the two OPDA <code>Glossary.xlsx</code> sources (Trust Framework PoC + Technical Working Group), deduplicated.</li>
+          <li><strong>698</strong> schema entities — deduplicated object / class concepts harvested from the PDTF v3 schemas, with labels in singular form.</li>
+          <li>Total: <strong>752</strong> concepts (down from a pre-dedup count of 1,024).</li>
+        </ul>
+      </div>
+
+      <h2 id="provenance">Where the terms came from</h2>
+
+      <Diagram size="small" caption="Two human-curated spreadsheets + schema-annotation harvester → one SKOS concept scheme.">
+flowchart LR
+  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
+
+  G1[Glossary.xlsx<br/>Trust Framework PoC<br/><i>~54 business terms</i>]:::src
+  G2[Glossary.xlsx<br/>Technical Working Group<br/><i>same set, refined</i>]:::src
+  S[PDTF v3 schemas<br/><i>title / description<br/>annotations</i>]:::src
+  PROC[Glossary merger<br/>+ SKOS generator]:::proc
+  TTL[business-glossary.ttl<br/>SKOS · 554 concepts]:::out
+
+  G1 --> PROC
+  G2 --> PROC
+  S  --> PROC
+  PROC --> TTL
+</Diagram>
+
+      <h2 id="twoKinds">Two kinds of entries</h2>
+
+      <table>
+        <thead>
+          <tr><th>Kind</th><th>Count</th><th>Origin</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Business term</strong></td>
+            <td>54</td>
+            <td>OPDA Glossary spreadsheets (Trust Framework PoC + Technical WG)</td>
+            <td>Authoritative business definitions. Use as <code>skos:prefLabel</code> + <code>skos:definition</code> in the ontology.</td>
+          </tr>
+          <tr>
+            <td><strong>Schema concept</strong></td>
+            <td>500</td>
+            <td>Harvested from JSON Schema <code>title</code> / <code>description</code> on PDTF v3 nodes</td>
+            <td>Working vocabulary. Needs an editorial pass with the Technical WG before becoming canonical.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="entities-browser" class="data-browser">
+        <div class="db-status-loading">Loading 752 concepts…</div>
+      </div>
+
+      <p class="muted tiny">
+        Tip: set <em>Kind</em> = <code>Business term</code> to see only the 54 curated
+        entries; the rest are working definitions extracted from schema annotations.
+      </p>
+
+      <h2 id="next">Where this is heading</h2>
+      <ol>
+        <li>
+          <strong>Editorial pass with the Technical Working Group</strong> — reconcile the
+          54 OPDA terms (open-banking-flavoured) with the 500 schema concepts
+          (property-flavoured) so the glossary reads as one coherent vocabulary.
+        </li>
+        <li>
+          <strong>Promote to SKOS taxonomy</strong> — group concepts under broader categories
+          (Transaction · Property · Participant · Claim · Document · Form · Search) with
+          <code>skos:broader</code> / <code>skos:narrower</code>. See the
+          <a href="30-concept-taxonomy.html">Concept taxonomy</a> page (stub).
+        </li>
+        <li>
+          <strong>Then OWL classes</strong> — promote the top-level branches into ontology
+          classes with W3C-VC alignment. See <a href="31-ontology.html">Ontology (OWL)</a>.
+        </li>
+      </ol>
+
+      <h2 id="sources">Source files</h2>
+      <ul>
+        <li><a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json"><code>source/00-deliverables/semantic-models/glossary-merged.json</code></a> — the 54 OPDA terms as JSON.</li>
+        <li><a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/business-glossary.md"><code>source/00-deliverables/semantic-models/business-glossary.md</code></a> — human-readable tri-source glossary.</li>
+        <li><a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl"><code>source/00-deliverables/semantic-models/business-glossary.ttl</code></a> — SKOS Concept Scheme (Turtle).</li>
+        <li><a class="resource-link" href="/resource.html?path=source/06-research/trust-framework-poc/Glossary.xlsx"><code>source/06-research/trust-framework-poc/Glossary.xlsx</code></a></li>
+        <li><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/technical/Glossary.xlsx"><code>source/04-governance-bodies/working-groups/technical/Glossary.xlsx</code></a></li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '13-data-dictionary.html', label: 'Data dictionary' }}
+  next={{ href: '30-concept-taxonomy.html', label: 'Concept taxonomy (SKOS)' }}
+/>
+</Layout>
+
+<style is:global>
+/* Business glossary: show the table at full height (no scroll container). */
+    #entities-browser .db-table-wrap {
+      max-height: none;
+      overflow-x: visible;
+      overflow-y: visible;
+    }
+</style>

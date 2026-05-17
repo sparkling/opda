@@ -1,0 +1,33 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Environmental"
+  description="Landing for the Environmental cluster."
+  page="local-context-environmental"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 46d</span>
+        <span>Landing</span>
+      </div>
+      <h1>Environmental</h1>
+      <p class="lead">
+        Risk and context that originates outside the property's boundary —
+        flooding, ground, pollution, coast, climate, infrastructure, and
+        nearby facilities. Five sub-pages by risk family.
+      </p>
+      <h2 id="subpages">Pages in this cluster</h2>
+      <ul class="cluster-index">
+        <li><a href="46d1-flooding.html"><strong>Flooding</strong></a> — surface, river, coastal, groundwater flood risk.</li>
+        <li><a href="46d2-mining-ground.html"><strong>Mining &amp; ground stability</strong></a> — coal mining, non-coal mining, ground subsidence.</li>
+        <li><a href="46d3-pollution-radon.html"><strong>Pollution &amp; radon</strong></a> — contaminated land, radon gas exposure.</li>
+        <li><a href="46d4-coast-climate.html"><strong>Coast &amp; climate</strong></a> — coastal erosion, climate-related risks.</li>
+        <li><a href="46d5-infra-policy.html"><strong>Infrastructure, energy, transport, planning</strong></a> — proximity to infrastructure, energy installations, transport, planning, neighbourhood facilities.</li>
+      </ul>
+      <PageFooter
+  prev={{ href: '46c-llc1.html', label: 'Local Land Charges (LLC1)' }}
+  next={{ href: '46d1-flooding.html', label: 'Flooding' }}
+/>
+</Layout>

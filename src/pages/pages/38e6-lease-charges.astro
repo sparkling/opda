@@ -1,0 +1,29 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Leasehold · service charge &amp; insurance"
+  description="Landing for the leasehold service charge &amp; insurance cluster."
+  page="lease-charges"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38e6</span>
+        <span>Landing</span>
+      </div>
+      <h1>Leasehold · service charge &amp; insurance</h1>
+      <p class="lead">
+        The two financial obligations of leasehold ownership — service
+        charge and buildings insurance — each split out onto its own page.
+      </p>
+      <h2 id="subpages">Pages in this cluster</h2>
+      <ul class="cluster-index">
+        <li><a href="38e6a-lease-service-charge.html"><strong>Service charge</strong></a> — annual charge, reserve fund, Section 20 works, disputes, arrears.</li>
+        <li><a href="38e6b-lease-buildings-insurance.html"><strong>Buildings insurance</strong></a> — managed-area cover, premiums, claims, terms.</li>
+      </ul>
+      <PageFooter
+  prev={{ href: '38e5-lease-rent.html', label: 'Ground rent' }}
+  next={{ href: '38e6a-lease-service-charge.html', label: 'Service charge' }}
+/>
+</Layout>

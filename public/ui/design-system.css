@@ -53,9 +53,14 @@ a:hover {
   align-items: center;
   height: var(--header-height);
   padding: 0 var(--space-6);
-  background: var(--surface-dark);
+  /* Lifted off the canvas — surface-dark-alt is one step brighter than the
+     page background, so content scrolling under the header is visually
+     separated. The shadow gives a soft material elevation. */
+  background: var(--surface-dark-alt);
   color: #f7f3e9;
   border-bottom: 1px solid #34302b;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25),
+              0 6px 12px -6px rgba(0, 0, 0, 0.4);
   /* Pin brand tints used by header text so dark mode doesn't invert them */
   --color-brand-100: var(--terracotta-100);
   --color-brand-200: var(--terracotta-200);
@@ -67,13 +72,18 @@ a:hover {
   gap: var(--space-3);
   color: #f7f3e9;
   text-decoration: none;
+  padding-right: var(--space-4);
+  border-right: 1px solid rgba(247, 243, 233, 0.1);
 }
 .app-header .brand-link:hover { text-decoration: none; }
+.app-header .brand-link:hover .brand-mark { color: var(--terracotta-300); }
 .app-header .brand-mark {
   font-family: var(--font-serif);
   font-weight: 700;
   font-size: var(--text-xl);
   letter-spacing: var(--tracking-tight);
+  color: var(--terracotta-300);
+  transition: color var(--duration-fast) var(--ease);
 }
 .app-header .brand-sub {
   font-family: var(--font-sans);
@@ -86,46 +96,50 @@ a:hover {
 .app-header .global-nav {
   display: flex;
   align-items: center;
-  gap: 2px;
-  margin-left: var(--space-5);
+  gap: var(--space-1);
+  margin-left: var(--space-4);
   flex-wrap: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
 }
 .app-header .global-nav::-webkit-scrollbar { display: none; }
 .app-header .global-nav a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: var(--space-2) var(--space-3);
+  padding: 0 var(--space-3);
+  height: 2.25rem;
   border-radius: var(--radius-md);
-  color: #c7c0b3;
+  color: #d8d2c5;
   font: 500 var(--text-sm) / 1 var(--font-sans);
   white-space: nowrap;
   transition: background var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease);
 }
 .app-header .global-nav a:hover {
-  background: rgba(247,243,233,0.06);
-  color: #f7f3e9;
+  background: rgba(247, 243, 233, 0.08);
+  color: #ffffff;
   text-decoration: none;
 }
 .app-header .global-nav a.active {
-  color: var(--terracotta-300);
-  box-shadow: inset 0 -2px 0 var(--terracotta-500);
+  color: var(--terracotta-200);
+  background: rgba(204, 120, 92, 0.18);
 }
 
 .app-header .header-nav {
   margin-left: auto;
   display: flex;
-  gap: var(--space-5);
+  gap: var(--space-4);
   align-items: center;
+  padding-right: var(--space-2);
 }
 .app-header .header-nav a {
-  color: #c7c0b3;
+  color: #b8b1a3;
   font-size: var(--text-sm);
   font-weight: 500;
+  transition: color var(--duration-fast) var(--ease);
 }
-.app-header .header-nav a:hover { color: #f7f3e9; text-decoration: none; }
+.app-header .header-nav a:hover { color: #ffffff; text-decoration: none; }
 
 .menu-toggle {
   display: none;
@@ -168,6 +182,45 @@ a:hover {
 :root[data-theme="dark"] .theme-icon--sun  { display: block; }
 :root[data-theme="dark"] .theme-icon--moon { display: none; }
 
+/* Light-mode header — warm cream chrome with ink text. Background is
+   one step warmer than canvas (cream-200) so scrolled content is
+   visually separated; the soft shadow reinforces the elevation. */
+:root[data-theme="light"] .app-header {
+  background: var(--cream-200);
+  color: var(--color-text-strong);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 0 rgba(20, 20, 19, 0.04),
+              0 6px 12px -6px rgba(20, 20, 19, 0.08);
+}
+:root[data-theme="light"] .app-header .brand-link {
+  color: var(--color-text-strong);
+  border-right-color: var(--color-border);
+}
+:root[data-theme="light"] .app-header .brand-mark { color: var(--terracotta-700); }
+:root[data-theme="light"] .app-header .brand-link:hover .brand-mark { color: var(--terracotta-800); }
+:root[data-theme="light"] .app-header .brand-sub { color: var(--color-text-muted); }
+:root[data-theme="light"] .app-header .global-nav a { color: var(--color-text); }
+:root[data-theme="light"] .app-header .global-nav a:hover {
+  background: var(--cream-300);
+  color: var(--color-text-strong);
+}
+:root[data-theme="light"] .app-header .global-nav a.active {
+  color: var(--terracotta-800);
+  background: var(--terracotta-100);
+}
+:root[data-theme="light"] .app-header .header-nav a { color: var(--color-text-muted); }
+:root[data-theme="light"] .app-header .header-nav a:hover { color: var(--color-text-strong); }
+:root[data-theme="light"] .menu-toggle { color: var(--color-text-strong); }
+:root[data-theme="light"] .menu-toggle:hover { background: var(--cream-300); }
+:root[data-theme="light"] .theme-toggle {
+  color: var(--color-text-strong);
+  border-color: var(--color-border);
+}
+:root[data-theme="light"] .theme-toggle:hover {
+  background: var(--cream-300);
+  border-color: var(--terracotta-400);
+}
+
 /* Sidebar */
 .app-body {
   display: grid;
@@ -178,6 +231,71 @@ a:hover {
 .app-body.no-sidebar { grid-template-columns: 1fr; }
 .app-body.with-toc { grid-template-columns: var(--sidebar-width) 1fr 16rem; }
 .app-body.no-sidebar.with-toc { grid-template-columns: 1fr 16rem; }
+
+/* Collapsed rails — narrow strip showing only the expand-toggle button. */
+.app-body.sidebar-collapsed { grid-template-columns: 2.5rem 1fr; }
+.app-body.sidebar-collapsed.with-toc { grid-template-columns: 2.5rem 1fr 16rem; }
+.app-body.sidebar-collapsed.with-toc.toc-collapsed { grid-template-columns: 2.5rem 1fr 2.5rem; }
+.app-body.with-toc.toc-collapsed { grid-template-columns: var(--sidebar-width) 1fr 2.5rem; }
+.app-body.no-sidebar.with-toc.toc-collapsed { grid-template-columns: 1fr 2.5rem; }
+
+/* Toggle button common styles. Sits at the top of each rail. */
+.rail-collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 var(--space-3) var(--space-3) auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  background: var(--cream-200);
+  cursor: pointer;
+  color: var(--terracotta-700);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 2px rgba(20, 20, 19, 0.04);
+  transition: background var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease);
+}
+.rail-collapse-toggle:hover {
+  background: var(--terracotta-100);
+  color: var(--terracotta-800);
+  border-color: var(--terracotta-300);
+}
+.rail-collapse-toggle:focus-visible {
+  outline: 2px solid var(--terracotta-500);
+  outline-offset: 2px;
+}
+:root[data-theme="dark"] .rail-collapse-toggle {
+  background: var(--surface-dark-tint);
+  border-color: var(--color-border);
+  color: var(--terracotta-300);
+}
+:root[data-theme="dark"] .rail-collapse-toggle:hover {
+  background: var(--surface-dark-alt);
+  color: var(--terracotta-200);
+  border-color: var(--terracotta-700);
+}
+.rail-collapse-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 2.5px;
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+/* When collapsed: hide nav content, centre the toggle on the rail,
+   flip the chevron via rotate. */
+.app-body.sidebar-collapsed .sidebar-nav { display: none; }
+.app-body.sidebar-collapsed .app-sidebar { padding-left: 0; padding-right: 0; }
+.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
+.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle svg { transform: rotate(180deg); }
+
+.app-body.toc-collapsed .toc-title,
+.app-body.toc-collapsed .toc > ul { display: none; }
+.app-body.toc-collapsed .toc { padding-left: 0; padding-right: 0; }
+.app-body.toc-collapsed .toc > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
+.app-body.toc-collapsed .toc > .rail-collapse-toggle svg { transform: rotate(180deg); }
 
 .app-sidebar {
   position: sticky;
@@ -1071,6 +1189,118 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   max-width: 36rem !important;
   max-height: 320px;
 }
+/* Medium variant — between the compact small (36rem/320px) and the
+   default cap (100%/750px). For diagrams that need more room than
+   --small allows but still shouldn't fill the column. */
+.diagram--medium .mermaid svg {
+  max-width: 44rem !important;
+  max-height: 420px;
+}
+/* Large variant — one step below the unconstrained default. */
+.diagram--large .mermaid svg {
+  max-width: 56rem !important;
+  max-height: 540px;
+}
+
+/* === Diagram node colour categories — Cagle palette (theme-aware) ============
+   Mermaid node colours follow the Cagle palette from the diagramming skill
+   (light + dark variants, WCAG AA+). Apply via mermaid `:::info`,
+   `:::success`, `:::warning`, `:::error`, `:::neutral` (statuses) or
+   `:::infra`, `:::service`, `:::data`, `:::user`, `:::process`,
+   `:::security`, `:::external` (architecture types). The matching
+   `classDef` in mermaid only needs a non-colour property (stroke-width or
+   stroke-dasharray); fills and strokes come from these rules. !important
+   is required because mermaid sets fills as inline SVG styles.
+
+   Light fills & strokes are the canonical Cagle hex from
+   ~/.claude/skills/diagramming/09-STYLING-GUIDE.md. Dark variants are the
+   Cagle Dark companion (Council Sessions 162 + 163, WCAG 2.2 + CVD audited). */
+
+/* --- Status colours ------------------------------------------------------ */
+.diagram .mermaid g.node.success rect,
+.diagram .mermaid g.node.success polygon,
+.diagram .mermaid g.node.success path { fill: #C8E6C9 !important; stroke: #2E7D32 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.success rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.success polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.success path { fill: #0D2818 !important; stroke: #66BB6A !important; }
+
+.diagram .mermaid g.node.warning rect,
+.diagram .mermaid g.node.warning polygon,
+.diagram .mermaid g.node.warning path { fill: #FFF9C4 !important; stroke: #F9A825 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.warning rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.warning polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.warning path { fill: #2E2400 !important; stroke: #FFEE58 !important; }
+
+.diagram .mermaid g.node.error rect,
+.diagram .mermaid g.node.error polygon,
+.diagram .mermaid g.node.error path { fill: #FFCDD2 !important; stroke: #C62828 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.error rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.error polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.error path { fill: #2A0A0A !important; stroke: #EF5350 !important; }
+
+.diagram .mermaid g.node.info rect,
+.diagram .mermaid g.node.info polygon,
+.diagram .mermaid g.node.info path { fill: #BBDEFB !important; stroke: #1565C0 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.info rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.info polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.info path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
+
+.diagram .mermaid g.node.neutral rect,
+.diagram .mermaid g.node.neutral polygon,
+.diagram .mermaid g.node.neutral path { fill: #F5F5F5 !important; stroke: #757575 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.neutral rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.neutral polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.neutral path { fill: #1E1E1E !important; stroke: #9E9E9E !important; }
+
+/* --- Architecture types --------------------------------------------------- */
+.diagram .mermaid g.node.infra rect,
+.diagram .mermaid g.node.infra polygon,
+.diagram .mermaid g.node.infra path { fill: #E3F2FD !important; stroke: #1565C0 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.infra rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.infra polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.infra path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
+
+.diagram .mermaid g.node.service rect,
+.diagram .mermaid g.node.service polygon,
+.diagram .mermaid g.node.service path { fill: #E8F5E9 !important; stroke: #2E7D32 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.service rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.service polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.service path { fill: #0D2818 !important; stroke: #66BB6A !important; }
+
+.diagram .mermaid g.node.data rect,
+.diagram .mermaid g.node.data polygon,
+.diagram .mermaid g.node.data path { fill: #FFF8E1 !important; stroke: #F57F17 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.data rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.data polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.data path { fill: #2E1500 !important; stroke: #FFA726 !important; }
+
+.diagram .mermaid g.node.user rect,
+.diagram .mermaid g.node.user polygon,
+.diagram .mermaid g.node.user path { fill: #F3E5F5 !important; stroke: #7B1FA2 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.user rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.user polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.user path { fill: #1A0A2E !important; stroke: #BA68C8 !important; }
+
+.diagram .mermaid g.node.process rect,
+.diagram .mermaid g.node.process polygon,
+.diagram .mermaid g.node.process path { fill: #E1F5FE !important; stroke: #0277BD !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.process rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.process polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.process path { fill: #012830 !important; stroke: #4DD0E1 !important; }
+
+.diagram .mermaid g.node.security rect,
+.diagram .mermaid g.node.security polygon,
+.diagram .mermaid g.node.security path { fill: #E0F2F1 !important; stroke: #00695C !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.security rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.security polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.security path { fill: #002A22 !important; stroke: #4DB6AC !important; }
+
+.diagram .mermaid g.node.external rect,
+.diagram .mermaid g.node.external polygon,
+.diagram .mermaid g.node.external path { fill: #ECEFF1 !important; stroke: #455A64 !important; }
+:root[data-theme="dark"] .diagram .mermaid g.node.external rect,
+:root[data-theme="dark"] .diagram .mermaid g.node.external polygon,
+:root[data-theme="dark"] .diagram .mermaid g.node.external path { fill: #211A17 !important; stroke: #D7CCC8 !important; }
 /* Same cap for inline content images in articles (icons / screenshots
    / illustrations). */
 .prose img,

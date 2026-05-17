@@ -1,0 +1,51 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Legal estate &amp; title"
+  description="Landing for the Legal estate &amp; title cluster — tenure, title (OC summary + full register), ownership variants, boundaries &amp; rights."
+  page="legal-estate"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 38</span>
+        <span>Landing</span>
+      </div>
+
+      <h1>Legal estate &amp; title</h1>
+      <p class="lead">
+        The legal layer of the property pack — who owns it, on what tenure,
+        what the title register records, and what binds the estate. This is
+        the largest cluster in the PDTF schema; it splits into seven
+        sub-pages by object sub-cluster.
+      </p>
+
+      <aside class="callout callout--key" role="note">
+        <p class="callout__label">The shape of this cluster</p>
+        <p>
+          Tenure governs the conveyance. Title — registered with HMLR —
+          carries the seal of state behind every ownership claim and every
+          charge or restriction over the estate. Ownership describes <em>how</em>
+          the seller holds the estate and <em>what</em> they transfer at completion
+          (freehold, leasehold, managed). Boundaries and rights complete
+          the legal envelope.
+        </p>
+      </aside>
+
+      <h2 id="subpages">Pages in this cluster</h2>
+      <ul class="cluster-index">
+        <li><a href="38a-tenure.html"><strong>Tenure</strong></a> — freehold/leasehold/commonhold marketing tenure and the legal-owner roster.</li>
+        <li><a href="38b-title-oc-summary.html"><strong>Title — Official Copy summary</strong></a> — parsed OC summary: proprietorship, lease, charges, restrictions, notices.</li>
+        <li><a href="38c-title-oc-full.html"><strong>Title — Official Copy full register</strong></a> — raw register data and additional title documents.</li>
+        <li><a href="38d-ownership-freehold.html"><strong>Ownership — freehold transfer</strong></a> — what's transferred when the estate is freehold.</li>
+        <li><a href="38e-ownership-leasehold.html"><strong>Ownership — leasehold transfer</strong></a> — lease term, ground rent, service charge, management, consents.</li>
+        <li><a href="38f-ownership-managed.html"><strong>Ownership — managed</strong></a> — managed freehold / commonhold contacts, finances, disputes.</li>
+        <li><a href="38g-boundaries-rights.html"><strong>Boundaries &amp; rights</strong></a> — legal boundaries and informal arrangements over the estate.</li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '37-property.html', label: 'Property identity' }}
+  next={{ href: '38a-tenure.html', label: 'Tenure' }}
+/>
+</Layout>

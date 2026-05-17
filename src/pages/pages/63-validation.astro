@@ -1,0 +1,145 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Validation"
+  description="Validating PDTF transactions and verified claims with the Ajv-backed validator the schemas package ships with."
+  page="validation"
+>
+<PageMeta category="Implementation" variant="brand" updated="Updated 2026-05-14" />
+
+      <h1>Validation</h1>
+      <p class="lead">
+        How to run a PDTF transaction through a validator, decode the errors, and
+        validate verified-claims envelopes. The package wraps Ajv with the right
+        keyword configuration so you don't have to assemble it yourself.
+      </p>
+
+      <h2 id="getvalidator">getValidator()</h2>
+
+      <pre><code>const &lbrace; getValidator &rbrace; = require('@pdtf/schemas');
+
+const validate = getValidator(
+  'https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json',
+  ['baspi5', 'nts2']
+);
+
+const ok = validate(transaction);
+if (!ok) &lbrace;
+  console.error(validate.errors);
+&rbrace;</code></pre>
+
+      <p>
+        Returns an Ajv-compiled validator. The Ajv instance is shared across calls
+        and configured with:
+      </p>
+      <ul>
+        <li><code>allErrors: true</code> — surface every validation error, not just the first</li>
+        <li><code>strictSchema: false</code> — PDTF carries non-standard keywords like <code>baspi5Ref</code>; strict mode would reject them</li>
+        <li><code>discriminator: true</code> — enables the OpenAPI-style discriminator pattern used in <code>oneOf</code> branches</li>
+        <li><code>ajv-formats</code> — adds <code>date</code>, <code>date-time</code>, <code>email</code>, <code>uri</code>, etc.</li>
+      </ul>
+
+      <h2 id="errors">Decoding errors</h2>
+
+      <p>Ajv error format. Each entry has <code>instancePath</code>, <code>schemaPath</code>, <code>keyword</code>, <code>params</code>, <code>message</code>.</p>
+
+      <pre><code>// Example error from a missing required field
+&lbrace;
+  instancePath: '/propertyPack/priceInformation',
+  schemaPath:   '#/properties/propertyPack/required',
+  keyword:      'required',
+  params:       &lbrace; missingProperty: 'price' &rbrace;,
+  message:      "must have required property 'price'"
+&rbrace;</code></pre>
+
+      <p>Useful patterns:</p>
+
+      <table>
+        <thead>
+          <tr><th>You see</th><th>Likely cause</th><th>Fix</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>must have required property 'X'</code></td>
+            <td>Overlay made it required; base didn't</td>
+            <td>Add it, or drop the overlay if it doesn't apply</td>
+          </tr>
+          <tr>
+            <td><code>must match exactly one schema in oneOf</code></td>
+            <td>Discriminator field has no match, or matches more than one branch</td>
+            <td>Check the value of the discriminator (usually <code>role</code>, <code>yesNo</code>, <code>capacity</code> etc.)</td>
+          </tr>
+          <tr>
+            <td><code>must be equal to one of the allowed values</code></td>
+            <td>Enum violation</td>
+            <td>Look up the enum in the merged schema; case sensitivity matters</td>
+          </tr>
+          <tr>
+            <td><code>strict mode: unknown keyword: "X"</code></td>
+            <td>You configured Ajv strictly</td>
+            <td>Use <code>getValidator</code> rather than rolling your own Ajv instance</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="verifiedclaims">validateVerifiedClaims()</h2>
+
+      <p>
+        PDTF transactions can be expressed as Verified Claims (W3C VC Data Model
+        2.0 envelopes). The package exports a dedicated validator for that case:
+      </p>
+
+      <pre><code>const &lbrace; validateVerifiedClaims &rbrace; = require('@pdtf/schemas');
+
+const errors = validateVerifiedClaims(
+  verifiedClaimsData,
+  'https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json',
+  ['baspi5']
+);
+
+if (errors.length === 0) &lbrace;
+  console.log('All claims valid');
+&rbrace;</code></pre>
+
+      <p>
+        Each claim inside the VC envelope is validated against the merged PDTF
+        transaction schema at the path the claim describes (using its
+        <code>credentialSubject</code> path). Returns an array of error objects;
+        empty array means all claims passed.
+      </p>
+
+      <p>See <a href="64-verified-claims.html">Verified claims</a> for the envelope shape.</p>
+
+      <h2 id="subschema">Validating a sub-path</h2>
+
+      <p>
+        For a producer who only emits one part of the transaction (e.g. just the
+        BASPI section), you don't need the whole base schema. <code>getValidator</code>
+        accepts a JSON Pointer path:
+      </p>
+
+      <pre><code>const &lbrace; getValidator &rbrace; = require('@pdtf/schemas');
+
+const validate = getValidator(
+  BASE_ID,
+  ['baspi5'],
+  '/properties/propertyPack/properties/priceInformation'
+);</code></pre>
+
+      <p>The validator now only checks the <code>priceInformation</code> sub-tree against the merged schema.</p>
+
+      <h2 id="performance">Performance</h2>
+      <ul>
+        <li>Validator compilation is the expensive step — done once per <code>(schemaId, overlay-key, path)</code> tuple, cached for re-use.</li>
+        <li>Validating a typical transaction (~5 KB JSON) against a single overlay takes &lt; 1 ms after warm-up.</li>
+        <li>Cache stats: <code>require('@pdtf/schemas').cacheStats</code> exposes hit/miss counts, useful for tuning long-running services.</li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '62-schema-composition.html', label: 'Schema composition' }}
+  next={{ href: '64-verified-claims.html', label: 'Verified claims' }}
+/>
+</Layout>

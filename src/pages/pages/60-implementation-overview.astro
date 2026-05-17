@@ -1,0 +1,127 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Implementation — overview"
+  description="The five-piece PDTF stack: schemas, OpenAPI, accreditation, trust-framework runtime, verified claims."
+  page="impl-overview"
+>
+<PageMeta category="Implementation" variant="brand" updated="Updated 2026-05-14" />
+
+      <h1>Implementation — overview</h1>
+      <p class="lead">
+        This section is the engineer's view of PDTF. The Modelling section explains
+        the vocabulary; this section is about <em>building software</em> that
+        produces, validates, transmits and verifies PDTF transactions.
+      </p>
+
+      <h2 id="stack">The five-piece stack</h2>
+
+      <Diagram caption="Most integrations consume Schemas + API spec; serious ones also satisfy
+          the trust framework's accreditation criteria and emit Verifiable Credentials.">
+flowchart TB
+  classDef pkg fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
+  classDef spec fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef proc fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+
+  S1["@pdtf/schemas<br/><i>npm · v3.4.0</i>"]:::pkg
+  S2["@pdtf/api<br/><i>OpenAPI spec</i>"]:::spec
+  S3["trust-framework<br/><i>spec repo</i>"]:::spec
+  S4["@pdtf/accreditation<br/><i>conformance test suite</i>"]:::pkg
+  S5["W3C VC / DID<br/><i>verified claims wrapper</i>"]:::pkg
+
+  P[Your product]:::proc
+
+  S1 -.consumed by.-> P
+  S2 -.consumed by.-> P
+  S3 -.bound by.-> P
+  P --> S4
+  P --> S5
+</Diagram>
+
+      <h2 id="pieces">The pieces</h2>
+
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Where it lives</th><th>What it gives you</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Schemas package</strong></td>
+            <td>npm: <code>@pdtf/schemas</code> · source: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/"><code>source/03-standards/schemas/</code></a></td>
+            <td>The base PDTF transaction schema + 18 main overlays + 16 extension overlays. Functions to merge them, validate, walk paths. See <a href="62-schema-composition.html">Schema composition</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>OpenAPI spec</strong></td>
+            <td>Source: <a class="resource-link" href="/resource.html?path=source/03-standards/api/"><code>source/03-standards/api/</code></a></td>
+            <td>v1.2 of the HTTP API. Defines the endpoints for transaction exchange. Implement on your side; or consume someone else's.</td>
+          </tr>
+          <tr>
+            <td><strong>Trust framework spec</strong></td>
+            <td>Source: <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/"><code>source/03-standards/trust-framework/</code></a></td>
+            <td>The rules of the road — governance, security, audit, accreditation criteria. Published as a Mintlify docs site.</td>
+          </tr>
+          <tr>
+            <td><strong>Accreditation</strong></td>
+            <td>Conformance test suite (to be released)</td>
+            <td>Mechanically check whether your implementation meets the criteria for OPDA-accredited intermediary or certified data source.</td>
+          </tr>
+          <tr>
+            <td><strong>Verified claims</strong></td>
+            <td>W3C VC Data Model 2.0 + DID 1.0</td>
+            <td>Wrapping PDTF transaction fragments as signed Verifiable Credentials for cross-party trust. See <a href="64-verified-claims.html">Verified claims</a>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="paths">Common integration paths</h2>
+
+      <table>
+        <thead>
+          <tr><th>Use case</th><th>Likely overlays</th><th>Stack needed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Estate-agent product showing material-info-compliant listings</td>
+            <td><code>baspi5</code>, <code>nts2</code>, <code>ntsl2</code></td>
+            <td>Schemas package + minimal API client</td>
+          </tr>
+          <tr>
+            <td>Conveyancer firm consuming a property pack</td>
+            <td><code>ta6</code>, <code>ta7</code>, <code>ta10</code>, <code>lpe1</code></td>
+            <td>Schemas + API consumer</td>
+          </tr>
+          <tr>
+            <td>Lender taking a mortgage application</td>
+            <td><code>fme1</code></td>
+            <td>Schemas + verified-claims verifier (need to trust the data)</td>
+          </tr>
+          <tr>
+            <td>Search-product provider</td>
+            <td><code>con29R</code>, <code>con29DW</code>, <code>llc1</code>, <code>oc1</code>, <code>rds</code></td>
+            <td>Full stack — you're a certified data source</td>
+          </tr>
+          <tr>
+            <td>Property tech orchestrator</td>
+            <td>Many overlays composed at runtime</td>
+            <td>Full stack incl. accreditation as intermediary</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="next">Sub-pages</h2>
+      <ul>
+        <li><a href="61-quickstart.html"><strong>Quickstart</strong></a> — install + first validation in ~3 minutes</li>
+        <li><a href="62-schema-composition.html"><strong>Schema composition</strong></a> — overlay merge mechanics</li>
+        <li><a href="63-validation.html"><strong>Validation</strong></a> — Ajv, getValidator, validateVerifiedClaims</li>
+        <li><a href="64-verified-claims.html"><strong>Verified claims</strong></a> — VC/DID integration (stub)</li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '/implementation.html', label: 'Implementation' }}
+  next={{ href: '61-quickstart.html', label: 'Quickstart' }}
+/>
+</Layout>

@@ -1,0 +1,240 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Project roadmap"
+  page="project-roadmap"
+>
+<PageMeta category="Roadmap" variant="warn" updated="Updated 2026-05-14" />
+
+      <h1>Project roadmap — semantic modelling + governance</h1>
+      <p class="lead">
+        Concrete deliverables, sequenced. The discovery phase is done; this is what
+        we produce from here.
+      </p>
+
+      <h2 id="discoveryComplete">What's already done (discovery phase)</h2>
+
+      <ul>
+        <li>5 GitHub repos cloned with full history</li>
+        <li>86-page WordPress site mirror + 6-page Astro site mirror</li>
+        <li>40+ video transcripts (YouTube, Vimeo, SharePoint Stream)</li>
+        <li>119 SharePoint documents organised into taxonomy</li>
+        <li>Full UK government initiative mapped (this docs site)</li>
+        <li>Governance framework choice settled (ToIP, evidenced from OPDA's own publications)</li>
+      </ul>
+
+      <h2 id="phase1">Phase 1 — Foundations (next 2–3 weeks)</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Read the Statement of Work</h3>
+          <p>
+            <code>source/00-deliverables/Draft Statement of Work - schema.docx</code> —
+            anchors everything else; tells us what Maria has formally scoped.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Plan + roadmap document</h3>
+          <p>
+            <a class="resource-link" href="/resource.html?path=source/00-deliverables/plan.md"><code>source/00-deliverables/plan.md</code></a> and <code>roadmap.md</code>
+            — synthesise this knowledge base plus the SoW into a single project plan.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Merged glossary v0.1</h3>
+          <p>
+            Reconcile <code>trust-framework-poc/Glossary.xlsx</code> +
+            <code>working-groups/technical/Glossary.xlsx</code> + JSON Schema property
+            names. Single source of truth for terminology.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Foundation</div>
+          <h3>Stakeholder map</h3>
+          <p>
+            Who, what they need, when. Driven by the
+            <a href="03-departments.html">departments</a>,
+            <a href="04-steering-forums.html">steering forums</a> pages and member list.
+          </p>
+        </div>
+      </div>
+
+      <h2 id="phase2">Phase 2 — Semantic model v0.1 (weeks 3–6)</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--info">Modelling</div>
+          <h3>Concept taxonomy (SKOS)</h3>
+          <p>
+            Top-level categories derived from <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> v3.
+            Output: <code>00-deliverables/semantic-models/taxonomy.ttl</code> + .md
+            human-readable view.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--info">Modelling</div>
+          <h3>Data dictionary</h3>
+          <p>
+            Every data element with definition, type, source, ownership. Auto-extracted
+            from JSON Schema then enriched.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--info">Modelling</div>
+          <h3>Ontology skeleton (OWL/Turtle)</h3>
+          <p>
+            Core classes only: Transaction, Property, Participant, Claim, Document,
+            Search, Listing, Form. Reuse W3C VC, Schema.org, FOAF/ORG, GeoSPARQL.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--info">Modelling</div>
+          <h3>First mapping spec</h3>
+          <p>
+            JSON Schema → JSON-LD context → RDF. Pick one overlay (BASPI v5) end-to-end
+            as the worked example.
+          </p>
+        </div>
+      </div>
+
+      <h2 id="phase3">Phase 3 — Governance documents (weeks 4–8, overlapping)</h2>
+
+      <p>
+        Per ToIP, working through the four layers + cross-cutting docs. Each starts
+        from existing OPDA artefacts (in <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/"><code>source/03-standards/trust-framework/docs/</code></a>)
+        and adds the structure that's missing.
+      </p>
+
+      <ol>
+        <li><strong>L4 Ecosystem Governance Framework</strong> (consolidates existing governance.md, plan.md, proposal.md, etc.)</li>
+        <li><strong>L3 Credential Trust Framework</strong> (PDTF v2.0 VC spec + issuer rules)</li>
+        <li><strong>L2 Communication Governance</strong> (HTTPS profile, DIDComm version, security audit cadence)</li>
+        <li><strong>L1 Utility Governance</strong> (DID methods allowed, trust-registry data structures, key rotation)</li>
+        <li><strong>Conformance &amp; Certification scheme</strong> (Open Banking-style)</li>
+        <li><strong>Risk &amp; Liability allocation</strong></li>
+        <li><strong>Disputes &amp; Redress process</strong></li>
+      </ol>
+
+      <h2 id="phase4">Phase 4 — Presentations for stakeholders (weeks 6–10)</h2>
+
+      <p>
+        Three core decks for OPDA's stakeholder engagement:
+      </p>
+      <ul>
+        <li><strong>Approach</strong> deck — why linked data, why ToIP, why now</li>
+        <li><strong>Governance</strong> deck — the framework, the documents, the operating model</li>
+        <li><strong>Technology</strong> deck — JSON Schema → JSON-LD → SHACL → OWL → DID/VC pipeline</li>
+      </ul>
+
+      <h2 id="sequence">Phase sequence</h2>
+
+      <Diagram caption="Phase sequence with cross-phase dependencies. Each task box shows duration in days; arrows show what blocks what.">
+flowchart LR
+  classDef phase fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
+  classDef task  fill:#f7fafc,stroke:#94a3b8,color:#0f172a;
+  classDef milestone fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
+
+  subgraph P1["Phase 1 — Foundations<br/><i>2 weeks</i>"]
+    direction TB
+    p1a["Read SoW + synthesis<br/>3d"]:::task
+    p1b["Plan + roadmap doc<br/>4d"]:::task
+    p1c["Merged glossary v0.1<br/>7d"]:::task
+    p1d["Stakeholder map<br/>5d"]:::task
+    p1a --> p1b
+    p1a --> p1c
+    p1a --> p1d
+  end
+
+  subgraph P2["Phase 2 — Semantic model<br/><i>3 weeks</i>"]
+    direction TB
+    p2a["Concept taxonomy<br/>SKOS · 7d"]:::task
+    p2b["Data dictionary<br/>10d"]:::task
+    p2c["Ontology skeleton<br/>OWL · 7d"]:::task
+    p2d["First mapping<br/>BASPI v5 · 7d"]:::task
+    p2a --> p2c
+    p2c --> p2d
+  end
+
+  subgraph P3["Phase 3 — Governance docs<br/><i>5 weeks</i>"]
+    direction TB
+    p3a["L4 Ecosystem doc<br/>14d"]:::task
+    p3b["L3 Credential trust fw<br/>10d"]:::task
+    p3c["L2 Comms governance<br/>7d"]:::task
+    p3d["L1 Utility governance<br/>7d"]:::task
+    p3e["Conformance scheme<br/>14d"]:::task
+    p3a --> p3b
+    p3a --> p3c
+    p3a --> p3d
+    p3a --> p3e
+  end
+
+  subgraph P4["Phase 4 — Presentations<br/><i>2 weeks</i>"]
+    direction TB
+    p4a["Approach deck<br/>10d"]:::task
+    p4b["Governance deck<br/>10d"]:::task
+    p4c["Technology deck<br/>10d"]:::task
+  end
+
+  class P1,P2,P3,P4 phase;
+
+  %% Cross-phase dependencies
+  p1c --> p2a
+  p1c --> p2b
+  p1b --> p3a
+  p1b --> p4a
+  p3a --> p4b
+  p2c --> p4c
+</Diagram>
+
+      <h2 id="dependencies">External dependencies</h2>
+
+      <table>
+        <thead>
+          <tr><th>Dependency</th><th>What we need</th><th>Owner</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Maria's SoW formalisation</td><td>Scope sign-off on the above plan</td><td>OPDA Chair</td></tr>
+          <tr><td>MHCLG material-information replacement guidance</td><td>Definitive successor to NTS — affects <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> overlay future</td><td>MHCLG (Oct 2025 consultation)</td></tr>
+          <tr><td>DPMSG working-group decisions</td><td>Several pending decisions on v3.6 / v2.0 spec</td><td>DPMSG Technical WG</td></tr>
+          <tr><td>Raidiam infrastructure spec</td><td>Trust registry data model</td><td>Raidiam (Sandbox partner)</td></tr>
+          <tr><td>BASPI v5 finalisation</td><td>HBSG release of BASPI v5</td><td>HBSG</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="risks">Risks &amp; watch-items</h2>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Watch out</div>
+        <ul style="margin: 0;">
+          <li><strong>NTS overlay drift</strong> — <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> implements withdrawn guidance. Needs explicit retirement/replacement plan once MHCLG publishes successor.</li>
+          <li><strong>Two glossaries</strong> — Technical WG and Trust Framework PoC both have <code>Glossary.xlsx</code>. May contain conflicting definitions.</li>
+          <li><strong>Schema v3 vs v3.6 vs v2 coexistence</strong> — multiple versions live in repos and dependencies. Need clear sunset dates.</li>
+          <li><strong>Open Banking-style funding</strong> — long-run sustainability of OPDA isn't settled. Cost-recovery participant fees model worth proposing in governance docs.</li>
+          <li><strong>Government department reorganisations</strong> — DLUHC → MHCLG; DCMS → DSIT. Names change; relationships need to be person-resilient.</li>
+        </ul>
+      </div>
+
+      <h2 id="successCriteria">Success criteria</h2>
+
+      <p>
+        By end of phase 3 (≈ week 8), OPDA can:
+      </p>
+      <ul>
+        <li>Point to a complete published governance framework, layered per ToIP, citing each existing artefact.</li>
+        <li>Walk a stakeholder through a JSON property data instance, its RDF projection, and the SHACL constraints it must satisfy.</li>
+        <li>Show how every UK government initiative tier maps to OPDA's standards stack.</li>
+        <li>Hand a new DPMSG working-group member a single reading list that brings them up to speed in &lt; 1 day.</li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '08-strategic-alignment.html', label: 'Strategic alignment' }}
+  next={{ href: '10-glossary.html', label: 'Glossary' }}
+/>
+</Layout>

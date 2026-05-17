@@ -1,0 +1,126 @@
+---
+import Layout from '../components/Layout.astro';
+import PageMeta from '../components/PageMeta.astro';
+---
+<Layout
+  title="Schema"
+  description="The structured story of the PDTF data model — every leaf placed on its canonical aggregate page, organised by lifecycle and authority, with declaration/evidence/derivation badges and overlay chips throughout. 11 pages, 21 diagrams, the entire 3,561-leaf schema."
+  page="schema"
+  section="schema"
+>
+<PageMeta category="Section overview" variant="brand" updated="Updated 2026-05-16" />
+
+      <h1>Schema</h1>
+      <p class="lead">
+        The structured story of the PDTF data model. Every leaf in the
+        schema lives on exactly one <strong>aggregate page</strong> here —
+        grouped by lifecycle and root authority, not by form or topic. Each
+        leaf carries a <strong>declaration / evidence / derivation</strong>
+        badge and the <strong>overlay chips</strong> that show every
+        form-categorisation it participates in. Where the
+        <a href="/pages/13-data-dictionary.html">data dictionary</a> is a flat
+        browser and the <a href="/pages/14-business-glossary.html">business
+        glossary</a> is a concept index, this section is the narrative.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">By the numbers</div>
+        <ul style="margin: 0;">
+          <li><strong>11</strong> pages (1 section overview · 9 aggregate pages · 1 cross-cuts page)</li>
+          <li><strong>3,561</strong> leaves walked from the base transaction schema</li>
+          <li><strong>21</strong> diagrams across 6 types (ER · sequence · flowchart · state · gantt · pie)</li>
+          <li><strong>15</strong> overlays cross-referenced (3,463 leaf-to-overlay membership records)</li>
+          <li><strong>2</strong> canonical example transactions (London leasehold flat · Manchester freehold semi) — both validated against <code>pdtf-transaction.json</code> on every build</li>
+        </ul>
+      </div>
+
+      <h2 id="overview">Start here</h2>
+      <div class="card-grid">
+        <a class="card" href="/pages/34-physical-architecture.html">
+          <div class="pill pill--brand">Overview</div>
+          <h3>Section overview</h3>
+          <p>The top-level entity map, the three kinds of fact (declaration / evidence / derivation), persona on-ramps, and the bindings between JSON Schema, OWL, SKOS, SHACL.</p>
+        </a>
+      </div>
+
+      <h2 id="process">Process</h2>
+      <div class="card-grid">
+        <a class="card" href="/pages/35-transaction-participants.html">
+          <div class="pill pill--info">35</div>
+          <h3>Transaction &amp; participants</h3>
+          <p>The state machine and the people. Identity, role, capacity, address. ER diagram of participant attributes.</p>
+        </a>
+        <a class="card" href="/pages/36-chain-milestones-contracts.html">
+          <div class="pill pill--info">36</div>
+          <h3>Chain, milestones &amp; contracts</h3>
+          <p>Process artefacts at the transaction level. ER + state diagram + Gantt timeline.</p>
+        </a>
+      </div>
+
+      <h2 id="property">The property</h2>
+      <div class="card-grid">
+        <a class="card" href="/pages/37-property.html">
+          <div class="pill pill--info">37</div>
+          <h3>Property</h3>
+          <p>The implicit entity the schema never names. Four identity surfaces (address, UPRN, INSPIRE, title-linked) — documents a known structural defect.</p>
+        </a>
+        <a class="card" href="/pages/38-legal-estate-title.html">
+          <div class="pill pill--info">38</div>
+          <h3>Legal estate &amp; title</h3>
+          <p>HMLR-rooted aggregate: tenure, title number, proprietors, leases, charges, restrictions, notices. ER + sequence diagram for OC1 retrieval.</p>
+        </a>
+      </div>
+
+      <h2 id="pack">Property pack content</h2>
+      <div class="card-grid">
+        <a class="card" href="/pages/39-built-form-condition-valuation.html">
+          <div class="pill pill--info">39</div>
+          <h3>Built form, condition &amp; valuation</h3>
+          <p>The biggest aggregate. Built form, condition (cladding), fixtures &amp; fittings, surveys, valuation, price. ER + sequence for survey-to-valuation feedback loop.</p>
+        </a>
+        <a class="card" href="/pages/45-utilities-energy.html">
+          <div class="pill pill--info">45</div>
+          <h3>Utilities &amp; energy</h3>
+          <p>Heating, electricity, water, connectivity, EPC. Coupled by meters and fuel enums. ER + sequence for EPC issuance + pie for EPC band distribution.</p>
+        </a>
+        <a class="card" href="/pages/46-local-context-searches.html">
+          <div class="pill pill--info">46</div>
+          <h3>Local context &amp; searches</h3>
+          <p>CON29R, CON29DW, LLC1, environmental, planning, neighbourhood. Sealed bundles from external authorities. Flowchart of request → authority → result + sequence.</p>
+        </a>
+        <a class="card" href="/pages/47-encumbrances-completion.html">
+          <div class="pill pill--info">47</div>
+          <h3>Encumbrances &amp; completion</h3>
+          <p>Council tax, insurance, guarantees, occupiers, letting, completion statements. ER + apportionment flowchart + completion-day Gantt.</p>
+        </a>
+      </div>
+
+      <h2 id="crosscut">Cross-cutting</h2>
+      <div class="card-grid">
+        <a class="card" href="/pages/48-evidence-documents-declarations.html">
+          <div class="pill pill--info">48</div>
+          <h3>Evidence, documents &amp; declarations</h3>
+          <p>The claim layer. Documents, attachments, VC envelope, declaration metadata. ER + VC issuance sequence + three-kinds-of-fact flowchart.</p>
+        </a>
+        <a class="card" href="/pages/49-overlays-tasks-crosscuts.html">
+          <div class="pill pill--info">49</div>
+          <h3>Overlays, tasks &amp; cross-cuts</h3>
+          <p>Overlay leaf-counts for all 15 overlays, 6 task-shaped questions (cladding, knotweed, leasehold extension, probate, new-build, shared ownership), and the composition diagram showing how aggregates, overlays and tasks compose.</p>
+        </a>
+      </div>
+
+      <h2 id="how">How it's built</h2>
+      <p>
+        Pages are generated by <code>scripts/build-schema-pages.py</code>: walk
+        the base schema → classify each leaf via
+        <code>provenance-map.yaml</code> → assign to canonical home via
+        <code>theme-map.yaml</code> → bind canonical examples by JSON path →
+        render Jinja2 templates with sidecar markdown narrative →
+        drift-check 12 CI invariants. The pipeline is deterministic and
+        re-runnable; the source documents are
+        <a class="resource-link" href="resource.html?path=source/_working/schema-section-ia.md"><code>schema-section-ia.md</code></a>
+        and
+        <a class="resource-link" href="resource.html?path=source/_working/schema-content-generation-spec.md"><code>schema-content-generation-spec.md</code></a>,
+        both synthesised by 6-agent design swarms.
+      </p>
+</Layout>

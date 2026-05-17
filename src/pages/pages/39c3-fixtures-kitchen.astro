@@ -1,0 +1,1710 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Fixtures · kitchen"
+  description="Fixtures · kitchen"
+  page="fixtures-kitchen"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39c3</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Fixtures · kitchen</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>78</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>78 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| FixturesAndFittings : "fixturesAndFittings"
+  FixturesAndFittings ||--o| Kitchen : "kitchen"
+  Kitchen ||--o| Hob : "hob"
+  Kitchen ||--o| ExtractorHood : "extractorHood"
+  Kitchen ||--o| OvenGrill : "ovenGrill"
+  Kitchen ||--o| Cooker : "cooker"
+  Kitchen ||--o| Microwave : "microwave"
+  Kitchen ||--o| RefrigeratorFridgeFreezer : "refrigeratorFridgeFreezer"
+  Kitchen ||--o| Freezer : "freezer"
+  Kitchen ||--o| Dishwasher : "dishwasher"
+  Kitchen ||--o| TumbleDryer : "tumbleDryer"
+  Kitchen ||--o| WashingMachine : "washingMachine"
+  Kitchen ||--o&lbrace; OtherItem : "otherItems"
+  Cooker ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  Dishwasher ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  ExtractorHood ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  Freezer ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  Hob ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  Microwave ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  OtherItem ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  OvenGrill ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  RefrigeratorFridgeFreezer ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  TumbleDryer ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  WashingMachine ||--o| FittedOrFreestanding : "fittedOrFreestanding"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  FixturesAndFittings &lbrace;
+  &rbrace;
+  Kitchen &lbrace;
+  &rbrace;
+  Cooker &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  FittedOrFreestanding &lbrace;
+    string fittedOrFreestanding "Fitted, Freestanding"
+  &rbrace;
+  Dishwasher &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  ExtractorHood &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Freezer &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Hob &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Microwave &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  OtherItem &lbrace;
+    string comments "Comments"
+    string isIncludedOrExcluded "isIncludedOrExcluded"
+    string itemName "Name"
+    number price "Price"
+  &rbrace;
+  OvenGrill &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  RefrigeratorFridgeFreezer &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  TumbleDryer &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  WashingMachine &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>26</strong> objects, <strong>78</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="fix_kitchen">Kitchen</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fixtures And Fittings</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittings" data-display-id="fixturesandfittings">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittings" class="object-block__title" data-display-id="fixturesandfittings">
+        <span class="object-block__display">Fixtures And Fittings</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchen" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Kitchen</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchen" data-display-id="kitchen">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchen" class="object-block__title" data-display-id="kitchen">
+        <span class="object-block__display">Kitchen</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenhob" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Hob</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenextractorhood" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Extractor Hood</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenovengrill" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Oven Grill</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchencooker" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Cooker</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenmicrowave" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Microwave</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenrefrigeratorfridgefreezer" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Refrigerator Fridge Freezer</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenfreezer" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Freezer</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchendishwasher" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Dishwasher</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchentumbledryer" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Tumble Dryer</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenwashingmachine" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Washing Machine</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingskitchenotheritem" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Items[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenCooker" data-display-id="cooker">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchencooker" class="object-block__title" data-display-id="cooker">
+        <span class="object-block__display">Cooker</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.cooker</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchencookerfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.cooker"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenDishwasher" data-display-id="dishwasher">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchendishwasher" class="object-block__title" data-display-id="dishwasher">
+        <span class="object-block__display">Dishwasher</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.dishwasher</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchendishwasherfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.dishwasher"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenExtractorHood" data-display-id="extractorhood">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenextractorhood" class="object-block__title" data-display-id="extractorhood">
+        <span class="object-block__display">Extractor Hood</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.extractorHood</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenextractorhoodfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.extractorHood"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenFreezer" data-display-id="freezer">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenfreezer" class="object-block__title" data-display-id="freezer">
+        <span class="object-block__display">Freezer</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.freezer</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenfreezerfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.freezer"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenHob" data-display-id="hob">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenhob" class="object-block__title" data-display-id="hob">
+        <span class="object-block__display">Hob</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.hob</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenhobfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.hob"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td>Whether included excluded or none.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td>Whether included excluded or none.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td>Whether included excluded or none.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenMicrowave" data-display-id="microwave">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenmicrowave" class="object-block__title" data-display-id="microwave">
+        <span class="object-block__display">Microwave</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.microwave</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenmicrowavefittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.microwave"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenOtherItem" data-display-id="otheritem">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenotheritem" class="object-block__title" data-display-id="otheritem">
+        <span class="object-block__display">Other Items</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.otherItems[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenotheritemsfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.otherItems[]"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].isIncludedOrExcluded"
+            data-overlays="ta10">
+          <td>isIncludedOrExcluded</td>
+          <td>Whether included or excluded.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedOrExcluded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].isIncludedOrExcluded"
+            data-overlays="ta10">
+          <td>isIncludedOrExcluded</td>
+          <td>Whether included or excluded.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedOrExcluded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].isIncludedOrExcluded"
+            data-overlays="ta10">
+          <td>isIncludedOrExcluded</td>
+          <td>Whether included or excluded.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedOrExcluded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].itemName"
+            data-overlays="ta10">
+          <td>Name</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>itemName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenOvenGrill" data-display-id="ovengrill">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenovengrill" class="object-block__title" data-display-id="ovengrill">
+        <span class="object-block__display">Oven Grill</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.ovenGrill</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenovengrillfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenRefrigeratorFridgeFreezer" data-display-id="refrigeratorfridgefreezer">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenrefrigeratorfridgefreezer" class="object-block__title" data-display-id="refrigeratorfridgefreezer">
+        <span class="object-block__display">Refrigerator Fridge Freezer</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenrefrigeratorfridgefreezerfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenTumbleDryer" data-display-id="tumbledryer">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchentumbledryer" class="object-block__title" data-display-id="tumbledryer">
+        <span class="object-block__display">Tumble Dryer</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.tumbleDryer</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchentumbledryerfittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenWashingMachine" data-display-id="washingmachine">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenwashingmachine" class="object-block__title" data-display-id="washingmachine">
+        <span class="object-block__display">Washing Machine</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.washingMachine</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingskitchenwashingmachinefittedorfreestanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fitted Or Freestanding</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.washingMachine"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenCookerFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchencookerfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.cooker.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.cooker.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.cooker.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenDishwasherFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchendishwasherfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.dishwasher.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.dishwasher.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenExtractorHoodFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenextractorhoodfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.extractorHood.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.extractorHood.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenFreezerFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenfreezerfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.freezer.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.freezer.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.freezer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenHobFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenhobfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenMicrowaveFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenmicrowavefittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.microwave.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.microwave.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.microwave.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenOtherItemsFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenotheritemsfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.otherItems[].fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.otherItems[].fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenOvenGrillFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenovengrillfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.ovenGrill.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.ovenGrill.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenRefrigeratorFridgeFreezerFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenrefrigeratorfridgefreezerfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenTumbleDryerFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchentumbledryerfittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.tumbleDryer.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.tumbleDryer.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsKitchenWashingMachineFittedOrFreestanding" data-display-id="fittedorfreestanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingskitchenwashingmachinefittedorfreestanding" class="object-block__title" data-display-id="fittedorfreestanding">
+        <span class="object-block__display">Fitted Or Freestanding</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.kitchen.washingMachine.fittedOrFreestanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.fittedOrFreestanding"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.kitchen.washingMachine.fittedOrFreestanding.fittedOrFreestanding"
+            data-overlays="ta10">
+          <td>Fitted, Freestanding</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>fittedOrFreestanding</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '39c2-fixtures-basic.html', label: 'Fixtures · basic fittings' }}
+  next={{ href: '39c4-fixtures-bathroom.html', label: 'Fixtures · bathroom' }}
+/>
+</Layout>

@@ -1,0 +1,106 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Engagement — overview"
+  description="The bodies, meetings and content streams that constitute the operational life of the OPDA programme."
+  page="engagement-overview"
+>
+<PageMeta category="Engagement" variant="brand" updated="Updated 2026-05-14" />
+
+      <h1>Engagement — overview</h1>
+      <p class="lead">
+        OPDA is convening. Most of the deliverable work — alignment with regulators,
+        scoping with members, resolving disagreements, communicating publicly — happens in
+        a small set of recurring bodies and content channels.
+      </p>
+
+      <h2 id="map">The operational map</h2>
+
+      <Diagram caption="DPMSG is the senior coordination forum. OPDA leads four of its six working groups.
+          Member updates and the YouTube channel are OPDA's own communication surfaces.">
+flowchart TB
+  classDef gov  fill:#dbeafe,stroke:#1e40af,color:#1e3a8a,stroke-width:2px;
+  classDef wg   fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef pub  fill:#dcfce7,stroke:#166534,color:#14532d;
+  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+
+  DPMSG["DPMSG Steering Group<br/><i>monthly · 8 meetings on record</i>"]:::gov
+  WGs["6 Working Groups<br/>Steering · Comms &amp; PR · Engagement<br/>Policy · Regulator · Technical"]:::wg
+  Members["OPDA all-member update<br/><i>monthly Sandbox WG call · 4 transcripts</i>"]:::wg
+  Videos["OPDA YouTube channel<br/><i>15 videos · ~3 hours</i>"]:::pub
+  SDC["Smart Data Challenge<br/><i>Moverly + OPDA prize entry</i>"]:::pub
+
+  OPDA[OPDA]:::opda
+
+  DPMSG --- WGs
+  OPDA -.leads.-> WGs
+  OPDA -.runs.-> Members
+  OPDA -.publishes.-> Videos
+  OPDA -.entry to.-> SDC
+</Diagram>
+
+      <h2 id="cadence">What happens, when</h2>
+
+      <table>
+        <thead>
+          <tr><th>Body</th><th>Cadence</th><th>Audience</th><th>Output</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DPMSG Steering Group</strong></td>
+            <td>Monthly</td>
+            <td>HMLR + 13 founding members</td>
+            <td>Meeting packs, minutes, formal decisions. Archive: <a class="resource-link" href="/resource.html?path=source/04-governance-bodies/steering-group/materials/"><code>source/04-governance-bodies/steering-group/materials/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>Working Groups</strong></td>
+            <td>Working — varies</td>
+            <td>Subject-matter experts from members</td>
+            <td>Deliverables fed into Steering: standards, comms, policy, regulator engagement, technical specs.</td>
+          </tr>
+          <tr>
+            <td><strong>OPDA all-member update</strong></td>
+            <td>Monthly (Sandbox WG)</td>
+            <td>All OPDA members + observers</td>
+            <td>4 transcribed sessions Feb–May 2026. PDF decks under <a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/engagement/"><code>source/04-governance-bodies/working-groups/engagement/</code></a></td>
+          </tr>
+          <tr>
+            <td><strong>YouTube channel</strong></td>
+            <td>Ad-hoc</td>
+            <td>Public</td>
+            <td>15 videos to date — schema explainer, accreditation walkthrough, vision pieces. <a href="43-video-library.html">Catalogue</a>.</td>
+          </tr>
+          <tr>
+            <td><strong>Smart Data Challenge</strong></td>
+            <td>One-off (2024–25)</td>
+            <td>DBT panel</td>
+            <td>SDCP Innovators prize. Prize entry + post-win briefing video.</td>
+          </tr>
+          <tr>
+            <td><strong>Consumer survey + campaign</strong></td>
+            <td>2025</td>
+            <td>Public, regulators</td>
+            <td>Research used in policy submissions. <a class="resource-link" href="/resource.html?path=source/06-research/consumer-survey/"><code>source/06-research/consumer-survey/</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="howToEngage">How a new participant engages</h2>
+
+      <ol>
+        <li><strong>Read the OPDA <a href="/resource.html?path=source/07-website/rendered/about-us/index.html">About us</a></strong> and the <a href="/resource.html?path=source/07-website/rendered/code-of-conduct/index.html">Code of Conduct</a>.</li>
+        <li><strong>Join an all-member update</strong> (see <a href="41-meetings-decisions.html">Meetings &amp; decisions</a>) — recorded, open to members.</li>
+        <li><strong>Pick a working group</strong> — see <a href="42-working-groups.html">DPMSG working groups</a> for the six current ones.</li>
+        <li><strong>Apply for the Sandbox</strong> via the published cohort process — see <a class="resource-link" href="/resource.html?path=source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Setup-Guide.pdf"><code>Introduction-to-the-Sandbox-Setup-Guide.pdf</code></a>.</li>
+        <li><strong>Watch the video library</strong> for the 1.5 hour induction — see <a href="43-video-library.html">Video library</a>.</li>
+      </ol>
+
+      <PageFooter
+  prev={{ href: '/engagement.html', label: 'Engagement' }}
+  next={{ href: '41-meetings-decisions.html', label: 'Meetings & decisions' }}
+/>
+</Layout>

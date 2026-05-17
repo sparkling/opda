@@ -1,0 +1,27 @@
+---
+/**
+ * Mermaid diagram block — wraps the diagram source plus an optional caption
+ * and applies the size variant CSS class.
+ *
+ *   <Diagram size="medium" caption="Two pathways, two authorities.">
+ *     flowchart LR
+ *       A --> B
+ *   </Diagram>
+ *
+ * `caption` is rendered with `set:html` so inline tags (<code>, <a>, <strong>)
+ * inside captions are preserved. `size` defaults to the unconstrained
+ * default (max-width 100%, max-height 750px).
+ */
+interface Props {
+  size?: 'small' | 'medium' | 'large';
+  caption?: string;
+}
+const { size, caption } = Astro.props;
+const cls = ['diagram', size && `diagram--${size}`].filter(Boolean).join(' ');
+---
+<div class={cls}>
+  <div class="mermaid">
+    <slot />
+  </div>
+  {caption && <div class="diagram-caption" set:html={caption} />}
+</div>

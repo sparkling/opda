@@ -1,0 +1,35 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Local authority searches"
+  description="Landing for the Local authority searches cluster."
+  page="local-authority-searches"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 46a2</span>
+        <span>Landing</span>
+      </div>
+      <h1>Local authority searches</h1>
+      <p class="lead">
+        The local-authority enquiries block in full — split into the three
+        top-level branches the schema defines, plus five themed cuts under
+        <code>otherMatters</code>.
+      </p>
+      <h2 id="subpages">Pages in this cluster</h2>
+      <ul class="cluster-index">
+        <li><a href="46a2a-la-planning-building.html"><strong>Planning &amp; building regulations</strong></a> — planning applications, permissions, building-regs.</li>
+        <li><a href="46a2b-la-roads.html"><strong>Roads &amp; public rights of way</strong></a> — adopted highways, rights of way.</li>
+        <li><a href="46a2c-la-other-planning-notices.html"><strong>Other · planning notices &amp; enforcement</strong></a> — Section 215 notices, conservation area, contravention of building regs.</li>
+        <li><a href="46a2d-la-other-finance.html"><strong>Other · community finance &amp; assets</strong></a> — Community Infrastructure Levy and Assets of Community Value.</li>
+        <li><a href="46a2e-la-other-road-rail.html"><strong>Other · road &amp; rail schemes</strong></a> — traffic schemes, nearby road schemes, nearby railway schemes.</li>
+        <li><a href="46a2f-la-other-environmental.html"><strong>Other · environmental</strong></a> — contaminated land, radon gas, drainage matters.</li>
+        <li><a href="46a2g-la-other-compulsory.html"><strong>Other · compulsory purchase &amp; public works</strong></a> — compulsory purchase, land for public purposes.</li>
+      </ul>
+      <PageFooter
+  prev={{ href: '46a1-local-authority-identity.html', label: 'LA identity' }}
+  next={{ href: '46a2a-la-planning-building.html', label: 'Planning & building regulations' }}
+/>
+</Layout>

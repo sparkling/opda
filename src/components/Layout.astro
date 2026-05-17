@@ -1,0 +1,96 @@
+---
+/**
+ * OPDA Knowledge Base — page shell.
+ *
+ * Every page renders into the standard chrome: <head> with the design
+ * system stylesheet + tailwindplus elements, then a #app root that
+ * site.js takes over to inject the header, sidebar, and (optionally)
+ * the TOC right rail. Authoring a page reduces to a single <Layout>
+ * wrap with frontmatter for title / description / page / section.
+ *
+ * `public/ui/*` assets get a `?v=<mtime>` cache-buster appended at build
+ * time so browsers fetch fresh JS/CSS whenever those files change. Public
+ * assets bypass Astro's content hashing, and we hit them on every page,
+ * so without this every change requires a hard-refresh to land.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+function assetVersion(rel: string): string {
+  try {
+    const full = path.resolve(process.cwd(), 'public', rel.replace(/^\//, ''));
+    const m = fs.statSync(full).mtimeMs;
+    return Math.floor(m).toString(36);
+  } catch {
+    return 'dev';
+  }
+}
+const cssV = assetVersion('/ui/design-system.css');
+const twV = assetVersion('/ui/tailwind.built.css');
+const jsV = assetVersion('/ui/site.js');
+
+interface Props {
+  /** Page title, used as the <title> (suffix " · OPDA Knowledge Base" is added automatically unless title already contains "Knowledge Base"). */
+  title: string;
+  /** <meta name="description"> contents. Omit for pages that don't need one. */
+  description?: string;
+  /** Page id — must match an entry in site.js SECTIONS (for sidebar active state). */
+  page: string;
+  /** Section id. Optional — site.js infers it from `page` if you omit it. */
+  section?: string | null;
+  /** Prose width class. Default "prose wide"; pass "prose" for narrow reading width. */
+  proseClass?: string;
+  /** Whether to include the TailwindPlus Elements ESM script. Default true. */
+  tailwindPlus?: boolean;
+  /**
+   * Wrap the slot in `<article class={proseClass}>`. Default true.
+   * Pass false on pages that need custom top-level structure inside #app
+   * (e.g. the homepage with its hero + card grid layout).
+   */
+  wrapArticle?: boolean;
+}
+
+const {
+  title,
+  description,
+  page,
+  section,
+  proseClass = 'prose wide',
+  tailwindPlus = true,
+  wrapArticle = true,
+} = Astro.props;
+
+const fullTitle = /knowledge base/i.test(title)
+  ? title
+  : `${title} · OPDA Knowledge Base`;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
+  <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
+  {tailwindPlus && (
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  )}
+  <slot name="head" />
+</head>
+<body>
+  <div id="app">
+    {wrapArticle ? (
+      <article class={proseClass}>
+        <slot />
+      </article>
+    ) : (
+      <slot />
+    )}
+  </div>
+
+  <script is:inline src={`/ui/site.js?v=${jsV}`}></script>
+  <script is:inline define:vars={{ page, section }}>
+    OPDA.init({ page, section });
+  </script>
+</body>
+</html>

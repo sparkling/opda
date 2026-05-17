@@ -1,0 +1,1714 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Built form"
+  description="Built form"
+  page="built-form-form"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39a</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Built form</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>72</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>62 in overlays</span>
+  <span>38 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o&lbrace; Media : "media"
+  PropertyPack ||--o| BuildInformation : "buildInformation"
+  PropertyPack ||--o| Parking : "parking"
+  PropertyPack ||--o| TypeOfConstruction : "typeOfConstruction"
+  PropertyPack ||--o| SmartHomeSystems : "smartHomeSystems"
+  BuildInformation ||--o| Building : "building"
+  BuildInformation ||--o| InternalArea : "internalArea"
+  BuildInformation ||--o| IsNewBuild : "isNewBuild"
+  BuildInformation ||--o| RoomDimensions : "roomDimensions"
+  Building ||--o| OverCommercialPremises : "overCommercialPremises"
+  RoomDimensions ||--o&lbrace; Room : "rooms"
+  Parking ||--o| DisabledParking : "disabledParking"
+  Parking ||--o| ControlledParking : "controlledParking"
+  Parking ||--o| VehicleTypeRestriction : "vehicleTypeRestriction"
+  Parking ||--o| ElectricVehicleChargingPoint : "electricVehicleChargingPoint"
+  Parking ||--o| LocatedInUlez : "locatedInUlez"
+  SmartHomeSystems ||--o| HeatingAndPower : "heatingAndPower"
+  SmartHomeSystems ||--o| Security : "security"
+  SmartHomeSystems ||--o| Entertainment : "entertainment"
+  TypeOfConstruction ||--o| IsStandardForm : "isStandardForm"
+  TypeOfConstruction ||--o| BuildingSafety : "buildingSafety"
+  TypeOfConstruction ||--o| Loft : "loft"
+  TypeOfConstruction ||--o| SprayFoamInsulation : "sprayFoamInsulation"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+    string summaryDescription "Summary description"
+  &rbrace;
+  BuildInformation &lbrace;
+    string isHMO "Is the property a House in Multiple Occupation (HMO)?"
+    string isStudentAccommodation "Is the property student accommodation?"
+    integer yearOfBuild "Year the property was built"
+  &rbrace;
+  Building &lbrace;
+    string builtForm "Built form"
+    integer entranceFloor "Entrance floor"
+    string hasLift "Is the property served by a lift?"
+    integer numberOfFloors "Number of floors in the building"
+    string otherType "Please describe the other type of property build"
+    string propertyType "propertyType"
+  &rbrace;
+  OverCommercialPremises &lbrace;
+    string details "Please provide details"
+    string isLocatedOverCommercialPremises "isLocatedOverCommercialPremises"
+  &rbrace;
+  InternalArea &lbrace;
+    number area "Internal area value"
+    string units "Internal area units"
+  &rbrace;
+  IsNewBuild &lbrace;
+    string yesNo "yesNo"
+  &rbrace;
+  RoomDimensions &lbrace;
+    string attachments "Attachments"
+    string hasFloorplan "hasFloorplan"
+  &rbrace;
+  Room &lbrace;
+    string description "Description of the room"
+    string dimensionDetails "Any additional description or clarification of the room d…"
+    number length "The length of the room"
+    string roomName "The name of the room"
+    string units "The units which the length and width of the room have bee…"
+    number width "The width of the room"
+  &rbrace;
+  Media &lbrace;
+    string caption "Caption"
+    string mediaType "Type of media"
+    string mediaUrl "Media URL"
+  &rbrace;
+  Parking &lbrace;
+    string[] parkingArrangements "Parking arrangements"
+  &rbrace;
+  ControlledParking &lbrace;
+    number annualCostOfPermit "Annual cost of permit (£)"
+    string yesNo "yesNo"
+  &rbrace;
+  DisabledParking &lbrace;
+    string yesNo "yesNo"
+  &rbrace;
+  ElectricVehicleChargingPoint &lbrace;
+    string yesNo "yesNo"
+  &rbrace;
+  LocatedInUlez &lbrace;
+    string yesNo "yesNo"
+  &rbrace;
+  VehicleTypeRestriction &lbrace;
+    string details "Please provide details of the restriction"
+    string yesNo "yesNo"
+  &rbrace;
+  SmartHomeSystems &lbrace;
+    boolean handoverOnCompletion "Confirm that you will handover details on day of completion"
+    string hasSmartHomeSystems "hasSmartHomeSystems"
+  &rbrace;
+  Entertainment &lbrace;
+    string details "Please provide the name of the service/system"
+    string yesNo "yesNo"
+  &rbrace;
+  HeatingAndPower &lbrace;
+    string details "Please provide the name of the service/system"
+    string yesNo "yesNo"
+  &rbrace;
+  Security &lbrace;
+    string details "Please provide the name of the service/system"
+    string yesNo "yesNo"
+  &rbrace;
+  TypeOfConstruction &lbrace;
+    string[] accessibilityAndAdaptations "Are there any adaptations or features that provide easier…"
+  &rbrace;
+  BuildingSafety &lbrace;
+    string abilityToResideAtProperty "Will the work impact the ability to reside at the property?"
+    string attachments "Attachments"
+    string details "What are the defects or hazards?"
+    string potentialCost "What will the potential cost be?"
+    string workAlreadyDone "What work has already been done?"
+    string workToBeDone "What work is required to be done?"
+    string yesNo "yesNo"
+  &rbrace;
+  IsStandardForm &lbrace;
+    string constructionType "What is the main construction type?"
+    string details "Details"
+    string yesNo "yesNo"
+  &rbrace;
+  Loft &lbrace;
+    string details "Please describe how the loft is accessed"
+    string loftAccess "loftAccess"
+    string loftBoarded "Is the loft space boarded?"
+    string loftInsulated "Is the loft space insulated?"
+  &rbrace;
+  SprayFoamInsulation &lbrace;
+    string attachments "Attachments"
+    string details "Please give details together with certification from BBA …"
+    string hasSprayFoamInstalled "hasSprayFoamInstalled"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>25</strong> objects, <strong>72</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="built_form">Built form</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackmedia" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Media[]</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Build Information</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstruction" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Type Of Construction</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystems" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Smart Home Systems</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.summaryDescription"
+            data-overlays="">
+          <td>Summary description</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>summaryDescription</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformation" data-display-id="buildinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformation" class="object-block__title" data-display-id="buildinformation">
+        <span class="object-block__display">Build Information</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationbuilding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationinternalarea" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Internal Area</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationisnewbuild" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Is New Build</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackbuildinformationroomdimensions" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Room Dimensions</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.isHMO"
+            data-overlays="">
+          <td>Is the property a House in Multiple Occupation (HMO)?</td>
+          <td>Is the property a House in Multiple Occupation (HMO)?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isHMO</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.isStudentAccommodation"
+            data-overlays="">
+          <td>Is the property student accommodation?</td>
+          <td>Is the property student accommodation?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isStudentAccommodation</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.yearOfBuild"
+            data-overlays="">
+          <td>Year the property was built</td>
+          <td>The year when the property was constructed.</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>yearOfBuild</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackMedia" data-display-id="media">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackmedia" class="object-block__title" data-display-id="media">
+        <span class="object-block__display">Media</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.media[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.media[]"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.media[].caption"
+            data-overlays="">
+          <td>Caption</td>
+          <td>A descriptive caption or label for the media content.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>caption</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.media[].mediaType"
+            data-overlays="">
+          <td>Type of media</td>
+          <td>The type of media content (e.g., images, floorplans, brochures) related to the property.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>mediaType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.media[].mediaUrl"
+            data-overlays="">
+          <td>Media URL</td>
+          <td>The URL or link to access the media content.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>mediaUrl</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParking" data-display-id="parking">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparking" class="object-block__title" data-display-id="parking">
+        <span class="object-block__display">Parking</span>      </h4>
+      <code class="object-block__path">propertyPack.parking</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackparkingdisabledparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Disabled Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingcontrolledparking" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Controlled Parking</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingvehicletyperestriction" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Vehicle Type Restriction</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkingelectricvehiclechargingpoint" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Electric Vehicle Charging Point</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackparkinglocatedinulez" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Located In Ulez</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.parkingArrangements"
+            data-overlays="baspi5,nts2,ntsl2,piq,ta6">
+          <td>Parking arrangements</td>
+          <td>Collection of parking arrangement item.</td>
+          <td><code>string[]</code></td>
+          <td>Declaration          </td>
+          <td><code>parkingArrangements</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSmartHomeSystems" data-display-id="smarthomesystems">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksmarthomesystems" class="object-block__title" data-display-id="smarthomesystems">
+        <span class="object-block__display">Smart Home Systems</span>      </h4>
+      <code class="object-block__path">propertyPack.smartHomeSystems</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksmarthomesystemsheatingandpower" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Heating And Power</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystemssecurity" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Security</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksmarthomesystemsentertainment" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Entertainment</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.smartHomeSystems"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.handoverOnCompletion"
+            data-overlays="baspi5">
+          <td>Confirm that you will handover details on day of completion</td>
+          <td>Confirm that you will provide the buyer with the login, password and link to user instruction for the relevant system(s). [NOTE: It is recommended that you reset the password before handing it over to avoid security issue by passing on your own password]. Confirm that you will handover detail on day of completion. Confirm that you will handover detail…</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>handoverOnCompletion</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.hasSmartHomeSystems"
+            data-overlays="baspi5">
+          <td>hasSmartHomeSystems</td>
+          <td>If so please indicate which are included in the sale. Are there Smart Home System at the property?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasSmartHomeSystems</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.hasSmartHomeSystems"
+            data-overlays="baspi5">
+          <td>hasSmartHomeSystems</td>
+          <td>If so please indicate which are included in the sale. Are there Smart Home System at the property?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasSmartHomeSystems</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTypeOfConstruction" data-display-id="typeofconstruction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktypeofconstruction" class="object-block__title" data-display-id="typeofconstruction">
+        <span class="object-block__display">Type Of Construction</span>      </h4>
+      <code class="object-block__path">propertyPack.typeOfConstruction</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacktypeofconstructionisstandardform" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Is Standard Form</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionbuildingsafety" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Building Safety</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionloft" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Loft</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacktypeofconstructionsprayfoaminsulation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Spray Foam Insulation</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.typeOfConstruction"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.accessibilityAndAdaptations"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Are there any adaptations or features that provide easier access to, and within, the property?</td>
+          <td>Lateral living is where a property has all essential facility e.g. kitchen, bathroom and bedroom on the entrance level. Are there any adaptation or feature that provide easier access to, and within, the property?</td>
+          <td><code>string[]</code></td>
+          <td>Declaration          </td>
+          <td><code>accessibilityAndAdaptations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationBuilding" data-display-id="building">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationbuilding" class="object-block__title" data-display-id="building">
+        <span class="object-block__display">Building</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.building</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationbuildingovercommercialpremises" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Over Commercial Premises</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.building"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.building.builtForm"
+            data-overlays="nts2,ntsl2">
+          <td>Built form</td>
+          <td>Enumeration: Detached, Semi-detached, Mid-terrace, End-terrace….</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>builtForm</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.entranceFloor"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Entrance floor</td>
+          <td>Floor level of the entrance floor relative to the lowest level of the property (0 for ground floor). If there is a basement, the basement is level 0 and the other floor are from 1 upward</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>entranceFloor</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.hasLift"
+            data-overlays="nts2,ntsl2">
+          <td>Is the property served by a lift?</td>
+          <td>Is the property served by a lift?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasLift</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.numberOfFloors"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Number of floors in the building</td>
+          <td>Number of floor in the building</td>
+          <td><code>integer</code></td>
+          <td>Declaration          </td>
+          <td><code>numberOfFloors</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.otherType"
+            data-overlays="nts2,ntsl2">
+          <td>Please describe the other type of property build</td>
+          <td>Please describe the other type of property build</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>otherType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.propertyType"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>propertyType</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>propertyType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationInternalArea" data-display-id="internalarea">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationinternalarea" class="object-block__title" data-display-id="internalarea">
+        <span class="object-block__display">Internal Area</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.internalArea</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.internalArea"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.internalArea.area"
+            data-overlays="">
+          <td>Internal area value</td>
+          <td>The numerical value of the internal floor area.</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>area</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.internalArea.units"
+            data-overlays="">
+          <td>Internal area units</td>
+          <td>The unit of measurement for the internal floor area.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>units</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationIsNewBuild" data-display-id="isnewbuild">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationisnewbuild" class="object-block__title" data-display-id="isnewbuild">
+        <span class="object-block__display">Is New Build</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.isNewBuild</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.isNewBuild"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.isNewBuild.yesNo"
+            data-overlays="">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationRoomDimensions" data-display-id="roomdimensions">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationroomdimensions" class="object-block__title" data-display-id="roomdimensions">
+        <span class="object-block__display">Room Dimensions</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.roomDimensions</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackbuildinformationroomdimensionsroom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Rooms[]</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.roomDimensions"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.attachments"
+            data-overlays="nts2,ntsl2">
+          <td>Attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.hasFloorplan"
+            data-overlays="nts2,ntsl2">
+          <td>hasFloorplan</td>
+          <td>Is a floorplan available which include the dimension of all the rooms?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasFloorplan</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.hasFloorplan"
+            data-overlays="nts2,ntsl2">
+          <td>hasFloorplan</td>
+          <td>Is a floorplan available which include the dimension of all the rooms?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasFloorplan</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParkingControlledParking" data-display-id="controlledparking">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparkingcontrolledparking" class="object-block__title" data-display-id="controlledparking">
+        <span class="object-block__display">Controlled Parking</span>      </h4>
+      <code class="object-block__path">propertyPack.parking.controlledParking</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking.controlledParking"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.controlledParking.annualCostOfPermit"
+            data-overlays="baspi5">
+          <td>Annual cost of permit (£)</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>annualCostOfPermit</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.parking.controlledParking.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.parking.controlledParking.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParkingDisabledParking" data-display-id="disabledparking">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparkingdisabledparking" class="object-block__title" data-display-id="disabledparking">
+        <span class="object-block__display">Disabled Parking</span>      </h4>
+      <code class="object-block__path">propertyPack.parking.disabledParking</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking.disabledParking"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.disabledParking.yesNo"
+            data-overlays="nts2,ntsl2">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParkingElectricVehicleChargingPoint" data-display-id="electricvehiclechargingpoint">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparkingelectricvehiclechargingpoint" class="object-block__title" data-display-id="electricvehiclechargingpoint">
+        <span class="object-block__display">Electric Vehicle Charging Point</span>      </h4>
+      <code class="object-block__path">propertyPack.parking.electricVehicleChargingPoint</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking.electricVehicleChargingPoint"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.electricVehicleChargingPoint.yesNo"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParkingLocatedInUlez" data-display-id="locatedinulez">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparkinglocatedinulez" class="object-block__title" data-display-id="locatedinulez">
+        <span class="object-block__display">Located In Ulez</span>      </h4>
+      <code class="object-block__path">propertyPack.parking.locatedInUlez</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking.locatedInUlez"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.locatedInUlez.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackParkingVehicleTypeRestriction" data-display-id="vehicletyperestriction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackparkingvehicletyperestriction" class="object-block__title" data-display-id="vehicletyperestriction">
+        <span class="object-block__display">Vehicle Type Restriction</span>      </h4>
+      <code class="object-block__path">propertyPack.parking.vehicleTypeRestriction</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.parking.vehicleTypeRestriction"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.details"
+            data-overlays="baspi5">
+          <td>Please provide details of the restriction</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.parking.vehicleTypeRestriction.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSmartHomeSystemsEntertainment" data-display-id="entertainment">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksmarthomesystemsentertainment" class="object-block__title" data-display-id="entertainment">
+        <span class="object-block__display">Entertainment</span>      </h4>
+      <code class="object-block__path">propertyPack.smartHomeSystems.entertainment</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.smartHomeSystems.entertainment"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.details"
+            data-overlays="baspi5">
+          <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.entertainment.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSmartHomeSystemsHeatingAndPower" data-display-id="heatingandpower">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksmarthomesystemsheatingandpower" class="object-block__title" data-display-id="heatingandpower">
+        <span class="object-block__display">Heating And Power</span>      </h4>
+      <code class="object-block__path">propertyPack.smartHomeSystems.heatingAndPower</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.smartHomeSystems.heatingAndPower"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.details"
+            data-overlays="baspi5">
+          <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.heatingAndPower.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSmartHomeSystemsSecurity" data-display-id="security">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksmarthomesystemssecurity" class="object-block__title" data-display-id="security">
+        <span class="object-block__display">Security</span>      </h4>
+      <code class="object-block__path">propertyPack.smartHomeSystems.security</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.smartHomeSystems.security"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.details"
+            data-overlays="baspi5">
+          <td>Please provide the name of the service/system</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.smartHomeSystems.security.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTypeOfConstructionBuildingSafety" data-display-id="buildingsafety">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktypeofconstructionbuildingsafety" class="object-block__title" data-display-id="buildingsafety">
+        <span class="object-block__display">Building Safety</span>      </h4>
+      <code class="object-block__path">propertyPack.typeOfConstruction.buildingSafety</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.typeOfConstruction.buildingSafety"
+       data-field-count="8">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>Will the work impact the ability to reside at the property?</td>
+          <td>Will the work impact the ability to reside at the property?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>abilityToResideAtProperty</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.attachments"
+            data-overlays="baspi5,ta7">
+          <td>Attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.details"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What are the defects or hazards?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.potentialCost"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What will the potential cost be?</td>
+          <td>What will the potential cost be?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>potentialCost</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.workAlreadyDone"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What work has already been done?</td>
+          <td>What work has already been done?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>workAlreadyDone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.workToBeDone"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>What work is required to be done?</td>
+          <td>What work is required to be done?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>workToBeDone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.buildingSafety.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,ta7">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTypeOfConstructionIsStandardForm" data-display-id="isstandardform">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktypeofconstructionisstandardform" class="object-block__title" data-display-id="isstandardform">
+        <span class="object-block__display">Is Standard Form</span>      </h4>
+      <code class="object-block__path">propertyPack.typeOfConstruction.isStandardForm</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.typeOfConstruction.isStandardForm"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.constructionType"
+            data-overlays="nts2,ntsl2">
+          <td>What is the main construction type?</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>constructionType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.details"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,piq,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.isStandardForm.yesNo"
+            data-overlays="baspi5,nts2,ntsl2,piq,rds">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTypeOfConstructionLoft" data-display-id="loft">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktypeofconstructionloft" class="object-block__title" data-display-id="loft">
+        <span class="object-block__display">Loft</span>      </h4>
+      <code class="object-block__path">propertyPack.typeOfConstruction.loft</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.typeOfConstruction.loft"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.details"
+            data-overlays="nts2,ntsl2">
+          <td>Please describe how the loft is accessed</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftAccess"
+            data-overlays="nts2,ntsl2">
+          <td>loftAccess</td>
+          <td>Enumeration: Yes, No.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>loftAccess</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftAccess"
+            data-overlays="nts2,ntsl2">
+          <td>loftAccess</td>
+          <td>Enumeration: Yes, No.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>loftAccess</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftBoarded"
+            data-overlays="nts2,ntsl2">
+          <td>Is the loft space boarded?</td>
+          <td>Is the loft space boarded?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>loftBoarded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.loft.loftInsulated"
+            data-overlays="nts2,ntsl2">
+          <td>Is the loft space insulated?</td>
+          <td>Is the loft space insulated?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>loftInsulated</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackTypeOfConstructionSprayFoamInsulation" data-display-id="sprayfoaminsulation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacktypeofconstructionsprayfoaminsulation" class="object-block__title" data-display-id="sprayfoaminsulation">
+        <span class="object-block__display">Spray Foam Insulation</span>      </h4>
+      <code class="object-block__path">propertyPack.typeOfConstruction.sprayFoamInsulation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.typeOfConstruction.sprayFoamInsulation"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.attachments"
+            data-overlays="baspi5">
+          <td>Attachments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>attachments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.details"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Please give details together with certification from BBA or KIWA and the installation warranty for the work carried out</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>hasSprayFoamInstalled</td>
+          <td>Whether s spray foam installed.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasSprayFoamInstalled</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>hasSprayFoamInstalled</td>
+          <td>Whether s spray foam installed.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>hasSprayFoamInstalled</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationBuildingOverCommercialPremises" data-display-id="overcommercialpremises">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationbuildingovercommercialpremises" class="object-block__title" data-display-id="overcommercialpremises">
+        <span class="object-block__display">Over Commercial Premises</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.building.overCommercialPremises</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.building.overCommercialPremises"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.details"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>Please provide details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>isLocatedOverCommercialPremises</td>
+          <td>Is the property located in a building which include commercial property E.g. shops, office etc?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isLocatedOverCommercialPremises</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises"
+            data-overlays="baspi5,nts2,ntsl2">
+          <td>isLocatedOverCommercialPremises</td>
+          <td>Is the property located in a building which include commercial property E.g. shops, office etc?</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isLocatedOverCommercialPremises</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td>example          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackBuildInformationRoomDimensionsRoom" data-display-id="room">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackbuildinformationroomdimensionsroom" class="object-block__title" data-display-id="room">
+        <span class="object-block__display">Rooms</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.buildInformation.roomDimensions.rooms[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.buildInformation.roomDimensions.rooms[]"
+       data-field-count="6">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].description"
+            data-overlays="nts2,ntsl2">
+          <td>Description of the room</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>description</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].dimensionDetails"
+            data-overlays="nts2,ntsl2">
+          <td>Any additional description or clarification of the room dimensions</td>
+          <td>Any additional description or clarification of the room dimension</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>dimensionDetails</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].length"
+            data-overlays="nts2,ntsl2">
+          <td>The length of the room</td>
+          <td>The length of the room</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>length</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].roomName"
+            data-overlays="nts2,ntsl2">
+          <td>The name of the room</td>
+          <td>The name of the room</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>roomName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].units"
+            data-overlays="nts2,ntsl2">
+          <td>The units which the length and width of the room have been provided in</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>units</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.buildInformation.roomDimensions.rooms[].width"
+            data-overlays="nts2,ntsl2">
+          <td>The width of the room</td>
+          <td>The width of the room</td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>width</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '39-built-form-condition-valuation.html', label: 'Built form, condition & valuation' }}
+  next={{ href: '39b-condition.html', label: 'Condition' }}
+/>
+</Layout>

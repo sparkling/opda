@@ -1,0 +1,325 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Surveys · valuation block"
+  description="Surveys · valuation block"
+  page="survey-valuation"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39d12</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Surveys · valuation block</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>10</strong> leaves</span>
+  <span>0.0% Declaration</span>
+  <span>100.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>0 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o&lbrace; Survey : "surveys"
+  Survey ||--o| PropertyValuation : "propertyValuation"
+  PropertyValuation ||--o| Valuation : "valuation"
+  PropertyValuation ||--o| ValuationInformation : "valuationInformation"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  Survey &lbrace;
+  &rbrace;
+  PropertyValuation &lbrace;
+  &rbrace;
+  Valuation &lbrace;
+    integer areaOfProperty "areaOfProperty"
+    integer lease "lease"
+    integer reinstatement "reinstatement"
+    string reinstatementWords "reinstatementWords"
+    string tenure "tenure"
+    boolean valuationDiscriminator "valuationDiscriminator"
+    integer value "value"
+    string valueWords "valueWords"
+  &rbrace;
+  ValuationInformation &lbrace;
+    string additionalAssumptions "additionalAssumptions"
+    string considerations "considerations"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>6</strong> objects, <strong>10</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="surv_valuation_block">Valuation block</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurvey" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Surveys[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
+        <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[]</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveyspropertyvaluation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Valuation</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysPropertyValuation" data-display-id="propertyvaluation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveyspropertyvaluation" class="object-block__title" data-display-id="propertyvaluation">
+        <span class="object-block__display">Property Valuation</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].propertyValuation</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacksurveyspropertyvaluationvaluation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Valuation</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypacksurveyspropertyvaluationvaluationinformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Valuation Information</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysPropertyValuationValuation" data-display-id="valuation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveyspropertyvaluationvaluation" class="object-block__title" data-display-id="valuation">
+        <span class="object-block__display">Valuation</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].propertyValuation.valuation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].propertyValuation.valuation"
+       data-field-count="8">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.areaOfProperty"
+            data-overlays="">
+          <td>areaOfProperty</td>
+          <td><span class="muted">—</span></td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>areaOfProperty</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.lease"
+            data-overlays="">
+          <td>lease</td>
+          <td>Unexpired Lease. Please supply a copy of the lease.</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>lease</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.reinstatement"
+            data-overlays="">
+          <td>reinstatement</td>
+          <td>Reinstatement Cost</td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>reinstatement</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.reinstatementWords"
+            data-overlays="">
+          <td>reinstatementWords</td>
+          <td>Reinstatement Cost in word</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>reinstatementWords</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.tenure"
+            data-overlays="">
+          <td>tenure</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>tenure</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.valuationDiscriminator"
+            data-overlays="">
+          <td>valuationDiscriminator</td>
+          <td>Provide Valuation Y/N</td>
+          <td><code>boolean</code></td>
+          <td>Evidence          </td>
+          <td><code>valuationDiscriminator</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.value"
+            data-overlays="">
+          <td>value</td>
+          <td><span class="muted">—</span></td>
+          <td><code>integer</code></td>
+          <td>Evidence          </td>
+          <td><code>value</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuation.valueWords"
+            data-overlays="">
+          <td>valueWords</td>
+          <td>Market Value in word</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>valueWords</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackSurveysPropertyValuationValuationInformation" data-display-id="valuationinformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacksurveyspropertyvaluationvaluationinformation" class="object-block__title" data-display-id="valuationinformation">
+        <span class="object-block__display">Valuation Information</span>      </h4>
+      <code class="object-block__path">propertyPack.surveys[].propertyValuation.valuationInformation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.surveys[].propertyValuation.valuationInformation"
+       data-field-count="2">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuationInformation.additionalAssumptions"
+            data-overlays="">
+          <td>additionalAssumptions</td>
+          <td>Valuation Assumption</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>additionalAssumptions</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.surveys[].propertyValuation.valuationInformation.considerations"
+            data-overlays="">
+          <td>considerations</td>
+          <td>Consideration affecting value</td>
+          <td><code>string</code></td>
+          <td>Evidence          </td>
+          <td><code>considerations</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell"><span class="muted">—</span>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '39d11-survey-legal.html', label: 'Surveys · legal & guarantees' }}
+  next={{ href: '39d13-survey-advice.html', label: 'Surveys · advice, risks & matters for legal advisers' }}
+/>
+</Layout>

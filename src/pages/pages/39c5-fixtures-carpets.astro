@@ -1,0 +1,769 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Fixtures · carpets"
+  description="Fixtures · carpets"
+  page="fixtures-carpets"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 39c5</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Fixtures · carpets</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>32</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>32 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| FixturesAndFittings : "fixturesAndFittings"
+  FixturesAndFittings ||--o| Carpets : "carpets"
+  Carpets ||--o| HallStairsLanding : "hallStairsLanding"
+  Carpets ||--o| LivingRoom : "livingRoom"
+  Carpets ||--o| DiningRoom : "diningRoom"
+  Carpets ||--o| Kitchen : "kitchen"
+  Carpets ||--o| Bedroom1 : "bedroom1"
+  Carpets ||--o| Bedroom2 : "bedroom2"
+  Carpets ||--o| Bedroom3 : "bedroom3"
+  Carpets ||--o&lbrace; OtherRoom : "otherRooms"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  FixturesAndFittings &lbrace;
+  &rbrace;
+  Carpets &lbrace;
+  &rbrace;
+  Bedroom1 &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Bedroom2 &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Bedroom3 &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  DiningRoom &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  HallStairsLanding &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  Kitchen &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  LivingRoom &lbrace;
+    string comments "Comments"
+    string isIncludedExcludedOrNone "isIncludedExcludedOrNone"
+    number price "Price"
+  &rbrace;
+  OtherRoom &lbrace;
+    string isIncludedOrExcluded "isIncludedOrExcluded"
+    string itemName "Name"
+    number price "Price"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>12</strong> objects, <strong>32</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="fix_carpets">Carpets</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittings" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Fixtures And Fittings</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittings" data-display-id="fixturesandfittings">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittings" class="object-block__title" data-display-id="fixturesandfittings">
+        <span class="object-block__display">Fixtures And Fittings</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingscarpets" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Carpets</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpets" data-display-id="carpets">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpets" class="object-block__title" data-display-id="carpets">
+        <span class="object-block__display">Carpets</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackfixturesandfittingscarpetshallstairslanding" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Hall Stairs Landing</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetslivingroom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Living Room</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetsdiningroom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Dining Room</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetskitchen" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Kitchen</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetsbedroom1" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bedroom1</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetsbedroom2" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bedroom2</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetsbedroom3" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Bedroom3</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackfixturesandfittingscarpetsotherroom" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Rooms[]</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsBedroom1" data-display-id="bedroom1">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetsbedroom1" class="object-block__title" data-display-id="bedroom1">
+        <span class="object-block__display">Bedroom1</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.bedroom1</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.bedroom1"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom1.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom1.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom1.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom1.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsBedroom2" data-display-id="bedroom2">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetsbedroom2" class="object-block__title" data-display-id="bedroom2">
+        <span class="object-block__display">Bedroom2</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.bedroom2</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.bedroom2"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom2.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom2.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom2.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom2.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsBedroom3" data-display-id="bedroom3">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetsbedroom3" class="object-block__title" data-display-id="bedroom3">
+        <span class="object-block__display">Bedroom3</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.bedroom3</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.bedroom3"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom3.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom3.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom3.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.bedroom3.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsDiningRoom" data-display-id="diningroom">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetsdiningroom" class="object-block__title" data-display-id="diningroom">
+        <span class="object-block__display">Dining Room</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.diningRoom</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.diningRoom"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.diningRoom.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.diningRoom.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.diningRoom.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.diningRoom.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsHallStairsLanding" data-display-id="hallstairslanding">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetshallstairslanding" class="object-block__title" data-display-id="hallstairslanding">
+        <span class="object-block__display">Hall Stairs Landing</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.hallStairsLanding</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.hallStairsLanding"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.hallStairsLanding.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.hallStairsLanding.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.hallStairsLanding.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.hallStairsLanding.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsKitchen" data-display-id="kitchen">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetskitchen" class="object-block__title" data-display-id="kitchen">
+        <span class="object-block__display">Kitchen</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.kitchen</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.kitchen"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.kitchen.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.kitchen.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.kitchen.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.kitchen.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsLivingRoom" data-display-id="livingroom">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetslivingroom" class="object-block__title" data-display-id="livingroom">
+        <span class="object-block__display">Living Room</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.livingRoom</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.livingRoom"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.livingRoom.comments"
+            data-overlays="ta10">
+          <td>Comments</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>comments</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.livingRoom.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.livingRoom.isIncludedExcludedOrNone"
+            data-overlays="ta10">
+          <td>isIncludedExcludedOrNone</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedExcludedOrNone</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.livingRoom.price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackFixturesAndFittingsCarpetsOtherRoom" data-display-id="otherroom">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackfixturesandfittingscarpetsotherroom" class="object-block__title" data-display-id="otherroom">
+        <span class="object-block__display">Other Rooms</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
+      <code class="object-block__path">propertyPack.fixturesAndFittings.carpets.otherRooms[]</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.fixturesAndFittings.carpets.otherRooms[]"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.otherRooms[].isIncludedOrExcluded"
+            data-overlays="ta10">
+          <td>isIncludedOrExcluded</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedOrExcluded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.otherRooms[].isIncludedOrExcluded"
+            data-overlays="ta10">
+          <td>isIncludedOrExcluded</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>isIncludedOrExcluded</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.otherRooms[].itemName"
+            data-overlays="ta10">
+          <td>Name</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>itemName</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.fixturesAndFittings.carpets.otherRooms[].price"
+            data-overlays="ta10">
+          <td>Price</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>price</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Law Society Fittings & Contents Form <span class="overlay-key">(TA10)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '39c4-fixtures-bathroom.html', label: 'Fixtures · bathroom' }}
+  next={{ href: '39c6-fixtures-curtains.html', label: 'Fixtures · curtains & rails' }}
+/>
+</Layout>

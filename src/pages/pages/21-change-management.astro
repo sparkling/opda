@@ -1,0 +1,227 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Change management process"
+  description="How OPDA changes its rules and standards &amp;mdash; constitutional amendments through the General Assembly, and technical schema changes via the PDTF SOP."
+  page="change-management"
+>
+<PageMeta category="Governance" updated="Draft · Updated 2026-05-17" />
+
+      <h1>Change management process</h1>
+      <p class="lead">
+        Two distinct change pathways exist at OPDA: <strong>constitutional / governance change</strong>
+        (the rules of the Association itself) and <strong>technical / schema change</strong>
+        (the PDTF artefacts). Each has its own approval route and authority.
+      </p>
+
+      <Diagram caption="Two pathways, two authorities. The constitutional route runs through company-law machinery; the technical route runs through the PDTF Standard Operating Procedure.">
+flowchart LR
+  classDef cat fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  classDef auth fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
+  C[Constitutional<br/>change]:::cat
+  T[Technical /<br/>schema change]:::cat
+  GA[General Assembly<br/><i>majority vote</i>]:::auth
+  TR[Technical Reviewers<br/><i>at least two members</i>]:::auth
+  C --> GA
+  T --> TR
+</Diagram>
+
+      <h2 id="constitutional">A. Constitutional &amp; governance change</h2>
+
+      <p>
+        Changes to OPDA's foundational documents &mdash; the Constitution, Articles of
+        Association, Code of Conduct, or policies &mdash; are governed by company law and
+        the Articles, not by the PDTF SOP.
+      </p>
+
+      <h3 id="amendmentRule">Constitution amendment rule</h3>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        This constitution may be amended by a majority vote of the General Assembly.
+        Proposed amendments shall be communicated to the members at least thirty (30)
+        days prior to the Annual General Meeting.
+      </blockquote>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Source: <a class="resource-link" href="/resource.html?path=source/01-organisation/constitution-and-policies/OPDA Constitution 2026.pdf"><code>OPDA Constitution 2026.pdf</code></a> p.6 (Amendments)
+      </p>
+
+      <h3 id="generalAssembly">General Assembly &mdash; the decision body</h3>
+
+      <p>
+        The Constitution names the General Assembly as the &ldquo;overall decision-making body
+        of the association&rdquo;. It consists of all members and convenes at least once a
+        year to approve the Constitution, receive reports, approve budgets, elect or
+        re-elect Executive Committee members, and discuss matters of importance.
+        Decisions are made by majority vote of members present or by proxy voting.
+      </p>
+
+      <ul>
+        <li><strong>AGM date.</strong> Held annually no later than <strong>31 October</strong> each year (Articles art. 24(1)).</li>
+        <li><strong>Quorum.</strong> Minimum two member attendees (Articles art. 25).</li>
+        <li><strong>Voting.</strong> One member, one vote. Decided on a show of hands unless a poll is demanded (Articles art. 29).</li>
+        <li><strong>Poll votes.</strong> Demandable by the chair, directors, two or more voting members, or members representing not less than one tenth of total voting rights (Articles art. 31).</li>
+        <li><strong>Proxies.</strong> Permitted by written notice (Articles arts. 32&ndash;33).</li>
+        <li><strong>Amendments to resolutions.</strong> Ordinary resolutions may be amended with 48 hours' notice; special resolutions only by the chair to correct non-substantive errors (Articles art. 34).</li>
+      </ul>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Source: <a class="resource-link" href="/resource.html?path=source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf"><code>Articles of Association 2026.pdf</code></a> Part 3 (Members), arts. 24&ndash;34.
+      </p>
+
+      <h3 id="reservePower">Members' reserve power</h3>
+
+      <p>
+        Day-to-day management sits with the directors under their general authority
+        (Articles art. 4). However, Article 5 reserves the ultimate power to the members:
+      </p>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        (1) The members may, by special resolution, direct the directors to take, or
+        refrain from taking, specified action. (2) No such special resolution
+        invalidates anything which the directors have done before the passing of the
+        resolution.
+      </blockquote>
+
+      <p>
+        A <strong>special resolution</strong> has the meaning given in section 283 of the
+        Companies Act 2006 (requiring a 75% majority). This is the mechanism by which
+        the membership can override the Executive Committee on a specified matter,
+        though it has prospective effect only.
+      </p>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Source: <a class="resource-link" href="/resource.html?path=source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf"><code>Articles of Association 2026.pdf</code></a> art. 5; defined terms art. 1.
+      </p>
+
+      <h2 id="technical">B. Technical &amp; schema change</h2>
+
+      <p>
+        Changes to the PDTF schema, overlays, and trust-framework artefacts follow the
+        canonical Standard Operating Procedure documented in
+        <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a> &sect; 6.
+        The current published schema version is
+        <strong>3.5.0</strong> (per <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/package.json"><code>schemas/package.json</code></a>).
+      </p>
+
+      <h3 id="sop">The 8-step SOP</h3>
+
+      <Diagram caption="PDTF SOP for schema changes (governance.md &sect; 6). Each step is owned by named roles inside the Technical Review group.">
+flowchart LR
+  classDef step fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
+  S1[1. Submission]:::step
+  S2[2. Implementation]:::step
+  S3[3. Impact assessment]:::step
+  S4[4. Review]:::step
+  S5[5. Documentation]:::step
+  S6[6. Approval]:::step
+  S7[7. Stakeholder notification]:::step
+  S8[8. Release]:::step
+  S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8
+</Diagram>
+
+      <ol>
+        <li><strong>Submission.</strong> Open a GitHub issue using the Standard Change Proposal Form. Required fields include a change reference identifier, change type (change or bug fix), justification, technical details, impacted areas (flagging any &ldquo;stable&rdquo; areas of the schema), and stakeholder impact.</li>
+        <li><strong>Implementation.</strong> Complete the work in a new branch linked to the issue.</li>
+        <li><strong>Impact assessment.</strong> Conduct a documented impact assessment for risks and compliance concerns using the Impact Assessment Form.</li>
+        <li><strong>Review.</strong> Raise a pull request to the <code>next</code> branch. Resolve review comments, squash incoming commits, and link the PR to the issue. Higher review barriers apply for &ldquo;stable&rdquo; schema elements or backwards-compatibility implications.</li>
+        <li><strong>Documentation.</strong> Update all relevant documentation to reflect the change.</li>
+        <li><strong>Approval.</strong> Notify stakeholders of intent to merge from <code>next</code> to <code>master</code>, summarising change, breaking-change implications, and intended merge date. Tag the commit with a release version.</li>
+        <li><strong>Stakeholder notification.</strong> Send the Change Notification Template (standard) or Breaking Change Notification Template (stability or breaking). For breaking changes, notify <em>before</em> the approval step.</li>
+        <li><strong>Release.</strong> Once fully approved the release is operational. Stakeholders are advised to update the Stakeholder Version Register.</li>
+      </ol>
+
+      <h3 id="thresholds">Approval thresholds</h3>
+
+      <ul>
+        <li><strong>Promotion to <code>next</code>.</strong> At least <em>X</em> Technical Reviewers must approve (the SOP placeholder &mdash; specific number still TBD).</li>
+        <li><strong>Technical proposals (general).</strong> Approval from <strong>at least two members</strong> of the Technical Review group (governance.md &sect; 3.B).</li>
+        <li><strong>Standard changes to <code>master</code>.</strong> At least <strong>two reviewers from different stakeholders</strong>.</li>
+        <li><strong>Stable schema or backwards-compatibility changes.</strong> Higher barrier &mdash; <strong>three reviewers or broader consensus</strong>, with additional compliance and risk assessment if needed.</li>
+        <li><strong>Feedback window.</strong> Minimum of <em>X</em> working days for stakeholder feedback after the approval announcement (specific number still TBD in the SOP).</li>
+      </ul>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Source: <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> &sect; 3.B (Technical Review &mdash; processes) and &sect; 6 (Approval Requirements).
+      </p>
+
+      <h3 id="versioning">Semantic versioning</h3>
+
+      <p>
+        The schema follows semantic versioning (MAJOR.MINOR.PATCH):
+      </p>
+
+      <ul>
+        <li><strong>Patch (3.5.x).</strong> Bug fixes, no breaking changes.</li>
+        <li><strong>Minor (3.x.0).</strong> New fields, backward compatible.</li>
+        <li><strong>Major (x.0.0).</strong> Breaking changes, migration required.</li>
+      </ul>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Source: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/README.md"><code>schemas/README.md</code></a> &sect; Versioning.
+      </p>
+
+      <h3 id="cadence">Release cadence</h3>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Cadence not yet codified</div>
+        <p>
+          The canonical SOP at <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a>
+          does not specify a fixed release cadence (monthly / quarterly / annual). Approval
+          thresholds and the consultation period (&ldquo;minimum of <em>X</em> working days&rdquo;) carry
+          <em>X</em> placeholders pending decision by the Technical Review group. The
+          earlier stub on this page claimed a monthly minor / twice-yearly major / 6-month
+          migration cadence; those figures were not in the source documents and have been
+          removed.
+        </p>
+      </div>
+
+      <h3 id="consultation">Public consultation &amp; stakeholder engagement</h3>
+
+      <p>
+        The Engagement function (governance.md &sect; 3.D) is responsible for inviting external
+        comment, gathering and consolidating stakeholder feedback on roadmap priorities
+        and schema changes, notifying impacted parties, and publishing regular updates on
+        progress. Compliance and Risk (&sect; 3.C) conduct a compliance check of proposed
+        major schema releases <em>before</em> release and provide guidance on potential
+        changes.
+      </p>
+
+      <h3 id="trustRegistry">Trust Registry update</h3>
+
+      <p>
+        Where a change affects accredited issuers or credential types, the
+        <strong>Trust Registry</strong> &mdash; a public JSON-LD document listing approved Issuers,
+        their DIDs, legal names, status, and authorised credential types &mdash; must be
+        updated and re-signed by the Governance Authority for authenticity
+        (governance.md &sect; 4).
+      </p>
+
+      <h2 id="templates">Templates &amp; reference forms</h2>
+
+      <p>OPDA already publishes the templates referenced by the SOP:</p>
+
+      <ul>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/proposal.md"><code>source/03-standards/trust-framework/docs/proposal.md</code></a> &mdash; Standard Change Proposal Form (step 1).</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md"><code>source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md</code></a> &mdash; Impact Assessment Form (step 3).</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/change-notification-template.md"><code>source/03-standards/trust-framework/docs/change-notification-template.md</code></a> &mdash; Change Notification Template (step 7, non-breaking).</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/breaking-change-notification-template.md"><code>source/03-standards/trust-framework/docs/breaking-change-notification-template.md</code></a> &mdash; Breaking Change Notification Template (step 7, breaking).</li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md</code></a> &mdash; Compliance and policy checklist (pre-release).</li>
+      </ul>
+
+      <h2 id="canonical">Canonical source</h2>
+
+      <p>
+        The single authoritative reference for the technical change procedure is
+        <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a>.
+        If this page and that file disagree, governance.md wins.
+      </p>
+
+      <div class="page-footer">
+        <a href="20-conformance-scheme.html">&larr; Conformance &amp; certification</a>
+        <a href="22-lifecycle-versioning.html">Lifecycle &amp; versioning &rarr;</a>
+      </div>
+</Layout>

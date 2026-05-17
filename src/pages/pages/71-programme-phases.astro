@@ -1,0 +1,110 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Programme phases"
+  description="Sandbox → Live trust framework → National rollout. The three OPDA programme phases with transition criteria."
+  page="programme-phases"
+>
+<PageMeta category="Strategy" variant="brand" updated="Updated 2026-05-14" />
+
+      <h1>Programme phases</h1>
+      <p class="lead">
+        Three phases, each a stable state with criteria for moving to the next.
+        Mirrors the UK Open Banking sequence and is structured to give regulators a
+        predictable evidence cadence.
+      </p>
+
+      <Diagram caption="Sandbox is the current state. Phase 2 begins when the Sandbox exit criteria are met.">
+flowchart LR
+  classDef phase fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
+  classDef done  fill:#dcfce7,stroke:#166534,color:#14532d;
+  P1["Phase 1 — Sandbox<br/><i>operational 2025–26</i>"]:::phase
+  P2["Phase 2 — Live trust framework<br/><i>2026–27 (planned)</i>"]:::phase
+  P3["Phase 3 — National rollout<br/><i>2027+ (planned)</i>"]:::phase
+  P1 --> P2 --> P3
+</Diagram>
+
+      <h2 id="phase1">Phase 1 — Sandbox</h2>
+
+      <p><strong>Status: operational today.</strong> CLC + OPDA + Raidiam, funded by the Regulators' Pioneer Fund.</p>
+
+      <p><strong>Goal:</strong> build and stress-test the technical, regulatory and governance foundations of the trust framework in a controlled environment with real participants.</p>
+
+      <table>
+        <thead><tr><th>Workstream</th><th>What's being delivered</th></tr></thead>
+        <tbody>
+          <tr><td>Technical</td><td>PDTF schemas v3.4+, OpenAPI v1.2, validation tooling, conformance test suite</td></tr>
+          <tr><td>Governance</td><td>Trust framework spec, accreditation criteria, consent &amp; liability model</td></tr>
+          <tr><td>Operational</td><td>Raidiam-run Sandbox infrastructure, participant onboarding process, audit regime</td></tr>
+          <tr><td>Regulatory</td><td>Gap analysis fed back to MHCLG, DSIT and FCA</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Exit criteria (proposed):</strong></p>
+      <ul>
+        <li>≥ 10 Sandbox participants completing the full transaction flow</li>
+        <li>Conformance test suite passing for all participating data sources</li>
+        <li>Regulator buy-in (FCA + ICO) on the consent/liability model</li>
+        <li>MHCLG-published material-information successor guidance incorporated into the <code>nts.json</code> overlay</li>
+        <li>Independent operational-readiness review completed</li>
+      </ul>
+
+      <h2 id="phase2">Phase 2 — Live trust framework</h2>
+
+      <p><strong>Status: planned 2026–27.</strong></p>
+
+      <p><strong>Goal:</strong> open the production trust framework to accredited participants. Move from "controlled cohort" to "anyone meeting the criteria can join".</p>
+
+      <ul>
+        <li>Productionised trust-framework infrastructure (not a sandbox copy)</li>
+        <li>Live conformance scheme — independent body issues certifications</li>
+        <li>Published accreditation criteria with a public participant register</li>
+        <li>Regulatory wrapper — likely FCA authorisation regime per the Smart Data Scheme model</li>
+        <li>Public dispute / incident-response process</li>
+      </ul>
+
+      <p><strong>Exit criteria (proposed):</strong></p>
+      <ul>
+        <li>≥ 50 certified participants across all six bounded contexts</li>
+        <li>Quarterly audit cycle running with public reports</li>
+        <li>End-to-end transactions running on the live framework at scale</li>
+        <li>Consumer-facing brand awareness comparable to Open Banking at the 2018–2019 mark</li>
+      </ul>
+
+      <h2 id="phase3">Phase 3 — National rollout</h2>
+
+      <p><strong>Status: planned 2027+.</strong></p>
+
+      <p><strong>Goal:</strong> industry-wide default. PDTF becomes the standard exchange layer for property data; non-conformant alternatives become rare and uncompetitive.</p>
+
+      <ul>
+        <li>Mandatory conformance for regulated activities (estate-agency Material Information, conveyancing, mortgage lending)</li>
+        <li>Cross-jurisdiction expansion — Scotland, Northern Ireland aligned</li>
+        <li>International peer-recognition (e.g. with similar property data initiatives in Australia or the Netherlands)</li>
+        <li>OPDA evolves to a steady-state standards body, more like the Open Banking Implementation Entity in maturity terms</li>
+      </ul>
+
+      <h2 id="precedent">Open Banking precedent</h2>
+      <p>
+        The phasing intentionally echoes the UK Open Banking timeline:
+      </p>
+      <ul>
+        <li><strong>2016–2017:</strong> CMA Order, Open Banking Implementation Entity stood up — equivalent to today (DPMSG + OPDA forming)</li>
+        <li><strong>2018:</strong> CMA9 banks live with read APIs — equivalent to Phase 2</li>
+        <li><strong>2019–2021:</strong> Variable Recurring Payments, broader fintech adoption — equivalent to Phase 3</li>
+      </ul>
+      <p>
+        Raidiam's involvement is significant precisely because they ran the
+        equivalent Open Banking infrastructure in Brazil and worked on the UK
+        Open Banking project — so this is not a from-scratch design.
+      </p>
+
+      <PageFooter
+  prev={{ href: '70-strategy-overview.html', label: 'Strategy overview' }}
+  next={{ href: '72-industrial-strategy.html', label: 'UK Industrial Strategy' }}
+/>
+</Layout>

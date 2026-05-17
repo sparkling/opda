@@ -1,0 +1,634 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageFooter from '../../components/PageFooter.astro';
+---
+<Layout
+  title="Schema · Letting &amp; completion"
+  description="Letting &amp;amp; completion"
+  page="encumbrances-letting-completion"
+>
+<div class="page-meta">
+        <span class="pill pill--info">Schema</span>
+        <span>Page 47d</span>
+        <span>Generated 2026-05-17</span>
+      </div>
+
+      <h1>Letting & completion</h1>
+
+      <div class="page-meta" aria-label="Page leaf statistics">
+  <span><strong>24</strong> leaves</span>
+  <span>100.0% Declaration</span>
+  <span>0.0% Evidence</span>
+  <span>0.0% Derivation</span>
+  <span>24 in overlays</span>
+  <span>0 with worked example</span></div>
+
+      
+            <h2 id="er">Entity relationships</h2>
+      <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+  elk:
+    direction: DOWN
+    nodePlacementStrategy: BRANDES_KOEPF
+    mergeEdges: false
+---
+erDiagram
+  Transaction ||--o| PropertyPack : "propertyPack"
+  PropertyPack ||--o| LettingInformation : "lettingInformation"
+  PropertyPack ||--o| CompletionAndMoving : "completionAndMoving"
+  CompletionAndMoving ||--o| SellerWillEnsure : "sellerWillEnsure"
+  CompletionAndMoving ||--o| OtherPropertyInChain : "otherPropertyInChain"
+  CompletionAndMoving ||--o| MoveRestrictionDates : "moveRestrictionDates"
+  CompletionAndMoving ||--o| DigitalPropertyLogbook : "digitalPropertyLogbook"
+  CompletionAndMoving ||--o| SufficientToRepayAllMortgages : "sufficientToRepayAllMortgages"
+  OtherPropertyInChain ||--o| DependentPropertyAddress : "dependentPropertyAddress"
+  Transaction &lbrace;
+  &rbrace;
+  PropertyPack &lbrace;
+  &rbrace;
+  CompletionAndMoving &lbrace;
+  &rbrace;
+  DigitalPropertyLogbook &lbrace;
+    string logbookProvider "Please confirm the name of the existing logbook provider"
+    boolean willHandoverLogbook "Please confirm that on completion you will transfer it to…"
+    string yesNo "yesNo"
+  &rbrace;
+  MoveRestrictionDates &lbrace;
+    string details "details"
+    string yesNo "yesNo"
+  &rbrace;
+  OtherPropertyInChain &lbrace;
+    string propertyDependencyType "propertyDependencyType"
+    string yesNo "yesNo"
+  &rbrace;
+  DependentPropertyAddress &lbrace;
+    string line1 "Address line 1"
+    string line2 "Address line 2"
+    string line3 "Address line 3"
+    string postcode "Postcode"
+    string town "Town"
+  &rbrace;
+  SellerWillEnsure &lbrace;
+    boolean leaveKeys "Leave keys for all door and window locks, along with any …"
+    boolean removeRubbish "Remove all rubbish and items not included in the sale fro…"
+    boolean replaceLightFittings "If light fittings are removed, the fittings will be repla…"
+    boolean takeReasonableCare "Take reasonable care when removing any other fittings or …"
+  &rbrace;
+  SufficientToRepayAllMortgages &lbrace;
+    string yesNo "yesNo"
+  &rbrace;
+  LettingInformation &lbrace;
+    number holdingDeposit "Holding deposit"
+    number rent "Rent"
+    string rentFrequency "Rent frequency"
+    number securityDeposit "Security deposit"
+  &rbrace;
+  </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>10</strong> objects, <strong>24</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>
+      <div class="objects-header flex items-center gap-4 flex-wrap pt-6 mt-8 border-t border-[var(--color-border)]">
+        <h2 id="objects" class="m-0! p-0! border-0! shrink-0">Object model</h2>
+
+        <el-popover-group class="isolate flex flex-1 mx-auto max-w-3xl rounded-md shadow-xs" role="toolbar" aria-label="Sub-table filtering">
+          <input type="search"
+                 id="objects-search"
+                 class="relative flex-1 min-w-0 rounded-l-md bg-[var(--button-bg)] px-3 py-2 text-sm text-[var(--color-text-strong)] placeholder:text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)]"
+                 placeholder="Search title, field or path…"
+                 aria-label="Search object tables">
+
+          <button type="button"
+                  id="filter-overlay-btn"
+                  popovertarget="filter-overlay-panel"
+                  class="relative -ml-px inline-flex items-center bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Filter by overlay">
+            <span class="sr-only">Filter by overlay</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span class="db-filter-badge ml-1" id="filter-overlay-count" hidden>0</span>
+          </button>
+
+          <el-popover id="filter-overlay-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+
+          <button type="button"
+                  id="objects-config-btn"
+                  popovertarget="objects-config-panel"
+                  class="relative -ml-px inline-flex items-center rounded-r-md bg-[var(--button-bg)] px-2 py-2 text-[var(--color-text-muted)] inset-ring-1 inset-ring-[var(--ring-subtle)] hover:bg-[var(--button-bg-hover)] focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] aria-expanded:z-10 aria-expanded:bg-[var(--button-bg-active)] cursor-pointer"
+                  title="Columns">
+            <span class="sr-only">Columns</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+
+          <el-popover id="objects-config-panel" anchor="bottom end" popover
+                      class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+          </el-popover>
+        </el-popover-group>
+      </div>      <h3 id="letting">Letting information</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="transaction" class="object-block__title" data-display-id="transaction">
+        <span class="object-block__display">Transaction</span>      </h4>
+      <code class="object-block__path">transaction (root)</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypack" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Property Pack</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
+        <span class="object-block__display">Property Pack</span>      </h4>
+      <code class="object-block__path">propertyPack</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypacklettinginformation" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Letting Information</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackcompletionandmoving" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Completion And Moving</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLettingInformation" data-display-id="lettinginformation">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypacklettinginformation" class="object-block__title" data-display-id="lettinginformation">
+        <span class="object-block__display">Letting Information</span>      </h4>
+      <code class="object-block__path">propertyPack.lettingInformation</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.lettingInformation"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.lettingInformation.holdingDeposit"
+            data-overlays="ntsl2">
+          <td>Holding deposit</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>holdingDeposit</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.lettingInformation.rent"
+            data-overlays="ntsl2">
+          <td>Rent</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>rent</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.lettingInformation.rentFrequency"
+            data-overlays="ntsl2">
+          <td>Rent frequency</td>
+          <td>Enumeration: Yearly, Quarterly, Monthly, Weekly.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>rentFrequency</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.lettingInformation.securityDeposit"
+            data-overlays="ntsl2">
+          <td>Security deposit</td>
+          <td><span class="muted">—</span></td>
+          <td><code>number</code></td>
+          <td>Declaration          </td>
+          <td><code>securityDeposit</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <h3 id="completion">Completion & moving</h3>      <div class="object-block" id="obj-PropertyPackCompletionAndMoving" data-display-id="completionandmoving">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmoving" class="object-block__title" data-display-id="completionandmoving">
+        <span class="object-block__display">Completion And Moving</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackcompletionandmovingsellerwillensure" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Seller Will Ensure</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackcompletionandmovingotherpropertyinchain" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Other Property In Chain</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackcompletionandmovingmoverestrictiondates" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Move Restriction Dates</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackcompletionandmovingdigitalpropertylogbook" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Digital Property Logbook</span>
+        </a>
+      </li>      <li>
+        <a href="#propertypackcompletionandmovingsufficienttorepayallmortgages" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Sufficient To Repay All Mortgages</span>
+        </a>
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingDigitalPropertyLogbook" data-display-id="digitalpropertylogbook">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingdigitalpropertylogbook" class="object-block__title" data-display-id="digitalpropertylogbook">
+        <span class="object-block__display">Digital Property Logbook</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.digitalPropertyLogbook</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.digitalPropertyLogbook"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider"
+            data-overlays="baspi5">
+          <td>Please confirm the name of the existing logbook provider</td>
+          <td>Please confirm the name of the existing logbook provider. Please confirm the name…</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>logbookProvider</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook"
+            data-overlays="baspi5">
+          <td>Please confirm that on completion you will transfer it to the new owner</td>
+          <td>Please confirm that on completion you will transfer it to the new owner</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>willHandoverLogbook</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.digitalPropertyLogbook.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.digitalPropertyLogbook.yesNo"
+            data-overlays="baspi5">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingMoveRestrictionDates" data-display-id="moverestrictiondates">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingmoverestrictiondates" class="object-block__title" data-display-id="moverestrictiondates">
+        <span class="object-block__display">Move Restriction Dates</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.moveRestrictionDates</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.moveRestrictionDates"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.moveRestrictionDates.details"
+            data-overlays="baspi5,ta6">
+          <td>details</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>details</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.moveRestrictionDates.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.moveRestrictionDates.yesNo"
+            data-overlays="baspi5,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingOtherPropertyInChain" data-display-id="otherpropertyinchain">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingotherpropertyinchain" class="object-block__title" data-display-id="otherpropertyinchain">
+        <span class="object-block__display">Other Property In Chain</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.otherPropertyInChain</code>
+    </div>    <ul class="object-block__children">      <li>
+        <a href="#propertypackcompletionandmovingotherpropertyinchaindependentpropertyaddress" class="object-block__child-link">
+          <svg class="object-block__child-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="13 17 18 12 13 7"/>
+            <polyline points="6 17 11 12 6 7"/>
+          </svg>
+          <span>Dependent Property Address</span>
+        </a>
+      </li>    </ul>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.otherPropertyInChain"
+       data-field-count="3">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.propertyDependencyType"
+            data-overlays="baspi5">
+          <td>propertyDependencyType</td>
+          <td>Enumeration: Sale, Purchase, Remortgage.</td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>propertyDependencyType</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.yesNo"
+            data-overlays="baspi5,nts2,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.yesNo"
+            data-overlays="baspi5,nts2,piq,rds,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingSellerWillEnsure" data-display-id="sellerwillensure">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingsellerwillensure" class="object-block__title" data-display-id="sellerwillensure">
+        <span class="object-block__display">Seller Will Ensure</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.sellerWillEnsure</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.sellerWillEnsure"
+       data-field-count="4">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys"
+            data-overlays="baspi5,piq,ta6">
+          <td>Leave keys for all door and window locks, along with any alarm codes, for the buyer on the day of completion.</td>
+          <td>Leave key for all door and window locks, along with any alarm codes, for the buyer on the day of completion.</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>leaveKeys</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish"
+            data-overlays="baspi5,piq,ta6">
+          <td>Remove all rubbish and items not included in the sale from the property (including its garden, loft and any sheds or outbuildings) and leave the property in a clean and tidy condition.</td>
+          <td>Remove all rubbish and item not included in the sale from the property (including its garden, loft and any shed or outbuildings) and leave the property in a clean and tidy condition.</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>removeRubbish</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings"
+            data-overlays="baspi5,piq,ta6">
+          <td>If light fittings are removed, the fittings will be replaced with ceiling rose, flex, bulb holder and bulb.</td>
+          <td>If light fitting are removed, the fitting will be replaced with ceiling rose, flex, bulb holder and bulb.</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>replaceLightFittings</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare"
+            data-overlays="baspi5,piq,ta6">
+          <td>Take reasonable care when removing any other fittings or contents.</td>
+          <td>Take reasonable care when removing any other fitting or contents.</td>
+          <td><code>boolean</code></td>
+          <td>Declaration          </td>
+          <td><code>takeReasonableCare</code><span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>          </td>
+          <td class="align-center">yes</td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingSufficientToRepayAllMortgages" data-display-id="sufficienttorepayallmortgages">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingsufficienttorepayallmortgages" class="object-block__title" data-display-id="sufficienttorepayallmortgages">
+        <span class="object-block__display">Sufficient To Repay All Mortgages</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.sufficientToRepayAllMortgages</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.sufficientToRepayAllMortgages"
+       data-field-count="1">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.sufficientToRepayAllMortgages.yesNo"
+            data-overlays="baspi5,ta6">
+          <td>yesNo</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>yesNo</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>      <div class="object-block" id="obj-PropertyPackCompletionAndMovingOtherPropertyInChainDependentPropertyAddress" data-display-id="dependentpropertyaddress">
+  <header class="object-block__head">
+    <div class="object-block__title-row">
+      <h4 id="propertypackcompletionandmovingotherpropertyinchaindependentpropertyaddress" class="object-block__title" data-display-id="dependentpropertyaddress">
+        <span class="object-block__display">Dependent Property Address</span>      </h4>
+      <code class="object-block__path">propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress</code>
+    </div>  </header>  <div class="db-table-wrap full-bleed"
+       data-object-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress"
+       data-field-count="5">
+    <table class="db-table db-table--fixed">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Title</th>
+          <th style="width: 22%;">Description</th>
+          <th style="width: 6rem;">Type</th>
+          <th style="width: 7rem;">Kind</th>
+          <th style="width: 14%;">Field</th>
+          <th class="align-center" style="width: 5rem;">Required</th>
+          <th style="width: 18%;">Overlays</th>
+          <th style="width: 6rem;">Affordance</th>
+        </tr>
+      </thead>
+      <tbody>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress.line1"
+            data-overlays="baspi5">
+          <td>Address line 1</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line1</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress.line2"
+            data-overlays="baspi5">
+          <td>Address line 2</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line2</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress.line3"
+            data-overlays="baspi5">
+          <td>Address line 3</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>line3</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress.postcode"
+            data-overlays="baspi5">
+          <td>Postcode</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>postcode</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>        <tr data-leaf-path="propertyPack.completionAndMoving.otherPropertyInChain.dependentPropertyAddress.town"
+            data-overlays="baspi5">
+          <td>Town</td>
+          <td><span class="muted">—</span></td>
+          <td><code>string</code></td>
+          <td>Declaration          </td>
+          <td><code>town</code>          </td>
+          <td class="align-center"><span class="muted">—</span></td>
+          <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
+          <td><span class="muted">—</span>          </td>
+        </tr>      </tbody>
+    </table>
+  </div></div>
+      <PageFooter
+  prev={{ href: '47c-occupiers-notices.html', label: 'Occupiers & notices' }}
+  next={{ href: '48-evidence-documents-declarations.html', label: 'Evidence, documents & declarations' }}
+/>
+</Layout>

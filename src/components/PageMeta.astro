@@ -1,0 +1,25 @@
+---
+/**
+ * Page metadata strip — sits directly under <Layout> and above the H1.
+ *
+ *   <PageMeta category="Governance" updated="2026-05-17" />
+ *   <PageMeta category="Section overview" variant="brand" updated="Draft · 2026-05-17" />
+ *
+ * The `category` pill defaults to the "accent" variant (terracotta).
+ * `updated` is a free-text slot so callers can prefix "Draft · " or
+ * similar status flags on the date.
+ */
+interface Props {
+  /** Pill text — typically the section name or page status (e.g. "Governance", "Section overview", "Stub"). */
+  category: string;
+  /** Pill variant — maps to .pill--{variant}. Defaults to "accent". */
+  variant?: 'brand' | 'accent' | 'info' | 'success' | 'warn';
+  /** Free text. Conventionally "Updated YYYY-MM-DD" or "Draft · Updated YYYY-MM-DD". */
+  updated?: string;
+}
+const { category, variant = 'accent', updated } = Astro.props;
+---
+<div class="page-meta">
+  <span class={`pill pill--${variant}`}>{category}</span>
+  {updated && <span>{updated}</span>}
+</div>

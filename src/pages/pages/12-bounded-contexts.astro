@@ -1,0 +1,415 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Bounded contexts &amp; industries"
+  description="DDD-style bounded contexts for the UK property transaction — the industries OPDA's standard must accommodate and how PDTF acts as their Published Language."
+  page="bounded-contexts"
+>
+<PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" />
+
+      <h1>Bounded contexts &amp; industries</h1>
+      <p class="lead">
+        The UK property transaction is a multi-industry process. Each actor has its own
+        ubiquitous language, rules, and concerns — a <em>bounded context</em> in
+        Domain-Driven Design terms. OPDA's PDTF doesn't try to replace any of those internal
+        models; it acts as the <strong>Published Language</strong> between them.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Design stance</div>
+        <p>
+          The PDTF semantic model should treat each industry as its own bounded context
+          with its own concepts, its own canonical forms, and its own owners. The
+          ontology binds them through shared root concepts (Transaction, Property,
+          Participant, Claim) and explicit inter-context translations — not by trying to
+          impose a single, unified vocabulary on the whole sector.
+        </p>
+      </div>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Bounded contexts vs schema overlays</div>
+        <p>
+          A <strong>bounded context</strong> is a domain-layer idea — a business function
+          with its own language and rules (Estate Agency, Conveyancing, …). A
+          <strong>PDTF overlay</strong> is a schema-layer artefact — a single JSON-Schema
+          file that adds one form, search or document to the base transaction
+          (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>, <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a>, …). They map cleanly onto each
+          other (many overlays per context) but they're not the same thing. See the
+          dedicated <a href="16-overlays.html">PDTF overlays</a> page for the full
+          catalogue and merge mechanics.
+        </p>
+      </div>
+
+      <h2 id="primaryIndustries">Six primary industry contexts</h2>
+
+      <p>
+        Each is a community of practice with its own regulators, professional bodies,
+        forms, software ecosystems, and language. The OPDA
+        <a href="11-opda-members.html">member firms</a> are deliberately drawn from across these contexts —
+        named below in each row.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Context</th>
+            <th>Industry stewards (regulators / pro bodies)</th>
+            <th>OPDA members in this context</th>
+            <th>Canonical forms / data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Estate Agency</strong></td>
+            <td>Propertymark; portals (Rightmove, Zoopla); regulated by NTSELAT (transitioning to MHCLG)</td>
+            <td>
+              <strong>Founders:</strong> OnTheMarket, Homely.<br>
+              <strong>Association:</strong> Connells Group.
+            </td>
+            <td>Listing data, viewings, offers, BASPI v4/v5, NTS Material Information</td>
+          </tr>
+          <tr>
+            <td><strong>Conveyancing (Legal)</strong></td>
+            <td>Law Society, SRA, CLC, Society of Licensed Conveyancers, CILEX, CILEx Regulation</td>
+            <td>
+              <strong>Founders:</strong> LMS.<br>
+              <strong>Association:</strong> Smoove, Movera, Movemnt.
+            </td>
+            <td>TA6, TA7, TA10, LPE1, contracts, searches, exchange &amp; completion documents</td>
+          </tr>
+          <tr>
+            <td><strong>Mortgage Lending</strong></td>
+            <td>UK Finance, BSA; regulated by FCA</td>
+            <td>
+              <strong>Founders:</strong> United Trust Bank (UTB), OMS.<br>
+              <strong>Association banks:</strong> HSBC UK, Nationwide, NatWest, Lloyds Banking Group (Halifax, BM Solutions, Scottish Widows), Santander.<br>
+              <strong>Lending tech:</strong> Finova, Phoebus, MAB (intermediary network), L&amp;C Mortgages, Lenderhive.
+            </td>
+            <td>FME1, DIP, mortgage offer, valuation requests, drawdown instructions</td>
+          </tr>
+          <tr>
+            <td><strong>Surveying / Valuation</strong></td>
+            <td>RICS</td>
+            <td>
+              <strong>No founding members.</strong> <em>Gap.</em><br>
+              <strong>Association (AVM-adjacent):</strong> Hometrack, Experian.
+            </td>
+            <td>PIQ, condition surveys (Levels 1–3), AVMs, RICS Red Book valuations</td>
+          </tr>
+          <tr>
+            <td><strong>Property Data Services</strong></td>
+            <td>COPSO</td>
+            <td>
+              <strong>Founders:</strong> Sprift, Groundsure, TM Group, Kotini, Inventory Base.<br>
+              <strong>Association:</strong> Hometrack, Experian, Credas (identity data), Property Deals Insight, Armalytix.
+            </td>
+            <td>CON29R, CON29DW, LLC1, OC1, RDS, BASPI; EPC datasets; HMLR title data</td>
+          </tr>
+          <tr>
+            <td><strong>Property Technology</strong> (orchestration)</td>
+            <td>—</td>
+            <td>
+              <strong>Founders:</strong> Moverly, Coadjute, PEXA.<br>
+              <strong>Association:</strong> HSP, VMC, Clozy, C2C, e4, Novus Strategy.
+            </td>
+            <td>System-to-system messages; orchestration; UX surfaces for each above context</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Gap</div>
+        <p>
+          <strong>Surveying / Valuation has no founding OPDA member.</strong> RICS is on
+          the DPMSG steering board but doesn't have a member-firm on OPDA's roster.
+          Worth flagging: the surveying overlay (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>) currently lacks an
+          OPDA member with practical implementation skin in the game. Stakeholder
+          engagement for the linked-data project should prioritise bringing a surveying
+          firm into membership.
+        </p>
+      </div>
+
+      <h2 id="supportingContexts">Five supporting / cross-cutting contexts</h2>
+
+      <p>
+        Each industry context is bordered by — and dependent on — several
+        government-owned or regulatory contexts. These have their own languages too;
+        PDTF treats them as <strong>upstream contexts</strong> and consumes their data
+        rather than trying to redefine it.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Context</th><th>Steward</th><th>What it owns</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Land Registry</strong></td><td>HMLR</td><td>Title register, charges, official copies (OC1), local land charges (LLC1)</td></tr>
+          <tr><td><strong>Local Authority</strong></td><td>308 LAs in England + Wales</td><td>CON29R search data, planning permissions, building control, council tax band — being progressively migrated into HMLR's national LLC service</td></tr>
+          <tr><td><strong>Material Information</strong></td><td>MHCLG (replacing withdrawn NTS rules)</td><td>The minimum disclosures a listing must contain — under the DMCC Act 2024</td></tr>
+          <tr><td><strong>Identity &amp; Verification</strong></td><td>DSIT (DIATF); regulated by ICO; MLR 2017</td><td>Identity proofing, AML / KYC, attribute exchange</td></tr>
+          <tr><td><strong>Trust &amp; Verifiable Claims</strong></td><td>W3C (VC + DID specs); ToIP Foundation; PDTF v2.0 spec</td><td>Cryptographic provenance: who issued what claim, when, with what evidence</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="spanningConcerns">Two spanning concerns</h2>
+
+      <p>
+        Cutting across every industry and supporting context, two concerns are
+        irreducibly system-wide:
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--brand">Spanning</div>
+          <h3>Transaction lifecycle</h3>
+          <p>
+            The end-to-end journey from listing → offer → instruction → searches →
+            valuation → mortgage offer → exchange → completion → registration.
+            PDTF's <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> is the spine. State transitions
+            are the events different contexts care about.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill pill--brand">Spanning</div>
+          <h3>Participants &amp; their roles</h3>
+          <p>
+            The same legal entities appear in multiple contexts wearing different hats
+            (a single firm might be agent + property data provider; a single person is
+            buyer + borrower + tenant). PDTF models participants once via DID and lets
+            them play role-typed parts in transactions.
+          </p>
+        </div>
+      </div>
+
+      <h2 id="contextMap">DDD context map</h2>
+
+      <p>
+        Following Eric Evans's notation. Relationship labels: <strong>U</strong>pstream
+        / <strong>D</strong>ownstream; <strong>PL</strong> = Published Language;
+        <strong>OHS</strong> = Open Host Service; <strong>ACL</strong> = Anti-Corruption Layer;
+        <strong>CF</strong> = Conformist; <strong>C/S</strong> = Customer / Supplier.
+      </p>
+
+      <Diagram caption="PDTF is the Published Language at the centre. Each primary industry context
+          has a bidirectional relationship via Anti-Corruption Layers (each firm's
+          adapter to PDTF). Upstream government/standards contexts are consumed in
+          conformist mode — PDTF doesn't try to redefine their language.">
+flowchart TB
+  classDef primary fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
+  classDef gov fill:#dbeafe,stroke:#1e40af,color:#1e3a8a,stroke-width:2px;
+  classDef tech fill:#dcfce7,stroke:#166534,color:#14532d,stroke-width:2px;
+  classDef pl fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
+
+  PDTF["<b>PDTF — Published Language</b><br/>JSON Schema + OpenAPI + VC + DID<br/><i>Open Host Service</i>"]:::pl
+
+  EA[Estate Agency]:::primary
+  CV[Conveyancing]:::primary
+  ML[Mortgage Lending]:::primary
+  SV[Surveying]:::primary
+  PD[Property Data]:::primary
+  PT[Property Tech]:::primary
+
+  HMLR["Land Registry (HMLR)"]:::gov
+  LA["Local Authority"]:::gov
+  MI["Material Information (MHCLG)"]:::gov
+  ID["Identity & Verification (DIATF)"]:::gov
+  TV["Trust & Verifiable Claims (W3C)"]:::tech
+
+  EA  <-->|PL via OPDA accreditation| PDTF
+  CV  <-->|PL| PDTF
+  ML  <-->|PL| PDTF
+  SV  <-->|PL| PDTF
+  PD  <-->|PL| PDTF
+  PT  <-->|PL| PDTF
+
+  PDTF -->|CF / consumes| HMLR
+  PDTF -->|CF / consumes| LA
+  PDTF -->|CF / implements| MI
+  PDTF -->|CF / wraps| ID
+  PDTF -->|CF / built on| TV
+</Diagram>
+
+      <h2 id="relationshipPatterns">Inter-context relationship patterns</h2>
+
+      <p>
+        Each pair of contexts has a specific DDD relationship. The pattern dictates how
+        translations are designed.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Pair</th><th>Pattern</th><th>What it means in practice</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PDTF ↔ each industry context</td>
+            <td><strong>Published Language</strong> + <strong>Open Host Service</strong></td>
+            <td>PDTF publishes the wire format and API. Each industry's software implements an Anti-Corruption Layer between its internal model and PDTF.</td>
+          </tr>
+          <tr>
+            <td>PDTF → HMLR</td>
+            <td><strong>Conformist</strong></td>
+            <td>HMLR's title register format is the canonical truth. PDTF consumes it as-is via the OC1 / LLC1 overlays; doesn't redefine title concepts.</td>
+          </tr>
+          <tr>
+            <td>PDTF → Local Authority searches</td>
+            <td><strong>Conformist</strong> via search providers</td>
+            <td>308 LAs have varying data; PDTF adopts the CON29R standard form as the canonical interface.</td>
+          </tr>
+          <tr>
+            <td>PDTF → MHCLG Material Information</td>
+            <td><strong>Conformist</strong> (regulatory)</td>
+            <td>Whatever MHCLG defines, PDTF's <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a>-successor overlay must implement. No design discretion on what counts as material.</td>
+          </tr>
+          <tr>
+            <td>PDTF → W3C VC / DID</td>
+            <td><strong>Conformist</strong> (technical)</td>
+            <td>PDTF v2.0 uses W3C VC Data Model verbatim for the claim structure. DID for participant identity.</td>
+          </tr>
+          <tr>
+            <td>Estate Agency ↔ Property Data</td>
+            <td><strong>Customer / Supplier</strong></td>
+            <td>Agents (customers) consume data products from search firms and aggregators (suppliers). PDTF formalises the supply contract.</td>
+          </tr>
+          <tr>
+            <td>Conveyancing ↔ Mortgage Lending</td>
+            <td><strong>Partnership</strong></td>
+            <td>Both parties need each other to complete; neither subordinate. PDTF formalises the handshakes (certificate of title, source of funds, completion monies).</td>
+          </tr>
+          <tr>
+            <td>Mortgage Lending ↔ Surveying</td>
+            <td><strong>Customer / Supplier</strong></td>
+            <td>Lender (customer) instructs surveyor (supplier). PDTF formalises valuation requests &amp; reports.</td>
+          </tr>
+          <tr>
+            <td>Property Tech ↔ all primary contexts</td>
+            <td><strong>Open Host Service</strong></td>
+            <td>Software platforms expose PDTF-compatible APIs to the industry-specific contexts they serve.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="overlayMapping">How each context maps to a PDTF schema overlay</h2>
+
+      <p>
+        Reassuringly, this isn't a new architecture — PDTF's overlay model already
+        reflects this bounded-context thinking. Each overlay is a context's view of the
+        shared transaction. Full catalogue of all <strong>18 main + 16 extension</strong>
+        overlays — and how they're defined and merged — on the dedicated
+        <a href="16-overlays.html">PDTF overlays</a> page; the mapping itself sits here.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Context</th><th>Main overlays</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Estate Agency</td>
+            <td><code>baspi4</code> (legacy) · <code>baspi5</code> · <code>nts</code> (legacy) · <code>nts2</code> · <code>ntsl</code> (legacy) · <code>ntsl2</code></td>
+          </tr>
+          <tr>
+            <td>Conveyancing</td>
+            <td><code>ta6</code> · <code>ta7</code> · <code>ta10</code> · <code>lpe1</code></td>
+          </tr>
+          <tr>
+            <td>Mortgage Lending</td>
+            <td><code>fme1</code></td>
+          </tr>
+          <tr>
+            <td>Surveying</td>
+            <td><code>piq</code></td>
+          </tr>
+          <tr>
+            <td>Property Data Services</td>
+            <td><code>rds</code> · <code>oc1</code> · <code>llc1</code> · <code>con29R</code> · <code>con29DW</code> · <code>sr24</code></td>
+          </tr>
+          <tr>
+            <td>Property Tech</td>
+            <td>The base <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper — no overlays of its own</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="muted tiny">
+        The <strong>16 extension overlays</strong> (<code>jk</code>, <code>tf</code>,
+        <code>as</code> …) are modular sub-pieces of NTS2, so they all belong to
+        Estate Agency. They let adopters stage their NTS → NTS2 migration one
+        sub-feature at a time.
+      </p>
+
+      <h2 id="extensionAxes">Where the model needs to extend</h2>
+
+      <p>
+        Today's overlay set covers the residential sale transaction well. Future
+        bounded contexts that PDTF will likely need to accommodate:
+      </p>
+
+      <ul>
+        <li><strong>Lettings / private rented sector</strong> — same actors but different
+        legal/regulatory frame; tenant-fees, deposit protection, EICR/gas safety, RoPA.
+        Hinted at by the existing NTS Lettings v1.0 overlay.</li>
+        <li><strong>New-build / off-plan</strong> — different conveyancing patterns,
+        warranties (NHBC), stage payments, build defects.</li>
+        <li><strong>Leasehold &amp; commonhold management</strong> — service-charge,
+        major works, RTM. LPE1 covers part; full leasehold lifecycle is broader.</li>
+        <li><strong>Probate / executor sales</strong> — title transfers without willing
+        sellers; grant-of-probate workflows.</li>
+        <li><strong>Commercial property</strong> — different forms (CPSE.1 etc.),
+        different statutory rules. Probably out of scope for PDTF v1.</li>
+        <li><strong>Auction</strong> — short timelines, different contract structures.</li>
+        <li><strong>Insurance</strong> — buildings + contents at completion; potential
+        future context.</li>
+        <li><strong>Utilities &amp; energy</strong> — meter readings, supplier
+        switching, EPC currency.</li>
+        <li><strong>Tax</strong> — SDLT calculation and submission; council tax band
+        confirmation.</li>
+      </ul>
+
+      <p>
+        Each future extension would be a new overlay (preserving the base
+        <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a>), with its own bounded-context owner who
+        stewards the wording.
+      </p>
+
+      <h2 id="implications">Implications for the linked-data work</h2>
+
+      <ul>
+        <li>
+          <strong>Ontology design</strong> — bind the contexts via a shared upper
+          ontology (Transaction, Property, Participant, Claim, Document) and use SKOS
+          schemes per context for vocabulary that's context-specific (e.g.
+          "instruction" means different things to a lender vs a conveyancer).
+        </li>
+        <li>
+          <strong>JSON-LD contexts</strong> — one per overlay. Each maps the
+          context-specific JSON property names to RDF terms in the shared ontology,
+          with explicit <code>@context</code> rules per overlay.
+        </li>
+        <li>
+          <strong>SHACL shapes</strong> — define per-overlay validation that reflects
+          each context's stewardship rules. The conformist overlays (HMLR, NTS, W3C)
+          have shape definitions effectively dictated by their upstream contexts.
+        </li>
+        <li>
+          <strong>Glossary structure</strong> — three-tier: shared kernel terms
+          (apply across all contexts), context-specific terms (qualified by context),
+          deprecated / superseded terms (with their replacement context).
+        </li>
+        <li>
+          <strong>Governance per context</strong> — under ToIP Layer 4, each industry
+          context probably warrants its own working-group equivalent (this echoes
+          DPMSG's existing Comms / Policy / Technical / Regulator / Engagement
+          structure, though that's organised functionally not by industry).
+        </li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '06-standards-stack.html', label: 'Standards stack' }}
+  next={{ href: '16-overlays.html', label: 'PDTF overlays' }}
+/>
+</Layout>
