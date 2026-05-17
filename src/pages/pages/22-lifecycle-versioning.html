@@ -14,7 +14,7 @@
     <article class="prose wide">
       <div class="page-meta">
         <span class="pill pill--accent">Governance</span>
-        <span>Stub · Updated 2026-05-14</span>
+        <span>Stub · Updated 2026-05-17</span>
       </div>
 
       <h1>Lifecycle & versioning policy</h1>
@@ -29,9 +29,27 @@
       <h2 id="whatExists">What already exists</h2>
       <ul>
         <li><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>source/03-standards/trust-framework/docs/release-version-register.md</code></a> — version log</li>
-        <li>Schemas use <strong>semantic versioning</strong> (MAJOR.MINOR.PATCH). Currently <strong>v3.4 stable</strong>, <strong>v3.6 in development</strong>.</li>
+        <li>Schemas use <strong>semantic versioning</strong> (MAJOR.MINOR.PATCH). Currently <strong>v3.5.0</strong> stable (per <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/package.json"><code>@pdtf/schemas</code> package.json</a>).</li>
         <li>Older overlay versions kept for backward compat in <code>v3/overlays/</code>: <code>baspi4</code>, <code>nts</code>, <code>ntsl</code>.</li>
       </ul>
+
+      <h2 id="versionDomains">Three independent version domains</h2>
+      <p>The standards stack carries three artefacts on separate version tracks. The page below treats them distinctly — they do not share a release cadence.</p>
+      <ul>
+        <li><strong>PDTF schemas</strong> — currently <strong>3.5.0</strong> (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/package.json"><code>@pdtf/schemas</code></a>).</li>
+        <li><strong>Trust framework</strong> — currently <strong>0.3.0</strong>, pre-1.0 (<a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/package.json"><code>@pdtf/trust-framework</code></a>).</li>
+        <li><strong>API spec</strong> — see the API versioning section below.</li>
+      </ul>
+
+      <h2 id="apiVersioning">API spec versioning</h2>
+      <p>The PDTF API spec is versioned independently of the schemas. Files live in <a class="resource-link" href="/resource.html?path=source/03-standards/api"><code>source/03-standards/api/</code></a>:</p>
+      <ul>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/api/pdtf-api-1.1.0.json"><code>pdtf-api-1.1.0.json</code></a></li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/api/pdtf-api-1.2.0.yaml"><code>pdtf-api-1.2.0.yaml</code></a></li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/api/pdtf-api-1.3.0.yaml"><code>pdtf-api-1.3.0.yaml</code></a></li>
+        <li><a class="resource-link" href="/resource.html?path=source/03-standards/api/pdtf-api-2.0.0.yaml"><code>pdtf-api-2.0.0.yaml</code></a> — <strong>major break</strong> from the 1.x line.</li>
+      </ul>
+      <p>Lifecycle policy for the 1.x → 2.x transition (N-1 support window, deprecation markers, sunset) is not yet defined — see the open questions below.</p>
 
       <h2 id="policyQuestions">Policy questions to resolve</h2>
       <ol>
@@ -53,7 +71,7 @@
         <li>Mark <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> as <strong>deprecated</strong> in the schema (not yet retired)</li>
         <li>Track MHCLG's successor publication (Oct 2025 consultation)</li>
         <li>When MHCLG publishes, ship a new <code>mhclg-material-info.json</code> overlay</li>
-        <li>Sunset date for the old NTS overlay: 6 months after MHCLG go-live</li>
+        <li>Sunset date for the old NTS overlay — <em>proposed</em>: 6 months after MHCLG go-live (no policy ratified yet)</li>
       </ul>
       <p>
         See <a href="/source/08-external-references/nts/README.md">source/08-external-references/nts/README.md</a> for the full context.

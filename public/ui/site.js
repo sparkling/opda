@@ -15,6 +15,9 @@
       title: 'Governance',
       summary: 'How OPDA is governed, who governs it, the UK government initiative it sits inside, and the published rules that make the standard authoritative.',
       groups: [
+        { heading: 'Overview', items: [
+          { id: 'governance', landing: 'governance', title: 'Section overview' },
+        ]},
         { heading: 'UK initiative context', items: [
           { id: 'uk-initiative',        file: '01-uk-initiative.html',        title: 'UK initiative — overview' },
           { id: 'legislation',          file: '02-legislation.html',          title: 'Legislation & policy' },

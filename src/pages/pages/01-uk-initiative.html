@@ -50,7 +50,7 @@ flowchart TB
 
   T1["<b>Tier 1 — Legislation &amp; Policy</b><br/>DMCC Act 2024 · DUA Act 2025<br/>Leasehold &amp; Freehold Reform Act 2024<br/>UK Industrial Strategy (property = priority sector)"]:::tier
   T2["<b>Tier 2 — Departments &amp; Bodies</b><br/>MHCLG · DSIT · DBT · HMLR · NTSELAT<br/>FCA · ICO"]:::gov
-  T3["<b>Tier 3 — Steering &amp; Coordination</b><br/>DPMSG (14 founding members)<br/>Smart Data Council · HBSC · HBSG"]:::gov
+  T3["<b>Tier 3 — Steering &amp; Coordination</b><br/>DPMSG (13 founding members)<br/>Smart Data Council · HBSG"]:::gov
   T4["<b>Tier 4 — Delivery</b><br/>Smart Property Data Trust Framework Sandbox<br/>(CLC + OPDA + Raidiam, RPF-funded)<br/>Smart Data Challenge · HMLR LLC Programme"]:::del
   T5["<b>Tier 5 — Standards</b><br/><b>PDTF</b> (JSON Schema · OpenAPI · v2.0 spec)<br/>W3C VC · DID · DIATF · ToIP"]:::std
   OPDA["OPDA"]:::opda
@@ -118,11 +118,11 @@ flowchart TB
           </tr>
           <tr>
             <td><strong>DSIT</strong> — Department for Science, Innovation and Technology</td>
-            <td>Smart Data Scheme and DIATF (Digital Identity and Attributes Trust Framework). Administers the Regulators' Pioneer Fund. Hosts the Smart Data Council.</td>
+            <td>Smart Data Scheme and DIATF (Digital Identity and Attributes Trust Framework). Administers the Regulators' Pioneer Fund.</td>
           </tr>
           <tr>
             <td><strong>DBT</strong> — Department for Business and Trade</td>
-            <td>Smart Data Challenge sponsor (the Moverly + OPDA prototype won an SDCP). Published the Smart Data Roadmap.</td>
+            <td>Hosts the Smart Data Council (OPDA sits on it). Smart Data Challenge sponsor (the Moverly + OPDA prototype won an SDCP). Published the Smart Data Roadmap.</td>
           </tr>
           <tr>
             <td><strong>NTS / NTSELAT</strong> — National Trading Standards Estate and Letting Agency Team</td>
@@ -147,10 +147,9 @@ flowchart LR
   classDef body fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
   HMLR[HM Land Registry]:::body
-  DPMSG[DPMSG<br/>Digital Property Market<br/>Steering Group<br/><i>14 founding members, formed Aug 2023</i>]:::body
-  SDC[Smart Data Council<br/><i>DSIT, cross-sector</i>]:::body
-  HBSC["Home Buying & Selling Council"]:::body
-  HBSG["HBSG<br/>Home Buying & Selling Group<br/><i>BASPI custodian</i>"]:::body
+  DPMSG[DPMSG<br/>Digital Property Market<br/>Steering Group<br/><i>13 founding members, formed Aug 2023</i>]:::body
+  SDC[Smart Data Council<br/><i>DBT, cross-sector</i>]:::body
+  HBSG["HBSG<br/>Home Buying and Selling Group<br/><i>chaired by Kate Faulkner OBE · BASPI custodian</i>"]:::body
   OPDA[OPDA]:::opda
   WGs["6 Working Groups<br/>Steering · Comms & PR · Engagement<br/>Policy · Regulator · Technical"]:::body
 
@@ -158,10 +157,10 @@ flowchart LR
   DPMSG --- WGs
   OPDA -.leads WGs for.-> DPMSG
   OPDA -.represented on.-> SDC
-  OPDA -.represented on.-> HBSC
+  OPDA -.represented on.-> HBSG
   HBSG -.feeds BASPI into.-> OPDA
         </div>
-        <div class="diagram-caption">DPMSG is the central convening forum. Its 14 founding members include the Law Society, RICS, UK Finance, BSA, Conveyancing Association, Council for Licensed Conveyancers, Society of Licensed Conveyancers, SRA, CILEX, CILEx Regulation, COPSO, Propertymark, and HMLR.</div>
+        <div class="diagram-caption">DPMSG is the central convening forum. Its 13 founding members (gov.uk, 1 Aug 2023) are the Law Society, Conveyancing Association, CLC, SLC, SRA, RICS, CILEX, CILEx Regulation, CoPSO, Propertymark, BSA, UK Finance, and HMLR. OPDA, HBSG, MHCLG, DSIT, LGA, UKPA, and Geovation joined later. Current priority workstreams: DPIP (Digital Property Information Protocol), Digital Identity Rules, and Digitisation & Interoperability Research.</div>
       </div>
 
       <p>
@@ -228,7 +227,7 @@ flowchart LR
         <tbody>
           <tr><td>Identity / participants</td><td>W3C DID + DIATF</td><td>Implements via <code>did:key</code>, <code>did:jwk</code>, <code>did:web</code></td></tr>
           <tr><td>Trust / verification</td><td>W3C Verifiable Credentials Data Model</td><td>Implements via PDTF v2.0 specification</td></tr>
-          <tr><td>Data definition</td><td>JSON Schema (PDTF v3.6) + overlays</td><td><strong>Owns &amp; publishes</strong> (BASPI v4/v5, TA6/7/10, NTS, CON29R, PIQ, RDS, LPE1, OC1, LLC1, FME1)</td></tr>
+          <tr><td>Data definition</td><td>JSON Schema (PDTF v3.5.0) + overlays</td><td><strong>Owns &amp; publishes</strong> (BASPI v4/v5, TA6/7/10, NTS, CON29R, PIQ, RDS, LPE1, OC1, LLC1, FME1)</td></tr>
           <tr><td>API</td><td>OpenAPI (PDTF API v1.1, 1.2, 1.3, 2.0)</td><td><strong>Owns &amp; publishes</strong></td></tr>
           <tr><td>Material information</td><td>DMCC Act 2024 → MHCLG (replacing NTS)</td><td>Implements via <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> overlay</td></tr>
           <tr><td>Form coverage</td><td>Law Society TA forms, HBSG BASPI</td><td>Maps via dedicated overlays</td></tr>
