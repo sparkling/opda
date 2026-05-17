@@ -1455,13 +1455,10 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   font: 700 0.625rem / 1 var(--font-sans);
 }
 .db-filter-badge[hidden] { display: none !important; }
-/* Object-tables popover panels are now <el-popover> elements styled
-   with Tailwind utilities on the element directly (mt-2, rounded-md,
-   bg-..., inset-ring-..., shadow-lg, p-5, transition data-closed:...).
-   These selectors target INSIDE the popover for the per-facet column
-   layout. The popover host itself uses display: flex when opened by
-   the HTML Popover API; flex-direction: column stacks the cols + clear
-   button. */
+/* Object-tables popover panels are <el-popover> elements styled with
+   Tailwind utilities (mt-2, rounded-md, bg-..., inset-ring-..., shadow-lg,
+   p-5, transition data-closed:...). These selectors target INSIDE the
+   popover for the per-facet column layout. */
 #filter-overlay-panel,
 #objects-config-panel {
   flex-direction: column;
@@ -1472,6 +1469,27 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 #objects-config-panel:popover-open {
   display: flex;
 }
+
+/* Legacy .db-filter-panel (still used by data-browser.js on the data
+   dictionary and business glossary pages — those haven't migrated to
+   <el-popover> yet). Position-fixed dropdown that opens via the
+   .is-open class set by data-browser.js. */
+.db-filter-panel {
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 38rem;
+  max-width: calc(100vw - 2rem);
+  padding: var(--space-5);
+  background: var(--button-bg);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--ring-subtle),
+              0 10px 15px -3px rgba(0,0,0,0.10),
+              0 4px 6px -4px rgba(0,0,0,0.10);
+}
+.db-filter-panel.is-open { display: flex; }
 .db-filter-cols {
   display: grid;
   grid-template-columns: max-content max-content;
