@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Concept taxonomy (SKOS)"
   description="Three families of SKOS concept scheme for PDTF: a cross-cutting Core, one per bounded context, and a growing set of small code-list (enumeration) schemes. Same-meaning concepts reconciled via multi-skos:inScheme — not collapsed into one tree."
-  page="concept-taxonomy"
 >
 <PageMeta category="Modelling" variant="info" updated="Stub · Updated 2026-05-15" />
 
@@ -22,7 +20,7 @@ import Diagram from '../../components/Diagram.astro';
       <h2 id="whatExists">What already exists</h2>
       <ul>
         <li><strong>Initial SKOS seed</strong> — <a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/business-glossary.ttl"><code>source/00-deliverables/semantic-models/business-glossary.ttl</code></a> (554 concepts in one flat scheme: 54 OPDA glossary terms + 500 schema-derived).</li>
-        <li><strong>1,557 unique leaf property names</strong> from the schemas (see <a href="13-data-dictionary.html">Data dictionary &amp; glossary</a>).</li>
+        <li><strong>1,557 unique leaf property names</strong> from the schemas (see <a href="/modelling/data-dictionary">Data dictionary &amp; glossary</a>).</li>
         <li><strong>No cross-scheme mapping triples yet</strong> — the seed flattens everything into one container, which is what this work corrects.</li>
       </ul>
 
@@ -30,7 +28,7 @@ import Diagram from '../../components/Diagram.astro';
 
       <h3 id="coreScheme">Core vocabulary scheme</h3>
       <p>
-        The spanning vocabulary — concepts that transcend any single context. These are the nouns the <a href="31-ontology.html">OWL ontology</a> mints as classes (<code>pdtf:Property</code>, <code>pdtf:Participant</code>, <code>pdtf:Transaction</code>, <code>pdtf:Document</code>) plus the cross-context property concepts the data dictionary already identifies (<code>address</code>, <code>name</code>, <code>email</code>, <code>dateOfBirth</code>, …).
+        The spanning vocabulary — concepts that transcend any single context. These are the nouns the <a href="/modelling/ontology">OWL ontology</a> mints as classes (<code>pdtf:Property</code>, <code>pdtf:Participant</code>, <code>pdtf:Transaction</code>, <code>pdtf:Document</code>) plus the cross-context property concepts the data dictionary already identifies (<code>address</code>, <code>name</code>, <code>email</code>, <code>dateOfBirth</code>, …).
       </p>
       <p>
         Source: the 389 cross-context concepts already counted in the data dictionary (appear in 3+ schemas).
@@ -38,7 +36,7 @@ import Diagram from '../../components/Diagram.astro';
 
       <h3 id="contextSchemes">One scheme per bounded context</h3>
       <p>
-        Six schemes, mirroring the six primary industry contexts in <a href="12-bounded-contexts.html#primaryIndustries">12-bounded-contexts</a> and the overlay grouping already used by the data dictionary:
+        Six schemes, mirroring the six primary industry contexts in <a href="/modelling/bounded-contexts#primaryIndustries">12-bounded-contexts</a> and the overlay grouping already used by the data dictionary:
       </p>
       <table>
         <thead><tr><th>Scheme</th><th>Bounded context</th><th>Overlays</th></tr></thead>
@@ -72,7 +70,7 @@ import Diagram from '../../components/Diagram.astro';
       <h3 id="whatsNotHere">What lives outside SKOS</h3>
       <p>The earlier nine-branch proposal mixed terminology with structure and state. SKOS keeps the terminology; the rest moves to its natural home:</p>
       <ul>
-        <li><strong>Structural classes</strong> — <a href="31-ontology.html#coreClasses"><code>pdtf:Property</code>, <code>pdtf:Participant</code>, <code>pdtf:Document</code>, <code>pdtf:Transaction</code>, <code>pdtf:Form</code>, <code>pdtf:Search</code></a> are OWL classes. The SKOS schemes hold the <em>terms</em>; OWL holds what those terms <em>are</em>. Form and Search appear in both layers — class-of-thing in OWL, value-of-tag in the code-list schemes above.</li>
+        <li><strong>Structural classes</strong> — <a href="/modelling/ontology#coreClasses"><code>pdtf:Property</code>, <code>pdtf:Participant</code>, <code>pdtf:Document</code>, <code>pdtf:Transaction</code>, <code>pdtf:Form</code>, <code>pdtf:Search</code></a> are OWL classes. The SKOS schemes hold the <em>terms</em>; OWL holds what those terms <em>are</em>. Form and Search appear in both layers — class-of-thing in OWL, value-of-tag in the code-list schemes above.</li>
         <li><strong>Transaction lifecycle — the machine</strong> — the ordering of states (Listed → OfferAccepted → Exchanged → Completed) is a state machine modelled in PROV-O activities. The state <em>labels</em> are in <code>pdtf-states:Scheme</code> above; the transitions are not.</li>
         <li><strong>Claim &amp; Evidence</strong> — the W3C VC wrapper. PDTF reuses <code>vc:Credential</code>, <code>vc:Issuer</code>, <code>vc:Holder</code>, <code>vc:Verifier</code> — we do not mint our own.</li>
         <li><strong>Financial / Legal</strong> — subject-matter facets, not concepts. Apply as <code>dcterms:subject</code> tags on individual concepts where useful, not as schemes.</li>
@@ -169,7 +167,7 @@ pdtf-ea:marketingAddress  a skos:Concept ;
 
       <h2 id="whyMultipleSchemes">Why multiple schemes, not one</h2>
       <p>
-        A bounded context is, by Eric Evans's definition, a linguistic boundary: a term means what it means <em>inside</em> the context, and reconciling it with another context is an explicit modelling step. <code>skos:ConceptScheme</code> formalises exactly that — it is the right SKOS construct for "this is where this term is at home." When the same concept genuinely <em>does</em> mean the same thing in multiple contexts, SKOS lets it sit in multiple schemes (<code>skos:inScheme</code> is many-to-many); when meaning diverges, the mapping relations (<code>closeMatch</code>, <code>broader</code>, <code>narrower</code>) carry the reconciliation that <a href="12-bounded-contexts.html#relationshipPatterns">context-map patterns</a> describe at the DDD layer.
+        A bounded context is, by Eric Evans's definition, a linguistic boundary: a term means what it means <em>inside</em> the context, and reconciling it with another context is an explicit modelling step. <code>skos:ConceptScheme</code> formalises exactly that — it is the right SKOS construct for "this is where this term is at home." When the same concept genuinely <em>does</em> mean the same thing in multiple contexts, SKOS lets it sit in multiple schemes (<code>skos:inScheme</code> is many-to-many); when meaning diverges, the mapping relations (<code>closeMatch</code>, <code>broader</code>, <code>narrower</code>) carry the reconciliation that <a href="/modelling/bounded-contexts#relationshipPatterns">context-map patterns</a> describe at the DDD layer.
       </p>
       <p>
         A single flat scheme cannot express that "address" is the same concept in Conveyancing and Property Data Services but a near-synonym ("marketing address") in Estate Agency — it either collapses them (losing context fidelity) or duplicates them with no link (losing the reconciliation). Multiple schemes with multi-membership and explicit mappings is the SKOS-native way to model what we already say in the bounded-contexts page.
@@ -180,13 +178,8 @@ pdtf-ea:marketingAddress  a skos:Concept ;
         <li>Mint the scheme URIs — Core, 6 contexts, and the initial 4 enum schemes (11 schemes to start) — and update <code>business-glossary.ttl</code> so each concept declares its <code>skos:inScheme</code> — multi-valued for shared concepts.</li>
         <li>For each of the 389 cross-context concepts, decide: <em>shared</em> (one URI, multiple <code>skos:inScheme</code>), <em>genuinely-variant</em> (separate URI + <code>skos:closeMatch</code>), or <em>hierarchical</em> (<code>skos:broader</code> / <code>narrower</code>). Start with <code>address</code>, <code>name</code>, <code>email</code>, <code>dateOfBirth</code>.</li>
         <li>Draft the first enumeration schemes: form types, search types, transaction states, participant roles. Each is small (≤20 concepts) and self-contained.</li>
-        <li>Hand the structural classes (Property, Participant, Document, Transaction, Form, Search) over to the <a href="31-ontology.html">OWL ontology</a>, and the state-machine transitions over to PROV-O activities.</li>
+        <li>Hand the structural classes (Property, Participant, Document, Transaction, Form, Search) over to the <a href="/modelling/ontology">OWL ontology</a>, and the state-machine transitions over to PROV-O activities.</li>
         <li>Land the cross-scheme mapping file at <code>source/00-deliverables/semantic-models/mappings/cross-scheme.ttl</code> (the empty folder is already there).</li>
-        <li>Wire the existing data browser on <a href="14-business-glossary.html">Business glossary</a> to filter by scheme and by scheme family.</li>
+        <li>Wire the existing data browser on <a href="/modelling/business-glossary">Business glossary</a> to filter by scheme and by scheme family.</li>
       </ol>
-
-      <PageFooter
-  prev={{ href: '26-stakeholder-engagement.html', label: 'Stakeholder engagement' }}
-  next={{ href: '31-ontology.html', label: 'Ontology (OWL)' }}
-/>
 </Layout>

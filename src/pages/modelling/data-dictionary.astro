@@ -1,20 +1,18 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Data dictionary"
   description="PDTF data dictionary — 1,538 deduplicated data elements (708 entities + 848 properties) with RDF URI suggestions, sourced from PDTF Schemas v3 and the OPDA Glossary."
-  page="data-dictionary"
 >
 <PageMeta category="Modelling" variant="info" updated="Generated 2026-05-15" />
 
       <h1>Data dictionary</h1>
       <p class="lead">
         Deduplicated and enriched from PDTF Schemas v3 (base transaction +
-        <a href="16-overlays.html">16 canonical overlays</a>) and the OPDA Glossary spreadsheets.
+        <a href="/modelling/overlays">16 canonical overlays</a>) and the OPDA Glossary spreadsheets.
         Each entry carries a suggested RDF URI for use in the ontology workstream.
       </p>
 
@@ -245,7 +243,7 @@ SKOS · 554 concepts`"]:::out
         </li>
         <li>
           <strong>Per-overlay JSON-LD contexts</strong> — for each of the
-          <a href="16-overlays.html">16 canonical overlays</a>, author a <code>@context</code>
+          <a href="/modelling/overlays">16 canonical overlays</a>, author a <code>@context</code>
           that maps JSON property names to ontology terms. Start with
           <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a> as the worked example.
         </li>
@@ -259,11 +257,6 @@ SKOS · 554 concepts`"]:::out
           to context-specific concepts (separate URIs with mapping).
         </li>
       </ol>
-
-      <PageFooter
-  prev={{ href: '16-overlays.html', label: 'PDTF overlays' }}
-  next={{ href: '14-business-glossary.html', label: 'Business glossary' }}
-/>
 
 <script slot="scripts" is:inline src="/ui/data-browser.js"></script>
 <script slot="scripts" is:inline src="/data/properties.js"></script>

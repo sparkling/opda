@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Bounded contexts &amp; industries"
   description="DDD-style bounded contexts for the UK property transaction — the industries OPDA's standard must accommodate and how PDTF acts as their Published Language."
-  page="bounded-contexts"
 >
 <PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" />
 
@@ -39,7 +37,7 @@ import Diagram from '../../components/Diagram.astro';
           file that adds one form, search or document to the base transaction
           (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>, <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a>, …). They map cleanly onto each
           other (many overlays per context) but they're not the same thing. See the
-          dedicated <a href="16-overlays.html">PDTF overlays</a> page for the full
+          dedicated <a href="/modelling/overlays">PDTF overlays</a> page for the full
           catalogue and merge mechanics.
         </p>
       </div>
@@ -49,7 +47,7 @@ import Diagram from '../../components/Diagram.astro';
       <p>
         Each is a community of practice with its own regulators, professional bodies,
         forms, software ecosystems, and language. The OPDA
-        <a href="11-opda-members.html">member firms</a> are deliberately drawn from across these contexts —
+        <a href="/governance/opda-members">member firms</a> are deliberately drawn from across these contexts —
         named below in each row.
       </p>
 
@@ -302,7 +300,7 @@ JSON Schema + OpenAPI + VC + DID
         reflects this bounded-context thinking. Each overlay is a context's view of the
         shared transaction. Full catalogue of all <strong>18 main + 16 extension</strong>
         overlays — and how they're defined and merged — on the dedicated
-        <a href="16-overlays.html">PDTF overlays</a> page; the mapping itself sits here.
+        <a href="/modelling/overlays">PDTF overlays</a> page; the mapping itself sits here.
       </p>
 
       <table>
@@ -409,9 +407,4 @@ JSON Schema + OpenAPI + VC + DID
           structure, though that's organised functionally not by industry).
         </li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '06-standards-stack.html', label: 'Standards stack' }}
-  next={{ href: '16-overlays.html', label: 'PDTF overlays' }}
-/>
 </Layout>

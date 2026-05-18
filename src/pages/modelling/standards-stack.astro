@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Standards stack"
-  page="standards-stack"
 >
 <PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" />
 
@@ -212,7 +210,7 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::form
         <div class="card">
           <div class="pill pill--info">Linux Foundation</div>
           <h3>Trust Over IP (ToIP)</h3>
-          <p>The 4-layer governance model PDTF follows. See <a href="07-toip-governance.html">ToIP governance</a>.</p>
+          <p>The 4-layer governance model PDTF follows. See <a href="/governance/toip-governance">ToIP governance</a>.</p>
         </div>
       </div>
 
@@ -235,9 +233,4 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::form
           — the formal spec being prepared for v2.0.
         </li>
       </ol>
-
-      <PageFooter
-  prev={{ href: '05-sandbox.html', label: 'Sandbox' }}
-  next={{ href: '07-toip-governance.html', label: 'ToIP governance' }}
-/>
 </Layout>

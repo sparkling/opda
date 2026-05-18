@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="PDTF overlays"
   description="What overlays are, the full catalogue (18 main + 16 extension), how they're defined in JSON Schema, how getTransactionSchema merges them, and how they relate to bounded contexts."
-  page="overlays"
 >
 <PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" />
 
@@ -153,7 +151,7 @@ flowchart LR
         <tbody>
           <tr><td><strong>Layer</strong></td><td>Schema layer — JSON Schema files</td><td>Domain layer — language and rules of a business function</td></tr>
           <tr><td><strong>Granularity</strong></td><td>One form, search or document (BASPI, TA6, CON29R …)</td><td>An entire industry function (Estate Agency, Conveyancing …)</td></tr>
-          <tr><td><strong>Lives in</strong></td><td><code>v3/overlays/*.json</code> in the schemas repo</td><td>Architecture documentation (see <a href="12-bounded-contexts.html">Bounded contexts</a>)</td></tr>
+          <tr><td><strong>Lives in</strong></td><td><code>v3/overlays/*.json</code> in the schemas repo</td><td>Architecture documentation (see <a href="/modelling/bounded-contexts">Bounded contexts</a>)</td></tr>
           <tr><td><strong>Who picks it</strong></td><td>Developer assembling a runtime schema</td><td>Business architect modelling the domain</td></tr>
           <tr><td><strong>Cardinality</strong></td><td>Many overlays per bounded context</td><td>One bounded context owns several overlays</td></tr>
         </tbody>
@@ -589,11 +587,6 @@ required & oneOf`"]:::proc
         <li>Extension overlays: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/extensions/"><code>source/03-standards/schemas/src/schemas/v3/overlays/extensions/</code></a></li>
         <li>Upstream README: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/README.md"><code>source/03-standards/schemas/src/schemas/v3/overlays/README.md</code></a></li>
         <li>Merge entrypoint: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/index.js"><code>source/03-standards/schemas/index.js</code></a> (function <code>getTransactionSchema</code> at line 170)</li>
-        <li>Bounded-context mapping rationale: <a href="12-bounded-contexts.html">Bounded contexts (DDD)</a></li>
+        <li>Bounded-context mapping rationale: <a href="/modelling/bounded-contexts">Bounded contexts (DDD)</a></li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '12-bounded-contexts.html', label: 'Bounded contexts' }}
-  next={{ href: '13-data-dictionary.html', label: 'Data dictionary' }}
-/>
 </Layout>

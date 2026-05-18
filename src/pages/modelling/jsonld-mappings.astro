@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="JSON-LD mappings"
   description="Per-overlay JSON-LD @context files that map each overlay's JSON property names to ontology terms. Bridges the JSON-Schema world to the RDF world."
-  page="jsonld-mappings"
 >
 <PageMeta category="Modelling" variant="info" updated="Stub · Updated 2026-05-14" />
 
@@ -51,10 +49,4 @@ import PageFooter from '../../components/PageFooter.astro';
         <li><code>nts2-context.jsonld</code> — third (and tracks MHCLG successor)</li>
         <li><code>...one per overlay</code></li>
       </ul>
-        
-
-      <PageFooter
-  prev={{ href: '32-shacl-shapes.html', label: 'SHACL shapes' }}
-  next={{ href: '09-project-roadmap.html', label: 'Project roadmap' }}
-/>
 </Layout>
