@@ -45,3 +45,7 @@ tailwindplus-components-*.json
 
 # OS junk
 Thumbs.db
+
+# Python bytecode
+__pycache__/
+*.pyc
