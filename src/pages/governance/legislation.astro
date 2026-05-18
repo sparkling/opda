@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Legislation &amp; policy"
-  page="legislation"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -162,9 +160,4 @@ smart data scheme`"]:::body
   MHCLG --> DPMSG
   DSIT --> DPMSG
 </Diagram>
-
-      <PageFooter
-  prev={{ href: '01-uk-initiative.html', label: 'UK initiative' }}
-  next={{ href: '03-departments.html', label: 'Departments & bodies' }}
-/>
 </Layout>

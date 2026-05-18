@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="UK government initiative"
   description="The Smart Property Data initiative — 5 tiers from legislation to standards, with every department, forum, and project named."
-  page="uk-initiative"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -139,7 +137,7 @@ W3C VC · DID · DIATF · ToIP`"]:::std
       </table>
 
       <p>
-        Full detail in <a href="03-departments.html">Departments &amp; bodies</a>.
+        Full detail in <a href="/governance/departments">Departments &amp; bodies</a>.
       </p>
 
       <h2 id="tier3">Tier 3 — Steering &amp; coordination forums</h2>
@@ -172,7 +170,7 @@ Policy · Regulator · Technical`"]:::body
 </Diagram>
 
       <p>
-        Full detail in <a href="04-steering-forums.html">Steering &amp; coordination</a>.
+        Full detail in <a href="/governance/steering-forums">Steering &amp; coordination</a>.
       </p>
 
       <h2 id="tier4">Tier 4 — Delivery: the Trust Framework Sandbox</h2>
@@ -223,7 +221,7 @@ Policy · Regulator · Technical`"]:::body
       </ul>
 
       <p>
-        Full detail in <a href="05-sandbox.html">Trust Framework Sandbox</a>.
+        Full detail in <a href="/governance/sandbox">Trust Framework Sandbox</a>.
       </p>
 
       <h2 id="tier5">Tier 5 — Standards stack</h2>
@@ -243,7 +241,7 @@ Policy · Regulator · Technical`"]:::body
       </table>
 
       <p>
-        Full detail in <a href="06-standards-stack.html">Standards stack</a>.
+        Full detail in <a href="/modelling/standards-stack">Standards stack</a>.
       </p>
 
       <h2 id="whyThisMatters">Why this matters for the linked-data project</h2>
@@ -257,7 +255,7 @@ Policy · Regulator · Technical`"]:::body
           <strong>The governance framework is largely already chosen.</strong> PDTF
           has publicly committed to Trust Over IP. Our job is to <em>codify</em> what's
           informally adopted into proper documents per layer — not to invent a framework.
-          See <a href="07-toip-governance.html">ToIP governance</a>.
+          See <a href="/governance/toip-governance">ToIP governance</a>.
         </li>
         <li>
           <strong>Every artefact has a government counterpart.</strong> If we design a
@@ -273,9 +271,4 @@ Policy · Regulator · Technical`"]:::body
           regulator separation.
         </li>
       </ol>
-
-      <PageFooter
-  prev={{ href: '/index.html', label: 'Home' }}
-  next={{ href: '02-legislation.html', label: 'Legislation & policy' }}
-/>
 </Layout>

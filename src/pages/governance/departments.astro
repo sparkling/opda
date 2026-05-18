@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Departments &amp; bodies"
-  page="departments"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -227,9 +225,4 @@ Information Commissioner's Office
           <strong>Geovation</strong> — DPMSG member (per DPMSG roadmap p.1).
         </li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '02-legislation.html', label: 'Legislation' }}
-  next={{ href: '04-steering-forums.html', label: 'Steering & coordination' }}
-/>
 </Layout>

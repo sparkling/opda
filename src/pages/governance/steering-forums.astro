@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Steering &amp; coordination"
-  page="steering-forums"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -234,9 +232,4 @@ standard`"]:::out
   OPDA --> SBX
   OPDA --> ACC
 </Diagram>
-
-      <PageFooter
-  prev={{ href: '03-departments.html', label: 'Departments & bodies' }}
-  next={{ href: '05-sandbox.html', label: 'Trust Framework Sandbox' }}
-/>
 </Layout>
