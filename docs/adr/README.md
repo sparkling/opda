@@ -27,6 +27,7 @@ don't have to re-litigate.
 | [0002](./0002-folder-hierarchy-and-slug-taxonomy.md) | Folder hierarchy and slug taxonomy | Implemented 2026-05-18 |
 | [0003](./0003-idiomatic-astro-refactor.md) | Refactor to idiomatic Astro architecture | Implemented 2026-05-18 |
 | [0004](./0004-accreditation-directory.md) | Accreditation Directory spec | Proposed (ready for C&R WG kick-off) |
+| [0005](./0005-deferred-work-register.md) | Deferred work register | Living document |
 
 ## Authoring a new ADR
 
