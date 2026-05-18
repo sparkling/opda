@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Verified claims"
   description="Wrapping PDTF transaction fragments as W3C Verifiable Credentials."
-  page="verified-claims"
 >
 <PageMeta category="Stub" variant="warn" updated="Updated 2026-05-14" />
 
@@ -46,7 +44,7 @@ import PageFooter from '../../components/PageFooter.astro';
       <h2 id="validator">Validating a claim</h2>
       <p>
         Use <code>validateVerifiedClaims</code> from the schemas package — see
-        <a href="63-validation.html#verifiedclaims">Validation → validateVerifiedClaims()</a>.
+        <a href="/implementation/validation#verifiedclaims">Validation → validateVerifiedClaims()</a>.
       </p>
 
       <h2 id="todo">What needs writing</h2>
@@ -56,8 +54,4 @@ import PageFooter from '../../components/PageFooter.astro';
         <li>Multi-party signing patterns (estate agent + conveyancer co-signing a property pack)</li>
         <li>Revocation and update semantics</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '63-validation.html', label: 'Validation' }}
-/>
 </Layout>

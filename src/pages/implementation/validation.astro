@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Validation"
   description="Validating PDTF transactions and verified claims with the Ajv-backed validator the schemas package ships with."
-  page="validation"
 >
 <PageMeta category="Implementation" variant="brand" updated="Updated 2026-05-14" />
 
@@ -111,7 +109,7 @@ if (errors.length === 0) &lbrace;
         empty array means all claims passed.
       </p>
 
-      <p>See <a href="64-verified-claims.html">Verified claims</a> for the envelope shape.</p>
+      <p>See <a href="/implementation/verified-claims">Verified claims</a> for the envelope shape.</p>
 
       <h2 id="subschema">Validating a sub-path</h2>
 
@@ -137,9 +135,4 @@ const validate = getValidator(
         <li>Validating a typical transaction (~5 KB JSON) against a single overlay takes &lt; 1 ms after warm-up.</li>
         <li>Cache stats: <code>require('@pdtf/schemas').cacheStats</code> exposes hit/miss counts, useful for tuning long-running services.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '62-schema-composition.html', label: 'Schema composition' }}
-  next={{ href: '64-verified-claims.html', label: 'Verified claims' }}
-/>
 </Layout>

@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Schema composition"
   description="How getTransactionSchema deep-merges the base PDTF transaction with overlays — rules, gotchas, worked examples."
-  page="schema-composition"
 >
 <PageMeta category="Implementation" variant="brand" updated="Updated 2026-05-14" />
 
@@ -86,7 +84,7 @@ flowchart LR
       <pre><code>const schema = getTransactionSchema(BASE_ID, ['nts2023', 'jk']);</code></pre>
       <p>Same with transfer fees:</p>
       <pre><code>const schema = getTransactionSchema(BASE_ID, ['nts2023', 'jk', 'tf']);</code></pre>
-      <p>The 16 extension overlays exist exactly for this — see <a href="16-overlays.html#extensions">Extension overlays</a>.</p>
+      <p>The 16 extension overlays exist exactly for this — see <a href="/modelling/overlays#extensions">Extension overlays</a>.</p>
 
       <h2 id="ordering">Order matters</h2>
       <p>
@@ -108,7 +106,7 @@ flowchart LR
         Overlays are addressable by either their filename stem (<code>'baspi5'</code>,
         <code>'ta6'</code>) or the versioned alias used in <code>overlaysMap</code>
         (<code>'baspiV5'</code>, <code>'ta6ed4'</code>). The full alias table is on
-        the <a href="16-overlays.html#aliases">PDTF overlays page</a>.
+        the <a href="/modelling/overlays#aliases">PDTF overlays page</a>.
       </p>
 
       <h2 id="caching">Caching</h2>
@@ -119,9 +117,4 @@ flowchart LR
         same merged object both times. Cache stats are exposed via
         <code>require('@pdtf/schemas').cacheStats</code>.
       </p>
-
-      <PageFooter
-  prev={{ href: '61-quickstart.html', label: 'Quickstart' }}
-  next={{ href: '63-validation.html', label: 'Validation' }}
-/>
 </Layout>

@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Implementation — overview"
   description="The five-piece PDTF stack: schemas, OpenAPI, accreditation, trust-framework runtime, verified claims."
-  page="impl-overview"
 >
 <PageMeta category="Implementation" variant="brand" updated="Updated 2026-05-14" />
 
@@ -57,7 +55,7 @@ flowchart TB
           <tr>
             <td><strong>Schemas package</strong></td>
             <td>npm: <code>@pdtf/schemas</code> · source: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/"><code>source/03-standards/schemas/</code></a></td>
-            <td>The base PDTF transaction schema + 18 main overlays + 16 extension overlays. Functions to merge them, validate, walk paths. See <a href="62-schema-composition.html">Schema composition</a>.</td>
+            <td>The base PDTF transaction schema + 18 main overlays + 16 extension overlays. Functions to merge them, validate, walk paths. See <a href="/implementation/schema-composition">Schema composition</a>.</td>
           </tr>
           <tr>
             <td><strong>OpenAPI spec</strong></td>
@@ -77,7 +75,7 @@ flowchart TB
           <tr>
             <td><strong>Verified claims</strong></td>
             <td>W3C VC Data Model 2.0 + DID 1.0</td>
-            <td>Wrapping PDTF transaction fragments as signed Verifiable Credentials for cross-party trust. See <a href="64-verified-claims.html">Verified claims</a>.</td>
+            <td>Wrapping PDTF transaction fragments as signed Verifiable Credentials for cross-party trust. See <a href="/implementation/verified-claims">Verified claims</a>.</td>
           </tr>
         </tbody>
       </table>
@@ -119,14 +117,9 @@ flowchart TB
 
       <h2 id="next">Sub-pages</h2>
       <ul>
-        <li><a href="61-quickstart.html"><strong>Quickstart</strong></a> — install + first validation in ~3 minutes</li>
-        <li><a href="62-schema-composition.html"><strong>Schema composition</strong></a> — overlay merge mechanics</li>
-        <li><a href="63-validation.html"><strong>Validation</strong></a> — Ajv, getValidator, validateVerifiedClaims</li>
-        <li><a href="64-verified-claims.html"><strong>Verified claims</strong></a> — VC/DID integration (stub)</li>
+        <li><a href="/implementation/quickstart"><strong>Quickstart</strong></a> — install + first validation in ~3 minutes</li>
+        <li><a href="/implementation/schema-composition"><strong>Schema composition</strong></a> — overlay merge mechanics</li>
+        <li><a href="/implementation/validation"><strong>Validation</strong></a> — Ajv, getValidator, validateVerifiedClaims</li>
+        <li><a href="/implementation/verified-claims"><strong>Verified claims</strong></a> — VC/DID integration (stub)</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '/implementation.html', label: 'Implementation' }}
-  next={{ href: '61-quickstart.html', label: 'Quickstart' }}
-/>
 </Layout>
