@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Meetings &amp; decisions"
   description="DPMSG Steering Group meetings and OPDA all-member updates — every session on record with materials."
-  page="meetings-decisions"
 >
 <PageMeta category="Engagement" variant="brand" updated="Updated 2026-05-14" />
 
@@ -109,9 +107,4 @@ import PageFooter from '../../components/PageFooter.astro';
         with Raidiam on the Sandbox, choosing the Trust Over IP framework as the
         governance model, and shipping PDTF v3.4.0 of the schemas.
       </p>
-
-      <PageFooter
-  prev={{ href: '40-engagement-overview.html', label: 'Overview' }}
-  next={{ href: '42-working-groups.html', label: 'DPMSG working groups' }}
-/>
 </Layout>

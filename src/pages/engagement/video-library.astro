@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Video library"
   description="The 15 OPDA YouTube videos + 1 Smart Data Challenge Vimeo, with duration, date and transcript pointer."
-  page="video-library"
 >
 <PageMeta category="Engagement" variant="brand" updated="Updated 2026-05-14" />
 
@@ -164,9 +162,4 @@ import PageFooter from '../../components/PageFooter.astro';
         <a class="resource-link" href="/resource.html?path=source/05-engagement/videos-youtube/videos-index.md"><code>source/05-engagement/videos-youtube/videos-index.md</code></a> ·
         <a class="resource-link" href="/resource.html?path=source/05-engagement/videos-youtube/videos-index.json"><code>videos-index.json</code></a>
       </p>
-
-      <PageFooter
-  prev={{ href: '42-working-groups.html', label: 'Working groups' }}
-  next={{ href: '44-transcripts.html', label: 'Transcripts index' }}
-/>
 </Layout>
