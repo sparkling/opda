@@ -1,10 +1,8 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
   title="Glossary"
-  page="glossary"
 >
 <div class="page-meta">
         <span class="pill">Reference</span>
@@ -146,11 +144,6 @@ import PageFooter from '../../components/PageFooter.astro';
         DPMSG founding statement, propdata.org.uk About page, W3C and Trust Over IP
         Foundation specs — all archived in <code>source/</code>.
       </p>
-
-      <PageFooter
-  prev={{ href: '09-project-roadmap.html', label: 'Project roadmap' }}
-  next={{ href: '/index.html', label: 'Home' }}
-/>
 </Layout>
 
 <style is:global>
