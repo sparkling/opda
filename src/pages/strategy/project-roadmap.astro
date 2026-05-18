@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Project roadmap"
-  page="project-roadmap"
 >
 <PageMeta category="Roadmap" variant="warn" updated="Updated 2026-05-14" />
 
@@ -60,8 +58,8 @@ import Diagram from '../../components/Diagram.astro';
           <h3>Stakeholder map</h3>
           <p>
             Who, what they need, when. Driven by the
-            <a href="03-departments.html">departments</a>,
-            <a href="04-steering-forums.html">steering forums</a> pages and member list.
+            <a href="/governance/departments">departments</a>,
+            <a href="/governance/steering-forums">steering forums</a> pages and member list.
           </p>
         </div>
       </div>
@@ -248,9 +246,4 @@ BASPI v5 · 7d`"]:::task
         <li>Show how every UK government initiative tier maps to OPDA's standards stack.</li>
         <li>Hand a new DPMSG working-group member a single reading list that brings them up to speed in &lt; 1 day.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '08-strategic-alignment.html', label: 'Strategic alignment' }}
-  next={{ href: '10-glossary.html', label: 'Glossary' }}
-/>
 </Layout>

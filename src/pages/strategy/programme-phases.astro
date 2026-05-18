@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Programme phases"
   description="Sandbox → Live trust framework → National rollout. The three OPDA programme phases with transition criteria."
-  page="programme-phases"
 >
 <PageMeta category="Strategy" variant="brand" updated="Updated 2026-05-14" />
 
@@ -105,9 +103,4 @@ flowchart LR
         equivalent Open Banking infrastructure in Brazil and worked on the UK
         Open Banking project — so this is not a from-scratch design.
       </p>
-
-      <PageFooter
-  prev={{ href: '70-strategy-overview.html', label: 'Strategy overview' }}
-  next={{ href: '72-industrial-strategy.html', label: 'UK Industrial Strategy' }}
-/>
 </Layout>
