@@ -1,0 +1,1493 @@
+{
+  "schemaVersion": 1,
+  "generated": "2026-05-18",
+  "source": "ADR-0005 B1 — DAMA Wheel cross-reference per page",
+  "outOfScopeDisclaimer": "OPDA explicitly disclaims KA #4 (Data Storage & Operations, except trust-registry ops) and KA #9 (Data Warehousing & BI, except meta-analytics outputs). KA #7 (Document & Content Management) was reassessed in scope per ADR-0001.",
+  "pages": [
+    {
+      "path": "src/pages/404.astro",
+      "url": "/404",
+      "h1": "404",
+      "category": null,
+      "kas": [],
+      "primary": null,
+      "rationale": "Error page; no DAMA KA fits"
+    },
+    {
+      "path": "src/pages/adoption/adoption-overview.astro",
+      "url": "/adoption/adoption-overview",
+      "h1": "Adoption — overview",
+      "category": "Adoption",
+      "kas": [],
+      "primary": null,
+      "rationale": "Market-adoption narrative (headline numbers, integration spectrum) — describes uptake of the standard, not a data-management activity"
+    },
+    {
+      "path": "src/pages/adoption/hmlr-llc.astro",
+      "url": "/adoption/hmlr-llc",
+      "h1": "HMLR Local Land Charges programme",
+      "category": "Adoption",
+      "kas": ["Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "HMLR's national LLC register is a public-sector master-data programme; PDTF's llc1.json aligns to it as authoritative reference data"
+    },
+    {
+      "path": "src/pages/adoption/index.astro",
+      "url": "/adoption",
+      "h1": "Adoption",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/adoption/member-implementations.astro",
+      "url": "/adoption/member-implementations",
+      "h1": "Member implementations",
+      "category": "Adoption",
+      "kas": [],
+      "primary": null,
+      "rationale": "Roster of what each member firm has shipped; market-adoption evidence, not a data-management activity"
+    },
+    {
+      "path": "src/pages/adoption/sandbox-pilots.astro",
+      "url": "/adoption/sandbox-pilots",
+      "h1": "Sandbox pilots",
+      "category": "Adoption",
+      "kas": [],
+      "primary": null,
+      "rationale": "Describes the operational Sandbox programme — pilot delivery vehicle, not a DAMA-mappable workstream in itself"
+    },
+    {
+      "path": "src/pages/adoption/smart-data-challenge.astro",
+      "url": "/adoption/smart-data-challenge",
+      "h1": "Smart Data Challenge 2025",
+      "category": "Adoption",
+      "kas": [],
+      "primary": null,
+      "rationale": "Programme/award archive; market evidence rather than DAMA-mapped activity"
+    },
+    {
+      "path": "src/pages/design-system.astro",
+      "url": "/design-system",
+      "h1": "Design system",
+      "category": "Reference",
+      "kas": [],
+      "primary": null,
+      "rationale": "Site UI design tokens — internal site styling, no DAMA KA applies"
+    },
+    {
+      "path": "src/pages/engagement/engagement-overview.astro",
+      "url": "/engagement/engagement-overview",
+      "h1": "Engagement — overview",
+      "category": "Engagement",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Operational map of governing forums (DPMSG, working groups) — Data Governance KA covers cross-stakeholder coordination"
+    },
+    {
+      "path": "src/pages/engagement/index.astro",
+      "url": "/engagement",
+      "h1": "Engagement",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/engagement/meetings-decisions.astro",
+      "url": "/engagement/meetings-decisions",
+      "h1": "Meetings & decisions",
+      "category": "Engagement",
+      "kas": ["Data Governance", "Document & Content Management"],
+      "primary": "Data Governance",
+      "rationale": "Decision log and meeting archive — governance audit trail with archived materials (recordkeeping aspect maps to D&CM)"
+    },
+    {
+      "path": "src/pages/engagement/transcripts.astro",
+      "url": "/engagement/transcripts",
+      "h1": "Transcripts index",
+      "category": "Engagement",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "Unstructured transcript corpus indexed for search — classic D&CM territory per ADR-0001 reassessment"
+    },
+    {
+      "path": "src/pages/engagement/video-library.astro",
+      "url": "/engagement/video-library",
+      "h1": "Video library",
+      "category": "Engagement",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "Public video archive with transcripts — unstructured-media management"
+    },
+    {
+      "path": "src/pages/engagement/working-groups.astro",
+      "url": "/engagement/working-groups",
+      "h1": "DPMSG working groups",
+      "category": "Engagement",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Working-group remit and structure — the federation governance machinery"
+    },
+    {
+      "path": "src/pages/glossary.astro",
+      "url": "/glossary",
+      "h1": "Glossary",
+      "category": "Reference",
+      "kas": ["Metadata Management"],
+      "primary": "Metadata Management",
+      "rationale": "Acronyms and key terms used across UK property data — business glossary is core Metadata Management"
+    },
+    {
+      "path": "src/pages/governance/accreditation-directory.astro",
+      "url": "/governance/accreditation-directory",
+      "h1": "Accreditation Directory",
+      "category": "OPDA's rules",
+      "kas": ["Data Governance", "Data Quality Management"],
+      "primary": "Data Governance",
+      "rationale": "Maturity-scored directory of accredited firms with capability scores — governance accountability surface plus DQ-derived scoring (meta-analytics carve-out also relevant per ADR-0001)"
+    },
+    {
+      "path": "src/pages/governance/change-management.astro",
+      "url": "/governance/change-management",
+      "h1": "Change management process",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Constitutional and schema-change pathways with approval authorities — governance change-control"
+    },
+    {
+      "path": "src/pages/governance/conformance-scheme.astro",
+      "url": "/governance/conformance-scheme",
+      "h1": "Conformance & certification scheme",
+      "category": "Governance",
+      "kas": ["Data Governance", "Data Quality Management"],
+      "primary": "Data Governance",
+      "rationale": "Accreditation/certification scheme — governance compliance regime with DQ pass-fail proving"
+    },
+    {
+      "path": "src/pages/governance/data-quality.astro",
+      "url": "/governance/data-quality",
+      "h1": "Data quality framework",
+      "category": "Quality & security",
+      "kas": ["Data Quality Management"],
+      "primary": "Data Quality Management",
+      "rationale": "Six DQ dimensions (accuracy, completeness, etc.) per claim type — the canonical DAMA KA #11"
+    },
+    {
+      "path": "src/pages/governance/data-security.astro",
+      "url": "/governance/data-security",
+      "h1": "Data security framework",
+      "category": "Quality & security",
+      "kas": ["Data Security"],
+      "primary": "Data Security",
+      "rationale": "KYC/KYB, DID key management, signature verification, revocation, audit logging — the canonical DAMA KA #5"
+    },
+    {
+      "path": "src/pages/governance/data-stewardship.astro",
+      "url": "/governance/data-stewardship",
+      "h1": "Data stewardship & decision rights",
+      "category": "Operating Model",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Domain Data Stewards, RACI, voting machinery — core Data Governance KA"
+    },
+    {
+      "path": "src/pages/governance/departments.astro",
+      "url": "/governance/departments",
+      "h1": "Departments & bodies",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "UK government departments authorising/regulating the initiative — external governance context"
+    },
+    {
+      "path": "src/pages/governance/index.astro",
+      "url": "/governance",
+      "h1": "Governance",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/governance/legislation.astro",
+      "url": "/governance/legislation",
+      "h1": "Legislation & policy backbone",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Statutes (DMCC, DUA, Leasehold Reform) that authorise OPDA's mandate — regulatory governance backbone"
+    },
+    {
+      "path": "src/pages/governance/lifecycle-versioning.astro",
+      "url": "/governance/lifecycle-versioning",
+      "h1": "Lifecycle & versioning policy",
+      "category": "Governance",
+      "kas": ["Data Governance", "Metadata Management"],
+      "primary": "Data Governance",
+      "rationale": "Semantic versioning, deprecation timelines, retirement — governance lifecycle policy with metadata aspects (release register)"
+    },
+    {
+      "path": "src/pages/governance/meetings-and-feedback.astro",
+      "url": "/governance/meetings-and-feedback",
+      "h1": "Meeting cadence & feedback channels",
+      "category": "Operating Model",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "AGM/Board rhythm, decision retention, feedback SLAs — governance operating model"
+    },
+    {
+      "path": "src/pages/governance/opda-members.astro",
+      "url": "/governance/opda-members",
+      "h1": "OPDA member firms",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Member-firm constitution and certified-roster — governance participant register"
+    },
+    {
+      "path": "src/pages/governance/overlay-attachments.astro",
+      "url": "/governance/overlay-attachments",
+      "h1": "Overlay attachments policy",
+      "category": "Operating Model",
+      "kas": ["Document & Content Management", "Data Governance"],
+      "primary": "Document & Content Management",
+      "rationale": "Handling policy for unstructured overlay attachments (TA10 plans, EPCs, photos) — D&CM is the canonical KA for this strand per ADR-0001 Wave 2"
+    },
+    {
+      "path": "src/pages/governance/risk-liability.astro",
+      "url": "/governance/risk-liability",
+      "h1": "Risk & liability allocation",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Liability framework for participants in the federation — governance risk allocation"
+    },
+    {
+      "path": "src/pages/governance/sandbox.astro",
+      "url": "/governance/sandbox",
+      "h1": "Smart Property Data Trust Framework Sandbox",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Trust framework Sandbox structure and partners — governance delivery vehicle"
+    },
+    {
+      "path": "src/pages/governance/stakeholder-engagement.astro",
+      "url": "/governance/stakeholder-engagement",
+      "h1": "Stakeholder engagement model",
+      "category": "Operating Model",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Five engagement modes (members/non-member/regulators/government/consumers) — governance stakeholder model"
+    },
+    {
+      "path": "src/pages/governance/steering-forums.astro",
+      "url": "/governance/steering-forums",
+      "h1": "Steering & coordination forums",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "DPMSG and adjacent cross-stakeholder bodies — federation governance forums"
+    },
+    {
+      "path": "src/pages/governance/strategic-alignment.astro",
+      "url": "/governance/strategic-alignment",
+      "h1": "Strategic alignment",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Five external frameworks (HMLR Strategy, DSIT, DIATF, W3C VC, ToIP) PDTF aligns to — strategic governance positioning"
+    },
+    {
+      "path": "src/pages/governance/toip-governance.astro",
+      "url": "/governance/toip-governance",
+      "h1": "Trust Over IP — the governance model PDTF follows",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "ToIP 4-layer governance model adopted by PDTF — the framing governance choice"
+    },
+    {
+      "path": "src/pages/governance/uk-initiative.astro",
+      "url": "/governance/uk-initiative",
+      "h1": "The UK government's Smart Property Data initiative",
+      "category": "Governance",
+      "kas": ["Data Governance"],
+      "primary": "Data Governance",
+      "rationale": "Five-tier stack from legislation to standards — wider governance context that authorises OPDA"
+    },
+    {
+      "path": "src/pages/implementation/implementation-overview.astro",
+      "url": "/implementation/implementation-overview",
+      "h1": "Implementation — overview",
+      "category": "Implementation",
+      "kas": ["Data Architecture", "Data Integration & Interoperability"],
+      "primary": "Data Architecture",
+      "rationale": "Five-piece PDTF stack (schemas, OpenAPI, accreditation, trust-framework runtime, VC wrapper) — Data Architecture with strong Integration angle"
+    },
+    {
+      "path": "src/pages/implementation/index.astro",
+      "url": "/implementation",
+      "h1": "Implementation",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/implementation/quickstart.astro",
+      "url": "/implementation/quickstart",
+      "h1": "Quickstart",
+      "category": "Implementation",
+      "kas": ["Data Integration & Interoperability"],
+      "primary": "Data Integration & Interoperability",
+      "rationale": "Install, compose schemas, validate — practical interoperability quickstart"
+    },
+    {
+      "path": "src/pages/implementation/schema-composition.astro",
+      "url": "/implementation/schema-composition",
+      "h1": "Schema composition",
+      "category": "Implementation",
+      "kas": ["Data Modeling & Design", "Data Integration & Interoperability"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Deep-merge mechanics for combining base + overlays — schema-design discipline serving integration"
+    },
+    {
+      "path": "src/pages/implementation/validation.astro",
+      "url": "/implementation/validation",
+      "h1": "Validation",
+      "category": "Implementation",
+      "kas": ["Data Quality Management", "Data Modeling & Design"],
+      "primary": "Data Quality Management",
+      "rationale": "Running Ajv validators, decoding errors — validation is the operational instrument of DQ; schema-design underlies it"
+    },
+    {
+      "path": "src/pages/implementation/verified-claims.astro",
+      "url": "/implementation/verified-claims",
+      "h1": "Verified claims",
+      "category": "Stub",
+      "kas": ["Data Security", "Data Integration & Interoperability"],
+      "primary": "Data Security",
+      "rationale": "W3C VC envelopes around schema fragments — cryptographic provenance (Data Security) interoperable across producers/consumers"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "url": "/",
+      "h1": "OPDA Knowledge Base",
+      "category": null,
+      "kas": [],
+      "primary": null,
+      "rationale": "Site root — no specific KA"
+    },
+    {
+      "path": "src/pages/library/document-archive.astro",
+      "url": "/library/document-archive",
+      "h1": "Document archive",
+      "category": "Library",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "Curated index of substantive project documents — D&CM in the institutional-records sense"
+    },
+    {
+      "path": "src/pages/library/external-references.astro",
+      "url": "/library/external-references",
+      "h1": "External references",
+      "category": "Library",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "External authoritative source material captured locally (NTS archive etc.) — D&CM archive"
+    },
+    {
+      "path": "src/pages/library/index.astro",
+      "url": "/library",
+      "h1": "Library",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/library/library-overview.astro",
+      "url": "/library/library-overview",
+      "h1": "Library — overview",
+      "category": "Library",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "Shape and inventory of the source archive — D&CM holdings overview"
+    },
+    {
+      "path": "src/pages/library/transcript-archive.astro",
+      "url": "/library/transcript-archive",
+      "h1": "Transcript archive",
+      "category": "Library",
+      "kas": ["Document & Content Management"],
+      "primary": "Document & Content Management",
+      "rationale": "Every plain-text transcript indexed for cross-corpus grep — D&CM territory"
+    },
+    {
+      "path": "src/pages/modelling/bounded-contexts.astro",
+      "url": "/modelling/bounded-contexts",
+      "h1": "Bounded contexts & industries",
+      "category": "Modelling",
+      "kas": ["Data Architecture", "Data Modeling & Design"],
+      "primary": "Data Architecture",
+      "rationale": "DDD bounded contexts and PDTF as Published Language between them — architectural partitioning of the domain"
+    },
+    {
+      "path": "src/pages/modelling/business-glossary.astro",
+      "url": "/modelling/business-glossary",
+      "h1": "Business glossary",
+      "category": "Business Data Knowledge",
+      "kas": ["Metadata Management"],
+      "primary": "Metadata Management",
+      "rationale": "Merged SKOS business glossary (554 concepts) — canonical Metadata Management deliverable"
+    },
+    {
+      "path": "src/pages/modelling/concept-taxonomy.astro",
+      "url": "/modelling/concept-taxonomy",
+      "h1": "Concept taxonomy (SKOS)",
+      "category": "Business Data Knowledge",
+      "kas": ["Metadata Management"],
+      "primary": "Metadata Management",
+      "rationale": "SKOS concept schemes (Core + per-context + code lists) — controlled-vocabulary metadata"
+    },
+    {
+      "path": "src/pages/modelling/data-dictionary.astro",
+      "url": "/modelling/data-dictionary",
+      "h1": "Data dictionary",
+      "category": "Business Data Knowledge",
+      "kas": ["Metadata Management", "Data Modeling & Design"],
+      "primary": "Metadata Management",
+      "rationale": "1,538 deduplicated data elements with RDF URIs — the canonical data dictionary, a Metadata Management artefact derived from schema models"
+    },
+    {
+      "path": "src/pages/modelling/index.astro",
+      "url": "/modelling",
+      "h1": "Modelling",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — no specific KA"
+    },
+    {
+      "path": "src/pages/modelling/jsonld-mappings.astro",
+      "url": "/modelling/jsonld-mappings",
+      "h1": "JSON-LD mappings",
+      "category": "Business Data Knowledge",
+      "kas": ["Metadata Management", "Data Integration & Interoperability"],
+      "primary": "Metadata Management",
+      "rationale": "Per-overlay @context mappings binding JSON to RDF terms — metadata bridging serving interoperability"
+    },
+    {
+      "path": "src/pages/modelling/ontology.astro",
+      "url": "/modelling/ontology",
+      "h1": "Ontology (OWL)",
+      "category": "Business Data Knowledge",
+      "kas": ["Metadata Management", "Data Modeling & Design"],
+      "primary": "Metadata Management",
+      "rationale": "Formal OWL class/property definitions reusing Schema.org, W3C VC, FOAF — ontology is Metadata Management with modelling overlap"
+    },
+    {
+      "path": "src/pages/modelling/overlays.astro",
+      "url": "/modelling/overlays",
+      "h1": "PDTF overlays",
+      "category": "Modelling",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "The 18+16 overlay catalogue, merge mechanics, bounded-context mapping — schema design as composition unit"
+    },
+    {
+      "path": "src/pages/modelling/shacl-shapes.astro",
+      "url": "/modelling/shacl-shapes",
+      "h1": "SHACL shapes",
+      "category": "Business Data Knowledge",
+      "kas": ["Data Modeling & Design", "Data Quality Management"],
+      "primary": "Data Modeling & Design",
+      "rationale": "SHACL constraints generated from JSON Schema plus hand-authored cross-property rules — design-time shapes that also enforce DQ"
+    },
+    {
+      "path": "src/pages/modelling/standards-stack.astro",
+      "url": "/modelling/standards-stack",
+      "h1": "Standards stack",
+      "category": "Modelling",
+      "kas": ["Data Architecture"],
+      "primary": "Data Architecture",
+      "rationale": "Five-layer technical stack from DIDs up through form overlays — the published OPDA Data Architecture"
+    },
+    {
+      "path": "src/pages/resource.astro",
+      "url": "/resource",
+      "h1": "Loading…",
+      "category": "Resource viewer",
+      "kas": [],
+      "primary": null,
+      "rationale": "Generic file viewer; no DAMA KA applies"
+    },
+    {
+      "path": "src/pages/schema/built-form/built-form-form.astro",
+      "url": "/schema/built-form/built-form-form",
+      "h1": "Built form",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for construction/year/type/parking — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/condition.astro",
+      "url": "/schema/built-form/condition",
+      "h1": "Condition",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for alterations, electrical works, declared condition — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/basic.astro",
+      "url": "/schema/built-form/fixtures/basic",
+      "h1": "Fixtures · basic fittings",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "TA10 schema leaves for boilers/radiators/tanks — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/bathroom.astro",
+      "url": "/schema/built-form/fixtures/bathroom",
+      "h1": "Fixtures · bathroom",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for bathroom fixtures/sanitary-ware — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/carpets.astro",
+      "url": "/schema/built-form/fixtures/carpets",
+      "h1": "Fixtures · carpets",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for carpets by room — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/curtains.astro",
+      "url": "/schema/built-form/fixtures/curtains",
+      "h1": "Fixtures · curtains & rails",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for curtains/rails by room — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/fixtures-summary.astro",
+      "url": "/schema/built-form/fixtures/fixtures-summary",
+      "h1": "Fixtures · items to include / remove",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Top-level include/exclude leaves with accuracy confirmation — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/index.astro",
+      "url": "/schema/built-form/fixtures",
+      "h1": "Fixtures & fittings",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for the TA10 fixtures cluster — schema-cluster overview"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/kitchen.astro",
+      "url": "/schema/built-form/fixtures/kitchen",
+      "h1": "Fixtures · kitchen",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for fitted kitchen units/white-goods — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/lights.astro",
+      "url": "/schema/built-form/fixtures/lights",
+      "h1": "Fixtures · light fittings",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for light fittings by room — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/outdoor.astro",
+      "url": "/schema/built-form/fixtures/outdoor",
+      "h1": "Fixtures · outdoor",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for sheds/plants/garden furniture — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/services.astro",
+      "url": "/schema/built-form/fixtures/services",
+      "h1": "Fixtures · TV, telephone, fuel, other items",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for TV/telephone/fuel install — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/fixtures/units.astro",
+      "url": "/schema/built-form/fixtures/units",
+      "h1": "Fixtures · fitted units",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for fitted wardrobes/shelving/cupboards — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/index.astro",
+      "url": "/schema/built-form",
+      "h1": "Built form, condition & valuation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for the built-form/condition/valuation schema cluster"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/advice.astro",
+      "url": "/schema/built-form/surveys/advice",
+      "h1": "Surveys · advice, risks & matters for legal advisers",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for surveyor advice/risk — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/grounds.astro",
+      "url": "/schema/built-form/surveys/grounds",
+      "h1": "Surveys · grounds",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for site/boundaries/drainage paths — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/index.astro",
+      "url": "/schema/built-form/surveys",
+      "h1": "Surveys",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for the RICS Home Survey schema cluster"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/inside-features.astro",
+      "url": "/schema/built-form/surveys/inside-features",
+      "h1": "Surveys · inside · floors, fireplaces, built-in fittings",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for floors/fireplaces/built-in fittings — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/inside-finishes.astro",
+      "url": "/schema/built-form/surveys/inside-finishes",
+      "h1": "Surveys · inside · woodwork, bathroom fittings, other",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for inside finishes — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/inside-structure.astro",
+      "url": "/schema/built-form/surveys/inside-structure",
+      "h1": "Surveys · inside · roof, ceilings, walls",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for roof/ceilings/walls — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/legal.astro",
+      "url": "/schema/built-form/surveys/legal",
+      "h1": "Surveys · legal & guarantees",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for legal advisers/guarantees in surveys — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/meta.astro",
+      "url": "/schema/built-form/surveys/meta",
+      "h1": "Surveys · report metadata & declaration",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Metadata Management"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for survey type/dates/declaration — modelling with explicit metadata about reports"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/outside-envelope.astro",
+      "url": "/schema/built-form/surveys/outside-envelope",
+      "h1": "Surveys · outside · walls, windows, doors",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for outside walls/windows/doors — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/outside-extras.astro",
+      "url": "/schema/built-form/surveys/outside-extras",
+      "h1": "Surveys · outside · conservatory, joinery, other",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for conservatory/joinery — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/outside-roof.astro",
+      "url": "/schema/built-form/surveys/outside-roof",
+      "h1": "Surveys · outside · chimneys, roof, rainwater",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for chimneys/roof/rainwater — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/services-energy.astro",
+      "url": "/schema/built-form/surveys/services-energy",
+      "h1": "Surveys · services · electricity, gas/oil, heating, water-heating",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for energy services in surveys — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/services-water.astro",
+      "url": "/schema/built-form/surveys/services-water",
+      "h1": "Surveys · services · water, drainage, common services",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for water/drainage services — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/surveys/valuation.astro",
+      "url": "/schema/built-form/surveys/valuation",
+      "h1": "Surveys · valuation block",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for survey-embedded valuation block — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/built-form/valuation.astro",
+      "url": "/schema/built-form/valuation",
+      "h1": "Valuation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for agreed-money valuation — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/chain-milestones.astro",
+      "url": "/schema/chain-milestones",
+      "h1": "Chain, milestones & contracts",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for transaction lifecycle/state machine — process-level data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/encumbrances/council-tax-insurance.astro",
+      "url": "/schema/encumbrances/council-tax-insurance",
+      "h1": "Council tax & insurance",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for council-tax band, payer, building/contents insurance — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/encumbrances/guarantees.astro",
+      "url": "/schema/encumbrances/guarantees",
+      "h1": "Guarantees, warranties & indemnities",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for guarantees/warranties/indemnity covers — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/encumbrances/index.astro",
+      "url": "/schema/encumbrances",
+      "h1": "Encumbrances & completion",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for encumbrances/completion schema cluster"
+    },
+    {
+      "path": "src/pages/schema/encumbrances/letting-completion.astro",
+      "url": "/schema/encumbrances/letting-completion",
+      "h1": "Letting & completion",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for tenancy detail and completion-day artefacts — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/encumbrances/occupiers-notices.astro",
+      "url": "/schema/encumbrances/occupiers-notices",
+      "h1": "Occupiers & notices",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for occupiers and served notices — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/evidence/additional.astro",
+      "url": "/schema/evidence/additional",
+      "h1": "Additional information & disclosures",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for additional seller disclosures — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/evidence/declarations.astro",
+      "url": "/schema/evidence/declarations",
+      "h1": "Sale-ready declarations",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for seller signatures/CPR declarations — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/evidence/disputes.astro",
+      "url": "/schema/evidence/disputes",
+      "h1": "Disputes & complaints",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for known disputes — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/evidence/documents.astro",
+      "url": "/schema/evidence/documents",
+      "h1": "Documents & attachments",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Document & Content Management"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for document catalogue/attachment patterns/VC envelope — modelling of document semantics within schemas (D&CM adjacency)"
+    },
+    {
+      "path": "src/pages/schema/evidence/index.astro",
+      "url": "/schema/evidence",
+      "h1": "Evidence, documents & declarations",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for evidence/declarations schema cluster"
+    },
+    {
+      "path": "src/pages/schema/evidence/specialist.astro",
+      "url": "/schema/evidence/specialist",
+      "h1": "Specialist & other issues",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for specialist/other issue disclosures — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/index.astro",
+      "url": "/schema",
+      "h1": "Schema",
+      "category": "Section overview",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Section landing for the schema data-model narrative across 3,561 leaves — Data Modeling & Design overview"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/boundaries-rights.astro",
+      "url": "/schema/legal-estate/boundaries-rights",
+      "h1": "Boundaries & rights",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for boundaries and easements/rights — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/index.astro",
+      "url": "/schema/legal-estate",
+      "h1": "Legal estate & title",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for legal estate/title schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/freehold.astro",
+      "url": "/schema/legal-estate/ownership/freehold",
+      "h1": "Ownership — freehold transfer",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for freehold ownership transfer — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/index.astro",
+      "url": "/schema/legal-estate/ownership/leasehold",
+      "h1": "Ownership — leasehold transfer",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for leasehold transfer schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-charges/buildings-insurance.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-charges/buildings-insurance",
+      "h1": "Leasehold · buildings insurance",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for leasehold buildings insurance — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-charges/index.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-charges",
+      "h1": "Leasehold · service charge & insurance",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for leasehold service-charge/insurance schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-charges/service-charge.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-charges/service-charge",
+      "h1": "Leasehold · service charge",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for leasehold service charge, reserve fund, Section 20 — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-contacts-list.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-contacts-list",
+      "h1": "Leasehold · contact list",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for leasehold contacts (freeholder/management/agent) — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-contacts-roles.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-contacts-roles",
+      "h1": "Leasehold · service-contact roles",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for service-contact role assignments — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-legal/building-safety.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-legal/building-safety",
+      "h1": "Leasehold · Building Safety Act",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for BSA-2022 disclosures (PAP, higher-risk building, remediation) — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-legal/consents-alterations.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-legal/consents-alterations",
+      "h1": "Leasehold · consents & alterations",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for landlord consents/alterations made — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-legal/index.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-legal",
+      "h1": "Leasehold · consents, restrictions, alterations, safety",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for leasehold legal-obligations schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-legal/lease-transfer.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-legal/lease-transfer",
+      "h1": "Leasehold · transfer & registration",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for TR1/AP1 leasehold-assignment registration — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-legal/restrictions-enfranchisement.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-legal/restrictions-enfranchisement",
+      "h1": "Leasehold · restrictions & enfranchisement",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for lease restrictions/enfranchisement status — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-management.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-management",
+      "h1": "Leasehold · management",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for leasehold management arrangements — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-misc/disputes.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-misc/disputes",
+      "h1": "Leasehold · disputes",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for leasehold disputes — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-misc/general.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-misc/general",
+      "h1": "Leasehold · general & confirmation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for general declarations/accuracy confirmation — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-misc/index.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-misc",
+      "h1": "Leasehold · disputes, general, documents, confirmation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for leasehold disputes/general/documents schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-misc/required-docs.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-misc/required-docs",
+      "h1": "Leasehold · required documents",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for required-documents schedule — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-rent.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-rent",
+      "h1": "Leasehold · ground rent",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for ground-rent schedule — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/leasehold/lease-term.astro",
+      "url": "/schema/legal-estate/ownership/leasehold/lease-term",
+      "h1": "Leasehold · term & shared ownership",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for lease term and shared-ownership percentage — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/contacts.astro",
+      "url": "/schema/legal-estate/ownership/managed/contacts",
+      "h1": "Managed · contacts",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for managed-estate contacts — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/disputes-docs.astro",
+      "url": "/schema/legal-estate/ownership/managed/disputes-docs",
+      "h1": "Managed · disputes & documents",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for managed-estate disputes/required docs — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/index.astro",
+      "url": "/schema/legal-estate/ownership/managed",
+      "h1": "Ownership — managed",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for managed-ownership schema cluster"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/insurance.astro",
+      "url": "/schema/legal-estate/ownership/managed/insurance",
+      "h1": "Managed · insurance",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for managed-estate buildings insurance — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/service-charge.astro",
+      "url": "/schema/legal-estate/ownership/managed/service-charge",
+      "h1": "Managed · service charge",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for managed-estate service charge — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/ownership/managed/transfer.astro",
+      "url": "/schema/legal-estate/ownership/managed/transfer",
+      "h1": "Managed · transfer & confirmation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for managed-estate transfer/confirmation — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/tenure.astro",
+      "url": "/schema/legal-estate/tenure",
+      "h1": "Tenure",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for tenure types (freehold/leasehold/commonhold) — controlled vocabulary of authoritative tenure categories"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-full.astro",
+      "url": "/schema/legal-estate/title/oc-full",
+      "h1": "Title — Official Copy full register",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema for HMLR Official Copy full register — HMLR is the authoritative master of land-title data per ADR-0001 bounded-contexts treatment"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/index.astro",
+      "url": "/schema/legal-estate/title/oc-summary",
+      "h1": "Title — Official Copy summary",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Landing for HMLR OC summary schema cluster — master-data anchor for ownership/encumbrance claims"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-charges-main.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-charges-main",
+      "h1": "OC summary · charges (main)",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for HMLR-recorded charges — derived from master register"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-charges-other.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-charges-other",
+      "h1": "OC summary · other charges & restrictions",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for HMLR other charges/restrictions — master-data dependent"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-meta.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-meta",
+      "h1": "OC summary · metadata & property",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Metadata Management"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for OC date/edition/price-paid — metadata about the register entry alongside element definitions"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-notices-main.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-notices-main",
+      "h1": "OC summary · notices",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for HMLR notices — derived from master register"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-notices-other.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-notices-other",
+      "h1": "OC summary · cautions, bankruptcy, rights",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for cautions/bankruptcy/rights from HMLR — master-data dependent"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/oc-owners.astro",
+      "url": "/schema/legal-estate/title/oc-summary/oc-owners",
+      "h1": "OC summary · proprietorship & lease",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for HMLR proprietorship/lease detail — master-data dependent"
+    },
+    {
+      "path": "src/pages/schema/legal-estate/title/oc-summary/title-number.astro",
+      "url": "/schema/legal-estate/title/oc-summary/title-number",
+      "h1": "Title · number & extents",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves for HMLR title number and title-extents geometry — master identifier"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/identity.astro",
+      "url": "/schema/local-context/con29r/identity",
+      "h1": "Local authority identity",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Schema leaves identifying the local authority — authoritative external party reference"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/index.astro",
+      "url": "/schema/local-context/con29r",
+      "h1": "Local authority (CON29R)",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for CON29R local-authority schema cluster"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/listing-conservation.astro",
+      "url": "/schema/local-context/con29r/listing-conservation",
+      "h1": "Listing & conservation",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for listed-building/conservation/TPO status — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/index.astro",
+      "url": "/schema/local-context/con29r/searches",
+      "h1": "Local authority searches",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for CON29R searches schema cluster"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/other-compulsory.astro",
+      "url": "/schema/local-context/con29r/searches/other-compulsory",
+      "h1": "Other · compulsory purchase & public works",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for compulsory-purchase/public-works disclosures — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/other-environmental.astro",
+      "url": "/schema/local-context/con29r/searches/other-environmental",
+      "h1": "Other · environmental",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for CON29R environmental matters — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/other-finance.astro",
+      "url": "/schema/local-context/con29r/searches/other-finance",
+      "h1": "Other · community finance & assets",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for CIL/Assets of Community Value — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/other-planning-notices.astro",
+      "url": "/schema/local-context/con29r/searches/other-planning-notices",
+      "h1": "Other · planning notices & enforcement",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for Section 215 notices/conservation/contravention — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/other-road-rail.astro",
+      "url": "/schema/local-context/con29r/searches/other-road-rail",
+      "h1": "Other · road & rail schemes",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for traffic/road/rail schemes — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/planning-building.astro",
+      "url": "/schema/local-context/con29r/searches/planning-building",
+      "h1": "Planning & building regulations",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for planning applications/permissions/building-regs — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/con29r/searches/roads.astro",
+      "url": "/schema/local-context/con29r/searches/roads",
+      "h1": "Roads & public rights of way",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for adopted highways/public rights of way — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/coast-climate.astro",
+      "url": "/schema/local-context/environmental/coast-climate",
+      "h1": "Coast & climate",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for coastal-erosion/climate risk — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/flooding.astro",
+      "url": "/schema/local-context/environmental/flooding",
+      "h1": "Flooding",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for flood-risk types — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/index.astro",
+      "url": "/schema/local-context/environmental",
+      "h1": "Environmental",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for environmental-risk schema cluster"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/infra-policy.astro",
+      "url": "/schema/local-context/environmental/infra-policy",
+      "h1": "Infrastructure, energy, transport, planning",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for proximity to infrastructure/energy/transport — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/mining-ground.astro",
+      "url": "/schema/local-context/environmental/mining-ground",
+      "h1": "Mining & ground stability",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for mining/subsidence risk — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/environmental/pollution-radon.astro",
+      "url": "/schema/local-context/environmental/pollution-radon",
+      "h1": "Pollution & radon",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for contaminated-land/radon exposure — data-element definitions"
+    },
+    {
+      "path": "src/pages/schema/local-context/index.astro",
+      "url": "/schema/local-context",
+      "h1": "Local context & searches",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Landing for local-context (CON29R/LLC1/environmental) schema cluster"
+    },
+    {
+      "path": "src/pages/schema/local-context/llc1.astro",
+      "url": "/schema/local-context/llc1",
+      "h1": "Local Land Charges (LLC1)",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "LLC1 schema mirrors HMLR's national Local Land Charges register — authoritative master data"
+    },
+    {
+      "path": "src/pages/schema/overlays-tasks.astro",
+      "url": "/schema/overlays-tasks",
+      "h1": "Overlays, tasks & cross-cuts",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Data Integration & Interoperability"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Cross-cuts over the leaf universe — overlay categorical filters (form-of-record) and task pivots; modelling lens with integration framing"
+    },
+    {
+      "path": "src/pages/schema/property.astro",
+      "url": "/schema/property",
+      "h1": "Property",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Reference & Master Data",
+      "rationale": "Property identity (UPRN, INSPIRE ID, title-linked address) — central master-data identity concept; page names the canonical-source gap"
+    },
+    {
+      "path": "src/pages/schema/transaction-participants.astro",
+      "url": "/schema/transaction-participants",
+      "h1": "Transaction & participants",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design", "Reference & Master Data"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for participant identity, role, capacity — modelling with master-data overtones for participant identification"
+    },
+    {
+      "path": "src/pages/schema/utilities-energy.astro",
+      "url": "/schema/utilities-energy",
+      "h1": "Utilities & energy",
+      "category": "Schema",
+      "kas": ["Data Modeling & Design"],
+      "primary": "Data Modeling & Design",
+      "rationale": "Schema leaves for heating/electricity/water/EPC — data-element definitions for property-to-utility couplings"
+    },
+    {
+      "path": "src/pages/strategy/index.astro",
+      "url": "/strategy",
+      "h1": "Strategy",
+      "category": "Section overview",
+      "kas": [],
+      "primary": null,
+      "rationale": "Section landing — strategic positioning rather than a DAMA-mapped activity"
+    },
+    {
+      "path": "src/pages/strategy/industrial-strategy.astro",
+      "url": "/strategy/industrial-strategy",
+      "h1": "UK Industrial Strategy & Smart Data",
+      "category": "Strategy",
+      "kas": [],
+      "primary": null,
+      "rationale": "Policy backdrop (DMCC Act, Industrial Strategy) — strategic context, not a data-management activity"
+    },
+    {
+      "path": "src/pages/strategy/programme-phases.astro",
+      "url": "/strategy/programme-phases",
+      "h1": "Programme phases",
+      "category": "Strategy",
+      "kas": [],
+      "primary": null,
+      "rationale": "Sandbox/Live/National phasing — programme delivery plan, not DAMA-mapped"
+    },
+    {
+      "path": "src/pages/strategy/project-roadmap.astro",
+      "url": "/strategy/project-roadmap",
+      "h1": "Project roadmap — semantic modelling + governance",
+      "category": "Roadmap",
+      "kas": [],
+      "primary": null,
+      "rationale": "Cross-workstream roadmap — delivery plan rather than a DAMA-mapped activity"
+    },
+    {
+      "path": "src/pages/strategy/strategy-overview.astro",
+      "url": "/strategy/strategy-overview",
+      "h1": "Strategy — overview",
+      "category": "Strategy",
+      "kas": [],
+      "primary": null,
+      "rationale": "Strategic frame and delivery plan — the why/what/how, not DAMA-mapped"
+    }
+  ]
+}

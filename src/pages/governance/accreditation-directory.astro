@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="Accreditation Directory"
   description="The published directory of OPDA-accredited member firms, with per-firm Assurance Level coverage plus capability maturity scores (Engagement / Process / Evidence) per DCAM-style capability. VC-signed self-attestation, quarterly cadence, public + drill-down tiers."
 >
-<PageMeta category="OPDA's rules" variant="brand" updated="Stub · spec in ADR 0004 · 2026-05-18" />
+<PageMeta category="OPDA's rules" variant="brand" updated="Stub · spec in ADR 0004 · 2026-05-18" damaKa={["Data Governance", "Data Quality Management"]} />
 
       <h1>Accreditation Directory</h1>
       <p class="lead">
@@ -29,74 +29,788 @@ import PageMeta from '@/components/PageMeta.astro';
         </p>
       </div>
 
-      <h2 id="how-it-works">How the directory works</h2>
-
-      <ol>
-        <li><strong>Member firm self-attests</strong> capability scores via a W3C
-          Verifiable Credential signed by their accredited issuer DID.</li>
-        <li><strong>OPDA validates</strong> the signature against the Trust Registry,
-          checks evidence-requirement compliance per score level, and stores the VC.</li>
-        <li><strong>Quarterly aggregator runs</strong> — produces the public Directory
-          JSON consumed by this page. Stale firms (no submission for 9+ months) flagged.</li>
-        <li><strong>OPDA spot-checks</strong> sampled scores. Inflated ratings drop the
-          score and add an audit-trail entry visible in the drill-down view.</li>
-      </ol>
-
-      <h2 id="firms">Accredited member firms</h2>
-      <p><em>Empty until the first quarterly publish.</em></p>
-
-      <div class="callout callout--key">
-        <div class="callout__label">First publish target</div>
+      <div class="callout callout--note">
+        <div class="callout__label">Draft for C&amp;R WG + Technical WG review — 2026-05-18</div>
         <p>
-          End of the quarter following ratification of the four Wave 2 ADRs (DQ,
-          Security, Overlay attachments, this one). C&amp;R WG owns the publish.
+          This page expands <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>
+          into a public-facing description of the Accreditation Directory. The spec
+          decisions (hosting, scoring granularity, visibility tiers, schema, evidence
+          requirements, naming) are settled in the ADR. Rubric wording, capability
+          catalogue contents, weighting, and dispute-resolution mechanics are flagged
+          as <strong>WG decisions</strong> below — joint
+          <em>Compliance &amp; Risk WG</em> + <em>Technical WG</em> ownership per
+          <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>.
         </p>
       </div>
 
-      <h2 id="scoring">How firms are scored</h2>
+      <h2 id="overview">Overview &amp; scope</h2>
 
       <p>
-        Per-capability scoring across three dimensions (each 1–6):
+        The Accreditation Directory is the public, quarterly-refreshed list of OPDA
+        member firms with their <strong>Assurance Level coverage</strong> (per-claim)
+        and <strong>capability scores</strong> (per-firm, three dimensions). It
+        replaces the binary "is OPDA-accredited" signal that the
+        <a href="/governance/conformance-scheme">Conformance Scheme</a> emits today
+        with a maturity-rich detail view that consumers, regulators, and member firms
+        can read at the level of granularity they need
+        (<a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>
+        §"Context" and §"Decision drivers"; the orthogonal-axes design is set in
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>
+        §"Wave 2 — Maturity-based accreditation").
       </p>
+
+      <p>
+        The Directory sits beside, not on top of, the Conformance Scheme. The Scheme
+        defines the <em>rules</em>; the Directory shows <em>who meets them and at what
+        maturity</em>. The two are designed to be read together — see
+        <a href="/governance/conformance-scheme#directoryIntegration">Conformance
+        Scheme § Directory integration</a> for how an Assurance Level (per-claim) and
+        a capability score (per-firm) compose into one legible picture.
+      </p>
+
+      <h3 id="who-it-serves">Who it serves</h3>
+
       <ul>
-        <li><strong>Engagement</strong> — governance authority engaged with the capability.</li>
-        <li><strong>Process</strong> — process established and repeatable.</li>
-        <li><strong>Evidence</strong> — auditable artefacts exist.</li>
+        <li><strong>Consumers</strong> (buyers, sellers, lenders, conveyancers) —
+          read a firm's overall posture without specialist knowledge before relying
+          on its claims.</li>
+        <li><strong>Regulators</strong> (FCA, ICO, MHCLG) — see how the regulated
+          population is distributed across maturity levels, with audit-grade evidence
+          for higher-tier claims.</li>
+        <li><strong>Member firms</strong> — understand how they compare to peers
+          without OPDA having to publish a league table (ADR 0004 Decision driver 3).</li>
+        <li><strong>OPDA itself</strong> — track the population's maturity over time
+          and identify framework gaps that no firm is scoring against.</li>
       </ul>
 
+      <h2 id="public-surface">How it works — the public surface</h2>
+
       <p>
-        Public-view cards aggregate to <strong>per-section averages</strong> across
-        ~8 sections (Governance, Architecture, DQ, Security, Operating Model,
-        Business Data Knowledge, etc.). No overall "firm maturity score" is
-        published — deliberately. Per-section + per-capability is the deepest
-        aggregation. See ADR 0004 §"Scoring granularity — hybrid" for the rationale.
+        Per <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR
+        0004</a> §"Visibility — tiered", the Directory ships three visibility tiers.
+        Only the first two are part of the initial public surface; the third is
+        deferred until first request (see <a href="#lifecycle">Lifecycle</a>).
       </p>
 
-      <h2 id="evidence-tiers">Evidence requirements per score band</h2>
-
       <table>
-        <thead><tr><th>Dimension score</th><th>Evidence requirement</th></tr></thead>
+        <thead>
+          <tr><th>Tier</th><th>Audience</th><th>What's shown</th></tr>
+        </thead>
         <tbody>
-          <tr><td><strong>1–2</strong></td><td>Self-asserted only. No artefact required.</td></tr>
-          <tr><td><strong>3–4</strong></td><td>Self-asserted + artefact link (policy doc, process diagram, runbook).</td></tr>
-          <tr><td><strong>5–6</strong></td><td>Self-asserted + artefact link + independent audit attestation (signed by an OPDA-listed audit partner).</td></tr>
+          <tr>
+            <td><strong>Public card</strong></td>
+            <td>Anyone</td>
+            <td>Firm name, AL coverage badges (AL1–AL4), per-section average scores
+              across the eight sections (radar or bar chart), last-refresh date, stale
+              flag if applicable.</td>
+          </tr>
+          <tr>
+            <td><strong>Drill-down (public)</strong></td>
+            <td>Anyone who clicks through</td>
+            <td>Per-capability scores within each section across the three dimensions,
+              evidence-tier indicator per capability, links to evidence artefacts where
+              the firm has published them, audit-trail entries for any
+              OPDA-spot-checked corrections.</td>
+          </tr>
+          <tr>
+            <td><strong>Member-firm portal</strong> (deferred)</td>
+            <td>Firm + OPDA only</td>
+            <td>Full capability scores, evidence artefacts (including any redacted
+              from public view), audit history, change log. Triggers on first member
+              request — see
+              <a href="/resource?path=docs/adr/0005-deferred-work-register.md">ADR
+              0005</a> item F3.</td>
+          </tr>
         </tbody>
       </table>
 
-      <h2 id="schema">Verifiable Credential schema</h2>
+      <h3 id="card-anatomy">Anatomy of a Directory card</h3>
 
       <p>
-        Each firm's quarterly submission is a W3C VC under
-        <code>https://w3id.org/opda/accreditation/v1</code>. See ADR 0004 §"Data
-        schema" for the payload shape. Stored at
-        <code>source/04-governance-bodies/accreditation/credentials/&#123;firm-did&#125;/&#123;YYYY-Qn&#125;.json</code>.
+        Each member firm gets one card. The card contains:
       </p>
 
-      <h2 id="related">Related</h2>
       <ul>
-        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the existing binary compliance regime this directory extends.</li>
-        <li><a href="/governance/data-quality">Data quality framework</a> — defines the DQ capabilities scored here.</li>
-        <li><a href="/governance/data-security">Data security framework</a> — defines the Security capabilities scored here.</li>
-        <li><a href="/governance/overlay-attachments">Overlay attachments</a> — defines the attachment-handling capabilities scored here.</li>
+        <li><strong>Firm name + DID</strong> — the
+          <code>did:web</code> identifier the firm signs its credentials with.</li>
+        <li><strong>AL coverage badges</strong> — one badge per Assurance Level the
+          firm is accredited to issue claims at. AL1 self-asserted · AL2 accredited
+          issuer · AL3 accredited issuer with extra controls or proxy authority · AL4
+          official primary authority (per
+          <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR
+          0001</a> Wave 2).</li>
+        <li><strong>Capability scores summary</strong> — per-section averages (~8
+          sections) for each of the three dimensions, shown as a radar chart or
+          horizontal bars. Section averages are simple unweighted means of capability
+          scores within the section, rounded to one decimal place (ADR 0004 §"Scoring
+          granularity").</li>
+        <li><strong>Evidence tier indicator</strong> — for each section average, the
+          dominant evidence tier (1–4 self-evidenced; 5–6 audit-corroborated). A
+          single section can mix tiers across its capabilities.</li>
+        <li><strong>Last-refresh date</strong> — the quarter the underlying VC was
+          submitted (e.g. "Last refreshed: 2026-Q2").</li>
+        <li><strong>Stale flag</strong> — visible when the firm has missed two
+          quarters in a row (data &gt; 9 months old). Set per ADR 0004 §"Update
+          cadence".</li>
+        <li><strong>Drill-down link</strong> — to the per-capability detail page.</li>
       </ul>
+
+      <h3 id="aggregation-rule">Aggregation rule — and what is deliberately absent</h3>
+
+      <p>
+        Section averages roll up capability scores. The Directory deliberately does
+        <strong>not</strong> publish an overall "firm maturity score" (ADR 0004
+        §"Scoring granularity — hybrid", bullet 4). Overall scores invite gaming and
+        obscure trade-offs between dimensions; per-section + per-capability is the
+        deepest aggregation the Directory will offer.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required — section weighting</div>
+        <p>
+          ADR 0004 specifies "simple unweighted mean" for section averages. Whether
+          to keep that as final policy, or to allow per-capability weighting within a
+          section (e.g. weight "DID key management" higher than "Audit log retention"
+          in the Security section), is a <em>Compliance &amp; Risk WG</em> decision
+          at first publish. The default below is unweighted; alternatives should be
+          considered explicitly rather than allowed to creep in via implementation.
+        </p>
+      </div>
+
+      <h3 id="hosting">Where the Directory lives</h3>
+
+      <ul>
+        <li><strong>Public URL</strong>: <code>/governance/accreditation-directory</code>
+          (this page) — rendered as a normal Astro page in the Governance section's
+          "OPDA's own rules" group, sibling to
+          <a href="/governance/conformance-scheme">Conformance Scheme</a>
+          (ADR 0004 §"Hosting").</li>
+        <li><strong>Machine-readable JSON</strong>: <code>src/data/accreditation/current.json</code>
+          — flat file consumed by this page at build time. Produced quarterly by the
+          aggregator script (see <a href="#lifecycle">Lifecycle</a>;
+          <a href="/resource?path=docs/adr/0005-deferred-work-register.md">ADR
+          0005</a> item C1 tracks the build pipeline).</li>
+        <li><strong>Source of truth</strong>:
+          <code>source/04-governance-bodies/accreditation/credentials/&#123;firm-did&#125;/&#123;YYYY-Qn&#125;.json</code>
+          — one signed Verifiable Credential per firm per quarter.</li>
+      </ul>
+
+      <h3 id="rollout">Phased rollout</h3>
+
+      <p>
+        Per ADR 0004 §"Resolving the parallel-execution cross-dependency", the
+        Directory ships first with a <em>skeleton schema</em>; the
+        <a href="/governance/data-quality">Data Quality</a> and
+        <a href="/governance/data-security">Data Security</a> workstreams each
+        contribute a "capability bundle" PR as their frameworks ratify. The
+        <a href="/governance/overlay-attachments">Overlay attachments</a> workstream
+        feeds the evidence-handling rules referenced from the Directory's evidence
+        requirements. The first quarterly publish (ADR 0005 item C3) waits on all
+        four Wave 2 ADRs being ratified.
+      </p>
+
+      <h2 id="scoring">Scoring — three dimensions, six levels each</h2>
+
+      <p>
+        Each capability a firm claims compliance against is scored across three
+        dimensions, on a 1–6 scale per dimension. The dimensions come from
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR
+        0001</a> Wave 2 (DCAM v3's scoring discipline, named as inspiration without
+        verbatim adoption); the 1–6 range is set in ADR 0004 §"Evidence requirements
+        per score level".
+      </p>
+
+      <ul>
+        <li><strong>Engagement</strong> — has the firm's governance authority engaged
+          with this capability? (Sponsorship, charter, named owner, board visibility.)</li>
+        <li><strong>Process</strong> — is the process for this capability established
+          and repeatable? (Documented, used, measured, improved.)</li>
+        <li><strong>Evidence</strong> — do auditable artefacts exist for this
+          capability? (Policy docs, audit logs, third-party attestations.)</li>
+      </ul>
+
+      <p>
+        A firm can score high on one dimension and low on another for the same
+        capability — for instance, strong Engagement and Evidence but weak Process
+        when the leadership and audit trail are in place but the operational practice
+        is still maturing. The Directory shows the three numbers separately rather
+        than collapsing them into one (ADR 0001 Wave 2 §"Worked example").
+      </p>
+
+      <h3 id="rubric">Proposed rubric per level (1–6)</h3>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required — rubric wording</div>
+        <p>
+          ADR 0004 sets the structure (three dimensions, 1–6 per dimension) and the
+          evidence-tier mapping (1–2 self-asserted, 3–4 self + artefact, 5–6
+          self + artefact + audit attestation). It does <em>not</em> author the
+          per-level rubric wording. The text in the tables below is a <strong>proposed
+          starting point</strong> for joint <em>Compliance &amp; Risk WG</em> +
+          <em>Technical WG</em> review. Final wording is a WG output.
+        </p>
+      </div>
+
+      <h4 id="rubric-engagement">Engagement dimension (1–6)</h4>
+
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Proposed rubric</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>No governance authority engaged. Capability is ad-hoc; no named
+              owner; no charter or mandate.</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>Informal engagement. A named individual takes responsibility but
+              without a charter, escalation path, or board visibility.</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>Governance authority has acknowledged the capability and assigned a
+              steward. A charter exists in draft.</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>Capability has a published charter, named accountable executive, and
+              regular reporting to a governance forum (e.g. Data Council, Risk
+              Committee).</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>As 4, plus board-level visibility (annual review at executive
+              committee or equivalent) and independent attestation that engagement is
+              substantive, not nominal.</td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>As 5, plus integration into firm-wide strategy (capability outcomes
+              feed into KPIs, OKRs, or regulatory submissions). Independent attestation
+              renewed annually.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 id="rubric-process">Process dimension (1–6)</h4>
+
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Proposed rubric</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>No defined process. Outcomes are achieved (or not) by individual
+              effort and informal practice.</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>Process exists in practice but is undocumented. Outcomes are
+              consistent within a single team but not transferable.</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>Process is documented (runbook, SOP, procedure manual) and used by
+              the relevant team. Not yet measured or improved systematically.</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>Process is documented, repeatable across teams, and has defined
+              inputs / outputs / SLAs. Measurement against SLAs occurs but improvement
+              loop is informal.</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>As 4, plus a measured improvement loop (metrics tracked, retrospectives,
+              changes applied) and independent attestation that the process is in
+              substantive operation.</td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>As 5, plus continuous improvement is institutionalised — the process
+              evolves on a defined cadence, with documented version history and
+              cross-firm benchmark comparison where applicable. Independent attestation
+              renewed annually.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 id="rubric-evidence">Evidence dimension (1–6)</h4>
+
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Proposed rubric</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>Self-asserted only. No artefact referenced. Score reflects the firm's
+              own statement; OPDA does not verify.</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>Self-asserted with internal reference (a named policy or wiki page
+              the firm points to internally; not necessarily published).</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>Self-asserted plus a published artefact (policy doc, process
+              diagram, runbook) the firm links to from the Verifiable Credential.</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>Self-asserted plus published artefact plus internal audit evidence
+              (audit log, sample reviews, control-test results) the firm can produce
+              on request.</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>As 4, plus an independent audit attestation signed by an
+              <a href="#audit-partners">OPDA-listed audit partner</a>. Attestation is
+              itself a Verifiable Credential. Required per ADR 0004 §"Evidence
+              requirements" for any claim at this band.</td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>As 5, plus the audit attestation is renewed annually with explicit
+              continuity findings (no material regression since prior period). Same
+              audit-partner-VC requirement.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required — composite formula</div>
+        <p>
+          The Directory currently has no composite formula combining the three
+          dimensions into a single per-capability number. ADR 0004 §"Scoring
+          granularity" actively resists this for the firm level; whether the same
+          principle should apply at capability level (i.e. the drill-down view always
+          shows three numbers, never one) is a <em>Compliance &amp; Risk WG</em>
+          decision. The recommendation in this draft is to keep the three-number form
+          throughout.
+        </p>
+      </div>
+
+      <h2 id="evidence-tiers">Evidence tiers and the audit-partner role</h2>
+
+      <p>
+        ADR 0004 §"Evidence requirements per score level" splits the six-level scale
+        into three evidence bands. Tiers 1–4 are self-evidenced — the firm publishes
+        the artefacts it relies on, and OPDA spot-checks. Tiers 5–6 require
+        independent corroboration by an <strong>OPDA-listed audit partner</strong>
+        (ADR 0005 items C4 and F1).
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Evidence tier</th><th>What the firm provides</th><th>How OPDA verifies</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1–2 (self-asserted)</strong></td>
+            <td>The signed Verifiable Credential, with optional internal reference.</td>
+            <td>Signature validated against the Trust Registry. No artefact check.
+              Spot-checked sample.</td>
+          </tr>
+          <tr>
+            <td><strong>3–4 (self + artefact)</strong></td>
+            <td>Signed VC plus published artefact link (policy doc, runbook,
+              process diagram). Tier 4 additionally requires internal audit evidence
+              available on request.</td>
+            <td>Signature validated; artefact URL reachability checked at build
+              time; spot-check may request the audit evidence behind tier-4 claims.</td>
+          </tr>
+          <tr>
+            <td><strong>5–6 (audit-corroborated)</strong></td>
+            <td>Signed VC plus published artefact plus a <em>separate</em>
+              Verifiable Credential issued by an OPDA-listed audit partner
+              attesting to the capability score.</td>
+            <td>Both VCs validated against the Trust Registry. Audit-partner VC
+              must reference the same capability key and quarter as the firm's
+              submission.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 id="audit-partners">OPDA-listed audit partners</h3>
+
+      <p>
+        An OPDA-listed audit partner is a firm whose audit reports OPDA recognises as
+        sufficient corroboration of a member's capability claims at tiers 5–6. The
+        candidate roster lives in
+        <a href="/resource?path=docs/recruitment/opda-listed-audit-partners.md">
+        <code>docs/recruitment/opda-listed-audit-partners.md</code></a>
+        — currently scaffolded with Big 4 firms (KPMG, Deloitte, BDO, optionally PwC
+        and EY) plus property-data specialists (Hometrack, Land Insight). Partner
+        selection is owned by the <em>Engagement WG</em>; ADR 0005 item C4 makes the
+        list a hard prerequisite before any firm can claim a tier-5-or-6 score.
+      </p>
+
+      <p>
+        Selection criteria, per the recruitment document and ADR 0004 §"Open
+        questions" Q1: audit credibility (ICAEW or equivalent), property-data domain
+        understanding, no structural conflict with the audited firm, capacity to act
+        at OPDA's quarterly cadence, willingness to publish methodology.
+      </p>
+
+      <h3 id="spot-checks">Spot-checks and rating corrections</h3>
+
+      <p>
+        ADR 0004 §"Evidence requirements per score level" (final paragraph) commits
+        OPDA to a spot-check process: a sampled review of firm submissions to
+        validate that the claimed evidence supports the claimed score. A spot-check
+        finding an inflated rating (e.g. no artefact backing a score-4 claim, or no
+        audit-partner VC backing a score-6 claim) drops the score and adds an
+        audit-trail entry visible in the drill-down view.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required — dispute resolution</div>
+        <p>
+          ADR 0004 specifies that spot-check corrections appear in the audit trail
+          but does not detail the firm's right to contest a correction. The dispute
+          path — who reviews an appeal, on what timeline, with what evidence — is a
+          <em>Compliance &amp; Risk WG</em> decision at first publish. The
+          12-step Non-Compliance Policy (referenced from
+          <a href="/governance/conformance-scheme#nonCompliance">Conformance Scheme</a>)
+          is a candidate basis; alignment is a WG call.
+        </p>
+      </div>
+
+      <h2 id="worked-example">AL × Capability worked example</h2>
+
+      <p>
+        The worked example below — drawn directly from
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR
+        0001</a> §"Wave 2 — Maturity-based accreditation" — shows why the two axes
+        are kept separate. Collapsing them loses signal that consumers and regulators
+        genuinely need.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Firm X</th>
+            <th>Firm Y</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Assurance Level coverage</strong></td>
+            <td>AL3 — accredited issuer with extra controls or proxy authority</td>
+            <td>AL2 — accredited issuer (medium trust)</td>
+          </tr>
+          <tr>
+            <td><strong>Capability — Process</strong></td>
+            <td>4 / 6 — documented, repeatable across teams, measured against SLAs</td>
+            <td>5 / 6 — measured improvement loop, independent attestation</td>
+          </tr>
+          <tr>
+            <td><strong>Capability — Evidence</strong></td>
+            <td>3 / 6 — self-asserted plus published artefact</td>
+            <td>5 / 6 — audit-corroborated by an OPDA-listed audit partner</td>
+          </tr>
+          <tr>
+            <td><strong>Reading</strong></td>
+            <td>High-assurance claims with mid-maturity operations. Firm can issue
+              AL3-level credentials, but its underlying operating practice is still
+              maturing.</td>
+            <td>Medium-assurance claims with mature operations. Firm cannot issue at
+              AL3, but the operations behind its AL2 claims are battle-tested.</td>
+          </tr>
+          <tr>
+            <td><strong>Useful to whom?</strong></td>
+            <td>A consumer relying on a regulated source of truth (an AL3 claim about
+              a statutory record) might pick Firm X for the higher claim authority
+              even with mid-maturity operations.</td>
+            <td>A counterparty doing high-volume verifications might pick Firm Y for
+              the operational reliability even though the claim authority is lower.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Collapsing this into a single number — say, "Firm X scores 7.0 overall, Firm
+        Y scores 7.5" — strips out exactly the signal the consumer and the regulator
+        need. The Directory keeps both axes visible at every level of detail (ADR
+        0001 Wave 2 §"Worked example"; ADR 0004 §"Scoring granularity").
+      </p>
+
+      <h2 id="capability-catalogue">The capability catalogue</h2>
+
+      <p>
+        A <strong>capability</strong> is a named area of practice (e.g. "Data
+        Quality — Accuracy", "Data Security — Key Management", "Issuer Onboarding",
+        "Document Retention"). The Directory scores firms <em>against</em>
+        capabilities; the catalogue is the canonical list of which capabilities
+        exist and which section each one rolls up into.
+      </p>
+
+      <p>
+        Per ADR 0004 §"Scoring granularity" the catalogue is expected to land at
+        ~30–50 capabilities once the Wave 2 frameworks ship, organised across ~8
+        sections. The catalogue is built from the Wave 2 framework outputs rather
+        than authored in advance:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Section</th><th>Source</th><th>Expected capability bundle</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Governance</strong></td>
+            <td>Existing — <a href="/governance/data-stewardship">Data
+              Stewardship</a>, <a href="/governance/meetings-and-feedback">Meetings
+              &amp; Feedback</a></td>
+            <td>EC composition, RACI, decision rights, voting, SLAs — already
+              mappable from current pages (ADR 0004 Phase 1)</td>
+          </tr>
+          <tr>
+            <td><strong>Architecture</strong></td>
+            <td>Existing — PDTF schemas, bounded contexts, ontology</td>
+            <td>Schema versioning, overlay registration, bounded-context boundaries
+              — already mappable</td>
+          </tr>
+          <tr>
+            <td><strong>Business Data Knowledge</strong></td>
+            <td>Existing — data dictionary, business glossary, SKOS taxonomy</td>
+            <td>Dictionary completeness, taxonomy coverage, ontology alignment —
+              already mappable</td>
+          </tr>
+          <tr>
+            <td><strong>Operating Model</strong></td>
+            <td>Existing — <a href="/governance/data-stewardship">Data
+              Stewardship</a>, <a href="/governance/stakeholder-engagement">Stakeholder
+              Engagement</a></td>
+            <td>Engagement modes, dispute resolution, change management — already
+              mappable</td>
+          </tr>
+          <tr>
+            <td><strong>Data Quality</strong></td>
+            <td>Wave 2 — <a href="/governance/data-quality">Data Quality
+              framework</a></td>
+            <td>Six DQ dimensions (accuracy, completeness, consistency, timeliness,
+              uniqueness, validity) per ADR 0001 Wave 2. Ships as a capability
+              bundle PR when the DQ framework ratifies.</td>
+          </tr>
+          <tr>
+            <td><strong>Data Security</strong></td>
+            <td>Wave 2 — <a href="/governance/data-security">Data Security
+              framework</a></td>
+            <td>~5–8 capabilities expected (KYC/KYB, key management, signature
+              verification, revocation, audit logging) per ADR 0004 Phase 2. Ships
+              as a capability bundle PR when the Security framework ratifies.</td>
+          </tr>
+          <tr>
+            <td><strong>Overlay Attachments</strong></td>
+            <td>Wave 2 — <a href="/governance/overlay-attachments">Overlay
+              Attachments policy</a></td>
+            <td>Per-attachment-type capabilities (file format, signing, retention,
+              consent) across the 11 v3 overlay attachment types. Ships as a
+              capability bundle PR when the Overlay Attachments policy ratifies.</td>
+          </tr>
+          <tr>
+            <td><strong>(TBD — to be named)</strong></td>
+            <td>WG decision — see below</td>
+            <td>ADR 0004 §"Scoring granularity" references "~8 sections" but does
+              not enumerate the final eighth. Candidates: Conformance &amp;
+              Certification, Trust Registry Operations, Funding &amp; Sustainability.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required — catalogue ratification</div>
+        <p>
+          The canonical capability catalogue — sections, capability keys within each
+          section, and the final mapping of capabilities to sections — is to be
+          <em>ratified by the Compliance &amp; Risk WG at first publish</em>. Until
+          then, the section list above is indicative. ADR 0004 commits to ~8 sections
+          and ~30–50 capabilities; the exact membership is a WG output.
+        </p>
+      </div>
+
+      <h2 id="lifecycle">Lifecycle and operations</h2>
+
+      <h3 id="quarterly-cadence">Quarterly publish cadence</h3>
+
+      <p>
+        Per ADR 0004 §"Update cadence — quarterly, with on-demand re-scoring":
+      </p>
+
+      <ul>
+        <li><strong>Submission deadline</strong> — firms submit their self-attested
+          VC by the <strong>15th of the quarter-end month</strong> (15 March, 15 June,
+          15 September, 15 December).</li>
+        <li><strong>Publish date</strong> — OPDA refreshes the Directory by the
+          <strong>1st of the following quarter</strong> (1 April, 1 July, 1 October,
+          1 January).</li>
+        <li><strong>On-demand re-scoring</strong> — a firm can request mid-quarter
+          re-publication when it passes a meaningful milestone (e.g. achieving AL3
+          status, passing an audit). The <em>Compliance &amp; Risk WG</em> approves
+          the off-cycle publish.</li>
+        <li><strong>Stale flag</strong> — firms whose data is &gt; 9 months old (two
+          missed quarters in a row) get a "stale" badge until they resubmit.</li>
+      </ul>
+
+      <h3 id="build-pipeline">Build pipeline</h3>
+
+      <p>
+        The Directory is rendered by this Astro page at build time from a flat JSON
+        consumed at <code>src/data/accreditation/current.json</code>. That JSON is
+        produced by <code>scripts/build-accreditation-directory.mjs</code>
+        (<a href="/resource?path=docs/adr/0005-deferred-work-register.md">ADR 0005</a>
+        item C1 — currently a stub) which:
+      </p>
+
+      <ol>
+        <li>Reads all current-quarter VCs from
+          <code>source/04-governance-bodies/accreditation/credentials/&#123;firm-did&#125;/&#123;YYYY-Qn&#125;.json</code>.</li>
+        <li>Validates each signature against the Trust Registry.</li>
+        <li>Validates that tier-5-or-6 claims have a matching audit-partner VC.</li>
+        <li>Computes per-section averages from the per-capability scores.</li>
+        <li>Emits the flat JSON consumed by this page.</li>
+        <li>On Trust Registry downtime, falls back to the last good build state
+          (ADR 0004 §"Consequences — Negative / risk").</li>
+      </ol>
+
+      <h3 id="member-submission">Member-firm submission</h3>
+
+      <p>
+        Firms submit a W3C Verifiable Credential signed by their accredited issuer
+        DID, with payload as specified in ADR 0004 §"Data schema — VC-backed
+        self-attestation, JSON for the render". The submission tooling itself
+        (CLI helper, web form, or signed-PR workflow) is deferred — see ADR 0005
+        item C2.
+      </p>
+
+      <p>
+        The credential format gives firms cryptographic skin-in-the-game: published
+        scores cannot diverge from what the firm actually signed, and anyone can
+        independently verify a score by checking the VC against the Trust Registry
+        (ADR 0004 §"Data schema", bullets after the JSON sketch).
+      </p>
+
+      <h3 id="first-publish">First quarterly publish</h3>
+
+      <p>
+        The first publish target is <strong>end of the quarter following ratification
+        of all four Wave 2 ADRs</strong> (Data Quality, Data Security, Overlay
+        Attachments, this Directory). Ownership is joint <em>Compliance &amp; Risk
+        WG</em> + <em>Technical WG</em> per ADR 0005 item C3. Until that point this
+        page renders the explanatory structure (this draft) without firm data.
+      </p>
+
+      <h3 id="ex-member">Ex-member handling</h3>
+
+      <p>
+        Handling of firms that leave OPDA membership mid-quarter — whether they
+        remain in the Directory as "Former member, last data YYYY-Qn" or drop out
+        immediately — is deferred to a future Membership ADR (ADR 0004 §"Open
+        questions" Q5; cross-listed in
+        <a href="/resource?path=docs/adr/0005-deferred-work-register.md">ADR 0005</a>
+        item F5).
+      </p>
+
+      <h3 id="member-portal">Member-firm portal (deferred tier)</h3>
+
+      <p>
+        The private detailed view for member firms + OPDA — full capability scores,
+        evidence artefacts including redacted content, audit history, change log —
+        is deferred to first member-firm request (ADR 0005 item F3). This page only
+        renders the two public tiers.
+      </p>
+
+      <h2 id="open-questions">Open questions for the WG kick-off</h2>
+
+      <p>
+        These are the questions joint <em>Compliance &amp; Risk WG</em> +
+        <em>Technical WG</em> review should settle at kick-off. Each maps to an
+        in-page WG-decision callout.
+      </p>
+
+      <ol>
+        <li><strong>Rubric wording.</strong> Confirm or rewrite the per-level rubric
+          for each of Engagement / Process / Evidence (see <a href="#rubric">§
+          Proposed rubric</a>). The 1–6 scale is set in ADR 0004; the wording is not.</li>
+        <li><strong>Capability catalogue contents.</strong> Ratify the eight sections
+          and the ~30–50 capabilities within them. Confirm or replace the
+          placeholder eighth section (see <a href="#capability-catalogue">§
+          Capability catalogue</a>).</li>
+        <li><strong>Section weighting.</strong> Confirm "simple unweighted mean" as
+          final policy, or define a weighting scheme per section (see
+          <a href="#aggregation-rule">§ Aggregation rule</a>).</li>
+        <li><strong>Composite formula.</strong> Decide whether per-capability detail
+          continues to show three numbers or collapses into one (see
+          <a href="#rubric">§ Proposed rubric — composite formula callout</a>).</li>
+        <li><strong>Dispute resolution.</strong> Define the appeal path for a
+          spot-check correction — reviewer, timeline, evidence (see
+          <a href="#spot-checks">§ Spot-checks</a>).</li>
+      </ol>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/governance/conformance-scheme">Conformance &amp; certification
+          scheme</a> — the existing accreditation regime; the Directory's Assurance
+          Level axis sits in the Conformance Scheme, the Capability axis sits here.
+          See in particular the
+          <a href="/governance/conformance-scheme#directoryIntegration">§ Directory
+          integration</a> section.</li>
+        <li><a href="/governance/data-quality">Data Quality framework</a> — Wave 2
+          workstream that contributes the DQ capability bundle.</li>
+        <li><a href="/governance/data-security">Data Security framework</a> — Wave 2
+          workstream that contributes the Security capability bundle.</li>
+        <li><a href="/governance/overlay-attachments">Overlay Attachments policy</a>
+          — Wave 2 workstream that contributes the Attachment capability bundle and
+          the evidence-handling rules referenced from <a href="#evidence-tiers">§
+          Evidence tiers</a>.</li>
+        <li><a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR
+          0004</a> — full spec this page expands.</li>
+        <li><a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR
+          0001</a> — Wave 2 commitment to maturity-based accreditation; source of the
+          worked example.</li>
+        <li><a href="/resource?path=docs/adr/0005-deferred-work-register.md">ADR
+          0005</a> — items A3 (this page's content), C1–C4 (build pipeline), F1–F5
+          (Directory open items).</li>
+        <li><a href="/resource?path=docs/recruitment/opda-listed-audit-partners.md">
+          <code>opda-listed-audit-partners.md</code></a> — candidate roster for the
+          tier-5-or-6 audit-partner list.</li>
+      </ul>
+
+      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <p>
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG + Technical WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+      </p>
+
+      <section>
+        <h3>Purpose</h3>
+        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Activities</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Deliverables</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Roles</h3>
+        <p><em>Content pending — see <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a> for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Metrics</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Maturity</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+      </section>
 </Layout>

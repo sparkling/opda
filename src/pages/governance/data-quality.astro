@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="Data quality framework"
   description="The six DQ dimensions OPDA scores PDTF claims against — accuracy, completeness, consistency, timeliness, uniqueness, validity — with measurement protocols per claim type and reporting via the Accreditation Directory."
 >
-<PageMeta category="Quality & security" variant="info" updated="Stub · Compliance & Risk WG to author · 2026-05-18" />
+<PageMeta category="Quality & security" variant="info" updated="Draft for C&R WG review · 2026-05-18" damaKa={["Data Quality Management"]} />
 
       <h1>Data quality framework</h1>
       <p class="lead">
@@ -19,7 +19,7 @@ import PageMeta from '@/components/PageMeta.astro';
       <div class="callout callout--warn">
         <div class="callout__label">Draft — content pending</div>
         <p>
-          Commissioned by <a href="https://github.com/Property-Data-Trust-Framework">ADR 0001</a> Wave 2.
+          Commissioned by <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 2.
           Owner: Compliance &amp; Risk WG (DQ dimensions map onto UK GDPR Art 5(1)(d)
           accuracy obligations). Technical WG provides schema hooks and per-overlay
           validation rules. Page scaffolding ready; section content to be authored once
@@ -27,35 +27,669 @@ import PageMeta from '@/components/PageMeta.astro';
         </p>
       </div>
 
-      <h2 id="dimensions">The six DQ dimensions</h2>
-      <p><em>Content pending C&amp;R WG.</em></p>
+      <div class="callout callout--info">
+        <div class="callout__label">Draft for Compliance &amp; Risk WG review — 2026-05-18</div>
+        <p>
+          The sections below are a substantive synthesis of <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>,
+          <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>, and the existing
+          <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">governance.md</a>.
+          They are intended as a starting point for the C&amp;R WG kick-off, not a ratified policy. Numeric thresholds,
+          cadence specifics, and per-claim-type scoring choices are flagged inline as <strong>WG decisions required</strong>
+          rather than asserted. Definitions for the six dimensions draw on DAMA-DMBOK2 conventions (named freely as a
+          source under the permissive attribution decided in <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>
+          §"Newly resolved" #2).
+        </p>
+      </div>
+
+      <h2 id="overview">1. Overview and scope</h2>
+
+      <p>
+        The Data Quality (DQ) framework gives OPDA, its member firms, and the consumers and regulators who depend on
+        PDTF claims a shared way to talk about <em>how good</em> a claim is, separate from <em>how strongly attested</em>
+        it is. The Conformance Scheme today answers a binary question ("is this firm compliant against this release?").
+        The DQ framework answers a richer one: across six standard dimensions, how does a given firm's output measure
+        up, and how confident should a downstream user be in re-using it? The framework applies to every member firm
+        that issues, holds, or verifies PDTF claims under <a href="/governance/conformance-scheme">the Conformance
+        Scheme</a>, and it produces a per-firm, per-dimension DQ profile that feeds into the
+        <a href="/governance/accreditation-directory">Accreditation Directory</a> on a quarterly cadence.
+      </p>
+
+      <p>
+        This framework is being drafted under <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>
+        Wave 2, which commits OPDA to filling the gap identified in DAMA-DMBOK2 knowledge area #11 (Data Quality
+        Management). The work is owned by the Compliance &amp; Risk Working Group per
+        <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">governance.md</a> §3.C, with
+        Technical WG providing schema hooks and per-overlay validation rules. The framework's regulatory anchor is
+        <a href="https://www.legislation.gov.uk/eur/2016/679/article/5">UK GDPR Article 5(1)(d) (accuracy)</a>, which
+        requires personal data to be "accurate and, where necessary, kept up to date" — an obligation that maps
+        directly onto two of the six dimensions below and which member firms already discharge as data controllers
+        in their own right.
+      </p>
+
+      <p>
+        Three things this framework is <strong>not</strong>: it is not a re-implementation of any single firm's
+        internal DQ regime (firms keep their own); it is not a binary pass/fail rebrand (the
+        <a href="/governance/conformance-scheme">Conformance Scheme</a> remains for the underlying compliance check);
+        and it is not a league table. The
+        <a href="/resource?path=docs/adr/0004-accreditation-directory.md">Accreditation Directory ADR</a> deliberately
+        rules out a single overall maturity number, and the DQ framework inherits that constraint: scores are
+        published per dimension, not collapsed.
+      </p>
+
+      <h2 id="dimensions">2. The six DQ dimensions</h2>
+
+      <p>
+        OPDA adopts the six standard DQ dimensions named in
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 2: <strong>accuracy,
+        completeness, consistency, timeliness, uniqueness, and validity</strong>. These are the conventional
+        dimensions discussed in DAMA-DMBOK2's knowledge area #11 and recognisable to any data office that has run a
+        DQ programme. For each dimension below, the framework gives a plain-English definition, anchors it on the
+        property-data domain via concrete PDTF overlay examples, describes the <em>shape</em> of a measurement
+        (without specifying numeric thresholds — those are WG decisions), and lists the common failure modes
+        seen in property-transaction data.
+      </p>
+
+      <h3 id="accuracy">2.1 Accuracy</h3>
+
+      <p>
+        <strong>Definition.</strong> Accuracy is the degree to which a claim correctly describes the real-world
+        state it asserts. A claim is accurate when its content matches the underlying truth — the actual title
+        owner, the actual EPC rating, the actual lease term. DAMA-DMBOK2 treats accuracy as the dimension that
+        ties data back to its referent in the world, distinct from validity (which only asks "is the value
+        well-formed?").
+      </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Accuracy on a <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json">title claim
+        (OC1)</a> means the registered proprietor, title number, and charges match HM Land Registry's current
+        position. Accuracy on an EPC claim means the rating, expiry date, and recommendations match the GOV.UK EPC
+        register. Accuracy on a <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json">TA6 form</a>
+        depends on the seller's good-faith disclosure — a different kind of "truth" but the same dimension.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Accuracy is measured by comparing the claim against an authoritative
+        external reference where one exists (HMLR, EPC register, Companies House, Local Land Charges). Where no
+        external reference exists, accuracy is measured indirectly via downstream-error rates — claims that were
+        later corrected, disputed, or contradicted by a subsequent transaction event. The shape of the measurement
+        is a ratio of agreeing fields to checked fields, weighted by field criticality.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
       <ul>
-        <li><strong>Accuracy</strong> — how closely a claim corresponds to the real-world state it describes.</li>
-        <li><strong>Completeness</strong> — what fraction of the required fields are populated and meaningful.</li>
-        <li><strong>Consistency</strong> — whether the claim agrees with related claims (within and across firms).</li>
-        <li><strong>Timeliness</strong> — how fresh the claim is relative to the underlying source of truth.</li>
-        <li><strong>Uniqueness</strong> — whether duplicate or shadow claims exist.</li>
-        <li><strong>Validity</strong> — whether the claim's structure, format, and value ranges meet the schema and overlay constraints.</li>
+        <li>Stale copies — a title claim issued against an HMLR position that has since changed.</li>
+        <li>Transcription drift — manual re-keying of EPC numbers, postcodes, lease terms introducing typos.</li>
+        <li>Authority confusion — using a derived data source as if it were primary (e.g. a third-party EPC aggregator instead of the EPC register).</li>
       </ul>
 
-      <h2 id="measurement">Per-claim-type measurement protocols</h2>
-      <p><em>Content pending C&amp;R WG.</em> Each PDTF claim type (title, EPC, lease pack, etc.) will get a measurement protocol per dimension — what's measured, how, what counts as a passing value.</p>
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          Specific accuracy thresholds per claim type, the weighting of critical vs non-critical fields, and the
+          handling of fields with no authoritative external reference are all to be set by the C&amp;R WG at
+          kick-off.
+        </p>
+      </div>
 
-      <h2 id="al-mapping">Mapping to Assurance Levels</h2>
-      <p><em>Content pending C&amp;R WG.</em> AL1–AL4 set a floor for required DQ scores; the Accreditation Directory captures actual scores above that floor.</p>
+      <h3 id="completeness">2.2 Completeness</h3>
 
-      <h2 id="reporting">Reporting via the Accreditation Directory</h2>
       <p>
-        Each member firm submits quarterly capability scores per dimension via the
-        <a href="/governance/accreditation-directory">Accreditation Directory</a>. Score
-        ranges and evidence requirements per dimension are detailed in
-        <a href="https://github.com/Property-Data-Trust-Framework">ADR 0004</a>.
+        <strong>Definition.</strong> Completeness is the degree to which a claim populates the fields that the
+        applicable schema and overlays require, with meaningful values rather than placeholders. DAMA-DMBOK2
+        distinguishes structural completeness (required fields present) from semantic completeness (fields carry
+        information, not just non-null tokens).
       </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Completeness on a <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json">BASPI
+        v5 pack</a> means every NTSELAT-required material-information field is populated for the property type in
+        question — not "Not known" for fields that have a knowable answer. Completeness on a leasehold pack means
+        the <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json">LPE1</a> and
+        <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json">TA7</a> overlays
+        carry the service-charge accounts, ground-rent terms, and management-pack documents the buyer's solicitor
+        will demand.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Completeness has a natural numeric shape: the ratio of populated required
+        fields to required field count, evaluated against the merged schema for the overlays the claim asserts
+        compliance with. The framework distinguishes "populated with a meaningful value" from "populated with a
+        not-applicable / not-known token" — the former counts, the latter does not, unless the field's schema
+        explicitly accepts the token as terminal.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
+      <ul>
+        <li>Bulk "Not known" fills used to satisfy required-field validation without supplying real information.</li>
+        <li>Optional-field neglect — fields that are technically optional but carry the material-information signal a buyer needs.</li>
+        <li>Overlay-mismatch — claim asserts compliance with an overlay (e.g. NTS2) but omits fields that overlay adds on top of NTS.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The C&amp;R WG must decide which "not applicable / not known" tokens are acceptable per overlay, and
+          whether optional-but-material fields (e.g. flood history, Japanese knotweed history) count toward the
+          completeness score or remain advisory.
+        </p>
+      </div>
+
+      <h3 id="consistency">2.3 Consistency</h3>
+
+      <p>
+        <strong>Definition.</strong> Consistency is the degree to which a claim agrees with related claims —
+        whether within the same transaction (e.g. the title proprietor named in OC1 matches the seller named in
+        TA6), across the same firm's claims over time (e.g. the same property described identically across two
+        listings), or across firms (e.g. two issuers reporting the same EPC). DAMA-DMBOK2 treats consistency as
+        a cross-cutting dimension: it can only be measured by comparing two or more claims.
+      </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Consistency on a property pack means the address,
+        UPRN, and registered owner reconcile across every overlay in the pack. Consistency across firms means
+        that when two member firms report a claim about the same property within the same window, their reports
+        agree on the facts both purported to observe. Consistency over time means the same firm's claim about the
+        same property doesn't silently change between releases without an audit trail.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Consistency is measured by sampling pairs (or groups) of claims that
+        ought to agree and computing the rate at which they do. The shape of the measurement is a pairwise
+        agreement ratio over a chosen reconciliation key (UPRN, title number, EPC number, transaction ID). For
+        within-pack consistency, the reconciliation is automatic from the schema; for cross-firm consistency, it
+        requires a published reconciliation protocol.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
+      <ul>
+        <li>Address normalisation drift — same property keyed by different normalised addresses across overlays.</li>
+        <li>Silent revisions — a claim's content changing without an audit-trail entry, so downstream users can't see what moved.</li>
+        <li>Overlay collision — two overlays in the same pack carrying conflicting values for an overlapping field.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The C&amp;R WG must define the reconciliation keys per claim type (UPRN vs title number vs transaction
+          ID), the time window over which cross-firm consistency is evaluated, and the protocol for resolving
+          conflicting claims about the same property.
+        </p>
+      </div>
+
+      <h3 id="timeliness">2.4 Timeliness</h3>
+
+      <p>
+        <strong>Definition.</strong> Timeliness is the degree to which a claim reflects the current state of the
+        world at the moment it is consumed. A claim can be perfectly accurate when issued and stale by the time
+        a verifier checks it. DAMA-DMBOK2 distinguishes "currency" (how recently issued) from "timeliness as
+        consumed" (how recently relative to the consumer's need) — OPDA conflates these into a single dimension
+        because PDTF claims carry issuance dates explicitly.
+      </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Timeliness on an EPC claim means the certificate is
+        within its statutory validity window (typically ten years from issue). Timeliness on a title claim means
+        the OC1 snapshot postdates any known charge or transfer event. Timeliness on a search result (CON29R,
+        LLC1, CON29DW) means the search was issued within the conveyancing-industry-accepted "fresh" window —
+        usually three to six months, though this is a moving target.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Timeliness is measured as the time elapsed between the claim's
+        issuance and either (a) its consumption, or (b) a fixed reference moment such as the quarterly Directory
+        publish. The shape of the measurement is a freshness window in days, compared to a per-claim-type policy.
+        Claims that exceed the policy window are not "wrong" — they are flagged stale and excluded from the
+        currency calculation.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
+      <ul>
+        <li>Cached re-issuance — a firm re-issues a claim with a new VC date but stale underlying content.</li>
+        <li>Missing observation timestamp — a claim carries an issuance date but no source-observation date, so consumers can't compute true freshness.</li>
+        <li>Statutory expiry creep — EPCs and certain searches have hard validity windows that consumers may overlook.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The C&amp;R WG must set the per-claim-type freshness windows (in days), define what counts as a
+          "re-observation" event that resets the timeliness clock, and decide how to treat statutory-validity
+          expiry (e.g. an EPC certificate at year 9 is "fresh" but a verifier may still want a warning).
+        </p>
+      </div>
+
+      <h3 id="uniqueness">2.5 Uniqueness</h3>
+
+      <p>
+        <strong>Definition.</strong> Uniqueness is the degree to which a claim is the sole authoritative
+        statement about its subject within scope. DAMA-DMBOK2 treats uniqueness as the absence of duplicates,
+        near-duplicates, and shadow records that should have been consolidated. For PDTF, the scope is usually
+        the (firm, property, claim-type) triple.
+      </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Uniqueness on a firm's listing data means there is one
+        canonical claim per property per claim type, not three nearly-identical OC1 issuances or duplicate BASPI
+        packs created by separate teams. Across firms, uniqueness is not enforced — multiple firms legitimately
+        observe the same property — but within a firm, duplicates degrade trust and complicate reconciliation.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Uniqueness is measured as one minus the duplicate ratio: the count of
+        non-duplicate claims divided by the total claim count, over a sampling window. Duplicates are detected
+        via a reconciliation key per claim type (typically UPRN + claim-type, narrowed by transaction context
+        where applicable). The shape of the measurement is therefore a deduplication ratio, with the duplicate
+        definition itself encoded per claim type.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
+      <ul>
+        <li>Shadow records — a property held in two systems within the same firm with no canonical link.</li>
+        <li>Re-issuance loops — a firm reissues a claim for technical reasons (key rotation, schema migration) without retiring the prior issuance.</li>
+        <li>Identifier ambiguity — the same property keyed by both UPRN and address with no resolution.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The C&amp;R WG must decide the reconciliation key per claim type, the treatment of legitimately
+          re-issued claims (e.g. key rotation should not count as a duplicate), and the time window for
+          duplicate detection.
+        </p>
+      </div>
+
+      <h3 id="validity">2.6 Validity</h3>
+
+      <p>
+        <strong>Definition.</strong> Validity is the degree to which a claim conforms to the syntactic and
+        semantic rules of its schema and overlays. A valid claim parses, passes JSON Schema validation against
+        the merged base + overlay schema, and respects any SHACL or business-rule constraints layered on top.
+        DAMA-DMBOK2 calls this dimension out as the "structural correctness" check that is necessary but not
+        sufficient for accuracy.
+      </p>
+
+      <p>
+        <strong>What it means for property data.</strong> Validity on any PDTF claim means it validates against
+        the base <code>pdtf-transaction.json</code> schema and every overlay it asserts compliance with — for
+        example, an NTS2 + TA6 claim must pass merged-schema validation including discriminator branches for
+        yes/no fields, required-when-yes details, and enum constraints on tenure types. Validity is the
+        dimension Technical WG owns most directly via the schema hooks called out in
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>.
+      </p>
+
+      <p>
+        <strong>How to measure.</strong> Validity is measured by running the official PDTF validator (per
+        <a href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/README.md">the overlays
+        README</a>) against a sample of the firm's claims. The shape of the measurement is the fraction of
+        claims that pass validation cleanly versus those that pass with warnings or fail. The validator's
+        decisions are deterministic and reproducible, which makes validity the most automatable of the six
+        dimensions.
+      </p>
+
+      <p>
+        <strong>Common failure modes.</strong>
+      </p>
+      <ul>
+        <li>Schema-version drift — claims issued against an older overlay version still circulating after a migration window has closed.</li>
+        <li>Discriminator-branch errors — yes/no fields where "yes" is asserted but the required follow-on details are missing.</li>
+        <li>Enum violations — free-text values supplied where an enum is required (most often in tenure, EPC rating, planning categories).</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The C&amp;R WG (with Technical WG) must set the validity floor per Assurance Level, decide whether
+          warnings are deductive or informational, and establish the migration-window policy for overlay version
+          changes.
+        </p>
+      </div>
+
+      <h2 id="measurement">3. Per-claim-type measurement framework</h2>
+
+      <p>
+        The six dimensions are framework-level; the actual measurement happens per claim type. A title claim
+        (OC1) and a TA10 fittings-and-contents form have very different "right answers" for accuracy,
+        completeness, and timeliness — and the evidence supporting a measurement differs too. The framework
+        therefore requires each claim type to define its own measurement protocol, derived from the six
+        dimensions but parameterised for the claim's subject matter, authoritative sources, and statutory
+        constraints.
+      </p>
+
+      <h3 id="protocol-shape">3.1 Proposed protocol shape</h3>
+
+      <p>
+        Each per-claim-type protocol must specify, at minimum:
+      </p>
+      <ul>
+        <li><strong>Which dimensions apply</strong> — most claims will use all six, but some are dominated by a subset (e.g. a CON29R search is mostly timeliness + validity; uniqueness is rarely a meaningful concern).</li>
+        <li><strong>Sampled fields per dimension</strong> — not every required field contributes equally; the protocol names the critical fields whose state drives the score.</li>
+        <li><strong>Authoritative reference</strong> — for accuracy, the named external source (HMLR, EPC register, Companies House, Local Land Charges, etc.) against which agreement is checked.</li>
+        <li><strong>Reconciliation key</strong> — for consistency and uniqueness, the field combination used to identify "the same claim" across instances.</li>
+        <li><strong>Freshness window</strong> — for timeliness, the days-from-observation policy.</li>
+        <li><strong>Evidence supporting the measurement</strong> — the artefact a firm must retain (audit log, sample export, validator output) to back the score in a spot-check.</li>
+        <li><strong>Sampling cadence and sample size</strong> — how often the protocol is run, against what fraction of the firm's claim population.</li>
+      </ul>
+
+      <p>
+        Protocols are version-controlled alongside the claim-type schemas, so a change to a protocol is a
+        documented event with a release tag. Member firms whose tooling automates DQ measurement can pin to a
+        protocol version the way they pin to a schema version today.
+      </p>
+
+      <h3 id="per-overlay-relevance">3.2 PDTF v3 overlays — initial dimension relevance map</h3>
+
+      <p>
+        The table below lists the v3 overlays present in the schemas repository (per <code>source/03-standards/schemas/src/schemas/v3/overlays/</code>)
+        with a draft note on which dimensions are most relevant to each. The relevance judgements are first-pass
+        and to be confirmed by C&amp;R WG with Technical WG input.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The relevance notes below are an initial synthesis based on each overlay's nature, not a ratified
+          mapping. The C&amp;R WG should review per overlay family at kick-off and adjust before any per-firm
+          scoring goes live. Specific numeric thresholds per claim type are deferred to the per-protocol
+          drafting phase.
+        </p>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Overlay family</th>
+            <th>Overlay files</th>
+            <th>Most relevant dimensions (draft)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BASPI (Buyers &amp; Sellers Property Information)</td>
+            <td><code>baspi4.json</code>, <code>baspi5.json</code></td>
+            <td>Completeness, accuracy, consistency, validity</td>
+          </tr>
+          <tr>
+            <td>NTS (National Trading Standards — sales)</td>
+            <td><code>nts.json</code>, <code>nts2.json</code></td>
+            <td>Completeness (material information), accuracy, validity, timeliness</td>
+          </tr>
+          <tr>
+            <td>NTS Leasehold</td>
+            <td><code>ntsl.json</code>, <code>ntsl2.json</code></td>
+            <td>Completeness, accuracy, consistency (against lease pack), validity</td>
+          </tr>
+          <tr>
+            <td>Law Society TA forms</td>
+            <td><code>ta6.json</code>, <code>ta7.json</code>, <code>ta10.json</code></td>
+            <td>Completeness, accuracy, consistency (with title and pack), validity</td>
+          </tr>
+          <tr>
+            <td>Property Information Questionnaire</td>
+            <td><code>piq.json</code></td>
+            <td>Completeness, accuracy, consistency</td>
+          </tr>
+          <tr>
+            <td>Local-authority and statutory searches</td>
+            <td><code>con29R.json</code>, <code>con29DW.json</code>, <code>llc1.json</code></td>
+            <td>Timeliness (statutory windows), accuracy (vs primary register), validity</td>
+          </tr>
+          <tr>
+            <td>HMLR Official Copies of the Register</td>
+            <td><code>oc1.json</code></td>
+            <td>Accuracy (vs the live HMLR register), timeliness ("as at" date), validity (correct extract format), uniqueness (single title per property)</td>
+          </tr>
+          <tr>
+            <td>Leasehold and freehold enquiries</td>
+            <td><code>lpe1.json</code>, <code>fme1.json</code></td>
+            <td>Completeness, consistency (with lease/freehold pack), timeliness</td>
+          </tr>
+          <tr>
+            <td>Surveys and specialist reports</td>
+            <td><code>rds.json</code>, <code>sr24.json</code></td>
+            <td>Completeness, accuracy, validity</td>
+          </tr>
+          <tr>
+            <td>NTS2 specialist-issue extensions</td>
+            <td><code>extensions/*.json</code> (asbestos, dry rot, Japanese knotweed, subsidence, health &amp; safety, flood, etc.)</td>
+            <td>Completeness (when invoked), accuracy, consistency with primary form</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The point of the table is not to lock dimensions per overlay but to make the relevance call explicit so
+        C&amp;R WG can argue with it. Some overlays will turn out to merit dimensions not listed here at first
+        pass; some listed dimensions may be downgraded in practice.
+      </p>
+
+      <h2 id="al-mapping">4. Assurance Level × DQ relationship</h2>
+
+      <p>
+        OPDA's existing <strong>Assurance Levels (AL1–AL4)</strong> describe how strongly a claim is attested — they
+        are a property of the claim itself, set by the issuer's accreditation and the source the claim is drawn
+        from. Per <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">governance.md</a>
+        §5 and <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 2:
+      </p>
+      <ul>
+        <li><strong>AL1</strong> — self-asserted data (low trust, no issuer accreditation).</li>
+        <li><strong>AL2</strong> — issued by an accredited property professional (medium trust).</li>
+        <li><strong>AL3</strong> — issued by an accredited issuer with extra controls, or by a trusted proxy on behalf of an official primary authority (medium trust, additional assurance).</li>
+        <li><strong>AL4</strong> — issued by the official primary authority (high trust, legal validity).</li>
+      </ul>
+
+      <p>
+        The DQ framework is orthogonal: the six dimensions describe how good a claim is at the level it's
+        attested at. A high-AL claim with poor DQ is still a real problem (a primary authority emitting stale
+        title data); a low-AL claim with strong DQ is genuinely useful information (a self-asserted PIQ
+        completed thoroughly and consistently).
+      </p>
+
+      <p>
+        The proposed integration is that each Assurance Level sets a <strong>floor</strong> for the DQ score per
+        dimension. To claim AL3 or AL4 on a given claim type, the issuer's measured DQ profile for that claim
+        type must meet or exceed the floor. The Accreditation Directory then publishes the actual scores above
+        the floor — so a member firm can be AL3 with a strong accuracy score and a weak timeliness score, and
+        the Directory shows both signals.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The specific floor values per AL per dimension per claim type are to be ratified by C&amp;R WG. The
+          framework's expectation is that AL4 floors are demanding (the primary authority should have nothing
+          to fear from a high bar), AL3 floors are firm-meaningful (passing requires real DQ work), AL2 floors
+          are entry-level, and AL1 has no DQ floor by construction (self-asserted carries its own caveats).
+          The exact numbers and the relationship between them are the WG's call.
+        </p>
+      </div>
+
+      <p>
+        A worked sketch (illustrative, not policy): suppose the accuracy dimension is measured on a 0–6 scale.
+        AL1 has no floor. AL2 floors at 2. AL3 floors at 4. AL4 floors at 5. A firm with AL3 accreditation on
+        title claims whose measured accuracy comes out at 4.7 publishes "AL3, accuracy 4.7" in the Directory —
+        the floor is met, and the score is exposed. A firm whose accuracy drops to 3.8 either loses AL3 on that
+        claim type, or is given a remediation window, or its AL3 claims are flagged. The remediation pathway
+        itself is a WG decision (see §7).
+      </p>
+
+      <h2 id="reporting">5. Reporting integration with the Accreditation Directory</h2>
+
+      <p>
+        Per <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>, the
+        <a href="/governance/accreditation-directory">Accreditation Directory</a> is the publication surface for
+        member firms' DQ profiles. The integration shape:
+      </p>
+
+      <ul>
+        <li><strong>Cadence.</strong> Quarterly publish, per ADR 0004 §4. Firms self-attest their DQ scores by the 15th of the quarter-end month; OPDA refreshes the Directory by the 1st of the following quarter.</li>
+        <li><strong>Capability bundle.</strong> DQ contributes a bundle of six capabilities (one per dimension) to the Directory's schema, per ADR 0004's "Resolving the parallel-execution cross-dependency" section. Each dimension is scored on the standard Engagement / Process / Evidence axes at 1–6, with evidence requirements that escalate per ADR 0004 §6.</li>
+        <li><strong>Per-firm rollup.</strong> The public Directory shows per-firm section averages including a "Data Quality" section; the drill-down view shows per-dimension scores and links to the supporting VC.</li>
+        <li><strong>What's public.</strong> Per ADR 0004 §3, public viewers see firm-level scores; the member-firm portal (deferred tier) carries the per-claim-type detail.</li>
+        <li><strong>Stale flag.</strong> Per ADR 0004 §4, firms missing two quarterly submissions are flagged stale until they refresh.</li>
+      </ul>
+
+      <p>
+        Because DQ is scored per-firm but produced by measuring per-claim-type, an intermediate aggregation step
+        is needed: per-claim-type scores roll up to per-dimension firm scores by averaging across the claim types
+        the firm asserts compliance with. The roll-up algorithm itself is a WG decision (simple unweighted mean,
+        volume-weighted, or claim-type-criticality-weighted are all defensible).
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          Scoring frequency for high-volume claim types is to be set by the C&amp;R WG. Quarterly is the
+          Directory's default per ADR 0004, but a firm issuing millions of OC1 claims per quarter may need a
+          more granular cadence to make the score meaningful — or a sampling protocol that produces a robust
+          quarterly score from a continuous stream. The WG should also decide how mid-quarter material changes
+          (a firm onboards a major new data source, or retires an old one) propagate into the next publish.
+        </p>
+      </div>
+
+      <h2 id="governance">6. Governance, roles, and review</h2>
+
+      <p>
+        The DQ framework's ownership and review machinery follows the existing OPDA operational structure in
+        <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">governance.md</a> §3:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Compliance &amp; Risk WG</strong> owns the framework end to end (per
+          <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> §"Resolved during review" #3).
+          That includes the dimension definitions, the per-claim-type protocols, the AL × DQ floors, the
+          remediation pathway, and the change-management process for the framework itself. C&amp;R already owns
+          UK GDPR Art 5(1)(d) compliance per governance.md §3.C, so DQ ownership sits inside an existing remit
+          rather than creating a new one.
+        </li>
+        <li>
+          <strong>Technical WG</strong> provides schema hooks and per-overlay validation rules — the validity
+          dimension is mostly mechanised through their work, and the consistency/completeness dimensions rely on
+          schema-level decisions about required fields and discriminators. Technical WG also commits to making
+          the official PDTF validator available as a reference implementation member firms can run against their
+          own data.
+        </li>
+        <li>
+          <strong>Domain Data Stewards</strong> (per <a href="/governance/data-stewardship">data-stewardship</a>)
+          are responsible for context-specific quality within each bounded context — flagging when a claim type's
+          measurement protocol misfires for their domain, surfacing common failure modes, and proposing protocol
+          revisions.
+        </li>
+        <li>
+          <strong>Member firms</strong> self-attest their DQ scores per quarter and retain the evidence artefacts
+          a spot-check would request (per ADR 0004 §6).
+        </li>
+      </ul>
+
+      <p>
+        <strong>Review cadence.</strong> The framework itself is reviewed annually by C&amp;R WG, with
+        interim revisions handled via the standard
+        <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">governance.md</a> §6
+        change-management SOP. Per-claim-type protocols can be revised more frequently as overlays evolve;
+        a protocol revision is a versioned event with backwards-compatibility considered explicitly.
+      </p>
+
+      <p>
+        <strong>Dispute escalation.</strong> If a member firm disputes a spot-check finding, or two firms
+        disagree about a cross-firm consistency measurement, the dispute escalates through the
+        <a href="/governance/conformance-scheme">Conformance Scheme</a>'s existing dispute pathway. C&amp;R WG
+        adjudicates; unresolved cases escalate to the Executive Committee per governance.md §3.A.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision required</div>
+        <p>
+          The remediation pathway when a firm's measured DQ drops below an AL floor (grace period, public flag,
+          AL downgrade, or some combination) is to be ratified by C&amp;R WG. Likewise the criteria for
+          escalating a dispute past WG adjudication to the EC.
+        </p>
+      </div>
+
+      <h2 id="open-questions">7. Open questions for C&amp;R WG kick-off</h2>
+
+      <p>
+        These are the substantive choices the framework cannot make on the WG's behalf. They are listed as
+        questions rather than asserted positions so the WG kick-off has explicit decision points to walk
+        through.
+      </p>
+
+      <ol>
+        <li>
+          <strong>What numeric scales does the framework use per dimension?</strong> ADR 0004 specifies a 1–6
+          Engagement / Process / Evidence scale for capabilities in the Directory; do the DQ dimension scores
+          themselves use the same 1–6 scale, or a 0–100 percentage scale that maps into 1–6 for Directory
+          publication?
+        </li>
+        <li>
+          <strong>What are the AL floors per dimension per claim type?</strong> The framework proposes that AL
+          sets a floor for DQ; the WG must fill in the matrix. Where the matrix is sparse (e.g. uniqueness on
+          single-instance claims), can a floor of "not applicable" be set without breaking the AL × DQ
+          relationship?
+        </li>
+        <li>
+          <strong>What is the remediation pathway for a firm that drops below an AL floor mid-quarter?</strong>
+          A grace period, a published warning flag, an AL downgrade for new claims while existing claims keep
+          their AL until expiry — all of these are defensible. The WG should pick one and document the
+          rationale.
+        </li>
+        <li>
+          <strong>How are roll-ups computed?</strong> Per-claim-type to per-dimension firm scores; per-dimension
+          firm scores to the section average shown publicly in the Directory. Simple unweighted mean,
+          volume-weighted, criticality-weighted, or median?
+        </li>
+        <li>
+          <strong>What is the sampling protocol for high-volume claim types?</strong> Quarterly is too coarse for
+          firms issuing claims at industrial scale. The WG should decide whether high-volume firms publish a
+          continuous-sampling-derived quarterly score, a rolling window, or a separate cadence entirely.
+        </li>
+      </ol>
 
       <h2 id="related">Related</h2>
       <ul>
         <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the binary compliance regime this framework extends.</li>
         <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — where DQ scores are reported.</li>
-        <li><a href="/governance/data-security">Data security framework</a> — sibling workstream covering KYC/KYB, DID key management, signature verification, revocation, audit logging.</li>
+        <li><a href="/governance/data-security">Data security framework</a> — sibling Wave 2 workstream owned by the same WG.</li>
+        <li><a href="/governance/overlay-attachments">Overlay attachments policy</a> — attachment quality is a DQ concern.</li>
+        <li><a href="/governance/data-stewardship">Data stewardship</a> — Domain Data Stewards' role in context-specific quality.</li>
       </ul>
+
+      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <p>
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+      </p>
+
+      <section>
+        <h3>Purpose</h3>
+        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Activities</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Deliverables</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Roles</h3>
+        <p><em>Content pending — see <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Metrics</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Maturity</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
 </Layout>

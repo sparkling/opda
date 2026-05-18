@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="Data security framework"
   description="OPDA's published security controls for PDTF participants — issuer onboarding KYC/KYB, DID key management, signature verification, revocation handling, and audit logging — anchored on the Code of Conduct and compliance checklist."
 >
-<PageMeta category="Quality & security" variant="info" updated="Stub · Compliance & Risk WG to author · 2026-05-18" />
+<PageMeta category="Quality & security" variant="info" updated="Draft for C&R WG review · 2026-05-18" damaKa={["Data Security"]} />
 
       <h1>Data security framework</h1>
       <p class="lead">
@@ -26,38 +26,1256 @@ import PageMeta from '@/components/PageMeta.astro';
         </p>
       </div>
 
-      <h2 id="controls">Security controls in scope</h2>
-      <p><em>Content pending C&amp;R WG.</em></p>
-      <ul>
-        <li><strong>Issuer onboarding (KYC/KYB)</strong> — what evidence OPDA requires before adding a DID to the Trust Registry.</li>
-        <li><strong>DID key management</strong> — key generation, rotation, backup, and revocation requirements per issuer.</li>
-        <li><strong>Signature verification</strong> — verifier responsibilities when receiving PDTF claims; failure modes and recovery.</li>
-        <li><strong>Revocation handling</strong> — Status List 2021 update cadence, propagation guarantees, consumer-side cache invalidation.</li>
-        <li><strong>Audit logging</strong> — what each participant logs, retention, and disclosure obligations.</li>
-      </ul>
+      <div class="callout callout--key">
+        <div class="callout__label">Draft for C&amp;R WG review — 2026-05-18</div>
+        <p>
+          This page is a synthesis of existing PDTF documentation produced ahead of
+          C&amp;R WG kick-off. It is <strong>not adopted policy</strong>. Every
+          numeric threshold, cadence, and specific operational choice is flagged
+          inline as a <em>WG decision</em> callout. The WG ratifies, replaces, or
+          refines each.
+        </p>
+      </div>
 
-      <h2 id="policy-checklist-audit">Policy + checklist + audit profile</h2>
-      <p><em>Content pending C&amp;R WG.</em> Each control gets all three: a policy statement (what the rule is), a checklist (how a firm self-assesses), and an audit profile (what an independent auditor verifies).</p>
+      <h2 id="overview">1. Overview &amp; scope</h2>
 
-      <h2 id="anchors">Anchor documents</h2>
-      <ul>
-        <li><a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a></li>
-        <li><a class="resource-link" href="/resource?path=source/01-organisation/constitution-and-policies/Code+of+Conduct+2026.pdf"><code>Code of Conduct 2026.pdf</code></a></li>
-      </ul>
-
-      <h2 id="reporting">Reporting via the Accreditation Directory</h2>
       <p>
-        Each member firm submits quarterly capability scores per control via the
-        <a href="/governance/accreditation-directory">Accreditation Directory</a>.
-        Evidence requirements per score level follow the three-tier model in
-        ADR 0004 (self-asserted at 1–2, artefact-linked at 3–4, independently
-        audited at 5–6).
+        OPDA's published trust framework — the
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md"><code>PDTF 2 Specification</code></a>
+        and its
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a>
+        — already implies a comprehensive security posture. Issuer onboarding
+        requires KYC/KYB; participants control DIDs whose key material must be
+        managed; verifiers validate cryptographic proofs on Verifiable Credentials;
+        revocation runs through a status list; and operational governance carries an
+        accountability principle that presupposes audit trails. None of these is
+        currently published as a <em>named</em> workstream with a policy, a
+        checklist, and an audit profile.
       </p>
+
+      <p>
+        This framework formalises five controls as that named workstream, on the
+        commission given in
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>
+        §"Wave 2 — Data Security framework". The controls themselves are not new;
+        the discipline of publishing them with audit-grade artefacts is.
+      </p>
+
+      <h3 id="scope-purpose">Purpose</h3>
+
+      <ul>
+        <li>
+          <strong>Formalise the implicit.</strong> The PDTF Spec, the governance
+          document, and the
+          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+          name many of these controls in passing. This page consolidates them under
+          one named framework so that members, regulators, and auditors can find
+          them in one place.
+        </li>
+        <li>
+          <strong>Fill DMBOK KA #5.</strong> ADR 0001 flags Data Security as a
+          weakness — present at the crypto layer (VC signatures, did:web) but
+          without a policy framework around it. This page is the framework.
+        </li>
+        <li>
+          <strong>Anchor the Accreditation Directory.</strong> Per
+          <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>,
+          firms self-score on capability axes. Data Security is one of those
+          capabilities; the five controls below are how a firm proves it.
+        </li>
+      </ul>
+
+      <h3 id="scope-regulatory">Regulatory anchor</h3>
+
+      <p>
+        UK GDPR Article 32 ("Security of processing") is the statutory floor for
+        every PDTF participant. Article 32(1) requires controllers and processors
+        to implement "appropriate technical and organisational measures to ensure
+        a level of security appropriate to the risk", and explicitly names
+        encryption, integrity, availability, and regular testing of the
+        effectiveness of those measures. The five controls in this framework
+        operationalise Article 32 for the specific shape of the PDTF ecosystem.
+      </p>
+
+      <p>
+        Article 33 ("Notification of a personal data breach to the supervisory
+        authority") sets the 72-hour ICO notification window referenced in
+        §5 Incident response. Article 5(1)(f) ("integrity and confidentiality")
+        underpins the cryptographic primitives that controls 2 and 3 rely on.
+        The
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+        names UK GDPR compliance, ICO 72-hour breach notification, and ISO 27001
+        (or equivalent) as baseline requirements; this framework lifts those
+        out of the checklist and gives them per-control structure.
+      </p>
+
+      <h3 id="scope-controls">The five controls</h3>
+
+      <p>
+        The scope of this framework is the five controls listed in §2.
+        <em>Out of scope:</em> sector-specific compliance regimes a member firm
+        is independently subject to (SRA Code of Conduct, RICS Rules, FCA Handbook,
+        ICO codes of practice), commercial cyber-insurance products, and the
+        operational security of the OPDA Knowledge Base itself (a separate
+        governance question covered indirectly under ADR 0001 Wave 3).
+      </p>
+
+      <h2 id="controls">2. The five controls</h2>
+
+      <p>
+        The order matches the existing stub on this page and the order in
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a>
+        §2.A "Onboarding Policies" and §"Technical Layer". Each control has the
+        same five-part structure: scope, technical anchor, required artefacts,
+        audit profile, common failure modes.
+      </p>
+
+      <h3 id="control-1">2.1 Issuer onboarding KYC/KYB</h3>
+
+      <p>
+        <em>Brief, because this control is covered in depth on
+        <a href="/governance/conformance-scheme">Conformance scheme</a>.</em>
+      </p>
+
+      <h4>Scope</h4>
+
+      <p>
+        Verifying the legal identity of a candidate Accredited Issuer before its
+        DID is added to the Trust Registry. Per
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a>
+        §2.A: "Verified organizations (e.g., land registries, surveyors) allowed
+        to issue property VCs. Must pass onboarding and legal agreements."
+        Onboarding is itself enumerated in the same section as "KYC/KYB
+        verification of the entity; Signed legal agreement; DID registration in
+        Trust Registry."
+      </p>
+
+      <p>
+        <strong>Out of scope here:</strong> the eligibility criteria, scoring
+        rubric, and 80% pass mark — those live on
+        <a href="/governance/conformance-scheme">Conformance scheme</a> Tier A.
+        This control covers the <em>security</em> properties of the onboarding
+        artefacts (identity evidence, signed agreement, key publication).
+      </p>
+
+      <h4>Technical anchor</h4>
+
+      <p>
+        The Accreditation Policy and the Non-Compliant Member Policy are the
+        primary anchors. ISO 27001 (or industry equivalent) is named as the
+        security baseline in clause 10 of the Accreditation Policy and clause 7
+        of the Accreditation Scheme — see
+        <a href="/governance/conformance-scheme#tierAStandards">Conformance scheme
+        — standards and conduct expectations</a>.
+      </p>
+
+      <h4>Required artefacts</h4>
+
+      <ul>
+        <li>
+          <strong>Entity identity evidence pack</strong> — Companies House (or
+          equivalent) record, beneficial-ownership disclosure, registered office
+          confirmation, regulator-issued IDs where applicable (SRA, RICS, FCA).
+        </li>
+        <li>
+          <strong>Signed Trust Framework participation agreement</strong> — per
+          governance.md §2.C "Terms of Use: GA → Issuers".
+        </li>
+        <li>
+          <strong>ISO 27001 certificate or equivalent evidence</strong> — per
+          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+          §"Information Security".
+        </li>
+        <li>
+          <strong>Initial DID publication record</strong> — proof that the issuer
+          controls the DID being added to the Trust Registry (signed challenge
+          response, demonstrated via the mechanism in §2.3).
+        </li>
+      </ul>
+
+      <h4>Audit profile</h4>
+
+      <p>
+        The Tier A independent review panel (three reviewers, 80% pass mark — see
+        <a href="/governance/conformance-scheme#tierAReview">Conformance scheme
+        review panel</a>) is the existing audit. Annual self-reassessment, plus
+        random audits per clause 7 of the Accreditation Policy. No additional
+        audit cadence is created by this framework for control 1.
+      </p>
+
+      <h4>Common failure modes</h4>
+
+      <ul>
+        <li>
+          <strong>Stale identity evidence.</strong> KYC/KYB packs age out;
+          beneficial ownership changes; the entity restructures. Annual
+          re-attestation is the existing mitigation; auditors should sample.
+        </li>
+        <li>
+          <strong>Mis-attribution of DID control.</strong> A candidate issuer
+          presents a DID it does not in fact control. Mitigated by a live
+          challenge-response at onboarding (per
+          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ PDTF Participant DID Auth OAuth 2 Specification.md"><code>Draft_ PDTF Participant DID Auth OAuth 2 Specification.md</code></a>
+          §4).
+        </li>
+        <li>
+          <strong>ISO 27001 scope mismatch.</strong> A certificate exists but
+          excludes the systems that handle PDTF claims. Auditors should check
+          the Statement of Applicability scope, not just the certificate.
+        </li>
+      </ul>
+
+      <h3 id="control-2">2.2 DID key management</h3>
+
+      <h4>Scope</h4>
+
+      <p>
+        The full key lifecycle for each issuer's signing keys: generation,
+        publication via the DID document, rotation, retirement, and recovery.
+        Applies to all DIDs registered in the Trust Registry, and to any DIDs
+        used by trusted proxies (per
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md"><code>PDTF 2 Specification</code></a>
+        §"Trust Model": "trusted proxies that can be relied on to connect to
+        non-compliant sources of data and accurately issue them as VCs into the
+        ecosystem").
+      </p>
+
+      <p>
+        <strong>Out of scope:</strong> participant DIDs generated by PDTF-compliant
+        platforms for end users (Sellers, Buyers, Conveyancers acting in a
+        transaction). Those keys are managed by the participant's platform under
+        its own policies; this framework covers issuer keys, not platform-managed
+        participant keys.
+      </p>
+
+      <h4>Technical anchor</h4>
+
+      <p>
+        The PDTF Spec specifies <strong>did:key</strong> for simple participant
+        DIDs and <strong>did:web</strong> for "more flexible participant DIDs or
+        for transactions, which need to describe service endpoints" (PDTF 2 Spec
+        §"Core Technologies — Decentralized Identifiers"). Implementers must
+        support universal DID resolution to handle other methods (same section).
+        Issuer DIDs in the Trust Registry are normatively did:web — they need to
+        publish key material via an HTTPS endpoint that the framework
+        repository can reference.
+      </p>
+
+      <p>
+        The
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ PDTF Participant DID Auth OAuth 2 Specification.md"><code>Draft_ PDTF Participant DID Auth OAuth 2 Specification.md</code></a>
+        defines the challenge-response flow that exercises issuer keys at
+        authentication time (§4 "Protocol Flow"). The example signature suite
+        named in §4 step 3 is <code>Ed25519Signature2020</code>; the PDTF 2 Spec
+        references the W3C Data Integrity model more broadly (PDTF 2 Spec §"PDTF
+        Verifiable Credentials" — "A proof property that represents an embedded
+        proof (digital signature) in accordance with the VC Data Integrity spec,
+        of type DataIntegrityProof and proofPurpose of assertionMethod").
+      </p>
+
+      <p>
+        Underlying standards: W3C
+        <a href="https://www.w3.org/TR/did-1.0/" target="_blank" rel="noopener">Decentralized Identifiers v1.0</a>;
+        the
+        <a href="https://w3c-ccg.github.io/did-method-web/" target="_blank" rel="noopener">did:web method specification</a>;
+        W3C
+        <a href="https://www.w3.org/TR/vc-data-integrity/" target="_blank" rel="noopener">Verifiable Credential Data Integrity v1.0</a>.
+      </p>
+
+      <h4>Required artefacts</h4>
+
+      <ul>
+        <li>
+          <strong>Key generation record.</strong> Date, environment (HSM, secure
+          enclave, software), algorithm and key size, the public key fingerprint
+          that ends up in the DID document.
+        </li>
+        <li>
+          <strong>Published DID document</strong> at the issuer's
+          <code>.well-known/did.json</code> endpoint, listing every active
+          verification method. Must be served over HTTPS with a valid TLS
+          certificate (did:web inherits its trust from web PKI).
+        </li>
+        <li>
+          <strong>Key rotation log.</strong> Each rotation event recorded with
+          the prior key fingerprint, the new key fingerprint, the date, and the
+          rotation reason (scheduled, suspected compromise, personnel change,
+          algorithm migration).
+        </li>
+        <li>
+          <strong>Key custody policy.</strong> Who holds the private key
+          material, under what access controls, with what break-glass procedure.
+        </li>
+        <li>
+          <strong>Retirement procedure.</strong> How a retired key is marked in
+          the DID document (verification method removed; revoked status carried
+          in any VCs still signed by it).
+        </li>
+      </ul>
+
+      <h4>Audit profile</h4>
+
+      <ul>
+        <li>
+          <strong>Live DID-document resolution.</strong> Auditor resolves the
+          issuer's did:web from the published Trust Registry entry and confirms
+          the verification methods match the issuer's declared key inventory.
+        </li>
+        <li>
+          <strong>Rotation-log walkthrough.</strong> For each rotation in the
+          audit period, evidence that the published DID document was updated
+          and that VCs issued under the prior key remain verifiable (or are
+          revoked).
+        </li>
+        <li>
+          <strong>Custody-control sampling.</strong> Confirm private-key access
+          is limited to the named role holders in the key custody policy, and
+          that the access log is preserved.
+        </li>
+        <li>
+          <strong>HSM / secure-enclave attestation</strong> where the policy
+          requires hardware-backed key storage.
+        </li>
+      </ul>
+
+      <div class="callout callout--note">
+        <div class="callout__label">WG decision — key rotation cadence</div>
+        <p>
+          The PDTF spec does not mandate a rotation interval. The C&amp;R WG
+          should ratify a default (industry norms range from 12 to 24 months
+          for production signing keys; emergency rotation on suspected
+          compromise is universal). Recommend: default rotation cadence,
+          documented exceptions for HSM-stored keys, mandatory rotation on
+          personnel-change events affecting key custodians.
+        </p>
+      </div>
+
+      <h4>Common failure modes</h4>
+
+      <ul>
+        <li>
+          <strong>Private key checked into source control.</strong> The classic
+          incident. did:web makes this particularly visible because the public
+          counterpart sits at a well-known path; commit history exposure is
+          immediate.
+        </li>
+        <li>
+          <strong>DID document and key inventory drift.</strong> Internal
+          rotation happens without updating the published DID document; or the
+          DID document lists keys that have been retired internally. Verifiers
+          then accept stale signatures.
+        </li>
+        <li>
+          <strong>TLS misconfiguration on the did:web endpoint.</strong>
+          Expired certificate, mismatched hostname, weak cipher suite. did:web
+          trust is entirely PKI-derived; the security of the DID document is
+          the security of the TLS connection that serves it.
+        </li>
+      </ul>
+
+      <h3 id="control-3">2.3 Signature verification</h3>
+
+      <h4>Scope</h4>
+
+      <p>
+        The Verifier's responsibility when accepting a PDTF Verifiable Credential:
+        validating the embedded cryptographic proof, resolving the issuer DID,
+        confirming the issuer is in the Trust Registry with active status, and
+        checking that the claim has not been revoked (covered in detail under
+        §2.4). This control defines what counts as "verified" for the purposes
+        of the framework.
+      </p>
+
+      <h4>Technical anchor</h4>
+
+      <p>
+        Per
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md"><code>PDTF 2 Specification</code></a>
+        §"PDTF Verifiable Credentials":
+      </p>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        A proof property that represents an embedded proof (digital signature)
+        in accordance with the VC Data Integrity spec, of type DataIntegrityProof
+        and proofPurpose of assertionMethod.
+      </blockquote>
+
+      <p>
+        The PDTF Spec lists W3C
+        <a href="https://www.w3.org/TR/vc-data-model-2.0/" target="_blank" rel="noopener">Verifiable Credentials Data Model v2.0</a>,
+        <a href="https://www.w3.org/TR/vc-data-integrity/" target="_blank" rel="noopener">Verifiable Credential Data Integrity v1.0</a>,
+        and
+        <a href="https://www.w3.org/TR/json-ld/" target="_blank" rel="noopener">JSON-LD v1.1</a>
+        as the underlying standards (PDTF 2 Spec §"Introduction"). Linked Data
+        Proofs and JWS are both named in governance.md §2.B "Technical Layer" as
+        acceptable proof mechanisms.
+      </p>
+
+      <p>
+        The Trust Registry itself is the authority on issuer status. From
+        governance.md §4:
+      </p>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        Public JSON-LD document containing: Issuer DID, Organization legal name,
+        Status (active/revoked), Credential types authorized — signed by
+        Governance Authority for authenticity.
+      </blockquote>
+
+      <h4>Required artefacts</h4>
+
+      <ul>
+        <li>
+          <strong>Verifier procedure document.</strong> The verifier's published
+          procedure for accepting a PDTF VC: signature algorithm support matrix,
+          DID resolution mechanism, Trust Registry consumption, status-list
+          consumption, error handling.
+        </li>
+        <li>
+          <strong>Verification log.</strong> For each VC presented to the
+          verifier and either accepted or rejected: timestamp, issuer DID,
+          credential type, verification outcome, failure reason if rejected.
+          (See also control 5.)
+        </li>
+        <li>
+          <strong>Trust Registry cache policy.</strong> How often the verifier
+          re-pulls the signed Trust Registry document; how it handles network
+          failures fetching the registry; whether it permits offline use.
+        </li>
+      </ul>
+
+      <h4>Audit profile</h4>
+
+      <ul>
+        <li>
+          <strong>End-to-end test.</strong> Present a known-good VC and a
+          known-bad VC (revoked / tampered / signed by an out-of-registry DID)
+          to the verifier; confirm correct outcomes.
+        </li>
+        <li>
+          <strong>Algorithm-support inspection.</strong> The verifier supports
+          all signature suites named in the issuer's published DID documents.
+        </li>
+        <li>
+          <strong>Registry-cache walkthrough.</strong> Confirm the verifier's
+          Trust Registry consumption matches the documented cache policy and
+          that stale-registry handling does not silently downgrade to "trust
+          all DIDs".
+        </li>
+      </ul>
+
+      <h4>Common failure modes</h4>
+
+      <ul>
+        <li>
+          <strong>Signature checked, issuer not.</strong> The verifier confirms
+          the JWS is valid but does not confirm the signing DID is in the
+          (current) Trust Registry. A revoked issuer's signatures still verify
+          cryptographically.
+        </li>
+        <li>
+          <strong>JSON-LD context substitution.</strong> The verifier resolves
+          a JSON-LD <code>@context</code> URL at verification time without
+          pinning or caching, and a malicious server returns a substituted
+          context. Mitigation: cache verified contexts; pin by hash where the
+          PDTF context vocabulary is stable.
+        </li>
+        <li>
+          <strong>Confusion of issuer DID and subject DID.</strong> The
+          credentialSubject DID is treated as if it were the issuer DID.
+          Verifiers must check signature against the <code>issuer</code>
+          property, which (per PDTF 2 Spec §"PDTF Verifiable Credentials")
+          "must contain the DID of the data source (trusted primary source,
+          trusted proxy or participant)".
+        </li>
+      </ul>
+
+      <h3 id="control-4">2.4 Revocation handling</h3>
+
+      <h4>Scope</h4>
+
+      <p>
+        Mechanics of revoking a previously-issued VC: the status-list mechanism,
+        publication of revocations, propagation to verifiers, and the
+        relationship between per-VC revocation and Trust Registry status changes
+        for the issuing DID.
+      </p>
+
+      <h4>Technical anchor</h4>
+
+      <p>
+        Per governance.md §2.B "Technical Layer": "Revocation: Status List 2021
+        or equivalent." The
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md"><code>PDTF 2 Specification</code></a>
+        normatively references
+        <a href="https://www.w3.org/TR/vc-bitstring-status-list/" target="_blank" rel="noopener">W3C Bitstring Status List v1.1</a>
+        (PDTF 2 Spec §"Introduction"). The spec also flags (§"Interoperability
+        — Credential revocation"): "especially in relation to participant
+        relationship credentials, so that the seller or buyer can control access
+        to the data".
+      </p>
+
+      <p>
+        Two revocation paths exist and must be distinguished:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Per-VC revocation</strong> via the issuer's published status
+          list (Bitstring Status List). Revokes one specific credential without
+          affecting other credentials issued by the same DID.
+        </li>
+        <li>
+          <strong>Issuer-level revocation</strong> via the Trust Registry. The
+          GA changes the issuer's status to "revoked" in the signed
+          JSON-LD registry document, invalidating all credentials issued by
+          that DID prospectively. Per governance.md §4 the registry carries
+          per-DID status (active/revoked).
+        </li>
+      </ul>
+
+      <h4>Required artefacts</h4>
+
+      <ul>
+        <li>
+          <strong>Status list publication endpoint</strong> per issuer DID. The
+          endpoint URL is named in the issued VC; the document is itself a
+          signed VC of type StatusList2021Credential (or its Bitstring Status
+          List successor).
+        </li>
+        <li>
+          <strong>Revocation event log.</strong> Each revocation event with
+          credential ID, revocation reason, requesting party, authorising party,
+          timestamp.
+        </li>
+        <li>
+          <strong>Subject-request handling procedure.</strong> How a data
+          subject requests revocation of a credential about them (notably for
+          participant relationship credentials, per PDTF 2 Spec §"Interoperability
+          — Credential revocation").
+        </li>
+      </ul>
+
+      <h4>Audit profile</h4>
+
+      <ul>
+        <li>
+          <strong>Publication-cadence check.</strong> The status list document
+          is refreshed at the documented cadence; ETag / Last-Modified headers
+          are correct; signature on the status list is current.
+        </li>
+        <li>
+          <strong>Trace a sample revocation</strong> end-to-end: subject
+          request → internal authorisation → status-list update → verifier
+          observes revoked status.
+        </li>
+        <li>
+          <strong>Trust Registry interlock.</strong> When an issuer is revoked
+          at the registry level, downstream verifiers stop accepting its
+          credentials within the documented propagation window.
+        </li>
+      </ul>
+
+      <div class="callout callout--note">
+        <div class="callout__label">WG decision — status-list publication cadence and propagation SLA</div>
+        <p>
+          The PDTF spec does not pin a publication cadence. Open Banking
+          precedent runs revocation lists hourly or more frequently. The C&amp;R
+          WG should ratify: maximum staleness for a status list before verifiers
+          must refuse to rely on it; cache TTL guidance for verifiers; the
+          propagation SLA for Trust Registry status changes (how long between
+          a registry update and the expected verifier behaviour change). The
+          Technical WG holds the cryptographic primitives but the operational
+          SLA is C&amp;R territory because it directly affects the consumer
+          experience when withdrawal of consent is requested.
+        </p>
+      </div>
+
+      <h4>Common failure modes</h4>
+
+      <ul>
+        <li>
+          <strong>Stale status list.</strong> The issuer's status list endpoint
+          serves an old document past its declared expiry; verifiers either
+          accept the stale document (under-revocation) or refuse all
+          credentials (over-revocation).
+        </li>
+        <li>
+          <strong>Status list not signed.</strong> The status-list document is
+          itself a VC and must carry a valid signature from the issuer.
+          Verifiers that don't check this can be misled by a tampered list.
+        </li>
+        <li>
+          <strong>Revocation requested but not effected.</strong> Data subject
+          requests revocation; the request is logged but the status-list bit
+          is never flipped. Mitigation: an audit trail per request, with the
+          status-list update event as the closing artefact.
+        </li>
+      </ul>
+
+      <h3 id="control-5">2.5 Audit logging</h3>
+
+      <h4>Scope</h4>
+
+      <p>
+        The set of events each participant MUST log; where logs live; for how
+        long; and the integrity properties of the log itself. Audit logging is
+        the connective tissue under the other four controls: every onboarding,
+        key rotation, signature verification, revocation, and access decision
+        leaves a record.
+      </p>
+
+      <h4>Technical anchor</h4>
+
+      <p>
+        The
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+        §"Audit and Monitoring" already requires participants to evidence
+        "Regular Compliance Audits", a "Non-Compliance Log", and "Monitoring
+        of Data Sharing Activities". The PDTF governance principles in
+        governance.md §1 name <strong>Accountability</strong> as one of seven
+        principles, which presupposes recorded evidence of who did what when.
+      </p>
+
+      <p>
+        UK GDPR Article 30 ("Records of processing activities") requires
+        controllers to maintain records of processing operations under their
+        responsibility. PDTF participants who act as controllers (which is most
+        of them, in respect of the PII inside PDTF claims) are statutorily
+        required to keep these records; this control formalises the
+        PDTF-specific event set.
+      </p>
+
+      <h4>Required event set</h4>
+
+      <p>
+        At minimum the following events MUST be logged by each participant in
+        whose system the event occurs:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Issuance events</strong> — VC ID, credential type, issuer DID,
+          subject DID, claim summary (path or hash, not full claim values for
+          PII reasons), evidence references, timestamp.
+        </li>
+        <li>
+          <strong>Verification events</strong> — VC ID presented, verifier
+          identity, outcome (accepted / rejected with reason), timestamp.
+        </li>
+        <li>
+          <strong>Revocation events</strong> — VC ID, revocation reason,
+          authorising party, timestamp. Also: Trust Registry status changes
+          affecting the participant.
+        </li>
+        <li>
+          <strong>Key lifecycle events</strong> — generation, publication,
+          rotation, retirement; algorithm, key fingerprint, authorising party,
+          timestamp.
+        </li>
+        <li>
+          <strong>KYC/KYB events</strong> — initial onboarding evidence
+          submission, annual re-attestation, beneficial-ownership changes,
+          policy updates.
+        </li>
+        <li>
+          <strong>Access events</strong> — successful and failed authentication
+          to systems that handle PDTF claims; particularly OAuth2 token
+          issuance per the
+          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ PDTF Participant DID Auth OAuth 2 Specification.md"><code>Draft_ PDTF Participant DID Auth OAuth 2 Specification.md</code></a>
+          flow.
+        </li>
+      </ul>
+
+      <h4>Required properties of the log</h4>
+
+      <ul>
+        <li>
+          <strong>Integrity.</strong> Logs must be tamper-evident. Acceptable
+          mechanisms include hash chains, append-only storage with retention
+          locks, or signed periodic digests.
+        </li>
+        <li>
+          <strong>Availability for audit.</strong> Logs must be producible on
+          request by an OPDA-recognised auditor within a defined response
+          window.
+        </li>
+        <li>
+          <strong>Minimisation.</strong> Logs are themselves processing of
+          personal data and are subject to UK GDPR. Don't log full claim
+          payloads where a reference would suffice; don't log raw biometric
+          or sensitive-category data.
+        </li>
+      </ul>
+
+      <h4>Audit profile</h4>
+
+      <ul>
+        <li>
+          <strong>Coverage sampling.</strong> For each event class, the auditor
+          picks a random business operation in the period and confirms the
+          corresponding log record exists with the required fields.
+        </li>
+        <li>
+          <strong>Integrity check.</strong> The auditor verifies the
+          tamper-evidence mechanism (hash chain continuity, signed digest
+          verification, retention-lock policy on the storage tier).
+        </li>
+        <li>
+          <strong>Retention check.</strong> Logs from the start of the audit
+          period are still present, complete, and readable.
+        </li>
+      </ul>
+
+      <div class="callout callout--note">
+        <div class="callout__label">WG decision — audit log retention period</div>
+        <p>
+          The C&amp;R WG should ratify a default retention period for audit
+          logs. UK GDPR retention requires "no longer than necessary"; SRA /
+          RICS / FCA workflows that intersect with property transactions
+          variously require 6, 7, or in some cases 15 years; ISO 27001 has no
+          mandated period but typically pairs with the business's own retention
+          schedule. Recommend a base default with per-event-class overrides
+          (key lifecycle events permanent; verification events on a shorter
+          horizon; KYC/KYB packs tied to the member's tenure plus a defined
+          tail).
+        </p>
+      </div>
+
+      <h4>Common failure modes</h4>
+
+      <ul>
+        <li>
+          <strong>Logs without integrity.</strong> The participant logs
+          everything but to mutable storage; an insider can edit history.
+        </li>
+        <li>
+          <strong>PII in logs.</strong> Logging the full credential payload
+          puts personal data in a place that probably has weaker access
+          controls than the primary store.
+        </li>
+        <li>
+          <strong>Logs but no log review.</strong> Logs exist; no one ever
+          looks at them. The
+          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+          §"Audit and Monitoring" calls out "Regular Compliance Audits" for
+          this reason.
+        </li>
+      </ul>
+
+      <h2 id="al-mapping">3. Mapping to Assurance Levels</h2>
+
+      <p>
+        The four PDTF Assurance Levels (AL1–AL4, per governance.md §5) describe
+        the trust attached to <em>a claim</em>; the five security controls
+        describe the operational discipline of <em>a participant</em>. The
+        higher the AL the issuer asserts on its claims, the stronger the
+        operational discipline the framework expects.
+      </p>
+
+      <p>
+        The table below is a <em>proposed</em> mapping for WG ratification. The
+        intent is that controls are required on a sliding scale rather than
+        appearing all-or-nothing at any one tier.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Control</th>
+            <th>AL1<br/><span style="font-weight: normal; font-size: var(--text-sm);">self-asserted</span></th>
+            <th>AL2<br/><span style="font-weight: normal; font-size: var(--text-sm);">accredited issuer</span></th>
+            <th>AL3<br/><span style="font-weight: normal; font-size: var(--text-sm);">accredited + extra controls / proxy</span></th>
+            <th>AL4<br/><span style="font-weight: normal; font-size: var(--text-sm);">official primary authority</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2.1 KYC/KYB</td>
+            <td>Out of scope</td>
+            <td>Required</td>
+            <td>Required</td>
+            <td>Required (statutory authority itself satisfies)</td>
+          </tr>
+          <tr>
+            <td>2.2 DID key management</td>
+            <td>Recommended</td>
+            <td>Required</td>
+            <td>Required (HSM-backed recommended)</td>
+            <td>Required (HSM-backed)</td>
+          </tr>
+          <tr>
+            <td>2.3 Signature verification</td>
+            <td>Required (verifier side)</td>
+            <td>Required</td>
+            <td>Required</td>
+            <td>Required</td>
+          </tr>
+          <tr>
+            <td>2.4 Revocation handling</td>
+            <td>Recommended</td>
+            <td>Required</td>
+            <td>Required</td>
+            <td>Required</td>
+          </tr>
+          <tr>
+            <td>2.5 Audit logging</td>
+            <td>Recommended (issuer side)</td>
+            <td>Required</td>
+            <td>Required (integrity-protected)</td>
+            <td>Required (integrity-protected)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
+        Definitions: <strong>Required</strong> — auditor must find evidence in
+        the audit period or the AL claim is not supported. <strong>Recommended</strong>
+        — auditor notes presence/absence; absence does not invalidate the AL
+        claim. <strong>Out of scope</strong> — control does not apply at this AL.
+      </p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">WG decision — control-to-AL mapping</div>
+        <p>
+          The exact cells in the table above are this draft's recommendation,
+          not adopted policy. C&amp;R WG ratification needed. Key open questions:
+          (i) is HSM-backed key storage <em>required</em> or <em>recommended</em>
+          at AL3? (ii) for AL4 official primary authorities (HMLR being the
+          canonical example), how are pre-existing statutory security regimes
+          deemed to satisfy the controls without a duplicate OPDA audit?
+        </p>
+      </div>
+
+      <h2 id="policy-checklist-audit">4. Policy / checklist / audit framing</h2>
+
+      <p>
+        Per
+        <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>
+        Wave 2: each control is to receive "policy + checklist + audit profile".
+        That three-part structure is what makes the framework auditable rather
+        than aspirational.
+      </p>
+
+      <h3 id="policy">4.1 Policy</h3>
+
+      <p>
+        The Policy layer is the published rule: what the framework requires.
+        The starting point is the existing
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>,
+        which already names:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Data Protection and Privacy</strong> — Privacy Policy, Data
+          Protection Policy, Data Protection Legislation Compliance Framework,
+          Data Breach Response Plan (with the ICO 72-hour clock), Data Retention
+          and Disposal Policy.
+        </li>
+        <li>
+          <strong>Information Security</strong> — Cybersecurity Policy, Business
+          Continuity Plan, Incident Response Plan, Access Control Policy, ISO
+          27001 (or Cyber Essentials equivalent).
+        </li>
+        <li>
+          <strong>Operational Policies</strong> — Risk Management, Supplier and
+          Partner Assurance, Version Control and Change Management,
+          Anti-Bribery (Bribery Act 2010).
+        </li>
+        <li>
+          <strong>Training and Awareness</strong> — staff training on data
+          protection, cybersecurity, anti-bribery.
+        </li>
+        <li>
+          <strong>Audit and Monitoring</strong> — Regular Compliance Audits,
+          Non-Compliance Log, Monitoring of Data Sharing Activities.
+        </li>
+      </ul>
+
+      <p>
+        The
+        <a class="resource-link" href="/resource?path=source/01-organisation/constitution-and-policies/Code+of+Conduct+2026.pdf"><code>Code of Conduct 2026.pdf</code></a>
+        sits alongside the checklist as the principles document. The Data
+        Security framework Policy is the combination of those two documents,
+        re-organised around the five controls, with the WG decisions in this
+        page baked in.
+      </p>
+
+      <h3 id="checklist">4.2 Checklist</h3>
+
+      <p>
+        The Checklist is the per-firm self-assessment instrument: a structured
+        questionnaire derived from the Policy, sized so a security officer can
+        complete it in a defined time window. Proposed structure for WG
+        authoring (not the items themselves — that is C&amp;R WG work):
+      </p>
+
+      <ul>
+        <li>
+          <strong>One section per control (five sections).</strong> Each
+          section asks: is the control in scope for our AL claim? What
+          artefacts do we hold? When was the last review of each artefact?
+        </li>
+        <li>
+          <strong>Evidence-tier alignment.</strong> Per ADR 0004 the Accreditation
+          Directory uses three evidence tiers (self-asserted at 1–2,
+          artefact-linked at 3–4, independently audited at 5–6). Each checklist
+          item carries an evidence-tier indicator so the firm sees the gap
+          between its current state and a higher tier.
+        </li>
+        <li>
+          <strong>Cross-references to the Policy.</strong> Each checklist item
+          cites the clause of the Policy it implements; ambiguous items are
+          flagged for WG attention rather than left to firm interpretation.
+        </li>
+        <li>
+          <strong>Annual cadence.</strong> Aligns with the Accreditation
+          Policy's existing annual self-reassessment (clause 16) so a firm
+          doesn't run two separate annual cycles.
+        </li>
+      </ul>
+
+      <h3 id="audit">4.3 Audit</h3>
+
+      <p>
+        Audit is the independent-verification layer. Two distinct audit
+        consumers exist:
+      </p>
+
+      <ul>
+        <li>
+          <strong>The Accreditation Directory.</strong> Firms claiming
+          evidence-tier 5–6 on the Data Security capability per ADR 0004
+          must hold an independent audit attestation. The audit profile per
+          control in §2 above is the basis on which an OPDA-listed audit
+          partner produces that attestation.
+        </li>
+        <li>
+          <strong>The Conformance Scheme review board.</strong> The Tier A
+          three-reviewer panel
+          (<a href="/governance/conformance-scheme#tierAReview">Conformance scheme
+          review panel</a>) covers the KYC/KYB control by way of the existing
+          onboarding pack; the other four controls are not within that
+          panel's scope today and would require either an extension of the
+          panel's remit or routing through an audit partner.
+        </li>
+      </ul>
+
+      <p>
+        <strong>Who runs audits.</strong> A list of OPDA-recognised audit
+        partners is contemplated in
+        <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>
+        for evidence-tier 5–6 attestations on capability claims; the same
+        partners cover the audit profiles in this framework.
+      </p>
+
+      <p>
+        <strong>Cadence.</strong> Annual at minimum (aligned with the existing
+        Accreditation Policy annual self-reassessment). Mid-cycle audits are
+        triggered by: a reported incident affecting the firm; a Trust Registry
+        status change; promotion of a previously-recommended control to
+        required at a given AL.
+      </p>
+
+      <p>
+        <strong>Findings flow.</strong> Audit findings flow back into the
+        <a href="/governance/accreditation-directory">Accreditation Directory</a>
+        as the per-firm capability score on Data Security. Material findings
+        that affect a firm's AL claim or its Trust Registry status are routed
+        through the Non-Compliant Member Policy 12-step framework — see
+        <a href="/governance/conformance-scheme#nonCompliance">Conformance scheme
+        — non-compliance handling</a>.
+      </p>
+
+      <h2 id="incident">5. Incident response</h2>
+
+      <p>
+        Incident response is the procedural layer that activates when a
+        control fails. The
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a>
+        §"Information Security" already requires participants to maintain an
+        Incident Response Plan and §"Data Protection and Privacy" requires a
+        Data Breach Response Plan with the ICO 72-hour clock. This framework
+        adds the PDTF-specific phases that sit on top of those firm-level
+        documents.
+      </p>
+
+      <h3 id="incident-phases">Five phases</h3>
+
+      <ol>
+        <li>
+          <strong>Detection.</strong> Indicators include: anomalous signature
+          verification failures, key-custody alerts, unexpected DID-document
+          changes, revocation-request surges, audit-log integrity warnings.
+          Detection responsibility sits with whichever participant first
+          observes the indicator.
+        </li>
+        <li>
+          <strong>Containment.</strong> Isolate the affected systems; if a key
+          is suspected compromised, initiate emergency rotation per the
+          control 2 procedure; if an issuer is suspected compromised, request
+          urgent Trust Registry status change from the GA.
+        </li>
+        <li>
+          <strong>Notification.</strong>
+          <ul>
+            <li>
+              <strong>ICO</strong> — within 72 hours of becoming aware of a
+              personal-data breach, where the breach is likely to result in
+              risk to the rights and freedoms of natural persons. UK GDPR
+              Article 33(1) is the statutory anchor.
+            </li>
+            <li>
+              <strong>Affected data subjects</strong> — without undue delay
+              where the breach is likely to result in a <em>high</em> risk to
+              the rights and freedoms of natural persons. UK GDPR Article 34
+              is the statutory anchor.
+            </li>
+            <li>
+              <strong>OPDA Governance Authority</strong> — incident report to
+              the C&amp;R WG, on a timeline to be ratified by the WG. This is
+              an OPDA-specific obligation in addition to the statutory ICO
+              and subject notification.
+            </li>
+            <li>
+              <strong>Counterparty participants</strong> — for incidents that
+              affect VCs already in circulation, the issuer must notify
+              verifiers and holders known to have consumed the affected
+              credentials.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Remediation.</strong> Revoke affected VCs (control 4),
+          rotate keys (control 2), publish updated DID document (control 2),
+          and refresh the Trust Registry entry. Record every step in the
+          audit log (control 5).
+        </li>
+        <li>
+          <strong>Review.</strong> Post-incident review producing a written
+          report, shared with the C&amp;R WG, with lessons-learned that flow
+          back into the framework. Repeated or systemic findings trigger
+          re-opening the relevant control.
+        </li>
+      </ol>
+
+      <div class="callout callout--note">
+        <div class="callout__label">WG decision — severity thresholds, escalation paths, OPDA notification window</div>
+        <p>
+          The 72-hour ICO clock and the "without undue delay" subject
+          notification are statutory minima and not WG-negotiable. The WG
+          should ratify: (i) severity bands (low / medium / high / critical)
+          with definitions; (ii) the OPDA-specific notification window to the
+          C&amp;R WG (recommend 24 hours for high/critical, weekly digest for
+          low); (iii) escalation path within the firm; (iv) whether and how
+          a public OPDA incident notice is published, particularly for
+          incidents affecting Trust Registry integrity.
+        </p>
+      </div>
+
+      <p>
+        <strong>Cross-reference.</strong> Incident-driven liability questions
+        (who is liable when a verifier relies on a compromised VC, who is
+        liable when an issuer's key is compromised, etc.) sit on
+        <a href="/governance/risk-liability">Risk &amp; liability</a>.
+        This framework defines the operational response; the liability
+        framework defines who bears the loss.
+      </p>
+
+      <h2 id="governance">6. Governance, roles, and review</h2>
+
+      <p>
+        Roles below are read from
+        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a>
+        §2.A (business-layer roles) and §3 (operational governance roles), with
+        framework-specific responsibilities added.
+      </p>
+
+      <h3 id="governance-roles">Role responsibilities</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Responsibility under this framework</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Compliance &amp; Risk WG</strong></td>
+            <td>
+              Owns this framework end-to-end. Drafts Policy. Maintains the
+              Checklist. Sets audit profiles. Receives incident notifications.
+              Coordinates with the Engagement WG on member-firm recruitment to
+              the WG itself (per ADR 0001 §"Newly resolved" #3).
+            </td>
+            <td>governance.md §3.C; ADR 0001 Wave 2</td>
+          </tr>
+          <tr>
+            <td><strong>Technical WG (Technical Review)</strong></td>
+            <td>
+              Provides the cryptographic primitives and reference tooling that
+              the controls rely on. Maintains the
+              <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md"><code>PDTF 2 Specification</code></a>
+              and
+              <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/Draft_ PDTF Participant DID Auth OAuth 2 Specification.md"><code>Draft_ PDTF Participant DID Auth OAuth 2 Specification.md</code></a>.
+              Approves changes to algorithm support matrices.
+            </td>
+            <td>governance.md §3.B</td>
+          </tr>
+          <tr>
+            <td><strong>Trust Registry Operator</strong></td>
+            <td>
+              Operates the runtime registry and status-list publication
+              infrastructure. Executes registry-level revocations on GA
+              authorisation. Publishes the signed JSON-LD registry document.
+              Carries operational SLAs to be ratified by the WG.
+            </td>
+            <td>governance.md §2.A, §4</td>
+          </tr>
+          <tr>
+            <td><strong>Governance Authority (OPDA)</strong></td>
+            <td>
+              Approves Trust Registry status changes. Signs the registry
+              document. Owns the Accreditation Policy and the
+              Non-Compliant Member Policy that the framework references.
+            </td>
+            <td>governance.md §2.A, §4</td>
+          </tr>
+          <tr>
+            <td><strong>Accredited Issuer</strong></td>
+            <td>
+              Implements all five controls at the AL it claims. Submits
+              annual Checklist self-assessment. Triggers incident response
+              when an indicator fires on its systems.
+            </td>
+            <td>governance.md §2.A</td>
+          </tr>
+          <tr>
+            <td><strong>Verifier</strong></td>
+            <td>
+              Implements control 2.3 (signature verification) and consumes
+              the status list under control 2.4. Maintains its own verification
+              log per control 2.5.
+            </td>
+            <td>governance.md §2.A</td>
+          </tr>
+          <tr>
+            <td><strong>Holder</strong></td>
+            <td>
+              Out of direct framework scope for issuance and verification, but
+              data-subject rights under UK GDPR (including revocation
+              requests for credentials about them) flow through the
+              participant relationship credentials described in PDTF 2 Spec
+              §"Interoperability — Credential revocation".
+            </td>
+            <td>governance.md §2.A; PDTF 2 Spec</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 id="governance-review">Review cadence</h3>
+
+      <ul>
+        <li>
+          <strong>Annual framework review</strong> by the C&amp;R WG, aligned
+          with the existing annual scheme review (Accreditation Policy clause
+          19, Accreditation Scheme clause 13). Output: a Change Log appended
+          to this page plus, where the changes are material, a new ADR.
+        </li>
+        <li>
+          <strong>Standing item on quarterly C&amp;R WG agenda</strong> — open
+          incidents, outstanding audit findings, control changes proposed
+          by member firms.
+        </li>
+        <li>
+          <strong>Triggered review</strong> after any incident classified
+          high or critical, after any change to the underlying W3C standards
+          referenced in §2.2 and §2.3, or after a Trust Registry breach.
+        </li>
+      </ul>
+
+      <h2 id="open-questions">7. Open questions for WG kick-off</h2>
+
+      <ol>
+        <li>
+          <strong>HSM mandate at AL3.</strong> Should hardware-backed key
+          storage be <em>required</em> at AL3 (and not just recommended)?
+          Implications: raises the bar for AL3 issuers, potentially excludes
+          smaller surveyors and conveyancers who can credibly issue
+          intermediate-trust claims today.
+        </li>
+        <li>
+          <strong>AL4 sufficiency for statutory authorities.</strong> How
+          does the framework recognise that an AL4 official primary authority
+          (HMLR, Companies House if it ever issued PDTF claims, local
+          authorities for council-tax claims) operates under its own
+          statutory security regime that already satisfies most of these
+          controls? Should the framework define a deemed-compliance path
+          rather than asking HMLR to fill out a Checklist?
+        </li>
+        <li>
+          <strong>Status-list publication cadence.</strong> Per the WG
+          decision callout in §2.4, what is the SLA? The market expectation
+          may be sub-hourly; the cost-to-issuer implication for hourly
+          re-signing of status lists is non-trivial.
+        </li>
+        <li>
+          <strong>Audit-partner selection.</strong> ADR 0004 contemplates an
+          OPDA-listed audit-partner panel for evidence-tier 5–6. How is that
+          panel constituted, on what criteria, and how is conflict-of-interest
+          managed for partners who also member-firm-consult to the firms
+          they audit?
+        </li>
+        <li>
+          <strong>Cross-recognition of existing security regimes.</strong>
+          A firm with ISO 27001, SOC 2 Type II, and Cyber Essentials Plus
+          should not have to re-evidence the same controls under three labels.
+          How does the framework recognise existing attestations as
+          partial-or-full satisfaction of the audit profiles in §2?
+        </li>
+      </ol>
 
       <h2 id="related">Related</h2>
       <ul>
         <li><a href="/governance/data-quality">Data quality framework</a> — sibling workstream; DQ accuracy/consistency dimensions overlap with security data-integrity controls.</li>
-        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — where security scores are reported.</li>
-        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the binary compliance regime this framework extends.</li>
+        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — where security capability scores are reported.</li>
+        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the binary compliance regime this framework extends; covers KYC/KYB onboarding in depth.</li>
+        <li><a href="/governance/risk-liability">Risk &amp; liability</a> — where compromise of a control flows in terms of who bears the loss.</li>
+        <li><a href="/governance/overlay-attachments">Overlay attachments</a> — sibling Wave 2 workstream; attachment integrity is a verification concern that intersects this framework.</li>
       </ul>
+
+      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <p>
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+      </p>
+
+      <section>
+        <h3>Purpose</h3>
+        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Activities</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Deliverables</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Roles</h3>
+        <p><em>Content pending — see <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Metrics</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
+      <section>
+        <h3>Maturity</h3>
+        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+      </section>
 </Layout>
+</content>
+</invoke>

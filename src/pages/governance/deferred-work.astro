@@ -1,0 +1,398 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Deferred work register"
+  description="Public mirror of ADR-0005 — the living register of work explicitly deferred from the 2026-05-18 implementation push, with named owner and triggering condition for each item."
+>
+<PageMeta category="OPDA's rules" variant="info" updated="Living register · Last review 2026-05-19" damaKa={["Data Governance"]} />
+
+      <h1>Deferred work register</h1>
+      <p class="lead">
+        Public mirror of <a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0005</a> — the
+        living list of work explicitly deferred from the 2026-05-18 implementation push.
+        Each item has a named owner and a triggering condition, so nothing rots out of
+        sight. This page is regenerated from the ADR; the ADR remains canonical. Items
+        leave the register when promoted to their own ADR, completed, abandoned, or
+        superseded.
+      </p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">How items leave this register</div>
+        <p>
+          Entries are mutable by design. They depart by one of four routes:
+          <strong>promotion</strong> to a dedicated ADR, <strong>completion</strong> (ships
+          and stays as evidence for one review cycle), <strong>abandonment</strong>
+          (declared out of scope with rationale), or <strong>supersession</strong> (replaced
+          by a different approach, link recorded). Items that don't progress for 12 months
+          get flagged at the annual Wave 3 review (item&nbsp;D5) for a "still relevant?"
+          check.
+        </p>
+      </div>
+
+      <h2 id="wave-2-content">A. Wave 2 content authoring</h2>
+      <p>
+        Substantive workstreams — months of WG work to flesh out the four Wave 2 stub
+        pages. Pre-trigger until the C&amp;R WG and Technical WG kickoffs land per
+        <a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0001</a>
+        Q3 sequencing.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A1</td>
+            <td><a href="/governance/data-quality"><code>/governance/data-quality</code></a> content</td>
+            <td>C&amp;R WG</td>
+            <td>Workstream kickoff (per ADR&nbsp;0001 Q3 — runs in parallel with A2 and A3)</td>
+            <td>Draft for C&amp;R WG · 2026-05-19</td>
+            <td><a href="/governance/data-quality"><code>/governance/data-quality</code></a> (substantive draft)</td>
+            <td>Stub has section headings for the 6 DQ dimensions, measurement protocols, AL mapping, reporting. WG fleshes out each section.</td>
+          </tr>
+          <tr>
+            <td>A2</td>
+            <td><a href="/governance/data-security"><code>/governance/data-security</code></a> content</td>
+            <td>C&amp;R WG</td>
+            <td>Workstream kickoff (parallel with A1, A3)</td>
+            <td>Draft for C&amp;R WG · 2026-05-19</td>
+            <td><a href="/governance/data-security"><code>/governance/data-security</code></a> (substantive draft)</td>
+            <td>Stub has 5 controls (KYC/KYB, key mgmt, signature verification, revocation, audit logging) + policy / checklist / audit framing.</td>
+          </tr>
+          <tr>
+            <td>A3</td>
+            <td><a href="/governance/accreditation-directory"><code>/governance/accreditation-directory</code></a> content</td>
+            <td>C&amp;R WG</td>
+            <td>Workstream kickoff (parallel with A1, A2); depends on ADR&nbsp;0004 Phase&nbsp;1 (skeleton schema)</td>
+            <td>Draft for C&amp;R + Tech WG · 2026-05-19</td>
+            <td><a href="/governance/accreditation-directory"><code>/governance/accreditation-directory</code></a> (substantive draft)</td>
+            <td>Stub describes the how-it-works flow, scoring, evidence tiers; first publish target is end of quarter following all four Wave 2 ADRs ratified.</td>
+          </tr>
+          <tr>
+            <td>A4</td>
+            <td><a href="/governance/overlay-attachments"><code>/governance/overlay-attachments</code></a> content</td>
+            <td>Technical WG (with C&amp;R WG input on retention + consent)</td>
+            <td>Workstream kickoff (parallel with A1–A3)</td>
+            <td>Draft for Tech WG (C&amp;R input) · 2026-05-19</td>
+            <td><a href="/governance/overlay-attachments"><code>/governance/overlay-attachments</code></a> (substantive draft)</td>
+            <td>Stub lists 11 v3 overlay attachment types; sections for file formats / signing / retention / consent.</td>
+          </tr>
+          <tr>
+            <td>A5</td>
+            <td>C&amp;R WG recruitment to support parallel A1–A3</td>
+            <td>Engagement WG</td>
+            <td>Before A1/A2/A3 kickoff (per ADR&nbsp;0001 Q3 pre-condition)</td>
+            <td>Recruitment brief drafted · 2026-05-18</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/cr-wg-candidate-firms.md"><code>docs/recruitment/cr-wg-candidate-firms.md</code></a></td>
+            <td>Target firms with mature internal DQ / Security functions (large lenders, surveyors, conveyancing platforms).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="wave-1-tagging">B. Wave 1 leftover tagging</h2>
+      <p>
+        Mechanical, but per-page work — applying the DAMA Wheel cross-reference and the
+        per-KA template across the existing corpus.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B1</td>
+            <td>DAMA Wheel cross-reference per page</td>
+            <td>Whoever picks up the Wave 1 leftovers</td>
+            <td>Opportunistic</td>
+            <td>Completed 2026-05-18</td>
+            <td><a class="resource-link" href="/resource.html?path=scripts/dama-ka-mapping.json"><code>scripts/dama-ka-mapping.json</code></a> + PageMeta <code>damaKa</code> prop</td>
+            <td>For each existing page, tag the DAMA KA(s) it serves. KAs out of scope (DW/BI, Storage &amp; Ops, Document &amp; Content) explicitly disclaimed once each. ~24+ pages.</td>
+          </tr>
+          <tr>
+            <td>B2</td>
+            <td>Per-KA template applied per page</td>
+            <td>Same</td>
+            <td>Opportunistic</td>
+            <td>Template ready · WG to apply incrementally</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/templates/per-ka-section-template.md"><code>docs/templates/per-ka-section-template.md</code></a> (rubric scaffold appended to A1–A4 stubs)</td>
+            <td>Consistent rubric: <em>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</em>. Apply incrementally; not all pages need every section filled.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="accreditation-pipeline">C. Accreditation Directory build pipeline</h2>
+      <p>
+        ADR&nbsp;0004 Phase&nbsp;4 — the build-time aggregator, member-firm submission
+        tooling, first quarterly publish, and OPDA-listed audit-partner list.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>C1</td>
+            <td><code>scripts/build-accreditation-directory.mjs</code></td>
+            <td>Technical WG</td>
+            <td>Member firms ready to submit first VCs (downstream of A1–A4 shipping capability bundles)</td>
+            <td>Stub ready (parses, throws on main)</td>
+            <td><a class="resource-link" href="/resource.html?path=scripts/build-accreditation-directory.mjs"><code>scripts/build-accreditation-directory.mjs</code></a></td>
+            <td>Build-time aggregator: reads all current-quarter VCs from <code>source/04-governance-bodies/accreditation/credentials/</code>, validates signatures against Trust Registry, emits <code>src/data/accreditation/current.json</code> for the Directory page render.</td>
+          </tr>
+          <tr>
+            <td>C2</td>
+            <td>Member-firm VC submission tooling</td>
+            <td>Technical WG + Engagement WG</td>
+            <td>After C1 ships</td>
+            <td>Draft spec · pending C1 + first firm</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/templates/vc-submission-spec.md"><code>docs/templates/vc-submission-spec.md</code></a></td>
+            <td>Firms need a clear way to mint and submit their quarterly VCs. CLI helper? Web form? Out of scope for the script itself.</td>
+          </tr>
+          <tr>
+            <td>C3</td>
+            <td>First quarterly publish</td>
+            <td>C&amp;R WG + Technical WG</td>
+            <td>After A1–A4 + C1 + C2</td>
+            <td>Checklist template ready</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/templates/first-quarterly-publish-checklist.md"><code>docs/templates/first-quarterly-publish-checklist.md</code></a></td>
+            <td>End-of-quarter milestone for the first time the Directory has real data.</td>
+          </tr>
+          <tr>
+            <td>C4</td>
+            <td>OPDA-listed audit-partner list</td>
+            <td>Engagement WG</td>
+            <td>Before any firm claims an evidence-tier score 5–6</td>
+            <td>Candidate list drafted (= F1)</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
+            <td>Initial list likely Big&nbsp;4 + property-data specialists (KPMG, Deloitte, BDO + Hometrack / Land Insight / etc.). Out of scope for this register beyond noting the dependency.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="wave-3-watching">D. Wave 3 watching briefs</h2>
+      <p>
+        Items kept warm per ADR&nbsp;0001 §"Wave&nbsp;3" — none in active flight; each
+        has a defined trigger or a standing calendar slot at the annual EC review.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>D1</td>
+            <td>GARP for OPDA institutional records</td>
+            <td>TBD</td>
+            <td>Opportunistic</td>
+            <td>Watching brief — no artefact</td>
+            <td>—</td>
+            <td>Apply Generally Accepted Recordkeeping Principles to OPDA's <code>source/</code> tree. Mostly a published handling policy + retention defaults per subtree.</td>
+          </tr>
+          <tr>
+            <td>D2</td>
+            <td>Storage &amp; Ops — retention/disposal guidance</td>
+            <td>TBD</td>
+            <td>Trust Registry to production OR consumer-trust narrative needs it</td>
+            <td>Watching brief — no artefact</td>
+            <td>—</td>
+            <td>Member-firm guidance: how long does a verified PDTF claim live in a firm's database after a transaction completes? UK&nbsp;GDPR alignment.</td>
+          </tr>
+          <tr>
+            <td>D3</td>
+            <td>AI/ML governance over PDTF data</td>
+            <td>TBD</td>
+            <td>First member firm publishes a PDTF-trained model OR ICO/EU AI Act guidance solidifies</td>
+            <td>Watching brief — no artefact</td>
+            <td>—</td>
+            <td>Bias/fairness considerations specific to property data (historical red-lining patterns). Data-use governance, not platform engineering.</td>
+          </tr>
+          <tr>
+            <td>D4</td>
+            <td>Data-product discipline for OPDA's meta-analytics</td>
+            <td>TBD</td>
+            <td>Opportunistic</td>
+            <td>Watching brief — no artefact</td>
+            <td>—</td>
+            <td>Apply data-product discipline (lineage, release plan, versioning) to Accreditation Directory, Standards Report, Consumer Survey. Extend <code>provenance-map.yaml</code> toward a lineage dictionary as new reports are produced.</td>
+          </tr>
+          <tr>
+            <td>D5</td>
+            <td>Annual Wave 3 review (AGM-adjacent EC meeting)</td>
+            <td>EC</td>
+            <td>Every AGM-adjacent EC meeting</td>
+            <td>Agenda template ready · annual</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/templates/agm-adjacent-ec-wave3-agenda.md"><code>docs/templates/agm-adjacent-ec-wave3-agenda.md</code></a></td>
+            <td>~15-min agenda item walking D1–D4 (and successors): trigger fired? rotted? watching brief continues?</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="pre-deploy-ops">E. Pre-deploy + ops</h2>
+      <p>
+        Operational hygiene items tied to the 2026-05-18 push — visual smoke test,
+        external-materials audit, and the DCAM attribution note.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>E1</td>
+            <td>Visual smoke test in browser</td>
+            <td>Henrik (next session)</td>
+            <td>Before push to production</td>
+            <td>Scaffold ready · manual run</td>
+            <td><a class="resource-link" href="/resource.html?path=scripts/smoke-test.mjs"><code>scripts/smoke-test.mjs</code></a> (install <code>@playwright/test</code> to run)</td>
+            <td>Theme toggle, sidebar collapse, tree-folder toggle, mobile menu, Mermaid diagrams across sections, data tables on <a href="/modelling/data-dictionary"><code>/modelling/data-dictionary</code></a> + <a href="/modelling/business-glossary"><code>/modelling/business-glossary</code></a>.</td>
+          </tr>
+          <tr>
+            <td>E2</td>
+            <td>External materials audit</td>
+            <td>Engagement WG</td>
+            <td>Before announcing the URL change</td>
+            <td>Runbook drafted · Engagement WG to execute</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/external-materials-audit-checklist.md"><code>docs/external-materials-audit-checklist.md</code></a></td>
+            <td>OPDA-controlled materials pointing to old <code>/pages/NN-…html</code> URLs will hard-break. Scan briefings PDFs in <code>source/02-policy-and-positioning/briefings-to-government/</code>, openpropdata.org.uk content, propdata.org.uk content, DPMSG decks, member-firm comms, regulator submissions.</td>
+          </tr>
+          <tr>
+            <td>E3</td>
+            <td>DCAM attribution note in <code>governance.md</code></td>
+            <td>Technical WG</td>
+            <td>When time allows</td>
+            <td>Completed 2026-05-18</td>
+            <td><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a> §"Framework lineage and attribution"</td>
+            <td>Per ADR&nbsp;0001 newly-resolved Q2 (permissive): one-paragraph note in <code>source/03-standards/trust-framework/docs/governance.md</code> defining the "name freely, no verbatim" boundary so future contributors don't re-litigate.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="open-in-other-adrs">F. Open items in other ADRs</h2>
+      <p>
+        Tracked here so the register is comprehensive; details live in the originating
+        ADRs.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>F1</td>
+            <td>OPDA-listed audit partners</td>
+            <td>ADR&nbsp;0004 Q1</td>
+            <td>See ADR&nbsp;0004 Q1</td>
+            <td>Candidate list drafted (= C4)</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
+            <td>Same as C4 above; cross-listed.</td>
+          </tr>
+          <tr>
+            <td>F2</td>
+            <td>Conformance Scheme integration with Directory</td>
+            <td>ADR&nbsp;0004 Q2</td>
+            <td>See ADR&nbsp;0004 Q2</td>
+            <td>Forward-reference added 2026-05-19</td>
+            <td><a href="/governance/conformance-scheme#directoryIntegration"><code>/governance/conformance-scheme#directoryIntegration</code></a></td>
+            <td>The existing <a href="/governance/conformance-scheme"><code>/governance/conformance-scheme</code></a> page needs updating to reference the Directory and explain the AL × Capability relationship. Own ADR when work begins.</td>
+          </tr>
+          <tr>
+            <td>F3</td>
+            <td>Member-firm portal (deferred tier of the Directory)</td>
+            <td>ADR&nbsp;0004 Q3</td>
+            <td>See ADR&nbsp;0004 Q3</td>
+            <td>Stub · open questions only</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/specs/member-firm-portal-requirements.md"><code>docs/specs/member-firm-portal-requirements.md</code></a></td>
+            <td>Private detailed view for firms + OPDA. Triggers on first member-firm request.</td>
+          </tr>
+          <tr>
+            <td>F4</td>
+            <td>Quarterly publishing automation</td>
+            <td>ADR&nbsp;0004 Q4</td>
+            <td>See ADR&nbsp;0004 Q4</td>
+            <td>Example workflow (<code>.example</code> — not active)</td>
+            <td><a class="resource-link" href="/resource.html?path=.github/workflows/accreditation-quarterly.yml.example"><code>.github/workflows/accreditation-quarterly.yml.example</code></a></td>
+            <td>Cron / GitHub Action to refresh the Directory; tooling decision deferred.</td>
+          </tr>
+          <tr>
+            <td>F5</td>
+            <td>Ex-member handling in the Directory</td>
+            <td>ADR&nbsp;0004 Q5</td>
+            <td>See ADR&nbsp;0004 Q5</td>
+            <td>ADR stub · awaiting promotion trigger</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/adr/_drafts/membership-lifecycle.md"><code>docs/adr/_drafts/membership-lifecycle.md</code></a></td>
+            <td>"Former member, last data YYYY-Qn" vs immediate drop-out. Membership ADR territory.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="lifecycle">How items leave this register</h2>
+      <ul>
+        <li><strong>Promoted to its own ADR.</strong> Item gets a dedicated ADR (typical for substantive workstreams). The register entry is updated to point at the new ADR and marked "promoted". Two reviews later it can be removed.</li>
+        <li><strong>Completed.</strong> Item ships. Entry marked "completed YYYY-MM-DD", remains for one review cycle as evidence, then removed.</li>
+        <li><strong>Abandoned.</strong> Item is explicitly declared out of scope (new ADR or annual review). Entry marked "abandoned YYYY-MM-DD, rationale: …", remains permanently as a "considered and rejected" record.</li>
+        <li><strong>Superseded.</strong> Item is replaced by a different approach. Entry marked "superseded by [link]", remains permanently.</li>
+      </ul>
+
+      <h2 id="references">References</h2>
+      <ul>
+        <li><a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0001</a> — Wave&nbsp;1/2/3 commitments; this register itemises what's not yet built.</li>
+        <li><a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0004</a> — Accreditation Directory spec (this register tracks its build pipeline).</li>
+        <li><a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0005</a> — canonical source for this register; living document, revised at every annual Wave&nbsp;3 EC review and ad-hoc as items ship or get added.</li>
+      </ul>
+</Layout>

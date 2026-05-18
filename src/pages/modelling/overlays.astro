@@ -7,7 +7,7 @@ import Diagram from '@/components/Diagram.astro';
   title="PDTF overlays"
   description="What overlays are, the full catalogue (18 main + 16 extension), how they're defined in JSON Schema, how getTransactionSchema merges them, and how they relate to bounded contexts."
 >
-<PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" />
+<PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" damaKa={["Data Modeling & Design"]} />
 
       <h1>PDTF overlays</h1>
       <p class="lead">
@@ -129,7 +129,7 @@ flowchart LR
   SURV --> PIQ["Property Information Questionnaire<br/>(PIQ)"]:::ovl
 
   PDS --> RDS["Residential Development Survey<br/>(RDS)"]:::ovl
-  PDS --> OC1["Optional Enquiries of Local Authority<br/>(OC1)"]:::ovl
+  PDS --> OC1["HMLR Official Copies of the Register<br/>(OC1)"]:::ovl
   PDS --> LLC1["Local Land Charges Search<br/>(LLC1)"]:::ovl
   PDS --> CON29R["Local Authority Search<br/>(CON29R)"]:::ovl
   PDS --> CON29DW["Drainage &amp; Water Search<br/>(CON29DW)"]:::ovl
@@ -239,7 +239,7 @@ flowchart LR
           <tr><td>Leasehold Property Enquiries</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
           <tr><td>Freehold Management Enquiries</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Edition 2</td><td>Mortgage Lending</td><td>active</td></tr>
           <tr><td>Local Land Charges Search</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>v2</td><td>Property Data Services</td><td>active</td></tr>
-          <tr><td>Optional Enquiries of Local Authority</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>v21</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>HMLR Official Copies of the Register</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>v21</td><td>Property Data Services</td><td>active</td></tr>
         </tbody>
       </table>
 
@@ -435,7 +435,7 @@ full NTS2 2025`"]:::done
             <td>
               <ul class="plain">
                 <li>Residential Development Survey (<code>rds</code>)</li>
-                <li>Optional Enquiries of Local Authority (<code>oc1</code>)</li>
+                <li>HMLR Official Copies of the Register (<code>oc1</code>)</li>
                 <li>Local Land Charges Search (<code>llc1</code>)</li>
                 <li>Local Authority Search (<code>con29R</code>)</li>
                 <li>Drainage and Water Search (<code>con29DW</code>)</li>
@@ -574,7 +574,7 @@ required & oneOf`"]:::proc
           <tr><td>Local Authority Search (CON29R, 2019)</td><td><code>con29R2019</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td></tr>
           <tr><td>Drainage and Water Search (CON29DW)</td><td><code>con29DW</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td></tr>
           <tr><td>Residential Development Survey (RDS v3.3.3)</td><td><code>rdsV333</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td></tr>
-          <tr><td>Optional Enquiries of Local Authority (OC1 v21)</td><td><code>oc1v21</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td></tr>
+          <tr><td>HMLR Official Copies of the Register (OC1 v21)</td><td><code>oc1v21</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td></tr>
           <tr><td>Property Information Questionnaire (PIQ v3)</td><td><code>piqV3</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td></tr>
           <tr><td>Sustainability Report 2024 (SR24)</td><td><code>sr24</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td></tr>
         </tbody>

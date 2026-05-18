@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="Overlay attachments policy"
   description="How PDTF overlays handle unstructured attachments — TA10 plans, EPCs, leasehold packs, photographs. File-format requirements, signing / integrity, retention guidance for issuers, consent semantics for consumers."
 >
-<PageMeta category="Operating Model" variant="info" updated="Stub · Technical WG + C&R input · 2026-05-18" />
+<PageMeta category="Operating Model" variant="info" updated="Stub · Technical WG + C&R input · 2026-05-18" damaKa={["Document & Content Management", "Data Governance"]} />
 
       <h1>Overlay attachments policy</h1>
       <p class="lead">
@@ -28,39 +28,598 @@ import PageMeta from '@/components/PageMeta.astro';
         </p>
       </div>
 
-      <h2 id="attachment-types">Attachment types in v3 overlays</h2>
-      <p><em>Content pending Technical WG.</em></p>
+      <div class="callout callout--info">
+        <div class="callout__label">Draft for Technical WG review (with C&amp;R WG input on retention + consent) — 2026-05-18</div>
+        <p>
+          This page synthesises <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>'s
+          <em>Document &amp; Content Management</em> reassessment, the production
+          PDTF v3 overlay schemas, and UK GDPR retention principles into an
+          attachment-handling policy <em>shape</em>. It is deliberately partial: the
+          <em>shape</em> is here for working-group review; specific retention
+          periods, format whitelists, AL-to-control mappings, consent UX and
+          disposal windows are flagged inline as <strong>WG decisions</strong>.
+        </p>
+      </div>
+
+      <h2 id="overview">1. Overview and scope</h2>
+
+      <p>
+        PDTF v3 overlays embed document attachments (TA10 plans, leasehold packs,
+        EPCs, photographs, survey reports, search responses) alongside the
+        structured claims they extend. Until now the framework has had no published
+        handling policy for these attachments — file-format expectations, integrity
+        proofs, retention obligations, and consent semantics have all been left to
+        the individual issuer's discretion. This page is the policy. It defines
+        what handling looks like across all eleven attachment-bearing overlay
+        families, and it identifies the decisions that the Technical WG (with C&amp;R
+        WG input on retention and consent) needs to make to put the policy into
+        production.
+      </p>
+
+      <p>
+        The work is commissioned in <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a>'s
+        Wave 2 — see §<em>Resolved during review</em> item 6, which promotes the
+        overlay-attachment strand from Wave 3 to Wave 2 because <q>the artefacts
+        are already in production overlays</q>. The companion strand (GARP-based
+        handling for OPDA's institutional records) stays in Wave 3. ADR 0001's
+        §<em>Reassessing the four boundaries</em> → <em>DMBOK Document &amp; Content
+        Management</em> is the framework anchor: <q>PDTF v3 overlays embed document
+        attachments throughout: TA10 fittings &amp; contents, leasehold packs, EPCs,
+        plans, photographs. The base <code>pdtf:Document</code> type carries
+        unstructured payloads alongside structured claims.</q>
+      </p>
+
+      <p>
+        The regulatory anchors are <strong>UK GDPR Article 5(1)(e)</strong> —
+        storage limitation: personal data kept in a form which permits
+        identification of data subjects for no longer than necessary — and
+        <strong>UK GDPR Article 5(1)(f)</strong> — integrity and confidentiality:
+        personal data processed in a manner that ensures appropriate security
+        including protection against unauthorised or unlawful processing and
+        against accidental loss, destruction or damage, using appropriate
+        technical or organisational measures. Both apply to every attachment that
+        carries personal data, which in practice is almost all of them. For
+        attachments that do not carry personal data (a redacted title plan, a
+        public EPC) the security limb still applies; the storage limit relaxes.
+      </p>
+
+      <p>
+        The framework anchor for handling discipline is the <strong>Generally
+        Accepted Recordkeeping Principles (GARP)</strong> — accountability,
+        integrity, protection, compliance, availability, retention, disposition,
+        transparency. ADR 0001's reassessment (§<em>Document &amp; Content
+        Management</em>) observes that <q>GARP overlaps almost perfectly with
+        OPDA's own published principles in <code>governance.md</code> §1</q>, and
+        promotes the framework into scope on that basis. This page therefore
+        reuses GARP as the cross-cutting policy spine: every per-type subsection
+        below maps to the GARP principles even where it does not name them.
+      </p>
+
+      <p>
+        Scope: every overlay in <code>source/03-standards/schemas/src/schemas/v3/overlays/</code>
+        that issues or anticipates issuing attachments alongside structured claims.
+        Out of scope: OPDA's institutional records (markdown, transcripts,
+        briefings) which are governed by the Wave 3 GARP-for-records strand;
+        attachment handling inside member firms' internal systems before issuance
+        or after disposal (which remains a member-firm matter, with this page
+        providing a default that can be adopted).
+      </p>
+
+      <h2 id="attachment-types">2. The eleven attachment types</h2>
+
+      <p>
+        The eleven attachment-bearing overlay families are listed below, in the
+        same order as the stub. Each subsection captures: what the attachment is,
+        which overlay it originates in, file formats that have appeared in
+        production, the integrity pattern, a retention <em>shape</em>, and a
+        consent <em>shape</em>. Specific retention durations, mandatory format
+        whitelists, and consent UX flows are flagged as <strong>WG decisions</strong>
+        — they are not proposed here.
+      </p>
+
+      <p>
+        The integrity pattern is universal across all eleven families and is
+        therefore restated once here rather than repeated per type: every
+        attachment is content-addressable (hashed before issuance); the hash is
+        embedded in the issuing Verifiable Credential; the VC envelope signature
+        covers the hash. See §<a href="#cross-cutting">3. Cross-cutting policy</a>
+        for the full signing / integrity discussion, anchored on the
+        <a href="https://www.w3.org/TR/vc-data-model/">W3C VC Data Model</a>.
+      </p>
+
+      <h3 id="ta10">2.1 TA10 — Fittings &amp; Contents attachments</h3>
+
       <ul>
-        <li><strong>TA10 (Fittings &amp; Contents)</strong> — photographs, plans.</li>
-        <li><strong>TA6 (Property Information Form)</strong> — guarantees, certificates, planning permissions.</li>
-        <li><strong>TA7 (Leasehold Information Form)</strong> — lease pack, service-charge statements, insurance certificates.</li>
-        <li><strong>BASPI v5</strong> — material-information documents per NTSELAT guidance.</li>
-        <li><strong>NTS2 / NTSL2 (Sales / Lettings material info)</strong> — supporting documents.</li>
-        <li><strong>PIQ (Property Information Questionnaire)</strong> — surveyor attachments.</li>
-        <li><strong>RDS (Residential Development Survey)</strong> — survey reports.</li>
-        <li><strong>CON29R / LLC1 / CON29DW (searches)</strong> — local-authority and water-utility responses.</li>
-        <li><strong>FME1 (Mortgage Enquiries)</strong> — supporting financial documents.</li>
-        <li><strong>OC1 (Office Copies)</strong> — title plan, charges register PDFs.</li>
-        <li><strong>SR24 (Sustainability Report)</strong> — supporting evidence.</li>
+        <li><strong>What it is:</strong> photographs of fixtures and fittings; floor plans annotated to identify items included in the sale; supplementary inventories where the form's enumerated fields cannot capture the item.</li>
+        <li><strong>Originating overlay:</strong> <code>ta10.json</code> (Law Society TA10 Edition 3, Fittings and Contents Form).</li>
+        <li><strong>Typical file formats (production observed):</strong> JPEG and PNG for photographs; PDF for annotated plans; occasionally PDF/A for archival-grade plans where the conveyancer's case-management system enforces it.</li>
+        <li><strong>Integrity:</strong> as <a href="#cross-cutting">universal</a> — content hash embedded in the VC; signature over the VC envelope covers the hash.</li>
+        <li><strong>Retention <em>shape</em>:</strong> linked to the transaction lifecycle for the issuing firm — retention extends through the Limitation Act 1980 ceiling for contractual claims arising from the conveyance, which is the longest plausible window in which a dispute over fixtures could surface. <strong>WG decision:</strong> exact retention period in years and the trigger event (completion, registration, or grant of indemnity).</li>
+        <li><strong>Consent <em>shape</em>:</strong> consent is granted under the transaction grant — the seller authorises onward sharing for purposes incidental to completing the sale (showing the buyer, the buyer's solicitor, the lender's surveyor). Derivative uses (training data for AVM photograph-quality scoring, comparable-sales image datasets) require a separate consent. <strong>WG decision:</strong> consent UX and whether derivative consent is granular (per use-case) or compound (a single broader opt-in).</li>
       </ul>
 
-      <h2 id="file-formats">File-format requirements</h2>
-      <p><em>Content pending Technical WG.</em> Per attachment type — what file formats are accepted (PDF/A, signed PDF, JPEG/PNG/AVIF for images, GeoJSON for plans, etc.), max sizes, EXIF / metadata handling.</p>
+      <h3 id="ta6-ta7">2.2 TA6 and TA7 — Property and Leasehold Information attachments</h3>
 
-      <h2 id="signing">Signing and integrity</h2>
-      <p><em>Content pending Technical WG.</em> Whether the attachment must be signed by the issuer (and via what mechanism: detached JWS, embedded signature, manifest), and how integrity is verified by the holder / verifier.</p>
+      <ul>
+        <li><strong>What it is:</strong> guarantees (FENSA, GasSafe, electrical), planning permissions and decision notices, building regulation completion certificates, party-wall agreements (TA6); lease pack, service-charge statements, buildings insurance certificates, head-lease where applicable (TA7).</li>
+        <li><strong>Originating overlays:</strong> <code>ta6.json</code> (Law Society TA6 Edition 4, Property Information Form) and <code>ta7.json</code> (Law Society TA7 Edition 3, Leasehold Information Form).</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF (overwhelmingly), with some legacy TIFF and scanned-image PDF for older certificates; native PDF where the issuing body publishes it (FENSA, local authority planning portals).</li>
+        <li><strong>Integrity:</strong> universal — see §<a href="#cross-cutting">3</a>. Additional note: where the issuing authority itself signs the PDF (HMLR signed title plans, FENSA certificates with embedded signatures), the original issuer's signature should be preserved alongside the OPDA-overlay signature.</li>
+        <li><strong>Retention <em>shape</em>:</strong> matched to the longer of (a) the Limitation Act 1980 contractual ceiling for the conveyance, and (b) the natural retention period for the underlying document (insurance certificates retain through the policy term; planning notices retain through the implementation window; lease packs retain through the lease term). <strong>WG decision:</strong> per-document-class retention rules and how multi-anchor retention is captured in the issuer's retention schedule.</li>
+        <li><strong>Consent <em>shape</em>:</strong> transaction grant covers onward sharing with the chain (buyer, buyer's solicitor, lender, freeholder for TA7); third-party data (e.g., a previous owner named on a planning notice, a contractor named on a guarantee) is incidental to the document and is shared on a necessary-for-the-transaction basis under UK GDPR Article 6(1)(b) or (f). <strong>WG decision:</strong> whether third-party data inside attachments requires a separate notification flow when it materially exceeds what the transaction needs.</li>
+      </ul>
 
-      <h2 id="retention">Retention guidance for issuers</h2>
-      <p><em>Content pending C&amp;R WG.</em> How long the issuer should retain the original attachment, what triggers disposal, GDPR alignment.</p>
+      <h3 id="baspi5">2.3 BASPI v5 — Material-information attachments</h3>
 
-      <h2 id="consent">Consent semantics for consumers</h2>
-      <p><em>Content pending C&amp;R WG.</em> What the consumer (homeowner) is consenting to when an attachment flows through the framework — re-use scope, sharing rules, opt-out mechanics.</p>
+      <ul>
+        <li><strong>What it is:</strong> material-information documents required by NTSELAT's Parts A, B, and C guidance (tenure proof, council-tax band, EPC, restrictive covenants, flood-risk statements, accessibility statements, parking arrangements).</li>
+        <li><strong>Originating overlay:</strong> <code>baspi5.json</code> (BASPI v5 — enhanced Buyers and Sellers Property Information). The earlier <code>baspi4.json</code> family carries a narrower set of the same kinds of attachments.</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for documents; image formats (JPEG / PNG) for photographs; GeoJSON or PDF for flood-risk maps depending on the source authority's publishing format.</li>
+        <li><strong>Integrity:</strong> universal. Many BASPI v5 attachments are themselves issued by an authoritative third party (EPC from a registered assessor, flood-risk statement from the Environment Agency); the third party's original signature should be retained where present, and the OPDA-overlay signature attests only to the integrity of the attachment as bundled, not to the underlying authority's claims.</li>
+        <li><strong>Retention <em>shape</em>:</strong> Limitation Act 1980 ceiling, plus the natural lifetime of the material-information document (EPCs are valid for ten years from issuance; council-tax bands persist until revaluation). Material information forms part of the contractual record and so retains for the duration of any plausible NTSELAT enforcement window. <strong>WG decision:</strong> NTSELAT-aligned retention floor versus the broader contractual ceiling, and how the two interact when they diverge.</li>
+        <li><strong>Consent <em>shape</em>:</strong> transaction grant covers onward sharing for marketing-the-property purposes (NTSELAT's primary use-case for material information is informing prospective buyers before they make an offer). Derivative analytical use (NTSELAT compliance benchmarking, regulator-facing aggregate reporting) is plausibly within the public-interest basis under UK GDPR Article 6(1)(e) but should not be assumed without WG sign-off. <strong>WG decision:</strong> derivative-use basis and whether aggregate reporting requires explicit consent or relies on legitimate interests / public interest.</li>
+      </ul>
+
+      <h3 id="nts">2.4 NTS / NTS2 / NTSL / NTSL2 — Consumer-protection attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> supporting documents for the National Trading Standards material-information regime — overlapping with BASPI's set but framed by the consumer-protection lens (specialist-issues documentation for asbestos, Japanese knotweed, dry rot, subsidence; flood-defence statements; leasehold-fee schedules in the NTSL families).</li>
+        <li><strong>Originating overlays:</strong> <code>nts.json</code> (NTS 2023), <code>nts2.json</code> (NTS 2025), <code>ntsl.json</code> (NTS Leasehold 2023), <code>ntsl2.json</code> (NTS Leasehold 2025). The <code>extensions/</code> directory carries the modular specialist-issues overlays (<code>as.json</code> asbestos, <code>jk.json</code> Japanese knotweed, <code>dr.json</code> dry rot, <code>sb.json</code> subsidence, <code>hs.json</code> health &amp; safety) that NTS2 references; each may carry its own supporting attachments.</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for specialist reports (asbestos surveys, structural reports, treatment guarantees); JPEG / PNG for photographs documenting the issue.</li>
+        <li><strong>Integrity:</strong> universal. Specialist-issues attachments are often signed by an accredited specialist (asbestos surveyor, structural engineer); the specialist's signature should be preserved alongside the OPDA-overlay signature.</li>
+        <li><strong>Retention <em>shape</em>:</strong> aligned with the latent-defect window for the underlying issue (asbestos and structural defects can manifest decades after disclosure; treatment guarantees specify their own retention windows). The Limitation Act 1980 ceiling applies for contractual claims; statutory limitation for tort claims extends further. <strong>WG decision:</strong> whether the OPDA-published default retention shadows the specialist's own guarantee period, the contractual ceiling, or a longer floor.</li>
+        <li><strong>Consent <em>shape</em>:</strong> transaction grant covers onward sharing with the chain. Specialist-issues attachments may identify named professionals (the surveyor who diagnosed the issue, the contractor who treated it) — their data is incidental and shared on the same basis as TA6/TA7 third-party data. <strong>WG decision:</strong> aligned with the TA6/TA7 third-party-data decision above.</li>
+      </ul>
+
+      <h3 id="piq">2.5 PIQ — Property Information Questionnaire attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> attachments supporting the estate agent's pre-marketing property information questionnaire — photographs, floor plans, marketing materials, the agent's own due-diligence evidence.</li>
+        <li><strong>Originating overlay:</strong> <code>piq.json</code> (PIQ v3, Property Information Questionnaire).</li>
+        <li><strong>Typical file formats (production observed):</strong> JPEG / PNG / WebP for photographs; PDF for floor plans and marketing brochures; occasionally video container formats for virtual tours.</li>
+        <li><strong>Integrity:</strong> universal. PIQ attachments are agent-issued and so the OPDA-overlay signature is typically the only signature present.</li>
+        <li><strong>Retention <em>shape</em>:</strong> shorter than the legal forms above — PIQ attachments are marketing artefacts, not contractual evidence. Retention follows the marketing-record retention default for the agent's accreditation body, with a floor aligned to the duration of the listing. <strong>WG decision:</strong> retention floor (listing duration plus a buffer) versus a fixed period after the listing's withdrawal or completion.</li>
+        <li><strong>Consent <em>shape</em>:</strong> the seller's consent to marketing the property includes consent to PIQ attachments being shared with portals (Rightmove, Zoopla, OnTheMarket), prospective buyers, and the agent's own marketing channels. Derivative use of photographs (the agent's own portfolio, training data for AI staging tools, comparable-sales image collections) requires a separate consent. <strong>WG decision:</strong> derivative-use granularity and whether photographs of identifiable interior detail (artwork, personal items) warrant a separate consent tier.</li>
+      </ul>
+
+      <h3 id="rds">2.6 RDS — Residential Development Survey attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> survey reports, condition-assessment narratives, photographs documenting building condition, drone imagery of roofs and external elevations, thermal-imaging output.</li>
+        <li><strong>Originating overlay:</strong> <code>rds.json</code> (Residential Development Survey).</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for the survey report itself; JPEG / PNG / TIFF for high-resolution photographs; thermal-imaging output in proprietary or PNG/TIFF format depending on the surveyor's equipment.</li>
+        <li><strong>Integrity:</strong> universal. Survey reports are signed by the issuing surveyor; the surveyor's signature should be preserved alongside the OPDA-overlay signature.</li>
+        <li><strong>Retention <em>shape</em>:</strong> long — survey findings remain relevant for the working life of the building element they describe (a roof survey informs decisions over decades). Surveyor professional-indemnity insurance typically requires retention of survey records for at least the limitation period for professional-negligence claims (six years from the date the cause of action accrues, extendable). <strong>WG decision:</strong> retention floor aligned with PI insurance practice, and whether OPDA's default exceeds the floor.</li>
+        <li><strong>Consent <em>shape</em>:</strong> transaction grant covers onward sharing with the chain and with subsequent surveyors who may rely on the previous report. Derivative use (training data for automated condition-assessment, comparable-survey benchmarking) requires a separate consent. <strong>WG decision:</strong> whether the surveyor or the seller is the appropriate consent party for derivative use, given that the report is the surveyor's intellectual property but the underlying property is the seller's.</li>
+      </ul>
+
+      <h3 id="searches">2.7 CON29R / LLC1 / CON29DW — Search attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> local-authority search responses (CON29R standard enquiries; LLC1 local land charges); water-utility search responses (CON29DW drainage and water); supporting documentation that authorities attach to their responses (planning decision notices, road-adoption maps, asset maps).</li>
+        <li><strong>Originating overlays:</strong> <code>con29R.json</code> (Local Authority Search 2019), <code>llc1.json</code> (Local Land Charges Search v2), <code>con29DW.json</code> (Drainage and Water Search). HMLR Official Copies (<code>oc1.json</code>) are covered separately in §2.9 — they share the "issued by a public authority" shape but the issuing authority and content are different.</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for the search response (authority-issued); PDF and GeoJSON for accompanying maps where the authority publishes machine-readable formats.</li>
+        <li><strong>Integrity:</strong> universal. Search responses are signed by the issuing authority (local council, water utility); the authority's signature should be preserved alongside the OPDA-overlay signature. Where the authority signs only the response narrative and not the accompanying maps, the OPDA-overlay signature should cover both.</li>
+        <li><strong>Retention <em>shape</em>:</strong> Limitation Act 1980 contractual ceiling, plus the natural lifetime of the underlying entries (a local land charge persists until removed from the register; a planning decision persists until implementation or lapse). Search responses are part of the conveyance contractual record and so retain through the conveyance limitation window. <strong>WG decision:</strong> aligned with the TA6 attachment retention decision.</li>
+        <li><strong>Consent <em>shape</em>:</strong> search responses are issued by public authorities and largely concern public-register information; consent considerations are weaker than for personal-data-rich attachments. Third-party personal data may appear (named owners on charge entries, named applicants on planning records) — handled on the same basis as TA6/TA7 third-party data. <strong>WG decision:</strong> minimal — aligned with TA6/TA7.</li>
+      </ul>
+
+      <h3 id="fme1-lpe1">2.8 FME1 / LPE1 — Management-enquiry attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> management company responses to freehold (FME1) or leasehold (LPE1) enquiries — service-charge accounts, reserve-fund statements, insurance schedules, building-safety case files (post-Building Safety Act 2022), major-works consultation notices.</li>
+        <li><strong>Originating overlays:</strong> <code>fme1.json</code> (Freehold Management Enquiries Edition 2) and <code>lpe1.json</code> (Leasehold Property Enquiries Edition 4).</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for financial statements, insurance schedules, and consultation notices; occasionally Excel / CSV for service-charge breakdowns where the managing agent publishes machine-readable data.</li>
+        <li><strong>Integrity:</strong> universal. Management-enquiry responses are signed by the managing agent or freeholder; their signature should be preserved alongside the OPDA-overlay signature.</li>
+        <li><strong>Retention <em>shape</em>:</strong> aligned with TA7 leasehold-pack retention (lease term plus the contractual ceiling); building-safety case files for relevant buildings retain through the statutory floor set by the Building Safety Act 2022. <strong>WG decision:</strong> Building-Safety-Act floor for the in-scope subset, and how it interacts with the broader leasehold default.</li>
+        <li><strong>Consent <em>shape</em>:</strong> aligned with TA7. Service-charge data and insurance schedules contain limited personal data; building-safety files may contain more (named building-safety officers, occupier-specific safety assessments) and warrant tighter handling. <strong>WG decision:</strong> whether building-safety files warrant a tighter consent tier than the broader leasehold default.</li>
+      </ul>
+
+      <h3 id="oc1">2.9 OC1 — Office Copy attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> HMLR office copy entries — official copies of the register, title plan, charges register; supporting documents referenced in the register (filed deeds, restrictions, leases held by HMLR).</li>
+        <li><strong>Originating overlay:</strong> <code>oc1.json</code> — HMLR Official Copies of the Register. The schema's own fields (<code>ocSummaryData</code>, <code>ocRegisterData</code>, <code>officialCopyDateTime</code>, <code>proprietorship</code>, <code>registerEntryIndicators</code>) are HMLR title-register concepts. <em>Upstream note:</em> the schemas <code>README.md</code> currently labels this overlay "Optional Enquiries of Local Authority v21" — that label is inconsistent with the schema content and should be corrected upstream; flagged for the Technical WG.</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF (HMLR's published format for official copies); occasionally the underlying lease as scanned PDF where the lease is held by HMLR rather than the leaseholder.</li>
+        <li><strong>Integrity:</strong> universal. Office copies are signed and dated by HMLR as the issuing authority; HMLR's signature should be preserved alongside the OPDA-overlay signature. The dated nature of office copies (an "as at" date) is material to integrity — the attachment's freshness is part of its value and should be surfaced in the VC metadata.</li>
+        <li><strong>Retention <em>shape</em>:</strong> office copies are by their nature point-in-time snapshots; HMLR's own retention practice is the upstream reference. The "as at" date plus a refresh window (a fresh office copy is typically obtained at exchange or completion) drives the operational retention. <strong>WG decision:</strong> retention of stale office copies — how long the original snapshot retains after a fresher copy supersedes it, and whether superseded copies are kept for audit or disposed.</li>
+        <li><strong>Consent <em>shape</em>:</strong> register entries are public; consent considerations are weaker than for personal-data-rich attachments. Filed deeds and historic leases may contain third-party personal data (named parties to historic transfers) — handled on the same basis as TA6/TA7 third-party data. <strong>WG decision:</strong> aligned with TA6/TA7; minimal.</li>
+      </ul>
+
+      <h3 id="sr24">2.10 SR24 — Sustainability Report attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> supporting evidence for the Sustainability Report — energy-use data, smart-meter exports, retrofit records, embodied-carbon assessments, accreditation certificates (Passivhaus, BREEAM, EnerPHit), green-mortgage compliance documentation.</li>
+        <li><strong>Originating overlay:</strong> <code>sr24.json</code> (Sustainability Report 2024).</li>
+        <li><strong>Typical file formats (production observed):</strong> PDF for reports and certificates; CSV / JSON for smart-meter and energy-use time series; PDF for accreditation certificates issued by certification bodies.</li>
+        <li><strong>Integrity:</strong> universal. Certification-body documents are signed by the issuing body; their signature should be preserved alongside the OPDA-overlay signature. Smart-meter exports raise an additional integrity question — they originate from a meter or a data-aggregator and the chain of integrity from meter to attachment is non-trivial. <strong>WG decision:</strong> whether smart-meter attachments require an additional provenance chain beyond the universal pattern (e.g., meter-signed export, aggregator-signed envelope).</li>
+        <li><strong>Retention <em>shape</em>:</strong> aligned with the asset-lifetime nature of sustainability information — accreditation certificates retain through their validity period (EPC ten-year cycle; Passivhaus typically not time-limited); retrofit records retain through the working life of the installed measure. <strong>WG decision:</strong> retention floors per evidence class, and whether smart-meter time series have a shorter window than the certificates they support.</li>
+        <li><strong>Consent <em>shape</em>:</strong> transaction grant covers onward sharing with the chain and with green-mortgage lenders or insurers. Derivative use (sustainability benchmarking, net-zero policy modelling, retrofit-incentive design) is plausibly within the public-interest basis but should not be assumed without WG sign-off. <strong>WG decision:</strong> derivative-use basis for sustainability data, including whether anonymised aggregate use needs an explicit consent flag.</li>
+      </ul>
+
+      <h3 id="identity">2.11 Identity-verification attachments</h3>
+
+      <ul>
+        <li><strong>What it is:</strong> KYC / identity-verification artefacts — government-issued ID images, address-verification documents, source-of-funds evidence, anti-money-laundering check outputs. Cited in the page lead as one of the in-scope attachment families.</li>
+        <li><strong>Originating overlays:</strong> not a single named overlay; identity-verification attachments flow through several overlays as supporting evidence for issuer KYC (per <a href="/governance/data-security">Data Security framework</a> §<em>Issuer onboarding</em>) and for transaction-party identity verification under the AML regime.</li>
+        <li><strong>Typical file formats (production observed):</strong> JPEG / PNG for ID images; PDF for proof-of-address documents; PDF or JSON for AML-check outputs from electronic-verification providers.</li>
+        <li><strong>Integrity:</strong> universal. Where the AML provider signs their output (Onfido, Veriff, HooYu and similar typically do), the provider's signature should be preserved alongside the OPDA-overlay signature.</li>
+        <li><strong>Retention <em>shape</em>:</strong> the most sensitive of all attachment families; the strictest UK GDPR Article 5(1)(e) discipline applies. The Money Laundering Regulations 2017 set a five-year retention floor for AML records after the end of the business relationship; UK GDPR storage-limitation principles set the ceiling against the same window. <strong>WG decision:</strong> retention exactly aligned with the MLR 2017 floor, or shorter where the transaction does not engage the AML regime; disposal trigger; and whether identity attachments are held in a separate retention silo from transaction attachments.</li>
+        <li><strong>Consent <em>shape</em>:</strong> consent for identity verification is granted explicitly at the point of KYC and is purpose-bound (verifying the party's identity for the transaction). Derivative use is highly constrained — biometric and identity data attract special-category-data protections under UK GDPR Article 9 where biometric features are used to uniquely identify a person. <strong>WG decision:</strong> hard line on derivative use of identity attachments; consent UX for identity data; whether OPDA publishes a model identity-verification consent template.</li>
+      </ul>
+
+      <h2 id="cross-cutting">3. Cross-cutting policy</h2>
+
+      <p>
+        Five cross-cutting policy themes apply across all eleven attachment
+        families. Each is defined in <em>shape</em> below; specifics are flagged
+        as WG decisions.
+      </p>
+
+      <h3 id="file-formats">3.1 File-format requirements</h3>
+
+      <p>
+        <strong>Shape:</strong> OPDA publishes and maintains a per-attachment-type
+        format whitelist — what formats may be carried for each type, including
+        version constraints where they matter (PDF/A-2 versus generic PDF;
+        progressive versus baseline JPEG for high-resolution photographs). Issuers
+        verify against the whitelist before issuance and the verification result
+        is part of the attachment metadata. Holders and verifiers can refuse an
+        attachment whose declared format does not match the whitelist or whose
+        actual bytes do not match the declared format.
+      </p>
+
+      <p>
+        <strong>Rationale:</strong> a maintained whitelist gives downstream
+        consumers (lenders, conveyancers, portals) a predictable surface to
+        implement against; an open-ended <q>any format the issuer chooses</q>
+        approach pushes integration cost onto every consumer and creates a long
+        tail of edge-case parsing bugs that are unfit for a trust framework.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — file-format whitelist contents</div>
+        <p>
+          The actual whitelist for each attachment type is a Technical WG
+          decision. This page does not propose specific format lists beyond the
+          <q>typical file formats (production observed)</q> notes per type in
+          §<a href="#attachment-types">2</a>, which describe current practice
+          rather than future policy. The Technical WG should consider: PDF/A
+          versus generic PDF for archival-grade documents; image-format
+          standardisation (JPEG, PNG, WebP, AVIF); whether GeoJSON or PDF is
+          preferred for spatial data; how to evolve the whitelist as formats
+          gain or lose support.
+        </p>
+      </div>
+
+      <h3 id="signing">3.2 Signing and integrity (the universal pattern)</h3>
+
+      <p>
+        Every attachment in every overlay follows the same integrity pattern:
+      </p>
+
+      <ol>
+        <li><strong>Content addressing.</strong> The attachment is hashed (a strong cryptographic hash — SHA-256 is the current floor) before issuance. The hash uniquely identifies the byte-exact attachment; any modification produces a different hash.</li>
+        <li><strong>Hash embedded in the VC.</strong> The issuing Verifiable Credential carries the hash as a claim, alongside the structured claims the attachment supports. The attachment itself may be embedded (base64 in the VC payload) or referenced by URL; either way, the hash binds the VC to the bytes.</li>
+        <li><strong>VC envelope signature.</strong> The issuer signs the VC under the standard PDTF signing pattern (see <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance</a> §2.B Technical Layer for the broader signing context). The signature therefore covers the hash, and so transitively covers the attachment bytes.</li>
+        <li><strong>Upstream signatures preserved.</strong> Where the attachment is itself signed by an authoritative third party (HMLR for office copies, FENSA for guarantees, an AML provider for identity-verification output, a surveyor for a survey report, a certifying body for an accreditation certificate), the third-party signature is preserved unchanged inside the attachment bytes. The OPDA-overlay signature attests to the integrity of the attachment as bundled; the third-party signature continues to attest to the underlying authority's claims.</li>
+        <li><strong>Verification.</strong> A verifier checks the OPDA-overlay signature against the issuer's DID; verifies the embedded hash against the attachment bytes; and, where present, verifies the upstream third-party signature against its own trust anchor.</li>
+      </ol>
+
+      <p>
+        The pattern is anchored on the
+        <a href="https://www.w3.org/TR/vc-data-model/">W3C VC Data Model</a> and
+        is consistent with the PDTF Technical Layer (DIDs, VCs, JSON-LD proofs)
+        defined in <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance §2.B</a>.
+        It applies uniformly across all eleven attachment families and is the
+        reason §<a href="#attachment-types">2</a> does not repeat it per type.
+      </p>
+
+      <h3 id="retention">3.3 Retention</h3>
+
+      <p>
+        <strong>Shape:</strong> UK GDPR Article 5(1)(e) — storage limitation —
+        is the primary regulatory anchor: <q>kept in a form which permits
+        identification of data subjects for no longer than is necessary for the
+        purposes for which the personal data are processed</q>. The
+        <strong>Limitation Act 1980</strong> sets contractual and tortious
+        limitation periods (six years for simple contract; twelve years for
+        deeds; longer in latent-defect tort cases) and so provides a ceiling
+        beyond which retention is hard to justify on a litigation-readiness
+        basis. The <strong>Land Registration Act 2002</strong> sets parallel
+        registration-related retention considerations for the title-data
+        subset. <strong>HMLR retention practice</strong> is the upstream
+        reference for register-derived attachments. The <strong>Money
+        Laundering Regulations 2017</strong> set a five-year floor for AML
+        records, which applies to the identity-verification family.
+      </p>
+
+      <p>
+        The general retention shape: <em>retain only as long as necessary;
+        align with the natural lifetime of the underlying obligation
+        (contractual, statutory, or asset-life); dispose on a defined trigger
+        with an audit trail</em>. Specific durations and triggers are deferred
+        to the C&amp;R WG.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — retention periods per attachment type</div>
+        <p>
+          Specific retention durations (in years), trigger events (completion,
+          registration, indemnity grant, listing withdrawal, certificate
+          lapse), and the interaction between the Limitation Act ceiling and
+          asset-lifetime floors are a Compliance &amp; Risk WG decision. The
+          per-type <em>shapes</em> in §<a href="#attachment-types">2</a>
+          identify which anchors are in play for each type; the C&amp;R WG
+          turns those shapes into numbers.
+        </p>
+      </div>
+
+      <h3 id="consent">3.4 Consent</h3>
+
+      <p>
+        <strong>Shape:</strong> the consent granted by a data subject when they
+        authorise a PDTF transaction covers all attachments <em>necessary to
+        complete the transaction</em> — sharing with the chain (buyer, seller,
+        their solicitors, the lender, the freeholder where applicable),
+        sharing with regulators where compulsion or public-interest bases
+        apply, and sharing with platforms acting as data processors under
+        Article 28 controller-processor agreements. <em>Derivative uses</em> —
+        analytics, comparable-sales training data, AI model training, public
+        research, internal benchmarking — require additional consent under a
+        separate consent flow. Identity-verification attachments are
+        purpose-bound and carry the strictest derivative-use restriction
+        (§<a href="#identity">2.11</a>).
+      </p>
+
+      <p>
+        The transaction-grant / derivative-grant split mirrors UK GDPR's
+        purpose-limitation principle (Article 5(1)(b)) — personal data
+        collected for specified, explicit and legitimate purposes shall not be
+        further processed in a manner that is incompatible with those
+        purposes. New purposes need a new lawful basis (consent, legitimate
+        interests, or one of the other Article 6 / 9 bases as appropriate).
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — consent UX and granularity</div>
+        <p>
+          The consent UX (where consent is captured, how it is surfaced to the
+          data subject, what default opt-ins exist), the granularity of
+          derivative-use consent (single broad opt-in versus per-use opt-in),
+          the handling of consent withdrawal and its propagation across
+          derivative copies, and whether OPDA publishes a model consent
+          template are Compliance &amp; Risk WG decisions. This page proposes
+          only the transaction-grant / derivative-grant split.
+        </p>
+      </div>
+
+      <h3 id="cross-border">3.5 Cross-border transfer</h3>
+
+      <p>
+        <strong>Shape:</strong> attachments containing personal data and
+        flowing to recipients outside the UK engage UK GDPR Chapter V transfer
+        rules. The default transfer mechanisms (UK-adequacy decisions for EEA
+        countries; UK International Data Transfer Agreement or the UK Addendum
+        to EU SCCs for non-adequate jurisdictions; binding corporate rules for
+        multinational member firms; specific derogations under Article 49
+        where transfer is necessary for the performance of a contract) all
+        apply unchanged. Per-attachment additional disciplines: identity
+        attachments warrant a stricter transfer review (special-category
+        biometric data); building-safety-case attachments require careful
+        handling where international parties are involved post-Building
+        Safety Act 2022.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — cross-border default and exceptions</div>
+        <p>
+          Whether OPDA publishes a default transfer-mechanism preference
+          (e.g., IDTA-first for non-adequate destinations), how member firms
+          report cross-border transfer arrangements as part of their
+          conformance reporting, and whether some attachment families (notably
+          identity-verification) carry a default no-international-transfer
+          posture are Compliance &amp; Risk WG decisions.
+        </p>
+      </div>
+
+      <h2 id="al-integrity">4. Assurance Level × Attachment integrity</h2>
+
+      <p>
+        The four PDTF Assurance Levels (AL1–AL4, defined in
+        <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance §5</a>
+        and recapitulated in ADR 0001's Wave 2 §<em>Maturity-based
+        accreditation</em>) describe the trustworthiness of the issuing party
+        for a structured claim. The same scale can be applied as a floor for
+        attachment-integrity controls — an attachment carried under an AL4
+        claim should not have weaker integrity than the claim itself.
+      </p>
+
+      <p>
+        <strong>Proposed shape:</strong>
+      </p>
+
+      <ul>
+        <li><strong>AL1 (self-asserted):</strong> the universal integrity pattern applies (content hash; VC envelope signature). The attachment may be supplied by the data subject themselves; no upstream third-party signature is required. Suitable for marketing photographs, seller-supplied floor plans, seller-uploaded EPC PDFs.</li>
+        <li><strong>AL2 (accredited issuer):</strong> AL1 plus the issuer is an accredited PDTF participant. The OPDA-overlay signature attests to the issuer's accreditation. Suitable for agent-issued PIQ attachments, conveyancer-issued TA6/TA7 attachments where the conveyancer is collating but not authoring the underlying documents.</li>
+        <li><strong>AL3 (accredited issuer with extra controls, or proxy authority):</strong> AL2 plus the issuer has either operationalised additional integrity controls (e.g., a documented attachment-provenance log) or is acting as proxy for the authoritative party. Suitable for AML-provider attachments under a regulated relationship; for surveyor-issued RDS attachments where the surveyor's PI insurance and accreditation backstop the integrity claim.</li>
+        <li><strong>AL4 (official primary authority):</strong> AL3 plus the attachment is issued by the authoritative party themselves and carries that party's signature (preserved alongside the OPDA-overlay signature). Suitable for HMLR office copies, local-authority search responses, certification-body accreditation certificates, FENSA-signed guarantees, Environment-Agency-signed flood statements.</li>
+      </ul>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — AL-to-control mapping</div>
+        <p>
+          The specific control set behind each AL floor — what counts as
+          <q>additional integrity controls</q> at AL3, what evidence backs an
+          AL4 attribution, how a downgrade triggers (e.g., an AL4 attachment
+          loses its upstream signature in transit) is handled — is a Technical
+          WG decision in coordination with the Accreditation Directory
+          (<a href="/governance/accreditation-directory">/governance/accreditation-directory</a>,
+          per <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>)
+          which scores attachment-integrity capability at the firm level.
+        </p>
+      </div>
+
+      <h2 id="disposal">5. Disposal and revocation</h2>
+
+      <p>
+        Attachments do not live forever. The GARP <em>disposition</em>
+        principle and UK GDPR's storage-limitation principle both require
+        defined disposal practices. PDTF attachment disposal has four
+        triggering scenarios:
+      </p>
+
+      <ol>
+        <li><strong>Transaction completes normally.</strong> Retention clocks start from the completion event; disposal happens at the per-type retention horizon (§<a href="#retention">3.3</a>).</li>
+        <li><strong>Transaction rescinded or aborts before completion.</strong> Attachments retain through any limitation window for claims arising from the aborted transaction, then dispose. Some attachments (PIQ marketing artefacts) may dispose earlier; some (identity-verification under the MLR 2017 five-year floor) retain regardless of completion outcome.</li>
+        <li><strong>Underlying VC revoked.</strong> Where the issuing VC is revoked (the issuer discovers an error, the issuer is itself de-accredited), the attachments associated with that VC are flagged in the status list and disposal is triggered for any holder who relied on the revoked VC.</li>
+        <li><strong>Consent withdrawn.</strong> Where the data subject withdraws derivative-use consent (§<a href="#consent">3.4</a>), derivative copies dispose under the consent-withdrawal window; the transaction-grant copies persist for their natural lifetime.</li>
+      </ol>
+
+      <p>
+        Revocation propagation: when an attachment is flagged for disposal,
+        the disposal signal needs to reach every party who has a derivative
+        copy (firm-held, partner-held, search-index cached, training-corpus
+        included). The default mechanism is the PDTF status list (W3C Status
+        List 2021 or equivalent, per
+        <a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance §2.B</a>);
+        derivative-copy holders are expected to honour the disposal signal
+        within a defined notification window.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">WG decision — disposal windows and notification chains</div>
+        <p>
+          Specific disposal windows after each trigger, the notification SLA
+          for derivative-copy holders, how disposal is evidenced (a disposal
+          attestation? a hash-of-deletion?), and how training-corpus inclusion
+          is reconciled with disposal (model weights cannot be selectively
+          unlearned without retraining) are Compliance &amp; Risk WG decisions
+          with Technical WG input on the propagation mechanism.
+        </p>
+      </div>
+
+      <h2 id="auditability">6. Auditability</h2>
+
+      <p>
+        Every attachment event — issuance, access, transfer, derivative-copy
+        creation, revocation, disposal — generates an audit-log entry per the
+        Data Security framework's audit-logging discipline (cross-link:
+        <a href="/governance/data-security#policy-checklist-audit">/governance/data-security §Policy + checklist + audit profile</a>).
+        Audit entries carry: the attachment hash, the event type, the actor
+        (issuer DID, holder DID, verifier DID, or processor identifier), the
+        timestamp, and the lawful basis or consent reference under which the
+        event occurred.
+      </p>
+
+      <p>
+        Audit logs are themselves attachments-like — they retain through the
+        longer of (a) the underlying attachment's retention window and (b) the
+        statutory audit-retention floor for the issuer's regulated activity.
+        Audit logs for identity-verification events retain through the MLR
+        2017 five-year floor at minimum. Audit-log integrity follows the same
+        universal pattern (§<a href="#signing">3.2</a>).
+      </p>
+
+      <p>
+        Verifier-side audit: a verifier who relies on an attachment to make a
+        decision (a lender approving a mortgage on the strength of an EPC
+        attachment; a conveyancer relying on an office-copy attachment) is
+        expected to record the verification event such that the decision can
+        be reconstructed. This page does not mandate verifier-side audit
+        formats; it cross-references the Data Security framework's audit
+        profile.
+      </p>
+
+      <h2 id="governance">7. Governance, roles, and review</h2>
+
+      <p>
+        Three role groups own this page's content, mirroring the broader PDTF
+        operational-functions structure
+        (<a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance §3</a>):
+      </p>
+
+      <ul>
+        <li><strong>Technical WG</strong> (PDTF governance §3.B) owns the technical anchors: the universal integrity pattern (§<a href="#signing">3.2</a>), the file-format whitelist machinery (§<a href="#file-formats">3.1</a>), the schema hooks that surface attachment metadata in the overlays, and the AL-to-control mapping (§<a href="#al-integrity">4</a>). The overlays themselves are Technical WG artefacts.</li>
+        <li><strong>Compliance &amp; Risk WG</strong> (PDTF governance §3.C) owns the retention rules (§<a href="#retention">3.3</a>), the consent policy (§<a href="#consent">3.4</a>), the cross-border-transfer policy (§<a href="#cross-border">3.5</a>), the disposal windows (§<a href="#disposal">5</a>), and the data-protection impact assessment for attachment handling. Per ADR 0001 Wave 2, the C&amp;R WG's remit explicitly includes UK GDPR Article 5(1)(d) accuracy obligations and the broader retention / consent agenda.</li>
+        <li><strong>Domain Data Stewards</strong> (per <a href="/governance/data-stewardship">/governance/data-stewardship</a>) are responsible for context-specific attachment guidance: e.g., a leasehold-bounded-context steward maintains the TA7 / LPE1 / FME1 attachment guidance; a search-bounded-context steward maintains the CON29R / LLC1 / CON29DW guidance. Stewards take the Technical-WG and C&amp;R-WG outputs and turn them into domain-specific working guidance that lives close to the practitioners who issue the attachments.</li>
+      </ul>
+
+      <p>
+        <strong>Annual review:</strong> the policy is reviewed annually as part
+        of the EC meeting nearest the AGM (per ADR 0001 §<em>Newly resolved
+        during review</em> item 4, which establishes the AGM-adjacent EC
+        meeting as the standing slot for governance reviews). The annual
+        review covers: regulatory change (UK GDPR updates, MLR amendments,
+        new sector-specific retention obligations), schema change (new
+        attachment-bearing overlays added since the previous review), and
+        evidence change (what audit data has accumulated and what it implies
+        for the policy).
+      </p>
+
+      <p>
+        <strong>Ad-hoc review:</strong> the policy may be revised mid-cycle on
+        the trigger of (a) a material UK GDPR or regulator action affecting
+        attachment handling, (b) a new attachment-bearing overlay reaching
+        production, or (c) an incident affecting attachment integrity in the
+        wild. Ad-hoc revisions follow the PDTF change-management SOP
+        (<a href="/resource?path=source/03-standards/trust-framework/docs/governance.md">PDTF governance §6</a>).
+      </p>
+
+      <h2 id="open-questions">8. Open questions for WG kick-off</h2>
+
+      <p>
+        The following questions are tabled for the Technical WG kick-off, with
+        Compliance &amp; Risk WG and Domain Data Stewards in attendance.
+      </p>
+
+      <ol>
+        <li><strong>Whitelist governance.</strong> Who maintains the file-format whitelist, what is its change cadence, and how is it versioned? Options span (a) Technical WG owns the whitelist as a versioned artefact under the schemas repository; (b) each overlay owns its own whitelist as part of the overlay schema; (c) the whitelist is published as a separate companion document to this page.</li>
+        <li><strong>Retention anchor preference.</strong> Where the Limitation Act ceiling and the asset-lifetime floor diverge (commonly for survey reports, building-safety files, accreditation certificates), which anchor wins? Possible answers: the longer wins (most defensive); the asset-lifetime wins (most aligned with the underlying obligation); a per-type call.</li>
+        <li><strong>Derivative-consent granularity.</strong> Single broad opt-in (transaction-incidental derivative use only) versus per-use opt-in (analytics, training, benchmarking, research as separate switches) versus a hybrid (broad opt-in plus a named-exception list for high-risk uses like AI training).</li>
+        <li><strong>Disposal evidence.</strong> What does <q>disposal happened</q> evidence look like, given that genuine cryptographic deletion across all derivative copies is hard (training corpora, search caches, partner archives)? Options: a disposal attestation signed by the disposing party; a hash-of-deletion entry in the status list; a third-party-auditable disposal log; or an acknowledgement that disposal is best-effort and the policy honours that limitation.</li>
+        <li><strong>Identity-attachment isolation.</strong> Should identity-verification attachments live in a separate retention silo with stricter access controls (different DIDs, different status lists, different verifier-side handling) — and if so, does that break the unified verification flow that holders and verifiers currently rely on?</li>
+      </ol>
 
       <h2 id="related">Related</h2>
       <ul>
-        <li><a href="/governance/data-security">Data security framework</a> — signing and integrity requirements draw on the security workstream.</li>
-        <li><a href="/governance/data-quality">Data quality framework</a> — attachment quality (legibility, completeness) is a DQ concern.</li>
-        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — overlay-attachment capabilities are scored here.</li>
-        <li><a href="/modelling/overlays">Overlays</a> — the technical reference for each overlay's structure.</li>
+        <li><a href="/governance/data-security">Data security framework</a> — signing and integrity requirements draw on the security workstream; audit-logging discipline (§<a href="#auditability">6</a>) cross-references the Data Security audit profile.</li>
+        <li><a href="/governance/data-quality">Data quality framework</a> — attachment quality (legibility, completeness, format conformance) is a DQ concern handled by the C&amp;R WG's parallel DQ workstream.</li>
+        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — overlay-attachment capabilities are scored here (per <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a>); the AL-to-control mapping (§<a href="#al-integrity">4</a>) feeds the Directory's capability dimension.</li>
+        <li><a href="/modelling/overlays">Overlays</a> — the technical reference for each overlay's structure; the eleven attachment families in §<a href="#attachment-types">2</a> map one-to-one onto entries here.</li>
+        <li><a href="/governance/data-stewardship">Data stewardship</a> — Domain Data Stewards take this page's cross-cutting policy and turn it into context-specific working guidance for practitioners.</li>
+        <li><a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> — commissions this work as part of Wave 2 (§<em>Resolved during review</em> item 6).</li>
       </ul>
+
+      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <p>
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Technical WG (with C&amp;R input on retention + consent)</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+      </p>
+
+      <section>
+        <h3>Purpose</h3>
+        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Activities</h3>
+        <p><em>Content pending — Technical WG (with C&amp;R input on retention + consent) to author.</em></p>
+      </section>
+      <section>
+        <h3>Deliverables</h3>
+        <p><em>Content pending — Technical WG (with C&amp;R input on retention + consent) to author.</em></p>
+      </section>
+      <section>
+        <h3>Roles</h3>
+        <p><em>Content pending — see <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> for current statement.</em></p>
+      </section>
+      <section>
+        <h3>Metrics</h3>
+        <p><em>Content pending — Technical WG (with C&amp;R input on retention + consent) to author.</em></p>
+      </section>
+      <section>
+        <h3>Maturity</h3>
+        <p><em>Content pending — Technical WG (with C&amp;R input on retention + consent) to author.</em></p>
+      </section>
 </Layout>
+</content>
+</invoke>

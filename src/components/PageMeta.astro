@@ -4,10 +4,12 @@
  *
  *   <PageMeta category="Governance" updated="2026-05-17" />
  *   <PageMeta category="Section overview" variant="brand" updated="Draft · 2026-05-17" />
+ *   <PageMeta category="Operating Model" updated="2026-05-18" damaKa={["Data Governance"]} />
  *
- * The `category` pill defaults to the "accent" variant (terracotta).
- * `updated` is a free-text slot so callers can prefix "Draft · " or
- * similar status flags on the date.
+ * `damaKa` lists the DAMA-DMBOK2 Knowledge Area(s) the page serves, per
+ * ADR-0001 Wave 1 vocabulary alignment. Mapping source of truth:
+ * scripts/dama-ka-mapping.json. Omit for pages with no KA fit
+ * (landing pages, adoption/strategy narrative, 404, etc.).
  */
 interface Props {
   /** Pill text — typically the section name or page status (e.g. "Governance", "Section overview", "Stub"). */
@@ -16,10 +18,15 @@ interface Props {
   variant?: 'brand' | 'accent' | 'info' | 'success' | 'warn';
   /** Free text. Conventionally "Updated YYYY-MM-DD" or "Draft · Updated YYYY-MM-DD". */
   updated?: string;
+  /** DAMA-DMBOK2 Knowledge Area(s) this page serves. Per ADR-0001. */
+  damaKa?: string[];
 }
-const { category, variant = 'accent', updated } = Astro.props;
+const { category, variant = 'accent', updated, damaKa } = Astro.props;
 ---
 <div class="page-meta">
   <span class={`pill pill--${variant}`}>{category}</span>
   {updated && <span>{updated}</span>}
+  {damaKa && damaKa.length > 0 && (
+    <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · {damaKa.join(' · ')}</span>
+  )}
 </div>

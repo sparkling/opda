@@ -7,7 +7,7 @@ import Diagram from '@/components/Diagram.astro';
   title="Conformance &amp; certification scheme"
   description="How members prove they meet OPDA's standard. Two tiers: self-certification (live today) and planned technical conformance modelled on Open Banking."
 >
-<PageMeta category="Governance" updated="Draft · Updated 2026-05-17" />
+<PageMeta category="Governance" updated="Draft · Updated 2026-05-17" damaKa={["Data Governance", "Data Quality Management"]} />
 
       <h1>Conformance & certification scheme</h1>
       <p class="lead">
@@ -349,6 +349,40 @@ possible reapplication`"]:::proc
         <li><strong>Appeals + public notification (steps 8–10)</strong> — terminations follow a clear written process, an appeals route, and a public announcement of the outcome.</li>
         <li><strong>Reapplication and feedback loops (steps 11–12)</strong> — terminated members can be periodically re-evaluated for reapplication; learnings from each case feed back into the accreditation framework itself.</li>
       </ul>
+
+      <h2 id="directoryIntegration">Directory integration — Assurance Level × Capability (planned)</h2>
+
+      <p>
+        The Conformance Scheme on this page describes <em>how a firm becomes a
+        member</em>. ADR 0001 Wave 2 adds an orthogonal axis describing
+        <em>how a firm performs across its claimed capabilities</em>, published
+        quarterly in the <a href="/governance/accreditation-directory">Accreditation
+        Directory</a>. The two axes are designed to be read together:
+      </p>
+
+      <ul>
+        <li><strong>Assurance Level (this page)</strong> — per-claim. AL1 self-asserted · AL2 accredited issuer · AL3 accredited issuer with extra controls or proxy authority · AL4 official primary authority. Set by the issuer of the claim.</li>
+        <li><strong>Capability score (the Directory)</strong> — per-firm. Three dimensions per claimed capability: Engagement (governance authority engaged), Process (process established and repeatable), Evidence (auditable artifacts exist). Set by the firm and corroborated by an OPDA-listed audit partner at higher evidence tiers.</li>
+      </ul>
+
+      <p>
+        Worked example: Firm X is AL3 + Process 4/6, Evidence 3/6 — high-assurance
+        claims with mid-maturity operations. Firm Y is AL2 + Process 5/6, Evidence
+        5/6 — medium-assurance claims with mature operations. Both views are useful
+        to a consumer or regulator; collapsing them into one number would lose
+        signal.
+      </p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Promotion to its own ADR when work begins</div>
+        <p>
+          Wiring the Conformance Scheme to the Accreditation Directory's per-capability
+          scoring touches eligibility, accreditation, and the Trust Registry's
+          public-facing surface. Per ADR 0005 item F2, this section is a forward-
+          reference only; the integration gets its own ADR when the Compliance &amp;
+          Risk WG begins Wave 2 work.
+        </p>
+      </div>
 
       <h2 id="schemeOwnership">Scheme ownership</h2>
 

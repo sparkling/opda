@@ -98,6 +98,7 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/governance/change-management',      title: 'Change management' },
         { url: '/governance/lifecycle-versioning',   title: 'Lifecycle & versioning' },
         { url: '/governance/risk-liability',         title: 'Risk & liability' },
+        { url: '/governance/deferred-work',          title: 'Deferred work register' },
       ]},
       { heading: 'Operating Model', items: [
         { url: '/governance/data-stewardship',       title: 'Data stewardship & decision rights' },
