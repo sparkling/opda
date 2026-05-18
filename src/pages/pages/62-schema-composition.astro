@@ -27,13 +27,15 @@ flowchart LR
   classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  BASE["pdtf-transaction.json<br/>(base)"]:::src
+  BASE["`pdtf-transaction.json
+(base)`"]:::src
   O1[Overlay 1]:::src
   O2[Overlay 2]:::src
   ON[Overlay n…]:::src
 
   M["deepmerge with custom arrayMerge"]:::proc
-  R["Merged schema<br/>(validated against)"]:::out
+  R["`Merged schema
+(validated against)`"]:::out
 
   BASE --> M
   O1 --> M

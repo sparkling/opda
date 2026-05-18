@@ -25,20 +25,36 @@ flowchart TB
   classDef ext fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef form fill:#fef3c7,stroke:#b45309,color:#7c2d12;
 
-  L1["<b>Network</b><br/>TCP/IP · IETF · HTTPS"]:::ext
-  L2["<b>Secure communication</b><br/>HTTPS · DIDComm"]:::ext
+  L1["`**Network**
+TCP/IP · IETF · HTTPS`"]:::ext
+  L2["`**Secure communication**
+HTTPS · DIDComm`"]:::ext
 
-  DID["<b>W3C DID Core 1.0</b><br/>identifier methods<br/>did:key · did:jwk · did:web"]:::ext
-  DIATF["<b>DIATF</b><br/>UK Digital Identity &amp;<br/>Attributes Trust Framework"]:::ext
+  DID["`**W3C DID Core 1.0**
+identifier methods
+did:key · did:jwk · did:web`"]:::ext
+  DIATF["`**DIATF**
+UK Digital Identity &
+Attributes Trust Framework`"]:::ext
 
-  VC["<b>W3C VC Data Model</b><br/>verifiable credentials 1.1 + 2.0"]:::ext
-  PDTF_V2["<b>PDTF v2.0 spec</b><br/>VC-based property data"]:::opda
+  VC["`**W3C VC Data Model**
+verifiable credentials 1.1 + 2.0`"]:::ext
+  PDTF_V2["`**PDTF v2.0 spec**
+VC-based property data`"]:::opda
 
-  PDTF_API["<b>PDTF OpenAPI</b><br/>v1.1 / v1.2 / v1.3 / v2.0"]:::opda
-  SCHEMAS["<b>PDTF JSON Schema</b><br/>v3.6 (active)<br/>pdtf-transaction.json"]:::opda
+  PDTF_API["`**PDTF OpenAPI**
+v1.1 / v1.2 / v1.3 / v2.0`"]:::opda
+  SCHEMAS["`**PDTF JSON Schema**
+v3.6 (active)
+pdtf-transaction.json`"]:::opda
 
-  OVERLAYS["<b>Form overlays</b><br/>BASPI v4 / v5<br/>TA6 · TA7 · TA10<br/>NTS · CON29R · PIQ<br/>RDS · LPE1 · OC1 · LLC1 · FME1"]:::opda
-  FORMS[Underlying UK forms<br/>Law Society · BASPI · NTS · HMLR · CON]:::form
+  OVERLAYS["`**Form overlays**
+BASPI v4 / v5
+TA6 · TA7 · TA10
+NTS · CON29R · PIQ
+RDS · LPE1 · OC1 · LLC1 · FME1`"]:::opda
+  FORMS["`Underlying UK forms
+Law Society · BASPI · NTS · HMLR · CON`"]:::form
 
   L1 --> L2
   L2 --> DID

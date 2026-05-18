@@ -124,19 +124,40 @@ flowchart LR
   classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  S1[v3 base schema<br/>pdtf-transaction.json]:::src
-  S2[16 canonical v3 overlays<br/>BASPI · TA6/7/10 · NTS<br/>CON29R/DW · PIQ · OC1 · LLC1<br/>LPE1 · FME1 · RDS · SR24]:::src
-  G1[Glossary.xlsx<br/>Trust Framework PoC]:::src
-  G2[Glossary.xlsx<br/>Technical Working Group]:::src
-  EXT[W3C VCDM 2.0<br/>W3C DID 1.0<br/>ToIP Foundation]:::src
+  S1["`v3 base schema
+pdtf-transaction.json`"]:::src
+  S2["`16 canonical v3 overlays
+BASPI · TA6/7/10 · NTS
+CON29R/DW · PIQ · OC1 · LLC1
+LPE1 · FME1 · RDS · SR24`"]:::src
+  G1["`Glossary.xlsx
+Trust Framework PoC`"]:::src
+  G2["`Glossary.xlsx
+Technical Working Group`"]:::src
+  EXT["`W3C VCDM 2.0
+W3C DID 1.0
+ToIP Foundation`"]:::src
 
-  PROC[Schema walker<br/>+ deduplication<br/>+ title enrichment<br/>+ RDF URI generator<br/>+ glossary merger<br/>+ SKOS generator]:::proc
+  PROC["`Schema walker
++ deduplication
++ title enrichment
++ RDF URI generator
++ glossary merger
++ SKOS generator`"]:::proc
 
-  D1[properties.js<br/>1,538 unique concepts<br/>entity + property kinds<br/>+ RDF URI per entry]:::out
-  D2[entities.js<br/>54 glossary terms<br/>+ 470 schema entities]:::out
-  D3[glossary-merged.json<br/>54 terms deduplicated]:::out
-  D4[business-glossary.md<br/>tri-source glossary]:::out
-  D5[business-glossary.ttl<br/>SKOS · 554 concepts]:::out
+  D1["`properties.js
+1,538 unique concepts
+entity + property kinds
++ RDF URI per entry`"]:::out
+  D2["`entities.js
+54 glossary terms
++ 470 schema entities`"]:::out
+  D3["`glossary-merged.json
+54 terms deduplicated`"]:::out
+  D4["`business-glossary.md
+tri-source glossary`"]:::out
+  D5["`business-glossary.ttl
+SKOS · 554 concepts`"]:::out
 
   S1 --> PROC
   S2 --> PROC

@@ -72,6 +72,12 @@ a:hover {
   gap: var(--space-3);
   color: #f7f3e9;
   text-decoration: none;
+  /* Width matches the sidebar so the vertical separator on the right
+     edge of the brand block lines up with the sidebar's right border.
+     Header has `padding: 0 var(--space-6)`, so we subtract that to make
+     the box end at exactly `--sidebar-width` from the page edge. */
+  width: calc(var(--sidebar-width) - var(--space-6));
+  flex-shrink: 0;
   padding-right: var(--space-4);
   border-right: 1px solid rgba(247, 243, 233, 0.1);
 }

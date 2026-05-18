@@ -21,10 +21,14 @@ import Diagram from '../../components/Diagram.astro';
 flowchart LR
   classDef cat fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef auth fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
-  C[Constitutional<br/>change]:::cat
-  T[Technical /<br/>schema change]:::cat
-  GA[General Assembly<br/><i>majority vote</i>]:::auth
-  TR[Technical Reviewers<br/><i>at least two members</i>]:::auth
+  C["`Constitutional
+change`"]:::cat
+  T["`Technical /
+schema change`"]:::cat
+  GA["`General Assembly
+*majority vote*`"]:::auth
+  TR["`Technical Reviewers
+*at least two members*`"]:::auth
   C --> GA
   T --> TR
 </Diagram>

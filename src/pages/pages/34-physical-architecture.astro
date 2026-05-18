@@ -184,11 +184,17 @@ flowchart TB
   classDef trust fill:#f3e8ff,stroke:#7e22ce,stroke-width:2px,color:#3b0764
   classDef out fill:#dcfce7,stroke:#166534,stroke-width:2px,color:#14532d
 
-  SCH["@pdtf/schemas v3.5.0<br/>base schema + 34 overlays<br/>+ merge engine"]:::base
-  TFW["@pdtf/trust-framework v0.3.0<br/>W3C VC schema + JSON-LD context<br/>+ DID registry"]:::trust
+  SCH["`@pdtf/schemas v3.5.0
+base schema + 34 overlays
++ merge engine`"]:::base
+  TFW["`@pdtf/trust-framework v0.3.0
+W3C VC schema + JSON-LD context
++ DID registry`"]:::trust
 
-  HOST["trust.propdata.org.uk<br/><i>canonical schema and context host</i>"]:::out
-  PART["PDTF participant software<br/>estate agents · conveyancers · lenders · surveyors"]:::out
+  HOST["`trust.propdata.org.uk
+*canonical schema and context host*`"]:::out
+  PART["`PDTF participant software
+estate agents · conveyancers · lenders · surveyors`"]:::out
 
   SCH -->|"schema $id URLs resolve at"| HOST
   TFW -->|"contexts, registry, did:web"| HOST

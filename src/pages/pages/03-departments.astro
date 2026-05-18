@@ -25,16 +25,32 @@ flowchart TB
   classDef ops fill:#dcfce7,stroke:#166534,color:#14532d;
   classDef regulator fill:#fef3c7,stroke:#b45309,color:#7c2d12;
 
-  MHCLG["<b>MHCLG</b><br/>Housing, Communities &amp; Local Government<br/><i>policy lead</i>"]:::policy
-  DSIT["<b>DSIT</b><br/>Science, Innovation &amp; Technology<br/><i>Smart Data scheme + DIATF</i>"]:::policy
-  DBT["<b>DBT</b><br/>Business &amp; Trade<br/><i>Smart Data Challenge sponsor</i>"]:::policy
+  MHCLG["`**MHCLG**
+Housing, Communities & Local Government
+*policy lead*`"]:::policy
+  DSIT["`**DSIT**
+Science, Innovation & Technology
+*Smart Data scheme + DIATF*`"]:::policy
+  DBT["`**DBT**
+Business & Trade
+*Smart Data Challenge sponsor*`"]:::policy
 
-  HMLR["<b>HMLR</b><br/>HM Land Registry<br/><i>operational lead, hosts DPMSG</i>"]:::ops
-  RPF["<b>RPF</b><br/>Regulators' Pioneer Fund<br/><i>funds the Sandbox</i>"]:::ops
+  HMLR["`**HMLR**
+HM Land Registry
+*operational lead, hosts DPMSG*`"]:::ops
+  RPF["`**RPF**
+Regulators' Pioneer Fund
+*funds the Sandbox*`"]:::ops
 
-  NTS["<b>NTSELAT</b><br/>National Trading Standards Estate &amp; Letting<br/><i>material information rules</i>"]:::regulator
-  FCA["<b>FCA</b><br/>Financial Conduct Authority<br/><i>Smart Data scheme regulator</i>"]:::regulator
-  ICO["<b>ICO</b><br/>Information Commissioner's Office<br/><i>data protection regulator</i>"]:::regulator
+  NTS["`**NTSELAT**
+National Trading Standards Estate & Letting
+*material information rules*`"]:::regulator
+  FCA["`**FCA**
+Financial Conduct Authority
+*Smart Data scheme regulator*`"]:::regulator
+  ICO["`**ICO**
+Information Commissioner's Office
+*data protection regulator*`"]:::regulator
 
   MHCLG --> HMLR
   DSIT --> RPF

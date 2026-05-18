@@ -204,7 +204,9 @@ flowchart TB
   classDef tech fill:#dcfce7,stroke:#166534,color:#14532d,stroke-width:2px;
   classDef pl fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
 
-  PDTF["<b>PDTF — Published Language</b><br/>JSON Schema + OpenAPI + VC + DID<br/><i>Open Host Service</i>"]:::pl
+  PDTF["`**PDTF — Published Language**
+JSON Schema + OpenAPI + VC + DID
+*Open Host Service*`"]:::pl
 
   EA[Estate Agency]:::primary
   CV[Conveyancing]:::primary
@@ -219,12 +221,12 @@ flowchart TB
   ID["Identity & Verification (DIATF)"]:::gov
   TV["Trust & Verifiable Claims (W3C)"]:::tech
 
-  EA  <-->|PL via OPDA accreditation| PDTF
-  CV  <-->|PL| PDTF
-  ML  <-->|PL| PDTF
-  SV  <-->|PL| PDTF
-  PD  <-->|PL| PDTF
-  PT  <-->|PL| PDTF
+  EA  &lt;-->|PL via OPDA accreditation| PDTF
+  CV  &lt;-->|PL| PDTF
+  ML  &lt;-->|PL| PDTF
+  SV  &lt;-->|PL| PDTF
+  PD  &lt;-->|PL| PDTF
+  PT  &lt;-->|PL| PDTF
 
   PDTF -->|CF / consumes| HMLR
   PDTF -->|CF / consumes| LA

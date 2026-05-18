@@ -143,10 +143,14 @@ flowchart LR
 
   subgraph P1["Phase 1 — Foundations<br/><i>2 weeks</i>"]
     direction TB
-    p1a["Read SoW + synthesis<br/>3d"]:::task
-    p1b["Plan + roadmap doc<br/>4d"]:::task
-    p1c["Merged glossary v0.1<br/>7d"]:::task
-    p1d["Stakeholder map<br/>5d"]:::task
+    p1a["`Read SoW + synthesis
+3d`"]:::task
+    p1b["`Plan + roadmap doc
+4d`"]:::task
+    p1c["`Merged glossary v0.1
+7d`"]:::task
+    p1d["`Stakeholder map
+5d`"]:::task
     p1a --> p1b
     p1a --> p1c
     p1a --> p1d
@@ -154,21 +158,30 @@ flowchart LR
 
   subgraph P2["Phase 2 — Semantic model<br/><i>3 weeks</i>"]
     direction TB
-    p2a["Concept taxonomy<br/>SKOS · 7d"]:::task
-    p2b["Data dictionary<br/>10d"]:::task
-    p2c["Ontology skeleton<br/>OWL · 7d"]:::task
-    p2d["First mapping<br/>BASPI v5 · 7d"]:::task
+    p2a["`Concept taxonomy
+SKOS · 7d`"]:::task
+    p2b["`Data dictionary
+10d`"]:::task
+    p2c["`Ontology skeleton
+OWL · 7d`"]:::task
+    p2d["`First mapping
+BASPI v5 · 7d`"]:::task
     p2a --> p2c
     p2c --> p2d
   end
 
   subgraph P3["Phase 3 — Governance docs<br/><i>5 weeks</i>"]
     direction TB
-    p3a["L4 Ecosystem doc<br/>14d"]:::task
-    p3b["L3 Credential trust fw<br/>10d"]:::task
-    p3c["L2 Comms governance<br/>7d"]:::task
-    p3d["L1 Utility governance<br/>7d"]:::task
-    p3e["Conformance scheme<br/>14d"]:::task
+    p3a["`L4 Ecosystem doc
+14d`"]:::task
+    p3b["`L3 Credential trust fw
+10d`"]:::task
+    p3c["`L2 Comms governance
+7d`"]:::task
+    p3d["`L1 Utility governance
+7d`"]:::task
+    p3e["`Conformance scheme
+14d`"]:::task
     p3a --> p3b
     p3a --> p3c
     p3a --> p3d
@@ -177,9 +190,12 @@ flowchart LR
 
   subgraph P4["Phase 4 — Presentations<br/><i>2 weeks</i>"]
     direction TB
-    p4a["Approach deck<br/>10d"]:::task
-    p4b["Governance deck<br/>10d"]:::task
-    p4c["Technology deck<br/>10d"]:::task
+    p4a["`Approach deck
+10d`"]:::task
+    p4b["`Governance deck
+10d`"]:::task
+    p4c["`Technology deck
+10d`"]:::task
   end
 
   class P1,P2,P3,P4 phase;

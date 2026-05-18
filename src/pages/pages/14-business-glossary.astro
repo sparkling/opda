@@ -35,11 +35,19 @@ flowchart LR
   classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  G1[Glossary.xlsx<br/>Trust Framework PoC<br/><i>~54 business terms</i>]:::src
-  G2[Glossary.xlsx<br/>Technical Working Group<br/><i>same set, refined</i>]:::src
-  S[PDTF v3 schemas<br/><i>title / description<br/>annotations</i>]:::src
-  PROC[Glossary merger<br/>+ SKOS generator]:::proc
-  TTL[business-glossary.ttl<br/>SKOS · 554 concepts]:::out
+  G1["`Glossary.xlsx
+Trust Framework PoC
+*~54 business terms*`"]:::src
+  G2["`Glossary.xlsx
+Technical Working Group
+*same set, refined*`"]:::src
+  S["`PDTF v3 schemas
+*title / description
+annotations*`"]:::src
+  PROC["`Glossary merger
++ SKOS generator`"]:::proc
+  TTL["`business-glossary.ttl
+SKOS · 554 concepts`"]:::out
 
   G1 --> PROC
   G2 --> PROC

@@ -36,11 +36,15 @@ flowchart LR
   classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  JS[JSON Schema v3<br/>+ overlays]:::src
+  JS["`JSON Schema v3
++ overlays`"]:::src
   ONT[Ontology .ttl]:::src
-  GEN[Translator<br/>schema → SHACL]:::proc
-  HAND[Hand-authored<br/>business rules]:::src
-  SHAPES[SHACL .ttl<br/>per overlay]:::out
+  GEN["`Translator
+schema → SHACL`"]:::proc
+  HAND["`Hand-authored
+business rules`"]:::src
+  SHAPES["`SHACL .ttl
+per overlay`"]:::out
 
   JS --> GEN
   ONT --> GEN

@@ -41,11 +41,23 @@ flowchart TB
   classDef std  fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
   classDef opda fill:#1a4d80,stroke:#0b2545,color:#ffffff,stroke-width:3px;
 
-  T1["<b>Tier 1 — Legislation &amp; Policy</b><br/>DMCC Act 2024 · DUA Act 2025<br/>Leasehold &amp; Freehold Reform Act 2024<br/>UK Industrial Strategy (property = priority sector)"]:::tier
-  T2["<b>Tier 2 — Departments &amp; Bodies</b><br/>MHCLG · DSIT · DBT · HMLR · NTSELAT<br/>FCA · ICO"]:::gov
-  T3["<b>Tier 3 — Steering &amp; Coordination</b><br/>DPMSG (13 founding members)<br/>Smart Data Council · HBSG"]:::gov
-  T4["<b>Tier 4 — Delivery</b><br/>Smart Property Data Trust Framework Sandbox<br/>(CLC + OPDA + Raidiam, RPF-funded)<br/>Smart Data Challenge · HMLR LLC Programme"]:::del
-  T5["<b>Tier 5 — Standards</b><br/><b>PDTF</b> (JSON Schema · OpenAPI · v2.0 spec)<br/>W3C VC · DID · DIATF · ToIP"]:::std
+  T1["`**Tier 1 — Legislation & Policy**
+DMCC Act 2024 · DUA Act 2025
+Leasehold & Freehold Reform Act 2024
+UK Industrial Strategy (property = priority sector)`"]:::tier
+  T2["`**Tier 2 — Departments & Bodies**
+MHCLG · DSIT · DBT · HMLR · NTSELAT
+FCA · ICO`"]:::gov
+  T3["`**Tier 3 — Steering & Coordination**
+DPMSG (13 founding members)
+Smart Data Council · HBSG`"]:::gov
+  T4["`**Tier 4 — Delivery**
+Smart Property Data Trust Framework Sandbox
+(CLC + OPDA + Raidiam, RPF-funded)
+Smart Data Challenge · HMLR LLC Programme`"]:::del
+  T5["`**Tier 5 — Standards**
+**PDTF** (JSON Schema · OpenAPI · v2.0 spec)
+W3C VC · DID · DIATF · ToIP`"]:::std
   OPDA["OPDA"]:::opda
 
   T1 --> T2
@@ -137,11 +149,19 @@ flowchart LR
   classDef body fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
   HMLR[HM Land Registry]:::body
-  DPMSG[DPMSG<br/>Digital Property Market<br/>Steering Group<br/><i>13 founding members, formed Aug 2023</i>]:::body
-  SDC[Smart Data Council<br/><i>DBT, cross-sector</i>]:::body
-  HBSG["HBSG<br/>Home Buying and Selling Group<br/><i>chaired by Kate Faulkner OBE · BASPI custodian</i>"]:::body
+  DPMSG["`DPMSG
+Digital Property Market
+Steering Group
+*13 founding members, formed Aug 2023*`"]:::body
+  SDC["`Smart Data Council
+*DBT, cross-sector*`"]:::body
+  HBSG["`HBSG
+Home Buying and Selling Group
+*chaired by Kate Faulkner OBE · BASPI custodian*`"]:::body
   OPDA[OPDA]:::opda
-  WGs["6 Working Groups<br/>Steering · Comms & PR · Engagement<br/>Policy · Regulator · Technical"]:::body
+  WGs["`6 Working Groups
+Steering · Comms & PR · Engagement
+Policy · Regulator · Technical`"]:::body
 
   HMLR -->|hosts| DPMSG
   DPMSG --- WGs

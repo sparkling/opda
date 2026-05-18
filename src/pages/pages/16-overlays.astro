@@ -78,7 +78,8 @@ flowchart LR
   classDef ovl fill:#ffffff,stroke:#1a4d80,color:#0b2545;
   classDef extn fill:#fce7f3,stroke:#9d174d,color:#831843;
 
-  BASE["pdtf-transaction.json<br/><i>base transaction schema</i>"]:::base
+  BASE["`pdtf-transaction.json
+*base transaction schema*`"]:::base
 
   EA[Estate Agency]:::ctx
   CONV[Conveyancing]:::ctx
@@ -290,11 +291,13 @@ flowchart LR
   classDef extn fill:#fce7f3,stroke:#9d174d,color:#831843;
   classDef done fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  NTS["<b>nts</b><br/>NTS 2023 base"]:::base
+  NTS["`**nts**
+NTS 2023 base`"]:::base
   E1["<b>+ jk</b> Japanese knotweed"]:::extn
   E2["<b>+ tf</b> Transfer fees"]:::extn
   E3["<b>+ ...</b> any of 16"]:::extn
-  NTS2["<b>nts2</b><br/>full NTS2 2025"]:::done
+  NTS2["`**nts2**
+full NTS2 2025`"]:::done
 
   NTS --> E1 --> NTS2
   NTS --> E2 --> NTS2
@@ -525,14 +528,20 @@ flowchart LR
   classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  BASE[pdtf-transaction.json<br/><i>base transaction schema</i>]:::src
-  O1[Overlay 1<br/>e.g. baspi5]:::src
-  O2[Overlay 2<br/>e.g. nts2]:::src
+  BASE["`pdtf-transaction.json
+*base transaction schema*`"]:::src
+  O1["`Overlay 1
+e.g. baspi5`"]:::src
+  O2["`Overlay 2
+e.g. nts2`"]:::src
   O3[Overlay n …]:::src
 
-  MERGE["deepmerge( base, O1, O2, … )<br/>+ custom arrayMerge for<br/>required &amp; oneOf"]:::proc
+  MERGE["`deepmerge( base, O1, O2, … )
++ custom arrayMerge for
+required & oneOf`"]:::proc
 
-  RESULT[Merged schema<br/><i>complete and validatable</i>]:::out
+  RESULT["`Merged schema
+*complete and validatable*`"]:::out
 
   BASE --> MERGE
   O1 --> MERGE

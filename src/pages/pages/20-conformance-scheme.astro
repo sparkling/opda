@@ -53,10 +53,15 @@ flowchart LR
   classDef live fill:#dcfce7,stroke:#166534,color:#14532d;
   classDef planned fill:#fef3c7,stroke:#92400e,color:#78350f;
   classDef shared fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  A["Tier A<br/>Self-certification<br/><i>live since 2024</i>"]:::live
-  B["Tier B<br/>Technical conformance<br/><i>planned</i>"]:::planned
+  A["`Tier A
+Self-certification
+*live since 2024*`"]:::live
+  B["`Tier B
+Technical conformance
+*planned*`"]:::planned
   REG[Trust Registry entry]:::shared
-  BADGE["Public badge<br/>+ directory listing"]:::shared
+  BADGE["`Public badge
++ directory listing`"]:::shared
   A --> BADGE
   B --> REG
   A -.evolves into.-> B
@@ -97,15 +102,20 @@ flowchart LR
   classDef gate fill:#fef3c7,stroke:#92400e,color:#78350f;
   classDef pass fill:#dcfce7,stroke:#166534,color:#14532d;
   AP[Application + fee]:::step
-  SA[Self-assessment<br/>+ evidence pack]:::step
-  PANEL[3-person<br/>independent panel]:::step
+  SA["`Self-assessment
++ evidence pack`"]:::step
+  PANEL["`3-person
+independent panel`"]:::step
   SCORE&lbrace;80% pass mark&rbrace;:::gate
-  PASS[Badge + directory<br/>+ member number]:::pass
-  REM[Remediation<br/>actions]:::step
-  ANN[Annual<br/>self-reassessment]:::step
+  PASS["`Badge + directory
++ member number`"]:::pass
+  REM["`Remediation
+actions`"]:::step
+  ANN["`Annual
+self-reassessment`"]:::step
   AP --> SA --> PANEL --> SCORE
   SCORE -->|>= 80%| PASS
-  SCORE -->|< 80%| REM
+  SCORE -->|&lt; 80%| REM
   REM --> SA
   PASS --> ANN
   ANN --> SA
@@ -302,19 +312,26 @@ flowchart TB
   classDef proc fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef decide fill:#fee2e2,stroke:#991b1b,color:#7f1d1d;
   classDef ok fill:#dcfce7,stroke:#166534,color:#14532d;
-  W[1. Initial warning<br/>+ timeline]:::warn
+  W["`1. Initial warning
++ timeline`"]:::warn
   R[2. Remediation period]:::proc
   M[3. Ongoing monitoring]:::proc
-  CA[4. Compliance assessment<br/>by review board]:::proc
-  DC[5. Decision committee<br/>internal + external experts]:::proc
-  MR[6. Membership review meeting<br/>member presents case]:::proc
+  CA["`4. Compliance assessment
+by review board`"]:::proc
+  DC["`5. Decision committee
+internal + external experts`"]:::proc
+  MR["`6. Membership review meeting
+member presents case`"]:::proc
   D&lbrace;7. Decision&rbrace;:::decide
-  F[Full compliance<br/>good standing]:::ok
-  P[Partial compliance<br/>additional monitoring]:::warn
+  F["`Full compliance
+good standing`"]:::ok
+  P["`Partial compliance
+additional monitoring`"]:::warn
   T[8. Termination process]:::decide
   AP[9. Appeals process]:::proc
   PUB[10. Public notification]:::warn
-  RE[11. Periodic re-evaluation<br/>possible reapplication]:::proc
+  RE["`11. Periodic re-evaluation
+possible reapplication`"]:::proc
   W --> R --> M --> CA --> DC --> MR --> D
   D --> F
   D --> P

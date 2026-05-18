@@ -92,12 +92,18 @@ import Diagram from '../../components/Diagram.astro';
 flowchart TB
   classDef wg fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   classDef sg fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  SG[Steering Group<br/>monthly governance]:::sg
-  CP["Comms & PR<br/>Working Group"]:::wg
-  EN[Engagement<br/>Working Group]:::wg
-  PO[Policy<br/>Working Group]:::wg
-  RE[Regulator<br/>Working Group]:::wg
-  TE[Technical<br/>Working Group]:::wg
+  SG["`Steering Group
+monthly governance`"]:::sg
+  CP["`Comms & PR
+Working Group`"]:::wg
+  EN["`Engagement
+Working Group`"]:::wg
+  PO["`Policy
+Working Group`"]:::wg
+  RE["`Regulator
+Working Group`"]:::wg
+  TE["`Technical
+Working Group`"]:::wg
 
   SG --> CP
   SG --> EN
@@ -204,14 +210,19 @@ flowchart LR
   classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
   classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
 
-  SDC[Smart Data Council<br/><i>DBT, cross-sector</i>]:::forum
-  DPMSG[DPMSG<br/><i>HMLR-hosted, property</i>]:::forum
-  HBSG["HBSG<br/><i>BASPI custodian</i>"]:::forum
+  SDC["`Smart Data Council
+*DBT, cross-sector*`"]:::forum
+  DPMSG["`DPMSG
+*HMLR-hosted, property*`"]:::forum
+  HBSG["`HBSG
+*BASPI custodian*`"]:::forum
 
-  MARIA["Maria Harris<br/>(OPDA Chair)"]
+  MARIA["`Maria Harris
+(OPDA Chair)`"]
   OPDA[OPDA]:::opda
 
-  PDTF[PDTF<br/>standard]:::out
+  PDTF["`PDTF
+standard`"]:::out
   SBX[Trust Framework Sandbox]:::out
   ACC[OPDA Accreditation]:::out
 
