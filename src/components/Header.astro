@@ -1,0 +1,47 @@
+---
+/**
+ * Global site header — brand, section nav, external links, theme toggle.
+ * Renders at build time. Active section derived from Astro.url.pathname.
+ */
+import { HEADER_ORDER, SECTIONS, getActiveSection } from '@/lib/site';
+
+const activeSection = getActiveSection(Astro.url.pathname);
+---
+<header class="app-header">
+  <a href="/" class="brand-link">
+    <span class="brand-mark">OPDA</span>
+    <span class="brand-sub">Knowledge base</span>
+  </a>
+
+  <nav class="global-nav">
+    {HEADER_ORDER.map(key => (
+      <a
+        href={`/${key}`}
+        class={activeSection === key ? 'active' : undefined}
+        aria-current={activeSection === key ? 'page' : undefined}
+      >{SECTIONS[key].title}</a>
+    ))}
+  </nav>
+
+  <button class="menu-toggle" aria-label="Toggle sidebar" id="menu-toggle">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+      <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+    </svg>
+  </button>
+
+  <nav class="header-nav">
+    <a href="https://openpropdata.org.uk" target="_blank" rel="noopener">openpropdata.org.uk</a>
+    <a href="https://propdata.org.uk" target="_blank" rel="noopener">propdata.org.uk</a>
+    <a href="https://github.com/Property-Data-Trust-Framework" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+    </svg>
+  </button>
+</header>

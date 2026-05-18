@@ -1,26 +1,18 @@
 ---
 /**
- * Page footer — previous / next navigation pair at the bottom of a doc page.
+ * Page footer — prev / next links derived from site.ts SECTIONS order.
+ * No props needed; reads from Astro.url.pathname.
  *
- *   <PageFooter
- *     prev={{ href: '01-uk-initiative.html', label: 'UK initiative' }}
- *     next={{ href: '03-departments.html', label: 'Departments & bodies' }}
- *   />
- *
- * Pass only `prev` or only `next` for first/last pages in a sequence.
- * The arrows ← / → are added by the component, not the caller.
+ * Renders nothing for pages not in a section (top-level reference pages,
+ * 404s) or section roots that have no prev/next.
  */
-interface NavLink {
-  href: string;
-  label: string;
-}
-interface Props {
-  prev?: NavLink;
-  next?: NavLink;
-}
-const { prev, next } = Astro.props;
+import { getPrevNext } from '@/lib/site';
+
+const { prev, next } = getPrevNext(Astro.url.pathname);
 ---
-<div class="page-footer">
-  {prev && <a href={prev.href}>← {prev.label}</a>}
-  {next && <a href={next.href}>{next.label} →</a>}
-</div>
+{(prev || next) && (
+  <div class="page-footer">
+    {prev && <a href={prev.url}>← {prev.title}</a>}
+    {next && <a href={next.url}>{next.title} →</a>}
+  </div>
+)}

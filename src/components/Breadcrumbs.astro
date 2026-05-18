@@ -1,0 +1,21 @@
+---
+/**
+ * Breadcrumbs — Section → Group → Page chain. Derived from site.ts via
+ * the current URL. Renders nothing on the home page or top-level
+ * reference pages.
+ */
+import { findPage, normalizeUrl } from '@/lib/site';
+
+const path = normalizeUrl(Astro.url.pathname);
+const found = findPage(path);
+const isSectionRoot = found && !found.item;
+---
+{found && (
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href={`/${found.section.key}`}>{found.section.title}</a>
+    {!isSectionRoot && found.group && <span class="breadcrumb-sep">›</span>}
+    {!isSectionRoot && found.group && <span class="breadcrumb-group">{found.group.heading}</span>}
+    {!isSectionRoot && found.item && <span class="breadcrumb-sep">›</span>}
+    {!isSectionRoot && found.item && <span class="breadcrumb-current" aria-current="page">{found.item.title}</span>}
+  </nav>
+)}

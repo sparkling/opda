@@ -1,0 +1,51 @@
+---
+/**
+ * Recursive sidebar item — renders either a leaf <a> or a folder with
+ * collapsible children. Folders default to open if they contain the
+ * active page (computed by containsActive prop).
+ */
+import type { Item } from '@/lib/site';
+import { normalizeUrl } from '@/lib/site';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Self from './SidebarItem.astro';
+
+interface Props {
+  item: Item;
+  path: string;
+  containsActive: (item: Item) => boolean;
+}
+
+const { item, path, containsActive } = Astro.props;
+const isLeaf = !item.children;
+const isActive = normalizeUrl(item.url) === path;
+const isOpen = !isLeaf && containsActive(item);
+---
+{isLeaf ? (
+  <li class="tree-leaf">
+    <a
+      href={item.url}
+      class={isActive ? 'active' : undefined}
+      aria-current={isActive ? 'page' : undefined}
+    >{item.title}</a>
+  </li>
+) : (
+  <li class={`tree-folder${isOpen ? ' is-open' : ''}`}>
+    <button
+      type="button"
+      class="tree-toggle"
+      aria-expanded={isOpen ? 'true' : 'false'}
+    >
+      <svg class="tree-caret" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
+           stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+      <span class="tree-label">{item.title}</span>
+    </button>
+    <ul class="tree-children">
+      {item.children?.map(child => (
+        <Self item={child} path={path} containsActive={containsActive} />
+      ))}
+    </ul>
+  </li>
+)}

@@ -1,0 +1,57 @@
+---
+/**
+ * Section sidebar — left rail with active page tracking and collapsible
+ * nested folders. Renders at build time. The active page is derived from
+ * Astro.url.pathname; folders containing the active page render as open.
+ *
+ * Renders nothing for URLs not in any section (e.g. top-level pages like
+ * /glossary, /design-system, or the home page).
+ */
+import type { Item } from '@/lib/site';
+import { SECTIONS, getActiveSection, normalizeUrl } from '@/lib/site';
+import SidebarItem from './SidebarItem.astro';
+
+const path = normalizeUrl(Astro.url.pathname);
+const sectionKey = getActiveSection(path);
+const section = sectionKey ? SECTIONS[sectionKey] : null;
+
+function containsActive(item: Item): boolean {
+  if (normalizeUrl(item.url) === path) return true;
+  if (item.children) return item.children.some(containsActive);
+  return false;
+}
+---
+{section && (
+  <aside class="app-sidebar" id="app-sidebar">
+    <button
+      type="button"
+      class="rail-collapse-toggle"
+      id="sidebar-collapse"
+      aria-label="Collapse sidebar"
+      title="Collapse sidebar"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+
+    <nav class="sidebar-nav">
+      {section.groups.map(group => (
+        <div class="nav-group">
+          <h3>{group.heading}</h3>
+          <ul class="tree">
+            {group.items.map(item => <SidebarItem item={item} path={path} containsActive={containsActive} />)}
+          </ul>
+        </div>
+      ))}
+    </nav>
+  </aside>
+)}
+
+{/* Recursive item — defined inline via a fragment script-style approach.
+    Astro doesn't let us define recursive components inline cleanly without
+    a separate file, so we delegate to SidebarItem.astro. */}
+<script>
+  // Reserved — see SidebarItem.astro for the recursive rendering.
+</script>

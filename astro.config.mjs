@@ -141,9 +141,15 @@ const serveProjectRoots = {
 export default defineConfig({
   site:    'https://opda-kb.pages.dev',
   outDir:  './dist',
+  // Directory format + bare-slug URLs per ADR information-architecture/0001.
+  // `format: 'directory'` outputs `foo/index.html` so URLs canonicalise to
+  // `/foo` without a `.html` suffix; `trailingSlash: 'never'` makes Astro's
+  // internal links use the bare form. Cloudflare Pages serves both `/foo`
+  // and `/foo/` from the same file by default.
   build: {
-    format: 'file',
+    format: 'directory',
   },
+  trailingSlash: 'never',
   server: {
     // 4321 conflicts with other tools on this machine — use 4330 instead.
     // dev.sh probes 4330-4339 and picks the first free one if 4330 is busy too.

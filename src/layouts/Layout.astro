@@ -1,0 +1,132 @@
+---
+/**
+ * OPDA Knowledge Base — page shell.
+ *
+ * Composes Header + Sidebar + main content + PageFooter at build time.
+ * Derives section / active state / prev-next from Astro.url.pathname via
+ * src/lib/site.ts. No runtime chrome injection; FOUC-free.
+ *
+ * Per-page interactivity (theme toggle, sidebar collapse, tree folder
+ * toggle, mobile menu, TOC observer, Mermaid) ships as small client
+ * scripts loaded at the bottom of the body.
+ *
+ * Astro's <ClientRouter /> enables view transitions for smooth
+ * page-to-page navigation (ADR information-architecture/0002).
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/Header.astro';
+import Sidebar from '@/components/Sidebar.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import PageFooter from '@/components/PageFooter.astro';
+import { getActiveSection } from '@/lib/site';
+
+function assetVersion(rel: string): string {
+  try {
+    const full = path.resolve(process.cwd(), 'public', rel.replace(/^\//, ''));
+    const m = fs.statSync(full).mtimeMs;
+    return Math.floor(m).toString(36);
+  } catch {
+    return 'dev';
+  }
+}
+const cssV = assetVersion('/ui/design-system.css');
+const twV = assetVersion('/ui/tailwind.built.css');
+const clientV = assetVersion('/ui/client.js');
+
+interface Props {
+  /** Page title — used as <title> (suffix " · OPDA Knowledge Base" added unless already present). */
+  title: string;
+  /** <meta name="description"> contents. */
+  description?: string;
+  /** Prose width class. Default 'prose wide'; pass 'prose' for narrow reading width. */
+  proseClass?: string;
+  /** Include the TailwindPlus Elements ESM script. Default true. */
+  tailwindPlus?: boolean;
+  /** Wrap the slot in `<article class={proseClass}>`. Default true. */
+  wrapArticle?: boolean;
+  /** Hide the sidebar (e.g. for the home page or single-page sections). */
+  hideSidebar?: boolean;
+  /** Hide the breadcrumbs (e.g. on section roots). */
+  hideBreadcrumbs?: boolean;
+  /** Hide the prev/next page footer. */
+  hideFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  proseClass = 'prose wide',
+  tailwindPlus = true,
+  wrapArticle = true,
+  hideSidebar = false,
+  hideBreadcrumbs = false,
+  hideFooter = false,
+} = Astro.props;
+
+const fullTitle = /knowledge base/i.test(title)
+  ? title
+  : `${title} · OPDA Knowledge Base`;
+
+const activeSection = getActiveSection(Astro.url.pathname);
+const sectionAttr = activeSection ?? '';
+const showSidebar = !hideSidebar && !!activeSection;
+---
+<!doctype html>
+<html lang="en" data-section={sectionAttr}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
+  <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
+
+  {/* Pre-paint theme: applies data-theme before first render to avoid FOUC.
+      Reads ?theme= URL param, then localStorage, falls back to dark. */}
+  <script is:inline>
+    (function () {
+      try {
+        var t = new URLSearchParams(location.search).get('theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = localStorage.getItem('opda-theme');
+        }
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  {tailwindPlus && (
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  )}
+
+  <ClientRouter />
+  <slot name="head" />
+</head>
+<body>
+  <div id="app">
+    <Header />
+    <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
+      {showSidebar && <Sidebar />}
+      <main class="app-main">
+        {!hideBreadcrumbs && <Breadcrumbs />}
+        {wrapArticle ? (
+          <article class={proseClass}>
+            <slot />
+          </article>
+        ) : (
+          <slot />
+        )}
+        {!hideFooter && <PageFooter />}
+      </main>
+    </div>
+  </div>
+
+  <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
+  <slot name="scripts" />
+</body>
+</html>
