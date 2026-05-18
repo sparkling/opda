@@ -23,9 +23,10 @@ don't have to re-litigate.
 
 | # | Title | Status |
 |---|---|---|
-| [0001](./0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | Proposed (6 review points decided) |
+| [0001](./0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | Proposed (11 review points decided across two passes) |
 | [0002](./0002-folder-hierarchy-and-slug-taxonomy.md) | Folder hierarchy and slug taxonomy | Implemented 2026-05-18 |
 | [0003](./0003-idiomatic-astro-refactor.md) | Refactor to idiomatic Astro architecture | Implemented 2026-05-18 |
+| [0004](./0004-accreditation-directory.md) | Accreditation Directory spec | Proposed (ready for C&R WG kick-off) |
 
 ## Authoring a new ADR
 

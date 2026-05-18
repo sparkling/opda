@@ -29,7 +29,7 @@ OPDA's framework has not been mapped to either standard. There is therefore no s
 4. **Filling known gaps.** Data Quality and Data Security are weakly addressed today; both frameworks have mature treatments worth borrowing.
 5. **Regulator dialogue.** FCA and ICO conversations land more cleanly when OPDA's framework is positioned in their reference frame.
 6. **Not reinventing.** Where industry has solved a problem, copying is faster and more credible than rolling our own.
-7. **Avoid licensing entanglement.** DCAM is a commercial framework owned by the EDM Council. OPDA's published pages will use generic data-management vocabulary and will *not* cite DCAM as the inspiration. This internal ADR cites DCAM because the analysis required it — but no other OPDA artefact will. See §"Resolved during review" #1 for the rationale.
+7. **Respect DCAM licensing without hiding the lineage.** DCAM is a commercial framework owned by the EDM Council. OPDA may freely name DCAM as an inspiration or source across any context (published pages, ADRs, academic papers, member-firm comms, conference talks) — naming is not licensing-protected. What does require a license is *verbatim quotation* of capability text, sub-capability descriptions, evidence criteria, or maturity-level definitions. See §"Resolved during review" #1 (revised 2026-05-18) for the rationale.
 
 ## Considered options
 
@@ -238,19 +238,30 @@ Wave 1 (vocabulary) is fully reversible — remove the labels, the substance sta
 
 The six open questions in the first draft of this ADR were walked through and decided. Outcomes recorded here so the next reader doesn't re-litigate.
 
-1. **Licensing.** *Resolved: vocabulary-only.* Published OPDA pages use generic data-management terminology and do not cite DCAM as the inspiration. This internal ADR cites DCAM because the analysis required it. Engagement WG dialogue with EDM Council is deferred — re-open if it becomes useful (e.g. if a member firm asks OPDA to formally align with their DCAM assessment).
+1. **Licensing.** *Originally resolved 2026-05-18 as "vocabulary-only, never cite". Revised same day to "permissive: name freely, no verbatim".* Naming DCAM as a source or inspiration is always fine (it's a fact, not a licensing exposure). Quoting capability text, sub-capability descriptions, evidence criteria, or maturity-level definitions verbatim — or republishing licensed DCAM materials — requires a license. Engagement WG dialogue with EDM Council remains deferred (see "newly resolved" #5).
 2. **Maturity scale calibration.** *Resolved: layer the two axes.* AL1–AL4 (per-claim) plus a Capability score with three dimensions (per-firm). See Wave 2 §"Maturity-based accreditation" for the worked example.
 3. **Data Quality ownership.** *Resolved: Compliance & Risk WG owns the framework; Technical WG provides schema hooks and per-overlay validation rules.* DQ dimensions sit alongside UK GDPR Art 5(1)(d) accuracy obligations, which Compliance & Risk already covers.
 4. **Page numbering.** *Resolved: renumber the whole governance section as a separate exercise.* This ADR no longer specifies page numbers for new pages; numbers get assigned when the renumber lands. The pre-existing 14→30 chain break noted in the 2026-05-18 handover folds into the same renumber.
 5. **Wave 3 triggering conditions.** *Resolved: both inline triggers and an annual EC review.* Inline triggers for responsiveness; annual review catches drift. See the new "Annual EC review" item in Wave 3.
 6. **PDTF overlay attachment policy.** *Resolved: partial promotion.* The overlay-attachment strand moved to Wave 2 (artefacts are already in production overlays). The GARP-for-OPDA-records strand stays in Wave 3.
 
-## Open questions (newly surfaced)
+## Newly resolved during review (2026-05-18 second pass)
 
-1. **Scope and ordering of the governance-section renumber.** Decision #4 above defers numbering to a separate exercise. That renumber needs its own scoping: does it cover only the OPDA's-own-rules block (24–26 + new pages), or the whole Governance section (20–26), or all 158 published pages? And: when does it happen relative to Wave 2 drafting?
-2. **DCAM attribution boundary.** Decision #1 puts DCAM citation out of bounds for published pages but allows it in this ADR. Where exactly is the line? Borderline cases: an EC meeting paper citing DCAM as background reading; a member-firm pitch deck describing OPDA's scoring as "DCAM-aligned"; an academic paper co-authored by OPDA staff. Worth a one-paragraph note in `governance.md` rather than re-deciding each time.
-3. **Wave 2 timeline.** Three new workstreams (DQ, Security, overlay attachments) plus the maturity-scoring revision to the Conformance Scheme. What is the realistic sequencing? Compliance & Risk WG capacity is the constraint on three of the four — they may need to recruit before all three start in parallel.
-4. **Annual EC review slot.** Decision #5 above adds an annual review. Suggest the meeting nearest the AGM so it lands with the broader annual cadence — confirm before publishing the EC's calendar.
+The four newly-surfaced questions were walked through and decided. Plus a follow-up on item #1 (Licensing) that softened the original "vocabulary-only" stance.
+
+1. **Scope and ordering of the governance-section renumber.** *Resolved: drop numbering entirely.* Addressed by ADRs [0002](./0002-folder-hierarchy-and-slug-taxonomy.md) (folder hierarchy and slug taxonomy) + [0003](./0003-idiomatic-astro-refactor.md) (idiomatic Astro refactor) — both implemented 2026-05-18. URLs are now bare slugs (`/governance/data-stewardship`), no numbering, sidebar ordering controlled by `src/lib/site.ts`. Renumber question can never recur.
+
+2. **DCAM attribution boundary.** *Resolved: permissive — name freely, no verbatim.* Naming DCAM is always fine in any OPDA context (KB pages, ADRs, academic papers, EC meeting papers, member-firm comms, conference talks, regulator submissions). Quoting capability text, sub-capability descriptions, evidence criteria, or maturity-level definitions verbatim requires a license; same for republishing any DCAM-licensed material. This supersedes the originally "vocabulary-only" reading of the original Q1 — see Decision driver 7 (revised) above. The line is the line drawn by copyright law: cite freely, don't reproduce.
+
+3. **Wave 2 timeline.** *Resolved: all three workstreams in parallel from day 1.* Compliance & Risk WG runs DQ + Security + Maturity Accreditation simultaneously. Technical WG runs the Overlay attachment policy independently. *Pre-condition:* Engagement WG to recruit additional C&R members from firms with mature internal DQ / Security functions (large lenders, surveyors, conveyancing platforms) before workstream kick-off. Trade-off accepted: maximum velocity at the cost of recruitment dependency. Maturity Accreditation will need to specify dimensions with placeholders for DQ + Security content that ships in parallel — see ADR 0004 (commissioned) for how the spec resolves the cross-dependency.
+
+4. **Annual EC review slot.** *Resolved: EC meeting nearest the AGM.* Pairs the Wave 3 review with the annual governance moment (annual report, member ratifications). Q1 / Q4 depending on AGM date. Action: add the 15-minute Wave 3 review item to the AGM-adjacent EC meeting's agenda template.
+
+5. **DCAM licensing dialogue with EDM Council (follow-up to item #1).** *Resolved: stay deferred.* Re-evaluate if a member firm asks for formal DCAM alignment, or if an academic paper / regulator submission directly references the framework, or if OPDA's Accreditation Directory would benefit from EDMC endorsement.
+
+## Commissioned follow-up ADRs
+
+- [ADR 0004 — Accreditation Directory spec](./0004-accreditation-directory.md) — commissioned by Q4 above; covers hosting, scoring granularity, visibility, schema, evidence requirements per score level, naming, and how Maturity Accreditation resolves the parallel-execution cross-dependency with DQ + Security.
 
 ## References
 
