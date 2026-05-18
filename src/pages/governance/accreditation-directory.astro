@@ -1,0 +1,102 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Accreditation Directory"
+  description="The published directory of OPDA-accredited member firms, with per-firm Assurance Level coverage plus capability maturity scores (Engagement / Process / Evidence) per DCAM-style capability. VC-signed self-attestation, quarterly cadence, public + drill-down tiers."
+>
+<PageMeta category="OPDA's rules" variant="brand" updated="Stub · spec in ADR 0004 · 2026-05-18" />
+
+      <h1>Accreditation Directory</h1>
+      <p class="lead">
+        Who is OPDA-accredited and how mature each member firm's data-management
+        capabilities are. Two axes per firm: <strong>Assurance Level coverage</strong>
+        (per-claim, AL1–AL4 from the existing Conformance Scheme) and
+        <strong>Capability scores</strong> (per-firm, three dimensions: Engagement /
+        Process / Evidence). Quarterly publication, on-demand re-scoring on request.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Draft — directory pending first publish</div>
+        <p>
+          Full artefact spec in ADR 0004. Once
+          the parallel Wave 2 workstreams (DQ framework, Security framework, Overlay
+          attachments) ship their capability bundles, the Directory's first quarterly
+          publish kicks off. This page is the destination; the build-time aggregator
+          (<code>scripts/build-accreditation-directory.mjs</code>) consumes signed
+          VCs from member firms and produces the public render.
+        </p>
+      </div>
+
+      <h2 id="how-it-works">How the directory works</h2>
+
+      <ol>
+        <li><strong>Member firm self-attests</strong> capability scores via a W3C
+          Verifiable Credential signed by their accredited issuer DID.</li>
+        <li><strong>OPDA validates</strong> the signature against the Trust Registry,
+          checks evidence-requirement compliance per score level, and stores the VC.</li>
+        <li><strong>Quarterly aggregator runs</strong> — produces the public Directory
+          JSON consumed by this page. Stale firms (no submission for 9+ months) flagged.</li>
+        <li><strong>OPDA spot-checks</strong> sampled scores. Inflated ratings drop the
+          score and add an audit-trail entry visible in the drill-down view.</li>
+      </ol>
+
+      <h2 id="firms">Accredited member firms</h2>
+      <p><em>Empty until the first quarterly publish.</em></p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">First publish target</div>
+        <p>
+          End of the quarter following ratification of the four Wave 2 ADRs (DQ,
+          Security, Overlay attachments, this one). C&amp;R WG owns the publish.
+        </p>
+      </div>
+
+      <h2 id="scoring">How firms are scored</h2>
+
+      <p>
+        Per-capability scoring across three dimensions (each 1–6):
+      </p>
+      <ul>
+        <li><strong>Engagement</strong> — governance authority engaged with the capability.</li>
+        <li><strong>Process</strong> — process established and repeatable.</li>
+        <li><strong>Evidence</strong> — auditable artefacts exist.</li>
+      </ul>
+
+      <p>
+        Public-view cards aggregate to <strong>per-section averages</strong> across
+        ~8 sections (Governance, Architecture, DQ, Security, Operating Model,
+        Business Data Knowledge, etc.). No overall "firm maturity score" is
+        published — deliberately. Per-section + per-capability is the deepest
+        aggregation. See ADR 0004 §"Scoring granularity — hybrid" for the rationale.
+      </p>
+
+      <h2 id="evidence-tiers">Evidence requirements per score band</h2>
+
+      <table>
+        <thead><tr><th>Dimension score</th><th>Evidence requirement</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1–2</strong></td><td>Self-asserted only. No artefact required.</td></tr>
+          <tr><td><strong>3–4</strong></td><td>Self-asserted + artefact link (policy doc, process diagram, runbook).</td></tr>
+          <tr><td><strong>5–6</strong></td><td>Self-asserted + artefact link + independent audit attestation (signed by an OPDA-listed audit partner).</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="schema">Verifiable Credential schema</h2>
+
+      <p>
+        Each firm's quarterly submission is a W3C VC under
+        <code>https://w3id.org/opda/accreditation/v1</code>. See ADR 0004 §"Data
+        schema" for the payload shape. Stored at
+        <code>source/04-governance-bodies/accreditation/credentials/&#123;firm-did&#125;/&#123;YYYY-Qn&#125;.json</code>.
+      </p>
+
+      <h2 id="related">Related</h2>
+      <ul>
+        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the existing binary compliance regime this directory extends.</li>
+        <li><a href="/governance/data-quality">Data quality framework</a> — defines the DQ capabilities scored here.</li>
+        <li><a href="/governance/data-security">Data security framework</a> — defines the Security capabilities scored here.</li>
+        <li><a href="/governance/overlay-attachments">Overlay attachments</a> — defines the attachment-handling capabilities scored here.</li>
+      </ul>
+</Layout>

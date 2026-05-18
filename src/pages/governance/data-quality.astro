@@ -1,0 +1,61 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Data quality framework"
+  description="The six DQ dimensions OPDA scores PDTF claims against — accuracy, completeness, consistency, timeliness, uniqueness, validity — with measurement protocols per claim type and reporting via the Accreditation Directory."
+>
+<PageMeta category="Quality & security" variant="info" updated="Stub · Compliance & Risk WG to author · 2026-05-18" />
+
+      <h1>Data quality framework</h1>
+      <p class="lead">
+        How OPDA defines, measures, and reports data quality for PDTF claims. Replaces
+        the binary compliance flag of the current Conformance Scheme with a richer
+        per-dimension profile that each member firm reports against quarterly via the
+        Accreditation Directory.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Draft — content pending</div>
+        <p>
+          Commissioned by <a href="https://github.com/Property-Data-Trust-Framework">ADR 0001</a> Wave 2.
+          Owner: Compliance &amp; Risk WG (DQ dimensions map onto UK GDPR Art 5(1)(d)
+          accuracy obligations). Technical WG provides schema hooks and per-overlay
+          validation rules. Page scaffolding ready; section content to be authored once
+          the workstream is staffed.
+        </p>
+      </div>
+
+      <h2 id="dimensions">The six DQ dimensions</h2>
+      <p><em>Content pending C&amp;R WG.</em></p>
+      <ul>
+        <li><strong>Accuracy</strong> — how closely a claim corresponds to the real-world state it describes.</li>
+        <li><strong>Completeness</strong> — what fraction of the required fields are populated and meaningful.</li>
+        <li><strong>Consistency</strong> — whether the claim agrees with related claims (within and across firms).</li>
+        <li><strong>Timeliness</strong> — how fresh the claim is relative to the underlying source of truth.</li>
+        <li><strong>Uniqueness</strong> — whether duplicate or shadow claims exist.</li>
+        <li><strong>Validity</strong> — whether the claim's structure, format, and value ranges meet the schema and overlay constraints.</li>
+      </ul>
+
+      <h2 id="measurement">Per-claim-type measurement protocols</h2>
+      <p><em>Content pending C&amp;R WG.</em> Each PDTF claim type (title, EPC, lease pack, etc.) will get a measurement protocol per dimension — what's measured, how, what counts as a passing value.</p>
+
+      <h2 id="al-mapping">Mapping to Assurance Levels</h2>
+      <p><em>Content pending C&amp;R WG.</em> AL1–AL4 set a floor for required DQ scores; the Accreditation Directory captures actual scores above that floor.</p>
+
+      <h2 id="reporting">Reporting via the Accreditation Directory</h2>
+      <p>
+        Each member firm submits quarterly capability scores per dimension via the
+        <a href="/governance/accreditation-directory">Accreditation Directory</a>. Score
+        ranges and evidence requirements per dimension are detailed in
+        <a href="https://github.com/Property-Data-Trust-Framework">ADR 0004</a>.
+      </p>
+
+      <h2 id="related">Related</h2>
+      <ul>
+        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the binary compliance regime this framework extends.</li>
+        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — where DQ scores are reported.</li>
+        <li><a href="/governance/data-security">Data security framework</a> — sibling workstream covering KYC/KYB, DID key management, signature verification, revocation, audit logging.</li>
+      </ul>
+</Layout>

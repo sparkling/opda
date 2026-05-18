@@ -1,0 +1,66 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Overlay attachments policy"
+  description="How PDTF overlays handle unstructured attachments — TA10 plans, EPCs, leasehold packs, photographs. File-format requirements, signing / integrity, retention guidance for issuers, consent semantics for consumers."
+>
+<PageMeta category="Operating Model" variant="info" updated="Stub · Technical WG + C&R input · 2026-05-18" />
+
+      <h1>Overlay attachments policy</h1>
+      <p class="lead">
+        Several v3 overlays carry unstructured attachments today — TA10 plans, EPCs,
+        leasehold packs, photographs, identity-verification documents. This page is
+        the published handling policy: file-format requirements, signing and integrity
+        rules, retention guidance for issuers, and consent semantics for consumers
+        whose documents are flowing through the framework.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Draft — content pending</div>
+        <p>
+          Commissioned by ADR 0001 Wave 2 (promoted ahead of broader Document &amp;
+          Content work because the artefacts are already in production overlays).
+          Owner: Technical WG (the overlays are theirs) with Compliance &amp; Risk
+          WG input on retention and consent. Page scaffolding ready; section content
+          to be authored once the workstream is staffed.
+        </p>
+      </div>
+
+      <h2 id="attachment-types">Attachment types in v3 overlays</h2>
+      <p><em>Content pending Technical WG.</em></p>
+      <ul>
+        <li><strong>TA10 (Fittings &amp; Contents)</strong> — photographs, plans.</li>
+        <li><strong>TA6 (Property Information Form)</strong> — guarantees, certificates, planning permissions.</li>
+        <li><strong>TA7 (Leasehold Information Form)</strong> — lease pack, service-charge statements, insurance certificates.</li>
+        <li><strong>BASPI v5</strong> — material-information documents per NTSELAT guidance.</li>
+        <li><strong>NTS2 / NTSL2 (Sales / Lettings material info)</strong> — supporting documents.</li>
+        <li><strong>PIQ (Property Information Questionnaire)</strong> — surveyor attachments.</li>
+        <li><strong>RDS (Residential Development Survey)</strong> — survey reports.</li>
+        <li><strong>CON29R / LLC1 / CON29DW (searches)</strong> — local-authority and water-utility responses.</li>
+        <li><strong>FME1 (Mortgage Enquiries)</strong> — supporting financial documents.</li>
+        <li><strong>OC1 (Office Copies)</strong> — title plan, charges register PDFs.</li>
+        <li><strong>SR24 (Sustainability Report)</strong> — supporting evidence.</li>
+      </ul>
+
+      <h2 id="file-formats">File-format requirements</h2>
+      <p><em>Content pending Technical WG.</em> Per attachment type — what file formats are accepted (PDF/A, signed PDF, JPEG/PNG/AVIF for images, GeoJSON for plans, etc.), max sizes, EXIF / metadata handling.</p>
+
+      <h2 id="signing">Signing and integrity</h2>
+      <p><em>Content pending Technical WG.</em> Whether the attachment must be signed by the issuer (and via what mechanism: detached JWS, embedded signature, manifest), and how integrity is verified by the holder / verifier.</p>
+
+      <h2 id="retention">Retention guidance for issuers</h2>
+      <p><em>Content pending C&amp;R WG.</em> How long the issuer should retain the original attachment, what triggers disposal, GDPR alignment.</p>
+
+      <h2 id="consent">Consent semantics for consumers</h2>
+      <p><em>Content pending C&amp;R WG.</em> What the consumer (homeowner) is consenting to when an attachment flows through the framework — re-use scope, sharing rules, opt-out mechanics.</p>
+
+      <h2 id="related">Related</h2>
+      <ul>
+        <li><a href="/governance/data-security">Data security framework</a> — signing and integrity requirements draw on the security workstream.</li>
+        <li><a href="/governance/data-quality">Data quality framework</a> — attachment quality (legibility, completeness) is a DQ concern.</li>
+        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — overlay-attachment capabilities are scored here.</li>
+        <li><a href="/modelling/overlays">Overlays</a> — the technical reference for each overlay's structure.</li>
+      </ul>
+</Layout>

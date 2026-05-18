@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Data security framework"
+  description="OPDA's published security controls for PDTF participants — issuer onboarding KYC/KYB, DID key management, signature verification, revocation handling, and audit logging — anchored on the Code of Conduct and compliance checklist."
+>
+<PageMeta category="Quality & security" variant="info" updated="Stub · Compliance & Risk WG to author · 2026-05-18" />
+
+      <h1>Data security framework</h1>
+      <p class="lead">
+        Formalises the implicit security controls in the PDTF trust framework into a
+        published security workstream: KYC/KYB for issuers, DID key management,
+        signature verification, revocation handling, and audit logging — with a policy
+        document, a checklist, and an audit profile per control.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Draft — content pending</div>
+        <p>
+          Commissioned by ADR 0001 Wave 2. Owner: Compliance &amp; Risk WG
+          (per <code>governance.md</code> §3.C they already own data-protection
+          impact assessment). Page scaffolding ready; section content to be authored
+          once the workstream is staffed.
+        </p>
+      </div>
+
+      <h2 id="controls">Security controls in scope</h2>
+      <p><em>Content pending C&amp;R WG.</em></p>
+      <ul>
+        <li><strong>Issuer onboarding (KYC/KYB)</strong> — what evidence OPDA requires before adding a DID to the Trust Registry.</li>
+        <li><strong>DID key management</strong> — key generation, rotation, backup, and revocation requirements per issuer.</li>
+        <li><strong>Signature verification</strong> — verifier responsibilities when receiving PDTF claims; failure modes and recovery.</li>
+        <li><strong>Revocation handling</strong> — Status List 2021 update cadence, propagation guarantees, consumer-side cache invalidation.</li>
+        <li><strong>Audit logging</strong> — what each participant logs, retention, and disclosure obligations.</li>
+      </ul>
+
+      <h2 id="policy-checklist-audit">Policy + checklist + audit profile</h2>
+      <p><em>Content pending C&amp;R WG.</em> Each control gets all three: a policy statement (what the rule is), a checklist (how a firm self-assesses), and an audit profile (what an independent auditor verifies).</p>
+
+      <h2 id="anchors">Anchor documents</h2>
+      <ul>
+        <li><a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>compliance-and-policy-checklist.md</code></a></li>
+        <li><a class="resource-link" href="/resource?path=source/01-organisation/constitution-and-policies/Code+of+Conduct+2026.pdf"><code>Code of Conduct 2026.pdf</code></a></li>
+      </ul>
+
+      <h2 id="reporting">Reporting via the Accreditation Directory</h2>
+      <p>
+        Each member firm submits quarterly capability scores per control via the
+        <a href="/governance/accreditation-directory">Accreditation Directory</a>.
+        Evidence requirements per score level follow the three-tier model in
+        ADR 0004 (self-asserted at 1–2, artefact-linked at 3–4, independently
+        audited at 5–6).
+      </p>
+
+      <h2 id="related">Related</h2>
+      <ul>
+        <li><a href="/governance/data-quality">Data quality framework</a> — sibling workstream; DQ accuracy/consistency dimensions overlap with security data-integrity controls.</li>
+        <li><a href="/governance/accreditation-directory">Accreditation Directory</a> — where security scores are reported.</li>
+        <li><a href="/governance/conformance-scheme">Conformance scheme</a> — the binary compliance regime this framework extends.</li>
+      </ul>
+</Layout>

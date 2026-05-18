@@ -92,14 +92,22 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/governance/toip-governance',     title: 'ToIP governance model' },
         { url: '/governance/strategic-alignment', title: 'Strategic alignment' },
       ]},
-      { heading: "OPDA's own rules", items: [
+      { heading: "OPDA's rules", items: [
         { url: '/governance/conformance-scheme',     title: 'Conformance & certification' },
+        { url: '/governance/accreditation-directory',title: 'Accreditation Directory' },
         { url: '/governance/change-management',      title: 'Change management' },
         { url: '/governance/lifecycle-versioning',   title: 'Lifecycle & versioning' },
         { url: '/governance/risk-liability',         title: 'Risk & liability' },
+      ]},
+      { heading: 'Operating Model', items: [
         { url: '/governance/data-stewardship',       title: 'Data stewardship & decision rights' },
         { url: '/governance/meetings-and-feedback',  title: 'Meeting cadence & feedback' },
         { url: '/governance/stakeholder-engagement', title: 'Stakeholder engagement' },
+        { url: '/governance/overlay-attachments',    title: 'Overlay attachments' },
+      ]},
+      { heading: 'Quality & security', items: [
+        { url: '/governance/data-quality',           title: 'Data quality framework' },
+        { url: '/governance/data-security',          title: 'Data security framework' },
       ]},
     ],
   },
