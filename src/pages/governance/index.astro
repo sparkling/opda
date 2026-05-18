@@ -72,13 +72,18 @@ import PageMeta from '@/components/PageMeta.astro';
         </a>
       </div>
 
-      <h2 id="opda-rules">OPDA's own rules</h2>
+      <h2 id="opda-rules">OPDA's rules</h2>
       <p>The published rules and procedures that make OPDA's standard authoritative.</p>
       <div class="card-grid">
         <a class="card" href="/governance/conformance-scheme">
           <div class="pill pill--info">Rules</div>
           <h3>Conformance &amp; certification</h3>
           <p>Self-certification today (3-person panel, 80% pass mark). Planned technical conformance follows the Open Banking pattern.</p>
+        </a>
+        <a class="card" href="/governance/accreditation-directory">
+          <div class="pill pill--brand">Rules · new</div>
+          <h3>Accreditation Directory</h3>
+          <p>Two-axis maturity view per member firm — AL coverage + capability scores. Full spec in ADR 0004.</p>
         </a>
         <a class="card" href="/governance/change-management">
           <div class="pill pill--info">Rules</div>
@@ -95,20 +100,45 @@ import PageMeta from '@/components/PageMeta.astro';
           <h3>Risk &amp; liability</h3>
           <p>Articles cap member liability at £1; framework spec is MIT/AS-IS. Downstream liability still open.</p>
         </a>
+      </div>
+
+      <h2 id="operating-model">Operating Model</h2>
+      <p>How the framework runs day-to-day: who's accountable, when meetings happen, who engages with stakeholders, how unstructured attachments flow. Adopts DCAM v3's "Operating Model" component name directly.</p>
+      <div class="card-grid">
         <a class="card" href="/governance/data-stewardship">
-          <div class="pill pill--info">Rules</div>
+          <div class="pill pill--info">Operating</div>
           <h3>Data stewardship &amp; decision rights</h3>
           <p>Domain Data Stewards (one per bounded context), RACI for the 8-step SOP, decision rights matrix, and voting mechanics grounded in the Articles.</p>
         </a>
         <a class="card" href="/governance/meetings-and-feedback">
-          <div class="pill pill--info">Rules</div>
+          <div class="pill pill--info">Operating</div>
           <h3>Meeting cadence &amp; feedback</h3>
           <p>Volunteer-paced SLAs, 6-week breaking-change consultations on Astro+Artalk pages, 10-year decision log, and the topic-flagging convention for EC stewards.</p>
         </a>
         <a class="card" href="/governance/stakeholder-engagement">
-          <div class="pill pill--info">Rules</div>
+          <div class="pill pill--info">Operating</div>
           <h3>Stakeholder engagement</h3>
           <p>Five engagement modes — members, non-member firms, regulators, government, consumers. FCA via PRISM, Which? as consumer voice, devolved-nations engagement active.</p>
+        </a>
+        <a class="card" href="/governance/overlay-attachments">
+          <div class="pill pill--brand">Operating · new</div>
+          <h3>Overlay attachments</h3>
+          <p>Per-attachment policy across v3 overlays (TA10 plans, EPCs, leasehold packs, photographs). File formats, signing, retention, consent.</p>
+        </a>
+      </div>
+
+      <h2 id="quality-security">Quality &amp; security</h2>
+      <p>Cross-cutting frameworks every member firm reports against. Fills the two largest gaps in OPDA's published rules (per ADR 0001).</p>
+      <div class="card-grid">
+        <a class="card" href="/governance/data-quality">
+          <div class="pill pill--brand">Quality · new</div>
+          <h3>Data quality framework</h3>
+          <p>Six dimensions — accuracy, completeness, consistency, timeliness, uniqueness, validity. Per-claim measurement; quarterly reporting via the Accreditation Directory.</p>
+        </a>
+        <a class="card" href="/governance/data-security">
+          <div class="pill pill--brand">Security · new</div>
+          <h3>Data security framework</h3>
+          <p>KYC/KYB, DID key management, signature verification, revocation, audit logging. Policy + checklist + audit profile per control.</p>
         </a>
       </div>
 
@@ -126,12 +156,16 @@ import PageMeta from '@/components/PageMeta.astro';
           <tr><td>ToIP governance model</td><td>✅ Built</td><td><a href="/governance/toip-governance">/governance/toip-governance</a></td></tr>
           <tr><td>Strategic alignment</td><td>✅ Built</td><td><a href="/governance/strategic-alignment">/governance/strategic-alignment</a></td></tr>
           <tr><td>Conformance &amp; certification</td><td>✅ Draft</td><td><a href="/governance/conformance-scheme">/governance/conformance-scheme</a></td></tr>
+          <tr><td>Accreditation Directory</td><td>📋 Spec (ADR 0004) · 🚧 Stub page</td><td><a href="/governance/accreditation-directory">/governance/accreditation-directory</a></td></tr>
           <tr><td>Change management</td><td>✅ Draft</td><td><a href="/governance/change-management">/governance/change-management</a></td></tr>
           <tr><td>Lifecycle &amp; versioning</td><td>⏳ Stub</td><td><a href="/governance/lifecycle-versioning">/governance/lifecycle-versioning</a></td></tr>
           <tr><td>Risk &amp; liability</td><td>✅ Draft</td><td><a href="/governance/risk-liability">/governance/risk-liability</a></td></tr>
           <tr><td>Data stewardship &amp; decision rights</td><td>✅ Draft</td><td><a href="/governance/data-stewardship">/governance/data-stewardship</a></td></tr>
           <tr><td>Meeting cadence &amp; feedback channels</td><td>✅ Draft</td><td><a href="/governance/meetings-and-feedback">/governance/meetings-and-feedback</a></td></tr>
           <tr><td>Stakeholder engagement</td><td>✅ Draft</td><td><a href="/governance/stakeholder-engagement">/governance/stakeholder-engagement</a></td></tr>
+          <tr><td>Overlay attachments policy</td><td>🚧 Stub · Technical WG</td><td><a href="/governance/overlay-attachments">/governance/overlay-attachments</a></td></tr>
+          <tr><td>Data quality framework</td><td>🚧 Stub · C&amp;R WG</td><td><a href="/governance/data-quality">/governance/data-quality</a></td></tr>
+          <tr><td>Data security framework</td><td>🚧 Stub · C&amp;R WG</td><td><a href="/governance/data-security">/governance/data-security</a></td></tr>
         </tbody>
       </table>
 </Layout>
