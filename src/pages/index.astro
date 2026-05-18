@@ -1,12 +1,11 @@
 ---
-import Layout from '../components/Layout.astro';
+import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
   title="OPDA Knowledge Base"
   description="Two workstreams: Governance (UK initiative, ToIP, conformance) and Modelling (PDTF schemas, ontology, SHACL, JSON-LD)."
-  page="index"
-  section={null}
   wrapArticle={false}
+  hideSidebar={true}
 >
 <section class="home-hero">
       <h1>OPDA Knowledge Base</h1>
@@ -107,8 +106,8 @@ import Layout from '../components/Layout.astro';
 
     <footer class="home-footer">
       <h3>Reference</h3>
-      <a href="/pages/09-project-roadmap.html">Project roadmap</a>
-      <a href="/pages/10-glossary.html">Glossary (acronyms)</a>
+      <a href="/strategy/project-roadmap">Project roadmap</a>
+      <a href="/glossary">Glossary (acronyms)</a>
       <a href="design-system.html">Design system</a>
       <a href="resource.html?path=source/INVENTORY.md">Source inventory</a>
     </footer>
