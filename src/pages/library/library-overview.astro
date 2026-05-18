@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Library — overview"
   description="The shape of the project archive — what we hold and where to find it."
-  page="library-overview"
 >
 <PageMeta category="Library" variant="brand" updated="Updated 2026-05-14" />
 
@@ -38,17 +36,17 @@ import PageFooter from '../../components/PageFooter.astro';
           <tr>
             <td><strong>OPDA YouTube channel</strong></td>
             <td><a class="resource-link" href="/resource.html?path=source/05-engagement/videos-youtube/"><code>source/05-engagement/videos-youtube/</code></a></td>
-            <td>15 videos with metadata + transcripts. ~2.5 hours of recordings. <a href="43-video-library.html">Cataloguing page</a>.</td>
+            <td>15 videos with metadata + transcripts. ~2.5 hours of recordings. <a href="/engagement/video-library">Cataloguing page</a>.</td>
           </tr>
           <tr>
             <td><strong>DPMSG Steering Group materials</strong></td>
             <td><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/steering-group/materials/"><code>source/04-governance-bodies/steering-group/materials/</code></a></td>
-            <td>8 meeting packs (Sep 2025 → Apr 2026). <a href="41-meetings-decisions.html">Meeting log</a>.</td>
+            <td>8 meeting packs (Sep 2025 → Apr 2026). <a href="/engagement/meetings-decisions">Meeting log</a>.</td>
           </tr>
           <tr>
             <td><strong>DPMSG Working Groups</strong></td>
             <td><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/"><code>source/04-governance-bodies/working-groups/</code></a></td>
-            <td>6 working-group folders. Includes the Spring 2025 Interoperability Report. <a href="42-working-groups.html">Group catalog</a>.</td>
+            <td>6 working-group folders. Includes the Spring 2025 Interoperability Report. <a href="/engagement/working-groups">Group catalog</a>.</td>
           </tr>
           <tr>
             <td><strong>Trust Framework PoC documents</strong></td>
@@ -58,7 +56,7 @@ import PageFooter from '../../components/PageFooter.astro';
           <tr>
             <td><strong>Smart Data Challenge entries</strong></td>
             <td><a class="resource-link" href="/resource.html?path=source/06-research/smart-data-challenge/"><code>source/06-research/smart-data-challenge/</code></a></td>
-            <td>Full submission archive incl. prize entries, cost spreadsheets, member-feedback workbooks. <a href="52-smart-data-challenge.html">SDC page</a>.</td>
+            <td>Full submission archive incl. prize entries, cost spreadsheets, member-feedback workbooks. <a href="/adoption/smart-data-challenge">SDC page</a>.</td>
           </tr>
           <tr>
             <td><strong>Third-party reports</strong></td>
@@ -109,13 +107,8 @@ import PageFooter from '../../components/PageFooter.astro';
 
       <h2 id="subPages">Sub-pages</h2>
       <ul>
-        <li><a href="81-document-archive.html"><strong>Document archive</strong></a> — every report, deck and project document, catalogued</li>
-        <li><a href="82-transcript-archive.html"><strong>Transcript archive</strong></a> — video + meeting transcripts in one place</li>
-        <li><a href="83-external-references.html"><strong>External references</strong></a> — gov.uk, NTS, related standards</li>
+        <li><a href="/library/document-archive"><strong>Document archive</strong></a> — every report, deck and project document, catalogued</li>
+        <li><a href="/library/transcript-archive"><strong>Transcript archive</strong></a> — video + meeting transcripts in one place</li>
+        <li><a href="/library/external-references"><strong>External references</strong></a> — gov.uk, NTS, related standards</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '/library.html', label: 'Library' }}
-  next={{ href: '81-document-archive.html', label: 'Document archive' }}
-/>
 </Layout>

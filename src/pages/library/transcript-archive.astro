@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Transcript archive"
   description="Every transcribed session in the archive — videos, sandbox member updates, DPMSG meetings."
-  page="transcripts-archive"
 >
 <PageMeta category="Library" variant="brand" updated="Updated 2026-05-14" />
 
@@ -14,8 +12,8 @@ import PageFooter from '../../components/PageFooter.astro';
       <p class="lead">
         Every plain-text transcript in <code>source/</code>. Indexed here so it's
         easy to grep across the whole corpus. For the video-centric view see
-        <a href="43-video-library.html">Video library</a>; for the
-        meeting-centric view see <a href="41-meetings-decisions.html">Meetings
+        <a href="/engagement/video-library">Video library</a>; for the
+        meeting-centric view see <a href="/engagement/meetings-decisions">Meetings
         &amp; decisions</a>.
       </p>
 
@@ -60,9 +58,4 @@ import PageFooter from '../../components/PageFooter.astro';
         <li>For grep/search across the corpus from your terminal: <code>rg "term" source/</code> is fastest. From the docs site, use the resource viewer's iframe + browser Ctrl-F.</li>
         <li>For LLM-friendly bulk read, the transcripts at <code>source/05-engagement/videos-youtube/transcripts/</code> total ~250 KB of text and fit comfortably in a single context window.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '81-document-archive.html', label: 'Document archive' }}
-  next={{ href: '83-external-references.html', label: 'External references' }}
-/>
 </Layout>

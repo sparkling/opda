@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Document archive"
   description="Every project document, report, deck and plan in the OPDA archive — catalogued by theme."
-  page="documents"
 >
 <PageMeta category="Library" variant="brand" updated="Updated 2026-05-14" />
 
@@ -69,7 +67,7 @@ import PageFooter from '../../components/PageFooter.astro';
       </table>
 
       <h2 id="smartDataChallenge">Smart Data Challenge submission</h2>
-      <p>Catalogued separately on the <a href="52-smart-data-challenge.html">Smart Data Challenge page</a>.</p>
+      <p>Catalogued separately on the <a href="/adoption/smart-data-challenge">Smart Data Challenge page</a>.</p>
 
       <h2 id="semanticModels">Semantic-model deliverables</h2>
       <table>
@@ -82,9 +80,4 @@ import PageFooter from '../../components/PageFooter.astro';
           <tr><td><a class="resource-link" href="/resource.html?path=source/00-deliverables/semantic-models/glossary-merged.json"><code>glossary-merged.json</code></a></td><td>Merged OPDA Glossary terms (54)</td></tr>
         </tbody>
       </table>
-
-      <PageFooter
-  prev={{ href: '80-library-overview.html', label: 'Overview' }}
-  next={{ href: '82-transcript-archive.html', label: 'Transcript archive' }}
-/>
 </Layout>
