@@ -1,0 +1,576 @@
+---
+import Layout from '../../components/Layout.astro';
+import PageMeta from '../../components/PageMeta.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import Diagram from '../../components/Diagram.astro';
+---
+<Layout
+  title="Data stewardship &amp; decision rights"
+  description="Who is accountable for which part of OPDA's data, and who decides what. Pulls voting machinery out of the Articles, RACI out of the change SOP, and introduces the missing layer — Domain Data Stewards, one per bounded context."
+  page="data-stewardship"
+  section="governance"
+>
+<PageMeta category="Governance" updated="Draft · Updated 2026-05-18" />
+
+      <h1>Data stewardship &amp; decision rights</h1>
+      <p class="lead">
+        Who is accountable for which part of OPDA's data, and who decides what. Pulls
+        the voting machinery out of the Articles and the change SOP out of
+        <code>governance.md</code>, and introduces the missing piece — Domain Data
+        Stewards, one per bounded context.
+      </p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status — what's ratified and what's proposed</div>
+        <p>
+          <strong>Ratified</strong> (already in primary documents): the membership /
+          Executive Committee / Board voting machinery (Constitution; Articles of
+          Association 2026 arts. 4–17, 24–34, 39–40), the OPDA Conflict of Interest
+          register, and the trust-framework role taxonomy in
+          <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> §3.
+          <strong>Proposed</strong>: the Domain Data Steward role itself, the RACI
+          for the 8-step SOP, working-group quorum rules, and the public dissent
+          record. None of these have been ratified by the General Assembly or the
+          Executive Committee yet — this page is the design baseline they would be
+          ratified against.
+        </p>
+      </div>
+
+      <h2 id="whyStewardship">Why a stewardship layer is needed</h2>
+
+      <p>
+        PDTF v3.5.0 has 18 main overlays and 16 extension overlays
+        (see <a href="16-overlays.html">PDTF overlays</a> and
+        <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/"><code>schemas/src/schemas/v3/overlays/</code></a>).
+        No person or role is currently <strong>named as accountable</strong> for each
+        overlay's content, evolution, or correctness. The change SOP in
+        <code>governance.md</code> describes the <em>process</em> through which changes
+        happen, but every change still has the unanswered question: <em>who decides
+        whether this is right for the bounded context it serves?</em>
+      </p>
+
+      <p>
+        The PDTF v2.0 spec rewrite makes this gap structural. As the model moves from
+        JSON Schema overlays towards W3C Verifiable Credentials and DIDs, the question
+        of who authorises issuance and who attests to claim semantics becomes
+        load-bearing. Without named domain accountability, every claim flowing through
+        PDTF defaults to OPDA-as-Governance-Authority accountability — which doesn't
+        scale, and which the framework's MIT licence
+        (<a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/LICENSE"><code>trust-framework/LICENSE</code></a>)
+        explicitly disclaims at the artefact level.
+      </p>
+
+      <p>
+        DCAM (EDM Council's Data Management Capability Assessment Model) builds its
+        entire data-governance pillar around named stewards per data domain. The
+        <a href="07-toip-governance.html#whyToip">ToIP page</a> argues OPDA can't adopt
+        DCAM whole — it assumes a single accountable enterprise, not a federated body —
+        but the <strong>steward concept</strong> translates cleanly to a federated
+        standards body. A Domain Data Steward represents one
+        <a href="12-bounded-contexts.html">bounded context</a> within OPDA's
+        federation.
+      </p>
+
+      <h2 id="threeTaxonomies">Three role taxonomies already exist — none is "domain steward"</h2>
+
+      <p>
+        OPDA's documents already define three distinct role taxonomies. They describe
+        authority over the company, authority over the change process, and positions
+        in the trust protocol. <strong>None of them says "person X is accountable for
+        the TA6 overlay"</strong>.
+      </p>
+
+      <Diagram caption="The three existing taxonomies (blue / green / amber) and the proposed Domain Data Steward layer (dark blue, dashed) that bridges them by being accountable for specific schemas within specific bounded contexts.">
+flowchart TB
+  classDef constitutional fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+  classDef operational fill:#dcfce7,stroke:#166534,color:#14532d;
+  classDef participant fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef proposed fill:#1a4d80,stroke:#0b2545,color:#ffffff,stroke-width:3px,stroke-dasharray:5 5;
+
+  subgraph CONST["Constitutional (Articles + Constitution)"]
+    direction TB
+    GA[General Assembly]:::constitutional
+    EC["`Executive Committee
+12 seats · 3y term`"]:::constitutional
+    BD["`Board of Directors
+quorum 5 · ≥4 mtgs/yr`"]:::constitutional
+    CH["`Independent Chair
+5y initial`"]:::constitutional
+    MB["`Members
+Founder · Certified · Associate`"]:::constitutional
+  end
+
+  subgraph OPS["Operational (governance.md §3)"]
+    direction TB
+    CO[Co-ordination function]:::operational
+    TRV["`Technical Review
+2+ approvers`"]:::operational
+    CR[Compliance &amp; Risk]:::operational
+    EN["`Engagement /
+Stakeholder Representation`"]:::operational
+  end
+
+  subgraph PTC["Trust Framework Participants (governance.md §2.A)"]
+    direction TB
+    GAA["`Governance Authority
+= OPDA itself`"]:::participant
+    AI[Accredited Issuer]:::participant
+    HO[Holder]:::participant
+    VE[Verifier]:::participant
+    TRO[Trust Registry Operator]:::participant
+  end
+
+  subgraph MISS["Proposed — Domain Data Stewards (one per bounded context)"]
+    direction TB
+    DS1[Estate Agency]:::proposed
+    DS2[Conveyancing]:::proposed
+    DS3[Mortgage Lending]:::proposed
+    DS4["`Surveying
+vacant`"]:::proposed
+    DS5[Property Data Services]:::proposed
+    DS6[Property Technology]:::proposed
+  end
+</Diagram>
+
+      <p>
+        The constitutional roles describe authority over the <em>company</em>. The
+        operational roles describe authority over the <em>process</em>. The participant
+        roles describe positions in the <em>protocol</em>. The proposed steward layer
+        is accountable for the <em>schemas</em> — the bridge between all three.
+      </p>
+
+      <h2 id="domainStewards">Proposed: Domain Data Stewards</h2>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Surveying steward seat is structurally unfillable today</div>
+        <p>
+          No Founder or Certified Member operates in Surveying. Survey Shack is
+          Associate-tier only; the eligibility rules below require Founder or
+          Certified. Before the stewardship model goes live, the Executive Committee
+          will need to either: (a) recruit a surveying firm to Certified, (b) relax
+          eligibility for under-represented contexts, or (c) deputise an external
+          advisor (e.g., a RICS representative) pending recruitment. See
+          <a href="#openQuestions">Open Question 4</a>.
+        </p>
+      </div>
+
+      <p>
+        Six stewards, one per primary bounded context (per
+        <a href="12-bounded-contexts.html">12-bounded-contexts</a>). Because each PDTF
+        overlay belongs to exactly one bounded context, six stewards collectively cover
+        every published schema artefact. The mapping:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Bounded context</th>
+            <th>Overlays stewarded</th>
+            <th>Recommended steward source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Estate Agency</strong></td>
+            <td><code>baspi4</code>, <code>baspi5</code>, <code>nts</code>, <code>nts2</code>, <code>ntsl</code>, <code>ntsl2</code> + 16 extension overlays</td>
+            <td>Founders: OnTheMarket or Homely. Association: Connells Group.</td>
+          </tr>
+          <tr>
+            <td><strong>Conveyancing (Legal)</strong></td>
+            <td><code>ta6</code>, <code>ta7</code>, <code>ta10</code>, <code>lpe1</code></td>
+            <td>Founder: LMS. Association: Smoove, Movera, Movemnt, Simply Conveyancing.</td>
+          </tr>
+          <tr>
+            <td><strong>Mortgage Lending</strong></td>
+            <td><code>fme1</code></td>
+            <td>Founders: UTB, OMS. Association banks: HSBC UK, Nationwide, NatWest, Lloyds (Halifax / BM Solutions / Scottish Widows), Atom Bank.</td>
+          </tr>
+          <tr>
+            <td><strong>Surveying / Valuation</strong></td>
+            <td><code>piq</code></td>
+            <td><strong>Vacant.</strong> No founding member; recruit from Survey Shack (association member) or via RICS introduction.</td>
+          </tr>
+          <tr>
+            <td><strong>Property Data Services</strong></td>
+            <td><code>rds</code>, <code>oc1</code>, <code>llc1</code>, <code>con29R</code>, <code>con29DW</code>, <code>sr24</code></td>
+            <td>Founders: Sprift, Groundsure, TM Group, Kotini, Inventory Base.</td>
+          </tr>
+          <tr>
+            <td><strong>Property Technology</strong> (orchestration)</td>
+            <td>Base <code>pdtf-transaction.json</code> + VC wrapper (no overlays of its own)</td>
+            <td>Founders: Moverly, Coadjute, PEXA.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 id="stewardResponsibilities">Steward responsibilities</h3>
+
+      <p>Each Domain Data Steward owns, for their bounded context:</p>
+
+      <ul>
+        <li>The published schemas and overlays — their wording, structure, examples, JSON-LD contexts, SHACL shapes.</li>
+        <li>The glossary terms specific to the context, and the SKOS scheme that organises them (per <a href="12-bounded-contexts.html#implications">12-bounded-contexts</a>).</li>
+        <li>Liaison with the <strong>industry stewards</strong> named on the bounded-contexts page (Propertymark / MHCLG for Estate Agency; Law Society / SRA / CLC / CILEx for Conveyancing; UK Finance / BSA / FCA for Mortgage Lending; RICS for Surveying; COPSO for Property Data Services).</li>
+        <li>Cross-context coordination via the (proposed) Steward Roundtable.</li>
+        <li>Stakeholder feedback ingestion for their context (see <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>).</li>
+      </ul>
+
+      <h3 id="stewardEligibility">Eligibility &amp; term</h3>
+
+      <ul>
+        <li><strong>Drawn from an Accredited Member firm</strong> — Founder or Certified Member tier (Constitution §Membership); Associate Members not eligible until they upgrade to Certified.</li>
+        <li><strong>Nominated by the member firm.</strong> OPDA does not gate on individual years of experience or specific qualifications. The nominating Accredited Member firm certifies that the candidate has the sector authority and operational knowledge to act as the steward for that bounded context. This mirrors how Companies House permits firms to appoint their own directors, and matches the OPDA Accreditation Scheme's existing framing of "demonstrated efforts in adopting data and technology standards" rather than years thresholds.</li>
+        <li><strong>Annual COI declaration</strong> on accreditation reapplication (see <a href="#coi">Conflict-of-interest declarations</a>).</li>
+        <li><strong>Term: 3 years initial, with a 2-year break clause, maximum 9 years</strong> total — mirrors the director term in Articles art. 18(1)(c) and the EC term in the Code of Conduct.</li>
+      </ul>
+
+      <h3 id="stewardOverlap">Role overlap with the Executive Committee</h3>
+
+      <p>
+        A Domain Data Steward <strong>does not hold a voting seat on the Executive
+        Committee</strong>. Each bounded context has <strong>3 distinct individuals</strong> —
+        2 EC voting reps (the &ldquo;2 per context&rdquo; structure in <a href="#ecVoting">EC voting</a>)
+        plus 1 Domain Data Steward — each from one of the context's member firms. A
+        member firm may staff multiple of these roles only by nominating different
+        individuals to each.
+      </p>
+
+      <p>
+        Stewards <strong>attend EC meetings on a topic-based basis</strong>: invited by
+        the Chair when a matter relating to their bounded context is on the agenda,
+        with speaking rights when present. This mirrors the Constitution's existing
+        provision for inviting Certified or Associate Members to EC meetings
+        (Constitution §Governance Structure). Stewards do not have a standing seat or
+        right of attendance.
+      </p>
+
+      <p>
+        Rationale: stewards are <em>operational</em> (responsible for schemas within a
+        context); EC members are <em>governing</em> (responsible for OPDA's strategic
+        direction and policy per Constitution §Governance Structure). Separating the
+        two prevents double-voting when a change escalates from Technical WG to EC
+        ratification under the <a href="#raci">RACI</a>. Topic-based attendance keeps
+        domain voice in the room when it matters, without imposing 6 standing
+        observers on every EC meeting.
+      </p>
+
+      <h3 id="stewardIndustryPairing">Pairing with external industry stewards</h3>
+
+      <Diagram caption="Each OPDA Domain Data Steward (internal) has a counterpart industry steward (external regulator or trade body). The pairing makes liaison concrete — a named person on each side, not a function-to-function relationship.">
+flowchart LR
+  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
+  classDef ext fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+  classDef vac fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+
+  EA["Estate Agency steward"]:::opda
+  CV["Conveyancing steward"]:::opda
+  ML["Mortgage Lending steward"]:::opda
+  SV["Surveying steward · vacant"]:::vac
+  PD["Property Data Services steward"]:::opda
+  PT["Property Technology steward"]:::opda
+
+  NTSE["NTSELAT → MHCLG · Propertymark"]:::ext
+  LAW["Law Society · SRA · CLC · CILEx"]:::ext
+  UKF["UK Finance · BSA · FCA"]:::ext
+  RICS["RICS"]:::ext
+  COP["COPSO"]:::ext
+  NOO["no single body"]:::ext
+
+  EA --- NTSE
+  CV --- LAW
+  ML --- UKF
+  SV -.- RICS
+  PD --- COP
+  PT --- NOO
+</Diagram>
+
+      <h2 id="raci">RACI for the 8-step change SOP</h2>
+
+      <p>
+        The 8-step Standard Operating Procedure from
+        <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> §6
+        (rendered on <a href="21-change-management.html#sop">Change management</a>) tells
+        us <em>what</em> happens; this RACI matrix tells us <em>who</em> does it. R =
+        Responsible (does the work), A = Accountable (owns the outcome), C = Consulted,
+        I = Informed.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>SOP step</th>
+            <th>Proposer</th>
+            <th>Domain Steward</th>
+            <th>Technical WG</th>
+            <th>Compliance &amp; Risk</th>
+            <th>Engagement WG</th>
+            <th>EC / DPMSG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1. Submission</td><td><strong>R</strong></td><td>C</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+          <tr><td>2. Implementation</td><td><strong>R</strong></td><td><strong>A</strong></td><td>C</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>3. Impact assessment</td><td>—</td><td><strong>R</strong></td><td>C</td><td><strong>A</strong></td><td>—</td><td>—</td></tr>
+          <tr><td>4. Review</td><td>—</td><td>C</td><td><strong>R / A</strong></td><td>C</td><td>I</td><td>—</td></tr>
+          <tr><td>5. Documentation</td><td>C</td><td><strong>R</strong></td><td>C</td><td>C</td><td>C</td><td>—</td></tr>
+          <tr><td>6. Approval</td><td>—</td><td>C</td><td><strong>R</strong></td><td>C</td><td>I</td><td><strong>A</strong> (breaking only)</td></tr>
+          <tr><td>7. Stakeholder notification</td><td>—</td><td>C</td><td>I</td><td>I</td><td><strong>R / A</strong></td><td>I</td></tr>
+          <tr><td>8. Release</td><td>—</td><td><strong>A</strong></td><td><strong>R</strong></td><td>—</td><td>C</td><td>I</td></tr>
+        </tbody>
+      </table>
+
+      <p>Key design choices in this RACI:</p>
+
+      <ul>
+        <li><strong>The Steward is Accountable for Implementation, Documentation, and Release</strong> within their bounded context — the through-line of context-specific authority.</li>
+        <li><strong>Technical WG is Responsible for Review and Approval</strong>, anchored in <code>governance.md</code> §3.B which assigns this function to "all technical PDTF members" with the 2+ approver threshold.</li>
+        <li><strong>Compliance &amp; Risk is Accountable for Impact Assessment</strong>, anchored in <code>governance.md</code> §3.C.</li>
+        <li><strong>Engagement WG is Responsible and Accountable for Stakeholder Notification</strong>, anchored in <code>governance.md</code> §3.D.</li>
+        <li><strong>EC / DPMSG only enters at step 6 for breaking changes</strong> — escalation, not routine involvement. Non-breaking changes complete the SOP without their gate.</li>
+      </ul>
+
+      <h2 id="decisionRights">Decision rights — what each body decides alone</h2>
+
+      <p>
+        Different decisions require different authorities. The ladder runs from the
+        steward at the narrow end (single-overlay typo) to the General Assembly at the
+        broad end (constitutional override).
+      </p>
+
+      <Diagram caption="Decision-rights ladder. Citations show where each level is ratified (R) or proposed (P). Authority broadens as you climb.">
+flowchart TB
+  classDef st fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
+  classDef wg fill:#dcfce7,stroke:#166534,color:#14532d;
+  classDef cr fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  classDef ec fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
+  classDef ga fill:#0b2545,color:#fff,stroke:#000,stroke-width:3px;
+
+  S1["`**Domain Steward alone**
+PATCH / doc-only · single overlay
+*Proposed*`"]:::st
+  S2["`**Technical WG · 2+ reviewers**
+MINOR additive · single overlay
+*governance.md §3.B — Ratified*`"]:::wg
+  S3["`**Technical WG · 3+ reviewers + C&amp;R**
+MAJOR breaking · single overlay
+*governance.md §6 — Ratified*`"]:::cr
+  S4["`**Steward Roundtable**
+cross-context change · consensus
+*Proposed*`"]:::wg
+  S5["`**Executive Committee**
+accreditation / conformance policy
+*Articles art. 4 + Constitution — Ratified*`"]:::ec
+  S6["`**General Assembly · majority vote**
+Constitution / Articles amendment · 30-day notice
+*Constitution — Ratified*`"]:::ga
+  S7["`**General Assembly · special resolution 75%**
+override directors on specified action
+*Articles art. 5 — Ratified*`"]:::ga
+
+  S1 --> S2 --> S3
+  S2 --> S4 --> S3
+  S3 --> S5
+  S5 --> S6 --> S7
+</Diagram>
+
+      <h2 id="votingRatified">Voting mechanics — ratified</h2>
+
+      <p>
+        Direct citations from the Articles of Association 2026, the Constitution, and
+        governance.md. These are <strong>not proposals</strong> — they are the rules
+        OPDA already operates under.
+      </p>
+
+      <h3 id="gaVoting">General Assembly (all members)</h3>
+
+      <ul>
+        <li><strong>AGM held annually no later than 31 October</strong>, in person or via interactive platform — Articles art. 24(1).</li>
+        <li><strong>Quorum: 2 member attendees minimum</strong> — Articles art. 25.</li>
+        <li><strong>One member, one vote</strong> — Articles art. 29(1).</li>
+        <li><strong>Show of hands default; poll demandable</strong> — Articles art. 29(2) and art. 31. A poll can be demanded by the chair, the directors, two or more voting members, or members representing not less than one tenth of voting rights — Articles art. 31(2).</li>
+        <li><strong>Chair's casting vote on equal votes</strong> at General Meeting — Articles art. 29(2).</li>
+        <li><strong>Proxy by written notice</strong> — Articles arts. 32–33.</li>
+        <li><strong>Ordinary resolution amendable with 48h notice</strong>; special resolutions only amendable by chair for non-substantive corrections — Articles art. 34.</li>
+        <li><strong>Adjournment if quorum not present within 30 minutes</strong> of start, or if quorum lost during meeting — Articles art. 28.</li>
+        <li><strong>Constitution amendment</strong>: majority vote of GA, 30 days' prior notice to members — Constitution §Amendments.</li>
+      </ul>
+
+      <h3 id="ecVoting">Executive Committee (12 voting seats — 2 per bounded context)</h3>
+
+      <ul>
+        <li><strong>Composition: 12 voting member-firm representatives + Chair</strong> (Code of Conduct §EC). The 12 voting seats are structured as <strong>2 representatives per bounded context</strong>, ideally with differentiated profiles within each context — e.g., one Founder + one Association firm; or one business lead + one technical lead.</li>
+        <li><strong>Design intent: representative, not comprehensive.</strong> With 13 founder firms + ~50 association members, the EC cannot be 1-per-firm. The 12-seat / 2-per-context structure provides Founder &harr; Association balance, business &harr; technical coverage, and resilience if one rep is unavailable. The figure comfortably satisfies the Articles art. 18(1) floor (Chair + minimum 5 voting member-firm reps) and matches DAMA-DMBOK's typical Data Governance Council size range of 8–15.</li>
+        <li><strong>Decision by consensus and majority basis</strong> — Constitution §Governance Structure.</li>
+        <li><strong>One firm, one vote</strong>: each member has one vote, except where multiple EC members come from the same group of companies, in which case the group gets one vote — Constitution §Governance Structure.</li>
+        <li><strong>Term: 3 years initial, 2-year break clause, maximum 9 years total</strong> — Articles art. 18(1)(c); confirmed in Code of Conduct §EC clause 2.</li>
+        <li><strong>Step-down on majority request</strong>: an EC member can be required to step down if the majority of the EC requests it; Chair has casting vote on ties — Code of Conduct §EC clause 6.</li>
+        <li><strong>Observers do not count toward seat figures.</strong> The Constitution permits the EC to invite Certified or Associate Members to attend meetings as non-voting observers; per <a href="#stewardOverlap">Role overlap</a>, Domain Data Stewards may also be invited on a topic-based basis when their bounded context is on the agenda. Neither category counts toward the 12-voting-seat or minimum-5 figures, which apply to voting members only.</li>
+      </ul>
+
+      <h3 id="boardVoting">Board of Directors (subset registered at Companies House)</h3>
+
+      <ul>
+        <li><strong>General authority over management</strong> — Articles art. 4.</li>
+        <li><strong>Minimum 4 meetings per year</strong> — Articles art. 10(1).</li>
+        <li><strong>Quorum: minimum 5</strong> (fixable by directors but never less than 5) — Articles art. 12(2).</li>
+        <li><strong>Decisions by majority at meeting OR unanimous written resolution</strong> — Articles arts. 8–9.</li>
+        <li><strong>Chair's casting vote on equal votes</strong> — Articles art. 14.</li>
+        <li><strong>Director term: 3 years initial, 2-year break, max 9 years</strong> — Articles art. 18(1)(c).</li>
+        <li><strong>Decision records kept for 10 years</strong> from date of decision — Articles art. 16. (This is the foundational citation for the decision-log retention policy in <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>.)</li>
+        <li><strong>Director COI</strong>: a director with an interest in a proposed transaction is not counted for quorum or voting purposes, except in permitted causes (Articles art. 15, aligned with s.175 Companies Act 2006).</li>
+      </ul>
+
+      <h3 id="reservePower">Members' reserve power</h3>
+
+      <p>
+        The ultimate override. Per <strong>Articles art. 5</strong>:
+      </p>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        (1) The members may, by special resolution, direct the directors to take, or
+        refrain from taking, specified action. (2) No such special resolution
+        invalidates anything which the directors have done before the passing of the
+        resolution.
+      </blockquote>
+
+      <p>
+        A <strong>special resolution</strong> has the meaning in s.283 of the Companies
+        Act 2006 — a 75% majority of votes cast. This is the mechanism by which the
+        membership as a whole can override the Board on a specified matter, with
+        prospective effect only.
+      </p>
+
+      <h2 id="votingProposed">Voting mechanics — proposed</h2>
+
+      <p>Rules the corpus does <em>not</em> yet define, and that this page proposes.</p>
+
+      <h3 id="techWgQuorum">Technical Working Group quorum</h3>
+
+      <ul>
+        <li><strong>Quorate at: 3 reviewers active</strong>, of which at least 2 from different member firms (mirrors the Articles' insistence on independent decision-makers).</li>
+        <li><strong>MINOR additive changes</strong>: 2-approver threshold per <code>governance.md</code> §3.B is met — fills the existing "X approvers" placeholder with 2.</li>
+        <li><strong>MAJOR breaking changes</strong>: 3-approver threshold from <code>governance.md</code> §6 is met, <em>plus</em> Compliance &amp; Risk sign-off, <em>plus</em> 4-week public consultation (see <a href="25-meetings-and-feedback.html#publicConsultation">Public consultation mechanics</a>).</li>
+        <li><strong>Tied votes</strong>: escalate to Steward Roundtable; if unresolved, to Executive Committee.</li>
+      </ul>
+
+      <h3 id="stewardRoundtable">Steward Roundtable</h3>
+
+      <ul>
+        <li><strong>Composition</strong>: all 6 Domain Data Stewards; meets quarterly (see <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>).</li>
+        <li><strong>Quorum: 4 of 6 stewards present</strong>.</li>
+        <li><strong>Decisions by consensus</strong>; if consensus fails, simple majority of those present; ties escalate to Technical WG.</li>
+        <li><strong>Chair rotates annually</strong> among the stewards.</li>
+        <li><strong>Purpose</strong>: cross-overlay coordination, calendar of upcoming changes, conflict raising, joint position papers.</li>
+      </ul>
+
+      <h2 id="coi">Conflict-of-interest declarations</h2>
+
+      <h3 id="coiRatified">Ratified COI machinery</h3>
+
+      <ul>
+        <li><strong>Director COI rule</strong>: Articles art. 15 — directors with an interest in a proposed transaction are excluded from quorum and voting, except in three "permitted causes" (guarantees in respect of the association, subscription for securities, employee/director benefits).</li>
+        <li><strong>Conflict of Interest register</strong>: maintained at
+          <a class="resource-link" href="/resource.html?path=source/01-organisation/constitution-and-policies/Conflict of interest register.xlsx"><code>source/01-organisation/constitution-and-policies/Conflict of interest register.xlsx</code></a>.
+          The artefact exists; this page proposes the operating model that extends its scope.</li>
+        <li><strong>Code of Conduct Principle 5 — Transparency</strong>: "our members are clear with customers, clients, and stakeholders about their membership and the role they play… and do not leverage their membership for commercial or political gain" — Code of Conduct §Code of Conduct Principles.</li>
+      </ul>
+
+      <h3 id="coiProposed">Proposed COI extensions for stewards</h3>
+
+      <ul>
+        <li>Each Domain Data Steward maintains a <strong>public COI register entry</strong>, updated annually on accreditation reapplication.</li>
+        <li><strong>Per-decision declaration</strong>: when a steward's firm has commercial stake in a specific change (e.g., a steward at Sprift voting on an overlay Sprift's products will sell into), they declare the interest and recuse from the binding vote — though they may participate in discussion in an advisory capacity.</li>
+        <li><strong>Group-acquisition trigger</strong>: when a steward's parent group acquires another OPDA member, COI is automatically re-declared and the Executive Committee re-confirms the appointment.</li>
+        <li><strong>Public-facing register</strong>: the COI register feeds the
+          <a href="07-toip-governance.html">Trust Registry</a> as machine-readable
+          metadata against each steward's DID, signed by the Governance Authority.</li>
+      </ul>
+
+      <h2 id="dissent">Dissent record — mandatory vote split, voluntary position</h2>
+
+      <p>
+        The <strong>mandatory layer</strong> derives from Articles art. 16: every EC /
+        Board decision records the vote split, retained for 10 years (see
+        <a href="#retention">Decision retention</a> below). The <strong>voluntary
+        layer</strong> is a publish-on-submit dissent position: dissenters may submit a
+        200-word position; if submitted, it's published alongside the change. Most
+        decisions will be unanimous and stay light-touch — dissent appears in the
+        record only when someone has one to put forward.
+      </p>
+
+      <p>Three precedents inform the optional layer:</p>
+
+      <ul>
+        <li><strong>IETF Internet-Drafts</strong> publish "rough consensus and running code" with explicit minority opinions recorded alongside.</li>
+        <li><strong>FCA consultation responses</strong> include verbatim dissent and the FCA's response to each.</li>
+        <li><strong>Open Banking standards</strong> ship with annotated alternatives where consensus was not reached.</li>
+      </ul>
+
+      <p>Implementation for PDTF (proposed):</p>
+
+      <ul>
+        <li><strong>Vote split is always recorded</strong> in the decision log per Articles art. 16 — this is the constitutional minimum, not optional.</li>
+        <li><strong>Dissenters may submit a 200-word position</strong> within 5 working days of the merge. Submission is voluntary; the dissenter chooses whether to put their position on the record.</li>
+        <li><strong>Submitted dissent is published</strong> in
+          <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a>
+          alongside the change. The Engagement WG curates.</li>
+        <li><strong>Stewards who abstain</strong> from a vote within their own bounded context optionally record reason (e.g., COI, insufficient information, awaiting external guidance) — same publish-on-submit pattern.</li>
+        <li><strong>Pattern analysis</strong>: submitted dissents feed the Compliance &amp; Risk function for cross-cycle pattern review. A steward who frequently dissents on adjacent-context changes can surface a coordination gap the Steward Roundtable should address.</li>
+      </ul>
+
+      <h2 id="retention">Decision retention</h2>
+
+      <p>
+        <strong>Articles art. 16</strong> (Ratified):
+      </p>
+
+      <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+        The directors must ensure that the association keeps a record, in writing, for
+        at least 10 years from the date of the decision recorded, of every unanimous
+        or majority decision taken by the executive committee and directors.
+      </blockquote>
+
+      <p>Operationalising this for OPDA-wide decisions:</p>
+
+      <ul>
+        <li><strong>Decision log path</strong>: <code>source/04-governance-bodies/decisions/YYYY/MM/decision-NNN.md</code>.</li>
+        <li><strong>Each entry</strong>: date, body (GA / EC / Board / Technical WG / Steward Roundtable), decision text, vote split, dissents (per §<a href="#dissent">Public dissent record</a>), action items.</li>
+        <li><strong>Cross-linked</strong> from
+          <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a>
+          where a decision triggers a schema release.</li>
+        <li><strong>Retention</strong>: 10 years (ratified for EC + Board); proposed extension to all WG decisions for symmetry and audit utility.</li>
+      </ul>
+
+      <h2 id="openQuestions">Open questions</h2>
+
+      <p>
+        Items this page deliberately does not yet decide — to be ratified by the
+        Executive Committee (operational matters) or General Assembly
+        (constitutional matters):
+      </p>
+
+      <ol>
+        <li><strong>Steward selection process</strong> — appointed by the Executive Committee, elected by the membership, or nominated by sector working groups?</li>
+        <li><strong>Compensation</strong> — voluntary (mirroring EC seats) or paid stipend (reflecting time commitment)?</li>
+        <li><strong>Removal procedure</strong> when a steward's firm exits OPDA membership mid-term.</li>
+        <li><strong>Vacant-context handling</strong>: Surveying has no founding member. Does the role stay vacant, is it temporarily merged with another context, or does the Executive Committee deputise an external advisor (e.g., a RICS representative) until a member is recruited?</li>
+        <li><strong>Liaison cadence</strong> with external industry stewards — quarterly meetings? Annual letter? Standing observer seats at each other's bodies?</li>
+        <li><strong>Voting at Technical WG</strong>: when a steward attends a Technical WG meeting reviewing a change in their own bounded context, do they vote, observe, or co-chair?</li>
+      </ol>
+
+      <h2 id="relatedPages">Related pages</h2>
+
+      <ul>
+        <li><a href="04-steering-forums.html">Steering &amp; coordination</a> — DPMSG and the 5 working groups the SOP runs within.</li>
+        <li><a href="12-bounded-contexts.html">Bounded contexts &amp; industries</a> — the six contexts each steward covers.</li>
+        <li><a href="20-conformance-scheme.html">Conformance &amp; certification</a> — Tier A self-certification process Stewards plug into.</li>
+        <li><a href="21-change-management.html">Change management</a> — the 8-step SOP the RACI maps onto.</li>
+        <li><a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a> — operational rhythm for the bodies on this page.</li>
+        <li><a href="26-stakeholder-engagement.html">Stakeholder engagement</a> — non-member, regulator, government participation.</li>
+      </ul>
+
+      <PageFooter
+  prev={{ href: '23-risk-liability.html', label: 'Risk & liability' }}
+  next={{ href: '25-meetings-and-feedback.html', label: 'Meetings & feedback' }}
+/>
+</Layout>
