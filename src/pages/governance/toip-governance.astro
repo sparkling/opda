@@ -46,23 +46,18 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="PDTF's published mapping. Each layer has a technical stack and a governance stack.">
 flowchart TB
-  classDef l4 fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  classDef l3 fill:#2a6caa,color:#fff,stroke:#1a4d80,stroke-width:2px;
-  classDef l2 fill:#4a90c2,color:#fff,stroke:#1a4d80,stroke-width:2px;
-  classDef l1 fill:#7aaecf,color:#0b2545,stroke:#1a4d80,stroke-width:2px;
-
   L4["`**Layer 4 — Application Ecosystems**
 PDTF · OPDA · DPMSG
-Industry rules and standards`"]:::l4
+Industry rules and standards`"]:::infra
   L3["`**Layer 3 — Credential Exchange**
 OIDC Verified Claims → VCs
-How claims are formatted and shared`"]:::l3
+How claims are formatted and shared`"]:::service
   L2["`**Layer 2 — Secure Communication**
 HTTPS · DIDComm
-How data is transmitted securely`"]:::l2
+How data is transmitted securely`"]:::security
   L1["`**Layer 1 — Utility / Network**
 TCP/IP · IETF standards
-Foundation infrastructure`"]:::l1
+Foundation infrastructure`"]:::process
 
   L4 --> L3 --> L2 --> L1
 </Diagram>

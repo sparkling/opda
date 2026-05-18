@@ -92,32 +92,25 @@ import Diagram from '@/components/Diagram.astro';
       <h2 id="sectoralShape">The shape of the founding coalition</h2>
 
       <Diagram caption="The 13 founders represent five segments of the property-transaction chain.
-          Colour legend: blue = portals, green = proptech / network, amber = search
-          data, pink = lenders / mortgage software (UTB, OMS), purple = conveyancing (LMS).">
+          Each Cagle class maps to a segment: infra (portals), service (proptech / network), data (search data), external (lenders / mortgage software), user (conveyancing).">
 flowchart LR
-  classDef portal fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef proptech fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef search fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef lender fill:#fce7f3,stroke:#9d174d,color:#831843;
-  classDef conv fill:#ede9fe,stroke:#5b21b6,color:#4c1d95;
+  OnTheMarket:::infra
+  Homely:::infra
 
-  OnTheMarket:::portal
-  Homely:::portal
+  Moverly:::service
+  Sprift:::service
+  Kotini:::service
+  Coadjute:::service
+  PEXA:::service
+  InventoryBase[Inventory Base]:::service
 
-  Moverly:::proptech
-  Sprift:::proptech
-  Kotini:::proptech
-  Coadjute:::proptech
-  PEXA:::proptech
-  InventoryBase[Inventory Base]:::proptech
+  Groundsure:::data
+  TMGroup[TM Group]:::data
 
-  Groundsure:::search
-  TMGroup[TM Group]:::search
+  UnitedTrustBank[United Trust Bank]:::external
+  OMS[OMS - One Mortgage System]:::external
 
-  UnitedTrustBank[United Trust Bank]:::lender
-  OMS[OMS - One Mortgage System]:::lender
-
-  LMS:::conv
+  LMS:::user
 </Diagram>
 
       <h2 id="certification">Technical Certification (as of May 2026)</h2>

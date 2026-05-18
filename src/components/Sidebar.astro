@@ -36,14 +36,21 @@ function containsActive(item: Item): boolean {
       </svg>
     </button>
 
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" data-section={sectionKey}>
       {section.groups.map(group => (
-        <div class="nav-group">
-          <h3>{group.heading}</h3>
+        <details class="nav-group" open data-group={group.heading}>
+          <summary>
+            <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+            <span class="nav-group-label">{group.heading}</span>
+          </summary>
           <ul class="tree">
             {group.items.map(item => <SidebarItem item={item} path={path} containsActive={containsActive} />)}
           </ul>
-        </div>
+        </details>
       ))}
     </nav>
   </aside>

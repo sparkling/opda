@@ -124,28 +124,24 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Legislation and policy documents and the departments they empower.">
 flowchart TB
-  classDef act fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef policy fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef body fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-
   IS["`UK Industrial Strategy
-property = priority Smart Data sector`"]:::policy
+property = priority Smart Data sector`"]:::warning
   DMCC["`DMCC Act 2024
-Smart Data powers`"]:::act
+Smart Data powers`"]:::infra
   DUA["`Data Use & Access Act 2025
-data sharing rights`"]:::act
-  LFR["Leasehold & Freehold Reform Act 2024"]:::act
+data sharing rights`"]:::infra
+  LFR["Leasehold & Freehold Reform Act 2024"]:::infra
   LRA["`Land Registration Act 2002
-e-conveyancing legacy`"]:::act
+e-conveyancing legacy`"]:::infra
   GDPR["`UK GDPR / DPA 2018
-personal data`"]:::act
+personal data`"]:::infra
 
   MHCLG["`MHCLG
-housing policy`"]:::body
+housing policy`"]:::service
   DSIT["`DSIT
-smart data scheme`"]:::body
-  HMLR[HMLR]:::body
-  ICO[ICO]:::body
+smart data scheme`"]:::service
+  HMLR[HMLR]:::service
+  ICO[ICO]:::service
 
   IS --> DMCC
   IS --> DSIT
@@ -156,7 +152,7 @@ smart data scheme`"]:::body
   GDPR --> ICO
   LFR --> MHCLG
   LRA --> HMLR
-  HMLR -.formed.-> DPMSG[DPMSG]:::body
+  HMLR -.formed.-> DPMSG[DPMSG]:::service
   MHCLG --> DPMSG
   DSIT --> DPMSG
 </Diagram>

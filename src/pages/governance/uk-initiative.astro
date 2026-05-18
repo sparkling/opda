@@ -33,30 +33,24 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="The five-tier stack, with OPDA sitting across Tiers 3, 4, and 5.">
 flowchart TB
-  classDef tier fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef gov  fill:#dbeafe,stroke:#1e40af,color:#1e3a8a,stroke-width:2px;
-  classDef del  fill:#dcfce7,stroke:#166534,color:#14532d,stroke-width:2px;
-  classDef std  fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
-  classDef opda fill:#1a4d80,stroke:#0b2545,color:#ffffff,stroke-width:3px;
-
   T1["`**Tier 1 — Legislation & Policy**
 DMCC Act 2024 · DUA Act 2025
 Leasehold & Freehold Reform Act 2024
-UK Industrial Strategy (property = priority sector)`"]:::tier
+UK Industrial Strategy (property = priority sector)`"]:::infra
   T2["`**Tier 2 — Departments & Bodies**
 MHCLG · DSIT · DBT · HMLR · NTSELAT
-FCA · ICO`"]:::gov
+FCA · ICO`"]:::service
   T3["`**Tier 3 — Steering & Coordination**
 DPMSG (13 founding members)
-Smart Data Council · HBSG`"]:::gov
+Smart Data Council · HBSG`"]:::service
   T4["`**Tier 4 — Delivery**
 Smart Property Data Trust Framework Sandbox
 (CLC + OPDA + Raidiam, RPF-funded)
-Smart Data Challenge · HMLR LLC Programme`"]:::del
+Smart Data Challenge · HMLR LLC Programme`"]:::process
   T5["`**Tier 5 — Standards**
 **PDTF** (JSON Schema · OpenAPI · v2.0 spec)
-W3C VC · DID · DIATF · ToIP`"]:::std
-  OPDA["OPDA"]:::opda
+W3C VC · DID · DIATF · ToIP`"]:::data
+  OPDA["OPDA"]:::user
 
   T1 --> T2
   T2 --> T3
@@ -144,22 +138,20 @@ W3C VC · DID · DIATF · ToIP`"]:::std
 
       <Diagram caption="DPMSG is the central convening forum. Its 13 founding members (gov.uk, 1 Aug 2023) are the Law Society, Conveyancing Association, CLC, SLC, SRA, RICS, CILEX, CILEx Regulation, CoPSO, Propertymark, BSA, UK Finance, and HMLR. OPDA, HBSG, MHCLG, DSIT, LGA, UKPA, and Geovation joined later. Current priority workstreams: DPIP (Digital Property Information Protocol), Digital Identity Rules, and Digitisation & Interoperability Research.">
 flowchart LR
-  classDef body fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  HMLR[HM Land Registry]:::body
+  HMLR[HM Land Registry]:::infra
   DPMSG["`DPMSG
 Digital Property Market
 Steering Group
-*13 founding members, formed Aug 2023*`"]:::body
+*13 founding members, formed Aug 2023*`"]:::infra
   SDC["`Smart Data Council
-*DBT, cross-sector*`"]:::body
+*DBT, cross-sector*`"]:::infra
   HBSG["`HBSG
 Home Buying and Selling Group
-*chaired by Kate Faulkner OBE · BASPI custodian*`"]:::body
-  OPDA[OPDA]:::opda
+*chaired by Kate Faulkner OBE · BASPI custodian*`"]:::infra
+  OPDA[OPDA]:::service
   WGs["`6 Working Groups
 Steering · Comms & PR · Engagement
-Policy · Regulator · Technical`"]:::body
+Policy · Regulator · Technical`"]:::infra
 
   HMLR -->|hosts| DPMSG
   DPMSG --- WGs

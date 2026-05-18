@@ -197,27 +197,22 @@ import Diagram from '@/components/Diagram.astro';
           adapter to PDTF). Upstream government/standards contexts are consumed in
           conformist mode — PDTF doesn't try to redefine their language.">
 flowchart TB
-  classDef primary fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef gov fill:#dbeafe,stroke:#1e40af,color:#1e3a8a,stroke-width:2px;
-  classDef tech fill:#dcfce7,stroke:#166534,color:#14532d,stroke-width:2px;
-  classDef pl fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-
   PDTF["`**PDTF — Published Language**
 JSON Schema + OpenAPI + VC + DID
-*Open Host Service*`"]:::pl
+*Open Host Service*`"]:::infra
 
-  EA[Estate Agency]:::primary
-  CV[Conveyancing]:::primary
-  ML[Mortgage Lending]:::primary
-  SV[Surveying]:::primary
-  PD[Property Data]:::primary
-  PT[Property Tech]:::primary
+  EA[Estate Agency]:::user
+  CV[Conveyancing]:::user
+  ML[Mortgage Lending]:::user
+  SV[Surveying]:::user
+  PD[Property Data]:::user
+  PT[Property Tech]:::user
 
-  HMLR["Land Registry (HMLR)"]:::gov
-  LA["Local Authority"]:::gov
-  MI["Material Information (MHCLG)"]:::gov
-  ID["Identity & Verification (DIATF)"]:::gov
-  TV["Trust & Verifiable Claims (W3C)"]:::tech
+  HMLR["Land Registry (HMLR)"]:::external
+  LA["Local Authority"]:::external
+  MI["Material Information (MHCLG)"]:::external
+  ID["Identity & Verification (DIATF)"]:::external
+  TV["Trust & Verifiable Claims (W3C)"]:::security
 
   EA  &lt;-->|PL via OPDA accreditation| PDTF
   CV  &lt;-->|PL| PDTF

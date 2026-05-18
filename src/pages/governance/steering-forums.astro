@@ -88,20 +88,18 @@ import Diagram from '@/components/Diagram.astro';
           (8 meeting dates archived: 25 Sep 2025, 30 Oct 2025, 27 Nov 2025, 18 Dec 2025,
           29 Jan 2026, 26 Feb 2026, 26 Mar 2026, 30 Apr 2026).">
 flowchart TB
-  classDef wg fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef sg fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
   SG["`Steering Group
-monthly governance`"]:::sg
+monthly governance`"]:::infra
   CP["`Comms & PR
-Working Group`"]:::wg
+Working Group`"]:::service
   EN["`Engagement
-Working Group`"]:::wg
+Working Group`"]:::service
   PO["`Policy
-Working Group`"]:::wg
+Working Group`"]:::service
   RE["`Regulator
-Working Group`"]:::wg
+Working Group`"]:::service
   TE["`Technical
-Working Group`"]:::wg
+Working Group`"]:::service
 
   SG --> CP
   SG --> EN
@@ -204,25 +202,21 @@ Working Group`"]:::wg
 
       <Diagram caption="Maria Harris bridges the senior forums; OPDA delivers the technical outputs.">
 flowchart LR
-  classDef forum fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
   SDC["`Smart Data Council
-*DBT, cross-sector*`"]:::forum
+*DBT, cross-sector*`"]:::infra
   DPMSG["`DPMSG
-*HMLR-hosted, property*`"]:::forum
+*HMLR-hosted, property*`"]:::infra
   HBSG["`HBSG
-*BASPI custodian*`"]:::forum
+*BASPI custodian*`"]:::infra
 
   MARIA["`Maria Harris
-(OPDA Chair)`"]
-  OPDA[OPDA]:::opda
+(OPDA Chair)`"]:::user
+  OPDA[OPDA]:::service
 
   PDTF["`PDTF
-standard`"]:::out
-  SBX[Trust Framework Sandbox]:::out
-  ACC[OPDA Accreditation]:::out
+standard`"]:::success
+  SBX[Trust Framework Sandbox]:::success
+  ACC[OPDA Accreditation]:::success
 
   MARIA --- SDC
   MARIA --- HBSG

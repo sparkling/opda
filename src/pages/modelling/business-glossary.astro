@@ -29,23 +29,19 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram size="small" caption="Two human-curated spreadsheets + schema-annotation harvester → one SKOS concept scheme.">
 flowchart LR
-  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
   G1["`Glossary.xlsx
 Trust Framework PoC
-*~54 business terms*`"]:::src
+*~54 business terms*`"]:::external
   G2["`Glossary.xlsx
 Technical Working Group
-*same set, refined*`"]:::src
+*same set, refined*`"]:::external
   S["`PDTF v3 schemas
 *title / description
-annotations*`"]:::src
+annotations*`"]:::external
   PROC["`Glossary merger
-+ SKOS generator`"]:::proc
++ SKOS generator`"]:::process
   TTL["`business-glossary.ttl
-SKOS · 554 concepts`"]:::out
+SKOS · 554 concepts`"]:::data
 
   G1 --> PROC
   G2 --> PROC

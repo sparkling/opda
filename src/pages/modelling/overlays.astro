@@ -71,20 +71,15 @@ import Diagram from '@/components/Diagram.astro';
           backward compatibility.">
 %%&lbrace;init: &lbrace;'flowchart': &lbrace;'rankSpacing': 120, 'nodeSpacing': 25&rbrace;&rbrace;&rbrace;%%
 flowchart LR
-  classDef base fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef ctx fill:#eef4f8,stroke:#1a4d80,color:#0b2545,font-weight:bold;
-  classDef ovl fill:#ffffff,stroke:#1a4d80,color:#0b2545;
-  classDef extn fill:#fce7f3,stroke:#9d174d,color:#831843;
-
   BASE["`pdtf-transaction.json
-*base transaction schema*`"]:::base
+*base transaction schema*`"]:::infra
 
-  EA[Estate Agency]:::ctx
-  CONV[Conveyancing]:::ctx
-  MORT[Mortgage Lending]:::ctx
-  SURV[Surveying]:::ctx
-  PTEC[Property Tech]:::ctx
-  PDS[Property Data Services]:::ctx
+  EA[Estate Agency]:::user
+  CONV[Conveyancing]:::user
+  MORT[Mortgage Lending]:::user
+  SURV[Surveying]:::user
+  PTEC[Property Tech]:::user
+  PDS[Property Data Services]:::user
 
   BASE --> EA
   BASE --> CONV
@@ -93,47 +88,47 @@ flowchart LR
   BASE --> PTEC
   BASE --> PDS
 
-  EA --> BASPI4["Buyers and Sellers Property Information v4<br/>(BASPI4)"]:::ovl
-  EA --> BASPI5["Buyers and Sellers Property Information v5<br/>(BASPI5)"]:::ovl
-  EA --> NTS["NTS Material Information — Sales 2023<br/>(NTS)"]:::ovl
-  EA --> NTS2["NTS Material Information — Sales 2025<br/>(NTS2)"]:::ovl
-  EA --> NTSL["NTS Material Information — Lettings 2023<br/>(NTSL)"]:::ovl
-  EA --> NTSL2["NTS Material Information — Lettings 2025<br/>(NTSL2)"]:::ovl
+  EA --> BASPI4["Buyers and Sellers Property Information v4<br/>(BASPI4)"]:::data
+  EA --> BASPI5["Buyers and Sellers Property Information v5<br/>(BASPI5)"]:::data
+  EA --> NTS["NTS Material Information — Sales 2023<br/>(NTS)"]:::data
+  EA --> NTS2["NTS Material Information — Sales 2025<br/>(NTS2)"]:::data
+  EA --> NTSL["NTS Material Information — Lettings 2023<br/>(NTSL)"]:::data
+  EA --> NTSL2["NTS Material Information — Lettings 2025<br/>(NTSL2)"]:::data
 
-  EA --> EXT["+ 16 extension overlays<br/>(NTS2 fragments)"]:::extn
+  EA --> EXT["+ 16 extension overlays<br/>(NTS2 fragments)"]:::process
 
-  EXT --> EAS["Asbestos<br/>(AS)"]:::extn
-  EXT --> EDR["Dry-rot treatment<br/>(DR)"]:::extn
-  EXT --> EJK["Japanese knotweed<br/>(JK)"]:::extn
-  EXT --> ESB["Subsidence / structural faults<br/>(SB)"]:::extn
-  EXT --> EHS["Health &amp; safety issues<br/>(HS)"]:::extn
-  EXT --> EOA["Outside areas<br/>(OA)"]:::extn
-  EXT --> ELA["Loft access &amp; insulation<br/>(LA)"]:::extn
-  EXT --> ESF["Spray-foam insulation<br/>(SF)"]:::extn
-  EXT --> EMC["Main construction type<br/>(MC)"]:::extn
-  EXT --> EER["Estate rentcharges<br/>(ER)"]:::extn
-  EXT --> EMA["Managing agent<br/>(MA)"]:::extn
-  EXT --> ETF["Transfer fees<br/>(TF)"]:::extn
-  EXT --> ESL["Solar-panel ownership<br/>(SL)"]:::extn
-  EXT --> EHI["Heating installation date<br/>(HI)"]:::extn
-  EXT --> EFD["Flood defences<br/>(FD)"]:::extn
-  EXT --> EOC["Other property chain dependency<br/>(OC)"]:::extn
+  EXT --> EAS["Asbestos<br/>(AS)"]:::process
+  EXT --> EDR["Dry-rot treatment<br/>(DR)"]:::process
+  EXT --> EJK["Japanese knotweed<br/>(JK)"]:::process
+  EXT --> ESB["Subsidence / structural faults<br/>(SB)"]:::process
+  EXT --> EHS["Health &amp; safety issues<br/>(HS)"]:::process
+  EXT --> EOA["Outside areas<br/>(OA)"]:::process
+  EXT --> ELA["Loft access &amp; insulation<br/>(LA)"]:::process
+  EXT --> ESF["Spray-foam insulation<br/>(SF)"]:::process
+  EXT --> EMC["Main construction type<br/>(MC)"]:::process
+  EXT --> EER["Estate rentcharges<br/>(ER)"]:::process
+  EXT --> EMA["Managing agent<br/>(MA)"]:::process
+  EXT --> ETF["Transfer fees<br/>(TF)"]:::process
+  EXT --> ESL["Solar-panel ownership<br/>(SL)"]:::process
+  EXT --> EHI["Heating installation date<br/>(HI)"]:::process
+  EXT --> EFD["Flood defences<br/>(FD)"]:::process
+  EXT --> EOC["Other property chain dependency<br/>(OC)"]:::process
 
-  CONV --> TA6["Property Information Form<br/>(TA6)"]:::ovl
-  CONV --> TA7["Leasehold Information Form<br/>(TA7)"]:::ovl
-  CONV --> TA10["Fittings &amp; Contents Form<br/>(TA10)"]:::ovl
-  CONV --> LPE1["Leasehold Property Enquiries<br/>(LPE1)"]:::ovl
+  CONV --> TA6["Property Information Form<br/>(TA6)"]:::data
+  CONV --> TA7["Leasehold Information Form<br/>(TA7)"]:::data
+  CONV --> TA10["Fittings &amp; Contents Form<br/>(TA10)"]:::data
+  CONV --> LPE1["Leasehold Property Enquiries<br/>(LPE1)"]:::data
 
-  MORT --> FME1["Freehold Management Enquiries<br/>(FME1)"]:::ovl
+  MORT --> FME1["Freehold Management Enquiries<br/>(FME1)"]:::data
 
-  SURV --> PIQ["Property Information Questionnaire<br/>(PIQ)"]:::ovl
+  SURV --> PIQ["Property Information Questionnaire<br/>(PIQ)"]:::data
 
-  PDS --> RDS["Residential Development Survey<br/>(RDS)"]:::ovl
-  PDS --> OC1["HMLR Official Copies of the Register<br/>(OC1)"]:::ovl
-  PDS --> LLC1["Local Land Charges Search<br/>(LLC1)"]:::ovl
-  PDS --> CON29R["Local Authority Search<br/>(CON29R)"]:::ovl
-  PDS --> CON29DW["Drainage &amp; Water Search<br/>(CON29DW)"]:::ovl
-  PDS --> SR24["Sustainability Report 2024<br/>(SR24)"]:::ovl
+  PDS --> RDS["Residential Development Survey<br/>(RDS)"]:::data
+  PDS --> OC1["HMLR Official Copies of the Register<br/>(OC1)"]:::data
+  PDS --> LLC1["Local Land Charges Search<br/>(LLC1)"]:::data
+  PDS --> CON29R["Local Authority Search<br/>(CON29R)"]:::data
+  PDS --> CON29DW["Drainage &amp; Water Search<br/>(CON29DW)"]:::data
+  PDS --> SR24["Sustainability Report 2024<br/>(SR24)"]:::data
 </Diagram>
 
       <h2 id="whatIsAnOverlay">What an overlay is — and is not</h2>
@@ -285,17 +280,13 @@ flowchart LR
           extensions for the NTS2 topics you need. Adopting all 16 is functionally
           equivalent to the full <code>nts2</code> overlay.">
 flowchart LR
-  classDef base fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef extn fill:#fce7f3,stroke:#9d174d,color:#831843;
-  classDef done fill:#dcfce7,stroke:#166534,color:#14532d;
-
   NTS["`**nts**
-NTS 2023 base`"]:::base
-  E1["<b>+ jk</b> Japanese knotweed"]:::extn
-  E2["<b>+ tf</b> Transfer fees"]:::extn
-  E3["<b>+ ...</b> any of 16"]:::extn
+NTS 2023 base`"]:::infra
+  E1["<b>+ jk</b> Japanese knotweed"]:::process
+  E2["<b>+ tf</b> Transfer fees"]:::process
+  E3["<b>+ ...</b> any of 16"]:::process
   NTS2["`**nts2**
-full NTS2 2025`"]:::done
+full NTS2 2025`"]:::success
 
   NTS --> E1 --> NTS2
   NTS --> E2 --> NTS2
@@ -522,24 +513,20 @@ const stagedSchema = getTransactionSchema(
 
       <Diagram caption="<code>deepmerge</code> with a custom <code>arrayMerge</code>: <code>required</code> arrays are unioned, <code>oneOf</code> arrays are concatenated, and the rest follows ordinary object-merge rules.">
 flowchart LR
-  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
   BASE["`pdtf-transaction.json
-*base transaction schema*`"]:::src
+*base transaction schema*`"]:::infra
   O1["`Overlay 1
-e.g. baspi5`"]:::src
+e.g. baspi5`"]:::data
   O2["`Overlay 2
-e.g. nts2`"]:::src
-  O3[Overlay n …]:::src
+e.g. nts2`"]:::data
+  O3[Overlay n …]:::data
 
   MERGE["`deepmerge( base, O1, O2, … )
 + custom arrayMerge for
-required & oneOf`"]:::proc
+required & oneOf`"]:::process
 
   RESULT["`Merged schema
-*complete and validatable*`"]:::out
+*complete and validatable*`"]:::success
 
   BASE --> MERGE
   O1 --> MERGE

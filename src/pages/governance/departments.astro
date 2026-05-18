@@ -19,36 +19,32 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Government departments (blue), operational arms (green), regulators (amber).">
 flowchart TB
-  classDef policy fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef ops fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef regulator fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-
   MHCLG["`**MHCLG**
 Housing, Communities & Local Government
-*policy lead*`"]:::policy
+*policy lead*`"]:::infra
   DSIT["`**DSIT**
 Science, Innovation & Technology
-*Smart Data scheme + DIATF*`"]:::policy
+*Smart Data scheme + DIATF*`"]:::infra
   DBT["`**DBT**
 Business & Trade
-*Smart Data Challenge sponsor*`"]:::policy
+*Smart Data Challenge sponsor*`"]:::infra
 
   HMLR["`**HMLR**
 HM Land Registry
-*operational lead, hosts DPMSG*`"]:::ops
+*operational lead, hosts DPMSG*`"]:::service
   RPF["`**RPF**
 Regulators' Pioneer Fund
-*funds the Sandbox*`"]:::ops
+*funds the Sandbox*`"]:::service
 
   NTS["`**NTSELAT**
 National Trading Standards Estate & Letting
-*material information rules*`"]:::regulator
+*material information rules*`"]:::warning
   FCA["`**FCA**
 Financial Conduct Authority
-*Smart Data scheme regulator*`"]:::regulator
+*Smart Data scheme regulator*`"]:::warning
   ICO["`**ICO**
 Information Commissioner's Office
-*data protection regulator*`"]:::regulator
+*data protection regulator*`"]:::warning
 
   MHCLG --> HMLR
   DSIT --> RPF

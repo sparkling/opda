@@ -110,12 +110,26 @@ import Diagram from '@/components/Diagram.astro';
       </table>
 
       <h2 id="diagrams">Diagrams (mermaid)</h2>
-      <Diagram caption="All diagrams render client-side via mermaid.js.">
+      <p>
+        Diagrams use the shared <strong>Cagle palette</strong> — 12 semantic classes injected
+        globally by <code>/ui/client.js</code>. Use class names like <code>:::infra</code>,
+        <code>:::service</code>, <code>:::data</code>, <code>:::process</code>, <code>:::user</code>,
+        <code>:::success</code>, <code>:::warning</code>, <code>:::error</code>, etc. — do not
+        hardcode <code>fill:#…</code> in diagrams.
+      </p>
+      <Diagram caption="All diagrams render client-side via mermaid.js using the Cagle palette.">
 flowchart LR
-  A[Source]:::brand --> B[Transform]:::brand --> C[Knowledge]:::accent
-  classDef brand fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef accent fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
+  A[Source]:::data --> B[Transform]:::process --> C[Knowledge]:::success
 </Diagram>
+
+      <h3>Cagle classes available</h3>
+      <p>
+        Semantic types: <code>infra</code> (deep blue), <code>service</code> (green),
+        <code>data</code> (orange), <code>user</code> (purple), <code>process</code> (cyan),
+        <code>security</code> (teal), <code>external</code> (gray).
+        Status types: <code>success</code> (green), <code>warning</code> (amber),
+        <code>error</code> (red), <code>info</code> (blue), <code>neutral</code> (gray).
+      </p>
 
       <h2 id="cards">Card grid</h2>
       <div class="card-grid">

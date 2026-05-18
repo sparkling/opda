@@ -46,42 +46,38 @@ import Diagram from '@/components/Diagram.astro';
         coordinates schema work and external consultation.
       </p>
 
-      <Diagram caption="Three clusters, one decision log. Blue = statutory bodies (GA, Board, EC). Green = DPMSG ecosystem (Steering Group + 5 working groups + Sandbox sub-group). Dark blue dashed = proposed operational bodies (Steward Roundtable + Public Consultation Window).">
+      <Diagram caption="Three clusters, one decision log. Blue = statutory bodies (GA, Board, EC). Green = DPMSG ecosystem (Steering Group + 5 working groups + Sandbox sub-group). Cyan = proposed operational bodies (Steward Roundtable + Public Consultation Window).">
 flowchart TB
-  classDef stat fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef dpmsg fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef prop fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px,stroke-dasharray:5 5;
-  classDef log fill:#fef3c7,stroke:#92400e,color:#78350f;
-
+  %% NOTE: prop nodes lost stroke-dasharray styling — apply via inline `style NodeId stroke-dasharray:5 5` if dashed border is needed
   GA["`**General Assembly**
-annual by 31 Oct`"]:::stat
+annual by 31 Oct`"]:::infra
   BD["`**Board of Directors**
-min 4/yr · quorum 5`"]:::stat
+min 4/yr · quorum 5`"]:::infra
   EC["`**Executive Committee**
-monthly *(proposed)* · 12 voting seats`"]:::stat
+monthly *(proposed)* · 12 voting seats`"]:::infra
 
   SG["`DPMSG Steering Group
-monthly *(practice)*`"]:::dpmsg
+monthly *(practice)*`"]:::service
   TR["`Technical WG
-monthly *(proposed)*`"]:::dpmsg
+monthly *(proposed)*`"]:::service
   EN["`Engagement WG
-monthly *(practice)*`"]:::dpmsg
+monthly *(practice)*`"]:::service
   CP["`Comms &amp; PR WG
-*(proposed)*`"]:::dpmsg
+*(proposed)*`"]:::service
   RG["`Regulator WG
-quarterly *(proposed)*`"]:::dpmsg
+quarterly *(proposed)*`"]:::service
   PO["`Policy WG
-*(proposed)*`"]:::dpmsg
+*(proposed)*`"]:::service
   TI["`Trust &amp; Interop
-sub-group *(active)*`"]:::dpmsg
+sub-group *(active)*`"]:::service
 
   STR["`**Steward Roundtable**
-quarterly`"]:::prop
+quarterly`"]:::process
   PCW["`**Public Consultation**
-per breaking change`"]:::prop
+per breaking change`"]:::process
 
   LOG["`Decision Log
-10y retention *(Art. 16)*`"]:::log
+10y retention *(Art. 16)*`"]:::data
 
   GA --> EC
   EC --> BD
@@ -387,32 +383,27 @@ per breaking change`"]:::prop
 
       <Diagram caption="Feedback ingestion swimlane. The five ingress channels (left) feed a single triage queue handled by the relevant Domain Data Steward, which categorises and routes to the appropriate body. Resolution closes the loop back to the original channel and writes to the decision log.">
 flowchart LR
-  classDef ingress fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef proc fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef dec fill:#fef3c7,stroke:#92400e,color:#78350f;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
-  GH["GitHub Issues"]:::ingress
-  EWG["Engagement WG call"]:::ingress
-  PCP["Public Consultation Portal"]:::ingress
-  SI["Stewardship Inbox"]:::ingress
-  SR["Self-reassessment"]:::ingress
+  GH["GitHub Issues"]:::infra
+  EWG["Engagement WG call"]:::infra
+  PCP["Public Consultation Portal"]:::infra
+  SI["Stewardship Inbox"]:::infra
+  SR["Self-reassessment"]:::infra
 
   TR["`**Triage**
 assigned steward
 5–15 working days
-(tiered by issue type)`"]:::proc
-  CAT{"`**Categorise**`"}:::dec
+(tiered by issue type)`"]:::process
+  CAT{"`**Categorise**`"}:::warning
   RT["`**Route**
 Technical WG /
 C&amp;R / Engagement WG /
-EC`"]:::proc
+EC`"]:::process
   RES["`**Resolve**
 20–40 working days
-(tiered by issue type)`"]:::proc
+(tiered by issue type)`"]:::process
   REC["`**Record**
 decision log +
-Stakeholder Version Register`"]:::out
+Stakeholder Version Register`"]:::success
 
   GH --> TR
   EWG --> TR
@@ -577,26 +568,22 @@ Stakeholder Version Register`"]:::out
 
       <Diagram caption="Breaking-change consultation timeline at 6 weeks. T-42 days (6 weeks) = notification published; T-21 days (3 weeks) = Engagement WG all-member call surfaces the change at the consultation midpoint; T-14 days (2 weeks) = final comment deadline, giving OPDA respondents 2 weeks to answer comments before merge; T-0 = merge to master; T+30 days = post-release review. The 4-week open / 2-week response split is calibrated for volunteer respondents.">
 flowchart LR
-  classDef stage fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef merge fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
-  classDef review fill:#dcfce7,stroke:#166534,color:#14532d;
-
   T0["`**T &minus; 42 days**
 Breaking-change
-notification published`"]:::stage
+notification published`"]:::process
   T1["`**T &minus; 21 days**
 Engagement WG
 all-member call
-surfaces the change`"]:::stage
+surfaces the change`"]:::process
   T2["`**T &minus; 14 days**
 Final comment
-deadline`"]:::stage
+deadline`"]:::process
   T3["`**T 0**
 Merge to master
-+ tag release`"]:::merge
++ tag release`"]:::infra
   T4["`**T + 30 days**
 Post-release
-review`"]:::review
+review`"]:::success
 
   T0 --> T1 --> T2 --> T3 --> T4
 </Diagram>

@@ -79,21 +79,18 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="The three Sandbox phases. Lifted from OPDA's own positioning page.">
 flowchart LR
-  classDef phase fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d,stroke-width:2px;
-
   T["`**1. Test**
 Real infrastructure built
 Certified data sources +
-accredited service providers`"]:::phase
+accredited service providers`"]:::process
   L["`**2. Learn**
 Regulatory gaps identified
 Consent + liability models tested
-Security + governance standards developed`"]:::phase
+Security + governance standards developed`"]:::process
   S["`**3. Shape**
 Evidence-based recommendations
-go to government + industry`"]:::phase
-  N[National rollout standards]:::out
+go to government + industry`"]:::process
+  N[National rollout standards]:::success
 
   T --> L --> S --> N
 </Diagram>

@@ -91,19 +91,15 @@ flowchart LR
   accTitle: SKOS concept scheme membership for pdtf:address
   accDescr: The shared pdtf:address concept belongs to multiple schemes via skos:inScheme. Estate Agency's pdtf-ea:marketingAddress is a separate concept because its meaning differs, linked back to the core via skos:closeMatch.
 
-  classDef concept fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
-  classDef variant fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
-  classDef sch     fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+  cAddress["pdtf:address"]:::info
+  eaMarketing["pdtf-ea:marketingAddress"]:::data
 
-  cAddress["pdtf:address"]:::concept
-  eaMarketing["pdtf-ea:marketingAddress"]:::variant
-
-  CORE[("Core scheme")]:::sch
-  EA[("Estate Agency scheme")]:::sch
-  CONV[("Conveyancing scheme")]:::sch
-  PDS[("Property Data Services scheme")]:::sch
-  LEND[("Mortgage Lending scheme")]:::sch
-  SURV[("Surveying scheme")]:::sch
+  CORE[("Core scheme")]:::user
+  EA[("Estate Agency scheme")]:::user
+  CONV[("Conveyancing scheme")]:::user
+  PDS[("Property Data Services scheme")]:::user
+  LEND[("Mortgage Lending scheme")]:::user
+  SURV[("Surveying scheme")]:::user
 
   cAddress -->|"skos:inScheme"| CORE
   cAddress -->|"skos:inScheme"| EA

@@ -19,40 +19,36 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="The PDTF standards stack. Blue boxes = OPDA-owned; light boxes = external standards; amber = UK industry forms.">
 flowchart TB
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  classDef ext fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef form fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-
   L1["`**Network**
-TCP/IP · IETF · HTTPS`"]:::ext
+TCP/IP · IETF · HTTPS`"]:::external
   L2["`**Secure communication**
-HTTPS · DIDComm`"]:::ext
+HTTPS · DIDComm`"]:::external
 
   DID["`**W3C DID Core 1.0**
 identifier methods
-did:key · did:jwk · did:web`"]:::ext
+did:key · did:jwk · did:web`"]:::external
   DIATF["`**DIATF**
 UK Digital Identity &
-Attributes Trust Framework`"]:::ext
+Attributes Trust Framework`"]:::external
 
   VC["`**W3C VC Data Model**
-verifiable credentials 1.1 + 2.0`"]:::ext
+verifiable credentials 1.1 + 2.0`"]:::external
   PDTF_V2["`**PDTF v2.0 spec**
-VC-based property data`"]:::opda
+VC-based property data`"]:::infra
 
   PDTF_API["`**PDTF OpenAPI**
-v1.1 / v1.2 / v1.3 / v2.0`"]:::opda
+v1.1 / v1.2 / v1.3 / v2.0`"]:::infra
   SCHEMAS["`**PDTF JSON Schema**
 v3.6 (active)
-pdtf-transaction.json`"]:::opda
+pdtf-transaction.json`"]:::infra
 
   OVERLAYS["`**Form overlays**
 BASPI v4 / v5
 TA6 · TA7 · TA10
 NTS · CON29R · PIQ
-RDS · LPE1 · OC1 · LLC1 · FME1`"]:::opda
+RDS · LPE1 · OC1 · LLC1 · FME1`"]:::infra
   FORMS["`Underlying UK forms
-Law Society · BASPI · NTS · HMLR · CON`"]:::form
+Law Society · BASPI · NTS · HMLR · CON`"]:::data
 
   L1 --> L2
   L2 --> DID

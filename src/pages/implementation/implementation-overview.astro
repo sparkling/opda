@@ -21,22 +21,18 @@ import Diagram from '@/components/Diagram.astro';
       <Diagram caption="Most integrations consume Schemas + API spec; serious ones also satisfy
           the trust framework's accreditation criteria and emit Verifiable Credentials.">
 flowchart TB
-  classDef pkg fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef spec fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef proc fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-
   S1["`@pdtf/schemas
-*npm · v3.4.0*`"]:::pkg
+*npm · v3.4.0*`"]:::service
   S2["`@pdtf/api
-*OpenAPI spec*`"]:::spec
+*OpenAPI spec*`"]:::data
   S3["`trust-framework
-*spec repo*`"]:::spec
+*spec repo*`"]:::data
   S4["`@pdtf/accreditation
-*conformance test suite*`"]:::pkg
+*conformance test suite*`"]:::service
   S5["`W3C VC / DID
-*verified claims wrapper*`"]:::pkg
+*verified claims wrapper*`"]:::service
 
-  P[Your product]:::proc
+  P[Your product]:::user
 
   S1 -.consumed by.-> P
   S2 -.consumed by.-> P

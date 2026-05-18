@@ -324,6 +324,42 @@ a:hover {
   margin: 0 var(--space-3) var(--space-2);
   padding-top: var(--space-1);
 }
+
+/* Collapsible nav-group — <details>/<summary> with caret. The summary
+   inherits the h3 styling above; the caret rotates on open. */
+.app-sidebar details.nav-group { padding: 0; }
+.app-sidebar details.nav-group > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: 700 0.6875rem / 1.4 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+  margin: 0 var(--space-3) var(--space-2);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+.app-sidebar details.nav-group > summary::-webkit-details-marker { display: none; }
+.app-sidebar details.nav-group > summary::marker { content: ''; }
+.app-sidebar details.nav-group > summary:hover { color: var(--color-text); }
+.app-sidebar .nav-group-caret {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  transition: transform 150ms ease, color 120ms ease;
+  color: var(--color-text-muted);
+  vertical-align: -0.1em;
+}
+.app-sidebar details.nav-group[open] > summary > .nav-group-caret {
+  transform: rotate(90deg);
+  color: var(--color-brand-700);
+}
+.app-sidebar details.nav-group > summary:hover > .nav-group-caret {
+  color: var(--color-text);
+}
 /* ── Tree-view nav ───────────────────────────────────────────────────
    Sidebar items render as a tree. Leaves are plain links; folders show
    a caret that flips on open/close. Nesting is arbitrary; only the

@@ -30,19 +30,15 @@ import Diagram from '@/components/Diagram.astro';
       <h2 id="generation">Generation pipeline</h2>
       <Diagram caption="Mechanical translation of JSON Schema constraints + hand-authored cross-property rules.">
 flowchart LR
-  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
   JS["`JSON Schema v3
-+ overlays`"]:::src
-  ONT[Ontology .ttl]:::src
++ overlays`"]:::external
+  ONT[Ontology .ttl]:::external
   GEN["`Translator
-schema → SHACL`"]:::proc
+schema → SHACL`"]:::process
   HAND["`Hand-authored
-business rules`"]:::src
+business rules`"]:::external
   SHAPES["`SHACL .ttl
-per overlay`"]:::out
+per overlay`"]:::security
 
   JS --> GEN
   ONT --> GEN

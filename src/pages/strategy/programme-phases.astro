@@ -18,14 +18,12 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Sandbox is the current state. Phase 2 begins when the Sandbox exit criteria are met.">
 flowchart LR
-  classDef phase fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
-  classDef done  fill:#dcfce7,stroke:#166534,color:#14532d;
   P1["`Phase 1 — Sandbox
-*operational 2025–26*`"]:::phase
+*operational 2025–26*`"]:::success
   P2["`Phase 2 — Live trust framework
-*2026–27 (planned)*`"]:::phase
+*2026–27 (planned)*`"]:::warning
   P3["`Phase 3 — National rollout
-*2027+ (planned)*`"]:::phase
+*2027+ (planned)*`"]:::warning
   P1 --> P2 --> P3
 </Diagram>
 

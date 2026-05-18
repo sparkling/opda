@@ -28,19 +28,15 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="PDTF's published Strategic Alignment partners.">
 flowchart LR
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  classDef strat fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef tech fill:#dcfce7,stroke:#166534,color:#14532d;
-
   PDTF["`Property Data
-Trust Framework`"]:::opda
+Trust Framework`"]:::infra
 
-  HMLR[HMLR Strategy 2022+]:::strat
-  DSIT[DSIT National Data Strategy]:::strat
+  HMLR[HMLR Strategy 2022+]:::service
+  DSIT[DSIT National Data Strategy]:::service
   DIATF["`DIATF
-Digital Identity Trust Framework`"]:::strat
-  VC[W3C Verifiable Credentials]:::tech
-  ToIP[Trust Over IP Foundation]:::tech
+Digital Identity Trust Framework`"]:::service
+  VC[W3C Verifiable Credentials]:::data
+  ToIP[Trust Over IP Foundation]:::data
 
   PDTF --- HMLR
   PDTF --- DSIT

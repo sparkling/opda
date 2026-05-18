@@ -35,29 +35,24 @@ import Diagram from '@/components/Diagram.astro';
           universe (each leaf has exactly one canonical home); overlays and
           tasks do not.">
 flowchart LR
-  classDef leaf fill:#FFFFFF,stroke:#0277BD,stroke-width:1.5px,color:#01579B
-  classDef agg  fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-  classDef ovl  fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
-  classDef tsk  fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
-
-  L1[Leaf: cladding.material]:::leaf
-  L2[Leaf: cladding.ews1Rating]:::leaf
-  L3[Leaf: searches.con29R.notices]:::leaf
-  L4[Leaf: documents.ews1Form.url]:::leaf
+  L1[Leaf: cladding.material]:::info
+  L2[Leaf: cladding.ews1Rating]:::info
+  L3[Leaf: searches.con29R.notices]:::info
+  L4[Leaf: documents.ews1Form.url]:::info
 
   A39["`page 39
-Built form, condition & valuation`"]:::agg
+Built form, condition & valuation`"]:::user
   A46["`page 46
-Local context & searches`"]:::agg
+Local context & searches`"]:::user
   A48["`page 48
-Evidence, documents`"]:::agg
+Evidence, documents`"]:::user
 
-  O_BASPI5[BASPI5]:::ovl
-  O_TA6[TA6]:::ovl
-  O_NTS2[NTS2]:::ovl
-  O_CON29R[CON29R]:::ovl
+  O_BASPI5[BASPI5]:::data
+  O_TA6[TA6]:::data
+  O_NTS2[NTS2]:::data
+  O_CON29R[CON29R]:::data
 
-  T_CLADDING[Task: Cladding &amp; EWS1]:::tsk
+  T_CLADDING[Task: Cladding &amp; EWS1]:::process
 
   L1 --> A39
   L2 --> A39

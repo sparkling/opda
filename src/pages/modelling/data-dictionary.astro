@@ -118,44 +118,40 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram size="small" caption="Build pipeline. Deterministic — re-runnable any time the schemas or glossaries change.">
 flowchart LR
-  classDef src fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef proc fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef out fill:#dcfce7,stroke:#166534,color:#14532d;
-
   S1["`v3 base schema
-pdtf-transaction.json`"]:::src
+pdtf-transaction.json`"]:::external
   S2["`16 canonical v3 overlays
 BASPI · TA6/7/10 · NTS
 CON29R/DW · PIQ · OC1 · LLC1
-LPE1 · FME1 · RDS · SR24`"]:::src
+LPE1 · FME1 · RDS · SR24`"]:::external
   G1["`Glossary.xlsx
-Trust Framework PoC`"]:::src
+Trust Framework PoC`"]:::external
   G2["`Glossary.xlsx
-Technical Working Group`"]:::src
+Technical Working Group`"]:::external
   EXT["`W3C VCDM 2.0
 W3C DID 1.0
-ToIP Foundation`"]:::src
+ToIP Foundation`"]:::external
 
   PROC["`Schema walker
 + deduplication
 + title enrichment
 + RDF URI generator
 + glossary merger
-+ SKOS generator`"]:::proc
++ SKOS generator`"]:::process
 
   D1["`properties.js
 1,538 unique concepts
 entity + property kinds
-+ RDF URI per entry`"]:::out
++ RDF URI per entry`"]:::data
   D2["`entities.js
 54 glossary terms
-+ 470 schema entities`"]:::out
++ 470 schema entities`"]:::data
   D3["`glossary-merged.json
-54 terms deduplicated`"]:::out
+54 terms deduplicated`"]:::data
   D4["`business-glossary.md
-tri-source glossary`"]:::out
+tri-source glossary`"]:::data
   D5["`business-glossary.ttl
-SKOS · 554 concepts`"]:::out
+SKOS · 554 concepts`"]:::data
 
   S1 --> PROC
   S2 --> PROC

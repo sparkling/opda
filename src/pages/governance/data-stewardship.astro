@@ -77,55 +77,51 @@ import Diagram from '@/components/Diagram.astro';
         the TA6 overlay"</strong>.
       </p>
 
-      <Diagram caption="The three existing taxonomies (blue / green / amber) and the proposed Domain Data Steward layer (dark blue, dashed) that bridges them by being accountable for specific schemas within specific bounded contexts.">
+      <Diagram caption="The three existing taxonomies (blue / green / amber) and the proposed Domain Data Steward layer (cyan, conceptually dashed) that bridges them by being accountable for specific schemas within specific bounded contexts.">
 flowchart TB
-  classDef constitutional fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef operational fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef participant fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef proposed fill:#1a4d80,stroke:#0b2545,color:#ffffff,stroke-width:3px,stroke-dasharray:5 5;
-
+  %% NOTE: proposed nodes lost stroke-dasharray styling — apply via inline `style NodeId stroke-dasharray:5 5` if dashed border is needed
   subgraph CONST["Constitutional (Articles + Constitution)"]
     direction TB
-    GA[General Assembly]:::constitutional
+    GA[General Assembly]:::infra
     EC["`Executive Committee
-12 seats · 3y term`"]:::constitutional
+12 seats · 3y term`"]:::infra
     BD["`Board of Directors
-quorum 5 · ≥4 mtgs/yr`"]:::constitutional
+quorum 5 · ≥4 mtgs/yr`"]:::infra
     CH["`Independent Chair
-5y initial`"]:::constitutional
+5y initial`"]:::infra
     MB["`Members
-Founder · Certified · Associate`"]:::constitutional
+Founder · Certified · Associate`"]:::infra
   end
 
   subgraph OPS["Operational (governance.md §3)"]
     direction TB
-    CO[Co-ordination function]:::operational
+    CO[Co-ordination function]:::service
     TRV["`Technical Review
-2+ approvers`"]:::operational
-    CR[Compliance &amp; Risk]:::operational
+2+ approvers`"]:::service
+    CR[Compliance &amp; Risk]:::service
     EN["`Engagement /
-Stakeholder Representation`"]:::operational
+Stakeholder Representation`"]:::service
   end
 
   subgraph PTC["Trust Framework Participants (governance.md §2.A)"]
     direction TB
     GAA["`Governance Authority
-= OPDA itself`"]:::participant
-    AI[Accredited Issuer]:::participant
-    HO[Holder]:::participant
-    VE[Verifier]:::participant
-    TRO[Trust Registry Operator]:::participant
+= OPDA itself`"]:::data
+    AI[Accredited Issuer]:::data
+    HO[Holder]:::data
+    VE[Verifier]:::data
+    TRO[Trust Registry Operator]:::data
   end
 
   subgraph MISS["Proposed — Domain Data Stewards (one per bounded context)"]
     direction TB
-    DS1[Estate Agency]:::proposed
-    DS2[Conveyancing]:::proposed
-    DS3[Mortgage Lending]:::proposed
+    DS1[Estate Agency]:::process
+    DS2[Conveyancing]:::process
+    DS3[Mortgage Lending]:::process
     DS4["`Surveying
-vacant`"]:::proposed
-    DS5[Property Data Services]:::proposed
-    DS6[Property Technology]:::proposed
+vacant`"]:::process
+    DS5[Property Data Services]:::process
+    DS6[Property Technology]:::process
   end
 </Diagram>
 
@@ -255,23 +251,19 @@ vacant`"]:::proposed
 
       <Diagram caption="Each OPDA Domain Data Steward (internal) has a counterpart industry steward (external regulator or trade body). The pairing makes liaison concrete — a named person on each side, not a function-to-function relationship.">
 flowchart LR
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
-  classDef ext fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef vac fill:#fef3c7,stroke:#b45309,color:#7c2d12;
+  EA["Estate Agency steward"]:::infra
+  CV["Conveyancing steward"]:::infra
+  ML["Mortgage Lending steward"]:::infra
+  SV["Surveying steward · vacant"]:::warning
+  PD["Property Data Services steward"]:::infra
+  PT["Property Technology steward"]:::infra
 
-  EA["Estate Agency steward"]:::opda
-  CV["Conveyancing steward"]:::opda
-  ML["Mortgage Lending steward"]:::opda
-  SV["Surveying steward · vacant"]:::vac
-  PD["Property Data Services steward"]:::opda
-  PT["Property Technology steward"]:::opda
-
-  NTSE["NTSELAT → MHCLG · Propertymark"]:::ext
-  LAW["Law Society · SRA · CLC · CILEx"]:::ext
-  UKF["UK Finance · BSA · FCA"]:::ext
-  RICS["RICS"]:::ext
-  COP["COPSO"]:::ext
-  NOO["no single body"]:::ext
+  NTSE["NTSELAT → MHCLG · Propertymark"]:::external
+  LAW["Law Society · SRA · CLC · CILEx"]:::external
+  UKF["UK Finance · BSA · FCA"]:::external
+  RICS["RICS"]:::external
+  COP["COPSO"]:::external
+  NOO["no single body"]:::external
 
   EA --- NTSE
   CV --- LAW
@@ -336,33 +328,27 @@ flowchart LR
 
       <Diagram caption="Decision-rights ladder. Citations show where each level is ratified (R) or proposed (P). Authority broadens as you climb.">
 flowchart TB
-  classDef st fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef wg fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef cr fill:#fef3c7,stroke:#b45309,color:#7c2d12;
-  classDef ec fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
-  classDef ga fill:#0b2545,color:#fff,stroke:#000,stroke-width:3px;
-
   S1["`**Domain Steward alone**
 PATCH / doc-only · single overlay
-*Proposed*`"]:::st
+*Proposed*`"]:::process
   S2["`**Technical WG · 2+ reviewers**
 MINOR additive · single overlay
-*governance.md §3.B — Ratified*`"]:::wg
+*governance.md §3.B — Ratified*`"]:::service
   S3["`**Technical WG · 3+ reviewers + C&amp;R**
 MAJOR breaking · single overlay
-*governance.md §6 — Ratified*`"]:::cr
+*governance.md §6 — Ratified*`"]:::warning
   S4["`**Steward Roundtable**
 cross-context change · consensus
-*Proposed*`"]:::wg
+*Proposed*`"]:::service
   S5["`**Executive Committee**
 accreditation / conformance policy
-*Articles art. 4 + Constitution — Ratified*`"]:::ec
+*Articles art. 4 + Constitution — Ratified*`"]:::infra
   S6["`**General Assembly · majority vote**
 Constitution / Articles amendment · 30-day notice
-*Constitution — Ratified*`"]:::ga
+*Constitution — Ratified*`"]:::security
   S7["`**General Assembly · special resolution 75%**
 override directors on specified action
-*Articles art. 5 — Ratified*`"]:::ga
+*Articles art. 5 — Ratified*`"]:::security
 
   S1 --> S2 --> S3
   S2 --> S4 --> S3

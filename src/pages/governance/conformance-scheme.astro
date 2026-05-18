@@ -48,18 +48,15 @@ import Diagram from '@/components/Diagram.astro';
       <Diagram caption="Tier A is the current self-certification process; Tier B is the planned
           machine-verifiable technical conformance tier modelled on Open Banking.">
 flowchart LR
-  classDef live fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef planned fill:#fef3c7,stroke:#92400e,color:#78350f;
-  classDef shared fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
   A["`Tier A
 Self-certification
-*live since 2024*`"]:::live
+*live since 2024*`"]:::success
   B["`Tier B
 Technical conformance
-*planned*`"]:::planned
-  REG[Trust Registry entry]:::shared
+*planned*`"]:::warning
+  REG[Trust Registry entry]:::neutral
   BADGE["`Public badge
-+ directory listing`"]:::shared
++ directory listing`"]:::neutral
   A --> BADGE
   B --> REG
   A -.evolves into.-> B
@@ -96,21 +93,18 @@ Technical conformance
       <Diagram caption="Self-certification flow. The 80% pass mark, 3-person independent panel,
           and ~2-week review SLA are all from the Sean Heming webinar (2025-07-01).">
 flowchart LR
-  classDef step fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef gate fill:#fef3c7,stroke:#92400e,color:#78350f;
-  classDef pass fill:#dcfce7,stroke:#166534,color:#14532d;
-  AP[Application + fee]:::step
+  AP[Application + fee]:::process
   SA["`Self-assessment
-+ evidence pack`"]:::step
++ evidence pack`"]:::process
   PANEL["`3-person
-independent panel`"]:::step
-  SCORE&lbrace;80% pass mark&rbrace;:::gate
+independent panel`"]:::process
+  SCORE&lbrace;80% pass mark&rbrace;:::warning
   PASS["`Badge + directory
-+ member number`"]:::pass
++ member number`"]:::success
   REM["`Remediation
-actions`"]:::step
+actions`"]:::process
   ANN["`Annual
-self-reassessment`"]:::step
+self-reassessment`"]:::process
   AP --> SA --> PANEL --> SCORE
   SCORE -->|>= 80%| PASS
   SCORE -->|&lt; 80%| REM
@@ -306,30 +300,26 @@ self-reassessment`"]:::step
       <Diagram caption="12-step non-compliance framework. Step 12 (continuous improvement)
           feeds findings back into scheme design.">
 flowchart TB
-  classDef warn fill:#fef3c7,stroke:#92400e,color:#78350f;
-  classDef proc fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef decide fill:#fee2e2,stroke:#991b1b,color:#7f1d1d;
-  classDef ok fill:#dcfce7,stroke:#166534,color:#14532d;
   W["`1. Initial warning
-+ timeline`"]:::warn
-  R[2. Remediation period]:::proc
-  M[3. Ongoing monitoring]:::proc
++ timeline`"]:::warning
+  R[2. Remediation period]:::process
+  M[3. Ongoing monitoring]:::process
   CA["`4. Compliance assessment
-by review board`"]:::proc
+by review board`"]:::process
   DC["`5. Decision committee
-internal + external experts`"]:::proc
+internal + external experts`"]:::process
   MR["`6. Membership review meeting
-member presents case`"]:::proc
-  D&lbrace;7. Decision&rbrace;:::decide
+member presents case`"]:::process
+  D&lbrace;7. Decision&rbrace;:::error
   F["`Full compliance
-good standing`"]:::ok
+good standing`"]:::success
   P["`Partial compliance
-additional monitoring`"]:::warn
-  T[8. Termination process]:::decide
-  AP[9. Appeals process]:::proc
-  PUB[10. Public notification]:::warn
+additional monitoring`"]:::warning
+  T[8. Termination process]:::error
+  AP[9. Appeals process]:::process
+  PUB[10. Public notification]:::warning
   RE["`11. Periodic re-evaluation
-possible reapplication`"]:::proc
+possible reapplication`"]:::process
   W --> R --> M --> CA --> DC --> MR --> D
   D --> F
   D --> P

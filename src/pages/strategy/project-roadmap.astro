@@ -135,20 +135,16 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Phase sequence with cross-phase dependencies. Each task box shows duration in days; arrows show what blocks what.">
 flowchart LR
-  classDef phase fill:#eef4f8,stroke:#1a4d80,color:#0b2545,stroke-width:2px;
-  classDef task  fill:#f7fafc,stroke:#94a3b8,color:#0f172a;
-  classDef milestone fill:#fef3c7,stroke:#b45309,color:#7c2d12,stroke-width:2px;
-
   subgraph P1["Phase 1 — Foundations<br/><i>2 weeks</i>"]
     direction TB
     p1a["`Read SoW + synthesis
-3d`"]:::task
+3d`"]:::neutral
     p1b["`Plan + roadmap doc
-4d`"]:::task
+4d`"]:::neutral
     p1c["`Merged glossary v0.1
-7d`"]:::task
+7d`"]:::neutral
     p1d["`Stakeholder map
-5d`"]:::task
+5d`"]:::neutral
     p1a --> p1b
     p1a --> p1c
     p1a --> p1d
@@ -157,13 +153,13 @@ flowchart LR
   subgraph P2["Phase 2 — Semantic model<br/><i>3 weeks</i>"]
     direction TB
     p2a["`Concept taxonomy
-SKOS · 7d`"]:::task
+SKOS · 7d`"]:::neutral
     p2b["`Data dictionary
-10d`"]:::task
+10d`"]:::neutral
     p2c["`Ontology skeleton
-OWL · 7d`"]:::task
+OWL · 7d`"]:::neutral
     p2d["`First mapping
-BASPI v5 · 7d`"]:::task
+BASPI v5 · 7d`"]:::neutral
     p2a --> p2c
     p2c --> p2d
   end
@@ -171,15 +167,15 @@ BASPI v5 · 7d`"]:::task
   subgraph P3["Phase 3 — Governance docs<br/><i>5 weeks</i>"]
     direction TB
     p3a["`L4 Ecosystem doc
-14d`"]:::task
+14d`"]:::neutral
     p3b["`L3 Credential trust fw
-10d`"]:::task
+10d`"]:::neutral
     p3c["`L2 Comms governance
-7d`"]:::task
+7d`"]:::neutral
     p3d["`L1 Utility governance
-7d`"]:::task
+7d`"]:::neutral
     p3e["`Conformance scheme
-14d`"]:::task
+14d`"]:::neutral
     p3a --> p3b
     p3a --> p3c
     p3a --> p3d
@@ -189,14 +185,14 @@ BASPI v5 · 7d`"]:::task
   subgraph P4["Phase 4 — Presentations<br/><i>2 weeks</i>"]
     direction TB
     p4a["`Approach deck
-10d`"]:::task
+10d`"]:::neutral
     p4b["`Governance deck
-10d`"]:::task
+10d`"]:::neutral
     p4c["`Technology deck
-10d`"]:::task
+10d`"]:::neutral
   end
 
-  class P1,P2,P3,P4 phase;
+  class P1,P2,P3,P4 infra;
 
   %% Cross-phase dependencies
   p1c --> p2a

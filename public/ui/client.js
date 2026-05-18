@@ -89,6 +89,28 @@
         });
       });
     }
+
+    // Nav-group <details> persistence — remember per-section group open/closed state
+    if (aside) {
+      const nav = aside.querySelector('.sidebar-nav');
+      const sectionKey = nav && nav.getAttribute('data-section');
+      if (sectionKey) {
+        aside.querySelectorAll('details.nav-group').forEach(function (det) {
+          const groupName = det.getAttribute('data-group');
+          if (!groupName) return;
+          const storageKey = 'opda.sidebar.' + sectionKey + '.' + groupName;
+          try {
+            const saved = localStorage.getItem(storageKey);
+            if (saved === 'closed') det.open = false;
+            else if (saved === 'open') det.open = true;
+            // else: leave the SSR default (open) in place
+          } catch (e) { /* localStorage may be blocked */ }
+          det.addEventListener('toggle', function () {
+            try { localStorage.setItem(storageKey, det.open ? 'open' : 'closed'); } catch (e) { /* ignore */ }
+          });
+        });
+      }
+    }
   }
 
   // ── Heading anchors ─────────────────────────────────────────────────────
@@ -241,7 +263,7 @@
     const themeVars = isDark ? darkTheme() : lightTheme();
     themeVars.fontFamily = fontFamily;
     themeVars.fontSize = fontSize;
-    injectInlineThemeDirective(themeVars);
+    injectInlineThemeDirective(themeVars, isDark);
     try {
       window.mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: themeVars, securityLevel: 'loose' });
       window.mermaid.run({ querySelector: '.mermaid' });
@@ -250,7 +272,57 @@
     }
   }
 
-  function injectInlineThemeDirective(themeVars) {
+  // Cagle Color System (per diagramming skill /09-STYLING-GUIDE.md).
+  // Light + dark variants, WCAG AA+ audited. Injected into every diagram so
+  // pages can use semantic class names (:::infra, :::service, etc.) without
+  // hardcoding hex; theme toggle re-runs this and swaps to dark variants.
+  function cagleClassDefs(isDark) {
+    var defs = isDark ? [
+      'classDef infra fill:#0D2137,stroke:#42A5F5,stroke-width:2px,color:#90CAF9',
+      'classDef service fill:#0D2818,stroke:#66BB6A,stroke-width:2px,color:#A5D6A7',
+      'classDef data fill:#2E1500,stroke:#FFA726,stroke-width:2px,color:#FFCC80',
+      'classDef user fill:#1A0A2E,stroke:#BA68C8,stroke-width:2px,color:#E1BEE7',
+      'classDef process fill:#012830,stroke:#4DD0E1,stroke-width:2px,color:#B2EBF2',
+      'classDef security fill:#002A22,stroke:#4DB6AC,stroke-width:2px,color:#B2DFDB',
+      'classDef external fill:#211A17,stroke:#D7CCC8,stroke-width:2px,color:#EFEBE9',
+      'classDef success fill:#0D2818,stroke:#66BB6A,stroke-width:2px,color:#A5D6A7',
+      'classDef warning fill:#2E2400,stroke:#FFEE58,stroke-width:2px,color:#FFF59D',
+      'classDef error fill:#2A0A0A,stroke:#EF5350,stroke-width:2px,color:#EF9A9A',
+      'classDef info fill:#0D2137,stroke:#42A5F5,stroke-width:2px,color:#90CAF9',
+      'classDef neutral fill:#1E1E1E,stroke:#9E9E9E,stroke-width:2px,color:#BDBDBD',
+    ] : [
+      'classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1',
+      'classDef service fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20',
+      'classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100',
+      'classDef user fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C',
+      'classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B',
+      'classDef security fill:#E0F2F1,stroke:#00695C,stroke-width:2px,color:#004D40',
+      'classDef external fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238',
+      'classDef success fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20',
+      'classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17',
+      'classDef error fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C',
+      'classDef info fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1',
+      'classDef neutral fill:#F5F5F5,stroke:#757575,stroke-width:2px,color:#424242',
+    ];
+    return defs.join('\n');
+  }
+
+  // Splice the Cagle classDef block in after the diagram-type declaration
+  // so :::infra etc. resolve regardless of which diagram type the page uses.
+  function spliceCageClassDefs(src, classDefBlock) {
+    var lines = src.split('\n');
+    var insertIdx = -1;
+    var diagramTypeRe = /^\s*(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram|gantt|pie|journey|gitGraph|mindmap|timeline|quadrantChart|requirementDiagram|sankey-beta|xychart-beta|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)\b/i;
+    for (var i = 0; i < lines.length; i++) {
+      if (diagramTypeRe.test(lines[i])) { insertIdx = i + 1; break; }
+    }
+    if (insertIdx === -1) return src;
+    var before = lines.slice(0, insertIdx);
+    var after = lines.slice(insertIdx);
+    return before.concat([classDefBlock]).concat(after).join('\n');
+  }
+
+  function injectInlineThemeDirective(themeVars, isDark) {
     if (!themeVars) return;
     var keys = Object.keys(themeVars);
     var pairs = [];
@@ -260,6 +332,7 @@
       pairs.push("'" + keys[i] + "':'" + v + "'");
     }
     var directive = "%%{init: { 'theme':'base', 'themeVariables': { " + pairs.join(', ') + " } }}%%\n";
+    var classDefBlock = cagleClassDefs(!!isDark);
     document.querySelectorAll('.mermaid').forEach(function (el) {
       var src = (el.dataset.mermaidSrc || el.textContent || '').trim();
       src = src.replace(/%%\{init:[^}]*\}\}%%\s*\n?/g, '');
@@ -267,11 +340,10 @@
       if (!src) return;
       if (!el.dataset.mermaidSrc) el.dataset.mermaidSrc = src;
       var fm = src.match(/^---\s*\n[\s\S]*?\n---\s*\n/);
-      if (fm) {
-        el.textContent = fm[0] + directive + src.slice(fm[0].length);
-      } else {
-        el.textContent = directive + src;
-      }
+      var body = fm ? src.slice(fm[0].length) : src;
+      body = spliceCageClassDefs(body, classDefBlock);
+      var assembled = (fm ? fm[0] : '') + directive + body;
+      el.textContent = assembled;
       el.removeAttribute('data-processed');
     });
   }

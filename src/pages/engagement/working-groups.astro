@@ -18,20 +18,18 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Six DPMSG working groups feed Steering. OPDA-led groups are highlighted in the table below.">
 flowchart TB
-  classDef wg   fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef sg   fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
   SG["`Steering Group
-monthly governance`"]:::sg
+monthly governance`"]:::infra
   CP["`Comms & PR
-Working Group`"]:::wg
+Working Group`"]:::process
   EN["`Engagement
-Working Group`"]:::wg
+Working Group`"]:::process
   PO["`Policy
-Working Group`"]:::wg
+Working Group`"]:::process
   RE["`Regulator
-Working Group`"]:::wg
+Working Group`"]:::process
   TE["`Technical
-Working Group`"]:::wg
+Working Group`"]:::process
 
   SG --> CP
   SG --> EN

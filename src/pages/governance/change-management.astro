@@ -18,16 +18,14 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram size="small" caption="Two pathways, two authorities. The constitutional route runs through company-law machinery; the technical route runs through the PDTF Standard Operating Procedure.">
 flowchart LR
-  classDef cat fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  classDef auth fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:2px;
   C["`Constitutional
-change`"]:::cat
+change`"]:::process
   T["`Technical /
-schema change`"]:::cat
+schema change`"]:::process
   GA["`General Assembly
-*majority vote*`"]:::auth
+*majority vote*`"]:::infra
   TR["`Technical Reviewers
-*at least two members*`"]:::auth
+*at least two members*`"]:::service
   C --> GA
   T --> TR
 </Diagram>
@@ -114,15 +112,14 @@ schema change`"]:::cat
 
       <Diagram size="medium" caption="PDTF SOP for schema changes (governance.md &sect; 6). Each step is owned by named roles inside the Technical Review group.">
 flowchart LR
-  classDef step fill:#eef4f8,stroke:#1a4d80,color:#0b2545;
-  S1[1. Submission]:::step
-  S2[2. Implementation]:::step
-  S3[3. Impact assessment]:::step
-  S4[4. Review]:::step
-  S5[5. Documentation]:::step
-  S6[6. Approval]:::step
-  S7[7. Stakeholder notification]:::step
-  S8[8. Release]:::step
+  S1[1. Submission]:::process
+  S2[2. Implementation]:::process
+  S3[3. Impact assessment]:::process
+  S4[4. Review]:::process
+  S5[5. Documentation]:::process
+  S6[6. Approval]:::process
+  S7[7. Stakeholder notification]:::process
+  S8[8. Release]:::process
   S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8
 </Diagram>
 

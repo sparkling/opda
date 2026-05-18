@@ -53,34 +53,27 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Five engagement modes around OPDA. Each mode has different rights and channels. Members are the only mode with voting power at General Assembly; the other four participate through observation, consultation, and the DPMSG cross-stakeholder forum.">
 flowchart LR
-  classDef opda fill:#1a4d80,color:#fff,stroke:#0b2545,stroke-width:3px;
-  classDef members fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-  classDef nonm fill:#dcfce7,stroke:#166534,color:#14532d;
-  classDef reg fill:#fef3c7,stroke:#92400e,color:#78350f;
-  classDef gov fill:#fce7f3,stroke:#9d174d,color:#831843;
-  classDef cons fill:#ede9fe,stroke:#5b21b6,color:#4c1d95;
-
-  OPDA["`**OPDA**`"]:::opda
+  OPDA["`**OPDA**`"]:::infra
 
   M["`**Members**
 Founder · Certified · Associate
-*GA vote · EC eligibility · WG seats*`"]:::members
+*GA vote · EC eligibility · WG seats*`"]:::user
 
   NM["`**Non-member firms**
 Sandbox participants · prospective members
-*Engagement WG call · public issue tracker · Artalk*`"]:::nonm
+*Engagement WG call · public issue tracker · Artalk*`"]:::service
 
   R["`**Regulators**
 SRA · CLC · CILEx Reg · RICS in DPMSG
-FCA via PRISM · ICO nominal`"]:::reg
+FCA via PRISM · ICO nominal`"]:::warning
 
   G["`**Government departments**
 MHCLG · DSIT · HMLR · DBT · LGA · Geovation
-*DPMSG · T&amp;I sub-group co-chair*`"]:::gov
+*DPMSG · T&amp;I sub-group co-chair*`"]:::external
 
   C["`**Consumers / public**
 buyers · sellers · tenants · public
-*Public consultation · Artalk threads*`"]:::cons
+*Public consultation · Artalk threads*`"]:::process
 
   M -->|set| OPDA
   NM -->|implement| OPDA
