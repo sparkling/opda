@@ -1,14 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Meeting cadence &amp; feedback channels"
   description="The operational rhythm of OPDA governance: who meets when, what's on the agenda, how feedback enters and leaves, and how the decision log preserves the 10-year retention Articles art. 16 requires."
-  page="meetings-and-feedback"
-  section="governance"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-18" />
 
@@ -207,14 +204,14 @@ per breaking change`"]:::prop
           <tr>
             <td><strong>Steward Roundtable</strong></td>
             <td>Quarterly</td>
-            <td>New — see <a href="24-data-stewardship.html#stewardRoundtable">Data stewardship §Steward Roundtable</a></td>
+            <td>New — see <a href="/governance/data-stewardship#stewardRoundtable">Data stewardship §Steward Roundtable</a></td>
             <td>Hybrid; cross-overlay coordination, annual chair rotation</td>
             <td>P</td>
           </tr>
           <tr>
             <td><strong>Public Consultation Window</strong></td>
             <td>Per breaking change (<strong>6 weeks / 30 working days</strong>); per non-breaking change (<strong>3 weeks / 15 working days</strong>)</td>
-            <td>Fills the <code>X</code> placeholder in <a href="21-change-management.html#thresholds">change-management §thresholds</a></td>
+            <td>Fills the <code>X</code> placeholder in <a href="/governance/change-management#thresholds">change-management §thresholds</a></td>
             <td>Public portal + Engagement WG all-member call</td>
             <td>P</td>
           </tr>
@@ -232,7 +229,7 @@ per breaking change`"]:::prop
 
       <p>
         <strong>Topic-flagging convention</strong> (supports the topic-based steward
-        observer pattern in <a href="24-data-stewardship.html#stewardOverlap">page 24 §Role overlap</a>):
+        observer pattern in <a href="/governance/data-stewardship#stewardOverlap">page 24 §Role overlap</a>):
         the Chair publishes the <strong>draft agenda 14 working days</strong> before
         the meeting; Domain Data Stewards self-identify any agenda items affecting
         their bounded context; the Chair issues the <strong>confirmed
@@ -244,7 +241,7 @@ per breaking change`"]:::prop
         <li><strong>Cadence items</strong> (5 min) — minutes from last meeting; standing actions; Chair updates.</li>
         <li><strong>Topic-based steward agenda</strong> (10 min) — confirmed steward attendees per the topic-flagging convention above are recognised; any context-specific items from their inbox surfaced.</li>
         <li><strong>Workstream updates</strong> (30 min) — WG chairs report (Technical, Engagement, Comms &amp; PR, Regulator, Policy); Sandbox / T&amp;I sub-group; finance &amp; budget.</li>
-        <li><strong>Decisions for ratification</strong> (30 min) — breaking-change escalations from Technical WG (per <a href="24-data-stewardship.html#raci">RACI step 6</a>); accreditation policy changes; conformance scheme adjustments; member admissions / suspensions.</li>
+        <li><strong>Decisions for ratification</strong> (30 min) — breaking-change escalations from Technical WG (per <a href="/governance/data-stewardship#raci">RACI step 6</a>); accreditation policy changes; conformance scheme adjustments; member admissions / suspensions.</li>
         <li><strong>Strategic items</strong> (15 min) — items rising to next AGM; new bounded-context proposals; cross-cutting initiatives.</li>
         <li><strong>Next month</strong> (5 min) — date, location/platform, anticipated agenda items, stewards to invite.</li>
       </ol>
@@ -267,7 +264,7 @@ per breaking change`"]:::prop
         <li><strong>Joint position papers</strong> — items where two or more contexts need to publish coordinated guidance.</li>
         <li><strong>External liaison report-back</strong> — each steward summarises their interactions with industry-steward counterparts (Propertymark, RICS, Law Society, etc.) since last roundtable.</li>
         <li><strong>Conflict raising</strong> — issues a single steward cannot resolve in their bounded context that affect adjacent ones.</li>
-        <li><strong>Pattern review</strong> — dissents and abstentions logged since last roundtable, per <a href="24-data-stewardship.html#dissent">page 24 §Dissent</a> — flag where they cluster.</li>
+        <li><strong>Pattern review</strong> — dissents and abstentions logged since last roundtable, per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a> — flag where they cluster.</li>
         <li><strong>Chair rotation</strong> (annually) — handover.</li>
       </ol>
 
@@ -316,7 +313,7 @@ per breaking change`"]:::prop
           <tr><td>Decision text</td><td>Required</td><td>One paragraph; the actual decision, not the discussion.</td></tr>
           <tr><td>Vote split</td><td>Required for EC / Board (Art. 16); proposed for WGs</td><td>For/against/abstain counts; named votes for breaking changes.</td></tr>
           <tr><td>Linked release</td><td>If applicable</td><td>Tag in <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a>.</td></tr>
-          <tr><td>Dissenting position</td><td>Voluntary</td><td>Publish-on-submit per <a href="24-data-stewardship.html#dissent">page 24 §Dissent</a> — up to 200 words; the Engagement WG curates.</td></tr>
+          <tr><td>Dissenting position</td><td>Voluntary</td><td>Publish-on-submit per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a> — up to 200 words; the Engagement WG curates.</td></tr>
           <tr><td>Action items</td><td>If applicable</td><td>Owner + due date; surfaces in next meeting's "cadence items".</td></tr>
         </tbody>
       </table>
@@ -508,7 +505,7 @@ Stakeholder Version Register`"]:::out
         <li><strong>Stakeholders notified</strong> — list of organisations + notification date.</li>
         <li><strong>Public consultation summary</strong> — number of substantive responses, headline themes, link to full responses log.</li>
         <li><strong>Vote split</strong> — at Technical WG and (for breaking changes) at EC.</li>
-        <li><strong>Submitted dissents</strong> — links to any 200-word positions filed per <a href="24-data-stewardship.html#dissent">page 24 §Dissent</a>.</li>
+        <li><strong>Submitted dissents</strong> — links to any 200-word positions filed per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a>.</li>
         <li><strong>Linked decision log entry</strong> — back-pointer to the canonical decision file.</li>
       </ul>
 
@@ -523,7 +520,7 @@ Stakeholder Version Register`"]:::out
       <h2 id="publicConsultation">Public consultation mechanics</h2>
 
       <p>
-        Fills the <code>X</code> placeholders in <a href="21-change-management.html#thresholds">change-management §thresholds</a>.
+        Fills the <code>X</code> placeholders in <a href="/governance/change-management#thresholds">change-management §thresholds</a>.
       </p>
 
       <h3 id="consultationPortal">Where consultations live: Astro pages + Artalk threads</h3>
@@ -571,7 +568,7 @@ Stakeholder Version Register`"]:::out
           <tr>
             <td><strong>PATCH</strong> — doc-only, typo, bug fix</td>
             <td>No consultation required</td>
-            <td>Steward decides alone per <a href="24-data-stewardship.html#decisionRights">Decision rights</a>; stakeholders informed at release via Stakeholder Version Register.</td>
+            <td>Steward decides alone per <a href="/governance/data-stewardship#decisionRights">Decision rights</a>; stakeholders informed at release via Stakeholder Version Register.</td>
           </tr>
         </tbody>
       </table>
@@ -618,7 +615,7 @@ review`"]:::review
         Open to <strong>all stakeholders</strong>: members, non-member firms,
         regulators, government departments, consumers / the public. Detail on
         differential participation rights — what regulators get to weigh in on vs.
-        what consumers can comment on — is on the <a href="26-stakeholder-engagement.html">Stakeholder engagement</a> page.
+        what consumers can comment on — is on the <a href="/governance/stakeholder-engagement">Stakeholder engagement</a> page.
       </p>
 
       <h3 id="publicationPolicy">Publication policy — public by default with opt-out</h3>
@@ -650,21 +647,16 @@ review`"]:::review
         <li><strong>Policy WG remit</strong> — the <a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/policy/"><code>working-groups/policy/</code></a> folder is empty in the corpus. Before setting cadence, the WG's remit needs to be defined (policy positions for external consultations? internal OPDA policy authoring? regulatory alignment? something else?). Cadence follows from remit, not the other way round.</li>
         <li><strong>Async vs synchronous default for Technical WG</strong> — async-first is proposed; whether the synchronous call should be standing monthly or convened only for breaking-change discussions is a coordination choice.</li>
         <li><strong>Decision-log retention extension</strong> — Articles art. 16 mandates 10y for EC + Board. Should we extend to all WG decisions for symmetry? Storage cost is negligible; the choice is about retention policy obligation.</li>
-        <li><strong>Quorum for Comms &amp; PR, Regulator, Policy WGs</strong> — not yet defined; presumably 3 members per <a href="24-data-stewardship.html#techWgQuorum">Technical WG pattern</a>, but each WG may need bespoke rules.</li>
+        <li><strong>Quorum for Comms &amp; PR, Regulator, Policy WGs</strong> — not yet defined; presumably 3 members per <a href="/governance/data-stewardship#techWgQuorum">Technical WG pattern</a>, but each WG may need bespoke rules.</li>
       </ol>
 
       <h2 id="relatedPages">Related pages</h2>
 
       <ul>
-        <li><a href="04-steering-forums.html">Steering &amp; coordination</a> — DPMSG structure that this page operationalises.</li>
-        <li><a href="21-change-management.html">Change management</a> — the 8-step SOP whose <code>X</code> placeholders this page fills.</li>
-        <li><a href="22-lifecycle-versioning.html">Lifecycle &amp; versioning</a> — how the version register intersects with semver.</li>
-        <li><a href="24-data-stewardship.html">Data stewardship &amp; decision rights</a> — the roles whose rhythm this page sets.</li>
-        <li><a href="26-stakeholder-engagement.html">Stakeholder engagement</a> — who gets to participate in the consultations described here.</li>
+        <li><a href="/governance/steering-forums">Steering &amp; coordination</a> — DPMSG structure that this page operationalises.</li>
+        <li><a href="/governance/change-management">Change management</a> — the 8-step SOP whose <code>X</code> placeholders this page fills.</li>
+        <li><a href="/governance/lifecycle-versioning">Lifecycle &amp; versioning</a> — how the version register intersects with semver.</li>
+        <li><a href="/governance/data-stewardship">Data stewardship &amp; decision rights</a> — the roles whose rhythm this page sets.</li>
+        <li><a href="/governance/stakeholder-engagement">Stakeholder engagement</a> — who gets to participate in the consultations described here.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '24-data-stewardship.html', label: 'Data stewardship' }}
-  next={{ href: '26-stakeholder-engagement.html', label: 'Stakeholder engagement' }}
-/>
 </Layout>

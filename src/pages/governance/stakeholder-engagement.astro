@@ -1,14 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Stakeholder engagement model"
   description="Five engagement modes — members, non-member firms, regulators, government departments, consumers — each with different rights of participation, grounded in the Articles, the Constitution, the DPMSG founding announcement, and current practice."
-  page="stakeholder-engagement"
-  section="governance"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-18" />
 
@@ -162,10 +159,10 @@ buyers · sellers · tenants · public
         <li><strong>One firm, one vote</strong> at General Assembly — Articles art. 29(1); Code of Conduct §Membership clause 2; Constitution §Governance Structure (groups of companies aggregate to one vote across multiple EC seats).</li>
         <li><strong>Application approved by the directors</strong> — Articles art. 22.</li>
         <li><strong>Membership not transferable</strong>; withdrawal requires <strong>one year's written notice</strong> — Articles art. 23.</li>
-        <li><strong>Eligibility to stand for the Executive Committee</strong> (12 voting seats, 2 per bounded context per <a href="24-data-stewardship.html#ecVoting">page 24 §EC voting</a>) — Articles art. 18(1).</li>
-        <li><strong>Eligibility to be nominated as a Domain Data Steward</strong> (Founder or Certified Members only) per <a href="24-data-stewardship.html#stewardEligibility">page 24 §Steward eligibility</a>.</li>
+        <li><strong>Eligibility to stand for the Executive Committee</strong> (12 voting seats, 2 per bounded context per <a href="/governance/data-stewardship#ecVoting">page 24 §EC voting</a>) — Articles art. 18(1).</li>
+        <li><strong>Eligibility to be nominated as a Domain Data Steward</strong> (Founder or Certified Members only) per <a href="/governance/data-stewardship#stewardEligibility">page 24 §Steward eligibility</a>.</li>
         <li><strong>Access to all WG materials and meetings</strong> — practice-as-ratified.</li>
-        <li><strong>Right to submit a 200-word dissent position</strong> on decisions per <a href="24-data-stewardship.html#dissent">page 24 §Dissent</a>.</li>
+        <li><strong>Right to submit a 200-word dissent position</strong> on decisions per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a>.</li>
         <li><strong>Annual self-reassessment</strong> obligation as part of Accreditation Policy clauses 16–17.</li>
       </ul>
 
@@ -219,7 +216,7 @@ buyers · sellers · tenants · public
             <td><strong>Public consultation responses</strong> (Artalk threads on consultation pages)</td>
             <td>Respond to OPDA-issued consultations on breaking changes</td>
             <td>Vote on the outcome</td>
-            <td>P — per <a href="25-meetings-and-feedback.html#consultationPortal">page 25 §Consultation portal</a></td>
+            <td>P — per <a href="/governance/meetings-and-feedback#consultationPortal">page 25 §Consultation portal</a></td>
           </tr>
           <tr>
             <td><strong>General Assembly attendance</strong></td>
@@ -229,7 +226,7 @@ buyers · sellers · tenants · public
           </tr>
           <tr>
             <td><strong>WG observer status</strong></td>
-            <td>Attend specific WG meetings as topic-based observers (parallels the EC topic-based observer pattern in <a href="24-data-stewardship.html#stewardOverlap">page 24</a>)</td>
+            <td>Attend specific WG meetings as topic-based observers (parallels the EC topic-based observer pattern in <a href="/governance/data-stewardship#stewardOverlap">page 24</a>)</td>
             <td>Vote; chair the WG</td>
             <td>P — new framing</td>
           </tr>
@@ -273,7 +270,7 @@ buyers · sellers · tenants · public
         These regulators engage through the DPMSG main forum (HMLR-hosted, monthly)
         and the <strong>Regulator WG</strong> — one of five DPMSG working groups —
         which runs quarterly + ad-hoc on breaking changes per
-        <a href="25-meetings-and-feedback.html#cadence">page 25 §Cadence</a>.
+        <a href="/governance/meetings-and-feedback#cadence">page 25 §Cadence</a>.
       </p>
 
       <h3 id="regulatorsFca">FCA — active engagement via FCA-led forums</h3>
@@ -309,7 +306,7 @@ buyers · sellers · tenants · public
 
       <p>
         ICO is documented as an "ecosystem regulator" on
-        <a href="03-departments.html#regulators">page 03 §Regulators in the ecosystem</a>
+        <a href="/governance/departments#regulators">page 03 §Regulators in the ecosystem</a>
         — its UK GDPR / DPA 2018 jurisdiction and Data Sharing Code of Practice apply
         to PDTF participants — but there is <strong>no operational engagement channel
         between OPDA and the ICO in the corpus today</strong>. No transcripts, emails,
@@ -327,7 +324,7 @@ buyers · sellers · tenants · public
           status. Lifts the credibility of an already-real relationship out of
           meeting notes into a citable artefact.</li>
         <li><strong>Initial ICO outreach.</strong> The Engagement WG (chaired by
-          Claire B per <a href="25-meetings-and-feedback.html#cadence">page 25 §Cadence</a>)
+          Claire B per <a href="/governance/meetings-and-feedback#cadence">page 25 §Cadence</a>)
           opens a dialogue with the ICO via the Data Sharing Code team — initially a
           letter introducing OPDA, PDTF, the Sandbox, and the data-protection
           considerations of the Verified Claim model, with a meeting request to
@@ -477,14 +474,14 @@ buyers · sellers · tenants · public
         <li><strong>Public website</strong>: <a href="https://openpropdata.org.uk" target="_blank" rel="noopener">openpropdata.org.uk</a> — primarily B2B-oriented.</li>
         <li><strong>Public LinkedIn</strong> and <strong>YouTube channel</strong> — broadcast, not dialogue.</li>
         <li><strong>"Transformation" landing page</strong> — consumer-facing framing of the programme.</li>
-        <li><strong>Public consultation responses</strong> — when OPDA opens an Artalk-thread consultation page (per <a href="25-meetings-and-feedback.html#consultationPortal">page 25 §Consultation portal</a>), the public can respond. But no consumer has done so to date — there's no pull mechanism, only a push.</li>
+        <li><strong>Public consultation responses</strong> — when OPDA opens an Artalk-thread consultation page (per <a href="/governance/meetings-and-feedback#consultationPortal">page 25 §Consultation portal</a>), the public can respond. But no consumer has done so to date — there's no pull mechanism, only a push.</li>
       </ul>
 
       <h3 id="consumersProposed">Proposed extensions</h3>
 
       <ul>
         <li><strong>Formalise the Which? relationship</strong> beyond the open action item. Standing observer seat at the Engagement WG monthly call, plus a quarterly bilateral working session between Which? policy lead and the OPDA Engagement WG chair. Status update incorporated into the all-member call standing agenda.</li>
-        <li><strong>Consumer complaints channel</strong>. A documented route for consumers who experience harm from PDTF-routed data (wrong information, stale data, missing disclosures) to raise the issue with OPDA. Closes part of the gap identified on <a href="23-risk-liability.html#liabilityQuestions">page 23 §Open liability questions</a>.</li>
+        <li><strong>Consumer complaints channel</strong>. A documented route for consumers who experience harm from PDTF-routed data (wrong information, stale data, missing disclosures) to raise the issue with OPDA. Closes part of the gap identified on <a href="/governance/risk-liability#liabilityQuestions">page 23 §Open liability questions</a>.</li>
         <li><strong>Plain-language summaries</strong> of every breaking change, published alongside the technical change-notification. Required reading for the consultation to be considered open to consumers in any meaningful sense.</li>
         <li><strong>Annual consumer impact report</strong>. Published alongside the AGM, documenting (anonymised) consumer-affecting issues raised through the complaints channel and OPDA's response. Co-published with Which? where the framing is jointly endorsed.</li>
       </ul>
@@ -507,7 +504,7 @@ buyers · sellers · tenants · public
         <tbody>
           <tr>
             <td><strong>Surveying bounded context</strong> — no founding OPDA member; Survey Shack is Associate-tier only</td>
-            <td>Documented on <a href="11-opda-members.html#founderContextDistribution">page 11</a> and <a href="12-bounded-contexts.html#supportingContexts">page 12</a>; Domain Data Steward seat <a href="24-data-stewardship.html#domainStewards">structurally unfillable today</a></td>
+            <td>Documented on <a href="/governance/opda-members#founderContextDistribution">page 11</a> and <a href="/modelling/bounded-contexts#supportingContexts">page 12</a>; Domain Data Steward seat <a href="/governance/data-stewardship#domainStewards">structurally unfillable today</a></td>
             <td>Recruit a surveying firm to Certified Membership; or upgrade Survey Shack from Associate; or deputise a RICS representative pending recruitment</td>
             <td>EC + Engagement WG</td>
           </tr>
@@ -531,14 +528,14 @@ buyers · sellers · tenants · public
           </tr>
           <tr>
             <td><strong>Insurance industry</strong> — entirely absent</td>
-            <td>No insurance member; no ABI engagement in any corpus transcript or email. Insurance touches PDTF flow via <strong>buildings cover at completion</strong> (every buyer needs it) and <strong>professional indemnity</strong> for conveyancers / surveyors (relevant to liability questions on <a href="23-risk-liability.html#liabilityQuestions">page 23</a>). Title risk is separately handled by HMLR's state-backed indemnity, not commercial insurance.</td>
+            <td>No insurance member; no ABI engagement in any corpus transcript or email. Insurance touches PDTF flow via <strong>buildings cover at completion</strong> (every buyer needs it) and <strong>professional indemnity</strong> for conveyancers / surveyors (relevant to liability questions on <a href="/governance/risk-liability#liabilityQuestions">page 23</a>). Title risk is separately handled by HMLR's state-backed indemnity, not commercial insurance.</td>
             <td>Engagement with ABI (Association of British Insurers) as a starting point; recruit at least one buildings-cover-side insurer or PI insurance provider; clarify OPDA's scope (insurance products are downstream consumers of PDTF data, not the data itself)</td>
             <td>EC + Engagement WG</td>
           </tr>
           <tr>
             <td><strong>Devolved nations</strong> — Scotland, Wales, Northern Ireland (formalisation gap, not engagement gap)</td>
             <td>Registers of Scotland + Northern Ireland invited to DPMSG Steering Group + Sandbox (Feb 2026); Welsh Revenue Authority on T&amp;I steering group recipient list (Apr 2026). Engagement is live; per §<a href="#governmentDevolved">Devolved nations</a> above.</td>
-            <td>Formalise into named sub-group or workstream; resolve scope (which legal frames OPDA covers — Scottish conveyancing has no land registry equivalent; NI touches UK + Irish frames); update <a href="12-bounded-contexts.html#extensionAxes">page 12 §extension axes</a></td>
+            <td>Formalise into named sub-group or workstream; resolve scope (which legal frames OPDA covers — Scottish conveyancing has no land registry equivalent; NI touches UK + Irish frames); update <a href="/modelling/bounded-contexts#extensionAxes">page 12 §extension axes</a></td>
             <td>EC + steering group</td>
           </tr>
         </tbody>
@@ -564,7 +561,7 @@ buyers · sellers · tenants · public
       <ul>
         <li><strong>Member satisfaction</strong> — annual self-reassessment return rate (baseline from Accreditation Policy clause 16) and free-text themes from member submissions.</li>
         <li><strong>Non-member firm participation</strong> — Sandbox participant count, Engagement WG monthly call attendance, public issue tracker contributor count.</li>
-        <li><strong>Consultation engagement</strong> — number of breaking-change consultations issued, substantive response counts per consultation, and SLA hit rate per <a href="25-meetings-and-feedback.html#slas">page 25 §SLAs</a> where measurable.</li>
+        <li><strong>Consultation engagement</strong> — number of breaking-change consultations issued, substantive response counts per consultation, and SLA hit rate per <a href="/governance/meetings-and-feedback#slas">page 25 §SLAs</a> where measurable.</li>
         <li><strong>Coverage-gap progress</strong> — narrative review against each row of the <a href="#coverageGaps">coverage-gaps table</a> above, including regulators (FCA / ICO), government (devolved nations), consumer (Which? and complaints channel), insurance, and lettings.</li>
       </ul>
 
@@ -591,17 +588,12 @@ buyers · sellers · tenants · public
       <h2 id="relatedPages">Related pages</h2>
 
       <ul>
-        <li><a href="04-steering-forums.html">Steering &amp; coordination</a> — DPMSG founding members and the five working groups.</li>
-        <li><a href="11-opda-members.html">OPDA member firms</a> — the 13 founder firms and association membership growth.</li>
-        <li><a href="12-bounded-contexts.html">Bounded contexts &amp; industries</a> — industry stewards (regulators/professional bodies) that pair with OPDA Domain Data Stewards.</li>
-        <li><a href="20-conformance-scheme.html">Conformance &amp; certification</a> — the scheme members are accredited against.</li>
-        <li><a href="23-risk-liability.html">Risk &amp; liability</a> — the consumer-harm side of the consumer-engagement gap.</li>
-        <li><a href="24-data-stewardship.html">Data stewardship &amp; decision rights</a> — Domain Data Stewards and their industry-steward counterparts.</li>
-        <li><a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a> — cadence and channels each engagement mode uses.</li>
+        <li><a href="/governance/steering-forums">Steering &amp; coordination</a> — DPMSG founding members and the five working groups.</li>
+        <li><a href="/governance/opda-members">OPDA member firms</a> — the 13 founder firms and association membership growth.</li>
+        <li><a href="/modelling/bounded-contexts">Bounded contexts &amp; industries</a> — industry stewards (regulators/professional bodies) that pair with OPDA Domain Data Stewards.</li>
+        <li><a href="/governance/conformance-scheme">Conformance &amp; certification</a> — the scheme members are accredited against.</li>
+        <li><a href="/governance/risk-liability">Risk &amp; liability</a> — the consumer-harm side of the consumer-engagement gap.</li>
+        <li><a href="/governance/data-stewardship">Data stewardship &amp; decision rights</a> — Domain Data Stewards and their industry-steward counterparts.</li>
+        <li><a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a> — cadence and channels each engagement mode uses.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '25-meetings-and-feedback.html', label: 'Meetings & feedback' }}
-  next={{ href: '30-concept-taxonomy.html', label: 'Concept taxonomy' }}
-/>
 </Layout>

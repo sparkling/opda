@@ -1,14 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Data stewardship &amp; decision rights"
   description="Who is accountable for which part of OPDA's data, and who decides what. Pulls voting machinery out of the Articles, RACI out of the change SOP, and introduces the missing layer — Domain Data Stewards, one per bounded context."
-  page="data-stewardship"
-  section="governance"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-18" />
 
@@ -40,7 +37,7 @@ import Diagram from '../../components/Diagram.astro';
 
       <p>
         PDTF v3.5.0 has 18 main overlays and 16 extension overlays
-        (see <a href="16-overlays.html">PDTF overlays</a> and
+        (see <a href="/modelling/overlays">PDTF overlays</a> and
         <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/"><code>schemas/src/schemas/v3/overlays/</code></a>).
         No person or role is currently <strong>named as accountable</strong> for each
         overlay's content, evolution, or correctness. The change SOP in
@@ -63,11 +60,11 @@ import Diagram from '../../components/Diagram.astro';
       <p>
         DCAM (EDM Council's Data Management Capability Assessment Model) builds its
         entire data-governance pillar around named stewards per data domain. The
-        <a href="07-toip-governance.html#whyToip">ToIP page</a> argues OPDA can't adopt
+        <a href="/governance/toip-governance#whyToip">ToIP page</a> argues OPDA can't adopt
         DCAM whole — it assumes a single accountable enterprise, not a federated body —
         but the <strong>steward concept</strong> translates cleanly to a federated
         standards body. A Domain Data Steward represents one
-        <a href="12-bounded-contexts.html">bounded context</a> within OPDA's
+        <a href="/modelling/bounded-contexts">bounded context</a> within OPDA's
         federation.
       </p>
 
@@ -156,7 +153,7 @@ vacant`"]:::proposed
 
       <p>
         Six stewards, one per primary bounded context (per
-        <a href="12-bounded-contexts.html">12-bounded-contexts</a>). Because each PDTF
+        <a href="/modelling/bounded-contexts">12-bounded-contexts</a>). Because each PDTF
         overlay belongs to exactly one bounded context, six stewards collectively cover
         every published schema artefact. The mapping:
       </p>
@@ -209,10 +206,10 @@ vacant`"]:::proposed
 
       <ul>
         <li>The published schemas and overlays — their wording, structure, examples, JSON-LD contexts, SHACL shapes.</li>
-        <li>The glossary terms specific to the context, and the SKOS scheme that organises them (per <a href="12-bounded-contexts.html#implications">12-bounded-contexts</a>).</li>
+        <li>The glossary terms specific to the context, and the SKOS scheme that organises them (per <a href="/modelling/bounded-contexts#implications">12-bounded-contexts</a>).</li>
         <li>Liaison with the <strong>industry stewards</strong> named on the bounded-contexts page (Propertymark / MHCLG for Estate Agency; Law Society / SRA / CLC / CILEx for Conveyancing; UK Finance / BSA / FCA for Mortgage Lending; RICS for Surveying; COPSO for Property Data Services).</li>
         <li>Cross-context coordination via the (proposed) Steward Roundtable.</li>
-        <li>Stakeholder feedback ingestion for their context (see <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>).</li>
+        <li>Stakeholder feedback ingestion for their context (see <a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a>).</li>
       </ul>
 
       <h3 id="stewardEligibility">Eligibility &amp; term</h3>
@@ -289,7 +286,7 @@ flowchart LR
       <p>
         The 8-step Standard Operating Procedure from
         <a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> §6
-        (rendered on <a href="21-change-management.html#sop">Change management</a>) tells
+        (rendered on <a href="/governance/change-management#sop">Change management</a>) tells
         us <em>what</em> happens; this RACI matrix tells us <em>who</em> does it. R =
         Responsible (does the work), A = Accountable (owns the outcome), C = Consulted,
         I = Informed.
@@ -416,7 +413,7 @@ override directors on specified action
         <li><strong>Decisions by majority at meeting OR unanimous written resolution</strong> — Articles arts. 8–9.</li>
         <li><strong>Chair's casting vote on equal votes</strong> — Articles art. 14.</li>
         <li><strong>Director term: 3 years initial, 2-year break, max 9 years</strong> — Articles art. 18(1)(c).</li>
-        <li><strong>Decision records kept for 10 years</strong> from date of decision — Articles art. 16. (This is the foundational citation for the decision-log retention policy in <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>.)</li>
+        <li><strong>Decision records kept for 10 years</strong> from date of decision — Articles art. 16. (This is the foundational citation for the decision-log retention policy in <a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a>.)</li>
         <li><strong>Director COI</strong>: a director with an interest in a proposed transaction is not counted for quorum or voting purposes, except in permitted causes (Articles art. 15, aligned with s.175 Companies Act 2006).</li>
       </ul>
 
@@ -449,14 +446,14 @@ override directors on specified action
       <ul>
         <li><strong>Quorate at: 3 reviewers active</strong>, of which at least 2 from different member firms (mirrors the Articles' insistence on independent decision-makers).</li>
         <li><strong>MINOR additive changes</strong>: 2-approver threshold per <code>governance.md</code> §3.B is met — fills the existing "X approvers" placeholder with 2.</li>
-        <li><strong>MAJOR breaking changes</strong>: 3-approver threshold from <code>governance.md</code> §6 is met, <em>plus</em> Compliance &amp; Risk sign-off, <em>plus</em> 4-week public consultation (see <a href="25-meetings-and-feedback.html#publicConsultation">Public consultation mechanics</a>).</li>
+        <li><strong>MAJOR breaking changes</strong>: 3-approver threshold from <code>governance.md</code> §6 is met, <em>plus</em> Compliance &amp; Risk sign-off, <em>plus</em> 4-week public consultation (see <a href="/governance/meetings-and-feedback#publicConsultation">Public consultation mechanics</a>).</li>
         <li><strong>Tied votes</strong>: escalate to Steward Roundtable; if unresolved, to Executive Committee.</li>
       </ul>
 
       <h3 id="stewardRoundtable">Steward Roundtable</h3>
 
       <ul>
-        <li><strong>Composition</strong>: all 6 Domain Data Stewards; meets quarterly (see <a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a>).</li>
+        <li><strong>Composition</strong>: all 6 Domain Data Stewards; meets quarterly (see <a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a>).</li>
         <li><strong>Quorum: 4 of 6 stewards present</strong>.</li>
         <li><strong>Decisions by consensus</strong>; if consensus fails, simple majority of those present; ties escalate to Technical WG.</li>
         <li><strong>Chair rotates annually</strong> among the stewards.</li>
@@ -482,7 +479,7 @@ override directors on specified action
         <li><strong>Per-decision declaration</strong>: when a steward's firm has commercial stake in a specific change (e.g., a steward at Sprift voting on an overlay Sprift's products will sell into), they declare the interest and recuse from the binding vote — though they may participate in discussion in an advisory capacity.</li>
         <li><strong>Group-acquisition trigger</strong>: when a steward's parent group acquires another OPDA member, COI is automatically re-declared and the Executive Committee re-confirms the appointment.</li>
         <li><strong>Public-facing register</strong>: the COI register feeds the
-          <a href="07-toip-governance.html">Trust Registry</a> as machine-readable
+          <a href="/governance/toip-governance">Trust Registry</a> as machine-readable
           metadata against each steward's DID, signed by the Governance Authority.</li>
       </ul>
 
@@ -561,16 +558,11 @@ override directors on specified action
       <h2 id="relatedPages">Related pages</h2>
 
       <ul>
-        <li><a href="04-steering-forums.html">Steering &amp; coordination</a> — DPMSG and the 5 working groups the SOP runs within.</li>
-        <li><a href="12-bounded-contexts.html">Bounded contexts &amp; industries</a> — the six contexts each steward covers.</li>
-        <li><a href="20-conformance-scheme.html">Conformance &amp; certification</a> — Tier A self-certification process Stewards plug into.</li>
-        <li><a href="21-change-management.html">Change management</a> — the 8-step SOP the RACI maps onto.</li>
-        <li><a href="25-meetings-and-feedback.html">Meetings &amp; feedback</a> — operational rhythm for the bodies on this page.</li>
-        <li><a href="26-stakeholder-engagement.html">Stakeholder engagement</a> — non-member, regulator, government participation.</li>
+        <li><a href="/governance/steering-forums">Steering &amp; coordination</a> — DPMSG and the 5 working groups the SOP runs within.</li>
+        <li><a href="/modelling/bounded-contexts">Bounded contexts &amp; industries</a> — the six contexts each steward covers.</li>
+        <li><a href="/governance/conformance-scheme">Conformance &amp; certification</a> — Tier A self-certification process Stewards plug into.</li>
+        <li><a href="/governance/change-management">Change management</a> — the 8-step SOP the RACI maps onto.</li>
+        <li><a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a> — operational rhythm for the bodies on this page.</li>
+        <li><a href="/governance/stakeholder-engagement">Stakeholder engagement</a> — non-member, regulator, government participation.</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '23-risk-liability.html', label: 'Risk & liability' }}
-  next={{ href: '25-meetings-and-feedback.html', label: 'Meetings & feedback' }}
-/>
 </Layout>

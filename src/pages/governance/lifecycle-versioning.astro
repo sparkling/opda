@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Lifecycle &amp; versioning policy"
   description="Semantic versioning rules, deprecation timelines, and retirement policy — including how to handle external regulatory withdrawals (the NTS situation)."
-  page="lifecycle-versioning"
 >
 <PageMeta category="Governance" updated="Stub · Updated 2026-05-17" />
 
@@ -69,10 +67,4 @@ import PageFooter from '../../components/PageFooter.astro';
       <p>
         See <a href="/source/08-external-references/nts/README.md">source/08-external-references/nts/README.md</a> for the full context.
       </p>
-        
-
-      <PageFooter
-  prev={{ href: '21-change-management.html', label: 'Change management' }}
-  next={{ href: '23-risk-liability.html', label: 'Risk & liability' }}
-/>
 </Layout>

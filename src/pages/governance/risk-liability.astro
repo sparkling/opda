@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Risk &amp; liability allocation"
   description="Who is liable when data flowing through PDTF turns out to be wrong, late, or missing. Tested in the Sandbox; will need to be formalised before national rollout."
-  page="risk-liability"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-17" />
 
@@ -104,10 +102,4 @@ import PageFooter from '../../components/PageFooter.astro';
       <p>
         OPDA can't decide this alone. Likely participants: FCA, ICO, SRA, CLC, RICS, UK Finance, BSA, MHCLG, plus the PII insurers of the regulated professions.
       </p>
-        
-
-      <PageFooter
-  prev={{ href: '22-lifecycle-versioning.html', label: 'Lifecycle & versioning' }}
-  next={{ href: '24-data-stewardship.html', label: 'Data stewardship' }}
-/>
 </Layout>

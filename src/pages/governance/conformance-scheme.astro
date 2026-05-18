@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Conformance &amp; certification scheme"
   description="How members prove they meet OPDA's standard. Two tiers: self-certification (live today) and planned technical conformance modelled on Open Banking."
-  page="conformance-scheme"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-17" />
 
@@ -155,7 +153,7 @@ self-reassessment`"]:::step
       <ul>
         <li><strong>ISO 27001 (or industry-recognised equivalent)</strong> — clause 10 of the Accreditation Policy, clause 7 of the Scheme. Privacy and security practices must be built into operations from the start.</li>
         <li><strong>Non-commercial use of accreditation</strong> — clause 13 of the Policy, clause 10 of the Scheme. Members may not leverage OPDA accreditation for commercial or political gain; the badge signals trust, not product endorsement.</li>
-        <li><strong>Code of Conduct adherence</strong> — see <a href="06-opda-governance.html">OPDA governance</a> for the principles; collaborative initiatives tie into <a href="04-steering-forums.html">steering forums</a>; dispute resolution is handled by the non-compliance flow below.</li>
+        <li><strong>Code of Conduct adherence</strong> — see <a href="06-opda-governance.html">OPDA governance</a> for the principles; collaborative initiatives tie into <a href="/governance/steering-forums">steering forums</a>; dispute resolution is handled by the non-compliance flow below.</li>
       </ul>
 
       <h3 id="tierABenefits">Public recognition</h3>
@@ -293,9 +291,9 @@ self-reassessment`"]:::step
       </ul>
 
       <p>
-        See <a href="07-toip-governance.html#openBankingParallel">ToIP governance — Open Banking parallel</a>
+        See <a href="/governance/toip-governance#openBankingParallel">ToIP governance — Open Banking parallel</a>
         for the full mapping. The Sandbox programme (delivered by CLC + OPDA + Raidiam)
-        is the natural rails on which Tier B will be built — see <a href="05-sandbox.html">Trust Framework Sandbox</a>.
+        is the natural rails on which Tier B will be built — see <a href="/governance/sandbox">Trust Framework Sandbox</a>.
       </p>
 
       <h2 id="nonCompliance">Non-compliance handling</h2>
@@ -362,20 +360,15 @@ possible reapplication`"]:::proc
         The split mirrors Open Banking, where OBL ran conformance independently
         of the FCA. See <a href="06-opda-governance.html">OPDA governance</a> for the
         scheme operator's own governance structure, and
-        <a href="07-toip-governance.html">ToIP governance mapping</a> for how this
+        <a href="/governance/toip-governance">ToIP governance mapping</a> for how this
         sits relative to a Layer 4 ecosystem-governance framework.
       </p>
 
       <h2 id="crossRefs">Related pages</h2>
 
       <ul>
-        <li><a href="05-sandbox.html">Trust Framework Sandbox</a> — operational vehicle Tier B will plug into</li>
-        <li><a href="11-opda-members.html">OPDA member firms</a> — the seven self-certified firms today</li>
-        <li><a href="21-change-management.html">Change management</a> — how the scheme itself evolves</li>
+        <li><a href="/governance/sandbox">Trust Framework Sandbox</a> — operational vehicle Tier B will plug into</li>
+        <li><a href="/governance/opda-members">OPDA member firms</a> — the seven self-certified firms today</li>
+        <li><a href="/governance/change-management">Change management</a> — how the scheme itself evolves</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '08-strategic-alignment.html', label: 'Strategic alignment' }}
-  next={{ href: '21-change-management.html', label: 'Change management' }}
-/>
 </Layout>

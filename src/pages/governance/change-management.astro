@@ -1,12 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Change management process"
   description="How OPDA changes its rules and standards &amp;mdash; constitutional amendments through the General Assembly, and technical schema changes via the PDTF SOP."
-  page="change-management"
 >
 <PageMeta category="Governance" updated="Draft · Updated 2026-05-17" />
 
@@ -225,7 +224,7 @@ flowchart LR
       </p>
 
       <div class="page-footer">
-        <a href="20-conformance-scheme.html">&larr; Conformance &amp; certification</a>
-        <a href="22-lifecycle-versioning.html">Lifecycle &amp; versioning &rarr;</a>
+        <a href="/governance/conformance-scheme">&larr; Conformance &amp; certification</a>
+        <a href="/governance/lifecycle-versioning">Lifecycle &amp; versioning &rarr;</a>
       </div>
 </Layout>
