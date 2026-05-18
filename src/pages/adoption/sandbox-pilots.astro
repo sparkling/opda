@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Sandbox pilots"
   description="The CLC + OPDA + Raidiam Sandbox — operational in 2026, testing certified data sources, accredited providers, and the consent/liability model."
-  page="sandbox-pilots"
 >
 <PageMeta category="Adoption" variant="brand" updated="Updated 2026-05-14" />
 
@@ -24,7 +22,7 @@ import PageFooter from '../../components/PageFooter.astro';
         <div class="callout__label">Status</div>
         <p>
           <strong>Operational today.</strong> Not a "pilot" in the sense of "future
-          experiment" — it is currently running. See the <a href="05-sandbox.html">Trust
+          experiment" — it is currently running. See the <a href="/governance/sandbox">Trust
           Framework Sandbox</a> governance page for the structural details.
         </p>
       </div>
@@ -97,7 +95,7 @@ import PageFooter from '../../components/PageFooter.astro';
           </tr>
           <tr>
             <td><a class="resource-link" href="/resource.html?path=source/06-research/trust-framework-poc/Glossary.xlsx"><code>Glossary.xlsx</code></a></td>
-            <td>Working glossary used inside Sandbox sessions (one of the two source glossaries for the <a href="14-business-glossary.html">business glossary</a>).</td>
+            <td>Working glossary used inside Sandbox sessions (one of the two source glossaries for the <a href="/modelling/business-glossary">business glossary</a>).</td>
           </tr>
         </tbody>
       </table>
@@ -105,7 +103,7 @@ import PageFooter from '../../components/PageFooter.astro';
       <h2 id="monthlyUpdates">Monthly progress</h2>
       <p>
         The Sandbox status is reported in the OPDA <em>all-member update</em> session
-        every month — see <a href="41-meetings-decisions.html">Meetings &amp;
+        every month — see <a href="/engagement/meetings-decisions">Meetings &amp;
         decisions</a> for the deck archive. The four most recent decks
         (Feb–May 2026) trace the live cohort progress.
       </p>
@@ -118,8 +116,4 @@ import PageFooter from '../../components/PageFooter.astro';
         to UK regulators, which reduces the political risk of national rollout. The
         adoption story for Open Banking proper is in the Raidiam deck linked above.
       </p>
-
-      <PageFooter
-  prev={{ href: '53-hmlr-llc.html', label: 'HMLR LLC programme' }}
-/>
 </Layout>

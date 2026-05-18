@@ -1,19 +1,17 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Member implementations"
   description="What each OPDA member firm has built or shipped that's public-facing — by bounded context."
-  page="member-implementations"
 >
 <PageMeta category="Adoption" variant="brand" updated="Updated 2026-05-14" />
 
       <h1>Member implementations</h1>
       <p class="lead">
         Each OPDA member firm is at a different point on the
-        <a href="50-adoption-overview.html">adoption spectrum</a>. The table below
+        <a href="/adoption/adoption-overview">adoption spectrum</a>. The table below
         captures what's <em>publicly visible</em> from each — the products, pilots
         and references that you can verify from outside.
       </p>
@@ -22,7 +20,7 @@ import PageFooter from '../../components/PageFooter.astro';
         <div class="callout__label">Scope</div>
         <p>
           Coverage is best-effort and may lag behind what members are building. For the
-          authoritative roster see <a href="11-opda-members.html">OPDA member firms</a>;
+          authoritative roster see <a href="/governance/opda-members">OPDA member firms</a>;
           this page focuses on <em>what they've done</em>, not who they are.
         </p>
       </div>
@@ -40,7 +38,7 @@ import PageFooter from '../../components/PageFooter.astro';
           <tr>
             <td><strong>Moverly</strong></td>
             <td>Smart Property Pack product. Tightly coupled to the PDTF schema set; produces BASPI v5 + NTS2 conforming data.</td>
-            <td>Smart Data Challenge prize entry (see <a href="52-smart-data-challenge.html">SDC page</a>). Vimeo briefing.</td>
+            <td>Smart Data Challenge prize entry (see <a href="/adoption/smart-data-challenge">SDC page</a>). Vimeo briefing.</td>
           </tr>
           <tr>
             <td><strong>Coadjute</strong></td>
@@ -193,12 +191,7 @@ import PageFooter from '../../components/PageFooter.astro';
           <strong>Surveying / Valuation has no founding OPDA member.</strong>
           PIQ is in the schema set but no implementing firm has put their name
           publicly to the section. Hometrack (AVM-adjacent) is the closest in the
-          association membership. See <a href="12-bounded-contexts.html#primaryIndustries">Bounded contexts</a> for the gap analysis.
+          association membership. See <a href="/modelling/bounded-contexts#primaryIndustries">Bounded contexts</a> for the gap analysis.
         </p>
       </div>
-
-      <PageFooter
-  prev={{ href: '50-adoption-overview.html', label: 'Overview' }}
-  next={{ href: '52-smart-data-challenge.html', label: 'Smart Data Challenge' }}
-/>
 </Layout>

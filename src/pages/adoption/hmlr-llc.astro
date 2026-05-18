@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="HMLR Local Land Charges"
   description="HM Land Registry's national Local Land Charges digital register — 200+ councils migrated, gold-status quality ratings."
-  page="hmlr-llc"
 >
 <PageMeta category="Adoption" variant="brand" updated="Updated 2026-05-14" />
 
@@ -75,9 +73,4 @@ import PageFooter from '../../components/PageFooter.astro';
         as a reference precedent in the
         <a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf"><code>Spring 2025 Interoperability Report</code></a>.
       </p>
-
-      <PageFooter
-  prev={{ href: '52-smart-data-challenge.html', label: 'Smart Data Challenge' }}
-  next={{ href: '54-sandbox-pilots.html', label: 'Sandbox pilots' }}
-/>
 </Layout>

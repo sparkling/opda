@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Smart Data Challenge 2025"
   description="The DBT-sponsored Smart Data Challenge. Moverly + OPDA entry won the SDCP Innovators prize. Full archive of the submission."
-  page="smart-data-challenge"
 >
 <PageMeta category="Adoption" variant="brand" updated="Updated 2026-05-14" />
 
@@ -99,9 +97,4 @@ import PageFooter from '../../components/PageFooter.astro';
         (<em>Smart-Data-Challenge-Prize-*</em>) include the cost &amp; timings
         evidence that's been re-used in subsequent MHCLG and DSIT submissions.
       </p>
-
-      <PageFooter
-  prev={{ href: '51-member-implementations.html', label: 'Member implementations' }}
-  next={{ href: '53-hmlr-llc.html', label: 'HMLR LLC programme' }}
-/>
 </Layout>

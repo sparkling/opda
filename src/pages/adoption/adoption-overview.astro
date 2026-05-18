@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Adoption — overview"
   description="Headline numbers, what counts as adoption, and the public evidence map for PDTF."
-  page="adoption-overview"
 >
 <PageMeta category="Adoption" variant="brand" updated="Updated 2026-05-14" />
 
@@ -91,14 +89,9 @@ Accredited & certified`"]:::step
 
       <h2 id="nextPages">Sub-pages</h2>
       <ul>
-        <li><a href="51-member-implementations.html"><strong>Member implementations</strong></a> — what each of the 13 founding members has built that's public-facing</li>
-        <li><a href="52-smart-data-challenge.html"><strong>Smart Data Challenge 2025</strong></a> — the Moverly + OPDA prize entry, archive of submission documents</li>
-        <li><a href="53-hmlr-llc.html"><strong>HMLR Local Land Charges</strong></a> — 200+ councils on the national digital register</li>
-        <li><a href="54-sandbox-pilots.html"><strong>Sandbox pilots</strong></a> — what the operational Sandbox is testing in 2026</li>
+        <li><a href="/adoption/member-implementations"><strong>Member implementations</strong></a> — what each of the 13 founding members has built that's public-facing</li>
+        <li><a href="/adoption/smart-data-challenge"><strong>Smart Data Challenge 2025</strong></a> — the Moverly + OPDA prize entry, archive of submission documents</li>
+        <li><a href="/adoption/hmlr-llc"><strong>HMLR Local Land Charges</strong></a> — 200+ councils on the national digital register</li>
+        <li><a href="/adoption/sandbox-pilots"><strong>Sandbox pilots</strong></a> — what the operational Sandbox is testing in 2026</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '/adoption.html', label: 'Adoption' }}
-  next={{ href: '51-member-implementations.html', label: 'Member implementations' }}
-/>
 </Layout>
