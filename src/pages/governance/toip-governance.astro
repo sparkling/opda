@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="ToIP governance model"
-  page="toip-governance"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -216,9 +214,4 @@ Foundation infrastructure`"]:::l1
         Each document follows the same structure: purpose, scope, what's already in place
         (citing existing OPDA artefacts), gap analysis, proposed operating model, KPIs.
       </p>
-
-      <PageFooter
-  prev={{ href: '06-standards-stack.html', label: 'Standards stack' }}
-  next={{ href: '08-strategic-alignment.html', label: 'Strategic alignment' }}
-/>
 </Layout>

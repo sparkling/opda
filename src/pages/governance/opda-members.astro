@@ -1,13 +1,11 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="OPDA member firms"
   description="OPDA's 13 founding member firms (the launch cohort of 2023), plus association members and Technical Certification holders."
-  page="opda-members"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -34,7 +32,7 @@ import Diagram from '../../components/Diagram.astro';
           lender / search-data firms that operationally launched OPDA in 2023. They
           are <strong>distinct from</strong> the 14 DPMSG founding members (the
           government + profession + finance coalition convened by HMLR in August 2023 —
-          see the <a href="04-steering-forums.html">Steering &amp; coordination</a> page).
+          see the <a href="/governance/steering-forums">Steering &amp; coordination</a> page).
           DPMSG sets the strategic direction; OPDA members do the technical work.
         </p>
       </div>
@@ -45,7 +43,7 @@ import Diagram from '../../components/Diagram.astro';
         Identified from the "Our Members → Founding Members" section of openpropdata.org.uk,
         cross-referenced against the May–Dec 2023 press posts on the OPDA blog announcing
         the formation. Each is mapped to its primary
-        <a href="12-bounded-contexts.html">bounded context</a> (one firm can touch
+        <a href="/modelling/bounded-contexts">bounded context</a> (one firm can touch
         multiple — primary is the dominant one).
       </p>
 
@@ -54,19 +52,19 @@ import Diagram from '../../components/Diagram.astro';
           <tr><th>#</th><th>Firm</th><th>Primary bounded context</th><th>Sector / focus</th><th>Cert.</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td><strong>Moverly</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Digital home-moving platform. Co-won the SDC Innovators prize with OPDA.</td><td>—</td></tr>
-          <tr><td>2</td><td><strong>OnTheMarket</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Estate Agency</a></td><td>UK property portal.</td><td>—</td></tr>
-          <tr><td>3</td><td><strong>Sprift</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Property data aggregator.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>4</td><td><strong>Coadjute</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Decentralised property-transaction network. Spans all contexts as orchestration.</td><td>—</td></tr>
-          <tr><td>5</td><td><strong>OMS</strong> (One Mortgage System)</td><td><a href="12-bounded-contexts.html#primaryIndustries">Mortgage Lending</a></td><td>Mortgage-software platform.</td><td>—</td></tr>
-          <tr><td>6</td><td><strong>Inventory Base</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Inventory + property-report platform. Also serves Lettings.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>7</td><td><strong>United Trust Bank</strong> (UTB)</td><td><a href="12-bounded-contexts.html#primaryIndustries">Mortgage Lending</a></td><td>Specialist lender — the founding lender.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>8</td><td><strong>TM Group</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Conveyancing search provider.</td><td>—</td></tr>
-          <tr><td>9</td><td><strong>PEXA</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Technology</a></td><td>Digital property settlement network. Touches Conveyancing + Lending.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>10</td><td><strong>LMS</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Conveyancing (Legal)</a></td><td>Conveyancing services group. Secondary: Mortgage Lending services.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>11</td><td><strong>Kotini</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Property data / packs platform. Also Property Technology.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>12</td><td><strong>Groundsure</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Property Data Services</a></td><td>Environmental + property search data.</td><td><span class="pill pill--success">✓</span></td></tr>
-          <tr><td>13</td><td><strong>Homely</strong></td><td><a href="12-bounded-contexts.html#primaryIndustries">Estate Agency</a></td><td>Property platform / portal.</td><td>—</td></tr>
+          <tr><td>1</td><td><strong>Moverly</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Digital home-moving platform. Co-won the SDC Innovators prize with OPDA.</td><td>—</td></tr>
+          <tr><td>2</td><td><strong>OnTheMarket</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Estate Agency</a></td><td>UK property portal.</td><td>—</td></tr>
+          <tr><td>3</td><td><strong>Sprift</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Property data aggregator.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>4</td><td><strong>Coadjute</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Decentralised property-transaction network. Spans all contexts as orchestration.</td><td>—</td></tr>
+          <tr><td>5</td><td><strong>OMS</strong> (One Mortgage System)</td><td><a href="/modelling/bounded-contexts#primaryIndustries">Mortgage Lending</a></td><td>Mortgage-software platform.</td><td>—</td></tr>
+          <tr><td>6</td><td><strong>Inventory Base</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Inventory + property-report platform. Also serves Lettings.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>7</td><td><strong>United Trust Bank</strong> (UTB)</td><td><a href="/modelling/bounded-contexts#primaryIndustries">Mortgage Lending</a></td><td>Specialist lender — the founding lender.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>8</td><td><strong>TM Group</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Conveyancing search provider.</td><td>—</td></tr>
+          <tr><td>9</td><td><strong>PEXA</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Digital property settlement network. Touches Conveyancing + Lending.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>10</td><td><strong>LMS</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Conveyancing (Legal)</a></td><td>Conveyancing services group. Secondary: Mortgage Lending services.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>11</td><td><strong>Kotini</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Property data / packs platform. Also Property Technology.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>12</td><td><strong>Groundsure</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Environmental + property search data.</td><td><span class="pill pill--success">✓</span></td></tr>
+          <tr><td>13</td><td><strong>Homely</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Estate Agency</a></td><td>Property platform / portal.</td><td>—</td></tr>
         </tbody>
       </table>
 
@@ -262,9 +260,4 @@ flowchart LR
           property-data analogue.
         </li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '10-glossary.html', label: 'Glossary' }}
-  next={{ href: '/index.html', label: 'Home' }}
-/>
 </Layout>

@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Strategic alignment"
-  page="strategic-alignment"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -106,7 +104,7 @@ Digital Identity Trust Framework`"]:::strat
       <p>
         Linux Foundation project. The 4-layer governance + technical stack model that
         PDTF directly adopts. See the dedicated
-        <a href="07-toip-governance.html">ToIP governance page</a>.
+        <a href="/governance/toip-governance">ToIP governance page</a>.
       </p>
 
       <h2 id="implicitAlignments">Implicit alignments — not on the published list but worth tracking</h2>
@@ -156,11 +154,6 @@ Digital Identity Trust Framework`"]:::strat
         <li><strong>National Data Strategy</strong> — public data assets in PDTF have <code>dcat:</code> metadata for discoverability.</li>
         <li><strong>DIATF</strong> — PDTF accreditation cross-recognises at least one DIATF-certified IDP.</li>
         <li><strong>W3C VC</strong> — PDTF v2.0 conforms to VCDM 2.0 test suite.</li>
-        <li><strong>ToIP</strong> — published governance documents for all 4 layers + cross-cutting docs (per <a href="07-toip-governance.html">ToIP page</a>).</li>
+        <li><strong>ToIP</strong> — published governance documents for all 4 layers + cross-cutting docs (per <a href="/governance/toip-governance">ToIP page</a>).</li>
       </ul>
-
-      <PageFooter
-  prev={{ href: '07-toip-governance.html', label: 'ToIP governance' }}
-  next={{ href: '09-project-roadmap.html', label: 'Project roadmap' }}
-/>
 </Layout>

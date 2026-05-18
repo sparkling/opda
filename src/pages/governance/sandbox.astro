@@ -1,12 +1,10 @@
 ---
-import Layout from '../../components/Layout.astro';
-import PageMeta from '../../components/PageMeta.astro';
-import PageFooter from '../../components/PageFooter.astro';
-import Diagram from '../../components/Diagram.astro';
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Trust Framework Sandbox"
-  page="sandbox"
 >
 <PageMeta category="Governance" updated="Updated 2026-05-14" />
 
@@ -73,7 +71,7 @@ import Diagram from '../../components/Diagram.astro';
       <h2 id="governance">Governance</h2>
       <p>
         Governed by the Digital Property Market Steering Group (DPMSG) — see
-        <a href="04-steering-forums.html">Steering &amp; coordination</a>. The Sandbox
+        <a href="/governance/steering-forums">Steering &amp; coordination</a>. The Sandbox
         provides the live evidence base that DPMSG uses to advise government.
       </p>
 
@@ -224,9 +222,4 @@ go to government + industry`"]:::phase
           <em>structurally familiar</em> to UK regulators.
         </p>
       </div>
-
-      <PageFooter
-  prev={{ href: '04-steering-forums.html', label: 'Steering & coordination' }}
-  next={{ href: '06-standards-stack.html', label: 'Standards stack' }}
-/>
 </Layout>
