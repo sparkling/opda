@@ -1,4 +1,6 @@
-# ADR 0001 — Selective adoption of DCAM v3 and DAMA-DMBOK2 elements into OPDA's framework
+# ADR 0001 — Selective adoption of DCAM v3 and DAMA-DMBOK2 elements
+
+> Renumbered + relocated 2026-05-18: previously `source/00-deliverables/governance/dcam-framework/0001-adoption-decision.md`. ADR numbering is now global across `docs/adr/`.
 
 **Status:** Proposed — six review points decided 2026-05-18 (§"Resolved during review"); remaining items pending EC ratification
 **Date:** 2026-05-18
@@ -274,9 +276,10 @@ The six open questions in the first draft of this ADR were walked through and de
 - `source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf` arts. 16, 18
 - `source/01-organisation/accreditation/Accreditation Scheme 2026.docx`
 
-### Related (existing empty placeholder)
+### Related ADRs
 
-- `source/00-deliverables/governance/dcam-framework/` — empty folder, created 2026-05-13. This ADR is the seed for what populates it.
+- [ADR 0002](./0002-folder-hierarchy-and-slug-taxonomy.md) — folder hierarchy and slug taxonomy. Surfaced from this ADR's "governance-section renumber" open question.
+- [ADR 0003](./0003-idiomatic-astro-refactor.md) — idiomatic Astro refactor. Bundled with ADR 0002.
 
 ---
 

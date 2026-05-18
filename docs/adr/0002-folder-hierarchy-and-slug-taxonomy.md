@@ -1,11 +1,13 @@
-# ADR 0001 — Folder hierarchy and slug taxonomy for OPDA Knowledge Base pages
+# ADR 0002 — Folder hierarchy and slug taxonomy for OPDA Knowledge Base pages
 
-**Status:** Proposed — all open questions decided 2026-05-18 (§"Resolved during review" and §"Newly resolved during review"); migration bundled with ADR 0002 (idiomatic Astro refactor); ready to implement
+> Renumbered + relocated 2026-05-18: previously `source/00-deliverables/governance/information-architecture/0001-folder-hierarchy-and-slug-taxonomy.md` (was numbered 0001 within its own folder). ADR numbering is now global across `docs/adr/`.
+
+**Status:** IMPLEMENTED 2026-05-18 — all open questions resolved (§"Resolved during review" and §"Newly resolved during review"); migration shipped jointly with ADR 0003 (idiomatic Astro refactor).
 **Date:** 2026-05-18
 **Authors:** Henrik Pettersen, with Claude Opus 4.7
 **Related:**
-- [governance/dcam-framework/0001-adoption-decision.md](../dcam-framework/0001-adoption-decision.md) — surfaced this question via "Open question #1: governance-section renumber".
-- [0002-idiomatic-astro-refactor.md](./0002-idiomatic-astro-refactor.md) — sibling decision; expands migration to bundle the Astro templating refactor in the same pass.
+- [0001-adopt-dcam-dmbok-elements.md](./0001-adopt-dcam-dmbok-elements.md) — surfaced this question via "Open question #1: governance-section renumber".
+- [0003-idiomatic-astro-refactor.md](./0003-idiomatic-astro-refactor.md) — sibling decision; expanded migration to bundle the Astro templating refactor in the same pass.
 **Supersedes:** none
 **Superseded by:** none
 
@@ -23,7 +25,7 @@ URLs follow the filename: `/pages/24-data-stewardship.html`.
 
 ### Why this is the wrong abstraction
 
-ADR `dcam-framework/0001-adoption-decision.md` reached "Open question #1 — governance-section renumber" because slotting in Wave 2 pages (DQ, Security, overlay attachments) forces renaming existing files and updating all internal links. The renumber recurs every time content evolves. The handover (2026-05-18) flagged a related symptom: the 14→30 prev/next chain is broken because page numbers, prev/next, and sidebar ordering are all hand-coded into individual page frontmatter.
+ADR [ADR 0001](./0001-adopt-dcam-dmbok-elements.md) reached "Open question #1 — governance-section renumber" because slotting in Wave 2 pages (DQ, Security, overlay attachments) forces renaming existing files and updating all internal links. The renumber recurs every time content evolves. The handover (2026-05-18) flagged a related symptom: the 14→30 prev/next chain is broken because page numbers, prev/next, and sidebar ordering are all hand-coded into individual page frontmatter.
 
 Specific failures of the numbered-prefix convention:
 
@@ -63,7 +65,7 @@ This taxonomy is good. It survives every page rewrite. The folder hierarchy and 
 
 ### A — Do nothing; renumber as planned
 
-The pre-existing "full renumber all 158 pages" decision from ADR `dcam-framework/0001-adoption-decision.md`. Solves the immediate Wave 2 problem; defers the structural issue. Renumbering will be required again every content evolution.
+The pre-existing "full renumber all 158 pages" decision from ADR [ADR 0001](./0001-adopt-dcam-dmbok-elements.md). Solves the immediate Wave 2 problem; defers the structural issue. Renumbering will be required again every content evolution.
 
 ### B — Decouple URL from filename (Astro slug override)
 
@@ -217,9 +219,9 @@ The six open questions in the first draft were walked through and decided. Outco
 
 4. **Schema section deep nesting.** *Resolved: keep deep nesting up to 5 levels.* Folder hierarchy mirrors the conceptual hierarchy of the title/lease/managed tree. Long URLs but semantic; what Stripe API docs and similar deep references do.
 
-5. **Page IDs in `site.js`.** *Resolved by ADR 0002.* `site.js` becomes `site.ts`; `id` field is dropped entirely; Layout introspects `Astro.url.pathname` and matches against SECTIONS automatically. No `page=` prop needed on individual pages. See ADR 0002 §"Data layer" and §"Page authoring after the refactor".
+5. **Page IDs in `site.js`.** *Resolved by ADR 0003.* `site.js` becomes `site.ts`; `id` field is dropped entirely; Layout introspects `Astro.url.pathname` and matches against SECTIONS automatically. No `page=` prop needed on individual pages. See ADR 0003 §"Data layer" and §"Page authoring after the refactor".
 
-6. **Migration window.** *Open — see below.* Now applies to the combined ADR 0001 + ADR 0002 migration rather than ADR 0001 alone.
+6. **Migration window.** *Open — see below.* Now applies to the combined ADR 0002 + ADR 0003 migration rather than ADR 0002 alone.
 
 ## Newly resolved during review (2026-05-18)
 
@@ -233,12 +235,12 @@ The three newly-surfaced questions above were walked through and decided.
 
 ## References
 
-- ADR `governance/dcam-framework/0001-adoption-decision.md` — surfaced this question via "Open question #1: governance-section renumber".
-- [`./0002-idiomatic-astro-refactor.md`](./0002-idiomatic-astro-refactor.md) — sibling ADR; expands migration to include the Astro templating refactor.
+- [ADR 0001](./0001-adopt-dcam-dmbok-elements.md) — surfaced this question via "Open question #1: governance-section renumber".
+- [ADR 0003](./0003-idiomatic-astro-refactor.md) — sibling ADR; expanded migration to include the Astro templating refactor.
 - `public/ui/site.js` lines 13–312 — current SECTIONS taxonomy (the keep-this-as-the-source).
 - `astro.config.mjs` — `build.format` setting (now `'directory'` per Q1 above).
 - `HANDOVER-2026-05-18-governance.md` — flagged the 14→30 chain break as a symptom of the broader pattern.
 
 ---
 
-*ADR 0001 — Drafted 2026-05-18 by Henrik Pettersen with Claude Opus 4.7. Not yet ratified.*
+*ADR 0002 — Drafted 2026-05-18 by Henrik Pettersen with Claude Opus 4.7. Implemented same day.*

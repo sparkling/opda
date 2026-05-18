@@ -4,7 +4,7 @@
  * Single source of truth for sections, sidebar groups, and pages.
  * Imported by Astro components at build time; no runtime parsing.
  *
- * URL convention (per ADR information-architecture/0001):
+ * URL convention (per docs/adr/0002 folder hierarchy):
  *   • Bare slug, no .html, no trailing slash.
  *   • Section root:   /{section}              (e.g. /governance)
  *   • Section page:   /{section}/{slug}       (e.g. /governance/data-stewardship)

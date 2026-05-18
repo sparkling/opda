@@ -1,9 +1,11 @@
-# ADR 0002 — Refactor to idiomatic Astro architecture
+# ADR 0003 — Refactor to idiomatic Astro architecture
 
-**Status:** Proposed — six review points decided 2026-05-18 (§"Resolved during review"); design ready to implement
+> Renumbered + relocated 2026-05-18: previously `source/00-deliverables/governance/information-architecture/0002-idiomatic-astro-refactor.md` (was numbered 0002 within its own folder). ADR numbering is now global across `docs/adr/`.
+
+**Status:** IMPLEMENTED 2026-05-18 — six review points decided (§"Resolved during review"); migration shipped jointly with ADR 0002 (folder hierarchy).
 **Date:** 2026-05-18
 **Authors:** Henrik Pettersen, with Claude Opus 4.7
-**Related:** [0001-folder-hierarchy-and-slug-taxonomy.md](./0001-folder-hierarchy-and-slug-taxonomy.md) — sibling decision; one coordinated migration
+**Related:** [0002-folder-hierarchy-and-slug-taxonomy.md](./0002-folder-hierarchy-and-slug-taxonomy.md) — sibling decision; one coordinated migration
 **Supersedes:** none
 **Superseded by:** none
 
@@ -29,7 +31,7 @@ This was an artefact of the 17 May incremental refactor (commit `82cbaf7`) that 
 
 ### Why decide now
 
-ADR 0001 (folder hierarchy) commits to touching every page anyway: drop numbers, move into section folders, rewrite prev/next, update cross-references. If we don't fix the templating in the same pass, every page gets touched again later. Doing both at once is meaningfully cheaper than two sequential migrations — the touch-every-page cost is shared.
+ADR 0002 (folder hierarchy) commits to touching every page anyway: drop numbers, move into section folders, rewrite prev/next, update cross-references. If we don't fix the templating in the same pass, every page gets touched again later. Doing both at once is meaningfully cheaper than two sequential migrations — the touch-every-page cost is shared.
 
 ## Decision drivers
 
@@ -44,7 +46,7 @@ ADR 0001 (folder hierarchy) commits to touching every page anyway: drop numbers,
 
 ### A — Stop at folder migration
 
-Do ADR 0001's restructure, skip the templating refactor. Cheapest path. Defers the architectural debt; site.js stays at ~1,700 lines doing runtime chrome injection forever.
+Do ADR 0002's restructure, skip the templating refactor. Cheapest path. Defers the architectural debt; site.js stays at ~1,700 lines doing runtime chrome injection forever.
 
 ### B — Idiomatic refactor first, then folder migration
 
@@ -94,7 +96,7 @@ src/
           oc-summary/
             oc-owners.astro
             …
-    glossary.astro           # /glossary (top-level reference per ADR 0001 Q3)
+    glossary.astro           # /glossary (top-level reference per ADR 0002 Q3)
     design-system.astro      # /design-system (top-level reference)
 public/
   ui/
@@ -189,9 +191,9 @@ That's it. No `page=` prop, no `section=`, no `<PageFooter>` call (Layout includ
 
 ## Migration plan
 
-Bundled with ADR 0001's folder migration. Adjusted ordering:
+Bundled with ADR 0002's folder migration. Adjusted ordering:
 
-1. **Confirm URL shape decisions from ADR 0001** — bare slugs, `build.format: 'directory'`, mixed reference-item placement, deep schema nesting.
+1. **Confirm URL shape decisions from ADR 0002** — bare slugs, `build.format: 'directory'`, mixed reference-item placement, deep schema nesting.
 2. **Build the mapping table** (old path → new path → old URL → new URL). Generated from current `site.js` SECTIONS.
 3. **Build the new component library** — Header, Sidebar, Breadcrumbs, PageFooter, TOC. Test against a handful of representative current pages *before* moving anything. Validates the data layer + components in isolation.
 4. **Convert `site.js` → `src/lib/site.ts`** — typed SECTIONS plus helper functions. Validated by the component test render in step 3.
@@ -229,8 +231,8 @@ Estimated effort: **12-20 hours** of careful work. Most of it scriptable (file m
 
 - The 8-section taxonomy. `site.ts` contains the same SECTIONS data, just typed.
 - Page content. Markdown / HTML in pages stays.
-- ADR 0001's folder hierarchy decision. Still valid.
-- ADR 0001's URL shape decisions (Q1-Q4 answers). Still valid.
+- ADR 0002's folder hierarchy decision. Still valid.
+- ADR 0002's URL shape decisions (Q1-Q4 answers). Still valid.
 - Data browser, Mermaid, theme toggle as features. Just delivered differently.
 
 ### Reversibility
@@ -261,7 +263,7 @@ Open questions in the first draft were walked through and decided. Where the que
 
 ## References
 
-- [`./0001-folder-hierarchy-and-slug-taxonomy.md`](./0001-folder-hierarchy-and-slug-taxonomy.md) — sibling decision; one coordinated migration.
+- [ADR 0002](./0002-folder-hierarchy-and-slug-taxonomy.md) — sibling decision; one coordinated migration.
 - `public/ui/site.js` lines 13-312 — current SECTIONS data (the source of truth that becomes `site.ts`).
 - `src/components/Layout.astro` — current minimal Layout (the thing being rewritten).
 - `astro.config.mjs` — build configuration.
@@ -269,4 +271,4 @@ Open questions in the first draft were walked through and decided. Where the que
 
 ---
 
-*ADR 0002 — Drafted 2026-05-18 by Henrik Pettersen with Claude Opus 4.7. Not yet ratified.*
+*ADR 0003 — Drafted 2026-05-18 by Henrik Pettersen with Claude Opus 4.7. Implemented same day.*
