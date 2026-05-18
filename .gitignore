@@ -19,6 +19,7 @@ dist/
 !/source/_working/schema-content-generation-spec.md
 !/source/00-deliverables/
 /source/00-deliverables/*
+!/source/00-deliverables/governance/
 !/source/00-deliverables/semantic-models/
 /source/00-deliverables/semantic-models/*
 !/source/00-deliverables/semantic-models/provenance-map.yaml
@@ -49,3 +50,11 @@ Thumbs.db
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
+.claude/
+.claude-flow/
+.swarm/
+.mcp.json
+CLAUDE.md
+ruvector.db

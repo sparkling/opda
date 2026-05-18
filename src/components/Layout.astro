@@ -92,5 +92,6 @@ const fullTitle = /knowledge base/i.test(title)
   <script is:inline define:vars={{ page, section }}>
     OPDA.init({ page, section });
   </script>
+  <slot name="scripts" />
 </body>
 </html>

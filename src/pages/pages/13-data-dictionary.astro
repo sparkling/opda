@@ -264,6 +264,106 @@ SKOS · 554 concepts`"]:::out
   prev={{ href: '16-overlays.html', label: 'PDTF overlays' }}
   next={{ href: '14-business-glossary.html', label: 'Business glossary' }}
 />
+
+<script slot="scripts" is:inline src="/ui/data-browser.js"></script>
+<script slot="scripts" is:inline src="/data/properties.js"></script>
+<script slot="scripts" is:inline>
+  (function () {
+    function esc(s) { return String(s == null ? '' : s).replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c])); }
+
+    var data = window.OPDA_PROPERTIES || [];
+    var mountEl = document.getElementById('elements-browser');
+    if (!mountEl) return;
+    if (!data.length) {
+      mountEl.innerHTML = '<div class="db-empty">Could not load <code>/data/properties.js</code>.</div>';
+      return;
+    }
+
+    var sourceLabels = {
+      'pdtf-transaction': 'Base Transaction',
+      'baspi5':    'BASPI v5',
+      'rds':       'Residential Data Schema',
+      'piq':       'Property Info Questionnaire',
+      'ta6':       'Property Information Form',
+      'ta7':       'Leasehold Information Form',
+      'ta10':      'Fittings & Contents',
+      'nts2':      'NTS Sales v2',
+      'ntsl2':     'NTS Lettings v2',
+      'lpe1':      'Leasehold Property Enquiry',
+      'con29R':    'Local Authority Search',
+      'con29DW':   'Drainage & Water',
+      'fme1':      'Mortgage Enquiries',
+      'oc1':       'Office Copy',
+      'llc1':      'Local Land Charges',
+      'sr24':      'SR24',
+    };
+
+    OPDA.DataBrowser.mount({
+      mount: mountEl,
+      heading: { id: 'browse', text: 'Browse all data elements' },
+      data: data,
+      itemLabel: 'data elements',
+      searchPlaceholder: 'Search name, title or description…',
+      searchKeys: ['name', 'title', 'description', 'examplePath'],
+      pageSize: 25,
+      defaultSort: { key: 'examplePath', dir: 'asc' },
+      facets: [
+        { key: 'sources', label: 'Source schema', valueLabels: sourceLabels },
+        { key: 'kind',    label: 'Kind' },
+        { key: 'contexts', label: 'Bounded context' },
+        { key: 'type',    label: 'JSON type' },
+      ],
+      columns: [
+        { key: 'kind', label: 'Kind', sortable: true, width: '4%',
+          render: function (v) {
+            if (!v) return '<span class="muted tiny">—</span>';
+            if (v === 'entity') {
+              return '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-label="entity"><title>Entity (object/array)</title><path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.76 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6zM13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6Z"/></svg>';
+            }
+            return '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-label="property"><title>Property (scalar)</title><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm3.5 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/></svg>';
+          }
+        },
+        { key: 'title', label: 'Title', sortable: true, width: '15%',
+          render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+        },
+        { key: 'description', label: 'Description', sortable: false, width: '22%',
+          render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+        },
+        { key: 'type', label: 'Type', sortable: true, width: '6%',
+          render: function (v) { return v ? esc(v) : '<span class="muted tiny">—</span>'; }
+        },
+        { key: 'sources', label: 'In schemas', sortable: false, width: '12%',
+          render: function (v, row) {
+            if (!v || !v.length) return '<span class="muted tiny">—</span>';
+            var primary = row.source || v[0];
+            var label = sourceLabels[primary] || primary;
+            var extra = v.length > 1 ? ' <span class="muted tiny">+' + (v.length - 1) + '</span>' : '';
+            return '<span title="' + esc(v.join(', ')) + '">' + esc(label) + extra + '</span>';
+          }
+        },
+        { key: 'name', label: 'Name', sortable: true, width: '9%',
+          render: function (v) { return v ? '<code>' + esc(v) + '</code>' : '<span class="muted tiny">—</span>'; }
+        },
+        { key: 'examplePath', label: 'Example path', sortable: true, width: '14%',
+          render: function (v, row) {
+            if (!v) return '<span class="muted tiny">—</span>';
+            var suffix = row.pathCount > 1
+              ? ' <span class="muted tiny" title="appears at ' + row.pathCount + ' paths">×' + row.pathCount + '</span>'
+              : '';
+            return '<code>' + esc(v) + '</code>' + suffix;
+          }
+        },
+        { key: 'uri', label: 'Suggested URI', sortable: false, width: '15%',
+          render: function (v) {
+            if (!v) return '<span class="muted tiny">—</span>';
+            var short = v.replace('https://w3id.org/opda/pdtf/', 'pdtf:');
+            return '<code title="' + esc(v) + '">' + esc(short) + '</code>';
+          }
+        },
+      ],
+    });
+  })();
+</script>
 </Layout>
 
 <style is:global>
