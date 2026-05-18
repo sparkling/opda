@@ -267,10 +267,10 @@ The six open questions in the first draft of this ADR were walked through and de
 ### OPDA source files referenced
 
 - `source/03-standards/trust-framework/docs/governance.md` — PDTF governance principles, roles, operational functions, 8-step SOP
-- `src/pages/pages/24-data-stewardship.astro` — Domain Data Stewards, EC 12-seat composition, RACI, voting
-- `src/pages/pages/25-meetings-and-feedback.astro` — cadence, SLAs, decision log, consultation windows
-- `src/pages/pages/26-stakeholder-engagement.astro` — five engagement modes
-- `src/pages/pages/20-conformance-scheme.astro` — current (binary) Conformance Scheme
+- `src/pages/governance/data-stewardship.astro` — Domain Data Stewards, EC 12-seat composition, RACI, voting
+- `src/pages/governance/meetings-and-feedback.astro` — cadence, SLAs, decision log, consultation windows
+- `src/pages/governance/stakeholder-engagement.astro` — five engagement modes
+- `src/pages/governance/conformance-scheme.astro` — current (binary) Conformance Scheme
 - `source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf` arts. 16, 18
 - `source/01-organisation/accreditation/Accreditation Scheme 2026.docx`
 

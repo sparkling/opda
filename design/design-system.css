@@ -1099,7 +1099,7 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 
 /* ─────────────────────────────────────────────────────────────
    GLOSSARY (.glossary-search, .glossary-table)
-   Used by docs/pages/10-glossary.html and any other acronym index.
+   Used by /glossary and any other acronym index.
    ───────────────────────────────────────────────────────────── */
 .glossary-search {
   width: 100%;

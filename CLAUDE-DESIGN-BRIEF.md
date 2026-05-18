@@ -149,10 +149,10 @@ Tone is editorial-authoritative, not playful.
 
 ```
 Recreate the OPDA Knowledge Base in this design system. The live site is
-at https://opda-kb.pages.dev/ — start with the homepage (/), then the seven
-section landings (Strategy, Governance, Engagement, Modelling, Implementation,
-Adoption, Library), then the data-dictionary topic page at
-/pages/13-data-dictionary.html.
+at https://opda-kb.pages.dev/ — start with the homepage (/), then the eight
+section landings (Strategy, Governance, Engagement, Modelling, Schema,
+Implementation, Adoption, Library), then the data-dictionary topic page at
+/modelling/data-dictionary.
 
 Preserve the page structure, hero copy, card grids, callouts, pills, tables
 and component types — only restyle. No Anthropic logo or wordmark. Output
