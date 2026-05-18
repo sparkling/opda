@@ -142,14 +142,16 @@ Adopt the following elements, in three waves plus a "genuinely out of scope" lis
 
 ### Wave 1 — Vocabulary alignment (low effort, high signalling value)
 
-**Generic vocabulary inspired by (but not citing) DCAM v3:**
+Per Decision driver 7 (as revised in the second-pass review — see "Newly resolved" #2), OPDA may name DCAM and DAMA-DMBOK as sources in any context. Only verbatim quotation of capability text, sub-capability descriptions, evidence criteria, or maturity-level definitions requires a license. So Wave 1 labels can carry the source names directly:
 
-Per Decision driver 7, OPDA's published pages use generic data-management terminology. The DCAM labels are noted here only as the analytical basis for choosing the OPDA terms; they will not appear on published pages.
+**From DCAM v3 (named as source; no verbatim quotation):**
 
-- **"Operating Model"** as the published name for what pages 24–26 describe. Sufficiently generic not to require attribution. Replaces no content; just labels.
-- **"Reference Vocabulary & Knowledge"** as the banner for the dictionary / glossary / ontology workstream (pages 13, 14, 30–34). Generic equivalent of DCAM v3's "Business Data Knowledge" component without naming the source.
+- **"Operating Model"** as the published name for what `/governance/data-stewardship`, `/governance/meetings-and-feedback`, and `/governance/stakeholder-engagement` describe. DCAM v3's third component; adopting the name directly. Replaces no content; just labels.
+- **"Business Data Knowledge"** as the banner for the dictionary / glossary / ontology workstream (`/modelling/data-dictionary`, `/modelling/business-glossary`, `/modelling/concept-taxonomy`, `/modelling/ontology`, `/modelling/shacl-shapes`, `/modelling/jsonld-mappings`). DCAM v3's eighth component; adopting the name directly. Validates this work as core, not adjacent.
 
-**From DAMA-DMBOK2 (no licensing constraints):**
+The "DCAM v3-inspired" or "drawn from DCAM v3" attribution can appear on those pages — page intro / footer — without licensing exposure.
+
+**From DAMA-DMBOK2:**
 
 - **DAMA Wheel cross-reference table** — for each existing OPDA page, label the DAMA KA(s) it serves. KAs that are genuinely out of scope (operating a DW/BI platform; custodying property data) explicitly disclaimed in a single sentence each. Indirect / adjacent KAs labelled accordingly so the boundary is auditable rather than hidden.
 - **Per-KA template** — establish a consistent rubric for each page: *Purpose · Activities · Deliverables · Roles · Metrics · Maturity*. Apply incrementally.
@@ -161,15 +163,15 @@ Per Decision driver 7, OPDA's published pages use generic data-management termin
 - **Owner:** Compliance & Risk WG (DQ dimensions map onto UK GDPR Art 5(1)(d) accuracy obligations). Technical WG provides schema hooks and per-overlay validation rules.
 - Adopt the six standard DQ dimensions: **accuracy, completeness, consistency, timeliness, uniqueness, validity**.
 - Define DQ measurement and reporting for each PDTF claim type at each Assurance Level.
-- Extend the Conformance Scheme (page 20) so a member firm reports a DQ profile, not just a binary compliance flag.
-- New page — number TBD pending the governance-section renumber (Open Q #1).
+- Extend the Conformance Scheme (`/governance/conformance-scheme`) so a member firm reports a DQ profile, not just a binary compliance flag.
+- New page at `/governance/data-quality` (placeholder slug — confirm with C&R WG at kick-off).
 
 **Data Security framework** (fills DMBOK KA #5 beyond crypto):
 
 - **Owner:** Compliance & Risk WG (per `governance.md` §3.C they already own data-protection impact assessment).
 - Formalise the implicit security controls (issuer onboarding KYC/KYB, DID key management, signature verification, revocation handling) into a named workstream with policy + checklist + audit profile.
 - Anchor on existing `compliance-and-policy-checklist.md` and `Code of Conduct 2026.pdf`.
-- New page — number TBD pending the governance-section renumber (Open Q #1).
+- New page at `/governance/data-security` (placeholder slug — confirm with C&R WG at kick-off).
 
 **Maturity-based accreditation — two axes:**
 
@@ -183,7 +185,7 @@ OPDA's existing Assurance Levels (AL1–AL4) describe *the claim*; the new capab
 
   Per-firm property.
 - Each capability gets an **Evidence requirement** in the Conformance Scheme: what artifact proves the claim.
-- Output: an Accreditation Directory with two columns per firm (AL coverage + Capability scores), not just a compliance flag.
+- Output: a new **Accreditation Directory** at `/governance/accreditation-directory` with per-firm cards showing AL coverage + capability scores. Full spec in [ADR 0004](./0004-accreditation-directory.md).
 - Expected EC discussion at the next quarterly meeting.
 
 *Worked example.* Firm X is AL3 + Process 4/6, Evidence 3/6 → high-assurance claims, mid-maturity operations. Firm Y is AL2 + Process 5/6, Evidence 5/6 → medium-assurance claims, mature operations. Both views are useful to a consumer or a regulator; collapsing them into one number loses signal.
@@ -193,7 +195,7 @@ OPDA's existing Assurance Levels (AL1–AL4) describe *the claim*; the new capab
 - Several v3 overlays carry unstructured attachments today (TA10 plans, EPCs, leasehold packs, photographs) without a published handling policy. Promoted ahead of broader Document & Content work because the artefacts are already in production overlays.
 - **Owner:** Technical WG (the overlays are theirs) with Compliance & Risk WG input on retention and consent.
 - Define per-attachment-type: file-format requirements, signing / integrity requirements, retention guidance for issuers, consent semantics for consumers.
-- New page — number TBD pending the governance-section renumber.
+- New page at `/governance/overlay-attachments` (placeholder slug — confirm with Technical WG at kick-off).
 
 ### Wave 3 — Adjacent and indirect (monitor, or pick up opportunistically)
 
