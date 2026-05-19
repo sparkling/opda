@@ -27,6 +27,10 @@ export function getAuth0Client(): Promise<Auth0Client> {
         typeof window !== 'undefined'
           ? window.location.origin + '/callback'
           : 'http://localhost:4321/callback',
+      // Request an access token for Auth0's /userinfo so the comments SSO
+      // bridge can verify identity via the Management API surface.
+      audience: `https://${AUTH0_DOMAIN}/userinfo`,
+      scope: 'openid profile email',
     },
     cacheLocation: 'localstorage',
     useRefreshTokens: true,

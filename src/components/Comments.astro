@@ -1,17 +1,20 @@
 ---
 /**
- * Page comments — Artalk backend on Railway with Auth0 OIDC SSO.
+ * Page comments — Artalk backend on Railway, SSO via the OPDA Auth0 session.
  *
- * - Anonymous comments are disabled on the backend (`auth.anonymous=false`),
- *   so the widget shows its own "Login" button. Login routes through
- *   /api/v2/auth/auth0 → Auth0 Universal Login → callback → Artalk session.
- * - Auth0's Post-Login allowlist Action restricts SSO to authorised emails,
- *   so the gate runs server-side rather than in OPDA's client code.
- * - Tracks <html data-theme> and pushes setDarkMode() on every change.
+ * Architecture:
+ * - On init, if the user is Auth0-authenticated, fetch an Auth0 access token,
+ *   POST it to /api/artalk-sso (Pages Function), get back an Artalk JWT,
+ *   and write it to localStorage["ArtalkUser"]. The Artalk widget then reads
+ *   that localStorage entry at mount and considers the user fully logged in
+ *   (is_login=true on the backend) — no popup, no password prompt.
+ * - If the user isn't signed in to OPDA Auth0, we skip rendering the widget
+ *   entirely (the allowlist gates SSO anyway, so anonymous use is moot).
+ * - Theme follows OPDA's html[data-theme] via MutationObserver.
  * - Re-runs on `astro:page-load` so view transitions reset cleanly.
  *
- * Backend: `opda-artalk` Railway project.
- * Auth0 OAuth app: jkTCdjC29lKz0oZOsTZ1ZcSqCo1JnTA3 (Regular Web App).
+ * Backend: opda-artalk Railway project.
+ * SSO bridge: functions/api/artalk-sso.js (mints Artalk JWT from Auth0 token).
  */
 ---
 <section class="comments-section" aria-label="Comments">
@@ -24,9 +27,12 @@
 <script>
   import Artalk from 'artalk';
   import 'artalk/Artalk.css';
+  import { getAuth0Client, AUTH0_DOMAIN } from '@/lib/auth0';
 
   const ARTALK_SERVER = 'https://artalk-production-4ade.up.railway.app';
   const ARTALK_SITE = 'OPDA Knowledge Base';
+  const SSO_ENDPOINT = '/api/artalk-sso';
+  const LOCAL_USER_KEY = 'ArtalkUser';
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
   let themeObserver: MutationObserver | null = null;
@@ -46,11 +52,90 @@
     }
   }
 
-  function init() {
+  function getStoredUser(): { token?: string; email?: string } {
+    try {
+      return JSON.parse(window.localStorage.getItem(LOCAL_USER_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function writeStoredUser(user: Record<string, unknown>) {
+    try {
+      window.localStorage.setItem(LOCAL_USER_KEY, JSON.stringify(user));
+    } catch { /* ignore quota / disabled */ }
+  }
+
+  // Decode the exp claim from a JWT without verifying — for client-side
+  // "is this still valid?" check before reusing it.
+  function jwtExp(token: string): number | null {
+    try {
+      const [, payload] = token.split('.');
+      const padded = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const json = atob(padded + '==='.slice((padded.length + 3) % 4));
+      const claims = JSON.parse(json);
+      return typeof claims.exp === 'number' ? claims.exp : null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function exchangeForArtalkToken(auth0Token: string) {
+    const r = await fetch(SSO_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ auth0_token: auth0Token }),
+    });
+    if (!r.ok) {
+      const text = await r.text();
+      throw new Error(`SSO exchange failed (${r.status}): ${text}`);
+    }
+    return r.json() as Promise<{ token: string; user: Record<string, unknown> }>;
+  }
+
+  async function ensureArtalkSession(): Promise<boolean> {
+    // Already have a non-expired token? Use it.
+    const existing = getStoredUser();
+    if (existing.token) {
+      const exp = jwtExp(existing.token);
+      if (exp && exp > Math.floor(Date.now() / 1000) + 60) return true;
+    }
+
+    // Need a fresh token. Get the Auth0 access token (silent if already signed in).
+    let auth0Token: string;
+    try {
+      const auth = await getAuth0Client();
+      const authenticated = await auth.isAuthenticated();
+      if (!authenticated) return false;
+      auth0Token = await auth.getTokenSilently({
+        authorizationParams: {
+          audience: `https://${AUTH0_DOMAIN}/userinfo`,
+          scope: 'openid profile email',
+        },
+      });
+    } catch (err) {
+      console.warn('[OPDA] comments: Auth0 token fetch failed', err);
+      return false;
+    }
+
+    try {
+      const { token, user } = await exchangeForArtalkToken(auth0Token);
+      writeStoredUser({ ...user, token });
+      return true;
+    } catch (err) {
+      console.warn('[OPDA] comments: SSO bridge failed', err);
+      return false;
+    }
+  }
+
+  async function init() {
     const container = document.getElementById('opda-comments');
     if (!container) return;
 
     tearDown();
+
+    await ensureArtalkSession(); // best-effort; widget loads either way
+
     container.innerHTML = '';
 
     artalkInstance = Artalk.init({
