@@ -20,6 +20,7 @@ import Header from '@/components/Header.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PageFooter from '@/components/PageFooter.astro';
+import Comments from '@/components/Comments.astro';
 import { getActiveSection } from '@/lib/site';
 
 function assetVersion(rel: string): string {
@@ -52,6 +53,8 @@ interface Props {
   hideBreadcrumbs?: boolean;
   /** Hide the prev/next page footer. */
   hideFooter?: boolean;
+  /** Hide the Artalk comments section (e.g. on /callback, /404, /design-system). */
+  hideComments?: boolean;
 }
 
 const {
@@ -63,6 +66,7 @@ const {
   hideSidebar = false,
   hideBreadcrumbs = false,
   hideFooter = false,
+  hideComments = false,
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -124,6 +128,7 @@ const showSidebar = !hideSidebar && !!activeSection;
         ) : (
           <slot />
         )}
+        {!hideComments && <Comments />}
         {!hideFooter && <PageFooter />}
       </main>
     </div>
