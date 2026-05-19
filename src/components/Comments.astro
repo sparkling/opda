@@ -31,7 +31,7 @@
 
   const ARTALK_SERVER = 'https://artalk-production-4ade.up.railway.app';
   const ARTALK_SITE = 'OPDA Knowledge Base';
-  const SSO_ENDPOINT = '/api/artalk-sso';
+  const SSO_ENDPOINT = `${ARTALK_SERVER}/api/v2/sso/exchange`;
   const LOCAL_USER_KEY = 'ArtalkUser';
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
@@ -84,13 +84,18 @@
     const r = await fetch(SSO_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ auth0_token: auth0Token }),
+      body: JSON.stringify({ token: auth0Token }),
     });
     if (!r.ok) {
       const text = await r.text();
       throw new Error(`SSO exchange failed (${r.status}): ${text}`);
     }
-    return r.json() as Promise<{ token: string; user: Record<string, unknown> }>;
+    // Artalk returns { data: { token, user } }; older shapes also { token, user }.
+    const body = (await r.json()) as
+      | { token: string; user: Record<string, unknown> }
+      | { data: { token: string; user: Record<string, unknown> } };
+    if ('data' in body && body.data) return body.data;
+    return body as { token: string; user: Record<string, unknown> };
   }
 
   async function ensureArtalkSession(): Promise<boolean> {
