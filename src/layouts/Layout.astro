@@ -84,8 +84,11 @@ const showSidebar = !hideSidebar && !!activeSection;
   <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
 
   {/* Pre-paint theme: applies data-theme before first render to avoid FOUC.
-      Reads ?theme= URL param, then localStorage, falls back to dark. */}
-  <script is:inline>
+      Reads ?theme= URL param, then localStorage, falls back to dark.
+      data-astro-rerun makes it re-execute on every view transition; without
+      that flag the new <html> would render without data-theme on navigation,
+      flashing back to the default. */}
+  <script is:inline data-astro-rerun>
     (function () {
       try {
         var t = new URLSearchParams(location.search).get('theme');
