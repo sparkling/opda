@@ -371,6 +371,116 @@ a:hover {
 .app-sidebar details.nav-group > summary:hover > .nav-group-caret {
   color: var(--color-text);
 }
+
+/* ── Auth button (Auth0 SPA) ───────────────────────────────────────── */
+.auth-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: var(--space-2);
+}
+.auth-button__signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  font: 600 0.8125rem / 1 var(--font-sans);
+  background: var(--color-brand-700, #CC785C);
+  color: #fff;
+  border: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 120ms ease, transform 80ms ease;
+}
+.auth-button__signin:hover { background: var(--color-brand-800, #B8634A); }
+.auth-button__signin:active { transform: translateY(1px); }
+.auth-button__user-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: 500 0.8125rem / 1.1 var(--font-sans);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.auth-button__user-trigger:hover { background: var(--cream-200); }
+:root[data-theme="dark"] .auth-button__user-trigger:hover {
+  background: var(--surface-dark-tint);
+}
+.auth-button__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background-color: var(--color-brand-200, #E8E0D2);
+  background-size: cover;
+  background-position: center;
+  color: var(--color-brand-700, #CC785C);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+.auth-button__email {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auth-button__chevron {
+  color: var(--color-text-muted);
+  transition: transform 120ms ease;
+}
+.auth-button__user-trigger[aria-expanded="true"] .auth-button__chevron {
+  transform: rotate(180deg);
+}
+.auth-button__dropdown {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  min-width: 14rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  padding: var(--space-2);
+  z-index: 50;
+}
+.auth-button__dropdown-header {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auth-button__dropdown-item {
+  display: block;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font: 500 0.875rem / 1.2 var(--font-sans);
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  text-align: left;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.auth-button__dropdown-item:hover {
+  background: var(--cream-200);
+}
+:root[data-theme="dark"] .auth-button__dropdown-item:hover {
+  background: var(--surface-dark-tint);
+}
+/* Hide email on small screens — keep just the avatar */
+@media (max-width: 720px) {
+  .auth-button__email { display: none; }
+}
 /* Indent top-level items inside an open nav-group so the tree sits
    visually under the summary heading. The summary's label text starts
    at ~1.6rem from its container edge (margin + caret + gap), so item

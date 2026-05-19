@@ -1,0 +1,139 @@
+---
+/**
+ * Auth0 sign-in / user-menu button — slotted into the header.
+ *
+ * Renders as a "Sign in" button when signed out and an avatar + dropdown
+ * (Profile, Log out) when signed in. State is reconciled in the browser
+ * on every page-load (including Astro view transitions).
+ */
+---
+<div class="auth-button" data-auth-button>
+  <button
+    class="auth-button__signin"
+    type="button"
+    id="auth-login-btn"
+    hidden
+  >
+    Sign in
+  </button>
+
+  <div class="auth-button__user" id="auth-user-menu" hidden>
+    <button
+      class="auth-button__user-trigger"
+      type="button"
+      id="auth-user-trigger"
+      aria-haspopup="menu"
+      aria-expanded="false"
+    >
+      <span class="auth-button__avatar" id="auth-user-avatar"></span>
+      <span class="auth-button__email" id="auth-user-email"></span>
+      <svg class="auth-button__chevron" viewBox="0 0 24 24" width="14" height="14"
+           fill="none" stroke="currentColor" stroke-width="2.25"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="auth-button__dropdown" id="auth-user-dropdown" role="menu" hidden>
+      <div class="auth-button__dropdown-header" id="auth-user-full"></div>
+      <button class="auth-button__dropdown-item" id="auth-logout-btn" type="button" role="menuitem">
+        Log out
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getAuth0Client } from '@/lib/auth0';
+
+  async function reconcile() {
+    const loginBtn = document.getElementById('auth-login-btn') as HTMLButtonElement | null;
+    const userMenu = document.getElementById('auth-user-menu') as HTMLDivElement | null;
+    const userEmail = document.getElementById('auth-user-email');
+    const userFull = document.getElementById('auth-user-full');
+    const userAvatar = document.getElementById('auth-user-avatar');
+    if (!loginBtn || !userMenu) return;
+
+    try {
+      const auth = await getAuth0Client();
+      const isAuthenticated = await auth.isAuthenticated();
+      if (isAuthenticated) {
+        const user = await auth.getUser();
+        const display = user?.nickname || user?.given_name || user?.email || 'Account';
+        const full = user?.email || user?.name || '';
+        if (userEmail) userEmail.textContent = display;
+        if (userFull) userFull.textContent = full;
+        if (userAvatar && user?.picture) {
+          userAvatar.style.backgroundImage = `url(${JSON.stringify(user.picture)})`;
+        } else if (userAvatar) {
+          userAvatar.textContent = display.slice(0, 1).toUpperCase();
+        }
+        loginBtn.hidden = true;
+        userMenu.hidden = false;
+      } else {
+        loginBtn.hidden = false;
+        userMenu.hidden = true;
+      }
+    } catch (err) {
+      // Auth0 not reachable, or local config broken — just show "Sign in".
+      console.warn('[OPDA] auth reconcile failed:', err);
+      loginBtn.hidden = false;
+      userMenu.hidden = true;
+    }
+  }
+
+  function bind() {
+    const loginBtn = document.getElementById('auth-login-btn');
+    const logoutBtn = document.getElementById('auth-logout-btn');
+    const trigger = document.getElementById('auth-user-trigger');
+    const dropdown = document.getElementById('auth-user-dropdown');
+
+    if (loginBtn && !loginBtn.dataset.bound) {
+      loginBtn.dataset.bound = '1';
+      loginBtn.addEventListener('click', async () => {
+        const auth = await getAuth0Client();
+        await auth.loginWithRedirect({
+          appState: { returnTo: window.location.pathname + window.location.search },
+        });
+      });
+    }
+
+    if (logoutBtn && !logoutBtn.dataset.bound) {
+      logoutBtn.dataset.bound = '1';
+      logoutBtn.addEventListener('click', async () => {
+        const auth = await getAuth0Client();
+        await auth.logout({
+          logoutParams: { returnTo: window.location.origin },
+        });
+      });
+    }
+
+    if (trigger && dropdown && !trigger.dataset.bound) {
+      trigger.dataset.bound = '1';
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = dropdown.hidden;
+        dropdown.hidden = !open;
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', (e) => {
+        if (!dropdown.hidden && !dropdown.contains(e.target as Node) && e.target !== trigger) {
+          dropdown.hidden = true;
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  }
+
+  function init() {
+    bind();
+    reconcile();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  // Re-init after Astro view transitions
+  document.addEventListener('astro:page-load', init);
+</script>

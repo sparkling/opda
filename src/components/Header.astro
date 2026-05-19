@@ -4,6 +4,7 @@
  * Renders at build time. Active section derived from Astro.url.pathname.
  */
 import { HEADER_ORDER, SECTIONS, getActiveSection } from '@/lib/site';
+import AuthButton from '@/components/AuthButton.astro';
 
 const activeSection = getActiveSection(Astro.url.pathname);
 ---
@@ -44,4 +45,6 @@ const activeSection = getActiveSection(Astro.url.pathname);
       <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
     </svg>
   </button>
+
+  <AuthButton />
 </header>
