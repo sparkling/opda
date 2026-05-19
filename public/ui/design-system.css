@@ -371,6 +371,13 @@ a:hover {
 .app-sidebar details.nav-group > summary:hover > .nav-group-caret {
   color: var(--color-text);
 }
+/* Indent top-level items inside an open nav-group so the tree sits
+   under the summary heading rather than at the same indent. Nested
+   children continue compounding via the existing .tree-children rules. */
+.app-sidebar details.nav-group > ul.tree > li.tree-leaf > a,
+.app-sidebar details.nav-group > ul.tree > li.tree-folder > .tree-toggle {
+  padding-left: calc(var(--space-3) + 0.5rem);
+}
 /* ── Tree-view nav ───────────────────────────────────────────────────
    Sidebar items render as a tree. Leaves are plain links; folders show
    a caret that flips on open/close. Nesting is arbitrary; only the
