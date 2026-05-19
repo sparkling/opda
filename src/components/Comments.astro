@@ -1,15 +1,17 @@
 ---
 /**
- * Page comments — Artalk backend on Railway, gated on Auth0 sign-in.
+ * Page comments — Artalk backend on Railway with Auth0 OIDC SSO.
  *
- * - Renders nothing visible until the page mounts; then either shows a
- *   "Sign in to comment" CTA (Auth0 unauthenticated) or initialises the
- *   Artalk widget with the Auth0 user's name + email pre-filled.
- * - Tracks OPDA's <html data-theme> attribute and pushes setDarkMode() on
- *   every change so the comment widget matches the surrounding page.
+ * - Anonymous comments are disabled on the backend (`auth.anonymous=false`),
+ *   so the widget shows its own "Login" button. Login routes through
+ *   /api/v2/auth/auth0 → Auth0 Universal Login → callback → Artalk session.
+ * - Auth0's Post-Login allowlist Action restricts SSO to authorised emails,
+ *   so the gate runs server-side rather than in OPDA's client code.
+ * - Tracks <html data-theme> and pushes setDarkMode() on every change.
  * - Re-runs on `astro:page-load` so view transitions reset cleanly.
  *
- * Backend: see `docs/auth0/` and the `opda-artalk` Railway project.
+ * Backend: `opda-artalk` Railway project.
+ * Auth0 OAuth app: jkTCdjC29lKz0oZOsTZ1ZcSqCo1JnTA3 (Regular Web App).
  */
 ---
 <section class="comments-section" aria-label="Comments">
@@ -22,11 +24,9 @@
 <script>
   import Artalk from 'artalk';
   import 'artalk/Artalk.css';
-  import { getAuth0Client } from '@/lib/auth0';
 
   const ARTALK_SERVER = 'https://artalk-production-4ade.up.railway.app';
   const ARTALK_SITE = 'OPDA Knowledge Base';
-  const LOCAL_USER_KEY = 'ArtalkUser';
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
   let themeObserver: MutationObserver | null = null;
@@ -46,58 +46,11 @@
     }
   }
 
-  function renderSignInCta(container: HTMLElement) {
-    container.innerHTML = `
-      <div class="comments-section__signin">
-        <p>Sign in to leave a comment.</p>
-        <button type="button" class="comments-section__signin-btn" id="comments-signin-btn">Sign in</button>
-      </div>
-    `;
-    const btn = document.getElementById('comments-signin-btn');
-    btn?.addEventListener('click', async () => {
-      const auth = await getAuth0Client();
-      await auth.loginWithRedirect({
-        appState: { returnTo: window.location.pathname + window.location.search + window.location.hash },
-      });
-    });
-  }
-
-  async function init() {
+  function init() {
     const container = document.getElementById('opda-comments');
     if (!container) return;
 
     tearDown();
-
-    let authenticated = false;
-    let user: Awaited<ReturnType<Awaited<ReturnType<typeof getAuth0Client>>['getUser']>> | undefined;
-    try {
-      const auth = await getAuth0Client();
-      authenticated = await auth.isAuthenticated();
-      if (authenticated) user = await auth.getUser();
-    } catch (err) {
-      console.warn('[OPDA] comments: auth check failed', err);
-    }
-
-    if (!authenticated) {
-      renderSignInCta(container);
-      return;
-    }
-
-    // Pre-seed Artalk's local user store so the comment form is pre-filled
-    // with the Auth0 identity. The Auth0 allowlist gate means whoever's here
-    // is already an authorised commenter; this just removes the duplicate
-    // name/email entry.
-    if (user) {
-      const localUser = {
-        name: user.nickname || user.given_name || user.name || user.email || '',
-        email: user.email || '',
-        link: '',
-      };
-      try {
-        window.localStorage.setItem(LOCAL_USER_KEY, JSON.stringify(localUser));
-      } catch { /* ignore localStorage quota / disabled */ }
-    }
-
     container.innerHTML = '';
 
     artalkInstance = Artalk.init({

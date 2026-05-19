@@ -388,34 +388,6 @@ a:hover {
   color: var(--color-text-muted);
   padding: var(--space-3) 0;
 }
-.comments-section__signin {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  background: var(--cream-200);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-}
-:root[data-theme="dark"] .comments-section__signin {
-  background: var(--surface-dark-tint);
-}
-.comments-section__signin p {
-  margin: 0;
-  color: var(--color-text);
-}
-.comments-section__signin-btn {
-  margin-left: auto;
-  padding: 0.4rem 0.9rem;
-  font: 600 0.8125rem / 1 var(--font-sans);
-  background: var(--color-brand-700, #CC785C);
-  color: #fff;
-  border: 0;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-}
-.comments-section__signin-btn:hover { background: var(--color-brand-800, #B8634A); }
-
 /* ── Auth button (Auth0 SPA) ───────────────────────────────────────── */
 .auth-button {
   position: relative;
