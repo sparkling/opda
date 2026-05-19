@@ -314,6 +314,17 @@ a:hover {
 }
 .sidebar-nav { padding: 0 var(--space-5); }
 .nav-group + .nav-group { margin-top: var(--space-5); }
+/* Tighten the stack when adjacent groups are both collapsed —
+   collapsed groups are just a summary line, so the default
+   inter-group margin feels airy. Keep the comfortable gap when
+   either neighbour is open (the open one's tree has visual weight). */
+.app-sidebar details.nav-group:not([open]) + details.nav-group:not([open]) {
+  margin-top: var(--space-1);
+}
+.app-sidebar details.nav-group[open] + details.nav-group:not([open]),
+.app-sidebar details.nav-group:not([open]) + details.nav-group[open] {
+  margin-top: var(--space-3);
+}
 .nav-subgroup + .nav-subgroup { margin-top: var(--space-3); }
 .app-sidebar h3,
 .sidebar-section-title {

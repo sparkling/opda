@@ -37,21 +37,28 @@ function containsActive(item: Item): boolean {
     </button>
 
     <nav class="sidebar-nav" data-section={sectionKey}>
-      {section.groups.map(group => (
-        <details class="nav-group" open data-group={group.heading}>
-          <summary>
-            <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
-            <span class="nav-group-label">{group.heading}</span>
-          </summary>
-          <ul class="tree">
-            {group.items.map(item => <SidebarItem item={item} path={path} containsActive={containsActive} />)}
-          </ul>
-        </details>
-      ))}
+      {section.groups.map(group => {
+        // Governance has many groups; collapse all by default except Overview.
+        // Other sections default to all-open. localStorage overrides both.
+        const collapseByDefault = sectionKey === 'governance' && group.heading !== 'Overview';
+        const containsActivePage = group.items.some(containsActive);
+        const defaultOpen = !collapseByDefault || containsActivePage;
+        return (
+          <details class="nav-group" open={defaultOpen} data-group={group.heading}>
+            <summary>
+              <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+              <span class="nav-group-label">{group.heading}</span>
+            </summary>
+            <ul class="tree">
+              {group.items.map(item => <SidebarItem item={item} path={path} containsActive={containsActive} />)}
+            </ul>
+          </details>
+        );
+      })}
     </nav>
   </aside>
 )}
