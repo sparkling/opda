@@ -4,7 +4,7 @@
  *
  * Architecture:
  * - On init, if the user is Auth0-authenticated, fetch an Auth0 access token,
- *   POST it to /api/artalk-sso (Pages Function), get back an Artalk JWT,
+ *   POST it to the backend's /api/v2/sso/exchange, get back an Artalk JWT,
  *   and write it to localStorage["ArtalkUser"]. The Artalk widget then reads
  *   that localStorage entry at mount and considers the user fully logged in
  *   (is_login=true on the backend) — no popup, no password prompt.
@@ -14,7 +14,7 @@
  * - Re-runs on `astro:page-load` so view transitions reset cleanly.
  *
  * Backend: opda-artalk Fly.io app (https://opda-artalk.fly.dev).
- * SSO bridge: functions/api/artalk-sso.js (mints Artalk JWT from Auth0 token).
+ * SSO bridge: the fork's /api/v2/sso/exchange (mints Artalk JWT from Auth0 token).
  */
 ---
 <section class="comments-section" aria-label="Comments">
@@ -139,9 +139,18 @@
 
     tearDown();
 
-    await ensureArtalkSession(); // best-effort; widget loads either way
+    const signedIn = await ensureArtalkSession();
 
     container.innerHTML = '';
+
+    // Gated: Artalk renders only for signed-in users. Sign-in is restricted to
+    // allowlisted emails by the Auth0 "OPDA KB Allowlist Gate" post-login Action,
+    // so a valid session implies an authorised user. Everyone else gets a prompt.
+    if (!signedIn) {
+      container.innerHTML =
+        '<p class="comments-section__gated" role="status">Sign in with an authorised OPDA account to view and post comments.</p>';
+      return;
+    }
 
     artalkInstance = Artalk.init({
       el: '#opda-comments',
