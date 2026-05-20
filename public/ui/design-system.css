@@ -395,6 +395,9 @@ a:hover {
   align-items: center;
   margin-left: var(--space-2);
 }
+/* Class rules below set `display`, which clobbers the HTML `hidden`
+   attribute. Restore [hidden]→display:none for any descendant. */
+.auth-button [hidden] { display: none !important; }
 .auth-button__signin {
   display: inline-flex;
   align-items: center;
