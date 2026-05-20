@@ -655,6 +655,9 @@ a:hover {
   box-shadow: none;
   border: 0;
 }
+/* When a Comments section follows the article, drop the half-viewport
+   trailing padding — the comments are the natural visual terminator. */
+.prose:has(+ .comments-section) { padding-bottom: var(--space-8); }
 html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 /* Wide track: overview pages, schema browsers, dictionary tables, Mermaid.
    At --content-max (1800px) the 8,458-row data dictionary and full Mermaid
