@@ -100,6 +100,11 @@
     if (logoutBtn && !logoutBtn.dataset.bound) {
       logoutBtn.dataset.bound = '1';
       logoutBtn.addEventListener('click', async () => {
+        // Clear the cached Artalk SSO JWT so the Comments widget on
+        // the next load can't reuse it. Auth0's own logout clears
+        // its session, but the Artalk token in localStorage outlives
+        // Auth0 (~3 days) and would keep showing the widget.
+        try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
         const auth = await getAuth0Client();
         await auth.logout({
           logoutParams: { returnTo: window.location.origin },
