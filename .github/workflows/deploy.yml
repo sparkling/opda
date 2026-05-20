@@ -1,8 +1,23 @@
 name: Deploy to Cloudflare Pages
 
 on:
+  # Only deploy when something in the production bundle changes. `astro build`
+  # ships src/ + public/ + the root build config; source/ and _build/ are
+  # dev-only (see astro.config.mjs) and docs/, .claude/, logs/ etc. never ship,
+  # so changes confined to those must not trigger a rebuild.
   push:
     branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
+      - '.github/workflows/deploy.yml'
+  # Manual escape hatch: force a deploy from the Actions tab when a change
+  # outside the paths above needs publishing, or to re-run a build.
+  workflow_dispatch:
 
 jobs:
   deploy:
