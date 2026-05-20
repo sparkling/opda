@@ -125,6 +125,14 @@
 
     try {
       const { token, user } = await exchangeForArtalkToken(auth0Token);
+      // Only treat the session as valid if we actually got a JWT. A response
+      // without a token (e.g. a captcha challenge or an error shape) must NOT
+      // be written as a logged-in user — that left Artalk in a broken
+      // half-logged-in state. Fall back to the signed-out prompt instead.
+      if (!token || typeof token !== 'string') {
+        console.warn('[OPDA] comments: SSO exchange returned no token', user);
+        return false;
+      }
       writeStoredUser({ ...user, token });
       return true;
     } catch (err) {
