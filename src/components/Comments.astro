@@ -36,7 +36,8 @@
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
   let themeObserver: MutationObserver | null = null;
-  let initGen = 0;
+  let initPromise: Promise<void> | null = null;
+  let initedPageKey: string | null = null;
 
   function isDark(): boolean {
     return document.documentElement.getAttribute('data-theme') === 'dark';
@@ -51,6 +52,7 @@
       try { artalkInstance.destroy(); } catch { /* ignore */ }
       artalkInstance = null;
     }
+    initedPageKey = null;
   }
 
   function getStoredUser(): { token?: string; email?: string } {
@@ -142,19 +144,31 @@
     }
   }
 
-  async function init() {
-    // init() fires on both DOMContentLoaded and astro:page-load, and there's
-    // an async gap below (ensureArtalkSession). Without this generation guard,
-    // two concurrent runs both call Artalk.init() on #opda-comments and leave
-    // a half-rendered widget. Only the latest run is allowed to render.
-    const myGen = ++initGen;
+  function init(): Promise<void> {
+    // init() fires from BOTH our DOMContentLoaded/immediate path AND
+    // astro:page-load, so it can be called twice for the same page load.
+    // Coalesce by tracking the in-flight promise + the pageKey we've
+    // already initialised for. A previous generation-counter guard wasn't
+    // enough: Artalk's own init does multiple async steps (config fetch,
+    // plugin load), and a second init() that arrived between those would
+    // tearDown the in-flight instance and leave a half-rendered widget.
+    const pageKey = window.location.pathname;
+    if (initedPageKey === pageKey && artalkInstance) return Promise.resolve();
+    if (initPromise) return initPromise;
+    initPromise = doInit(pageKey).finally(() => { initPromise = null; });
+    return initPromise;
+  }
+
+  async function doInit(pageKey: string) {
     const container = document.getElementById('opda-comments');
     if (!container) return;
 
     tearDown();
 
     const signedIn = await ensureArtalkSession();
-    if (myGen !== initGen) return;
+    // If the user navigated away while we were exchanging tokens, drop out
+    // — a fresh init() will run for the new page via astro:page-load.
+    if (window.location.pathname !== pageKey) return;
 
     container.innerHTML = '';
 
@@ -171,13 +185,21 @@
       el: '#opda-comments',
       server: ARTALK_SERVER,
       site: ARTALK_SITE,
-      pageKey: window.location.pathname,
+      pageKey,
       pageTitle: document.title,
       darkMode: isDark(),
       placeholder: 'Share your thoughts…',
       noComment: 'No comments yet — be the first.',
       sendBtn: 'Post comment',
+      // The backend's frontend.conf has empty labels and lists an OAuth
+      // login plugin we don't want — comments are gated to signed-in
+      // Auth0 users via our own SSO bridge, so the plugin's popup-login
+      // UI is dead weight and was leaving the widget half-rendered.
+      // useBackendConf:false keeps our client-side labels and skips
+      // the plugin load.
+      useBackendConf: false,
     });
+    initedPageKey = pageKey;
 
     themeObserver = new MutationObserver(() => {
       if (!artalkInstance) return;
