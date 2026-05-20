@@ -1,6 +1,6 @@
 ---
 /**
- * Page comments — Artalk backend on Railway, SSO via the OPDA Auth0 session.
+ * Page comments — Artalk backend on Fly.io, SSO via the OPDA Auth0 session.
  *
  * Architecture:
  * - On init, if the user is Auth0-authenticated, fetch an Auth0 access token,
@@ -13,7 +13,7 @@
  * - Theme follows OPDA's html[data-theme] via MutationObserver.
  * - Re-runs on `astro:page-load` so view transitions reset cleanly.
  *
- * Backend: opda-artalk Railway project.
+ * Backend: opda-artalk Fly.io app (https://opda-artalk.fly.dev).
  * SSO bridge: functions/api/artalk-sso.js (mints Artalk JWT from Auth0 token).
  */
 ---
@@ -29,7 +29,7 @@
   import 'artalk/Artalk.css';
   import { getAuth0Client, AUTH0_DOMAIN } from '@/lib/auth0';
 
-  const ARTALK_SERVER = 'https://artalk-production-8623.up.railway.app';
+  const ARTALK_SERVER = 'https://opda-artalk.fly.dev';
   const ARTALK_SITE = 'OPDA Knowledge Base';
   const SSO_ENDPOINT = `${ARTALK_SERVER}/api/v2/sso/exchange`;
   const LOCAL_USER_KEY = 'ArtalkUser';
