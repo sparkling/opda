@@ -51,9 +51,10 @@ __pycache__/
 *.pyc
 
 # Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
-.claude/
+# .claude/ is tracked — curated config + ruflo-init resources (agents, commands,
+# helpers, scripts). Agent memory (memory.db*) and machine-local overrides are ignored.
+.claude/settings.local.json
+.claude/memory.db*
 .claude-flow/
 .swarm/
-.mcp.json
-CLAUDE.md
 ruvector.db
