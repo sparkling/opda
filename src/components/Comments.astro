@@ -36,6 +36,7 @@
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
   let themeObserver: MutationObserver | null = null;
+  let initGen = 0;
 
   function isDark(): boolean {
     return document.documentElement.getAttribute('data-theme') === 'dark';
@@ -142,12 +143,18 @@
   }
 
   async function init() {
+    // init() fires on both DOMContentLoaded and astro:page-load, and there's
+    // an async gap below (ensureArtalkSession). Without this generation guard,
+    // two concurrent runs both call Artalk.init() on #opda-comments and leave
+    // a half-rendered widget. Only the latest run is allowed to render.
+    const myGen = ++initGen;
     const container = document.getElementById('opda-comments');
     if (!container) return;
 
     tearDown();
 
     const signedIn = await ensureArtalkSession();
+    if (myGen !== initGen) return;
 
     container.innerHTML = '';
 
