@@ -71,11 +71,6 @@
             "type": "command",
             "command": "sh -c 'D=\"${CLAUDE_PROJECT_DIR:-.}\"; [ -f \"$D/.claude/helpers/hook-handler.mjs\" ] || D=\"${HOME}\"; exec node \"$D/.claude/helpers/hook-handler.mjs\" route'",
             "timeout": 10000
-          },
-          {
-            "type": "command",
-            "command": "sh -c 'D=\"${CLAUDE_PROJECT_DIR:-.}\"; [ -f \"$D/.claude/helpers/hook-handler.mjs\" ] || D=\"${HOME}\"; exec node \"$D/.claude/helpers/hook-handler.mjs\" user-prompt'",
-            "timeout": 5000
           }
         ]
       }
@@ -170,28 +165,6 @@
         ]
       }
     ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "sh -c 'D=\"${CLAUDE_PROJECT_DIR:-.}\"; [ -f \"$D/.claude/helpers/hook-handler.mjs\" ] || D=\"${HOME}\"; exec node \"$D/.claude/helpers/hook-handler.mjs\" teammate-idle'",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "sh -c 'D=\"${CLAUDE_PROJECT_DIR:-.}\"; [ -f \"$D/.claude/helpers/hook-handler.mjs\" ] || D=\"${HOME}\"; exec node \"$D/.claude/helpers/hook-handler.mjs\" post-tool-failure'",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "hooks": [
@@ -221,18 +194,7 @@
     ]
   },
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_FLOW_V3_ENABLED": "true",
-    "CLAUDE_FLOW_HOOKS_ENABLED": "true",
-    "GUIDANCE_EVENT_WIRING_ENABLED": "true",
-    "GUIDANCE_PRE_EDIT_HOOK": "true",
-    "GUIDANCE_POST_COMMAND_SENTINEL": "true",
-    "GUIDANCE_TEAMMATE_IDLE_HOOK": "true",
-    "GUIDANCE_POST_TOOL_FAILURE": "true",
-    "GUIDANCE_SESSION_SENTINEL": "true",
-    "GUIDANCE_AUTO_MEMORY": "true",
-    "GUIDANCE_LEARNING_BRIDGE": "true",
-    "GUIDANCE_STATUS_LINE": "true"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "claudeFlow": {
     "version": "3.0.0",

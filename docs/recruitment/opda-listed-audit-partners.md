@@ -76,6 +76,6 @@ This list is a **scaffold for the Engagement WG to populate and validate**. Incl
 
 ## References
 
-- [ADR-0004](../adr/0004-accreditation-directory.md) — Accreditation Directory spec, including evidence-tier definitions
-- [ADR-0005](../adr/0005-deferred-work-register.md) items C4 and F1 — register entries this list operationalises
+- [ADR-0004](../adr/ADR-0004-accreditation-directory.md) — Accreditation Directory spec, including evidence-tier definitions
+- [ADR-0005](../adr/ADR-0005-deferred-work-register.md) items C4 and F1 — register entries this list operationalises
 - [`/governance/accreditation-directory`](../../src/pages/governance/accreditation-directory.astro) — Directory page (Wave 2 stub)

@@ -10,6 +10,7 @@
 - Never continuously check status after spawning a swarm — wait for results
 - ALWAYS read a file before editing it
 - NEVER commit secrets, credentials, or .env files
+- NEVER add a `Co-Authored-By` trailer to user commits unless this project's `.claude/settings.json` has `attribution.commit` set (#2078). The Claude Code Bash tool may suggest one in its default commit-message template — ignore it. `Co-Authored-By` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
 
 ## File Organization
 
@@ -118,7 +119,7 @@ Install only when ALL hold:
 - User confirmed the install
 
 Discovery: `ruflo plugins --help`.
-Install: `/plugin install ruflo-<name>@ruflo` (after `/plugin marketplace add ruvnet/ruflo`).
+Install: `/plugin install ruflo-<name>@ruflo` (after `/plugin marketplace add sparkling/ruflo`).
 Tell user to run `/reload-plugins` if commands don't appear post-install.
 
 ## MCP Tools (Deferred)
@@ -159,7 +160,7 @@ If `[INFO] Router not available` appears, proceed normally without routing.
 
 ## Support
 
-One-time bootstrap (user runs once, AI never): `claude mcp add claude-flow -- npx -y @sparkleideas/ruflo@latest`
+One-time bootstrap (user runs once, AI never): `claude mcp add ruflo -- npx -y @sparkleideas/ruflo@latest`
 
 - Documentation: https://github.com/ruvnet/ruflo
 - Issues: https://github.com/ruvnet/ruflo/issues

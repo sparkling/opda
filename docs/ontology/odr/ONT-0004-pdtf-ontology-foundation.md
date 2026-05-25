@@ -102,6 +102,7 @@ Chosen option: **single `opda:` HASH namespace with layer-segregated naming, thr
 
 ## More Information
 
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
 - **Vocabularies**: Core only this round — RDF/RDFS/OWL/XSD, Dublin Core (commons substrate per ONT-0002), VANN (header), SKOS (for the glossary-sourced labels/definitions the modules will mint). SHACL + DASH are *declared* but their shapes are authored in [ONT-0010](./ONT-0010-overlay-profile-mechanism.md) / [ONT-0013](./ONT-0013-shacl-validation-and-severity.md).
 - **Glossary & data dictionary as inputs**: business glossary at `source/00-deliverables/semantic-models/business-glossary.{md,ttl}` + `glossary-merged.json` (54 trust-framework terms plus schema-annotation and external-standard terms; "most authoritative wins: W3C > OPDA Glossary > PDTF schema text"); data dictionary at `source/00-deliverables/semantic-models/data-dictionary.{md,json}` + `data-dictionary-canonical.json` (1,557 unique leaves; 935 annotated base-schema leaves; 16 canonical schemas). These are the two additional human-readable inputs the term-sourcing convention draws on beyond the JSON Schema.
 - **Open questions** (WG-owned): exact base namespace URI (`https://opda.uk/ns/` vs `https://trust.propdata.org.uk/ontology/`); versioning scheme (calendar vs semantic mirroring schema 3.4.0); repository location for the TTL (candidate: `source/03-standards/ontology/`, peer to `schemas/`).

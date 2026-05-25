@@ -40,11 +40,11 @@ Chosen option: **adopt the three-tier survey-grounded catalogue (Core / Conditio
 
 | Vocabulary | Prefix | Canonical URI | Role |
 |---|---|---|---|
-| **RDF 1.1** (target: RDF 1.2 when adopted by tools) | `rdf` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` | Foundation — triples, types, lists |
+| **RDF 1.2** | `rdf` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` | Foundation — triples, types, lists; RDF 1.2 adds triple terms for statement-level annotation (native to the provenance/annotation layers, superseding reification) |
 | **RDF Schema** | `rdfs` | `http://www.w3.org/2000/01/rdf-schema#` | Basic class/property hierarchy, labels, comments |
 | **OWL 2** | `owl` | `http://www.w3.org/2002/07/owl#` | Formal class/property semantics, equivalence, restrictions |
 | **XML Schema Datatypes** | `xsd` | `http://www.w3.org/2001/XMLSchema#` | Literal datatypes (string, date, integer, etc.) |
-| **SHACL** | `sh` | `http://www.w3.org/ns/shacl#` | Validation shapes — the contract between the ontology and consuming applications |
+| **SHACL 1.2** | `sh` | `http://www.w3.org/ns/shacl#` | Validation shapes — the contract between the ontology and consuming applications; SHACL 1.2 (W3C Data Shapes WG) for expanded constraint expressivity |
 | **SKOS** | `skos` | `http://www.w3.org/2004/02/skos/core#` | Concept schemes, taxonomies, controlled vocabularies (e.g. property-type lists, classification facets) |
 | **Dublin Core Terms** | `dct` | `http://purl.org/dc/terms/` | Administrative metadata (`title`, `creator`, `issued`, `modified`, `identifier`). The hidden lingua franca of every other vocabulary listed below — adoption merely formalises what is already implicit |
 | **VANN** | `vann` | `http://purl.org/vocab/vann/` | Vocabulary annotation — `vann:preferredNamespacePrefix`, `vann:preferredNamespaceUri` on `owl:Ontology` headers |
@@ -72,7 +72,7 @@ Chosen option: **adopt the three-tier survey-grounded catalogue (Core / Conditio
 | **DCAT-AP / DCAT-AP EU** | `dcatap` | Adds EU-government catalogue profile constraints that may not match OPDA's UK-property-data scope. H&M S371 deferred (3-3-3 deadlock) | OPDA actually needs to publish to data.europa.eu or a UK government open-data portal that requires it |
 | **FIBO** | `fibo` | Financial Industry Business Ontology — large surface area; not used in H&M `src/`. Property-transaction finance touches FIBO but PDTF v2 does not depend on it | A property-transaction-finance modelling task arises that would otherwise require reinventing FIBO concepts |
 | **SOSA/SSN, QUDT, GeoSPARQL** | (various) | Sensor, units-of-measurement, and geospatial vocabularies. Not in H&M `src/`. Plausibly relevant to OPDA (energy-performance sensors, EPC ratings with units, property-location geometry) but no current consumer | A pipeline producing the corresponding data starts (e.g. EPC/MEES ingestion, plot-boundary linked data) |
-| **FOAF** | `foaf` | Person/Agent modelling — provisionally treated as superseded by `prov:Agent` + Dublin Core for our purposes. Not in H&M `src/`. **This entry is reopened by the agents work** — see More Information | Reopened: Council Session 001 Q2 flagged `prov:Agent` as too thin for the Kind layer; the FOAF-vs-Org question is carried into [ONT-0006](./ONT-0006-agents-and-roles.md) |
+| **FOAF** | `foaf` | Person/Agent modelling — superseded by `prov:Agent` + Dublin Core for our purposes. Not in H&M `src/`. Session 001 Q2 briefly reopened this; **ruled out** (programme decision — see More Information) | Not adopted (decided). The Kind-layer choice — W3C Org ontology vs bespoke `opda:`, `prov:Agent` for provenance only — is settled in [ONT-0006](./ONT-0006-agents-and-roles.md) |
 
 ### Consequences
 
@@ -81,7 +81,7 @@ Chosen option: **adopt the three-tier survey-grounded catalogue (Core / Conditio
 * Good, because the Defer column documents non-adoption, pre-empting the recurring "why don't we use schema.org?" question.
 * Good, because the catalogue is small enough (8 Core + 10 Conditional) for newcomers to learn in one sitting.
 * Bad, because Conditional-tier gating requires SHACL enforcement to be meaningful — until those gates are written, "conditional" is honour-system.
-* Bad, because pinning to DPV / DCAT 3 / DASH versions is implicit; semver-style version pinning will need its own follow-up ODR if any of these have breaking changes.
+* Bad, because version pinning is explicit only for RDF (1.2) and SHACL (1.2); DPV / DCAT 3 / DASH versions remain implicit, and a future *breaking* version change would still warrant a follow-up ODR.
 * Bad, because a vocabulary good for OPDA but absent from H&M (a candidate: a property-data-specific community vocabulary like the PDTF JSON Schema's eventual RDF expression) will trip the "no precedent" reflex unless the catalogue is kept alive.
 * Neutral, because the Defer column will need re-review on a schedule (suggest annual, or whenever a triggering use case arises).
 * Neutral, because ArchiMate and BBO sit in the Conditional tier *and* the H&M `src/` survey — imported here for completeness, not because OPDA has an immediate process- or capability-modelling task; they can be quietly demoted to Defer at the first Council review if no use case has materialised.
@@ -100,7 +100,7 @@ Compliance is verified by checklist against the published catalogue and the intr
 ## More Information
 
 - **Catalogue amended by [ONT-0014](./ONT-0014-vocabulary-catalogue-amendments.md).** Council Session 001 (Q2) revisited the tiering and carried several changes against this record: **OWL-Time** is promoted from "use only where genuinely needed" to an actively-adopted Conditional vocabulary (the incoherence of adopting PROV-O's `prov:atTime` *instant* while proprietorship, lease-term and claim-validity *intervals* go unmodelled); **DCAT** is confirmed Conditional (ontology-as-published-dataset + reference data); **SSSOM/SEMAPV** adoption is deferred with `dct:source` to a minted form-question IRI used in the interim (SSSOM earns its place only when external mappings — FIBO, INSPIRE — arrive); **ODRL** is adopted into the catalogue but policy-authoring is deferred until consent/policy instances enter scope; **DPV** Phase-1 annotation is adopted (with Pandit's broader-TBox dissent recorded for [ONT-0012](./ONT-0012-data-governance-layer.md)). ONT-0014 carries the supersession edge against this record; the partial-supersession scope is recorded there, not here.
-- **FOAF reopened.** The Defer-tier FOAF entry's "superseded by `prov:Agent`, never, probably" rationale is reopened by the agents work: `prov:Agent` is deliberately thin (no person/organisation distinction, no structured name), so the live question is whether to reuse FOAF or the W3C Org ontology for the Kind layer while keeping `prov:Agent` for provenance only. Carried into [ONT-0006](./ONT-0006-agents-and-roles.md).
+- **FOAF — ruled out.** Session 001 Q2 briefly reopened the Defer-tier FOAF entry (because `prov:Agent` is deliberately thin — no person/organisation distinction, no structured name), but FOAF has since been **ruled out** (programme decision). The Defer-tier negative stands; the Kind layer uses the W3C Org ontology or a bespoke `opda:` model, with `prov:Agent` for the provenance role only. Settled in [ONT-0006](./ONT-0006-agents-and-roles.md); recorded in [ONT-0014](./ONT-0014-vocabulary-catalogue-amendments.md).
 - **Provenance**: catalogue ported from a survey of the H&M `src/` ontology `@prefix` declarations. The adoption pattern (canonical URIs + local SHACL + no `owl:imports`) is inherited from H&M ONT-0071c/i/j and ONT-0086.
 - **Related**: Council methodology [ONT-0001](./ONT-0001-linked-data-council-methodology.md); programme anchor [ONT-0003](./ONT-0003-pdtf-ontology-programme.md). Relates contextually to ADR-0001 (DCAM/DMBOK adoption); not a typed dependency.
 

@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Claude Flow Memory Helper
+ * Ruflo Memory Helper
  * Simple key-value memory for cross-session context
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const MEMORY_DIR = path.join(process.cwd(), '.claude-flow', 'data');
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
+const MEMORY_DIR = path.join(PROJECT_ROOT, '.claude-flow', 'data');
 const MEMORY_FILE = path.join(MEMORY_DIR, 'memory.json');
 
 function loadMemory() {
@@ -16,7 +17,7 @@ function loadMemory() {
       return JSON.parse(fs.readFileSync(MEMORY_FILE, 'utf-8'));
     }
   } catch (e) {
-    // Ignore
+    console.error('[FAIL] memory.loadMemory: ' + (e?.message || e));
   }
   return {};
 }

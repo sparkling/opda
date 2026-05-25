@@ -93,6 +93,7 @@ Chosen option: **overlays as named, dereferenceable SHACL profile graphs over a 
 
 ## More Information
 
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
 - **Vocabularies**: SHACL (the profile shapes); DASH (form rendering — `dash:propertyRole`/`viewer`/`editor`, `sh:order`/`sh:group`, adopted unconditionally for form-driving shapes per Q2); Core (`dct:source`/`rdfs:isDefinedBy` traceability); SKOS for the enum members surfaced via `sh:in` (→ ONT-0011); local `opda:ValidationContext` reifying the profile. SSSOM deferred (Q2; `dct:source` now, SSSOM when external mappings arrive — Cagle dissent recorded).
 - **Source schema & composition**: the overlays under `source/03-standards/schemas/src/schemas/v3/overlays/` and the deep-merge in `getTransactionSchema` (web app `src/pages/implementation/schema-composition.astro`) are the build-step the SHACL graph-union mirrors. The business glossary notes that `propertyPack` appears in 18 overlays and `address`/`attachments`/`ownership` in ~10 each — the spanning leaves a profile composition must reconcile.
 - **Deliverables (when fleshed out)**: `profiles/baspi5.ttl` as the worked MVP slice (chosen for its discriminated `oneOf`/`sellersCapacity` stressing `sh:xone`); the `opda:ValidationContext` pattern; the no-identity-override SHACL gate; the composition build-step specification mirroring `getTransactionSchema`; the separate advisory-annotation graph keyed to shape IRIs (→ ONT-0013).

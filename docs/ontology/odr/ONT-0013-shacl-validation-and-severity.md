@@ -101,6 +101,7 @@ The principle: the rarest, most damaging error (identity loss) must be the loude
 
 ## More Information
 
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
 - **Vocabularies**: SHACL (`sh:minCount`/`sh:maxCount`/`sh:datatype`/`sh:in`/`sh:xone`/`sh:qualifiedValueShape`/severity); DASH (`dash:propertyRole`/`viewer`/`editor`/`uniqueValueForClass`/`EnumSelectEditor`); Core; SKOS (for `sh:in` over the [ONT-0011](./ONT-0011-enumeration-vocabularies.md) schemes). Catalogue status per [ONT-0002](./ONT-0002-ontology-language-adoption.md).
 - **Data dictionary as input** (key input): the 935 annotated base-schema leaves in `data-dictionary.md` / `data-dictionary-canonical.json` are the constraint source — recorded leaf **types** (`string`, `integer`, `number`, `boolean`, `string (date)`, `string (date-time)`, `string (email)`, `object`, `array`) drive `sh:datatype`/`sh:nodeKind`; requiredness drives `sh:minCount`; array bounds drive `sh:minCount`/`sh:maxCount`; `enum` columns drive `sh:in` over the corresponding [ONT-0011](./ONT-0011-enumeration-vocabularies.md) scheme. Each property shape carries `dct:source` to its canonical leaf path per the [ONT-0004](./ONT-0004-pdtf-ontology-foundation.md) convention.
 - **Deliverables (when fleshed out)**: the constraint-mapping generator spec (feeds Allemang's generator-first policy); the severity-tier rubric; the open-world/closed-world drift check; the annotation-graph convention; the DASH UI-hint catalogue.

@@ -11,14 +11,14 @@ last_updated: "2026-05-19"
 
 ## Context
 
-[ADR-0005](../adr/0005-deferred-work-register.md) register item C2 carves out the member-firm tooling for minting and submitting the quarterly Verifiable Credentials that the C1 build pipeline (`scripts/build-accreditation-directory.mjs`) consumes. C1 is the aggregator; C2 is what firms run on their side to produce its inputs.
+[ADR-0005](../adr/ADR-0005-deferred-work-register.md) register item C2 carves out the member-firm tooling for minting and submitting the quarterly Verifiable Credentials that the C1 build pipeline (`scripts/build-accreditation-directory.mjs`) consumes. C1 is the aggregator; C2 is what firms run on their side to produce its inputs.
 
 C2 depends on:
 
 - **C1 shipping first.** Until the build script exists, the VC consumer interface isn't fixed.
 - **Member firms being ready.** As of 2026-05-19 the credentials directory has **zero** submissions — there are no production VCs yet. The dependency on first-firm readiness is real, not nominal.
 
-The artefact lives downstream of [ADR-0004](../adr/0004-accreditation-directory.md) §5, which sets the schema-of-truth as a W3C Verifiable Credential signed by the firm's accredited issuer DID. This document expands that into something a firm engineer can actually implement against.
+The artefact lives downstream of [ADR-0004](../adr/ADR-0004-accreditation-directory.md) §5, which sets the schema-of-truth as a W3C Verifiable Credential signed by the firm's accredited issuer DID. This document expands that into something a firm engineer can actually implement against.
 
 ## Required VC shape
 
@@ -86,7 +86,7 @@ For the firm-facing submission interface itself, three shapes are plausible and 
 | **CLI helper** | OPDA-published CLI (`opda-attest mint --quarter 2026-Q2 …`) generates and signs the VC; either writes locally for PR or pushes to an OPDA endpoint | Smoother DX; OPDA owns more tooling. ***WG decision required:*** is this Technical WG capacity in the first cycle? |
 | **Web form** | Authenticated portal where firms fill in capability scores; OPDA backend mints the VC on the firm's behalf using a key the firm has delegated | Lowest firm-side complexity; highest OPDA-side complexity (delegation, custody concerns). Likely a Phase 5+ artefact, not a first-publish artefact. |
 
-***WG decision required:*** which interface is supported at first quarterly publish ([ADR-0005](../adr/0005-deferred-work-register.md) register item C3). Recommend starting with PR / commit and layering a CLI later.
+***WG decision required:*** which interface is supported at first quarterly publish ([ADR-0005](../adr/ADR-0005-deferred-work-register.md) register item C3). Recommend starting with PR / commit and layering a CLI later.
 
 ## Validation rules at intake
 
@@ -119,9 +119,9 @@ Resubmission window: ***WG decision required:*** propose 7 days from notificatio
 
 ## References
 
-- [ADR-0005](../adr/0005-deferred-work-register.md) §C2 — the register entry this spec operationalises.
-- [ADR-0004](../adr/0004-accreditation-directory.md) §5–§6 — VC schema sketch + evidence requirements per score level.
-- [ADR-0001](../adr/0001-adopt-dcam-dmbok-elements.md) Wave 2 — three-axis capability scoring (Engagement / Process / Evidence) the VC payload reflects.
+- [ADR-0005](../adr/ADR-0005-deferred-work-register.md) §C2 — the register entry this spec operationalises.
+- [ADR-0004](../adr/ADR-0004-accreditation-directory.md) §5–§6 — VC schema sketch + evidence requirements per score level.
+- [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) Wave 2 — three-axis capability scoring (Engagement / Process / Evidence) the VC payload reflects.
 - `source/03-standards/trust-framework/docs/governance.md` §B — Trust Registry mechanics the signature verification relies on.
 - `source/03-standards/schemas/` — PDTF schemas; capability keys cross-reference overlays defined here but live in the governance layer.
 - W3C VC Data Model 2.0 · VC Data Integrity · vc-jose-cose — external specs the implementation conforms to.

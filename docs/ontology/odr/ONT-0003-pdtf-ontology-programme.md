@@ -80,6 +80,8 @@ The programme's gate is verified by an end-to-end round-trip on a single vertica
 
 ## More Information
 
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
+
 **Work breakdown.**
 
 *Phase 0 — Spike (gates the programme):*
@@ -89,7 +91,7 @@ The programme's gate is verified by an end-to-end round-trip on a single vertica
 
 *Phase 1 — Modules (after the crux clears):*
 
-- **[ONT-0006](./ONT-0006-agents-and-roles.md) — Agents & Roles.** Person/Organisation Kinds; Seller/Buyer RoleMixins; Proprietor Role + Proprietorship Relator; capacity-vs-evidenced-authority; FOAF-vs-`prov:Agent` open question.
+- **[ONT-0006](./ONT-0006-agents-and-roles.md) — Agents & Roles.** Person/Organisation Kinds; Seller/Buyer RoleMixins; Proprietor Role + Proprietorship Relator; capacity-vs-evidenced-authority; FOAF ruled out (Kind-layer vocabulary now W3C Org vs bespoke `opda:`).
 - **[ONT-0007](./ONT-0007-transactions-and-lifecycle.md) — Transactions & Lifecycle.** Transaction relator, milestones, status; OWL-Time intervals.
 - **[ONT-0008](./ONT-0008-property-descriptive-attributes.md) — Property descriptive attributes.** Built form, condition, valuation, EPC/energy, utilities, local-context searches, encumbrances/completion — the descriptive leaves hanging off Property/Title.
 
@@ -103,7 +105,7 @@ The programme's gate is verified by an end-to-end round-trip on a single vertica
 
 *Amendment:*
 
-- **[ONT-0014](./ONT-0014-vocabulary-catalogue-amendments.md) — Vocabulary catalogue amendments** (amends [ONT-0002](./ONT-0002-ontology-language-adoption.md)): OWL-Time IN, DCAT Conditional, SSSOM deferred, ODRL policies deferred; OBO RO / FOAF open.
+- **[ONT-0014](./ONT-0014-vocabulary-catalogue-amendments.md) — Vocabulary catalogue amendments** (amends [ONT-0002](./ONT-0002-ontology-language-adoption.md)): OWL-Time IN, DCAT Conditional, SSSOM deferred, ODRL policies deferred; OBO RO open, FOAF ruled out.
 
 **Dependency graph.**
 

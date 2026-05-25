@@ -7,7 +7,7 @@ owner: "Engagement WG"
 
 ## Context
 
-ADRs [0002](./adr/0002-folder-hierarchy-and-slug-taxonomy.md) and [0003](./adr/0003-idiomatic-astro-refactor.md) migrated 158 Knowledge Base pages from `/pages/NN-NN…html` (and the older `xx-pages-NN-NN-NN.html` shape) to bare hierarchical slugs (e.g. `/governance/data-stewardship`). The new site does **not** keep redirects for the legacy URLs. Any pre-existing external material that points at the old URLs will hard-break the moment the new site is announced.
+ADRs [ADR-0002](./adr/ADR-0002-folder-hierarchy-and-slug-taxonomy.md) and [ADR-0003](./adr/ADR-0003-idiomatic-astro-refactor.md) migrated 158 Knowledge Base pages from `/pages/NN-NN…html` (and the older `xx-pages-NN-NN-NN.html` shape) to bare hierarchical slugs (e.g. `/governance/data-stewardship`). The new site does **not** keep redirects for the legacy URLs. Any pre-existing external material that points at the old URLs will hard-break the moment the new site is announced.
 
 This checklist is a runnable scan to find and fix those references before announcement.
 

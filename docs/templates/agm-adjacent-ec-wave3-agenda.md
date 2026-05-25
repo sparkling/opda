@@ -11,9 +11,9 @@ last_updated: "2026-05-19"
 
 ## Context
 
-[ADR-0001](../adr/0001-adopt-dcam-dmbok-elements.md) Wave 3 commits OPDA to four watching briefs (D1–D4 below) that — unlike Wave 1 vocabulary or Wave 2 gap-filling — have **no firm delivery trigger**. They sit live until either a triggering condition fires (promote to Wave 2 or own ADR), the item rots (close out), or the brief continues another year.
+[ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) Wave 3 commits OPDA to four watching briefs (D1–D4 below) that — unlike Wave 1 vocabulary or Wave 2 gap-filling — have **no firm delivery trigger**. They sit live until either a triggering condition fires (promote to Wave 2 or own ADR), the item rots (close out), or the brief continues another year.
 
-The risk that Wave 3 watching briefs silently rot was flagged during the 2026-05-18 review. The resolution recorded in [ADR-0001 §"Newly resolved" #4](../adr/0001-adopt-dcam-dmbok-elements.md) was: pair the review with the EC meeting nearest the AGM, as a fixed annual checkpoint. [ADR-0005](../adr/0005-deferred-work-register.md) register item D5 records that recurring meeting; this template is what the Chair tables.
+The risk that Wave 3 watching briefs silently rot was flagged during the 2026-05-18 review. The resolution recorded in [ADR-0001 §"Newly resolved" #4](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) was: pair the review with the EC meeting nearest the AGM, as a fixed annual checkpoint. [ADR-0005](../adr/ADR-0005-deferred-work-register.md) register item D5 records that recurring meeting; this template is what the Chair tables.
 
 The review's job is **not** to do the Wave 3 work — it's to *decide whether the work has come due, gone away, or still warrants watching*.
 
@@ -69,11 +69,11 @@ A **promote** decision implies a follow-up: who drafts the promoting ADR, on wha
 
 D5 itself — this recurring review — is **not reviewed**; it is the mechanism by which the others are reviewed. If the review process needs to change (e.g. expand to 30 minutes, move to twice a year), that change is made via a new ADR or amendment to ADR-0005, not at this meeting.
 
-New Wave 3 items added between annual reviews appear in [ADR-0005](../adr/0005-deferred-work-register.md) §D and join the table above when this template is next used.
+New Wave 3 items added between annual reviews appear in [ADR-0005](../adr/ADR-0005-deferred-work-register.md) §D and join the table above when this template is next used.
 
 ## Lifecycle outcomes
 
-Same as [ADR-0005 §Lifecycle](../adr/0005-deferred-work-register.md). A Wave 3 item leaves the register when:
+Same as [ADR-0005 §Lifecycle](../adr/ADR-0005-deferred-work-register.md). A Wave 3 item leaves the register when:
 
 1. **Promoted to its own ADR** — typical when a triggering condition has fired and substantive work begins.
 2. **Completed** — rare for Wave 3 (most items don't ship as a discrete artefact; they roll into broader work).
@@ -85,12 +85,12 @@ An item that **continues** for 12 months without progress gets the "still releva
 ## Open questions for first run
 
 1. **Prep owner.** Default proposal: Engagement WG drafts the one-pagers. Alternative: rotate among C&R / Tech / Engagement so the WG closest to a given item summarises it. ***WG decision required.***
-2. **Decision feedback into ADR-0005.** When the EC decides "promote D2", who updates [ADR-0005](../adr/0005-deferred-work-register.md) to reflect the new ADR owner — the EC secretary, the Engagement WG prep owner, or whoever drafts the promoting ADR? Propose: EC secretary as part of the decision-log entry. ***WG decision required.***
+2. **Decision feedback into ADR-0005.** When the EC decides "promote D2", who updates [ADR-0005](../adr/ADR-0005-deferred-work-register.md) to reflect the new ADR owner — the EC secretary, the Engagement WG prep owner, or whoever drafts the promoting ADR? Propose: EC secretary as part of the decision-log entry. ***WG decision required.***
 3. **Threshold for adding new Wave 3 items mid-year.** Can a WG add a Wave 3 item between annual reviews, or only at the review? Permissive (anyone with edit rights) is the lowest-friction; strict (review-only) gives the EC a single read each year. Recommend permissive with the trade-off that the annual review may surface items the EC hasn't previously seen.
 
 ## References
 
-- [ADR-0001](../adr/0001-adopt-dcam-dmbok-elements.md) §Wave 3 — the four watching briefs this template reviews.
-- [ADR-0001 §"Newly resolved during review" #4](../adr/0001-adopt-dcam-dmbok-elements.md) — the resolution that pegs the review to the AGM-adjacent EC meeting.
-- [ADR-0005](../adr/0005-deferred-work-register.md) §D — the register entries this template walks; §Lifecycle — the exit paths.
+- [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) §Wave 3 — the four watching briefs this template reviews.
+- [ADR-0001 §"Newly resolved during review" #4](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) — the resolution that pegs the review to the AGM-adjacent EC meeting.
+- [ADR-0005](../adr/ADR-0005-deferred-work-register.md) §D — the register entries this template walks; §Lifecycle — the exit paths.
 - `governance.md` §6 — EC decision-log mechanics referenced by the in-meeting agenda.

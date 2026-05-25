@@ -1,7 +1,7 @@
 ---
 status: proposed
 date: 2026-05-20
-tags: [agents, roles, ufo, foaf, module]
+tags: [agents, roles, ufo, module]
 supersedes: []
 depends-on: [ONT-0004, ONT-0005, ONT-0011]
 implements: [ONT-0003]
@@ -29,11 +29,12 @@ The question: how do we re-express `participants[]` + `role` so that identity-su
 
 * **Keep the schema shape** — one `opda:Participant` class with a `role` datatype property. Faithful to the JSON, but reproduces the defect: no identity criterion, role conflated with bearer.
 * **`prov:Agent`-only agent layer** — model every party as a `prov:Agent` subtype. Minimal, provenance-ready.
-* **FOAF / W3C Org ontology for the Kind layer + UFO Kind/RoleMixin/Role layering for the role layer** (chosen direction) — Person/Organisation as substance Kinds; Seller/Buyer as RoleMixins; professional parties as Roles founded by Relators; `prov:Agent` retained only for the provenance role. The exact Kind-layer vocabulary (FOAF vs W3C Org vs bespoke) is itself an open question carried into this ODR.
+* **FOAF for the Kind layer** — reuse `foaf:Person`/`foaf:Organization` for the substance Kinds. Rejected (see Decision Outcome): redundant with the W3C Org ontology and `dct:`, absent from the comparable H&M `src/` survey, and already deferred by ONT-0002.
+* **W3C Org ontology (or bespoke `opda:`) for the Kind layer + UFO Kind/RoleMixin/Role layering for the role layer** (chosen direction) — Person/Organisation as substance Kinds; Seller/Buyer as RoleMixins; professional parties as Roles founded by Relators; `prov:Agent` retained only for the provenance role. The exact Kind-layer vocabulary (W3C Org vs bespoke `opda:`) is the narrowed open question carried into this ODR.
 
 ## Decision Outcome
 
-Chosen option: **FOAF/Org Kind layer + UFO Kind/RoleMixin/Role layering**, because it is the only option that places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded, and because it leaves a clean seam to the provenance layer via `prov:Agent`.
+Chosen option: **W3C Org ontology (or bespoke `opda:`) Kind layer + UFO Kind/RoleMixin/Role layering**, with **FOAF ruled out** — because it places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded, and because it leaves a clean seam to the provenance layer via `prov:Agent`.
 
 - **`opda:Person`, `opda:Organisation`** — substance **Kinds** (rigid, identity-supplying). Identity criteria coordinated with ONT-0005's category commitments.
 - **`opda:Seller`, `opda:Buyer`** — **RoleMixins**, because the role is played by a Person *or* an Organisation (`participants[].organisation`; register `privateIndividual` vs `organization`). Each is specialised by a sortal role (`PersonSeller`, `OrganisationSeller`) that carries identity, and founded by the `opda:Transaction` relator (ONT-0007).
@@ -42,14 +43,14 @@ Chosen option: **FOAF/Org Kind layer + UFO Kind/RoleMixin/Role layering**, becau
 - **Capacity split** — `opda:assertedCapacity` (SKOS, → ONT-0011) vs `opda:evidencedAuthority` (→ ONT-0009 evidence). The founding grant (probate, POA) is modelled as the missing Relator.
 - **`prov:Agent`** is retained only as the provenance role in claim/verification activities (ONT-0009), not as the Kind-layer agent type.
 
-The **FOAF vs `prov:Agent` vs W3C Org ontology** choice for the Kind layer is **deferred to this ODR's own follow-up council session** (Q2 open question): `prov:Agent` is deliberately thin (no person/org distinction, no name structure), so the live question is whether to reuse FOAF / W3C Org for the Kind layer while keeping `prov:Agent` for provenance only.
+**FOAF is ruled out for the Kind layer** (programme decision). `prov:Agent` is deliberately thin (no person/org distinction, no name structure) and is retained for the provenance role only; the remaining choice — **the W3C Org ontology vs a bespoke `opda:` Kind layer** — is deferred to this ODR's own follow-up council session.
 
 ### Consequences
 
 * Good, because identity-supplying Kinds are separated from anti-rigid Roles, eliminating the rigidity error baked into `participants[] + role`.
 * Good, because `Address`/`Name` are declared once and reused, satisfying Kendall's "declare reused entities once" driver.
 * Good, because the asserted/evidenced capacity split gives the evidence layer (ONT-0009) a precise attachment point and surfaces the missing founding-grant Relator.
-* Bad, because the Kind-layer vocabulary question (FOAF vs Org vs bespoke) is left open, so a second deliberation is required before the module's TBox can be frozen.
+* Bad, because the Kind-layer vocabulary question (W3C Org vs bespoke `opda:`) is left open, so a second deliberation is required before the module's TBox can be frozen.
 * Neutral, because role and capacity enumerations are delegated to ONT-0011 (SKOS concept schemes) rather than resolved here.
 
 ### Confirmation
@@ -57,7 +58,7 @@ The **FOAF vs `prov:Agent` vs W3C Org ontology** choice for the Kind layer is **
 - SHACL shapes (ONT-0013) constrain `opda:Seller`/`opda:Buyer` role-play to a `opda:Person` or `opda:Organisation` bearer, and require an `opda:evidencedAuthority` link where a capacity is asserted in a regulated context.
 - The module is validated against the participant facets of the diagnostic exemplars (ONT-0005): a private-individual seller, an organisation seller, a seller acting under power of attorney.
 - Role and capacity SKOS concepts (ONT-0011) carry `skos:prefLabel`/`skos:definition` sourced from the business glossary and `dct:source` back to it.
-- **Gate**: this module's TBox is not frozen until (a) ONT-0005 clears its identity-criterion gate and (b) the FOAF/Org open question is resolved in council.
+- **Gate**: this module's TBox is not frozen until (a) ONT-0005 clears its identity-criterion gate and (b) the remaining Kind-layer choice (W3C Org vs bespoke `opda:`) is resolved in council.
 
 ## Pros and Cons of the Options
 
@@ -71,23 +72,29 @@ The **FOAF vs `prov:Agent` vs W3C Org ontology** choice for the Kind layer is **
 * Good, because it is provenance-ready out of the box and needs no external vocabulary.
 * Bad, because `prov:Agent` is deliberately thin: no Person/Organisation distinction, no structured `Name` — it cannot carry the Kind layer (Guarino, Q2).
 
-### FOAF/Org Kind layer + UFO layering
+### FOAF for the Kind layer
+
+* Good, because `foaf:Person`/`foaf:Organization` are widely deployed and need no re-minting.
+* Bad, because FOAF overlaps the W3C Org ontology and `dct:` confusingly, is absent from the comparable H&M `src/` survey, and ONT-0002 already defers it — **ruled out**.
+
+### W3C Org / bespoke Kind layer + UFO layering
 
 * Good, because UFO categories place rigidity and identity correctly and the Relators make founding grants explicit.
-* Good, because it reuses a standard agent vocabulary for the Kind layer rather than re-minting under `opda:`.
-* Bad, because it defers the FOAF-vs-Org choice and so requires a second council pass before freeze.
+* Good, because the W3C Org ontology (or a tight bespoke `opda:` Kind layer) supplies the person/organisation distinction `prov:Agent` lacks, without FOAF's overlap.
+* Bad, because the W3C-Org-vs-bespoke choice is still open, so a second council pass is needed before freeze.
 
 ## More Information
 
-- **Vocabularies**: Core (OWL/RDFS/XSD); SKOS for role/capacity schemes (→ ONT-0011); PROV-O for the verification cross-link (→ ONT-0009); DPV for PII annotation on Person/contact leaves (→ ONT-0012); OWL-Time if role-tenure intervals are modelled here. Candidate Kind-layer vocabularies under the open question: FOAF, W3C Org ontology.
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
+- **Vocabularies**: Core (OWL/RDFS/XSD); SKOS for role/capacity schemes (→ ONT-0011); PROV-O for the verification cross-link (→ ONT-0009); DPV for PII annotation on Person/contact leaves (→ ONT-0012); OWL-Time if role-tenure intervals are modelled here. Candidate Kind-layer vocabularies (FOAF ruled out): the W3C Org ontology or a bespoke `opda:` Kind layer.
 - **Glossary & data dictionary as inputs**: the role concept scheme (ONT-0011) draws its enumerated members from the data dictionary's `role` enum (`baspi5.json`: Buyer, Seller's Conveyancer, Prospective Buyer, Buyer's Conveyancer, Estate Agent, Buyer's Agent…) and its `skos:definition`/`skos:prefLabel` from the **business glossary** (`Participant`, `Role`, `Scheme Operator`, `Data Provider`, `Data Recipient`, `TPP`). Each concept carries `dct:source` to its glossary row or schema leaf path. See ONT-0004 for the general term-sourcing and provenance convention.
 - **Deliverables (when fleshed out)**: `agents-roles.ttl`; Role/Capacity/Status SKOS schemes (→ ONT-0011); DPV PII annotations (→ ONT-0012); SHACL role-play and capacity-evidence shapes (→ ONT-0013).
-- **Related**: anchor [ONT-0003](./ONT-0003-pdtf-ontology-programme.md); foundation [ONT-0004](./ONT-0004-pdtf-ontology-foundation.md); the gating crux [ONT-0005](./ONT-0005-property-land-identity-crux.md); provenance [ONT-0009](./ONT-0009-claims-evidence-provenance.md); enumerations [ONT-0011](./ONT-0011-enumeration-vocabularies.md); governance [ONT-0012](./ONT-0012-data-governance-layer.md). Council deliberation: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (FOAF open question), Q3 (partition), Q4 (shared Address/identity).
+- **Related**: anchor [ONT-0003](./ONT-0003-pdtf-ontology-programme.md); foundation [ONT-0004](./ONT-0004-pdtf-ontology-foundation.md); the gating crux [ONT-0005](./ONT-0005-property-land-identity-crux.md); provenance [ONT-0009](./ONT-0009-claims-evidence-provenance.md); enumerations [ONT-0011](./ONT-0011-enumeration-vocabularies.md); governance [ONT-0012](./ONT-0012-data-governance-layer.md). Council deliberation: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (Kind-layer agent vocabulary), Q3 (partition), Q4 (shared Address/identity).
 
 ## Vote and Dissent
 
 This module ODR records no vote of its own — it is a planning record to be deliberated in its own follow-up session. The Council Session 001 positions it inherits:
 
 - **Q3 partition** — consensus against the by-aggregate-page partition; partition by ontological concern (UFO/FIBO). Evidence/Claims promoted to cross-cutting.
-- **Q2 FOAF** — **open question recorded** (Guarino): `prov:Agent` is too thin for the Kind layer; FOAF vs W3C Org vs bespoke left for this ODR's session.
+- **Q2 Kind-layer vocabulary** — Guarino flagged `prov:Agent` as too thin for the Kind layer; Session 001 left the vocabulary open. Subsequently resolved by the programme lead: **FOAF ruled out**; the Kind layer uses the W3C Org ontology or a bespoke `opda:` model, with `prov:Agent` for the provenance role only. The W3C-Org-vs-bespoke choice remains for this ODR's session.
 - No recorded dissent specific to Agents & Roles beyond the open Kind-layer-vocabulary question.

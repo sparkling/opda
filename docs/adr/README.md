@@ -7,41 +7,67 @@ don't have to re-litigate.
 
 ## Conventions
 
-- **Sequential, global numbering.** `0001-…`, `0002-…`, `0003-…`. New ADRs
+ADRs follow canonical [MADR 4.x](https://adr.github.io/madr/) with two
+project extensions (per the `ruflo-adr` `adr-create` skill):
+
+- A `tags:` frontmatter field for cross-cutting categorisation.
+- Three typed-relation frontmatter slots: `supersedes:`, `depends-on:`,
+  `implements:`.
+
+Specifics:
+
+- **Sequential, global numbering.** `ADR-0001`, `ADR-0002`, … New ADRs
   pick the next free number; do not skip or re-use.
 - **Flat directory.** All ADRs live directly under `docs/adr/`. Topic
   sub-folders (the old `dcam-framework/`, `information-architecture/`)
   created number clashes — avoid.
-- **File name = `NNNN-kebab-case-slug.md`.** The slug describes the
-  decision in 3-6 words.
-- **Status.** One of: `Proposed`, `Accepted`, `Implemented`,
-  `Superseded by NNNN`, `Deprecated`.
-- **Status as a section, not a tag.** The status line in the frontmatter
-  is the source of truth; the README index is best-effort.
+- **Filename**: `ADR-NNNN-<slug>.md` — 4-digit zero-padded number,
+  lowercase kebab-case slug. The `ADR-` prefix disambiguates against the
+  ODR corpus in `docs/ontology/odr/ODR-NNNN-<slug>.md`.
+- **H1**: title only, no `ADR-NNNN —` prefix (the number lives in the
+  filename).
+- **Frontmatter (YAML)**: `status`, `date`, `tags`, `supersedes`,
+  `depends-on`, `implements`. DACI fields (`decision-makers`,
+  `consulted`, `informed`) are intentionally omitted —
+  `git log --follow <file>` is the canonical authorship surface.
+- **Status enum**: `proposed | accepted | rejected | deprecated |
+  superseded by ADR-NNNN`. Lowercase exactly as listed. Implementation
+  status (shipped, in progress, paused) belongs in `### Confirmation`,
+  not the status line.
+- **Required body sections**: `## Context and Problem Statement`,
+  `## Considered Options` (bullet list), `## Decision Outcome`
+  containing `### Consequences` (flat `Good, because…` / `Bad,
+  because…` / `Neutral, because…` bullets) and `### Confirmation`.
+- **Optional**: `## Decision Drivers`, `## Pros and Cons of the
+  Options` (with `### {Option}` per option), `## More Information`.
+- **Trailing project-specific extensions** (use sparingly): `## Rules`,
+  `## Vote and Dissent`, `## Amendments`, `## Mapping`.
+
+Use the `/ruflo-adr:adr-create <title>` skill to scaffold a new ADR
+with the next sequential number and canonical sections.
 
 ## Index
 
 | # | Title | Status |
 |---|---|---|
-| [0001](./0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | Proposed (11 review points decided across two passes) |
-| [0002](./0002-folder-hierarchy-and-slug-taxonomy.md) | Folder hierarchy and slug taxonomy | Implemented 2026-05-18 |
-| [0003](./0003-idiomatic-astro-refactor.md) | Refactor to idiomatic Astro architecture | Implemented 2026-05-18 |
-| [0004](./0004-accreditation-directory.md) | Accreditation Directory spec | Proposed (ready for C&R WG kick-off) |
-| [0005](./0005-deferred-work-register.md) | Deferred work register | Living document |
+| [ADR-0001](./ADR-0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | proposed |
+| [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-taxonomy.md) | Folder hierarchy and slug taxonomy | accepted · shipped 2026-05-18 |
+| [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md) | Refactor to idiomatic Astro architecture | accepted · shipped 2026-05-18 |
+| [ADR-0004](./ADR-0004-accreditation-directory.md) | Accreditation Directory spec | proposed |
+| [ADR-0005](./ADR-0005-deferred-work-register.md) | Deferred work register | accepted · living document |
 
 ## Authoring a new ADR
 
-1. Copy an existing ADR as a template.
-2. Use the next sequential number (check this index).
-3. Lead with `# ADR NNNN — <decision title>`.
-4. Required sections: Status, Date, Context, Decision drivers, Considered
-   options, Decision, Consequences. Most ADRs also need Open questions
-   and References.
-5. Cross-link sibling ADRs (the "Related" field at the top).
-6. Update this index.
+1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
+   next number and scaffolds the file with the canonical MADR template.
+2. Cross-link related ADRs through `supersedes:`, `depends-on:`,
+   `implements:` (frontmatter) and `## More Information` (human prose).
+3. Update this index.
 
 ADRs are immutable history. After ratification, edit them only to:
-- update the Status line (e.g. when superseded)
-- record "Resolved during review" outcomes from the discussion
-- fix typos or broken cross-references
+
+- update the `status` frontmatter (e.g. when superseded);
+- record review outcomes in `## Amendments` or `## Vote and Dissent`;
+- fix typos or broken cross-references.
+
 Never rewrite the original analysis.

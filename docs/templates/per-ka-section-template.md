@@ -1,12 +1,12 @@
 ---
 title: Per-KA section template
-purpose: Encode ADR 0001 Wave 1's standard rubric for DAMA Knowledge Area pages — six consistent sections per KA-tagged page
+purpose: Encode ADR-0001 Wave 1's standard rubric for DAMA Knowledge Area pages — six consistent sections per KA-tagged page
 source_adr: docs/adr/0001-adopt-dcam-dmbok-elements.md
 ---
 
 # Per-KA section template
 
-A consistent rubric for OPDA pages tagged with one or more DAMA-DMBOK2 Knowledge Areas. Established by [ADR 0001](../adr/0001-adopt-dcam-dmbok-elements.md) Wave 1 to give member firms' data offices a predictable structure when reading OPDA's framework against their own DAMA / DCAM reference frame.
+A consistent rubric for OPDA pages tagged with one or more DAMA-DMBOK2 Knowledge Areas. Established by [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) Wave 1 to give member firms' data offices a predictable structure when reading OPDA's framework against their own DAMA / DCAM reference frame.
 
 Apply this template when authoring or revising a KA-tagged page in `src/pages/governance/` or `src/pages/modelling/`. The six sections are: **Purpose · Activities · Deliverables · Roles · Metrics · Maturity**.
 
@@ -69,7 +69,7 @@ Drop into any KA-tagged `.astro` page under `src/pages/`. Each section gets a st
 
 ## Worked example — Data Quality Management
 
-A partial walkthrough using ADR 0001's framing of DMBOK KA #11. Content authored by Compliance & Risk WG in due course; values below are illustrative only.
+A partial walkthrough using ADR-0001's framing of DMBOK KA #11. Content authored by Compliance & Risk WG in due course; values below are illustrative only.
 
 ```html
 <h2 id="purpose">Purpose</h2>
@@ -130,15 +130,15 @@ A partial walkthrough using ADR 0001's framing of DMBOK KA #11. Content authored
 
 ## Notes on incremental application
 
-Per [ADR 0001](../adr/0001-adopt-dcam-dmbok-elements.md) Wave 1, **apply this template incrementally**. Not all pages need every section filled.
+Per [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) Wave 1, **apply this template incrementally**. Not all pages need every section filled.
 
 - **Existing pages.** When revising a KA-tagged page, add the six section anchors first; fill content as the responsible WG authors it. Empty sections may carry a single line — *"Content pending — \[WG NAME\] to author"* — without breaking the rubric.
-- **Wave 2 stubs.** Pages commissioned by ADR 0001 Wave 2 (`/governance/data-quality`, `/governance/data-security`, `/governance/accreditation-directory`, `/governance/overlay-attachments`) already have lead content above the rubric. Append the six sections near the bottom as scaffolding for future WG authoring; don't restructure the existing content.
+- **Wave 2 stubs.** Pages commissioned by ADR-0001 Wave 2 (`/governance/data-quality`, `/governance/data-security`, `/governance/accreditation-directory`, `/governance/overlay-attachments`) already have lead content above the rubric. Append the six sections near the bottom as scaffolding for future WG authoring; don't restructure the existing content.
 - **Multi-KA pages.** A page tagged with multiple KAs (e.g. Accreditation Directory tagged Data Governance + Data Quality Management) may merge sections where the substance is shared; split where divergence is material.
-- **Out-of-scope KAs.** Pages disclaiming a KA (per ADR 0001's "genuinely out of scope" list) do not need this template — a single disclaiming sentence is sufficient.
+- **Out-of-scope KAs.** Pages disclaiming a KA (per ADR-0001's "genuinely out of scope" list) do not need this template — a single disclaiming sentence is sufficient.
 - **Skeleton evolution.** If the rubric needs new sections (e.g. Risks, Dependencies), open a follow-up ADR — don't drift the template silently.
 
 ## References
 
-- [ADR 0001](../adr/0001-adopt-dcam-dmbok-elements.md) — Wave 1 vocabulary alignment, including this rubric.
-- [ADR 0004](../adr/0004-accreditation-directory.md) — consumes the Metrics + Maturity sections for the Accreditation Directory scoring.
+- [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) — Wave 1 vocabulary alignment, including this rubric.
+- [ADR-0004](../adr/ADR-0004-accreditation-directory.md) — consumes the Metrics + Maturity sections for the Accreditation Directory scoring.

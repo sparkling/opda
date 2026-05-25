@@ -13,7 +13,7 @@ implements: [ONT-0003]
 
 [ONT-0002](./ONT-0002-ontology-language-adoption.md) established OPDA's vocabulary catalogue — a closed, three-tier set (Core / Conditional / Defer) with a canonical URI, role, and adoption pattern per entry — surveyed from the H&M programme before any PDTF-specific modelling had been attempted. Council Session 001 then scoped the PDTF-to-ontology work against that catalogue (Q2) and, in doing so, made several decisions that **change ONT-0002's tiering and reasoning** for specific entries. Those changes need to be recorded as a first-class amendment rather than silently editing ONT-0002, so that the provenance of each change — which Council session, which argument, which tally — is preserved.
 
-The catalogue was authored as a survey baseline; the PDTF programme is its first real consumer. Two entries in particular were settled differently once a concrete modelling task pressed on them: **OWL-Time**, which ONT-0002 placed at Conditional ("use only where bitemporal/interval semantics genuinely needed") and which the PDTF brief had initially *excluded* outright; and the cluster of mapping/policy vocabularies (SSSOM, ODRL) whose Conditional status assumed use cases the data-model-only round does not yet present. The amendment must also record two questions the session *opened* without resolving (OBO RO, FOAF), so future modellers know they were asked.
+The catalogue was authored as a survey baseline; the PDTF programme is its first real consumer. Two entries in particular were settled differently once a concrete modelling task pressed on them: **OWL-Time**, which ONT-0002 placed at Conditional ("use only where bitemporal/interval semantics genuinely needed") and which the PDTF brief had initially *excluded* outright; and the cluster of mapping/policy vocabularies (SSSOM, ODRL) whose Conditional status assumed use cases the data-model-only round does not yet present. The amendment must also record the questions the session *opened* — OBO RO (still open) and FOAF (subsequently ruled out) — so future modellers know they were asked.
 
 The question: what precisely does Council Session 001 change in the ONT-0002 catalogue, what survives unchanged, and how is that partial supersession recorded so the catalogue's provenance stays intact?
 
@@ -23,7 +23,7 @@ The question: what precisely does Council Session 001 change in the ONT-0002 cat
 * **Coherence of the temporal model** (Guizzardi/Gandon) — adopting PROV-O's `prov:atTime` (an *instant*) while proprietorship, lease-term, and claim-validity *intervals* go unmodelled is incoherent; the catalogue's temporal tier must match what the model actually needs.
 * **Machinery must have a target** (Gandon/Knublauch) — a mapping vocabulary (SSSOM) earns its place only where there is something to map *to*; for single-source internal references `dct:source` to a form-question IRI suffices.
 * **A policy vocabulary asserts nothing without instances** (Guarino) — ODRL is adoptable in catalogue, but authoring policies is premature in an instance-free round.
-* **Honest open questions** — where the session reached no consensus (OBO RO, FOAF), the catalogue records the question as open and routes it to its owning ODR, rather than forcing a premature tier.
+* **Honest open questions** — where the session reached no consensus (OBO RO; and FOAF, since ruled out), the catalogue records the outcome and routes it to its owning ODR, rather than forcing a premature tier.
 * **Minimise disturbance to the survey baseline** — the entire Core tier, the adoption pattern, and the Defer-tier reasoning that the PDTF round did not test must survive unchanged.
 
 ## Considered Options
@@ -53,14 +53,14 @@ OWL-Time moves into active scope for this programme, carrying ONT-0002's adoptio
 **New open questions raised (not adopted, routed to owning ODRs):**
 
 - **OBO RO** — Kendall proposed adding it for transitive part-of (flat → block → estate); Davis rejected it (biology-flavoured; use `dct:isPartOf`). **No consensus — left open**, routed to the Property & Land work ([ONT-0005](./ONT-0005-property-land-identity-crux.md)) where the part-of relation lives.
-- **FOAF / W3C Org ontology** — Guarino: `prov:Agent` is deliberately thin (no person/organisation distinction, no name structure) for the participant model. **Open question**, routed to Agents & Roles ([ONT-0006](./ONT-0006-agents-and-roles.md)) for the FOAF-vs-Org-vs-`prov:Agent` Kind-layer choice. Note this *opens* FOAF: ONT-0002's Defer row reasoned "superseded by `prov:Agent` … Never, probably" — Session 001 reopens that as a live question rather than a settled negative.
+- **FOAF / W3C Org ontology** — Guarino: `prov:Agent` is deliberately thin (no person/organisation distinction, no name structure) for the participant model. Session 001 reopened FOAF as a live question; it has **since been ruled out** (programme decision — "No FOAF"). The Kind-layer choice routed to Agents & Roles ([ONT-0006](./ONT-0006-agents-and-roles.md)) is now **W3C Org ontology vs bespoke `opda:`**, with `prov:Agent` for the provenance role only. ONT-0002's Defer-row negative on FOAF therefore stands.
 
 ### Consequences
 
 * Good, because each tiering change is recorded with its Council session, argument, and tally — the catalogue's provenance is layered (survey baseline + attributed amendment) rather than flattened by an in-place edit.
 * Good, because the temporal tier now matches what the model needs: adopting OWL-Time intervals alongside PROV-O's instants removes the incoherence Guizzardi/Gandon identified.
 * Good, because SSSOM and ODRL-policy deferral keeps unused machinery out of the round while leaving both adoptable the moment a target (external mappings; consent instances) arrives — neither is rejected.
-* Good, because the OBO RO and FOAF questions are recorded as open and routed to their owning ODRs, so they are not silently dropped or prematurely tiered.
+* Good, because the OBO RO question is recorded as open and the FOAF question as decided (ruled out), each routed to its owning ODR, so neither is silently dropped or prematurely tiered.
 * Bad, because the catalogue is now read across two records (ONT-0002 baseline + this amendment) until a future consolidation, so a reader must hold both to see the current tiering.
 * Neutral, because Dublin Core's reclassification is a rationale change with no tier movement — it strengthens the justification without altering what the catalogue permits.
 
@@ -69,7 +69,7 @@ OWL-Time moves into active scope for this programme, carrying ONT-0002's adoptio
 - The amendment is confirmed against the Session 001 Q2 record: each row's tally (OWL-Time ≈6-3; SSSOM ≈5-4 with Cagle dissent) and argument matches the transcript ([session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2).
 - ONT-0002's affected rows are confirmed to carry a "Superseded in part by ONT-0014" note pointing here, and ONT-0002's Core tier, adoption pattern, and untouched Defer reasoning are confirmed unchanged.
 - The OWL-Time adoption is confirmed downstream by its use in [ONT-0007](./ONT-0007-transactions-and-lifecycle.md) (interval modelling), carrying the canonical-URI + local-SHACL + no-`owl:imports` adoption pattern.
-- The open questions are confirmed routed: the FOAF question appears in [ONT-0006](./ONT-0006-agents-and-roles.md)'s open Kind-layer-vocabulary question; the OBO RO question in [ONT-0005](./ONT-0005-property-land-identity-crux.md)'s part-of treatment.
+- The questions are confirmed routed: the Kind-layer-vocabulary question (FOAF ruled out; W3C Org vs bespoke `opda:`) appears in [ONT-0006](./ONT-0006-agents-and-roles.md); the OBO RO question in [ONT-0005](./ONT-0005-property-land-identity-crux.md)'s part-of treatment.
 
 ### Supersession scope
 
@@ -83,7 +83,7 @@ This record **partially supersedes** [ONT-0002](./ONT-0002-ontology-language-ado
 - **ODRL** — **policy-authoring deferred** (the vocabulary remains adopted in catalogue; what changes is that authoring policies is held to Phase 2).
 - **DPV family** — **Phase-1 annotation adopted; the broader lawful-basis/consent/purpose class vocabulary is recorded as a live question** ([ONT-0012](./ONT-0012-data-governance-layer.md)).
 - **Dublin Core** — **rationale restated as "commons substrate"** with no tier change (it remains Core).
-- **OBO RO** and **FOAF** — **opened as questions** routed to [ONT-0005](./ONT-0005-property-land-identity-crux.md) and [ONT-0006](./ONT-0006-agents-and-roles.md) respectively; FOAF's ONT-0002 "Defer / never, probably" reasoning is reopened.
+- **OBO RO** — **opened as a question** routed to [ONT-0005](./ONT-0005-property-land-identity-crux.md). **FOAF** — **ruled out** (programme decision); ONT-0002's "Defer / never, probably" negative stands. The remaining Kind-layer choice routed to [ONT-0006](./ONT-0006-agents-and-roles.md) is **W3C Org ontology vs bespoke `opda:`**, with `prov:Agent` for the provenance role only.
 
 **Survives unchanged — this record does NOT touch:**
 
@@ -113,10 +113,11 @@ Per the DCAP supersession policy, this is a **partial** supersession: this recor
 
 ## More Information
 
+- **Target versions**: this ODR targets **RDF 1.2** and **SHACL 1.2**, per the Core-tier pin in [ONT-0002](./ONT-0002-ontology-language-adoption.md).
 - **Amends**: [ONT-0002](./ONT-0002-ontology-language-adoption.md) — the vocabulary catalogue. The affected rows gain a "Superseded in part by ONT-0014" note; the catalogue's `supersedes`-target relationship is carried in this record's frontmatter (`supersedes: [ONT-0002]`).
 - **Downstream consumers of the amendments**: OWL-Time → Transactions & Lifecycle [ONT-0007](./ONT-0007-transactions-and-lifecycle.md); DPV Phase-1 + ODRL deferral → Governance [ONT-0012](./ONT-0012-data-governance-layer.md); SSSOM-vs-`dct:source` → Enumeration Vocabularies [ONT-0011](./ONT-0011-enumeration-vocabularies.md) and the overlay `dct:source` traceability in [ONT-0010](./ONT-0010-overlay-profile-mechanism.md).
-- **Open questions routed**: OBO RO → [ONT-0005](./ONT-0005-property-land-identity-crux.md) (transitive part-of); FOAF / W3C Org → [ONT-0006](./ONT-0006-agents-and-roles.md) (Kind-layer agent vocabulary).
-- **Deliverables (when fleshed out)**: edits to ONT-0002's Core/Conditional/Defer tables (the "superseded in part" notes); OWL-Time moved into active scope with its adoption pattern documented; the OBO-RO and FOAF questions tracked for their owning ODRs.
+- **Questions routed**: OBO RO → [ONT-0005](./ONT-0005-property-land-identity-crux.md) (transitive part-of, open); FOAF → **ruled out**; W3C Org ontology vs bespoke `opda:` → [ONT-0006](./ONT-0006-agents-and-roles.md) (Kind-layer vocabulary).
+- **Deliverables (when fleshed out)**: edits to ONT-0002's Core/Conditional/Defer tables (the "superseded in part" notes); OWL-Time moved into active scope with its adoption pattern documented; the OBO-RO question tracked for its owning ODR; FOAF resolved (ruled out, not adopted).
 - **Related**: anchor [ONT-0003](./ONT-0003-pdtf-ontology-programme.md). Council deliberation: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (vocabulary set).
 
 ## Vote and Dissent
@@ -130,4 +131,4 @@ This amendment records the Council Session 001 Q2 outcomes it codifies:
 - **DPV** — Phase-1 annotation adopted; **Pandit's broader-TBox dissent recorded as a live question** for [ONT-0012](./ONT-0012-data-governance-layer.md).
 - **Dublin Core** — reclassified rationale to "commons substrate" (Baker, carried); no tier change.
 - **BBO, ArchiMate** — **out** for this programme, unanimous.
-- **OBO RO, FOAF** — **opened, not adopted**; no consensus; routed to [ONT-0005](./ONT-0005-property-land-identity-crux.md) and [ONT-0006](./ONT-0006-agents-and-roles.md).
+- **OBO RO** — **opened, not adopted** (open); no consensus; routed to [ONT-0005](./ONT-0005-property-land-identity-crux.md). **FOAF** — **ruled out** (decided, not adopted); the Kind-layer vocabulary choice (W3C Org vs bespoke `opda:`) routed to [ONT-0006](./ONT-0006-agents-and-roles.md).

@@ -62,6 +62,6 @@ A short outline the Engagement WG can adapt for first contact. Tone: peer-to-pee
 
 ## References
 
-- [ADR-0001](../adr/0001-adopt-dcam-dmbok-elements.md) Wave 2 — three-workstream parallel timeline + recruitment pre-condition
-- [ADR-0005](../adr/0005-deferred-work-register.md) item A5 — register entry this brief operationalises
+- [ADR-0001](../adr/ADR-0001-adopt-dcam-dmbok-elements.md) Wave 2 — three-workstream parallel timeline + recruitment pre-condition
+- [ADR-0005](../adr/ADR-0005-deferred-work-register.md) item A5 — register entry this brief operationalises
 - [`/governance/data-stewardship`](../../src/pages/governance/data-stewardship.astro) — Domain Data Steward roles (separate but related recruitment effort)

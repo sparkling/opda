@@ -11,7 +11,7 @@ last_updated: "2026-05-19"
 
 ## Trigger
 
-This stub activates when **the first member firm requests private detailed views** of the Accreditation Directory. Until then, no work happens. See [ADR-0005 register item F3](../adr/0005-deferred-work-register.md) and the third visibility tier in [ADR-0004 §3](../adr/0004-accreditation-directory.md).
+This stub activates when **the first member firm requests private detailed views** of the Accreditation Directory. Until then, no work happens. See [ADR-0005 register item F3](../adr/ADR-0005-deferred-work-register.md) and the third visibility tier in [ADR-0004 §3](../adr/ADR-0004-accreditation-directory.md).
 
 ## Why this is a stub
 
@@ -72,7 +72,7 @@ When the first member-firm request arrives, this stub is promoted to its own ADR
 
 ## References
 
-- [ADR-0004](../adr/0004-accreditation-directory.md) §3 — tiered visibility, third tier (member-firm portal) marked deferred
-- [ADR-0004](../adr/0004-accreditation-directory.md) §Open question 3 — member-firm portal trigger
-- [ADR-0005](../adr/0005-deferred-work-register.md) item F3 — register entry this stub backs
+- [ADR-0004](../adr/ADR-0004-accreditation-directory.md) §3 — tiered visibility, third tier (member-firm portal) marked deferred
+- [ADR-0004](../adr/ADR-0004-accreditation-directory.md) §Open question 3 — member-firm portal trigger
+- [ADR-0005](../adr/ADR-0005-deferred-work-register.md) item F3 — register entry this stub backs
 - Non-Compliant Member Policy — `source/01-organisation/accreditation/Non-Compliant Member Policy - OPDA.docx` (suspension semantics interact with portal access)

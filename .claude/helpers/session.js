@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Claude Flow Session Manager
+ * Ruflo Session Manager
  * Handles session lifecycle: start, restore, end
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const SESSION_DIR = path.join(process.cwd(), '.claude-flow', 'sessions');
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
+const SESSION_DIR = path.join(PROJECT_ROOT, '.claude-flow', 'sessions');
 const SESSION_FILE = path.join(SESSION_DIR, 'current.json');
 
 const commands = {
@@ -16,7 +17,7 @@ const commands = {
     const session = {
       id: sessionId,
       startedAt: new Date().toISOString(),
-      cwd: process.cwd(),
+      cwd: process.cwd(), // adr-0100-allow: tracked in ADR-0118 hive-mind-runtime-gaps-tracker
       context: {},
       metrics: {
         edits: 0,
@@ -98,14 +99,6 @@ const commands = {
     fs.writeFileSync(SESSION_FILE, JSON.stringify(session, null, 2));
 
     return session;
-  },
-
-  get: (key) => {
-    if (!fs.existsSync(SESSION_FILE)) return null;
-    try {
-      const session = JSON.parse(fs.readFileSync(SESSION_FILE, 'utf-8'));
-      return key ? (session.context || {})[key] : session.context;
-    } catch { return null; }
   },
 
   metric: (name) => {
