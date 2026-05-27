@@ -708,34 +708,40 @@ def build_agent_shapes() -> Graph:
     )
 
     # --- Cat 4: special-category PII without lawful basis (per S012 Q3) -
-    # Targets Person because Person carries the aggregate baseline; the
-    # property-level shape on a hypothetical opda:hasSpecialCategoryData
-    # predicate would emit downstream when SpecialCategoryScheme members
-    # are populated (deferred per ODR-0011 — no Q3 enum currently scoped).
-    pshape = BNode()
+    # Targets Person; expressed as a SHACL-AF SPARQL constraint because the
+    # semantics ("IF Person has opda:hasSpecialCategoryData true THEN
+    # Person must have dpv:hasLegalBasis") cannot be expressed cleanly
+    # with core SHACL constraint components — sh:property + sh:hasValue
+    # would force every Person to carry the predicate. SPARQL constraint
+    # fires the violation only on the conditional intersection per
+    # ODR-0013 §Q1 Cat 4 intent.
+    sparql_node = BNode()
     g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
            RDF.type, SH.NodeShape))
     g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.targetClass, OPDA.Person))
     g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
-           SH.property, pshape))
+           SH.severity, SH.Violation))
     g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
-           DCTERMS.source, _ODR_0012_Q3))
-    g.add((pshape, SH.path, OPDA.hasSpecialCategoryData))
-    g.add((pshape, SH.severity, SH.Violation))
-    g.add((pshape, SH.message, Literal(
+           SH.message, Literal(
         "Special-category PII (GDPR Article 10) MUST have an associated "
         "dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 "
         "Category 4: lawful-basis-elevated PII is a Violation-tier breach.",
         lang="en",
     )))
-    # SHACL "if hasValue true then must have dpv:hasLegalBasis" is
-    # expressed as sh:qualifiedValueShape with sh:not / sh:minCount.
-    not_node = BNode()
-    g.add((pshape, SH.hasValue, Literal(True)))
-    g.add((pshape, SH["not"], not_node))
-    g.add((not_node, SH.path, DPV.hasLegalBasis))
-    g.add((not_node, SH.minCount, Literal(1)))
+    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+           DCTERMS.source, _ODR_0012_Q3))
+    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+           SH.sparql, sparql_node))
+    g.add((sparql_node, SH.select, Literal(
+        "PREFIX opda: <https://w3id.org/opda/#>\n"
+        "PREFIX dpv: <https://w3id.org/dpv/pd#>\n"
+        "SELECT $this ?path WHERE {\n"
+        "  $this opda:hasSpecialCategoryData true .\n"
+        "  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n"
+        "  BIND (opda:hasSpecialCategoryData AS ?path)\n"
+        "}",
+    )))
 
     # --- SHACL-AF rule #5: IdentifierSuccessionRule (ODR-0006 Q1) -------
     _add_sparql_rule_shape(

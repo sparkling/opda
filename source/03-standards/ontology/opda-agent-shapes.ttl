@@ -10,7 +10,6 @@
 # (ODR-0004 §3a three-graph separation).
 
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix dpv: <https://w3id.org/dpv#> .
 @prefix opda: <https://w3id.org/opda/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -54,7 +53,9 @@ opda:PersonIdentityKeyShape
 opda:SpecialCategoryPIIWithoutLawfulBasisShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q3> ;
-    sh:property _:b691b6403ff07 ;
+    sh:message "Special-category PII (GDPR Article 10) MUST have an associated dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 Category 4: lawful-basis-elevated PII is a Violation-tier breach."@en ;
+    sh:severity sh:Violation ;
+    sh:sparql _:b1ced501bb698 ;
     sh:targetClass opda:Person .
 
 _:b04ddc2ae8a10
@@ -65,22 +66,14 @@ _:bcd856a2c693b
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
 
+_:b1ced501bb698
+    sh:select "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dpv: <https://w3id.org/dpv/pd#>\nSELECT $this ?path WHERE {\n  $this opda:hasSpecialCategoryData true .\n  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n  BIND (opda:hasSpecialCategoryData AS ?path)\n}" .
+
 _:b2ea199d949d8
     sh:datatype xsd:string ;
     sh:maxCount "1"^^xsd:integer ;
     sh:message "Organisation identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."@en ;
     sh:path opda:hasAssertedCapacity ;
-    sh:severity sh:Violation .
-
-_:b6310132735a7
-    sh:minCount "1"^^xsd:integer ;
-    sh:path dpv:hasLegalBasis .
-
-_:b691b6403ff07
-    sh:hasValue "true"^^xsd:boolean ;
-    sh:message "Special-category PII (GDPR Article 10) MUST have an associated dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 Category 4: lawful-basis-elevated PII is a Violation-tier breach."@en ;
-    sh:not _:b6310132735a7 ;
-    sh:path opda:hasSpecialCategoryData ;
     sh:severity sh:Violation .
 
 _:bf660b84eaa1e

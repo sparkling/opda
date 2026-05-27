@@ -6,7 +6,6 @@
 # Comparison is semantic-equivalence (focusNode, resultPath, severity, constraint, message) per tests/baspi5_round_trip/compare_reports.py.
 
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix opda: <https://w3id.org/opda/#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -14,13 +13,4 @@
 <https://w3id.org/opda/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
     dct:source <https://openpropdata.org.uk/data/exemplar/person-with-name-change> ;
-    sh:conforms "false"^^xsd:boolean ;
-    sh:result <https://w3id.org/opda/data/exemplar-reports/result-f0cf380b065e> .
-
-<https://w3id.org/opda/data/exemplar-reports/result-f0cf380b065e>
-    rdf:type sh:ValidationResult ;
-    sh:focusNode <https://openpropdata.org.uk/data/exemplar/person-with-name-change/person> ;
-    sh:resultMessage "Special-category PII (GDPR Article 10) MUST have an associated dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 Category 4: lawful-basis-elevated PII is a Violation-tier breach."@en ;
-    sh:resultPath opda:hasSpecialCategoryData ;
-    sh:resultSeverity sh:Violation ;
-    sh:sourceConstraintComponent sh:HasValueConstraintComponent .
+    sh:conforms "true"^^xsd:boolean .
