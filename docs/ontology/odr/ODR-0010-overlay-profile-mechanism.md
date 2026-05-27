@@ -4,10 +4,10 @@ date: 2026-05-20
 kind: architecture
 tags: [overlays, shacl, profiles, validation-context]
 scope: []
-council: session-001
+council: session-010
 supersedes: []
-depends-on: [ODR-0004, ODR-0005]
-implements: [ODR-0003]
+depends-on: [ODR-0004, ODR-0005, ODR-0006, ODR-0007, ODR-0009, ODR-0011, ODR-0013]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Overlay Profile Mechanism
