@@ -1,0 +1,51 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
+# Situation: flat 5C Glasshouse Mansions. The building was subdivided; UPRN re-issued.
+# The physical flat is the same individual before and after — UPRN succession is administrative, not identity.
+# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (S005 will settle the IC and the succession-reification shape).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/flat-with-split-uprn/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Flat with split UPRN — UPRN succession; physical identity persists" ;
+    dct:status "draft" ;
+    dct:references <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Rule 6: UPRN is a contingent administrative identifier; the same physical Property persists across re-numbering. The right answer is one Property individual (NOT two) whose current UPRN was derived from a predecessor. NO owl:sameAs anywhere. The reification shape for the succession history is deliberately open — Property carries both opda:uprn (current) and opda:previousUPRN (literal) AND a separate opda:UPRNSuccessionEvent resource; S005 will settle whether succession needs a reified event resource, a literal pair, or both." .
+
+# Physical Property — one individual, persists across the UPRN re-numbering.
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Flat 5C Glasshouse Mansions — physical referent (unchanged across UPRN succession)" ;
+    opda:uprn "100000000222" ;
+    opda:previousUPRN "100000000111" ;
+    opda:postalAddress "Flat 5C, Glasshouse Mansions, 102 Glasshouse Walk, London SE11 5ES" .
+
+# Reified succession event — alternative modelling the Council may prefer over literal-pair.
+opda-x:uprn-succession-event
+    a opda:UPRNSuccessionEvent ;
+    rdfs:label "UPRN re-numbering on building subdivision" ;
+    prov:atTime "2022-09-01T00:00:00Z"^^xsd:dateTime ;
+    opda:retiredUPRN "100000000111" ;
+    opda:issuedUPRN "100000000222" ;
+    opda:appliesTo opda-x:property .
+
+# Leasehold title for this flat (registered post-subdivision). The freehold of the building is a
+# separate title not included here — multi-title cardinality is the parallel S005 Q5 question
+# (2-vs-3 class split) and is covered by deliberation, not by stacking more individuals in this exemplar.
+opda-x:title-leasehold
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title TGL654321 (leasehold of Flat 5C)" ;
+    opda:titleNumber "TGL654321" ;
+    opda:tenureKind "leasehold" ;
+    opda:firstRegisteredOn "2022-10-12"^^xsd:date .
+
+# Co-reference between title and physical flat. NEVER owl:sameAs.
+opda-x:title-leasehold opda:identifiesSameProperty opda-x:property .

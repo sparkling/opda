@@ -1,0 +1,29 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
+# Situation: rural cottage, owner-occupied for decades, no first registration yet (isFirstRegistration = Yes).
+# UPRN deliberately absent — Cagle's graceful-degradation challenge (ODR-0005 Rule 3 + Alternatives).
+# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (S005 will settle the IC).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/unregistered-pre-first-registration-house/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Unregistered house pre-first-registration — legal layer absent, UPRN absent" ;
+    dct:status "draft" ;
+    dct:references <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests the IC when no legal counterpart exists yet AND UPRN is absent. The right answer is one physical Property — and it must persist as the same individual when first registration later completes and a LegalEstate/RegisteredTitle subsequently appears. Pressure-tests Guarino's Q4 dissent (IC must work on the physical thing without a legal anchor) and Cagle's graceful-degradation challenge (UPRN-as-sole-key is inert here). The IC the Council settles MUST yield a stable answer for this case before the gate clears." .
+
+# Physical Property only — Endurant category (DOLCE) committed by S005 Q1.
+# UPRN deliberately omitted; no RegisteredTitle / LegalEstate individual exists.
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Unregistered cottage at 7 Old Lane (no UPRN in AddressBase as of dataset cut)" ;
+    opda:postalAddress "7 Old Lane, Lower Slaughter, Gloucestershire, GL54 2HP" ;
+    opda:isFirstRegistration true .
+# Deliberately NO opda:uprn — graceful-degradation case.
+# Deliberately NO RegisteredTitle/LegalEstate individual — registration not yet completed.

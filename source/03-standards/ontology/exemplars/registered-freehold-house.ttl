@@ -1,0 +1,39 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
+# Situation: 24 Acacia Avenue, Birmingham. UPRN present; freehold title registered; single proprietor.
+# Status: provisional. Namespace and several predicate shapes pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (S005 will settle the IC and class cardinality 2-vs-3).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/registered-freehold-house/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Registered freehold house — baseline easy case" ;
+    dct:status "draft" ;
+    dct:references <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests the IC under no edge condition: UPRN present, title registered, single freehold proprietor. The right answer is one physical Property + one RegisteredTitle co-referring; no succession; no degradation; no first-registration ambiguity. Baseline against which the harder cases (unregistered, UPRN-split) are differentiated." .
+
+# Physical Property (Endurant — DOLCE category to be committed by S005 Q1).
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Physical dwelling at 24 Acacia Avenue, Birmingham" ;
+    opda:uprn "100070123456" ;
+    opda:inspireId "urn:opda:inspire:200012345" ;
+    opda:postalAddress "24 Acacia Avenue, Birmingham, B12 9XY" .
+
+# Legal/registered counterpart. 2-vs-3 class cardinality (LegalEstate ?= RegisteredTitle) is S005 Q5.
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title BM123456 (freehold)" ;
+    opda:titleNumber "BM123456" ;
+    opda:tenureKind "freehold" ;
+    opda:firstRegisteredOn "1998-03-14"^^xsd:date ;
+    opda:lastRegistryEvent "2018-05-12"^^xsd:date .
+
+# Co-reference between physical and legal individuals. NEVER owl:sameAs (ODR-0005 anti-pattern).
+opda-x:title opda:identifiesSameProperty opda-x:property .

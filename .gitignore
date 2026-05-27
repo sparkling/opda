@@ -23,6 +23,12 @@ dist/
 /source/00-deliverables/semantic-models/*
 !/source/00-deliverables/semantic-models/provenance-map.yaml
 !/source/00-deliverables/semantic-models/theme-map.yaml
+# OPDA ontology — parent-repo path per ODR-0004 §8a (peer to nested schemas/ sub-repo).
+# Track the ontology authoring tree (exemplars, future foundation.ttl, etc.).
+!/source/03-standards/
+/source/03-standards/*
+!/source/03-standards/ontology/
+!/source/03-standards/ontology/**
 
 # Build intermediates (regenerated; not tracked)
 /_build/
