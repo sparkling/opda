@@ -199,6 +199,15 @@ Generator emits **one TTL file per ratified module ODR** (`opda-property.ttl`, `
 
 The composer step assembles the derived consumer profiles (`opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl`) from the per-module source graphs.
 
+### Generator version vs ontology version-IRI (G15 amendment, 2026-05-27)
+
+Two version numbers track different things and intentionally decouple:
+
+- **`opda_gen.__version__`** — the generator package's emitter-capability version. Bumps when the generator gains a new emitter scope (e.g. 0.1.0 = foundation only; 0.2.0 = + vocabularies; 0.3.0 = + module classes; 0.4.0 = + module shapes + DPV annotations). Drives the `opda-gen --version` output and the source-commit sentinel pin per ADR-0009 §"sentinel pinning convention".
+- **`owl:versionIRI <https://w3id.org/opda/<NNN>/>`** on each emitted ontology — the **content version** of that specific graph. Bumps only when the graph's triples change. Foundation's class-graph `owl:versionIRI` stayed at `0.3.0` across the 0.3.0 → 0.4.0 generator bump because the class graph content was unchanged; only the shapes + annotations files (new ontology IRIs `<https://w3id.org/opda/shapes/0.3.0/>` etc.) gained content.
+
+The decoupling matters for consumers: an ontology consumer importing `<https://w3id.org/opda/0.3.0/>` should see byte-identical content regardless of which generator version emitted it. A consumer using `opda-gen` as a build-time tool gets the latest emitter scope. The two-number contract is engineering's, not Council's; emitter-scope bumps follow programme-plan ADR phasing (ADR-0009 → 0.1.0; ADR-0010 → 0.2.0; ADR-0011 → 0.3.0; ADR-0012 → 0.4.0; ADR-0013 → 0.5.0; ADR-0014 → 1.0.0 on MVP gate).
+
 ### A9 per-kind discipline output
 
 For `kind: pattern` and `kind: mapping` module ODRs (per Session A9 + ODR-0001 §"What an ODR records"), the generator MUST emit on each minted class:

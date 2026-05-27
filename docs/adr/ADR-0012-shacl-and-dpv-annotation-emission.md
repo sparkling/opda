@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, shacl, dpv, annotations, validation, emission]
 supersedes: []
@@ -332,3 +332,8 @@ A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker ame
   - BASPI5 round-trip integration (ADR-0014).
   - Exemplar `expected-report.ttl` generation (ADR-0014).
   - DPV TBox itself (referenced; not imported — Kendall's S012 condition).
+
+## Amendments
+
+- **2026-05-27 — Implementation landed (commit `050f595`).** 12 new TTLs emitted: 6 module shapes + 6 module annotations. Foundation `opda-shapes.ttl` extended with the three interface-contract meta-shapes + Cat 3 + Cat 5 meta-shapes + 2 SHACL-AF meta-rules. Foundation `opda-annotations.ttl` remains header-only (foundation classes not PII-bearing). All five `sh:Violation` categories emit (Cat 1 identity-key: 15 shapes; Cat 2 IC breach: 2 shapes; Cat 3 no-identity-override: 1 meta-shape; Cat 4 special-category PII: 1 shape with placeholder predicate per G14; Cat 5 meta-shape-over-shape-graph: 1 meta-shape). 11 SHACL-AF citing sites all emit (9 at sh:Info default; 1 sh:Warning per ADR explicit override; 1 sh:Violation as Cat 3 meta-shape). G1 code half closed (`tools/opda-gen/src/opda_gen/term_sourcing.py` rewritten to ODR-0004 §7a slot ordering; `ResolvedTerm` returns primary + contextual; regulator-only terms resolve cleanly). Generator bumped 0.3.0 → 0.4.0; foundation `owl:versionIRI` decoupled at 0.3.0 (class-graph unchanged). Test suite grew 61 → 102 (+41). Implementation report at [`docs/adr/implementation-reports/ADR-0012-implementation.md`](./implementation-reports/ADR-0012-implementation.md).
+- **2026-05-27 — Independent validation PASS-WITH-FOLLOW-UPS (commit `ae1560f`).** Soundness 7/7, Completeness 7/7 (with explicit deferrals named to ADR-0013/0014), Cross-ADR 10/10. All 5 worker-flagged within-engineering ambiguities (PIIWithoutDPVCoAnnotation sh:Warning override; Cat 4 placeholder predicate; descriptive Kind identity-key targeting; `__version__` vs `owl:versionIRI` decoupling; G1 landing here) independently affirmed. Four new follow-ups surfaced (G12 cosmetic serialiser dedup; G13 housekeeping G1 status close; G14 Cat 4 shape activation trigger Council-routed for S012 Q3; G15 cosmetic `__version__`-decoupling doc amendment). Status moves `proposed → accepted`. Validation report at [`docs/adr/validation/ADR-0012-validation-report.md`](./validation/ADR-0012-validation-report.md).
