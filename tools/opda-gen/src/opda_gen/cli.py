@@ -28,6 +28,14 @@ Realises:
 - ADR-0011 §"Module emission template" — the `emit` umbrella now also
   invokes `emit-all-modules` after foundation + vocabularies so the
   byte-identity diff covers the full Phase-3 corpus.
+- ADR-0012 §Confirmation #1 — `emit-shapes` writes six per-module
+  shape TTLs to the canonical ontology directory (default) or to a
+  user-supplied output directory; `--module <name>` restricts emission
+  to a single module. `emit-annotations` is the sibling subcommand for
+  DPV annotation graphs. The `emit` umbrella now also invokes both so
+  byte-identity diff covers the full Phase-4 corpus (4 foundation + 1
+  vocabularies + 6 module classes + 6 module shapes + 6 module
+  annotations = 23 files).
 - ADR-0007 §"Architecture" — generator entry point in the data flow.
 - ODR-0004 §6a — generator-first contract surface exposed to CI.
 
@@ -130,8 +138,12 @@ def emit(output: Path | None) -> None:
     explicit-deferral discipline of programme plan §9.2.
     """
     target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.annotations import (
+        emit_annotations as _emit_annotations,
+    )
     from opda_gen.emitters.classes import emit_all_modules as _emit_modules
     from opda_gen.emitters.foundation import emit_foundation as _emit_foundation
+    from opda_gen.emitters.shapes import emit_shapes as _emit_shapes
     from opda_gen.emitters.vocabularies import (
         emit_vocabularies as _emit_vocabularies,
     )
@@ -140,6 +152,8 @@ def emit(output: Path | None) -> None:
     written.update(_emit_foundation(target))
     written.update(_emit_vocabularies(target))
     written.update(_emit_modules(target))
+    written.update(_emit_shapes(target))
+    written.update(_emit_annotations(target))
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
 
@@ -229,16 +243,85 @@ def emit_module(name: str, output: Path | None) -> None:
 
 @main.command(name="emit-shapes")
 @click.option(
+    "--module",
+    "-m",
+    type=str,
+    required=False,
+    default=None,
+    help=(
+        "Name of a single module to emit (property, agent, transaction, "
+        "claim, governance, descriptive). If omitted, emits all six "
+        "per-module shape files."
+    ),
+)
+@click.option(
     "--output",
     "-o",
     type=click.Path(file_okay=False, path_type=Path),
-    required=True,
+    required=False,
+    default=None,
+    help=(
+        "Output directory for shape TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
 )
-def emit_shapes(output: Path) -> None:
-    """Emit shapes graph (Phase 4)."""
-    from opda_gen.emitters.shapes import emit as _emit
+def emit_shapes(module: str | None, output: Path | None) -> None:
+    """Emit per-module SHACL shape TTLs (Phase 4; ADR-0012).
 
-    _emit(output)
+    Writes one or six `opda-<module>-shapes.ttl` files containing per-
+    Kind identity-key shapes, IC-breach (anti-pattern) shapes, and
+    SHACL-AF non-blocking quality rules. The foundation shapes graph
+    (`opda-shapes.ttl`) is emitted separately by `emit-foundation`
+    (which now carries the three-rule interface-contract meta-shapes
+    + Cat 3 / Cat 5 meta-shapes per ADR-0012).
+    """
+    target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.shapes import emit_shapes as _emit
+
+    written = _emit(target, module=module)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
+
+
+@main.command(name="emit-annotations")
+@click.option(
+    "--module",
+    "-m",
+    type=str,
+    required=False,
+    default=None,
+    help=(
+        "Name of a single module to emit (property, agent, transaction, "
+        "claim, governance, descriptive). If omitted, emits all six "
+        "per-module annotation files."
+    ),
+)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Output directory for annotation TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+def emit_annotations(module: str | None, output: Path | None) -> None:
+    """Emit per-module DPV annotation TTLs (Phase 4; ADR-0012).
+
+    Writes one or six `opda-<module>-annotations.ttl` files containing
+    class-level DPV baselines + variant-conditional refinement maps
+    per ODR-0018. Reference-not-import for DPV: DPV terms cited via
+    `dct:references` and URIRef triples; no `owl:imports
+    <https://w3id.org/dpv/pd>`.
+    """
+    target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.annotations import emit_annotations as _emit
+
+    written = _emit(target, module=module)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
 
 
 @main.command(name="emit-profile")

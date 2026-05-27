@@ -16,10 +16,22 @@ Realises:
   the cross-cutting UFO discipline. The classes carry full A9 per-kind
   discipline citing UFO source (Guizzardi 2005 Ch. 4) and the ratifying
   ODR section (ODR-0006 §Q2/§Q3).
+- ADR-0012 — foundation `opda-shapes.ttl` extension with cross-cutting
+  meta-shapes: NoIdentityOverride (Cat 3 per ODR-0013); ShInSemantics +
+  ShViolationFloor (three-rule interface contract per ODR-0010);
+  MetaShapeOverShapeGraph (Cat 5 per ODR-0017 §2a amendment);
+  PIIWithoutDPVCoAnnotationRule (SHACL-AF rule per ODR-0012 §Q5 +
+  ODR-0017); DeprecationChainRule (SHACL-AF rule per ODR-0011 §5a +
+  ODR-0017). Per-module shapes live in `opda-<module>-shapes.ttl`.
+- ADR-0012 — foundation `opda-annotations.ttl` remains header-only;
+  the five foundation classes (DiagnosticExemplar, GeneratorRun,
+  RoleMixin, Role, Relator) are not PII-bearing.
 - ADR-0009 §"opda-shapes.ttl — initial shapes graph" — header-only graph
-  pointing at the class-graph version IRI via `opda:targetsClassGraph`.
+  pointing at the class-graph version IRI via `opda:targetsClassGraph`
+  (now extended by ADR-0012).
 - ADR-0009 §"opda-annotations.ttl — initial annotations graph" — header-only
-  graph pointing at the class-graph version IRI.
+  graph pointing at the class-graph version IRI (remains header-only
+  per ADR-0012 because foundation classes have no DPV regime).
 - ADR-0007 §"Deterministic emission rules" — every emitted file is produced
   by the canonical serialiser; rdflib's own Turtle writer is NOT used.
 - ADR-0007 §"A9 per-kind discipline output" — class blocks emit the
@@ -65,16 +77,23 @@ VANN = Namespace("http://purl.org/vocab/vann/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
-# --- Constants pinned by ADR-0009 + ADR-0010 + ADR-0011 -------------------
+# --- Constants pinned by ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 -------
 _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
-# `owl:versionIRI` advances when the generator version bumps and the
-# emitted substrate materially extends. ADR-0009 pinned 0.1.0 (foundation
-# only). ADR-0010 introduces the SKOS substrate (16 ConceptSchemes), which
-# is a substantive addition to the corpus; the version IRI moved to 0.2.0.
-# ADR-0011 adds six per-module TBoxes plus three UFO meta-classes
-# (RoleMixin / Role / Relator) folded into the foundation class graph,
-# warranting a further minor bump to 0.3.0 in lockstep with
-# `opda_gen.__version__`.
+# `owl:versionIRI` is the CLASS-GRAPH identity; it advances when the
+# class-graph content materially extends (new owl:Class declarations or
+# property declarations), NOT when shapes / annotations / SKOS substrate
+# is added or extended. ADR-0009 pinned 0.1.0 (foundation only).
+# ADR-0010 introduces the SKOS substrate at its own version IRI (the
+# foundation class-graph IRI did not move). ADR-0011 added six per-module
+# TBoxes plus three UFO meta-classes folded into the foundation class
+# graph — that *was* a substantive class-graph extension, hence the bump
+# to 0.3.0. ADR-0012 adds shape graphs + annotation graphs + foundation
+# meta-shapes but does NOT extend the class graph; the class-graph IRI
+# stays at 0.3.0 and module shape files reference it as their
+# `opda:targetsClassGraph`. The generator package version
+# (`opda_gen.__version__`) does bump to 0.4.0 (semver minor: substantive
+# new substrate emitted by the toolchain), and that bump appears in
+# every TTL's generator-comment header.
 _VERSION_IRI = URIRef("https://w3id.org/opda/0.3.0/")
 _SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
 _ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
@@ -99,7 +118,7 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-27"
 # ADR-0011 adds three UFO meta-classes (RoleMixin / Role / Relator) to
 # the foundation class graph plus bumps the foundation `owl:versionIRI`,
 # both substantive foundation mutations warranting the sentinel bump.
-_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0011"
+_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0012"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # Version-info string tracks the ADR responsible for the most recent
@@ -108,7 +127,8 @@ _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # the three UFO meta-classes and unblocks per-module emission.
 _VERSION_INFO = (
     f"{__version__} — foundation + SKOS vocabularies + UFO meta-classes "
-    "(ADR-0009 + ADR-0010 + ADR-0011)"
+    "+ module shapes + DPV annotations "
+    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012)"
 )
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
@@ -158,7 +178,7 @@ def _comment_header(
         "# Implementation: "
         "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
-        "https://openpropdata.org.uk/adr/ADR-0009-foundation-ttl-emission",
+        "https://openpropdata.org.uk/adr/ADR-0012-shacl-and-dpv-annotation-emission",
         f"# Generator version: {_GENERATOR_VERSION_LABEL}",
         f"# Source commit: {git_sha}",
     ]
@@ -352,30 +372,69 @@ def build_classes_graph() -> Graph:
 
 
 def build_shapes_graph() -> Graph:
-    """Build the header-only SHACL shapes graph per ADR-0009 §"opda-shapes.ttl".
+    """Build the foundation SHACL shapes graph.
 
-    No `sh:NodeShape`/`sh:PropertyShape` triples; only the ontology header
-    declaring `opda:targetsClassGraph <https://w3id.org/opda/0.1.0/>`. Module
-    shapes are appended by ADR-0012 emissions.
+    Per ADR-0009: ontology header declaring `opda:targetsClassGraph`.
+    Per ADR-0012: five foundation-level meta-shapes added:
+
+    - `opda:NoIdentityOverride_MetaShape` (Category 3 per ODR-0013 §Q1
+      + ODR-0010 §Q6) — verifies no overlay profile shape can remove
+      the identity-key property of a Substance Kind.
+    - `opda:ShInSemantics_MetaShape` (three-rule interface contract,
+      first rule per ODR-0010) — verifies overlay `sh:in` constraints
+      union into base SKOS scheme (encoded as SPARQL-based skeleton).
+    - `opda:ShViolationFloor_MetaShape` (three-rule interface contract,
+      second rule per ODR-0010) — verifies no overlay downgrades a
+      base `sh:Violation` severity.
+    - `opda:MetaShapeOverShapeGraphMetaShape` (Category 5 per
+      ODR-0013 §Q1 + ODR-0017 §2a amendment) — verifies any
+      meta-shape over the shape-graph using `sh:Violation` severity
+      carries explicit `opda:metaShapeJustification`.
+    - `opda:PIIWithoutDPVCoAnnotationRule` (SHACL-AF rule per
+      ODR-0017 + ODR-0012 §Q5) — non-blocking quality rule flagging
+      any class marked `opda:isPIIBearing true` that lacks a
+      `dpv-pd:hasPersonalDataCategory` co-annotation in the annotation
+      graph.
+    - `opda:DeprecationChainRule` (SHACL-AF rule per ODR-0011 §5a +
+      ODR-0017 §1a citing site #2) — non-blocking quality rule
+      materialising the deprecation chain for any SKOS Concept marked
+      `owl:deprecated true`.
+
+    The cross-module shapes (per-Kind identity / IC breach / etc.)
+    land in the per-module `opda-<module>-shapes.ttl` files via
+    `opda_gen.emitters.shapes`. This foundation file holds only the
+    cross-cutting meta-shapes.
     """
     g = Graph()
     _bind_common(g)
+    g.bind("dct", DCTERMS)
     g.add((_SHAPES_GRAPH_IRI, RDF.type, OWL.Ontology))
     g.add((_SHAPES_GRAPH_IRI, DCTERMS.title, Literal(
         "OPDA SHACL Shapes Graph", lang="en"
     )))
     g.add((_SHAPES_GRAPH_IRI, OPDA.targetsClassGraph, _VERSION_IRI))
+
+    # Lazy import to keep the foundation builder dependency-free at
+    # import time (the shapes builder lives in a sibling module).
+    from opda_gen.emitters.shapes import build_foundation_meta_shapes
+
+    build_foundation_meta_shapes(g)
     return g
 
 
 def build_annotations_graph() -> Graph:
-    """Build the header-only advisory annotations graph per ADR-0009
-    §"opda-annotations.ttl".
+    """Build the foundation advisory annotations graph.
 
-    No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples; only
-    the ontology header declaring `opda:targetsClassGraph
-    <https://w3id.org/opda/0.1.0/>`. Module annotations (DPV co-annotation;
-    LLM hints; UI hints) are appended by ADR-0012 emissions.
+    Per ADR-0009 + ADR-0012: header-only. The five foundation classes
+    (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator) are
+    NOT PII-bearing — none carry a DPV co-annotation. Per-module
+    annotations (DPV co-annotation per ODR-0018; LLM hints; UI hints)
+    land via `opda_gen.emitters.annotations`.
+
+    No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples;
+    no DPV triples (the five foundation classes carry no PII regime);
+    only the ontology header declaring `opda:targetsClassGraph
+    <https://w3id.org/opda/0.4.0/>`.
     """
     g = Graph()
     _bind_common(g)
@@ -430,10 +489,17 @@ def emit_foundation(
         ),
         (
             SHAPES_FILENAME,
-            "OPDA SHACL shapes graph (foundation skeleton)",
+            "OPDA SHACL shapes graph (foundation + cross-cutting meta-shapes)",
             [
-                "Module shapes intentionally empty here; appended by",
-                "per-module emission via ADR-0012.",
+                "Per-module Cat 1/2 shapes + SHACL-AF rules live in",
+                "opda-<module>-shapes.ttl. This file carries the five",
+                "foundation meta-shapes per ADR-0012:",
+                "NoIdentityOverride (Cat 3, ODR-0010 §Q6);",
+                "ShInSemantics + ShViolationFloor (three-rule interface",
+                "contract per ODR-0010); MetaShapeOverShapeGraph (Cat 5,",
+                "ODR-0017 §2a); plus two cross-cutting SHACL-AF rules:",
+                "PIIWithoutDPVCoAnnotationRule (ODR-0012 §Q5);",
+                "DeprecationChainRule (ODR-0011 §5a; ODR-0017 §1a).",
                 "MUST NOT contain owl:Class or owl:imports triples",
                 "(ODR-0004 §3a three-graph separation).",
             ],
@@ -441,10 +507,13 @@ def emit_foundation(
         ),
         (
             ANNOTATIONS_FILENAME,
-            "OPDA advisory annotations graph (foundation skeleton)",
+            "OPDA advisory annotations graph (foundation header)",
             [
-                "Module annotations (DPV co-annotation per ODR-0018; LLM hints;",
-                "UI hints) land via ADR-0012 and downstream module ADRs.",
+                "Header-only per ADR-0012: the five foundation classes",
+                "(DiagnosticExemplar, GeneratorRun, RoleMixin, Role,",
+                "Relator) are not PII-bearing — no DPV co-annotation",
+                "baseline applies. Per-module DPV annotations live in",
+                "opda-<module>-annotations.ttl.",
                 "MUST NOT contain sh:* or owl:Class triples",
                 "(ODR-0004 §3a three-graph separation).",
             ],

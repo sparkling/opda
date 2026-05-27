@@ -82,11 +82,46 @@ jobs:
             diff -q "/tmp/module-$mod/opda-$mod.ttl" "source/03-standards/ontology/opda-$mod.ttl"
           done
 
+      # ----- Activated by ADR-0012 (SHACL + DPV annotation emission) ----
+      # Twelve new TTLs (six per-module shapes + six per-module
+      # annotations) are committed alongside the foundation + module
+      # classes. The `opda-gen emit` umbrella above already regenerates
+      # them, and the directory-level `diff -rq` step already covers them.
+      # The explicit subcommands below validate the per-file emission
+      # contract on its own for each module (matches ADR-0012
+      # §Confirmation #1).
+
+      - name: Regenerate each module's shapes only (per-file gate)
+        working-directory: tools/opda-gen
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            opda-gen emit-shapes --module "$mod" --output "/tmp/shapes-$mod"
+          done
+
+      - name: Module shapes byte-identity
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            diff -q "/tmp/shapes-$mod/opda-$mod-shapes.ttl" "source/03-standards/ontology/opda-$mod-shapes.ttl"
+          done
+
+      - name: Regenerate each module's annotations only (per-file gate)
+        working-directory: tools/opda-gen
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            opda-gen emit-annotations --module "$mod" --output "/tmp/annotations-$mod"
+          done
+
+      - name: Module annotations byte-identity
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            diff -q "/tmp/annotations-$mod/opda-$mod-annotations.ttl" "source/03-standards/ontology/opda-$mod-annotations.ttl"
+          done
+
       # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
       # validate-exemplar runs pyshacl against a diagnostic exemplar and
       # compares to the paired expected-report.ttl. Stays commented until
-      # the shapes graph has content (ADR-0012) and the exemplar harness
-      # lands (ADR-0014).
+      # the exemplar harness lands (ADR-0014). ADR-0012 shapes are now
+      # present; ADR-0014 will activate this step.
       #
       # - name: Validate sample exemplar
       #   working-directory: tools/opda-gen

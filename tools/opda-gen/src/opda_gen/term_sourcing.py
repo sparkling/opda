@@ -2,39 +2,65 @@
 Module term_sourcing.
 
 Realises:
-- ADR-0007 §"Term-sourcing five-line precedence" — five-tier resolver: W3C spec
-  > OPDA Trust Framework > business glossary > data dictionary > external
-  regulator. Generator MUST resolve each term against this precedence and emit
-  `dct:source` to the authoritative origin.
+- ADR-0007 §"Term-sourcing five-line precedence" (amended 2026-05-27 per
+  G1) — five-tier resolver implementing ODR-0004 §7a slot ordering exactly:
+  slot 1 = W3C / external spec (authoritative); slot 2 = OPDA Trust Framework
+  (authoritative); slot 3 = other regulatory authorities (**contextual, not
+  authoritative**); slot 4 = OPDA business glossary (authoritative);
+  slot 5 = data-dictionary schema-leaf (authoritative).
 - ADR-0008 §"Repository structure" — `term_sourcing.py` per layout.
 - ODR-0004 §Rules.7 — every minted term carries `dct:source`; precedence:
   W3C spec > business glossary > schema text.
-- ODR-0004 §7a — five-line precedence (Knublauch DA's full demand): W3C >
-  OPDA TF > regulator (contextual) > glossary > schema-leaf. NOTE: ODR-0004
-  §7a re-orders Knublauch's five lines such that "other regulatory authorities"
-  is tier 3 *but is contextual, not authoritative*. The resolver below treats
-  the five tiers as the canonical lookup order; downstream emitters
-  (ADR-0009+) emit `skos:scopeNote` for tier-5 contextual sources per the
-  programme plan's authoritative/contextual distinction.
+- ODR-0004 §7a — five-line precedence (Knublauch DA's full demand); G1
+  closure-amendment 2026-05-27 corrected the slot order in this module
+  to match §7a verbatim. Prior (pre-G1) code wrongly placed glossary at
+  tier 3 and regulators at tier 5 and marked regulators "tier 5";
+  §7a places regulators at slot 3 (contextual) and glossary at slot 4
+  (authoritative). This module now matches.
+
+Contract:
+
+- `resolve_term(...)` returns a `ResolvedTerm` dataclass with:
+  - `primary` (`SourceRecord | None`) — the chosen authoritative slot's
+    record from slots 1 / 2 / 4 / 5 (whichever wins). Resolution stops at
+    the highest-tier match.
+  - `contextual` (`list[SourceRecord]`) — slot-3 regulator records, always
+    evaluated and appended when the term appears in the regulator registry
+    (zero or more entries; an empty list when no regulator citation
+    exists). Always evaluated regardless of whether the primary resolved,
+    so the emitter can attach `skos:scopeNote` / `skos:closeMatch`
+    citations even when primary came from W3C / TF / glossary.
+  - `term_id` — the input term id (for traceability).
+- `SourceRecord.kind` is `"authoritative"` for tiers 1, 2, 4, 5 and
+  `"contextual"` for tier 3.
+- `UnsourceableTerm` is raised only when neither a primary slot resolves
+  nor any contextual slot matches (i.e. the term is completely unknown).
+  A term known only as a slot-3 regulator entry resolves successfully:
+  `primary` is None, `contextual` has the regulator record, and downstream
+  emitters render it as `skos:closeMatch`/`skos:scopeNote` per the
+  consuming ODR's discipline (most commonly ODR-0011 §4a regulator-citation
+  pattern).
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Mapping
 
 
 class UnsourceableTerm(Exception):
-    """Raised when no precedence tier can supply a source for a term.
+    """Raised when no precedence slot can supply a source for a term.
 
-    Per ADR-0007 §"Term-sourcing five-line precedence" the generator MUST fail
-    on unresolved terms; the build-pipeline error names the term verbatim.
+    Per ADR-0007 §"Term-sourcing five-line precedence" the generator MUST
+    fail on unresolved terms; the build-pipeline error names the term
+    verbatim. Slot-3-only (regulator-only) terms do NOT raise — they
+    resolve with `primary=None` and a non-empty `contextual` list.
     """
 
 
 @dataclass(frozen=True)
 class SourceRecord:
-    """The result of a term-sourcing lookup."""
+    """The result of a single-slot term-sourcing lookup."""
 
     term_id: str
     source_url: str
@@ -43,7 +69,22 @@ class SourceRecord:
     kind: str  # "authoritative" | "contextual"
 
 
-# --- Tier-1 W3C / external standard registry (minimal bootstrap) ---------
+@dataclass(frozen=True)
+class ResolvedTerm:
+    """The result of a multi-slot `resolve_term` lookup.
+
+    Per ODR-0004 §7a, primary and contextual citations are emitted into
+    different RDF predicates: the primary's `source_url` becomes
+    `dct:source` on the minted term; each contextual entry becomes
+    `skos:scopeNote` or `skos:closeMatch` by the emitter's discretion.
+    """
+
+    term_id: str
+    primary: SourceRecord | None
+    contextual: list[SourceRecord] = field(default_factory=list)
+
+
+# --- Slot-1 W3C / external standard registry (minimal bootstrap) ---------
 # Each entry pins an authoritative source URI per ODR-0004 §7a `dct:source`
 # discipline (version-IRI preferred; generic "latest" IRIs are forbidden by
 # the §7a `dct:source` URI rule).
@@ -155,14 +196,8 @@ W3C_REGISTRY: Mapping[str, tuple[str, str]] = {
 }
 
 
-# --- Tier-2 OPDA Trust Framework registry (bootstrap) --------------------
+# --- Slot-2 OPDA Trust Framework registry (bootstrap) --------------------
 # Per ODR-0004 §7a: "treated as W3C-equivalent for terms the TF defines".
-# Sample terms drawn from `source/00-deliverables/semantic-models/
-# business-glossary.ttl` Trust Framework header block (terms tagged
-# trust-framework-poc + technical-working-group). The full registry is
-# expected to grow as ADR-0011 (module emission) lands; the bootstrap below is
-# sufficient for the term-sourcing test fixtures and any downstream emitter
-# wanting to resolve a TF-canonical term.
 OPDA_TF_REGISTRY: Mapping[str, tuple[str, str]] = {
     "pdtf:GlossaryScheme": (
         "https://trust.propdata.org.uk/vocab/GlossaryScheme",
@@ -223,10 +258,12 @@ OPDA_TF_REGISTRY: Mapping[str, tuple[str, str]] = {
 }
 
 
-# --- Tier-5 external regulator registry (contextual; not authoritative) --
-# Per ODR-0004 §7a tier-5 entries become `skos:scopeNote` / `skos:closeMatch`
-# rather than `dct:source`. The kind is recorded explicitly so emitters can
-# branch on it.
+# --- Slot-3 external regulator registry (contextual; not authoritative) --
+# Per ODR-0004 §7a: contextual citations rendered via `skos:scopeNote` or
+# `skos:closeMatch`, never as `dct:source`. The kind is recorded
+# explicitly so emitters can branch on it. These entries are appended to
+# `ResolvedTerm.contextual` even when primary resolved from slot 1, 2, 4,
+# or 5 — slot-3 is always evaluated.
 EXTERNAL_REGULATORS: Mapping[str, tuple[str, str]] = {
     "fca:ConductOfBusinessRule": (
         "https://www.handbook.fca.org.uk/handbook/COBS/",
@@ -243,21 +280,15 @@ EXTERNAL_REGULATORS: Mapping[str, tuple[str, str]] = {
 }
 
 
-def resolve_term(
+def _primary_lookup(
     term_id: str,
-    glossary: Mapping[str, object] | None = None,
-    dictionary: Mapping[str, object] | None = None,
-) -> SourceRecord:
-    """Resolve `term_id` against the five-tier precedence.
+    glossary: Mapping[str, object] | None,
+    dictionary: Mapping[str, object] | None,
+) -> SourceRecord | None:
+    """Resolve `term_id` against slots 1, 2, 4, 5 (in that order).
 
-    Order (ADR-0007 §"Term-sourcing five-line precedence"):
-      1. W3C / external standard registry — authoritative.
-      2. OPDA Trust Framework registry — authoritative.
-      3. Business glossary (dict mapping term_id → record with `source_iri`).
-      4. Data dictionary (dict mapping term_id → record with `source_iri`).
-      5. External regulator registry — contextual.
-
-    Raises `UnsourceableTerm` when no tier matches.
+    Returns the first authoritative hit or `None`. Slot 3 (regulator) is
+    explicitly skipped here because it is contextual, never primary.
     """
     if term_id in W3C_REGISTRY:
         url, text = W3C_REGISTRY[term_id]
@@ -269,15 +300,62 @@ def resolve_term(
         record = glossary[term_id]
         url = getattr(record, "source_iri", None) or f"glossary:{term_id}"
         text = getattr(record, "pref_label", None) or term_id
-        return SourceRecord(term_id, url, text, tier=3, kind="authoritative")
+        return SourceRecord(term_id, url, text, tier=4, kind="authoritative")
     if dictionary and term_id in dictionary:
         record = dictionary[term_id]
         url = getattr(record, "source_iri", None) or f"dict:{term_id}"
         text = getattr(record, "comment", None) or term_id
-        return SourceRecord(term_id, url, text, tier=4, kind="authoritative")
+        return SourceRecord(term_id, url, text, tier=5, kind="authoritative")
+    return None
+
+
+def _contextual_lookup(term_id: str) -> list[SourceRecord]:
+    """Resolve `term_id` against slot 3 (regulator registry).
+
+    Returns a list of contextual records (zero or more). Always evaluated
+    regardless of whether the primary resolved. Currently the registry
+    maps one term to one record so the list is at most one element; the
+    multi-element shape is preserved for forward-compatibility with
+    regulators that may publish overlapping citations (e.g. ICO + FCA on
+    AML rule X).
+    """
     if term_id in EXTERNAL_REGULATORS:
         url, text = EXTERNAL_REGULATORS[term_id]
-        return SourceRecord(term_id, url, text, tier=5, kind="contextual")
-    raise UnsourceableTerm(
-        f"No precedence tier supplies a source for term: {term_id!r}"
+        return [SourceRecord(term_id, url, text, tier=3, kind="contextual")]
+    return []
+
+
+def resolve_term(
+    term_id: str,
+    glossary: Mapping[str, object] | None = None,
+    dictionary: Mapping[str, object] | None = None,
+) -> ResolvedTerm:
+    """Resolve `term_id` against ODR-0004 §7a's five-slot precedence.
+
+    Slot order (per §7a verbatim):
+      1. W3C / external spec — authoritative.
+      2. OPDA Trust Framework — authoritative.
+      3. Other regulatory authorities — **contextual** (skos:scopeNote /
+         skos:closeMatch). Always evaluated; appended to
+         `ResolvedTerm.contextual`.
+      4. OPDA business glossary — authoritative.
+      5. Data-dictionary schema-leaf — authoritative.
+
+    The chosen `primary` is the highest-tier authoritative slot that
+    matched (resolution stops at first hit). Slot 3 is **always** evaluated
+    so emitters can attach regulator citations regardless of where the
+    primary came from.
+
+    Raises `UnsourceableTerm` when no slot matches at all (i.e. the term
+    appears in neither the W3C/TF/glossary/dictionary slots nor the
+    regulator slot).
+    """
+    primary = _primary_lookup(term_id, glossary, dictionary)
+    contextual = _contextual_lookup(term_id)
+    if primary is None and not contextual:
+        raise UnsourceableTerm(
+            f"No precedence slot supplies a source for term: {term_id!r}"
+        )
+    return ResolvedTerm(
+        term_id=term_id, primary=primary, contextual=contextual
     )

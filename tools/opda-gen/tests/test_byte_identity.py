@@ -1,6 +1,6 @@
 """
 Tests for end-to-end byte-identity on the foundation + vocabularies +
-modules emission.
+modules + shapes + annotations emission.
 
 Realises:
 - ADR-0008 §"Confirmation" #3 + #6 — byte-identity test in the suite +
@@ -12,14 +12,18 @@ Realises:
 - ADR-0011 §"Confirmation" #2 — byte-identity gate extended again to
   cover the six per-module TTLs (opda-property / agent / transaction /
   claim / governance / descriptive).
+- ADR-0012 §"Confirmation" #2 — byte-identity gate extended to cover
+  the twelve new TTLs (six per-module shapes + six per-module
+  annotations).
 - ADR-0007 §"Byte-identity CI test" sub-test #1 — `diff <(gen) <(gen)`
   returns empty (byte-identical on consecutive runs).
 - ODR-0004 §6a #3 — byte-identity CI contract.
 
 Procedure:
-  1. Emit foundation + vocabularies + modules into tmp dir A.
-  2. Emit foundation + vocabularies + modules into tmp dir B.
-  3. Assert file bytes are identical (all eleven files).
+  1. Emit foundation + vocabularies + modules + shapes + annotations
+     into tmp dir A.
+  2. Emit same into tmp dir B.
+  3. Assert file bytes are identical (all 23 files).
 """
 
 from __future__ import annotations
@@ -27,8 +31,10 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+from opda_gen.emitters.annotations import emit_annotations
 from opda_gen.emitters.classes import emit_all_modules
 from opda_gen.emitters.foundation import emit_foundation
+from opda_gen.emitters.shapes import emit_shapes
 from opda_gen.emitters.vocabularies import emit_vocabularies
 
 
@@ -82,9 +88,10 @@ def test_byte_identity_runner_reports_match() -> None:
     """The `ci.byte_identity.run` helper reports an empty violation list when
     the reference is regenerated identically.
 
-    Per ADR-0011 the reference now must include foundation + vocabularies +
-    six modules; the runner emits all three layers, so the test fixture
-    seeds all three.
+    Per ADR-0012 the reference must include foundation + vocabularies +
+    six module classes + six module shapes + six module annotations = 23
+    files; the runner emits all layers, so the test fixture seeds all
+    layers.
     """
     from opda_gen.ci.byte_identity import run
 
@@ -93,4 +100,6 @@ def test_byte_identity_runner_reports_match() -> None:
         emit_foundation(ref)
         emit_vocabularies(ref)
         emit_all_modules(ref)
+        emit_shapes(ref)
+        emit_annotations(ref)
         assert run(ref) == []

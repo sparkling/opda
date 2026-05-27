@@ -114,6 +114,13 @@ def check_target_class_resolves(
         FILTER NOT EXISTS { GRAPH opda:classes { ?c a owl:Class } } }
       MUST return empty.
 
+    OPDA-namespaced target classes (`opda:*`) MUST resolve to an
+    `owl:Class` declaration in the class graph. External W3C / DPV /
+    PROV-O / etc. target classes are exempt — meta-shapes legitimately
+    target standard classes like `sh:NodeShape`, `owl:Class`,
+    `skos:Concept` (ADR-0012 foundation meta-shapes; ODR-0017 SHACL-AF
+    deprecation rule targeting `skos:Concept`).
+
     Returns a list of unresolved-target violations (empty == PASS).
     """
     from rdflib.namespace import RDF
@@ -122,7 +129,13 @@ def check_target_class_resolves(
         o for _s, _p, o in shapes_graph.triples((None, SH.targetClass, None))
     }
     violations: list[str] = []
+    opda_ns = str(OPDA)
     for cls in target_classes:
+        # External target classes (W3C / DPV / SHACL meta-targets) are
+        # exempt — they exist in their own vocabularies and can't appear
+        # in the OPDA class graph.
+        if not str(cls).startswith(opda_ns):
+            continue
         if (cls, RDF.type, OWL.Class) not in class_graph:
             violations.append(
                 f"sh:targetClass {cls} does not resolve to an owl:Class "
@@ -238,28 +251,62 @@ def run_all(ontology_dir: Path) -> list[str]:
     Returns a flat list of violation strings across all five checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
+
+    Per ADR-0012, the shape and annotation layers expanded from one
+    foundation TTL each to seven TTLs each (1 foundation + 6 per-module).
+    `run_all` merges all `*-shapes.ttl` files into a single shapes graph
+    and all `*-annotations.ttl` files into a single annotations graph
+    before applying the ODR-0004 §3a checks; per-module class files
+    (`opda-{module}.ttl`) merge into the classes graph similarly. This
+    keeps the three-graph contract enforceable across the full Phase-4
+    corpus, not just the foundation skeleton.
     """
     out: list[str] = []
-    classes_path = ontology_dir / "opda-classes.ttl"
-    shapes_path = ontology_dir / "opda-shapes.ttl"
-    annotations_path = ontology_dir / "opda-annotations.ttl"
+
+    foundation_classes = ontology_dir / "opda-classes.ttl"
+    foundation_shapes = ontology_dir / "opda-shapes.ttl"
+    foundation_annotations = ontology_dir / "opda-annotations.ttl"
 
     classes_g = Graph()
     shapes_g = Graph()
     annotations_g = Graph()
 
-    if classes_path.exists():
-        classes_g.parse(str(classes_path), format="turtle")
+    # Foundation files MUST exist.
+    if foundation_classes.exists():
+        classes_g.parse(str(foundation_classes), format="turtle")
     else:
-        out.append(f"missing file: {classes_path}")
-    if shapes_path.exists():
-        shapes_g.parse(str(shapes_path), format="turtle")
+        out.append(f"missing file: {foundation_classes}")
+    if foundation_shapes.exists():
+        shapes_g.parse(str(foundation_shapes), format="turtle")
     else:
-        out.append(f"missing file: {shapes_path}")
-    if annotations_path.exists():
-        annotations_g.parse(str(annotations_path), format="turtle")
+        out.append(f"missing file: {foundation_shapes}")
+    if foundation_annotations.exists():
+        annotations_g.parse(str(foundation_annotations), format="turtle")
     else:
-        out.append(f"missing file: {annotations_path}")
+        out.append(f"missing file: {foundation_annotations}")
+
+    # Per-module classes — opda-{module}.ttl (6 expected post-ADR-0011).
+    for module in (
+        "property", "agent", "transaction",
+        "claim", "governance", "descriptive",
+    ):
+        cpath = ontology_dir / f"opda-{module}.ttl"
+        if cpath.exists():
+            classes_g.parse(str(cpath), format="turtle")
+
+    # Per-module shapes + annotations — opda-{module}-shapes/annotations.ttl
+    # (6 + 6 expected post-ADR-0012). Tolerates missing files (Phase 3
+    # corpora that haven't run ADR-0012 yet).
+    for module in (
+        "property", "agent", "transaction",
+        "claim", "governance", "descriptive",
+    ):
+        spath = ontology_dir / f"opda-{module}-shapes.ttl"
+        if spath.exists():
+            shapes_g.parse(str(spath), format="turtle")
+        apath = ontology_dir / f"opda-{module}-annotations.ttl"
+        if apath.exists():
+            annotations_g.parse(str(apath), format="turtle")
 
     out.extend(check_no_shacl_in_annotations(annotations_g))
     out.extend(check_no_owl_imports_in_shapes(shapes_g))

@@ -1,0 +1,362 @@
+"""
+Tests for ADR-0012 DPV annotation emission.
+
+Realises:
+- ADR-0012 §Confirmation #1 — `opda-gen emit-annotations` produces six
+  `*-annotations.ttl` files (one per module).
+- ADR-0012 §Confirmation #2 — byte-identity per file.
+- ADR-0012 §Confirmation #3 — three-graph isolation verified: no
+  sh:* triples in any annotations file; no owl:Class triples; no DPV
+  owl:imports.
+- ADR-0012 §Confirmation #7 — DPV co-annotations validate against
+  ODR-0018 §Rule 3a CI test (DPV triples in annotation graph, NOT in
+  classes / shapes).
+- ODR-0018 §Rule 1 — class-level baseline DPV co-annotations for every
+  PII-bearing Kind.
+"""
+
+from __future__ import annotations
+
+import tempfile
+from pathlib import Path
+
+import pytest
+from rdflib import Graph, Literal, Namespace, URIRef
+from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
+
+
+OPDA = Namespace("https://w3id.org/opda/#")
+DPV = Namespace("https://w3id.org/dpv#")
+DPV_PD = Namespace("https://w3id.org/dpv/pd#")
+SH = Namespace("http://www.w3.org/ns/shacl#")
+
+
+MODULE_NAMES = (
+    "property",
+    "agent",
+    "transaction",
+    "claim",
+    "governance",
+    "descriptive",
+)
+
+
+@pytest.fixture(scope="module")
+def emitted_annotations(
+    tmp_path_factory: pytest.TempPathFactory,
+) -> dict[str, Path]:
+    """Emit foundation + all six module annotations into a single tmp dir."""
+    tmp = tmp_path_factory.mktemp("annotations-ttls")
+    from opda_gen.emitters.annotations import emit_annotations
+    from opda_gen.emitters.foundation import emit_foundation
+
+    emit_foundation(tmp)
+    emit_annotations(tmp)
+    out = {"foundation": tmp / "opda-annotations.ttl"}
+    for name in MODULE_NAMES:
+        out[name] = tmp / f"opda-{name}-annotations.ttl"
+    return out
+
+
+# ---------------------------------------------------------------------------
+# §Confirmation #1 — all six module annotation files emit
+# ---------------------------------------------------------------------------
+def test_all_six_module_annotation_files_emit(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    for name in MODULE_NAMES:
+        path = emitted_annotations[name]
+        assert path.exists(), (
+            f"annotations module {name} did not emit at {path}"
+        )
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        assert len(g) > 0, f"annotations module {name} parsed empty"
+
+
+def test_foundation_annotations_remains_header_only(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Per ADR-0012: foundation classes (DiagnosticExemplar, GeneratorRun,
+    RoleMixin, Role, Relator) are NOT PII-bearing, so the foundation
+    opda-annotations.ttl carries no DPV co-annotation predicate triples."""
+    g = Graph()
+    g.parse(str(emitted_annotations["foundation"]), format="turtle")
+    # No DPV predicates at all.
+    for s, p, o in g:
+        assert not str(p).startswith("https://w3id.org/dpv"), (
+            f"foundation annotations carries unexpected DPV predicate {p}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# §Confirmation #2 — byte-identity per file
+# ---------------------------------------------------------------------------
+def test_annotation_files_byte_identical_across_runs() -> None:
+    from opda_gen.emitters.annotations import emit_annotations
+
+    with tempfile.TemporaryDirectory() as a_dir, tempfile.TemporaryDirectory() as b_dir:
+        a = Path(a_dir)
+        b = Path(b_dir)
+        emit_annotations(a)
+        emit_annotations(b)
+        a_files = sorted(p.name for p in a.iterdir())
+        b_files = sorted(p.name for p in b.iterdir())
+        assert a_files == b_files
+        for name in a_files:
+            assert (a / name).read_bytes() == (b / name).read_bytes(), (
+                f"byte mismatch on second run: {name}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# §Confirmation #3 — three-graph isolation
+# ---------------------------------------------------------------------------
+def test_no_shacl_in_annotations(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Per ODR-0004 §3a CI test 1: no sh:* triples in any annotation file."""
+    for name, path in emitted_annotations.items():
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        for s, p, o in g:
+            assert not str(p).startswith("http://www.w3.org/ns/shacl#"), (
+                f"annotations file {name} contains sh:* predicate {p}"
+            )
+
+
+def test_no_owl_class_triples_in_annotations(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    for name, path in emitted_annotations.items():
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        class_subjects = list(g.subjects(RDF.type, OWL.Class))
+        assert not class_subjects, (
+            f"annotations file {name} contains owl:Class subjects: "
+            f"{class_subjects}"
+        )
+
+
+def test_no_dpv_owl_imports_in_annotations(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Reference-not-import for DPV per ODR-0018 §Rule 3 + Kendall S012."""
+    for name, path in emitted_annotations.items():
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        for _, _, o in g.triples((None, OWL.imports, None)):
+            assert not str(o).startswith("https://w3id.org/dpv"), (
+                f"annotations file {name} imports DPV via owl:imports {o}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# DPV co-annotation coverage — every expected baseline emits
+# ---------------------------------------------------------------------------
+def test_property_baseline_dpv_coannotation(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    g = Graph()
+    g.parse(str(emitted_annotations["property"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    # opda:Property → dpv-pd:PostalAddress baseline.
+    expected = (OPDA.Property, has_pd,
+                URIRef("https://w3id.org/dpv/pd#PostalAddress"))
+    assert expected in g, (
+        f"missing Property baseline DPV co-annotation: {expected}"
+    )
+    # opda:RegisteredTitle → dpv-pd:PublicData (S005 §3c).
+    expected2 = (OPDA.RegisteredTitle, has_pd,
+                 URIRef("https://w3id.org/dpv/pd#PublicData"))
+    assert expected2 in g, (
+        f"missing RegisteredTitle baseline DPV co-annotation: {expected2}"
+    )
+
+
+def test_address_variant_refinements_present(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Per ODR-0015 §7a + ODR-0018 §3a: three Address variant refinements."""
+    g = Graph()
+    g.parse(str(emitted_annotations["property"]), format="turtle")
+    expected_refinements = (
+        OPDA.AddressVariantTitleRefinement,
+        OPDA.AddressVariantMarketingRefinement,
+        OPDA.AddressVariantInspireRefinement,
+    )
+    for ref in expected_refinements:
+        assert (ref, RDF.type, OPDA.DPVMappingRefinement) in g, (
+            f"missing Address variant refinement: {ref}"
+        )
+
+
+def test_person_baseline_dpv_coannotation(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    g = Graph()
+    g.parse(str(emitted_annotations["agent"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    expected = (OPDA.Person, has_pd,
+                URIRef("https://w3id.org/dpv/pd#Name"))
+    assert expected in g, (
+        f"missing Person baseline DPV co-annotation: {expected}"
+    )
+
+
+def test_organisation_documented_as_not_pii(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """opda:Organisation has rdfs:comment documenting why no DPV
+    baseline applies (sole-trader/individual-director surface yields
+    Person co-annotation, not Organisation)."""
+    g = Graph()
+    g.parse(str(emitted_annotations["agent"]), format="turtle")
+    comments = list(g.objects(OPDA.Organisation, RDFS.comment))
+    assert comments, (
+        "opda:Organisation should have rdfs:comment documenting "
+        "the absence of a DPV class-level baseline"
+    )
+    # The comment text should reference Q6.
+    assert any("Q6" in str(c) for c in comments)
+
+
+def test_claim_baseline_dpv_coannotation(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    g = Graph()
+    g.parse(str(emitted_annotations["claim"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    expected = (OPDA.Claim, has_pd,
+                URIRef("https://w3id.org/dpv/pd#OfficialID"))
+    assert expected in g, (
+        f"missing Claim baseline DPV co-annotation: {expected}"
+    )
+
+
+def test_evidence_subclass_refinements_present(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    g = Graph()
+    g.parse(str(emitted_annotations["claim"]), format="turtle")
+    expected_refinements = (
+        OPDA.DocumentEvidenceRefinement,
+        OPDA.ElectronicRecordEvidenceRefinement,
+        OPDA.VouchEvidenceRefinement,
+    )
+    for ref in expected_refinements:
+        assert (ref, RDF.type, OPDA.DPVMappingRefinement) in g, (
+            f"missing Evidence variant refinement: {ref}"
+        )
+
+
+def test_transaction_annotations_header_only(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Transactions are Relators (events), not PII bearers."""
+    g = Graph()
+    g.parse(str(emitted_annotations["transaction"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    # No baseline triples — only documentation triples on the module IRI.
+    for s, p, o in g.triples((None, has_pd, None)):
+        raise AssertionError(
+            f"transaction annotations should be header-only; found "
+            f"unexpected DPV baseline {s} {p} {o}"
+        )
+
+
+def test_governance_annotations_header_only(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Governance classes are meta-records, not PII bearers."""
+    g = Graph()
+    g.parse(str(emitted_annotations["governance"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    for s, p, o in g.triples((None, has_pd, None)):
+        raise AssertionError(
+            f"governance annotations should be header-only; found "
+            f"unexpected DPV baseline {s} {p} {o}"
+        )
+
+
+def test_descriptive_epc_baseline(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    g = Graph()
+    g.parse(str(emitted_annotations["descriptive"]), format="turtle")
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    expected = (OPDA.EPCCertificate, has_pd,
+                URIRef("https://w3id.org/dpv/pd#PostalAddress"))
+    assert expected in g, (
+        f"missing EPCCertificate baseline DPV co-annotation: {expected}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# §Confirmation #7 — DPV co-annotations NOT in classes graph
+# ---------------------------------------------------------------------------
+def test_dpv_coannotations_not_in_classes_graph(
+    emitted_annotations: dict[str, Path],
+    tmp_path: Path,
+) -> None:
+    """Per ODR-0018 §3a CI test 3: DPV triples MUST NOT appear in any
+    classes file. Emit the full module class graph + verify."""
+    from opda_gen.emitters.classes import emit_all_modules
+    from opda_gen.emitters.foundation import emit_foundation
+
+    emit_foundation(tmp_path)
+    emit_all_modules(tmp_path)
+
+    for path in sorted(tmp_path.glob("opda-*.ttl")):
+        # Skip the shapes / annotations files for this check.
+        if "-shapes" in path.name or "-annotations" in path.name:
+            continue
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        for s, p, o in g:
+            assert not str(p).startswith("https://w3id.org/dpv"), (
+                f"class file {path.name} contains DPV predicate {p}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# CLI smoke test — emit-annotations with --module restricts to one file
+# ---------------------------------------------------------------------------
+def test_emit_annotations_single_module() -> None:
+    from opda_gen.emitters.annotations import emit_annotations
+
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp)
+        written = emit_annotations(out, module="agent")
+        assert len(written) == 1
+        only = next(iter(written))
+        assert only.name == "opda-agent-annotations.ttl"
+
+
+def test_emit_annotations_invalid_module_raises() -> None:
+    from opda_gen.emitters.annotations import emit_annotations
+
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp)
+        with pytest.raises(ValueError, match="unknown annotations module"):
+            emit_annotations(out, module="nonexistent")
+
+
+# ---------------------------------------------------------------------------
+# Provenance — every annotation carries dct:source somewhere
+# ---------------------------------------------------------------------------
+def test_every_dpv_baseline_kind_has_dct_source(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """Each PII-bearing Kind that emits a DPV baseline MUST also emit
+    dct:source citing the ratifying ODR section."""
+    has_pd = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+    for name, path in emitted_annotations.items():
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        for kind in {s for s, _, _ in g.triples((None, has_pd, None))}:
+            sources = list(g.objects(kind, DCTERMS.source))
+            assert sources, (
+                f"Kind {kind} in {name} carries DPV baseline but no "
+                f"dct:source citation"
+            )

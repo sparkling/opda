@@ -12,7 +12,12 @@ Realises:
   the six per-module TBoxes plus the three UFO meta-classes added to the
   foundation (RoleMixin / Role / Relator) constitute a substantive
   extension of the emitted corpus).
+- ADR-0012 — SHACL + DPV annotation emission (minor version bump
+  0.3.0 → 0.4.0; twelve new TTL files — six per-module shape graphs +
+  six per-module annotation graphs — plus extended foundation shapes
+  carrying the three-rule interface-contract meta-shapes constitute the
+  substrate's largest substantive expansion since Phase 1).
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
