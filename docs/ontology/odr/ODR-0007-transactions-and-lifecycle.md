@@ -23,10 +23,10 @@ scope:
   - pdtf-v3:lengthOfLeaseInYears
   - pdtf-v3:lastDemandPeriod
   - pdtf-v3:moveRestrictionDates
-council: session-001
+council: session-007
 supersedes: []
-depends-on: [ODR-0004, ODR-0005]
-implements: [ODR-0003]
+depends-on: [ODR-0004, ODR-0005, ODR-0006, ODR-0011]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Transactions & Lifecycle
