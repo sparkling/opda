@@ -16,7 +16,7 @@ scope:
 council: session-015
 supersedes: []
 depends-on: [ODR-0004, ODR-0005]
-implements: [ODR-0003]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Address & Geography

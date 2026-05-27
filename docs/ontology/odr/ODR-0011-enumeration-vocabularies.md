@@ -7,7 +7,7 @@ scope: []
 council: session-011
 supersedes: []
 depends-on: [ODR-0004]
-implements: [ODR-0003]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Enumeration Vocabularies

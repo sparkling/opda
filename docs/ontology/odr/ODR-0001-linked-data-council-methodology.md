@@ -193,6 +193,31 @@ Not every proposition needs the full nine-expert apparatus. Three tiers:
 
 Format per session is named in the convening block. The default is Full Council; deviations are justified inline.
 
+### Two-artefact discipline (default for Full Council + Reduced Council)
+
+*Added by Author-only amendment recording the EXPAND verdict from S011 (Phase 2.5 substrate; 2026-05-27). Three pilot sites — S005 (Full Council, B2 pilot `hive-mind/byzantine`) + S015 (Reduced Council, two-artefact only) + S011 (Full Council substrate-mode, B3 pilot `hive-mind/typed-output` for Q8) — confirmed that the structured tally captured dissent the narrative reading alone would have buried. The threshold for full adoption is satisfied.*
+
+Every **Full Council** and **Reduced Council** session produces TWO artefacts:
+
+1. **Narrative synthesis (primary).** The Queen's prose transcript per §Session document conventions — the substantive verdict, with each expert's position recorded, the Synthesis section closing the loop.
+2. **Structured per-question tally appendix (second artefact).** A machine-consumable per-voice vote table + DA scorecard + per-question count, embedded in the same transcript document. Downstream tooling (`odr-review` lint extensions; audit-trail consumers; LLM retrievers) reads the tally mechanically.
+
+The DA scorecard discipline is mechanical: each DA position file lists per-question withdrawal conditions verbatim; the Queen synthesis marks each as WITHDRAWN (condition met) / HELD (condition unmet; held-as-live with named re-open trigger) / CONCEDED (no attack). No vague "DA aligned with majority" — the alignment traces to specific named conditions per question.
+
+**Pre-EXPAND status (historical).** The tally appendix was previously conditioned on `consensus-mode` being a hive-mind variant (§Session document conventions historical text). The B2 pilot (`hive-mind/byzantine` at S005) and B3 pilot (`hive-mind/typed-output` at S011 Q8) tested the discipline; all three pilot sites observed structured-tally value beyond narrative reading. **The EXPAND verdict makes the two-artefact discipline UNCONDITIONAL for Full + Reduced Council, regardless of consensus-mode.** Author-only sessions do not require the tally appendix (no panel to tally).
+
+**Pilot-label retirement.** Session-level pilot consensus-mode labels (`hive-mind/byzantine` as the B2 pilot's S005 declaration; `hive-mind/typed-output` as the B3 pilot's S011 Q8 declaration) are retired as session-level labels — the discipline is now default, no special-pilot designation needed. The consensus-mode framework table (next subsection) retains the modes themselves as operational tools selected per session shape; what's retired is the *pilot-status* framing.
+
+**Format-by-format requirements:**
+
+| Format | Narrative synthesis | Structured tally | DA scorecard | Held-as-live dissent record |
+|---|---|---|---|---|
+| Full Council | MUST | MUST | MUST | MUST when DA holds |
+| Reduced Council | MUST | MUST | MUST | MUST when DA holds |
+| Author-only | MUST | n/a (no panel) | n/a | n/a |
+
+The tally artefact's structure is specified in §Session document conventions (Tally appendix).
+
 ### Consensus-mode framework
 
 Each session declares a `consensus-mode` in its frontmatter, selected by applying the criteria below to the session shape. The mode determines which coordination primitive is used.
@@ -356,7 +381,7 @@ Sessions whose subject is the methodology itself, the programme plan, the cut of
     - Inside each: each expert's position as a labelled sub-section or bolded `**Allemang:**` paragraph. The Queen's contribution is marked `**Allemang (Queen):**`; the DA's `**Cagle (DA):**`.
     - **Vote:** `N-M-K` with the tally and (optionally) a one-line summary of the verdict. Approximate tallies admitted only per §Session protocol rule 6.
   - **Synthesis** — Queen's closing summary, amendments, downstream record impact.
-  - **Tally appendix** (only when `consensus-mode` is a hive-mind variant) — the structured vote output from `hive-mind_consensus`, alongside the narrative synthesis. Narrative is the verdict; tally is the count.
+  - **Tally appendix** (MUST for Full Council + Reduced Council per §Two-artefact discipline; n/a for Author-only) — the structured per-voice vote table + per-question count + DA scorecard, embedded in the transcript document. Narrative is the verdict; tally is the count. The tally is machine-consumable (downstream tooling reads it as data); the narrative is human-readable (Queen's prose synthesis). When `consensus-mode` is `hive-mind/byzantine` or `hive-mind/typed-output`, the tally also carries the structured-vote output from `hive-mind_consensus` or the typed-verdict object respectively; for `agent-fan-out` sessions, the tally is constructed from each panel teammate's per-question position votes in their working file.
 
 ### When to use the Council
 
