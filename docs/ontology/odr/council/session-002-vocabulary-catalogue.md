@@ -14,7 +14,7 @@
   | formal-pair | Fabien Gandon + Giancarlo Guizzardi | [gandon-guizzardi.md](./session-002-vocabulary-catalogue/gandon-guizzardi.md) |
   | da-solo | **Kurt Cagle (DA)** | [cagle-da.md](./session-002-vocabulary-catalogue/cagle-da.md) |
 
-  (`shacl-solo` seat is absent because Cagle plays the DA role; no extended-panel guests per [plan §4 Session 002](../../plan/council-followup-sessions.md).)
+  (`shacl-solo` seat is absent because Cagle plays the DA role; no extended-panel guests per [plan §4 Session 002](../../../plan/council-followup-sessions.md).)
 - **Input Documents:**
   - [ODR-0002 — Ontology Languages and Vocabularies Adopted](../ODR-0002-ontology-language-adoption.md) (the stub; 80% settled; 11-row Change Log).
   - [ODR-0001 — Linked Data Council Methodology](../ODR-0001-linked-data-council-methodology.md), especially the new §What an ODR records (per-kind discipline) — A9 amendment ratified 2026-05-27. ODR-0002 is `kind: architecture`; requirements (a) UFO meta-category and (b) IC over named hard cases are RELAXED.
@@ -23,7 +23,7 @@
   - [Scope-Check 1 Q4 transcript](./scope-check-1-programme.md) — the retire-0014 decision (7-1-1; Hendler dissent preserved); Q7c the `cred:`/`did:` admission (8-1).
   - [DCAP profile](../DCAP.md) — §Frontmatter Kind enum; §Sections.
 - **`consensus-mode`:** `agent-fan-out` (default per ODR-0001 §Consensus-mode framework — votes on each question are independent of votes on other questions; verdict reduces to a tally of standalone positions).
-- **Format tier:** **Full Council** (per [plan §4 Session 002 blueprint](../../plan/council-followup-sessions.md)). 5 teammates × 13 questions; Queen synthesis.
+- **Format tier:** **Full Council** (per [plan §4 Session 002 blueprint](../../../plan/council-followup-sessions.md)). 5 teammates × 13 questions; Queen synthesis.
 
 ## Context
 
@@ -279,7 +279,7 @@ Activation Council session is named (Session 012b or an explicit activation amen
 
 ### Q11 — OBO RO (adopt / defer / reject) — DEPTH; genuine pair-split
 
-**Positions** (formal-pair carries the lead per [plan §4 Session 002 Q11](../../plan/council-followup-sessions.md)):
+**Positions** (formal-pair carries the lead per [plan §4 Session 002 Q11](../../../plan/council-followup-sessions.md)):
 
 - **Baker:** Leans defer-not-adopt; `dct:isPartOf` + `opda:`-minted transitive predicates suffice for flat→block→estate.
 - **Pandit:** Concur with Baker; not own area.
@@ -437,7 +437,7 @@ The following amendments land in ODR-0002:
   - [cagle-da.md](./session-002-vocabulary-catalogue/cagle-da.md)
 - [Session 001 transcript](./session-001-pdtf-schema-to-ontology.md) Q2 — every per-vocabulary dispute deliberated.
 - [Scope-Check 1 transcript](./scope-check-1-programme.md) Q4 (retire 0014; Hendler dissent), Q7c (admit `cred:`/`did:`).
-- [Council follow-up sessions plan](../../plan/council-followup-sessions.md) §4 Session 002 blueprint; §4.1 shared-question routing (Q9 SSSOM → ODR-0011; Q10 ODRL → ODR-0012); §5 Phase 0 sequence.
+- [Council follow-up sessions plan](../../../plan/council-followup-sessions.md) §4 Session 002 blueprint; §4.1 shared-question routing (Q9 SSSOM → ODR-0011; Q10 ODRL → ODR-0012); §5 Phase 0 sequence.
 - [DCAP profile](../DCAP.md) — `kind` enum and §Frontmatter prose invoked by the synthesis.
 - [OPDA adoption record §Track Record](./adoption.md#track-record) — updated by this session.
 - **Cited grounding** (per ODR-0001 §Citation grounding): DCMI Abstract Model (Powell, Nilsson, Naeve, Johnston, Baker 2007); Singapore Framework (Nilsson, Baker, Johnston 2008); DCMI Namespace Policy (Baker, Bechhofer, Isaac, Miles 2013); DPV 2.0 §3 *Modules* (Pandit et al. 2024); *Semantic Web for the Working Ontologist* 3rd ed. Chs. 3, 8, 12 (Allemang, Hendler, Gandon 2020); W3C TAG "Cool URIs Don't Change" (2008); FIBO Methodology / Modelling Team Process; BBC `/programmes/` ontology (2009); data.gov.uk linked-data cookbook §3; W3C Org Ontology Rec (Reynolds 2014); PROV-O Rec (Moreau et al. 2013); OBO RO (Smith, Ceusters, Klagges, Köhler, Kumar, Lomax, Mungall, Neuhaus, Rector, Rosse 2005, *Genome Biology* 6:R46); FOAF Vocabulary Specification 0.99 (Brickley & Miller 2014); Guizzardi 2005 *Ontological Foundations for Conceptual Modeling*; Linked Data Principles (Berners-Lee 2006; Heath & Bizer 2011 Chs. 2, 6).

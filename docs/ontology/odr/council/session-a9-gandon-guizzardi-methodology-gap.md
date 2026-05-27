@@ -29,7 +29,7 @@ Gandon's COMBINE vote treated the shapes graph as the unit of decision: "From th
 
 Scope-Check 1 routed the gap back to the ODR-0001 amendment queue (the [Q6 transcript](./scope-check-1-programme.md) closing paragraph: "what does an ODR record — an *artefact-engineering* decision (Gandon) or an *ontological commitment* (Guizzardi)? ODR-0001/DCAP have not chosen between these readings. Under Gandon's reading, 0010+0013 → one ODR. Under Guizzardi's reading, they stay two. DCAP currently reads as Guizzardi's, but the read is implicit. **This is the live methodology gap exposed by this scope-check.**")
 
-The stakes are not cosmetic. The OPDA programme has 12 further sessions queued in `docs/ontology/plan/council-followup-sessions.md`; ≥7 of those produce `kind: pattern` ODRs whose ratifiability depends on what this gap-closing amendment requires. A loose amendment licenses UFO-labelled artefact bundles without falsifiable commitments; a strict amendment imposes IC-over-named-hard-cases discipline that ODR-0005 already practices but other modules do not yet.
+The stakes are not cosmetic. The OPDA programme has 12 further sessions queued in `docs/plan/council-followup-sessions.md`; ≥7 of those produce `kind: pattern` ODRs whose ratifiability depends on what this gap-closing amendment requires. A loose amendment licenses UFO-labelled artefact bundles without falsifiable commitments; a strict amendment imposes IC-over-named-hard-cases discipline that ODR-0005 already practices but other modules do not yet.
 
 Default reading on convening: Guizzardi's, per Scope-Check 1's "DCAP currently reads as Guizzardi's, but the read is implicit" — the DCAP `kind` enum's `pattern` prose-definition explicitly names "identity criteria" as constitutive content.
 
@@ -137,7 +137,7 @@ His procedural concerns: §Procedural #1 (A9 is a `kind: methodology` deliberati
 - **`odr-review`** lint requires a new check (Lint 4 enhancement, or a new Lint 8): for `kind: pattern | mapping` records, verify `## Rules` names (a) a UFO/DOLCE meta-category and (b) at least one identity criterion stated over named hard cases. Warning on `status: proposed`; blocker on `status: accepted`. The lint specification is delegated to the next `odr-review` skill update (not in this session's scope — flagged as a follow-up).
 - **Future ODRs.** S005 (Property IC crux — `kind: pattern`) becomes the first ratifiability test of the amendment. S011 (Enumerations — `kind: pattern` under Scope-Check 1 Q3) is the second. Both already practice the discipline; the amendment makes it normative. ODR-0010 and ODR-0013's currently-mixed content (architecture artefact carrying Relator commitments and identity-tied severity rules) is acknowledged as a known seam ([guizzardi.md "Q6 re-stated under the proposed boundary"](./session-a9-gandon-guizzardi-methodology-gap/guizzardi.md)): the amendment does not retroactively split these records; future amendments may extract the commitment content to sibling `pattern` records when downstream queries require it.
 
-**Termination-signal evaluation** (per `docs/ontology/plan/council-followup-sessions.md` §5 signals 3–6, cumulative at session close):
+**Termination-signal evaluation** (per `docs/plan/council-followup-sessions.md` §5 signals 3–6, cumulative at session close):
 
 - Signal 3 (no duplicate constraint authoring) — N/A (no ontology constraints authored).
 - Signal 4 (≤3-ODR consumer-query traversal) — N/A.
@@ -223,6 +223,6 @@ The following text is added to [ODR-0001 §Rules](../ODR-0001-linked-data-counci
 - [Scope-Check 1 — Programme cut](./scope-check-1-programme.md) Q6 — the deliberation that opened the gap and routed it to A9.
 - [Session 001 transcript](./session-001-pdtf-schema-to-ontology.md) Q1 (diagnostic exemplars) and Q4 (UPRN as contingent) — the precedents the IC discipline generalises from.
 - [DCAP profile](../DCAP.md) — the `kind` enum prose this amendment invokes as the boundary.
-- [Council follow-up sessions plan](../../plan/council-followup-sessions.md) §9 risks — the Gandon-vs-Guizzardi gap routing entry and the Davis Q1/Q5/Q6 held dissents (the absent relaxation-side DA the procedural caveat addresses).
+- [Council follow-up sessions plan](../../../plan/council-followup-sessions.md) §9 risks — the Gandon-vs-Guizzardi gap routing entry and the Davis Q1/Q5/Q6 held dissents (the absent relaxation-side DA the procedural caveat addresses).
 - [OPDA adoption record §Track Record](./adoption.md#track-record) — updated by this session.
 - ODR-0005, ODR-0010, ODR-0011, ODR-0013 — the corpus records whose `kind` classifications the amendment uses as worked examples.

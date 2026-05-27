@@ -10,7 +10,7 @@
   - [Session 002 transcript](./session-002-vocabulary-catalogue.md) — Q11 OBO RO + SSSOM dispositions
   - [Session 011 transcript](./session-011-enumeration-vocabularies.md) — Q3 cross-vocabulary mapping deferral
   - [ODR-0011 Q3 disposition](../ODR-0011-enumeration-vocabularies.md) — SSSOM/SEMAPV deferred; `skos:exactMatch` to schema.org / Wikidata / Land Registry codes admitted-or-deferred
-  - [Council follow-up plan §"Outstanding work after plan completion"](../../plan/council-followup-sessions.md) — Phase-3.5 audit named as Author-only or Reduced Council
+  - [Council follow-up plan §"Outstanding work after plan completion"](../../../plan/council-followup-sessions.md) — Phase-3.5 audit named as Author-only or Reduced Council
 - **`consensus-mode`:** `none` (Author-only)
 - **Format tier:** **Author-only.** Recording cross-vocab mapping discipline + activation triggers; the named experts' positions are stable per S002 + S011 deliberations; substantive deliberation will occur at trigger-time.
 
@@ -99,5 +99,5 @@ The Phase-3.5 audit is **complete**. Cross-vocab mapping is no longer an open pr
 - **Anchor records:** [ODR-0002 Q11 Change Log](../ODR-0002-ontology-language-adoption.md); [ODR-0011 Q3 disposition](../ODR-0011-enumeration-vocabularies.md).
 - **Precedent sessions:** [Session 002 Q11](./session-002-vocabulary-catalogue.md); [Session 011 Q3](./session-011-enumeration-vocabularies.md).
 - **External standards:** SSSOM (Matentzoglu et al. 2022; OBO Foundation); SEMAPV (semantic mapping vocabulary; Mungall et al.); OBO Relation Ontology (Smith et al.).
-- **Plan reference:** [Council follow-up plan §"Outstanding work after plan completion" — Phase-3.5 audit row](../../plan/council-followup-sessions.md).
+- **Plan reference:** [Council follow-up plan §"Outstanding work after plan completion" — Phase-3.5 audit row](../../../plan/council-followup-sessions.md).
 - **Future per-scheme mappings:** when triggered, each Author-only mini-session records the admission with `## Change log` row in the consuming module ODR.

@@ -132,5 +132,5 @@ Updates land as in-place edits with git history as the audit trail. No parallel 
 
 - Methodology: [ODR-0001 — Linked Data Council: Review Methodology](../ODR-0001-linked-data-council-methodology.md).
 - Programme anchor: [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../ODR-0003-pdtf-ontology-programme.md).
-- Plan: [Council follow-up sessions](../../plan/council-followup-sessions.md) — operational plan for the 13 active ODR ratification sessions plus the deferred ODR-0016.
+- Plan: [Council follow-up sessions](../../../plan/council-followup-sessions.md) — operational plan for the 13 active ODR ratification sessions plus the deferred ODR-0016.
 - Sister project precedent: H&M semantic-modelling programme (the source of the Council methodology; see ONT-0021 in that repository).

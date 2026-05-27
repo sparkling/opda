@@ -131,7 +131,7 @@ Rationale: reference-only is the FIBO discipline (`fibo-fnd-utl-av` references `
 
 ### Change log
 
-This catalogue is governed in place: amendments to tiering or rationale are recorded as rows here, attributed to the Council session that authored them. The amendment-ODR pattern (formerly ODR-0014) is **retired** by Scope-Check 1 (2026-05-26, Q4 vote 7-1-1) on FIBO / DCMI / W3C-WD-discipline grounds; provenance is preserved here, not in a parallel record. Hendler's dissent on the retirement ("every governance act stays permanently") is recorded in the follow-up plan's risks (`docs/ontology/plan/council-followup-sessions.md` §9), not silenced.
+This catalogue is governed in place: amendments to tiering or rationale are recorded as rows here, attributed to the Council session that authored them. The amendment-ODR pattern (formerly ODR-0014) is **retired** by Scope-Check 1 (2026-05-26, Q4 vote 7-1-1) on FIBO / DCMI / W3C-WD-discipline grounds; provenance is preserved here, not in a parallel record. Hendler's dissent on the retirement ("every governance act stays permanently") is recorded in the follow-up plan's risks (`docs/plan/council-followup-sessions.md` §9), not silenced.
 
 | Date | Source | Row(s) affected | What changed |
 |---|---|---|---|

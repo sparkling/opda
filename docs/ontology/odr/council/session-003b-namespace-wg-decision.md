@@ -9,7 +9,7 @@
   - [ODR-0004 — PDTF Ontology Foundation](../ODR-0004-pdtf-ontology-foundation.md) — Rules.1 (single hash namespace; WG-owned literal string), §Consequences (`w3id.org/opda/` as named alternative + namespace-as-blocker on `status: accepted`).
   - [Session 004 transcript](./session-004-pdtf-ontology-foundation.md) — Q7 (namespace string + version scheme; 9-0 vote; full Knublauch DA withdrawal; W3C PICG persistence argument carried). Three candidates ratified for WG consideration: `https://opda.uk/ns/` (institutional default; 7 voices); **`https://w3id.org/opda/` (Knublauch DA primary demand; W3C PICG persistence)**; `https://trust.propdata.org.uk/ontology/` (rejected on programme-namespace-coupling grounds).
   - [ADR-0006 — Ontology namespace at w3id.org/opda/ via W3C PICG redirect](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — engineering realisation: redirect mechanics, hosting target, deploy-pipeline implications, five-criterion confirmation gate.
-  - [Council follow-up plan §"Open WG decisions"](../../plan/council-followup-sessions.md) — namespace string named as the gating WG decision blocking `status: accepted` on all 13 ratified ODRs in the `depends-on:[ODR-0004]` chain.
+  - [Council follow-up plan §"Open WG decisions"](../../../plan/council-followup-sessions.md) — namespace string named as the gating WG decision blocking `status: accepted` on all 13 ratified ODRs in the `depends-on:[ODR-0004]` chain.
   - DPV precedent: Pandit (W3C DPV CG chair) chose `https://w3id.org/dpv/` for the same persistence reasons; pattern referenced verbatim at S004 by Knublauch.
 - **`consensus-mode`:** `none` (Author-only — no panel to coordinate).
 - **Format tier:** **Author-only.** Per ODR-0001 §Format tiers: "Recording a decision the methodology or precedent has already settled; sequencing/index work; no panel split expected." The Council ratified three candidates and the operationally-strongest argument at S004; the WG selects from that ratified set.
@@ -30,7 +30,7 @@ This Author-only session records the WG decision into ODR-0004's `## Rules`, lan
 
 ## Pre-flight scope check
 
-Per [ODR-0001 §Pre-flight scope check](../ODR-0001-linked-data-council-methodology.md) and [follow-up plan §11](../../plan/council-followup-sessions.md#11-pre-flight-scope-check--opda-candidates). Outcome: **ratify-as-is**.
+Per [ODR-0001 §Pre-flight scope check](../ODR-0001-linked-data-council-methodology.md) and [follow-up plan §11](../../../plan/council-followup-sessions.md#11-pre-flight-scope-check--opda-candidates). Outcome: **ratify-as-is**.
 
 - **Coherent proposition.** Recording the WG namespace decision into ODR-0004 §Rules.1 is a single coherent decision, scoped to one rule.
 - **No retire signal.** Session 004 affirmed the hash policy 9-0; the WG choice is among the ratified alternatives.
@@ -88,7 +88,7 @@ With the namespace block cleared, the following ODRs move `status: proposed → 
 
 The `council-cleared, namespace-blocked` tags on the flipped ODRs are now vestigial — `status: accepted` carries the same signal. Tags removed at the same time as the status flip.
 
-**Source:** [ODR-0004 §Consequences "Namespace string is a blocker on `status: accepted`"](../ODR-0004-pdtf-ontology-foundation.md); [follow-up plan §"Open WG decisions"](../../plan/council-followup-sessions.md).
+**Source:** [ODR-0004 §Consequences "Namespace string is a blocker on `status: accepted`"](../ODR-0004-pdtf-ontology-foundation.md); [follow-up plan §"Open WG decisions"](../../../plan/council-followup-sessions.md).
 
 ### Item 3 — Exemplar bulk namespace update
 
@@ -132,6 +132,6 @@ The plan is no longer namespace-blocked.
 - **Programme anchor + status discipline:** [ODR-0003 §Rules "Status discipline (bidirectional-update protocol)"](../ODR-0003-pdtf-ontology-programme.md).
 - **Methodology:** [ODR-0001 §Format tiers](../ODR-0001-linked-data-council-methodology.md) (Author-only tier criteria).
 - **Adoption record:** [OPDA Council adoption record §Track Record](./adoption.md#track-record) — this session row appended.
-- **Follow-up plan:** [Council follow-up sessions](../../plan/council-followup-sessions.md) §"Open WG decisions" — namespace string blocker cleared.
+- **Follow-up plan:** [Council follow-up sessions](../../../plan/council-followup-sessions.md) §"Open WG decisions" — namespace string blocker cleared.
 - **DPV precedent:** W3C Data Privacy Vocabulary at [`https://w3id.org/dpv/`](https://w3id.org/dpv/) — Pandit's principal-author choice for identical persistence reasons.
 - **W3C PICG repository:** [`https://github.com/perma-id/w3id.org`](https://github.com/perma-id/w3id.org) — PR submission target.

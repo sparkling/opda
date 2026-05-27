@@ -28,7 +28,7 @@ The original question this ODR answered — *how should the partial supersession
 
 ### Supersession scope
 
-This record is wholly superseded by ODR-0002 — the amendments it carried (OWL-Time Conditional adoption; DCAT Conditional; SSSOM deferral; ODRL deferred-policy; DPV Phase-1; Dublin Core rationale; BBO/ArchiMate out) now live as `## Change log` rows in ODR-0002's `## Rules`, attributed to Session 001 Q2. The two open questions originally routed here (OBO RO → ODR-0005; FOAF / W3C Org → ODR-0006) remain routed — but their pointers live in ODR-0002, not here. Hendler's recorded dissent on the retirement (Scope-Check 1 Q4: "every governance act stays permanently") is preserved in the plan's risks table (`docs/ontology/plan/council-followup-sessions.md` §9) as a live methodological position, not silenced.
+This record is wholly superseded by ODR-0002 — the amendments it carried (OWL-Time Conditional adoption; DCAT Conditional; SSSOM deferral; ODRL deferred-policy; DPV Phase-1; Dublin Core rationale; BBO/ArchiMate out) now live as `## Change log` rows in ODR-0002's `## Rules`, attributed to Session 001 Q2. The two open questions originally routed here (OBO RO → ODR-0005; FOAF / W3C Org → ODR-0006) remain routed — but their pointers live in ODR-0002, not here. Hendler's recorded dissent on the retirement (Scope-Check 1 Q4: "every governance act stays permanently") is preserved in the plan's risks table (`docs/plan/council-followup-sessions.md` §9) as a live methodological position, not silenced.
 
 ### Amended entries (superseded in part)
 

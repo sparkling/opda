@@ -18,7 +18,7 @@
 
 ## Input documents
 
-- ODR-0001 (methodology), the plan (`docs/ontology/plan/council-followup-sessions.md`).
+- ODR-0001 (methodology), the plan (`docs/plan/council-followup-sessions.md`).
 - Scope-Check 1 transcript (`scope-check-1-programme.md`) — the precedent for meta-methodology Council.
 - `mcp__ruflo__hive-mind_*` tool surface: init (raft / byzantine / gossip / crdt / quorum / weighted strategies; queenType strategic / tactical / adaptive); programmatic `hive-mind_consensus`; typed `hive-mind_memory`; persistence across processes; Byzantine fault tolerance (f<n/3); broadcast protocol.
 - CLAUDE.md ADR-0115 carve-out: "Use `mcp__ruflo__hive-mind_spawn` only when the queen needs explicit byzantine voting".
@@ -100,7 +100,7 @@ Davis (DA) holds DISSENT pending a named operational failure.
 
 **Davis (DA):** CONDITIONALLY OK on persistence *value*; DISSENT on hive-mind as the *mechanism*. Persistence value is real (the 009→012 loop, S016 deferred trigger). Mechanism is wrong — git + a `cross-references.md` markdown maintained by the Queen at session close delivers the narrow real value cheaply. Typed memory in a vendor-specific MCP store is more than needed.
 
-**Allemang:** Markdown wins on the *Working Ontologist* legibility-from-disk test. Maintainer eighteen months from now opens `docs/ontology/plan/council-followup-sessions.md` §4.1 and reads the routing table. She doesn't need `hive-mind_memory.query(...)`. She doesn't need the MCP server running. Markdown passes the reconstruction test; typed memory in vendor-specific storage fails.
+**Allemang:** Markdown wins on the *Working Ontologist* legibility-from-disk test. Maintainer eighteen months from now opens `docs/plan/council-followup-sessions.md` §4.1 and reads the routing table. She doesn't need `hive-mind_memory.query(...)`. She doesn't need the MCP server running. Markdown passes the reconstruction test; typed memory in vendor-specific storage fails.
 
 **Gandon:** **SPLIT — adopt `hive-mind_memory` for cross-session state on the S009→S012 amendment loop and S016 deferred-activation triggers.** W3C-style structured cross-meeting state is canonical; minutes are derivative. The seam (plan §4.1 row + ODR `## References` + `odr-review` lint) is *three artefacts* the maintainer composes mentally. Typed memory composes them into one. Cost is MCP dependency; benefit is the seam cannot diverge silently.
 

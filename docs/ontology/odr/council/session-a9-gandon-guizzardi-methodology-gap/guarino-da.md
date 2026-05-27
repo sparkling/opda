@@ -128,7 +128,7 @@ Three procedural concerns the panel should not skip.
 
 ### 1. A9 is itself a `kind: methodology` deliberation — apply the relaxed rule to its own output
 
-This session amends ODR-0001 (`kind: methodology`). Per the amendment I propose, ODR-0001 is *not* required to state UFO categories or ICs over hard cases. Good — that would be circular. *But* the amendment ODR-0001 *produces* governs every future `kind: pattern | mapping` ODR. The panel should recognise that A9 is a meta-Council with high downstream leverage: 12 more sessions are queued in `docs/ontology/plan/council-followup-sessions.md`, most producing `kind: pattern` or `kind: mapping` ODRs. The amendment must be calibrated for them, not for the methodology-internal case it is being written in.
+This session amends ODR-0001 (`kind: methodology`). Per the amendment I propose, ODR-0001 is *not* required to state UFO categories or ICs over hard cases. Good — that would be circular. *But* the amendment ODR-0001 *produces* governs every future `kind: pattern | mapping` ODR. The panel should recognise that A9 is a meta-Council with high downstream leverage: 12 more sessions are queued in `docs/plan/council-followup-sessions.md`, most producing `kind: pattern` or `kind: mapping` ODRs. The amendment must be calibrated for them, not for the methodology-internal case it is being written in.
 
 The procedural risk: drafting an amendment that is *easy to land in ODR-0001* (a `methodology` record where laxity feels natural) but *hard to enforce on ODR-0011 / 0006 / 0008 / 0009 / 0012* (pattern records where laxity will be costly). The Queen (Kendall) should pressure-test the amendment text against the next three queued `kind: pattern` sessions (S006 Agents & Roles, S008 Property descriptive attributes, S011 Enumerations) before ratifying it. Does the amendment text *bite* on those? If not, it is theatre.
 
@@ -163,7 +163,7 @@ This is not a held-dissent matter; it is a procedural acknowledgement for the sy
 
 ## Coda — why this matters for the 12 sessions to come
 
-The OPDA programme has 12 more sessions queued (per `docs/ontology/plan/council-followup-sessions.md`). Of those:
+The OPDA programme has 12 more sessions queued (per `docs/plan/council-followup-sessions.md`). Of those:
 
 - S005 (the IC-crux follow-up) is already gated on Guarino-discipline (the three exemplars).
 - S006 (Agents & Roles), S007 (Transactions & Lifecycle), S008 (Property descriptive attributes), S009 (Claims & Evidence), S011 (Enumerations), S012 (Data Governance), S015 (Address & Geography) — all `kind: pattern`. All will produce ODRs whose ratifiability depends on what A9 lands.

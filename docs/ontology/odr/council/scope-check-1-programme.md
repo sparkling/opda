@@ -5,7 +5,7 @@
 - **Format:** ODR-0001 Linked Data Council with Devil's Advocate
 - **Queen / Moderator:** Elisa Kendall (OMG / EDM Council — FIBO methodology lead)
 - **Devil's Advocate:** Ian Davis (BBC / UK Government linked-data; ex-Talis)
-- **Method:** 9 expert voices across 6 teammates (one agent-team teammate per position file, own context window). Queen synthesised. This is a **meta-Council** session — its subject is the *plan* operationalising ODR-0002…ODR-0014, not any single ODR's content. Output: amendments to the plan (`docs/ontology/plan/council-followup-sessions.md`) and recommended spawns/retirements in the ODR corpus.
+- **Method:** 9 expert voices across 6 teammates (one agent-team teammate per position file, own context window). Queen synthesised. This is a **meta-Council** session — its subject is the *plan* operationalising ODR-0002…ODR-0014, not any single ODR's content. Output: amendments to the plan (`docs/plan/council-followup-sessions.md`) and recommended spawns/retirements in the ODR corpus.
 
 ## Panel (9 voices, 6 teammates)
 
@@ -24,7 +24,7 @@ Working files: `working/scope-check-programme/<teammate>.md` (this directory).
 
 - ODR-0001 (methodology); ODR-0002…ODR-0014 (the 13 stubs under review)
 - Council Session 001 transcript
-- Plan: `docs/ontology/plan/council-followup-sessions.md` — operationalises the 13 stubs
+- Plan: `docs/plan/council-followup-sessions.md` — operationalises the 13 stubs
 
 ## Context
 
@@ -334,7 +334,7 @@ This is the DA functioning as designed — strong attacks, three partial withdra
 
 **Downstream impact on the plan.**
 
-The plan (`docs/ontology/plan/council-followup-sessions.md`) needs surgical edits, not a re-write:
+The plan (`docs/plan/council-followup-sessions.md`) needs surgical edits, not a re-write:
 
 - §4: amend Session 002 blueprint (now absorbs Session 014); delete or replace Session 014 blueprint; add Session 015 (Address) and Session 016 (VC/DID, deferred) blueprints; tighten Session 009 and Session 012 blueprints per A4; tighten Session 011 blueprint per A5; tighten Sessions 010/013 cross-cite per A6.
 - §4.1: update shared-question routing per A4 (DPV co-annotation owner changes to 012), A5 (UFO meta-category per scheme), A6 (Cagle's three-rule cross-cut).

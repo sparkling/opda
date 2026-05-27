@@ -10,7 +10,7 @@
   - [Session 003b](./session-003b-namespace-wg-decision.md) — namespace-string resolution; Item 3 flagged instance-URI as separate decision; Item 4 noted reopening-trigger as housekeeping
   - [Session 004](./session-004-pdtf-ontology-foundation.md) — Q4 five-line term-sourcing precedence (OPDA TF authoritative within scope; other regulators contextual)
   - [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — w3id.org redirect engineering realisation
-  - [Council follow-up plan §"Open WG decisions"](../../plan/council-followup-sessions.md) — three items routed forward
+  - [Council follow-up plan §"Open WG decisions"](../../../plan/council-followup-sessions.md) — three items routed forward
 - **`consensus-mode`:** `none` (Author-only)
 - **Format tier:** **Author-only.** Three small WG decisions, each grounded in already-ratified precedent. No fresh deliberation claimed.
 

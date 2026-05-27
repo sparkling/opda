@@ -255,7 +255,7 @@ The ADR is honoured when all eight hold (this is the **programme retirement gate
 
 Manual test: `pytest tests/baspi5-round-trip/ -v` → all green; `opda-gen emit-exemplar-reports && git diff` → empty diff; `pyshacl --advanced -s opda-shapes.ttl -d exemplars/registered-freehold-house.ttl` → `sh:conforms true`.
 
-**Programme-wide validation gate** (per [ADR programme plan §9 — Validation discipline](./plan/ontology-implementation.md)). In addition to the ADR-specific criteria above, this ADR moves `proposed → accepted` only when **all four** of the following hold (independent of the worker that implemented this ADR):
+**Programme-wide validation gate** (per [ADR programme plan §9 — Validation discipline](../plan/ontology-implementation.md)). In addition to the ADR-specific criteria above, this ADR moves `proposed → accepted` only when **all four** of the following hold (independent of the worker that implemented this ADR):
 
 - **(a) Soundness check PASS** — every emitted artefact traces to a cited ODR/ADR `## Rules` or `## Operational specifications` clause via `dct:source` (for Turtle) or code-comment provenance header (for Python). The validation agent extracts emitted-artefact provenance and verifies each resolves to a ratified section.
 - **(b) Completeness check PASS** — every cited ODR's `## Rules` and `## Operational specifications` subsection is realised by an emitted artefact OR explicitly deferred with a named follow-up trigger. The validation agent enumerates cited subsections and checks coverage.
