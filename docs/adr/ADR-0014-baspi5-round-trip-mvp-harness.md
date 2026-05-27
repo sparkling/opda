@@ -255,20 +255,6 @@ The ADR is honoured when all eight hold (this is the **programme retirement gate
 
 Manual test: `pytest tests/baspi5-round-trip/ -v` → all green; `opda-gen emit-exemplar-reports && git diff` → empty diff; `pyshacl --advanced -s opda-shapes.ttl -d exemplars/registered-freehold-house.ttl` → `sh:conforms true`.
 
-## Implications for ADR programme retirement
-
-When this ADR moves `proposed → accepted` (Confirmation §1-8 all hold), the ADR programme itself retires per [ADR programme plan §10](./plan/ontology-implementation.md). Both conditions for retirement land:
-
-1. **MVP gate cleared** — BASPI5 round-trip demonstrates end-to-end coherence (this ADR §Confirmation).
-2. **Every ADR in this programme** (ADR-0008 through ADR-0014) is `status: accepted`.
-
-Plus ODR-0003 §"Programme retirement criterion" closes:
-
-- Condition (i): MVP round-trip closes ✅ (this ADR's Confirmation).
-- Condition (ii): every linked ODR is `accepted` ✅ (17 ODRs accepted as of 2026-05-27).
-
-The Council programme and the ADR programme retire jointly. Subsequent ontology-engineering work (overlay additions; module amendments; consumer-profile additions) lands as fresh ODRs/ADRs without revisiting these programmes' sequencing.
-
 **Programme-wide validation gate** (per [ADR programme plan §9 — Validation discipline](./plan/ontology-implementation.md)). In addition to the ADR-specific criteria above, this ADR moves `proposed → accepted` only when **all four** of the following hold (independent of the worker that implemented this ADR):
 
 - **(a) Soundness check PASS** — every emitted artefact traces to a cited ODR/ADR `## Rules` or `## Operational specifications` clause via `dct:source` (for Turtle) or code-comment provenance header (for Python). The validation agent extracts emitted-artefact provenance and verifies each resolves to a ratified section.
