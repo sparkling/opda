@@ -1,94 +1,106 @@
 # ODR Decision-Application Profile (DCAP)
 
-The normative profile for Ontology Decision Records under `docs/ontology/odr/`. It is the prose specification that `odr-review` Lint 3 (DCAP profile conformance) checks each record against. ODRs follow canonical [MADR 4.x](https://adr.github.io/madr/) with the named project extensions declared below.
+The normative profile for Ontology Decision Records under `docs/ontology/odr/`. It is the prose specification that `odr-review` checks each record against.
 
 This profile is text-based by design. SHACL shape graphs and pySHACL CI are out of scope; this prose profile is the equivalent contract.
 
+## Purpose
+
+An ODR records a decision about ontology design — how source-data elements (typically PDTF v3 clauses) map into the OPDA ontology, what reusable modelling conventions apply, what architectural framework holds. The ODR contains the **decision** and the **rules** that decision produces. It does NOT contain the deliberation.
+
+When a council session deliberated the decision, the session transcript lives in `council/session-NNN-*.md` and is cited from the ODR's `council:` frontmatter field. When the decision is author-only (no council convened), `council:` is omitted — git is the authorship record.
+
+ODRs cover ontology-modelling decisions. Schema-encoding decisions (how to express the ontology in JSON Schema, YAML, RDF, SHACL) are ADRs under `docs/adr/`.
+
 ## Scope
 
-- **Applies to**: every `docs/ontology/odr/ONT-NNNN-*.md` record file.
-- **Excluded**: `README.md`, `INDEX.md`, `DCAP.md`, `DCAP-audit-log.md`, `_template.md`, and council session siblings under `council/`.
+- **Applies to**: every `docs/ontology/odr/ODR-NNNN-*.md` record file.
+- **Excluded**: `DCAP.md`, `DCAP-audit-log.md`, `_template.md`, and council session siblings under `council/`. (`README.md`, `INDEX.md` are forbidden — see Lint 7.)
 
 ## Filename and heading
 
-- **Filename**: `ONT-NNNN-<slug>.md` — 4-digit zero-padded number, lowercase kebab-case slug. Sub-letter suffixes (`ONT-0071a`) are permitted for child records.
-- **H1**: `# <Title>` — title only, **no `ONT-NNNN:` prefix**. The number lives in the filename.
-- **Order**: YAML frontmatter leads the file (between `---` fences), then the H1, then the sections below.
+- **Filename**: `ODR-NNNN-<slug>.md` — 4-digit zero-padded number, lowercase kebab-case slug. Sub-letter suffixes (`ODR-0071a`) are permitted for child records.
+- **H1**: `# <Title>` — title only, no `ODR-NNNN:` prefix.
+- **Order**: YAML frontmatter, then H1, then the six required H2 sections in declared order.
 
 ## Frontmatter
 
-YAML frontmatter between leading `---` fences, before the H1. Keys MUST be a **subset** of the declared set. No other keys are permitted (legacy DACI keys `deciders`/`consulted`/`informed` are tolerated only during the migration window and removed mechanically).
+YAML between leading `---` fences before the H1. Keys MUST be a subset of the declared set; no other keys are permitted.
 
 | Key | Required | Type | Rule |
 |---|---|---|---|
-| `status` | yes | enum | One of `proposed`, `accepted`, `rejected`, `deprecated`, `superseded` (lowercase exactly). |
-| `date` | yes | string | `YYYY-MM-DD`. |
-| `tags` | yes | list | Cross-cutting categorisation. May be empty (`[]`). |
-| `supersedes` | yes | list | Record IDs this record replaces. May be empty. **Intra-corpus only** (ONT↔ONT). |
-| `depends-on` | yes | list | Record IDs this record cites / requires for coherence. May be empty. **Cross-corpus allowed** (ONT↔ADR). |
-| `implements` | yes | list | Record IDs whose parent decision this record realises. May be empty. **Intra-corpus only** (ONT→ONT). |
+| `status` | yes | enum | `proposed` \| `accepted` \| `rejected` \| `deprecated` \| `superseded` (lowercase exactly) |
+| `date` | yes | string | ISO `YYYY-MM-DD` |
+| `kind` | yes | enum | `methodology` \| `architecture` \| `pattern` \| `mapping` \| `programme` |
+| `tags` | yes | list | Cross-cutting categorisation. May be empty (`[]`) |
+| `scope` | yes | list | Typed source-data references this ODR governs (e.g. `pdtf-v3:propertyPack.titleNumber`). May be empty |
+| `council` | no | string | Session identifier when the decision came from a council session (e.g. `session-001`). Omit for author decisions |
+| `supersedes` | yes | list | ODR IDs this record replaces. May be empty. Intra-corpus only |
+| `depends-on` | yes | list | ODR or ADR IDs this record cites. May be empty. Cross-corpus allowed |
+| `implements` | yes | list | ODR IDs or external schema URIs this record realises. May be empty. ODR refs intra-corpus; external URIs pass through |
+
+### Kind enum
+
+| Value | Use for |
+|---|---|
+| `methodology` | Decisions about how decisions are made (council methodology, ODR format itself) |
+| `architecture` | Framework decisions (namespace topology, governance layers, validation severity scheme) |
+| `pattern` | Reusable modelling conventions (SKOS for enumerations, identity criteria, role/view pattern) |
+| `mapping` | Specific source→ontology mappings (PDTF clause to ontology fragment) |
+| `programme` | Workplans, dependency graphs, roadmaps |
 
 ### Typed-relation semantics
 
 | Slot | Meaning | Corpus rule |
 |---|---|---|
-| `supersedes:` | Replaces — kills the prior record. | Intra-corpus only. |
-| `depends-on:` | Cites — correctness/coherence requires the cited record to hold. | Cross-corpus allowed. |
-| `implements:` | Realises — this record is the artefact realising a parent decision. | Intra-corpus only. |
+| `supersedes` | Replaces — kills the prior record | Intra-corpus only (ODR↔ODR). Setting this marks the target's status as `superseded` |
+| `depends-on` | Cites — correctness/coherence requires the cited record to hold | Cross-corpus allowed (ODR↔ADR) |
+| `implements` | Realises — this ODR is the technical artefact realising a parent decision | ODR refs intra-corpus; external schema URIs pass-through |
 
-- **Inverse properties are forbidden in frontmatter.** `superseded-by:`, `depended-on-by:`, `implemented-by:` are derived at index time by `odr-index` from forward edges. Authoring them fails Lint 4.
-- **Referential integrity**: every `ONT-NNNN` reference MUST resolve to a file under `docs/ontology/odr/`; every `ADR-NNNN` reference MUST resolve to `docs/adr/NNNN-*.md`. References to external corpora (e.g. the H&M `ONT-0021` source programme) MUST NOT appear in frontmatter — cite them in `## More Information` prose instead.
+- **Inverse properties are forbidden in frontmatter** — `superseded-by`, `depended-on-by`, `implemented-by` are derived at index time.
+- **Referential integrity**: every `ODR-NNNN` and `ADR-NNNN` reference MUST resolve to a real file. External schema URIs in `implements:` pass-through without resolution check.
 
 ## Sections
 
-Section headings MUST be a subset of those declared here, MUST appear in the declared order, and the cardinality rules MUST hold. Any heading not declared here fails Lint 3 until this DCAP is amended in the same commit.
+Section headings MUST be exactly the six declared below, MUST appear in declared order, and each appears exactly once. No other H2 headings are permitted. H3s within sections are free-form (the indexer does not parse them).
 
-| # | Heading | Level | Required | Cardinality |
-|---|---|---|---|---|
-| 1 | `## Context and Problem Statement` | H2 | yes | exactly 1 |
-| 2 | `## Decision Drivers` | H2 | optional | 0–1 |
-| 3 | `## Considered Options` | H2 | yes | exactly 1 |
-| 4 | `## Decision Outcome` | H2 | yes | exactly 1 |
-| 4a | `### Consequences` | H3 (under 4) | yes | exactly 1 |
-| 4b | `### Confirmation` | H3 (under 4) | optional | 0–1 |
-| 4c | `### Supersession scope` | H3 (under 4) | conditional | 0–1 — present iff this record partially supersedes another |
-| 5 | `## Pros and Cons of the Options` | H2 | optional | 0–1 |
-| 5a | `### <Option>` | H3 (under 5) | optional | 0–n, one per option |
-| 6 | `## More Information` | H2 | optional | 0–1 |
-
-### Named extensions (trailing position, after `## More Information`)
-
-Project-specific extensions to canonical MADR. Optional; when present they appear after `## More Information` in this order:
-
-| Heading | Purpose | OntoClean rigidity test |
+| # | Heading | Purpose |
 |---|---|---|
-| `## Rules` | Durable normative content scoped to this ODR's lifetime. | If rules survive supersession → they belong in `docs/policy/`. If they evaporate with supersession → they belong in `### Consequences`. The extension is the only-when-needed middle. |
-| `## Vote and Dissent` | Compact summary of Linked Data Council verdicts (tallies, dissents, withdrawals). The full transcript lives in `council/session-NNN-*.md`; this is a summary, not the transcript. | — |
-| `## Amendments` | Running list of post-acceptance amendments to this record. | — |
-
-## Consequences phrasing
-
-`### Consequences` uses flat bullets with canonical phrasing:
-
-- `* Good, because <positive consequence>`
-- `* Bad, because <negative consequence>`
-- `* Neutral, because <neutral consequence>`
-
-## Confirmation
-
-`### Confirmation` states how compliance with the decision is verified — review, SHACL shape, lint rule, exemplar validation, etc. For records that gate downstream work (e.g. the identity crux), the gate condition is stated here.
+| 1 | `## Context` | Why the decision was needed. 1–3 paragraphs. Not a tutorial — link out for source-schema documentation |
+| 2 | `## Decision` | One paragraph: what was chosen and the one-sentence justification |
+| 3 | `## Rules` | The load-bearing slot. Normative content: tables, Turtle, SHACL stubs, SKOS scheme links, naming conventions, anti-patterns. As long as needed. Inline enforcement notes where applicable |
+| 4 | `## Alternatives` | Options considered and rejected. One bullet per option, naming the fatal flaw in one sentence. Not a deliberation log — if you need more, expand `## Context` |
+| 5 | `## Consequences` | Operational impact. What downstream changes. What breaks. What teams must do. Imperative voice |
+| 6 | `## References` | Links: source-schema clauses, related ODRs/ADRs, external citations. If `council:` is set, the session transcript belongs here too |
 
 ## Supersession
 
-For full supersession, the superseding record carries the prior record's ID in `supersedes:` and the superseded record's `status` becomes `superseded`. For **partial** supersession (amendment), the superseding record additionally carries a `### Supersession scope` subsection inside `## Decision Outcome` describing precisely what of the prior record survives and what is replaced.
+A record with `supersedes: [ODR-NNNN]` marks ODR-NNNN's status as `superseded`. Partial supersession is captured **inside the rules table** of the superseding record — ODR-N's `## Rules` states which of ODR-M's entries it replaces, leaving the rest of ODR-M operative. There is no separate frontmatter field for partial-supersession scope; the rules are themselves the granular unit.
+
+## Authoring discipline
+
+Every new ODR MUST be created via the `odr-create` skill (or follow its steps manually — see [`/Users/henrik/.claude/skills/odr-create/SKILL.md`](../../../.claude/skills/odr-create/SKILL.md)). The skill produces all three artefacts atomically:
+
+1. The conforming markdown file at `docs/ontology/odr/ODR-NNNN-<slug>.md`.
+2. The AgentDB hierarchical-store registration at `odr/ODR-NNNN` (via `mcp__ruflo__agentdb_hierarchical-store`, tier `semantic`).
+3. The pattern entry in the `odr-patterns` memory namespace (via `mcp__ruflo__memory_store`) with semantic embedding for cross-corpus search.
+
+**The AgentDB graph is the authoritative index.** No parallel markdown index (`README.md`, `INDEX.md`) is maintained — duplicate state drifts. The index is derived; the records are the source of truth. `odr-index` (strict mode) rebuilds the graph from the file system; the corpus and the graph stay in sync by construction, not by hand.
+
+**Hand-authored ODRs that skip the AgentDB registration are non-conforming** and will be flagged by `odr-index` when it next runs. The remedy is to run `odr-index` (which back-fills the registration) or to delete and recreate via `odr-create`.
+
+**No `README.md` or `INDEX.md` under `docs/ontology/odr/`.** The directory's entry point is the alphabetised `ODR-NNNN-*.md` filenames themselves; programmatic discovery goes through `mcp__ruflo__agentdb_hierarchical-store` queries against the `odr/*` namespace.
 
 ## Lints enforced by `odr-review`
 
-1. **Cross-corpus modifying-relations** — `supersedes`/`implements` must be intra-corpus; `depends-on` may cross.
-2. **Referential integrity** — every typed reference resolves to a real file.
-3. **DCAP profile conformance** — frontmatter keys, section headings, ordering, cardinality conform to this profile.
-4. **Inverse-authoring prohibition** — no `superseded-by`/`depended-on-by`/`implemented-by` in frontmatter.
+1. **Cross-corpus modifying-relations** — `supersedes` must be intra-ODR; `implements` may reference ODRs intra-corpus and external schema URIs; `depends-on` may cross corpora.
+2. **Referential integrity** — every `ODR-NNNN` and `ADR-NNNN` reference resolves. External URIs in `implements:` pass-through.
+3. **Council reference** — if `council:` is set, the session file `council/<value>-*.md` must exist.
+4. **DCAP profile conformance** — frontmatter keys, section headings, ordering, cardinality conform to this profile.
+5. **Inverse-authoring prohibition** — no `superseded-by`/`depended-on-by`/`implemented-by` in frontmatter.
+6. **AgentDB registration** — every ODR-NNNN file has a corresponding `odr/ODR-NNNN` entry in the hierarchical store. Missing entries are auto-back-filled by `odr-index`; hand-authored ODRs that skip `odr-create` are flagged here.
+7. **No parallel markdown index** — `docs/ontology/odr/README.md` and `docs/ontology/odr/INDEX.md` MUST NOT exist. Discovery goes through the AgentDB graph.
 
 ## Amendment policy
 
-New sections, new frontmatter keys, or section reorderings require an edit to this DCAP **in the same commit** (undeclared-extension policy). The companion `DCAP-audit-log.md` records quarterly reviews even when no change was made.
+New sections, new frontmatter keys, new `kind` enum values, or section reorderings require an edit to this DCAP in the same commit (undeclared-extension policy). The companion `DCAP-audit-log.md` records reviews.
