@@ -2,9 +2,10 @@
 # Situation: a Person with a name change (deed-poll, 2019); they were the seller on a 2017
 # transaction under their former name, and the buyer on a 2024 transaction under their current name.
 # The IC must say this is one Person individual whose name-attribute changed, not two.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0006 status: proposed.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/person-with-name-change/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -15,7 +16,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Person with name change — IC across name-mutation hard case" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0006> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Person IC over the name-change hard case. The same Person held distinct names on two transactions five years apart (deed-poll in 2019). Under S006 Q1 the IC for opda:Person must give one individual, not two. Candidate ICs: (a) date-of-birth + state-issued ID combination; (b) any single state-issued ID; (c) PROV-O wasDerivedFrom chain over name-attribute changes. The IC the Council settles must cope with the 2017-as-FormerName + 2024-as-CurrentName case without collapsing to owl:sameAs (which would propagate every triple from one context to the other; same anti-pattern as ODR-0005 Rule 5)." .

@@ -2,12 +2,13 @@
 # Situation: a rural plot with an INSPIRE Identifier (cadastral feature) but no UPRN — the
 # plot is undeveloped land (no built dwelling, no postal delivery point), so AddressBase
 # has no UPRN to issue. The INSPIRE identifier is the only operational join surface.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
-# ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
 # Amended 2026-05-27 post-S015 close: added explicit opda:Address instance with addressVariant
 # "inspire" (S015 Q1 Kind commitment + Q2 IC rule 5 INSPIRE-only locatedness made manifest).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/rural-plot-inspire-no-uprn/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -17,7 +18,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Rural plot with INSPIRE Identifier but no UPRN — undeveloped land" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Address modelling when the Property has no postal address at all — only a cadastral identifier. A 2-hectare grazing plot near Hereford, with a registered freehold title (HMLR HE890123) and an INSPIRE Identifier (from Land Registry's INSPIRE polygon feed), but no UPRN (AddressBase issues UPRNs only to addressable objects with potential postal delivery). Under S015 Q1's Kind commitment: one opda:Property + one opda:LegalEstate (freehold) + one opda:RegisteredTitle + one opda:Address with addressVariant 'inspire' (Q2 IC rule 5 INSPIRE-only locatedness). The INSPIRE-variant Address bears opda:inspireFeatureId as Q4 operational key; structural fields empty/sparse (the cadastral feature has no derivable postal line1/postcode); opda:hasGeometry interface declared but not encoded (Q5 deferral honoured). Q7 PII regime: dpv:hasLawfulBasis dpv:PublicTask (INSPIRE Directive open-data; differs from residential PII regimes)." .

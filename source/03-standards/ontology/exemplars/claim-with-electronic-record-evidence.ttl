@@ -2,10 +2,11 @@
 # Situation: a Person-identity claim supported by an electronic record (HMRC tax record lookup).
 # Tests electronic-record evidence-type; eIDAS Substantial assurance via API-verified lookup;
 # Q7 SHACL-over-PROV `sh:xone` evidence-type discrimination.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0009 status: proposed (S009 to ratify).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/claim-with-electronic-record-evidence/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -16,7 +17,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Claim with electronic-record evidence — HMRC API tax-record lookup" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0009> , <ODR-0006> , <ODR-0004> ;
     skos:scopeNote
         "Tests electronic-record evidence-type (eIDAS Substantial via real-time API verification). A Person-identity claim that the claimant is the named tax-payer at the asserted address; evidence is an HMRC API lookup returning a structured tax-record. Under S009 Q1 the PROV-O backbone fits cleanly: prov:wasGeneratedBy (claim from API-verification activity) + prov:used (activity used the structured API response) + opda:verificationMethod 'electronic-record'. The opda:assuranceLevel is 'Substantial' (Q3 SKOS scheme; S011 Quality Region) — real-time API lookups from a regulator meet eIDAS Substantial. Q7 SHACL-over-PROV: an `sh:xone` on opda:Evidence dispatches on evidence-type and validates the electronic-record-specific properties (api-endpoint, api-response-timestamp) without firing for document-evidence." .

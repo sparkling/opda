@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [agents, roles, ufo, module, council-cleared, namespace-blocked]
+tags: [agents, roles, ufo, module]
 scope:
   - pdtf-v3:propertyPack.participants
   - pdtf-v3:propertyPack.participants.role

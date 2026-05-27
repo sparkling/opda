@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-20
 kind: pattern
 tags: [claims, evidence, provenance, prov-o, assurance]

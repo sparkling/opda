@@ -2,12 +2,13 @@
 # Situation: a freehold house was recently converted into two flats; the new flats have not yet
 # been issued UPRNs by AddressBase (typical lag is weeks-to-months post-conversion).
 # Each flat has an address (5A and 5B of the same street) but no UPRN.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
-# ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
 # Amended 2026-05-27 post-S015 close: refactored from literal opda:postalAddress on Property to
 # opda:Address resource shape with addressVariant "marketing" (S015 Q1 Kind commitment).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/flat-no-uprn-newly-converted/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -18,7 +19,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Flat with no UPRN — newly converted from one freehold" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Address modelling when UPRN is absent. The original freehold house had UPRN 100070555000; on conversion (2026-01-12) into two flats, OS AddressBase issued no UPRNs to the flats yet (typical 6-week lag). Each flat now has an address (5A/5B) but cannot key by UPRN. Under S015 Q1's Kind commitment: two opda:Property individuals (S005 Q5 3-class precedent — subdivision per S005 §3a Rule 2) each bearing an opda:Address resource with addressVariant 'marketing' (the listing agent's address presentation; OS AddressBase variant absent pending UPRN issuance). UPRN absence handled by dash:uniqueValueForClass graceful degradation (S005 §6a). The marketing-variant Address has no opda:uprn predicate; structural fields are present per S015 §3b (line1/postTown/postcode/country)." .

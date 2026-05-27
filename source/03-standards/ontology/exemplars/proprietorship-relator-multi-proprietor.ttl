@@ -3,9 +3,10 @@
 # Proprietorship relator binds two Person Role instances (Proprietor-A, Proprietor-B) to one
 # RegisteredTitle. Each Proprietor borrows identity from its Person bearer; the Relator
 # itself has no independent identity beyond the Title + Persons it mediates.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0006 status: proposed.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/proprietorship-relator-multi-proprietor/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -15,7 +16,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Proprietorship Relator — joint-tenancy multi-proprietor hard case" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0006> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests S006 Q3: Proprietorship modelled as a UFO Relator with mediating Role instances (Proprietor) for each natural person on title. Two Persons jointly own a freehold (registered as joint tenants per HMLR Practice Guide 24); the title's Proprietorship register lists both. Under UFO: one opda:Proprietorship Relator binds two opda:Proprietor Roles (one per Person). Each Role has no identity qua-Role (S005 Anti-pattern §3 — never key a Role); each Role borrows identity from its Person bearer. The Relator's IC = the (Title, Persons-set) tuple. Joint-tenancy vs tenants-in-common is a property of the Relator (S006 may settle), NOT of the Roles." .

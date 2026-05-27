@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [shacl, shacl-af, pattern, data-quality, non-blocking, council-cleared, namespace-blocked]
+tags: [shacl, shacl-af, pattern, data-quality, non-blocking]
 scope: []
 council: session-011
 supersedes: []

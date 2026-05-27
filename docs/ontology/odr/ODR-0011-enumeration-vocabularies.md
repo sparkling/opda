@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [enumerations, skos, vocabularies, glossary, ufo, council-cleared, namespace-blocked]
+tags: [enumerations, skos, vocabularies, glossary, ufo]
 scope: []
 council: session-011
 supersedes: []

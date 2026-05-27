@@ -73,23 +73,29 @@ settles the IC). At S005 close the Queen amends each exemplar with its
 companion report; the gate clears when each exemplar+report pair drives a CI
 regression test.
 
-## Provisional namespace
+## Namespace (ratified)
 
-The literal base URI for `opda:` is **WG-owned** (ODR-0004 Rule 1; Knublauch DA
-withdrawal demand). The exemplars use `https://opda.uk/ns/` as the institutional
-default placeholder. The `w3id.org/opda/` alternative (operationally-strongest
-per ODR-0004 Consequences) and any other WG choice will be substituted
-mechanically when ratification lands. Each exemplar header carries
-`dct:status "draft"` per ODR-0004's pre-ratification convention.
+The literal base URI for `opda:` is **`https://w3id.org/opda/#`** — WG-ratified
+2026-05-27 ([Session 003b](../../../../docs/ontology/odr/council/session-003b-namespace-wg-decision.md))
+per Knublauch S004 DA primary demand + DPV precedent. W3C PICG-redirected to the
+OPDA-hosted target (`https://openpropdata.org.uk/ontology/`); engineering
+realisation in
+[ADR-0006](../../../../docs/adr/ADR-0006-w3id-opda-ontology-namespace.md).
+Exemplars updated mechanically by the same sweep. The `opda-x:` instance-URI
+prefix (currently `https://opda.uk/data/exemplar/...`) is a separate decision
+flagged for a follow-up WG ratification.
 
 ## Predicate provisionality
 
 The TBox the exemplars instantiate against (`opda:Property`,
 `opda:RegisteredTitle`, `opda:identifiesSameProperty`, `opda:uprn`, etc.) is
-itself unratified. Names follow ODR-0005's stub plus the layer-segregated naming
-of ODR-0004 §Rule 2 (Kinds in CamelCase, etc.) but are **provisional** — S005
-will settle classes; downstream module ODRs settle the predicates. Inline
-comments in each TTL flag the open questions.
+**Council-ratified** through Sessions 005/006/007/009/010/011/012/013/015 (all
+moved `status: accepted` 2026-05-27 via the namespace-block clearance). The
+generator's first emission of `foundation.ttl` + module `.ttl` files is the
+remaining engineering milestone before the TBox is *deployment-survivable*.
+Names follow ODR-0005's ratified 3-class commitment plus the layer-segregated
+naming of ODR-0004 §Rule 2 (Kinds in CamelCase, etc.). Inline comments in each
+TTL flag downstream-module specifics.
 
 ## Citation discipline (from consuming ODR)
 

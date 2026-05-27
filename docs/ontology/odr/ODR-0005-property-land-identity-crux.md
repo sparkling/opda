@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [property, identity, crux, dolce, ufo, shacl, gate, council-cleared, namespace-blocked]
+tags: [property, identity, crux, dolce, ufo, shacl, gate]
 scope: [pdtf-v3:propertyPack.uprn, pdtf-v3:propertyPack.address, pdtf-v3:energyEfficiency.certificate.uprn, pdtf-v3:chain.onwardPurchase.uprn, pdtf-v3:valuationComparisonData.propertyDetails.uprn, pdtf-v3:propertyPack.isFirstRegistration]
 council: session-005
 supersedes: []

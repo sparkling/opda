@@ -1,9 +1,10 @@
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0007 (Transactions & Lifecycle).
 # Situation: three-link chain of property sales — buyer of property A is selling property B
 # (which has a buyer who is selling property C). Tests Q4 chain modelling.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0007 status: proposed.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/chain-of-transactions/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -14,7 +15,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Chain of three property transactions linked by buyer-also-seller participants" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0007> , <ODR-0006> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Q4 chain modelling. Three transactions: T_A (sale of Property A; buyer = Person X), T_B (sale of Property B; seller = Person X, buyer = Person Y), T_C (sale of Property C; seller = Person Y). The chain is recursive on the buyer-also-seller relationship. The plan §S007 Q4 names three candidate mechanisms: (a) recursive Relator (opda:dependsOnTransaction); (b) list of Transactions on a parent ChainTransaction; (c) two separate predicates (opda:dependsOn / opda:dependedOnBy). Each transaction's status is the S011 Phase label scheme; chain status is derived (any-blocked → chain-blocked). Q3 lifecycle event: a milestone-not-met on T_C cascades up via opda:dependedOnBy to T_B and T_A — the linked transactions go on hold." .

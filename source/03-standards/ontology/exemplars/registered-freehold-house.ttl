@@ -1,10 +1,11 @@
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
 # Situation: 24 Acacia Avenue, Birmingham. UPRN present; freehold title registered; single proprietor.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
-# ODR-0005 status: proposed (council: session-005; namespace block carries).
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# ODR-0005 status: accepted (council: session-005).
 # Amended 2026-05-27 post-S005 close: added opda:LegalEstate individual explicitly (3-class commitment from S005 Q5).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/registered-freehold-house/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -14,7 +15,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Registered freehold house — baseline easy case" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests the IC under no edge condition: UPRN present, freehold legal estate vested, freehold title registered. Under the 3-class commitment (S005 Q5): one physical Property + one LegalEstate (freehold rights-bundle) + one RegisteredTitle (HMLR record) all co-referring; no succession; no degradation; no first-registration ambiguity. Baseline against which the harder cases (unregistered, UPRN-split) are differentiated." .

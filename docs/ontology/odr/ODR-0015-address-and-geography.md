@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [address, geography, reuse, module, gate, council-cleared, namespace-blocked]
+tags: [address, geography, reuse, module, gate]
 scope:
   - pdtf-v3:propertyPack.address
   - pdtf-v3:propertyPack.uprn

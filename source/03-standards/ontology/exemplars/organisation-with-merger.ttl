@@ -3,9 +3,10 @@
 # Organisation has its own Companies House number, LEI, and trading name. Pre-merger
 # transactions were associated with the predecessors; post-merger with the successor.
 # The IC must determine when an Organisation persists through change and when it does not.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0006 status: proposed.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/organisation-with-merger/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -16,7 +17,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Organisation merger — IC across entity-merger hard case" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0006> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Organisation IC over the merger hard case. Two estate agencies (Companies House CRNs 12345678 and 23456789) merged in 2023; predecessors dissolved on Companies House; successor company (CRN 34567890) is a new individual. Under S006 Q1 the IC for opda:Organisation must give three individuals (two predecessors + one successor), NOT one with mutated CRN. PROV-O chains: successor prov:wasDerivedFrom both predecessors. Multi-jurisdiction parallel: each predecessor had its own LEI (ISO 17442); successor has a new LEI. FIBO LegalEntity / LEI succession pattern is the precedent (Kendall S005 Q4 + Q5 framing — FIBO LEI handles multiple identifiers for one Kind; entity-merger is different: multiple Kind instances → new Kind instance)." .

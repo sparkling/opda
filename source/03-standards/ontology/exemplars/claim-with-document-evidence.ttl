@@ -2,10 +2,11 @@
 # Situation: a Personal Representative claim of authority to sell, supported by a grant of probate
 # document. Tests PROV-O qualified attribution; document-evidence type; eIDAS Substantial-tier
 # assurance for a court-issued instrument; trust-framework conformance.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0009 status: proposed (S009 to ratify).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/claim-with-document-evidence/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -16,7 +17,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Claim with document evidence — grant of probate supporting sellersCapacity" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0009> , <ODR-0006> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests PROV-O backbone for claims supported by document evidence. A Personal Representative (sellersCapacity from S011 Method/plan code scheme) claims authority to sell on behalf of a deceased proprietor; the evidence is a grant of probate issued by HMCTS. Under S009 Q1's 80%-PROV-O / 5-residue split: prov:wasAttributedTo (claim to claimant) + prov:wasGeneratedBy (claim from probate verification activity) + prov:used (activity used the probate document). The opda:assuranceLevel (S011 Quality Region scheme) is 'Substantial' under eIDAS — court-issued instruments meet the criterion. Q5 trust_framework conformance: dct:conformsTo <opda:UKPropertyDataTrustFramework>." .

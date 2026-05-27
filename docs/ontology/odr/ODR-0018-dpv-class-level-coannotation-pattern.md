@@ -1,8 +1,8 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 kind: pattern
-tags: [dpv, pii, co-annotation, pattern, class-level, council-cleared, namespace-blocked]
+tags: [dpv, pii, co-annotation, pattern, class-level]
 scope: []
 council: session-009
 supersedes: []

@@ -2,14 +2,15 @@
 # Situation: a Grade II-listed building with three divergent address presentations —
 # the title address (as on the HMLR register), the marketing address (as on Rightmove),
 # and the INSPIRE-derived cadastral address. All three identify the same physical Property.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
 # This exemplar was authored under the Kind reading natively (S015 Q1 Substance Kind verdict);
 # the structure matches the ratified ODR-0015 §3b class with property shapes.
 # Amended 2026-05-27 post-S015 close: added opda:hasAddress join predicate from Property side
 # (S005 §6b + S015 Q3 — opda:hasAddress is the canonical Property→Address join).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/listed-building-divergent-addresses/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -19,7 +20,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Listed building with divergent title / marketing / INSPIRE addresses" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
         "Tests Address co-reference. One physical opda:Property (Q5 3-class from S005); one opda:LegalEstate (freehold); one opda:RegisteredTitle (HMLR title NK123456); three divergent address surfaces — title-address ('The Old Rectory, Glebe Lane, Stamford'), marketing-address ('The Old Rectory, near Wothorpe'), INSPIRE-derived cadastral address. The Q1 UFO category answer dictates the modelling: if Address is a Mode of presentation (Guarino's S001 Q4 framing carried), the three are three modes on one Property; if Address is a Kind (INSPIRE feature-as-class position), the three are three Kind instances co-referring via opda:identifiesSameProperty (S005's predicate). The Q6 SHACL co-reference shape must validate that the three agree on UPRN + postcode + first-line-prefix; disagreement is a data-quality finding, not modelling failure." .

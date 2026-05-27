@@ -5,9 +5,10 @@
 # Tests Q5 lease term as OWL-Time interval (`time:ProperInterval`); Q1 Transaction-vs-Event
 # (this is a lifecycle event on an existing estate, not a new estate vesting); cross-cite
 # Hendler S005 Q5 lease-extension consumer-fails case (charge-event on title-record, not on estate).
-# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0007 status: proposed.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/lease-extension-transaction/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix time:    <http://www.w3.org/2006/time#> .
@@ -19,7 +20,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Lease extension transaction — leasehold term extended by 90 years (LRHUDA 1993)" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0007> , <ODR-0006> , <ODR-0005> , <ODR-0011> , <ODR-0004> ;
     skos:scopeNote
         "Tests Q5 lease term as OWL-Time `time:ProperInterval` with `time:hasBeginning` + `time:hasDurationDescription`. Tests Q1 Transaction-as-Relator framing under a lifecycle-event-on-existing-Kind: the LegalEstate (leasehold) PERSISTS through the extension (its rights-bundle is modified, not dissolved per S005 §3b Rule 1 estate transfer / Rule 4 charges-and-easements don't change identity); the RegisteredTitle records the extension as a registry-event (S005 §3c Rule 1 — title persists; new registry-event timestamp). This is Hendler's S005 Q5 'lease extension' consumer-fails case: the property of being-extended attaches to the RegisteredTitle's lifecycle event, NOT to the LegalEstate (which retains the same identity) and NOT to the Property (which is unchanged)." .

@@ -3,10 +3,11 @@
 # solicitor) — qualitatively weaker than document or electronic-record evidence; eIDAS Low.
 # Tests vouch-evidence type; Q2 prov:qualifiedAttribution with prov:hadRole for the voucher;
 # Q3 assurance-level downgrade for vouch-only evidence.
-# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0009 status: proposed (S009 to ratify).
 
-@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda:    <https://w3id.org/opda/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/claim-with-vouch-evidence/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -17,7 +18,7 @@
 opda-x:exemplar
     a opda:DiagnosticExemplar ;
     dct:title "Claim with vouch evidence — SRA-regulated solicitor vouches for residency" ;
-    dct:status "draft" ;
+    dct:status "ratified" ;
     dct:references <ODR-0009> , <ODR-0006> , <ODR-0004> ;
     skos:scopeNote
         "Tests vouch-evidence type — a person's professional-regulator-licensed adviser confirms the claim via formal attestation. Under S009 Q1 the PROV-O backbone applies but the assurance-level downgrades: vouch-only evidence is eIDAS 'Low' (Q3 SKOS scheme; S011 Quality Region) regardless of voucher quality — confirmation by a regulated professional is corroborative, not authoritative. Q2 qualified attribution: prov:qualifiedAttribution + prov:hadRole opda:Voucher captures the voucher's role. Q7 SHACL-over-PROV: the `sh:xone` dispatch on evidence-type validates voucher-specific properties (regulator-licence-number, attestation-date) without firing for document or electronic-record." .
