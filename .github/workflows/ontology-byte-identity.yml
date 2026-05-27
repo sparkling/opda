@@ -29,8 +29,8 @@ jobs:
         run: pytest -q
 
       # ----- Activated by ADR-0009 (foundation TTL emission) ------------
-      # The four foundation TTLs are now committed under
-      # source/03-standards/ontology/ — these three steps regenerate, diff
+      # The four foundation TTLs are committed under
+      # source/03-standards/ontology/ — these steps regenerate, diff
       # for byte-identity, and run the ODR-0004 §3a five-part CI test
       # against the real corpus.
 
@@ -44,6 +44,21 @@ jobs:
       - name: Three-graph CI test
         working-directory: tools/opda-gen
         run: opda-gen ci-three-graph --ontology-dir ../../source/03-standards/ontology
+
+      # ----- Activated by ADR-0010 (SKOS vocabulary emission) -----------
+      # `opda-vocabularies.ttl` is committed alongside the foundation TTLs.
+      # The `opda-gen emit` umbrella above already regenerates it, and the
+      # byte-identity `diff -rq` step already covers the full corpus via
+      # the directory-level walk. The explicit subcommand below validates
+      # the per-file emission contract on its own (matches ADR-0010's
+      # §Confirmation #1 manual test invocation).
+
+      - name: Regenerate vocabularies only (per-file gate)
+        working-directory: tools/opda-gen
+        run: opda-gen emit-vocabularies --output /tmp/vocabularies-only
+
+      - name: Vocabularies byte-identity
+        run: diff -q /tmp/vocabularies-only/opda-vocabularies.ttl source/03-standards/ontology/opda-vocabularies.ttl
 
       # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
       # validate-exemplar runs pyshacl against a diagnostic exemplar and

@@ -18,7 +18,12 @@ from rdflib.namespace import OWL, RDF, RDFS, SKOS
 # --- Term-type ordering --------------------------------------------------
 # Per ADR-0007 §"Deterministic emission rules" #2:
 #   owl:Ontology → owl:Class → owl:DatatypeProperty → owl:ObjectProperty →
-#   sh:NodeShape → sh:PropertyShape → skos:Concept → other.
+#   sh:NodeShape → sh:PropertyShape → skos:ConceptScheme → skos:Concept → other.
+#
+# `skos:ConceptScheme` is inserted before `skos:Concept` so that ADR-0010
+# vocabulary emissions place each scheme's header above its member concept
+# blocks (otherwise members would appear before their owning scheme, since
+# unknown types sort after Concept and would also alphabetically interleave).
 SH = "http://www.w3.org/ns/shacl#"
 TERM_TYPE_ORDER: list[URIRef | str] = [
     OWL.Ontology,
@@ -27,6 +32,7 @@ TERM_TYPE_ORDER: list[URIRef | str] = [
     OWL.ObjectProperty,
     URIRef(f"{SH}NodeShape"),
     URIRef(f"{SH}PropertyShape"),
+    SKOS.ConceptScheme,
     SKOS.Concept,
 ]
 
@@ -52,6 +58,12 @@ def type_rank(type_iri: URIRef | None) -> int:
 #   3. rdfs:comment / skos:definition
 #   4. dct:source
 #   5. predicate-lexicographic
+#
+# ADR-0010 SKOS member blocks read most naturally when `skos:inScheme` follows
+# `skos:prefLabel` (so the reader sees what the concept is + which scheme it
+# belongs to before any definition body). `skos:notation` follows `dct:source`
+# (it is a machine-coded fingerprint of the member, less important to a human
+# reader than the scheme membership + the citation).
 DCT_SOURCE = "http://purl.org/dc/terms/source"
 PREDICATE_PRIORITY: dict[str, int] = {
     str(RDF.type): 0,

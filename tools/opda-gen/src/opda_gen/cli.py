@@ -14,6 +14,13 @@ Realises:
 - ADR-0009 §"Confirmation" #2 — second-run regeneration is byte-identical;
   `emit` umbrella calls `emit-foundation` first so the byte-identity diff
   step exercises a real corpus from Phase 1.
+- ADR-0010 §"Confirmation" #1 — `emit-vocabularies` writes
+  `opda-vocabularies.ttl` to the same output directory; the `emit` umbrella
+  now also invokes it so the byte-identity diff covers the full Phase-2
+  corpus.
+- ADR-0010 §"Confirmation" #2 — `--output` for `emit-vocabularies` defaults
+  to the same canonical ontology directory as `emit-foundation` so an ad
+  hoc invocation regenerates the committed file in place.
 - ADR-0007 §"Architecture" — generator entry point in the data flow.
 - ODR-0004 §6a — generator-first contract surface exposed to CI.
 
@@ -106,16 +113,22 @@ def main() -> None:
 def emit(output: Path | None) -> None:
     """Emit the full ontology corpus (ADR-0007 §Architecture target).
 
-    At Phase 1 (ADR-0009) the corpus consists of the four foundation TTLs.
-    Subsequent phases (ADR-0010..0013) append vocabularies, module TBoxes,
-    shapes + annotations, and overlay profiles. Each new phase extends this
+    Phase 1 (ADR-0009) emits the four foundation TTLs; Phase 2 (ADR-0010)
+    adds `opda-vocabularies.ttl`. Both run sequentially under the `emit`
+    umbrella so the byte-identity CI step exercises the whole committed
+    corpus in one shot. Subsequent phases (ADR-0011..0013) extend this
     umbrella; intermediate phases raise `NotImplementedError` per the
     explicit-deferral discipline of programme plan §9.2.
     """
     target = output if output is not None else _default_ontology_dir()
     from opda_gen.emitters.foundation import emit_foundation as _emit_foundation
+    from opda_gen.emitters.vocabularies import (
+        emit_vocabularies as _emit_vocabularies,
+    )
 
-    written = _emit_foundation(target)
+    written: dict[Path, str] = {}
+    written.update(_emit_foundation(target))
+    written.update(_emit_vocabularies(target))
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
 
@@ -153,13 +166,26 @@ def emit_foundation(output: Path | None) -> None:
     "--output",
     "-o",
     type=click.Path(file_okay=False, path_type=Path),
-    required=True,
+    required=False,
+    default=None,
+    help=(
+        "Output directory for `opda-vocabularies.ttl`. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
 )
-def emit_vocabularies(output: Path) -> None:
-    """Emit SKOS schemes only (Phase 2)."""
-    from opda_gen.emitters.vocabularies import emit as _emit
+def emit_vocabularies(output: Path | None) -> None:
+    """Emit the SKOS vocabulary substrate (Phase 2; ADR-0010).
 
-    _emit(output)
+    Writes `opda-vocabularies.ttl` with the 16 first-batch SKOS Concept
+    Schemes (per ADR-0010 §"Scheme catalogue"). Output is produced by
+    the canonical serialiser; second-run regeneration is byte-identical.
+    """
+    target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.vocabularies import emit_vocabularies as _emit
+
+    written = _emit(target)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
 
 
 @main.command(name="emit-module")

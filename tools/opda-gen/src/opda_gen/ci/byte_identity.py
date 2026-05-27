@@ -11,6 +11,8 @@ Realises:
   this comparator runs against the foundation corpus (foundation.ttl +
   opda-classes.ttl + opda-shapes.ttl + opda-annotations.ttl) as the
   byte-identity gate.
+- ADR-0010 §"Confirmation" #2 — vocabularies file added to the
+  byte-identity gate alongside the four foundation TTLs.
 
 This module provides a `run()` function that compares a freshly-regenerated
 directory against a committed reference directory and returns a list of
@@ -23,22 +25,24 @@ import tempfile
 from pathlib import Path
 
 from opda_gen.emitters.foundation import emit_foundation
+from opda_gen.emitters.vocabularies import emit_vocabularies
 
 
 def run(reference_dir: Path) -> list[str]:
-    """Regenerate the foundation corpus + diff against the reference dir.
+    """Regenerate the full corpus + diff against the reference dir.
 
     Returns a list of violation strings (empty == PASS). Per ADR-0007
     §"Byte-identity CI test", a non-empty list fails the CI run.
 
-    Per ADR-0009, the regeneration emits four files (foundation.ttl,
-    opda-classes.ttl, opda-shapes.ttl, opda-annotations.ttl); the diff is
-    a per-file byte-comparison. A missing reference is itself a violation.
+    Per ADR-0009 + ADR-0010, the regeneration emits five files (the four
+    foundation TTLs plus `opda-vocabularies.ttl`); the diff is a per-file
+    byte-comparison. A missing reference is itself a violation.
     """
     violations: list[str] = []
     with tempfile.TemporaryDirectory() as tmp:
         out_dir = Path(tmp)
         emit_foundation(out_dir)
+        emit_vocabularies(out_dir)
         for emitted in sorted(out_dir.iterdir()):
             ref = reference_dir / emitted.name
             if not ref.exists():

@@ -6,6 +6,11 @@ Realises:
 - ADR-0009 follow-up G2 — Literal-lexical-value prefix-filter scan; added
   here so the foundation header's `sh:namespace "..."^^xsd:anyURI` doesn't
   silently drop the opda prefix from a header-only graph.
+- ADR-0009 follow-up G7 (closed by ADR-0010 worker) — prefix-filter edge
+  case for URLs embedded inside `skos:scopeNote @en` Literals (ADR-0010
+  regulator-cited schemes hold gov.uk URLs in their scope-notes; the
+  scan MUST NOT bind a `gov.uk` prefix because that namespace is not bound
+  on the graph). Two regression tests below cement the contract.
 - ADR-0007 §"Deterministic emission rules" #1–6 — invariants verified here.
 - ODR-0004 §6a #1, sub-test #1 — `diff <(gen) <(gen)` empty (byte-identical
   on consecutive runs).
@@ -14,11 +19,14 @@ Invariants covered:
   - same input → same output bytes across 100 runs.
   - prefix declarations alphabetised.
   - term-type ordering: owl:Ontology → owl:Class → owl:DatatypeProperty →
-    owl:ObjectProperty → sh:NodeShape → sh:PropertyShape → skos:Concept.
+    owl:ObjectProperty → sh:NodeShape → sh:PropertyShape →
+    skos:ConceptScheme → skos:Concept.
   - within-term: rdf:type first, then label, then comment, then dct:source,
     then predicate-lex.
   - final newline; LF line endings; no trailing whitespace; no BOM.
   - Literal-IRI lexical values trigger prefix retention (G2 follow-up).
+  - Literal-IRI lexical values for unbound namespaces DO NOT bind a new
+    prefix (G7 follow-up — closes ADR-0005 §G G7).
 """
 
 from __future__ import annotations
@@ -205,3 +213,66 @@ def test_non_iri_literals_do_not_pollute_prefix_set() -> None:
     assert "@prefix opda:" not in out, (
         "plain string literal incorrectly triggered prefix retention:\n" + out
     )
+
+
+# --- G7 follow-up: URLs embedded in @en-language Literals ----------------
+def test_literal_url_inside_scope_note_does_not_bind_new_prefix() -> None:
+    """G7 follow-up (closes ADR-0005 §G G7).
+
+    Scenario: ADR-0010 regulator-cited schemes carry sentences like
+    `"... published at https://www.gov.uk/council-tax-bands."@en` in their
+    `skos:scopeNote`. The G2 prefix-filter scan retains a bound prefix
+    when the prefix's namespace IS referenced anywhere in the graph.
+    `gov.uk` is not bound (the graph never registered a `gov-uk` prefix),
+    so the scan MUST NOT invent a new binding.
+
+    The contract: only prefixes ALREADY BOUND on the graph are eligible
+    for retention; the Literal-IRI scan widens the *reference set* but
+    never the *binding set*. This test confirms that contract by
+    asserting no `@prefix` line points at any gov.uk-rooted namespace.
+    """
+    g = Graph()
+    g.bind("opda", OPDA)
+    g.bind("skos", SKOS)
+    scheme = URIRef("https://w3id.org/opda/#TestScheme")
+    g.add((scheme, RDF.type, URIRef("http://www.w3.org/2004/02/skos/core#ConceptScheme")))
+    g.add((scheme, SKOS.scopeNote, Literal(
+        "Verbatim source: VOA council-tax bands published at "
+        "https://www.gov.uk/council-tax-bands.",
+        lang="en",
+    )))
+    out = to_canonical_turtle(g).decode("utf-8")
+    for line in out.splitlines():
+        if line.startswith("@prefix "):
+            assert "gov.uk" not in line, (
+                f"unbound gov.uk namespace bound by Literal scan: {line!r}"
+            )
+        # And the opda prefix MUST appear (the scheme IRI references it).
+    assert "@prefix opda:" in out
+
+
+def test_literal_url_lexical_value_does_not_bind_unbound_namespace() -> None:
+    """G7 follow-up — second negative case.
+
+    Scenario variant: a Literal whose lexical value IS exactly a URL
+    (no surrounding prose) in a namespace that no prefix is bound to.
+    The scan adds the URL to the referenced-IRI set, but no bound
+    prefix matches it (gov.uk is not bound), so no `@prefix gov.uk:`
+    appears in output.
+    """
+    g = Graph()
+    g.bind("opda", OPDA)
+    g.bind("skos", SKOS)
+    scheme = URIRef("https://w3id.org/opda/#OtherScheme")
+    g.add((scheme, RDF.type, URIRef("http://www.w3.org/2004/02/skos/core#ConceptScheme")))
+    # Literal lexical value is just the URL — the most aggressive case.
+    g.add((scheme, DCTERMS.source, Literal("https://www.gov.uk/council-tax-bands")))
+    out = to_canonical_turtle(g).decode("utf-8")
+    # No bound prefix for gov.uk; the literal-IRI scan must not invent one.
+    for line in out.splitlines():
+        if line.startswith("@prefix "):
+            assert "gov.uk" not in line, (
+                f"G7: unbound gov.uk literal triggered prefix binding: {line!r}"
+            )
+    # The opda prefix MUST still appear (the scheme IRI references it).
+    assert "@prefix opda:" in out

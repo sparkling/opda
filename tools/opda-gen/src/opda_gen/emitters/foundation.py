@@ -57,9 +57,14 @@ VANN = Namespace("http://purl.org/vocab/vann/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
-# --- Constants pinned by ADR-0009 ----------------------------------------
+# --- Constants pinned by ADR-0009 + ADR-0010 -----------------------------
 _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
-_VERSION_IRI = URIRef("https://w3id.org/opda/0.1.0/")
+# `owl:versionIRI` advances when the generator version bumps and the
+# emitted substrate materially extends. ADR-0009 pinned 0.1.0 (foundation
+# only). ADR-0010 introduces the SKOS substrate (16 ConceptSchemes), which
+# is a substantive addition to the corpus; the version IRI moves to 0.2.0
+# in lockstep with `opda_gen.__version__`.
+_VERSION_IRI = URIRef("https://w3id.org/opda/0.2.0/")
 _SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
 _ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
 _OPDA_NS_LITERAL = Literal("https://w3id.org/opda/#", datatype=XSD.anyURI)
@@ -84,7 +89,10 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-27"
 _FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0009"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
-_VERSION_INFO = f"{__version__} — foundation skeleton (ADR-0009)"
+# Version-info string tracks the ADR responsible for the most recent
+# substantive substrate addition. ADR-0009 set "foundation skeleton";
+# ADR-0010 extends to "foundation + SKOS vocabularies".
+_VERSION_INFO = f"{__version__} — foundation + SKOS vocabularies (ADR-0009 + ADR-0010)"
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
 _ODR_0004_SECTION_8A = URIRef(
