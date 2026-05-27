@@ -1,8 +1,8 @@
 # ADR Programme — Ontology Implementation (JSON Schemas → Turtle)
 
-> **Anchor:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../ontology/odr/ODR-0003-pdtf-ontology-programme.md). The Council programme (ODR corpus) ratifies the *modelling decisions*; this ADR programme (ADR corpus) realises those decisions as engineering artefacts — Turtle files, generator code, SHACL shapes, CI hooks. DCAP boundary: ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs.
+> **Anchor:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md). The Council programme (ODR corpus) ratifies the *modelling decisions*; this ADR programme (ADR corpus) realises those decisions as engineering artefacts — Turtle files, generator code, SHACL shapes, CI hooks. DCAP boundary: ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs.
 >
-> **Sister plan:** [Council follow-up sessions](../ontology/plan/council-followup-sessions.md) — operationalised the 14-session ODR ratification programme. This plan operationalises the seven-ADR implementation programme that follows.
+> **Sister plan:** [Council follow-up sessions](../../ontology/plan/council-followup-sessions.md) — operationalised the 14-session ODR ratification programme. This plan operationalises the seven-ADR implementation programme that follows.
 
 ## 1. Scope and method
 
@@ -17,9 +17,9 @@
 | Corpus: `docs/adr/` | Corpus: `docs/ontology/odr/` |
 | Authority: project ADR conventions (MADR 4.x + project extensions) | Authority: ODR-0001 Linked Data Council |
 
-**State at top of programme (2026-05-27).** All 14 original Council sessions ratified + Phase-3.5 audit + Session 003c WG housekeeping. 17 ODRs accepted (0001 thru 0018 minus 0014 superseded + 0016 deferred-until-trigger). Namespace ratified at `https://w3id.org/opda/#` (Session 003b + ADR-0006). Generator specification ratified ([ADR-0007](./ADR-0007-ontology-generator-specification.md)).
+**State at top of programme (2026-05-27).** All 14 original Council sessions ratified + Phase-3.5 audit + Session 003c WG housekeeping. 17 ODRs accepted (0001 thru 0018 minus 0014 superseded + 0016 deferred-until-trigger). Namespace ratified at `https://w3id.org/opda/#` (Session 003b + ADR-0006). Generator specification ratified ([ADR-0007](../ADR-0007-ontology-generator-specification.md)).
 
-This ADR programme **bootstraps the implementation** from ADR-0006 (namespace infrastructure) + ADR-0007 (generator specification) into a working BASPI5 round-trip — the MVP gate that closes [ODR-0003 §"Programme retirement criterion"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md).
+This ADR programme **bootstraps the implementation** from ADR-0006 (namespace infrastructure) + ADR-0007 (generator specification) into a working BASPI5 round-trip — the MVP gate that closes [ODR-0003 §"Programme retirement criterion"](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md).
 
 ## 2. Inputs
 
@@ -56,13 +56,13 @@ Seven engineering ADRs, sequenced by dependency. Each ADR realises one or more r
 
 | Phase | ADR | Title | Realises (ODRs) | Dependency |
 |---|---|---|---|---|
-| Phase 1 — Bootstrap | [ADR-0008](./ADR-0008-generator-implementation-infrastructure.md) | Generator implementation infrastructure | ODR-0004 §6a; ADR-0007 | (none — bootstrap) |
-| Phase 1 — Bootstrap | [ADR-0009](./ADR-0009-foundation-ttl-emission.md) | Foundation TTL emission | ODR-0004 §3a, §6a; ODR-0001 §What-an-ODR-records | ADR-0008 |
-| Phase 2 — Substrate | [ADR-0010](./ADR-0010-skos-vocabulary-emission.md) | SKOS vocabulary emission | ODR-0011; A9 per-kind discipline | ADR-0009 |
-| Phase 3 — Modules | [ADR-0011](./ADR-0011-module-tbox-emission.md) | Module TBox emission (Property + Agent + Transaction + Claims + Address + Descriptive Attributes) | ODR-0005 + ODR-0006 + ODR-0007 + ODR-0008 + ODR-0009 + ODR-0015 + ODR-0017 + ODR-0018 | ADR-0009 + ADR-0010 |
-| Phase 4 — Validation | [ADR-0012](./ADR-0012-shacl-and-dpv-annotation-emission.md) | SHACL shapes + DPV annotation emission | ODR-0010 §Q1-Q6; ODR-0012; ODR-0013; ODR-0017; ODR-0018 | ADR-0011 |
-| Phase 5 — Overlays | [ADR-0013](./ADR-0013-overlay-profile-emission.md) | Overlay profile emission | ODR-0010 (full); three-rule interface contract | ADR-0012 |
-| Phase 6 — MVP | [ADR-0014](./ADR-0014-baspi5-round-trip-mvp-harness.md) | BASPI5 round-trip MVP harness + diagnostic exemplar regression | ODR-0010 §Q7 (MVP gate); ODR-0004 §8a; ODR-0003 §Programme retirement criterion | ADR-0013 |
+| Phase 1 — Bootstrap | [ADR-0008](../ADR-0008-generator-implementation-infrastructure.md) | Generator implementation infrastructure | ODR-0004 §6a; ADR-0007 | (none — bootstrap) |
+| Phase 1 — Bootstrap | [ADR-0009](../ADR-0009-foundation-ttl-emission.md) | Foundation TTL emission | ODR-0004 §3a, §6a; ODR-0001 §What-an-ODR-records | ADR-0008 |
+| Phase 2 — Substrate | [ADR-0010](../ADR-0010-skos-vocabulary-emission.md) | SKOS vocabulary emission | ODR-0011; A9 per-kind discipline | ADR-0009 |
+| Phase 3 — Modules | [ADR-0011](../ADR-0011-module-tbox-emission.md) | Module TBox emission (Property + Agent + Transaction + Claims + Address + Descriptive Attributes) | ODR-0005 + ODR-0006 + ODR-0007 + ODR-0008 + ODR-0009 + ODR-0015 + ODR-0017 + ODR-0018 | ADR-0009 + ADR-0010 |
+| Phase 4 — Validation | [ADR-0012](../ADR-0012-shacl-and-dpv-annotation-emission.md) | SHACL shapes + DPV annotation emission | ODR-0010 §Q1-Q6; ODR-0012; ODR-0013; ODR-0017; ODR-0018 | ADR-0011 |
+| Phase 5 — Overlays | [ADR-0013](../ADR-0013-overlay-profile-emission.md) | Overlay profile emission | ODR-0010 (full); three-rule interface contract | ADR-0012 |
+| Phase 6 — MVP | [ADR-0014](../ADR-0014-baspi5-round-trip-mvp-harness.md) | BASPI5 round-trip MVP harness + diagnostic exemplar regression | ODR-0010 §Q7 (MVP gate); ODR-0004 §8a; ODR-0003 §Programme retirement criterion | ADR-0013 |
 
 Total: 7 engineering ADRs. With ADR-0006 (namespace infrastructure) + ADR-0007 (generator specification) as upstream, the implementation programme is **9 ADRs end-to-end** from namespace decision to MVP gate.
 
@@ -113,17 +113,17 @@ This is real engineering, not deliberation. The Council programme produced the r
 
 ## 6. CI integration
 
-Per [ADR-0007 §"Byte-identity CI test"](./ADR-0007-ontology-generator-specification.md), `.github/workflows/ontology-byte-identity.yml` runs on every push + PR. Tests:
+Per [ADR-0007 §"Byte-identity CI test"](../ADR-0007-ontology-generator-specification.md), `.github/workflows/ontology-byte-identity.yml` runs on every push + PR. Tests:
 
 1. **Byte-identity regeneration.** `opda-gen emit --output /tmp/ontology` → `diff -q` against committed copies → fail on any diff.
-2. **Three-graph separation** ([ODR-0004 §3a](../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) five-part CI test): no `sh:*` in annotation graph; no `owl:imports` from shapes; no advisory annotations in shapes; every `sh:targetClass` resolves; consumer-profile artefacts have no commits outside service account.
+2. **Three-graph separation** ([ODR-0004 §3a](../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) five-part CI test): no `sh:*` in annotation graph; no `owl:imports` from shapes; no advisory annotations in shapes; every `sh:targetClass` resolves; consumer-profile artefacts have no commits outside service account.
 3. **Exemplar regression** (per ODR-0004 §8a + ADR-0014): pyshacl validates each exemplar against shapes graph; result matches paired `expected-report.ttl`.
 4. **Three-rule interface contract** (per ODR-0010 + ODR-0013 + ADR-0013): `sh:in` semantics; `sh:Violation` floor; no-identity-override gate. Build-step composition produces no surprises.
 5. **BASPI5 round-trip** (per ADR-0014): JSON → loaded SHACL profile → rendered DASH form → validated transaction with full `dct:source` traceability. Round-trip equivalence test.
 
 ## 7. MVP gate (BASPI5 round-trip)
 
-Per [ODR-0010 §Q7](../ontology/odr/ODR-0010-overlay-profile-mechanism.md) and [ODR-0003 §"Programme retirement criterion"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md):
+Per [ODR-0010 §Q7](../../ontology/odr/ODR-0010-overlay-profile-mechanism.md) and [ODR-0003 §"Programme retirement criterion"](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md):
 
 > **MVP definition:** Load BASPI5 overlay → SHACL profile composition → DASH rendering → validate exemplar transaction → regenerate BASPI5 form with full `dct:source` traceability back to data-dictionary leaves.
 
@@ -131,7 +131,7 @@ The MVP gate is the methodology's operational pressure-test: if BASPI5 round-tri
 
 ## 8. Execution model — swarm orchestration
 
-The engineering programme uses **swarm orchestration via `/ruflo-swarm:swarm`** to run independent ADR implementations concurrently while preserving dependency gates. This mirrors the Council programme's Agent fan-out pattern (per [ODR-0001 §"Roles for every session"](../ontology/odr/ODR-0001-linked-data-council-methodology.md)), adapted for engineering execution. The Council used named-expert teammates; the ADR programme uses scoped-task workers, but the topology is the same shape.
+The engineering programme uses **swarm orchestration via `/ruflo-swarm:swarm`** to run independent ADR implementations concurrently while preserving dependency gates. This mirrors the Council programme's Agent fan-out pattern (per [ODR-0001 §"Roles for every session"](../../ontology/odr/ODR-0001-linked-data-council-methodology.md)), adapted for engineering execution. The Council used named-expert teammates; the ADR programme uses scoped-task workers, but the topology is the same shape.
 
 ### 8.1 Agent topology
 
@@ -279,9 +279,9 @@ A FAIL on any check blocks `accepted` status. The implementing worker amends; va
 
 ### 9.4 Surfaced ambiguities → Council amendment
 
-If a validation check surfaces a genuine ODR ambiguity (the ratified `## Rules` text underspecifies the engineering decision OR two ODRs cite the same concern with conflicting framings), the engineer routes the ambiguity to an Author-only Council session per [ODR-0001 §Self-amendment process](../ontology/odr/ODR-0001-linked-data-council-methodology.md) — **NOT** a silent ADR-side interpretation.
+If a validation check surfaces a genuine ODR ambiguity (the ratified `## Rules` text underspecifies the engineering decision OR two ODRs cite the same concern with conflicting framings), the engineer routes the ambiguity to an Author-only Council session per [ODR-0001 §Self-amendment process](../../ontology/odr/ODR-0001-linked-data-council-methodology.md) — **NOT** a silent ADR-side interpretation.
 
-Engineering does not re-deliberate. Ambiguity discovery triggers Council; Council ratifies an amendment; engineering re-runs with the amended `## Rules`. This is the structural anti-drift mechanism the Council programme expects (per [ODR-0003 §"Status discipline"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md)).
+Engineering does not re-deliberate. Ambiguity discovery triggers Council; Council ratifies an amendment; engineering re-runs with the amended `## Rules`. This is the structural anti-drift mechanism the Council programme expects (per [ODR-0003 §"Status discipline"](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md)).
 
 ### 9.5 Validation directory convention
 
@@ -327,14 +327,14 @@ This programme retires when **all** hold:
 
 Once retired, subsequent ontology-engineering work in OPDA (overlay additions; module amendments; consumer-profile additions) lands as fresh ADRs in the ADR corpus without revisiting this programme's sequencing.
 
-The retirement closes [ODR-0003 §Programme retirement criterion](../ontology/odr/ODR-0003-pdtf-ontology-programme.md) jointly with the Council programme's own retirement signal.
+The retirement closes [ODR-0003 §Programme retirement criterion](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md) jointly with the Council programme's own retirement signal.
 
 ## References
 
-- **Anchor ODR:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../ontology/odr/ODR-0003-pdtf-ontology-programme.md). This plan operationalises its §"Programme retirement criterion".
-- **Sister plan:** [Council follow-up sessions](../ontology/plan/council-followup-sessions.md). The Council ratification programme that produced the inputs (ODR `## Rules`) this plan consumes.
-- **Foundation ADR:** [ADR-0006 — Ontology namespace at w3id.org/opda/ via W3C PICG redirect](./ADR-0006-w3id-opda-ontology-namespace.md). Phase 0 infrastructure.
-- **Specification ADR:** [ADR-0007 — Ontology generator specification](./ADR-0007-ontology-generator-specification.md). Specifies what ADR-0008 implements.
-- **Methodology:** [ODR-0001 — Linked Data Council methodology](../ontology/odr/ODR-0001-linked-data-council-methodology.md). Defines `kind: pattern` per-kind discipline + the ODR-vs-ADR corpus boundary.
-- **DCAP profile:** [DCAP.md](../ontology/odr/DCAP.md). Cross-corpus modifying-relations rule (intra-corpus `supersedes`/`implements`; cross-corpus `depends-on`).
-- **Adoption record:** [OPDA Council adoption record](../ontology/odr/council/adoption.md). Track record showing the Council programme is complete at the ratification level.
+- **Anchor ODR:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../../ontology/odr/ODR-0003-pdtf-ontology-programme.md). This plan operationalises its §"Programme retirement criterion".
+- **Sister plan:** [Council follow-up sessions](../../ontology/plan/council-followup-sessions.md). The Council ratification programme that produced the inputs (ODR `## Rules`) this plan consumes.
+- **Foundation ADR:** [ADR-0006 — Ontology namespace at w3id.org/opda/ via W3C PICG redirect](../ADR-0006-w3id-opda-ontology-namespace.md). Phase 0 infrastructure.
+- **Specification ADR:** [ADR-0007 — Ontology generator specification](../ADR-0007-ontology-generator-specification.md). Specifies what ADR-0008 implements.
+- **Methodology:** [ODR-0001 — Linked Data Council methodology](../../ontology/odr/ODR-0001-linked-data-council-methodology.md). Defines `kind: pattern` per-kind discipline + the ODR-vs-ADR corpus boundary.
+- **DCAP profile:** [DCAP.md](../../ontology/odr/DCAP.md). Cross-corpus modifying-relations rule (intra-corpus `supersedes`/`implements`; cross-corpus `depends-on`).
+- **Adoption record:** [OPDA Council adoption record](../../ontology/odr/council/adoption.md). Track record showing the Council programme is complete at the ratification level.
