@@ -17,13 +17,23 @@ ODR-0005 is the first record to discharge its IC gate against this set.
 Descriptive kebab-case (FIBO test-case-naming discipline — the filename is the
 documentation). Small files (≤ ~50 lines) per Davis's BBC test-suite discipline.
 
-## Current canonical set (input to S005 — Property & Land Identity Crux)
+## Current canonical set
+
+### Input to S005 — Property & Land Identity Crux ✅ (closed 2026-05-27)
 
 | Exemplar | Hard case it isolates |
 |---|---|
 | `registered-freehold-house.ttl` | Baseline easy case (UPRN present, title registered, single proprietor). Differentiates the harder cases. |
-| `unregistered-pre-first-registration-house.ttl` | Legal layer absent + UPRN absent. Guarino's "IC must work without legal anchor" + Cagle's graceful-degradation challenge. |
+| `unregistered-pre-first-registration-house.ttl` | Legal layer absent + UPRN absent. Guarino's "IC must work without legal anchor" + Cagle's graceful-degradation challenge. **Will be amended post-S005 to add the common-law LegalEstate individual explicitly** (Kendall+Davis cardinality-test requirement). |
 | `flat-with-split-uprn.ttl` | UPRN succession via re-numbering. Rule 6 (UPRN contingent, not IC); physical identity persists across administrative re-issue. |
+
+### Input to S015 — Address & Geography (pending; between-session prep)
+
+| Exemplar | Hard case it isolates |
+|---|---|
+| `flat-no-uprn-newly-converted.ttl` | Address exists without UPRN; subdivision created two new Properties whose UPRN issuance lags AddressBase. Tests Q1 UFO category accommodation of UPRN-absence. |
+| `listed-building-divergent-addresses.ttl` | Three divergent address surfaces (title / marketing / INSPIRE) on one Property. Tests Q6 co-reference SHACL shape across address presentations. |
+| `rural-plot-inspire-no-uprn.ttl` | Undeveloped land with INSPIRE Identifier but no UPRN and no postal address. Tests Q5 GeoSPARQL-deferral interface; Q7 different PII regime (no postal delivery). |
 
 ## Expected-report pairing
 

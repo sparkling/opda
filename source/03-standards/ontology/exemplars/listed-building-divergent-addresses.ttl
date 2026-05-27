@@ -1,0 +1,65 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0015 (Address & Geography).
+# Situation: a Grade II-listed building with three divergent address presentations —
+# the title address (as on the HMLR register), the marketing address (as on Rightmove),
+# and the INSPIRE-derived cadastral address. All three identify the same physical Property.
+# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed;
+# ODR-0005 status: proposed; ODR-0015 status: proposed (S015 will settle the IC for Address).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/listed-building-divergent-addresses/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Listed building with divergent title / marketing / INSPIRE addresses" ;
+    dct:status "draft" ;
+    dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Address co-reference. One physical opda:Property (Q5 3-class from S005); one opda:LegalEstate (freehold); one opda:RegisteredTitle (HMLR title NK123456); three divergent address surfaces — title-address ('The Old Rectory, Glebe Lane, Stamford'), marketing-address ('The Old Rectory, near Wothorpe'), INSPIRE-derived cadastral address. The Q1 UFO category answer dictates the modelling: if Address is a Mode of presentation (Guarino's S001 Q4 framing carried), the three are three modes on one Property; if Address is a Kind (INSPIRE feature-as-class position), the three are three Kind instances co-referring via opda:identifiesSameProperty (S005's predicate). The Q6 SHACL co-reference shape must validate that the three agree on UPRN + postcode + first-line-prefix; disagreement is a data-quality finding, not modelling failure." .
+
+# Physical Property
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Grade II-listed rectory at the Glebe Lane site" ;
+    opda:uprn "100070888000" ;
+    opda:inspireId "urn:opda:inspire:OS:200099876" ;
+    opda:listedStatus "Grade II" .
+
+# Three address presentations — the structure each takes is the S015 Q3 question
+opda-x:title-address
+    a opda:Address ;
+    rdfs:label "Title address (as recorded on HMLR title NK123456)" ;
+    opda:addressVariant "title" ;
+    opda:line1 "The Old Rectory" ;
+    opda:line2 "Glebe Lane" ;
+    opda:postTown "Stamford" ;
+    opda:postcode "PE9 2RW" ;
+    opda:country "GB" .
+
+opda-x:marketing-address
+    a opda:Address ;
+    rdfs:label "Marketing address (estate agent's Rightmove listing)" ;
+    opda:addressVariant "marketing" ;
+    opda:line1 "The Old Rectory" ;
+    opda:line2 "near Wothorpe" ;
+    opda:postTown "Stamford" ;
+    opda:postcode "PE9 2RW" ;
+    opda:country "GB" .
+
+opda-x:inspire-address
+    a opda:Address ;
+    rdfs:label "INSPIRE-cadastral-derived address (from OS AddressBase via inspireId)" ;
+    opda:addressVariant "inspire" ;
+    opda:line1 "The Old Rectory" ;
+    opda:postTown "Stamford" ;
+    opda:postcode "PE9 2RW" ;
+    opda:country "GB" .
+
+# Co-reference: all three address surfaces refer to the same physical Property
+# (mechanism — Mode-via-property OR Kind-via-identifiesSameProperty — is S015 Q1's call)
+opda-x:title-address opda:identifiesSameProperty opda-x:property .
+opda-x:marketing-address opda:identifiesSameProperty opda-x:property .
+opda-x:inspire-address opda:identifiesSameProperty opda-x:property .

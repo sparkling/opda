@@ -1,0 +1,44 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0015 (Address & Geography).
+# Situation: a freehold house was recently converted into two flats; the new flats have not yet
+# been issued UPRNs by AddressBase (typical lag is weeks-to-months post-conversion).
+# Each flat has an address (5A and 5B of the same street) but no UPRN.
+# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed;
+# ODR-0005 status: proposed; ODR-0015 status: proposed (S015 will settle Address class commitment).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/flat-no-uprn-newly-converted/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Flat with no UPRN — newly converted from one freehold" ;
+    dct:status "draft" ;
+    dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Address modelling when UPRN is absent. The original freehold house had UPRN 100070555000; on conversion (2026-01-12) into two flats, the OS AddressBase issued no UPRNs to the flats yet (typical 6-week lag). Each flat now has an address (5A / 5B) but cannot key by UPRN. The right answer is two opda:Property individuals (Q5 3-class precedent from S005) each bearing an opda:Address that is structurally complete (line1 + town + postcode + country) but UPRN-less. The Council's Q1 UFO category choice (Kind/Quale/Mode) must accommodate the case where Address exists without UPRN; the Q6 co-reference SHACL must not fire violations from UPRN-absence." .
+
+# Original (pre-conversion) Property — closed by subdivision (S005 IC §3a Rule 2)
+opda-x:property-predecessor
+    a opda:Property ;
+    rdfs:label "Predecessor freehold house at 5 Linden Road (subdivided 2026-01-12; ceased)" ;
+    opda:uprn "100070555000" ;
+    opda:postalAddress "5 Linden Road, Reading, RG1 4QT" .
+
+# Two new Property individuals (flats 5A and 5B) — both UPRN-less pending AddressBase issue
+opda-x:property-5a
+    a opda:Property ;
+    rdfs:label "Flat 5A Linden Road — newly created from subdivision; UPRN pending" ;
+    opda:postalAddress "Flat 5A, 5 Linden Road, Reading, RG1 4QT" ;
+    prov:wasDerivedFrom opda-x:property-predecessor .
+
+opda-x:property-5b
+    a opda:Property ;
+    rdfs:label "Flat 5B Linden Road — newly created from subdivision; UPRN pending" ;
+    opda:postalAddress "Flat 5B, 5 Linden Road, Reading, RG1 4QT" ;
+    prov:wasDerivedFrom opda-x:property-predecessor .
+# Deliberately NO opda:uprn on either successor — AddressBase has not yet issued UPRNs.
+# Both Properties exist; Address-modelling must give a coherent answer without UPRN.
