@@ -8,7 +8,11 @@ Realises:
   the SKOS substrate is a substantive addition to the emitted corpus and
   warrants a minor version per the `owl:versionIRI` scheme established in
   ADR-0009).
+- ADR-0011 — Module TBox emission (minor version bump 0.2.0 → 0.3.0;
+  the six per-module TBoxes plus the three UFO meta-classes added to the
+  foundation (RoleMixin / Role / Relator) constitute a substantive
+  extension of the emitted corpus).
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

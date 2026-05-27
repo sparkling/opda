@@ -60,6 +60,28 @@ jobs:
       - name: Vocabularies byte-identity
         run: diff -q /tmp/vocabularies-only/opda-vocabularies.ttl source/03-standards/ontology/opda-vocabularies.ttl
 
+      # ----- Activated by ADR-0011 (module TBox emission) ---------------
+      # The six per-module TTLs (opda-property / agent / transaction /
+      # claim / governance / descriptive) are committed alongside the
+      # foundation + vocabularies. The `opda-gen emit` umbrella above
+      # already regenerates them, and the byte-identity `diff -rq` step
+      # already covers them via the directory-level walk. The explicit
+      # subcommand below validates the per-file emission contract on its
+      # own for each module (matches ADR-0011 §Confirmation #1).
+
+      - name: Regenerate each module only (per-file gate)
+        working-directory: tools/opda-gen
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            opda-gen emit-module "$mod" --output "/tmp/module-$mod"
+          done
+
+      - name: Modules byte-identity
+        run: |
+          for mod in property agent transaction claim governance descriptive; do
+            diff -q "/tmp/module-$mod/opda-$mod.ttl" "source/03-standards/ontology/opda-$mod.ttl"
+          done
+
       # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
       # validate-exemplar runs pyshacl against a diagnostic exemplar and
       # compares to the paired expected-report.ttl. Stays commented until

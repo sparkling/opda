@@ -13,6 +13,9 @@ Realises:
   byte-identity gate.
 - ADR-0010 §"Confirmation" #2 — vocabularies file added to the
   byte-identity gate alongside the four foundation TTLs.
+- ADR-0011 §"Confirmation" #2 — six module TTLs (opda-property /
+  agent / transaction / claim / governance / descriptive) added to the
+  byte-identity gate.
 
 This module provides a `run()` function that compares a freshly-regenerated
 directory against a committed reference directory and returns a list of
@@ -24,6 +27,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+from opda_gen.emitters.classes import emit_all_modules
 from opda_gen.emitters.foundation import emit_foundation
 from opda_gen.emitters.vocabularies import emit_vocabularies
 
@@ -34,15 +38,16 @@ def run(reference_dir: Path) -> list[str]:
     Returns a list of violation strings (empty == PASS). Per ADR-0007
     §"Byte-identity CI test", a non-empty list fails the CI run.
 
-    Per ADR-0009 + ADR-0010, the regeneration emits five files (the four
-    foundation TTLs plus `opda-vocabularies.ttl`); the diff is a per-file
-    byte-comparison. A missing reference is itself a violation.
+    Per ADR-0009 + ADR-0010 + ADR-0011, the regeneration emits eleven
+    files (foundation 4 + vocabularies 1 + modules 6); the diff is a
+    per-file byte-comparison. A missing reference is itself a violation.
     """
     violations: list[str] = []
     with tempfile.TemporaryDirectory() as tmp:
         out_dir = Path(tmp)
         emit_foundation(out_dir)
         emit_vocabularies(out_dir)
+        emit_all_modules(out_dir)
         for emitted in sorted(out_dir.iterdir()):
             ref = reference_dir / emitted.name
             if not ref.exists():

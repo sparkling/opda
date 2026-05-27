@@ -1,5 +1,6 @@
 """
-Tests for end-to-end byte-identity on the foundation + vocabularies emission.
+Tests for end-to-end byte-identity on the foundation + vocabularies +
+modules emission.
 
 Realises:
 - ADR-0008 §"Confirmation" #3 + #6 — byte-identity test in the suite +
@@ -8,14 +9,17 @@ Realises:
   against the first.
 - ADR-0010 §"Confirmation" #2 — byte-identity gate extended to cover
   `opda-vocabularies.ttl` alongside the foundation TTLs.
+- ADR-0011 §"Confirmation" #2 — byte-identity gate extended again to
+  cover the six per-module TTLs (opda-property / agent / transaction /
+  claim / governance / descriptive).
 - ADR-0007 §"Byte-identity CI test" sub-test #1 — `diff <(gen) <(gen)`
   returns empty (byte-identical on consecutive runs).
 - ODR-0004 §6a #3 — byte-identity CI contract.
 
 Procedure:
-  1. Emit foundation + vocabularies into tmp dir A.
-  2. Emit foundation + vocabularies into tmp dir B.
-  3. Assert file bytes are identical (all five files).
+  1. Emit foundation + vocabularies + modules into tmp dir A.
+  2. Emit foundation + vocabularies + modules into tmp dir B.
+  3. Assert file bytes are identical (all eleven files).
 """
 
 from __future__ import annotations
@@ -23,6 +27,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+from opda_gen.emitters.classes import emit_all_modules
 from opda_gen.emitters.foundation import emit_foundation
 from opda_gen.emitters.vocabularies import emit_vocabularies
 
@@ -77,8 +82,9 @@ def test_byte_identity_runner_reports_match() -> None:
     """The `ci.byte_identity.run` helper reports an empty violation list when
     the reference is regenerated identically.
 
-    Per ADR-0010 the reference now must include both foundation + vocabularies;
-    the runner emits both, so the test fixture seeds both.
+    Per ADR-0011 the reference now must include foundation + vocabularies +
+    six modules; the runner emits all three layers, so the test fixture
+    seeds all three.
     """
     from opda_gen.ci.byte_identity import run
 
@@ -86,4 +92,5 @@ def test_byte_identity_runner_reports_match() -> None:
         ref = Path(ref_dir)
         emit_foundation(ref)
         emit_vocabularies(ref)
+        emit_all_modules(ref)
         assert run(ref) == []

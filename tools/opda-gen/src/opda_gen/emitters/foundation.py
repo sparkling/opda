@@ -8,6 +8,14 @@ Realises:
   classes (`opda:DiagnosticExemplar`, `opda:GeneratorRun`) emitted with the
   ADR-0007 §"A9 per-kind discipline output" triple set (`dct:source` +
   `skos:scopeNote` + `rdfs:comment`).
+- ADR-0011 — foundation expansion to three additional UFO meta-classes
+  used cross-module: `opda:RoleMixin`, `opda:Role`, `opda:Relator`. These
+  belong here (foundation) rather than in any single module file because
+  they are referenced by `opda-agent.ttl` (Seller, Buyer, Proprietor,
+  Proprietorship), `opda-transaction.ttl` (Transaction-as-Relator), and
+  the cross-cutting UFO discipline. The classes carry full A9 per-kind
+  discipline citing UFO source (Guizzardi 2005 Ch. 4) and the ratifying
+  ODR section (ODR-0006 §Q2/§Q3).
 - ADR-0009 §"opda-shapes.ttl — initial shapes graph" — header-only graph
   pointing at the class-graph version IRI via `opda:targetsClassGraph`.
 - ADR-0009 §"opda-annotations.ttl — initial annotations graph" — header-only
@@ -57,14 +65,17 @@ VANN = Namespace("http://purl.org/vocab/vann/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
-# --- Constants pinned by ADR-0009 + ADR-0010 -----------------------------
+# --- Constants pinned by ADR-0009 + ADR-0010 + ADR-0011 -------------------
 _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
 # `owl:versionIRI` advances when the generator version bumps and the
 # emitted substrate materially extends. ADR-0009 pinned 0.1.0 (foundation
 # only). ADR-0010 introduces the SKOS substrate (16 ConceptSchemes), which
-# is a substantive addition to the corpus; the version IRI moves to 0.2.0
-# in lockstep with `opda_gen.__version__`.
-_VERSION_IRI = URIRef("https://w3id.org/opda/0.2.0/")
+# is a substantive addition to the corpus; the version IRI moved to 0.2.0.
+# ADR-0011 adds six per-module TBoxes plus three UFO meta-classes
+# (RoleMixin / Role / Relator) folded into the foundation class graph,
+# warranting a further minor bump to 0.3.0 in lockstep with
+# `opda_gen.__version__`.
+_VERSION_IRI = URIRef("https://w3id.org/opda/0.3.0/")
 _SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
 _ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
 _OPDA_NS_LITERAL = Literal("https://w3id.org/opda/#", datatype=XSD.anyURI)
@@ -84,15 +95,21 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-27"
 # The sentinel tells human readers which ADR ratified this content; the
 # live SHA at the time of any specific regeneration is recoverable via
 # `git log -- source/03-standards/ontology/foundation.ttl`. The constant
-# advances when a future ADR materially mutates the foundation content
-# (e.g. ADR-0011 module emissions will bump this to "pinned-by-ADR-0011").
-_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0009"
+# advances when a future ADR materially mutates the foundation content.
+# ADR-0011 adds three UFO meta-classes (RoleMixin / Role / Relator) to
+# the foundation class graph plus bumps the foundation `owl:versionIRI`,
+# both substantive foundation mutations warranting the sentinel bump.
+_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0011"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # Version-info string tracks the ADR responsible for the most recent
 # substantive substrate addition. ADR-0009 set "foundation skeleton";
-# ADR-0010 extends to "foundation + SKOS vocabularies".
-_VERSION_INFO = f"{__version__} — foundation + SKOS vocabularies (ADR-0009 + ADR-0010)"
+# ADR-0010 extended to "foundation + SKOS vocabularies"; ADR-0011 adds
+# the three UFO meta-classes and unblocks per-module emission.
+_VERSION_INFO = (
+    f"{__version__} — foundation + SKOS vocabularies + UFO meta-classes "
+    "(ADR-0009 + ADR-0010 + ADR-0011)"
+)
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
 _ODR_0004_SECTION_8A = URIRef(
@@ -100,6 +117,14 @@ _ODR_0004_SECTION_8A = URIRef(
 )
 _ODR_0004_SECTION_6A = URIRef(
     "https://w3id.org/opda/odr/ODR-0004#section-6a-generator-first"
+)
+# ADR-0011 — UFO meta-classes ratified by ODR-0006 §Q2 (RoleMixin / Role
+# layer) and §Q3 (Relator layer).
+_ODR_0006_SECTION_Q2 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0006#section-Q2"
+)
+_ODR_0006_SECTION_Q3 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0006#section-Q3"
 )
 
 # Output file names.
@@ -202,12 +227,18 @@ def build_foundation_graph(emission_date: str) -> Graph:
 
 
 def build_classes_graph() -> Graph:
-    """Build the initial OWL class graph per ADR-0009 §"opda-classes.ttl".
+    """Build the initial OWL class graph per ADR-0009 §"opda-classes.ttl"
+    extended by ADR-0011 with three cross-module UFO meta-classes.
 
-    Two classes — `opda:DiagnosticExemplar` and `opda:GeneratorRun` — each
-    emitted with the ADR-0007 §"A9 per-kind discipline output" triple set:
-    `rdf:type owl:Class` + `rdfs:label` + `rdfs:comment` + `skos:scopeNote`
-    + `dct:source`.
+    Five classes total after ADR-0011:
+
+    - `opda:DiagnosticExemplar`, `opda:GeneratorRun` — foundation (ADR-0009).
+    - `opda:RoleMixin`, `opda:Role`, `opda:Relator` — UFO meta-classes
+      referenced by every per-module TBox (ADR-0011 + ODR-0006 §Q2/§Q3).
+
+    Each emitted with the ADR-0007 §"A9 per-kind discipline output"
+    triple set: `rdf:type owl:Class` + `rdfs:label` + `rdfs:comment` +
+    `skos:scopeNote` + `dct:source`.
     """
     g = Graph()
     _bind_common(g)
@@ -253,6 +284,69 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.GeneratorRun, DCTERMS.source, _ODR_0004_SECTION_6A))
+
+    # --- ADR-0011 — UFO meta-classes folded into the foundation ----------
+    # These three classes are referenced cross-module (Seller / Buyer as
+    # RoleMixin; Proprietor as Role; Transaction / Proprietorship as
+    # Relator). They land here so per-module TBoxes can subclass them
+    # uniformly without each module re-declaring the UFO meta-vocabulary.
+
+    g.add((OPDA.RoleMixin, RDF.type, OWL.Class))
+    g.add((OPDA.RoleMixin, RDFS.label, Literal("Role Mixin", lang="en")))
+    g.add((OPDA.RoleMixin, RDFS.comment, Literal(
+        "UFO RoleMixin — anti-rigid, cross-sortal role pattern. An "
+        "instance of a RoleMixin is borne by a bearer drawn from more "
+        "than one substantial Kind (e.g. Seller may be borne by Person OR "
+        "Organisation). Distinguished from `opda:Role` (which is sortal "
+        "— borne by a single Kind). Per ODR-0006 §Q2 Role layer.",
+        lang="en",
+    )))
+    g.add((OPDA.RoleMixin, SKOS.scopeNote, Literal(
+        "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, "
+        "externally founded, cross-sortal). DOLCE: Role qua Universal "
+        "without sortal commitment (Masolo et al. 2003 D18 §4.5).",
+        lang="en",
+    )))
+    g.add((OPDA.RoleMixin, DCTERMS.source, _ODR_0006_SECTION_Q2))
+
+    g.add((OPDA.Role, RDF.type, OWL.Class))
+    g.add((OPDA.Role, RDFS.label, Literal("Role", lang="en")))
+    g.add((OPDA.Role, RDFS.comment, Literal(
+        "UFO Role — anti-rigid, sortal role. An instance of a Role is "
+        "borne by a bearer drawn from a single substantial Kind (e.g. "
+        "Proprietor is borne by a Person — or by an Organisation under a "
+        "named specialisation, but never simultaneously). A Role NEVER "
+        "supplies its own identity; it borrows identity from its bearer "
+        "(ODR-0005 Anti-pattern §3 — never key a Role). Per ODR-0006 §Q2.",
+        lang="en",
+    )))
+    g.add((OPDA.Role, SKOS.scopeNote, Literal(
+        "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally "
+        "founded, sortal). Distinguished from RoleMixin by sortal "
+        "commitment to a single Kind.",
+        lang="en",
+    )))
+    g.add((OPDA.Role, DCTERMS.source, _ODR_0006_SECTION_Q2))
+
+    g.add((OPDA.Relator, RDF.type, OWL.Class))
+    g.add((OPDA.Relator, RDFS.label, Literal("Relator", lang="en")))
+    g.add((OPDA.Relator, RDFS.comment, Literal(
+        "UFO Relator — a relational endurant that mediates two or more "
+        "bearers and is founded by an external event. The Relator carries "
+        "its own identity (the (mediated-bearers, founding-event) tuple) "
+        "and bears properties that don't belong to any single mediated "
+        "Kind. OPDA Relators in scope: opda:Transaction (founds Seller / "
+        "Buyer RoleMixins per ODR-0007 §Q1); opda:Proprietorship (binds "
+        "Proprietor Roles to a RegisteredTitle per ODR-0006 §Q3).",
+        lang="en",
+    )))
+    g.add((OPDA.Relator, SKOS.scopeNote, Literal(
+        "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; "
+        "founded by an event; mediates two or more bearers). DOLCE: "
+        "Relation as Universal (Masolo et al. 2003 D18 §4.6).",
+        lang="en",
+    )))
+    g.add((OPDA.Relator, DCTERMS.source, _ODR_0006_SECTION_Q3))
 
     return g
 
@@ -327,8 +421,10 @@ def emit_foundation(
             CLASSES_FILENAME,
             "OPDA OWL/RDFS class graph (foundation)",
             [
-                "Two foundation classes per ADR-0009 §opda-classes.ttl;",
-                "per-module classes land via ADR-0011.",
+                "Five foundation classes: two per ADR-0009 (DiagnosticExemplar,",
+                "GeneratorRun) plus three UFO meta-classes per ADR-0011",
+                "(RoleMixin, Role, Relator — referenced cross-module).",
+                "Per-module classes land in opda-<module>.ttl via ADR-0011.",
             ],
             build_classes_graph(),
         ),

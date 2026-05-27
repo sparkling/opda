@@ -21,6 +21,13 @@ Realises:
 - ADR-0010 §"Confirmation" #2 — `--output` for `emit-vocabularies` defaults
   to the same canonical ontology directory as `emit-foundation` so an ad
   hoc invocation regenerates the committed file in place.
+- ADR-0011 §"Confirmation" #1 — `emit-module <name>` writes
+  `opda-<name>.ttl` to the canonical ontology directory (default) or to
+  a user-supplied output directory. Six modules accepted: property /
+  agent / transaction / claim / governance / descriptive.
+- ADR-0011 §"Module emission template" — the `emit` umbrella now also
+  invokes `emit-all-modules` after foundation + vocabularies so the
+  byte-identity diff covers the full Phase-3 corpus.
 - ADR-0007 §"Architecture" — generator entry point in the data flow.
 - ODR-0004 §6a — generator-first contract surface exposed to CI.
 
@@ -114,13 +121,16 @@ def emit(output: Path | None) -> None:
     """Emit the full ontology corpus (ADR-0007 §Architecture target).
 
     Phase 1 (ADR-0009) emits the four foundation TTLs; Phase 2 (ADR-0010)
-    adds `opda-vocabularies.ttl`. Both run sequentially under the `emit`
+    adds `opda-vocabularies.ttl`; Phase 3 (ADR-0011) adds the six
+    per-module TBoxes (opda-property / agent / transaction / claim /
+    governance / descriptive). All run sequentially under the `emit`
     umbrella so the byte-identity CI step exercises the whole committed
-    corpus in one shot. Subsequent phases (ADR-0011..0013) extend this
+    corpus in one shot. Subsequent phases (ADR-0012..0013) extend this
     umbrella; intermediate phases raise `NotImplementedError` per the
     explicit-deferral discipline of programme plan §9.2.
     """
     target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.classes import emit_all_modules as _emit_modules
     from opda_gen.emitters.foundation import emit_foundation as _emit_foundation
     from opda_gen.emitters.vocabularies import (
         emit_vocabularies as _emit_vocabularies,
@@ -129,6 +139,7 @@ def emit(output: Path | None) -> None:
     written: dict[Path, str] = {}
     written.update(_emit_foundation(target))
     written.update(_emit_vocabularies(target))
+    written.update(_emit_modules(target))
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
 
@@ -194,13 +205,26 @@ def emit_vocabularies(output: Path | None) -> None:
     "--output",
     "-o",
     type=click.Path(file_okay=False, path_type=Path),
-    required=True,
+    required=False,
+    default=None,
+    help=(
+        "Output directory for the regenerated module TTL. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
 )
-def emit_module(name: str, output: Path) -> None:
-    """Emit one module .ttl (Phase 3)."""
+def emit_module(name: str, output: Path | None) -> None:
+    """Emit one module .ttl (Phase 3; ADR-0011).
+
+    Valid module names: property, agent, transaction, claim, governance,
+    descriptive. Output goes to the canonical ontology directory unless
+    `--output` overrides it.
+    """
     from opda_gen.emitters.classes import emit_module as _emit
 
-    _emit(name, output)
+    target = output if output is not None else _default_ontology_dir()
+    written = _emit(name, target)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
 
 
 @main.command(name="emit-shapes")
