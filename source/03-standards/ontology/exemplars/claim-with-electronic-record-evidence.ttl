@@ -1,0 +1,67 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0009 (Claims, Evidence & Provenance).
+# Situation: a Person-identity claim supported by an electronic record (HMRC tax record lookup).
+# Tests electronic-record evidence-type; eIDAS Substantial assurance via API-verified lookup;
+# Q7 SHACL-over-PROV `sh:xone` evidence-type discrimination.
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0009 status: proposed (S009 to ratify).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/claim-with-electronic-record-evidence/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Claim with electronic-record evidence — HMRC API tax-record lookup" ;
+    dct:status "draft" ;
+    dct:references <ODR-0009> , <ODR-0006> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests electronic-record evidence-type (eIDAS Substantial via real-time API verification). A Person-identity claim that the claimant is the named tax-payer at the asserted address; evidence is an HMRC API lookup returning a structured tax-record. Under S009 Q1 the PROV-O backbone fits cleanly: prov:wasGeneratedBy (claim from API-verification activity) + prov:used (activity used the structured API response) + opda:verificationMethod 'electronic-record'. The opda:assuranceLevel is 'Substantial' (Q3 SKOS scheme; S011 Quality Region) — real-time API lookups from a regulator meet eIDAS Substantial. Q7 SHACL-over-PROV: an `sh:xone` on opda:Evidence dispatches on evidence-type and validates the electronic-record-specific properties (api-endpoint, api-response-timestamp) without firing for document-evidence." .
+
+# The claim — Person-identity assertion
+opda-x:claim
+    a opda:Claim ;
+    rdfs:label "Identity claim: Marcus Wright is the tax-resident person at 14 Oak Road" ;
+    opda:claimType "personIdentity" ;
+    opda:claimContent "Marcus Wright tax-resident at 14 Oak Road, Leeds, LS1 2AB" ;
+    opda:assuranceLevel "Substantial" ;
+    dct:conformsTo <opda:UKPropertyDataTrustFramework> .
+
+# The verification activity (PROV-O backbone)
+opda-x:verification-activity
+    a prov:Activity , opda:VerificationActivity ;
+    rdfs:label "HMRC API verification activity (conveyancer KYC pipeline, 2024-05-08)" ;
+    prov:atTime "2024-05-08T09:14:22Z"^^xsd:dateTime ;
+    prov:used opda-x:hmrc-api-response ;
+    opda:verificationMethod "electronic-record" .
+
+# The electronic-record evidence (the API response)
+opda-x:hmrc-api-response
+    a opda:ElectronicRecord , prov:Entity ;
+    rdfs:label "HMRC tax-record API response for NI QQ987654A" ;
+    opda:apiEndpoint <https://api.hmrc.gov.uk/individuals/employments/v1.0> ;
+    opda:apiResponseId "hmrc-2024-05-08-09142200-87654" ;
+    opda:retrievedAt "2024-05-08T09:14:22Z"^^xsd:dateTime ;
+    opda:issuerAuthority <opda:HMRC> .
+
+# Qualified attribution — claim attributed via the verification activity
+opda-x:claim-attribution
+    a prov:Attribution ;
+    prov:agent opda-x:marcus-wright ;
+    prov:hadRole opda:VerifiedIdentitySubjectRole .
+
+opda-x:claim prov:qualifiedAttribution opda-x:claim-attribution .
+opda-x:claim prov:wasGeneratedBy opda-x:verification-activity .
+
+# The verified subject
+opda-x:marcus-wright
+    a opda:Person ;
+    rdfs:label "Marcus Wright (claim subject; tax-resident)" ;
+    opda:niNumber "QQ987654A" .
+
+# Cryptographic digest (S009 Q4)
+opda-x:claim
+    opda:digest "sha256:f1d2d2f924e986ac86fdf7b36c94bcdf32beec15a9748b96fcc6c4c9d4a3f8b2" .

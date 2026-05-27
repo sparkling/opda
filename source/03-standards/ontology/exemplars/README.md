@@ -43,6 +43,14 @@ documentation). Small files (≤ ~50 lines) per Davis's BBC test-suite disciplin
 | `organisation-with-merger.ttl` | Organisation IC over entity merger. Two predecessors dissolve; successor is a new individual with `prov:wasDerivedFrom` chains. Tests Q1 + Q6 (FIBO LegalEntity/LEI pattern vs entity-merger pattern). |
 | `proprietorship-relator-multi-proprietor.ttl` | Proprietorship as UFO Relator with multiple Proprietor Role instances. Tests Q3 (joint-tenancy multi-proprietor case) + Q2 (RoleMixin vs Role distinction). |
 
+### Input to S009 — Claims, Evidence & Provenance (pending; between-session prep)
+
+| Exemplar | Hard case it isolates |
+|---|---|
+| `claim-with-document-evidence.ttl` | PR claim supported by grant of probate. Tests Q1 80%-PROV-O coverage + Q2 `prov:qualifiedAttribution` with `prov:hadRole`. eIDAS Substantial assurance for court-issued instrument; trust-framework conformance via `dct:conformsTo`. |
+| `claim-with-electronic-record-evidence.ttl` | Identity claim supported by HMRC API tax-record. Tests electronic-record evidence-type at eIDAS Substantial. Q7 SHACL-over-PROV `sh:xone` evidence-type discrimination. |
+| `claim-with-vouch-evidence.ttl` | Residency claim supported by SRA-solicitor vouch. Tests vouch-evidence type at eIDAS Low (corroborative not authoritative regardless of voucher quality). Q2 `prov:hadRole opda:Voucher` for the voucher's qualified attribution alongside the subject's attribution. |
+
 ## Expected-report pairing
 
 Per ODR-0004 §8a each exemplar TTL **MUST** be paired with an
