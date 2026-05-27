@@ -227,6 +227,15 @@ The ADR is honoured when all six hold:
 
 Manual test: `opda-gen emit-profile baspi5 && pyshacl --advanced -s profiles/baspi5.ttl -d source/03-standards/ontology/exemplars/registered-freehold-house.ttl` returns a `sh:ValidationReport` consistent with BASPI5's cardinality requirements.
 
+**Programme-wide validation gate** (per [ADR programme plan §9 — Validation discipline](./ADR-programme-ontology-implementation.md)). In addition to the ADR-specific criteria above, this ADR moves `proposed → accepted` only when **all four** of the following hold (independent of the worker that implemented this ADR):
+
+- **(a) Soundness check PASS** — every emitted artefact traces to a cited ODR/ADR `## Rules` or `## Operational specifications` clause via `dct:source` (for Turtle) or code-comment provenance header (for Python). The validation agent extracts emitted-artefact provenance and verifies each resolves to a ratified section.
+- **(b) Completeness check PASS** — every cited ODR's `## Rules` and `## Operational specifications` subsection is realised by an emitted artefact OR explicitly deferred with a named follow-up trigger. The validation agent enumerates cited subsections and checks coverage.
+- **(c) Cross-ADR consistency check PASS** — every downstream ADR's confirmation criteria can be met given this ADR's emission (e.g. classes emitted here are referenceable by downstream shapes; shapes here are composable by downstream profiles). The validation agent simulates the downstream contract against this ADR's output.
+- **(d) Validation report committed** at `docs/adr/validation/ADR-0013-validation-report.md`, produced by an **independent validation-agent spawn** (NOT the implementing worker; mirrors the Council Devil's Advocate independence per [ODR-0001 §Roles for every session](../ontology/odr/ODR-0001-linked-data-council-methodology.md); see ADR programme plan §8 swarm orchestration topology).
+
+A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker amends and validation re-runs. Two consecutive validation failures on the same ADR escalate to a Council mini-session per [ODR-0001 §Self-amendment process](../ontology/odr/ODR-0001-linked-data-council-methodology.md) — engineering does not re-deliberate; surfaced `## Rules` ambiguity routes to Council ratification.
+
 ## More Information
 
 * **Council-ratified inputs:** [ODR-0010 §Q1-Q7](../ontology/odr/ODR-0010-overlay-profile-mechanism.md) — overlay profile mechanism, BASPI5 round-trip framing, three-rule interface contract.

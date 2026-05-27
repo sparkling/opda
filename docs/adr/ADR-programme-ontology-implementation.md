@@ -129,7 +129,173 @@ Per [ODR-0010 §Q7](../ontology/odr/ODR-0010-overlay-profile-mechanism.md) and [
 
 The MVP gate is the methodology's operational pressure-test: if BASPI5 round-trips, the ratified ODR stack is coherent end-to-end. Closes the ODR-0003 programme retirement criterion (condition i — MVP round-trip closes; condition ii — every linked ODR is `accepted` — already met).
 
-## 8. Out of scope for this plan
+## 8. Execution model — swarm orchestration
+
+The engineering programme uses **swarm orchestration via `/ruflo-swarm:swarm`** to run independent ADR implementations concurrently while preserving dependency gates. This mirrors the Council programme's Agent fan-out pattern (per [ODR-0001 §"Roles for every session"](../ontology/odr/ODR-0001-linked-data-council-methodology.md)), adapted for engineering execution. The Council used named-expert teammates; the ADR programme uses scoped-task workers, but the topology is the same shape.
+
+### 8.1 Agent topology
+
+- **Queen agent** — programme coordinator. Reads ADR sequence + dependency graph; spawns worker agents per ADR or per parallel sub-task; tracks completion; gates next-phase spawn on prior-phase confirmation. Equivalent to the Council Queen's synthesis role.
+- **Worker agents** — one per ADR implementation (or per parallel sub-task within an ADR). Each receives: the ADR text + cited ODRs (`depends-on:` list) + cited prior ADRs + existing OPDA codebase context. Output: emitted artefacts (TTL files; Python code) + structured implementation report. Worker spawns are background (`run_in_background: true`).
+- **Validation agents** — one per completed ADR (per §9 Validation discipline). **Independent of the implementing worker**; verifies soundness + completeness + cross-ADR consistency against the ratified ODR corpus. Mirrors the Council Devil's Advocate role: independent, attack-first, withdraw-on-evidence.
+
+### 8.2 Concurrency model per phase
+
+```
+Phase 1 (Bootstrap; sequential — ADR-0009 imports ADR-0008's package):
+  Queen → ADR-0008 worker → ADR-0008 validation agent
+            ↓ (gate on PASS)
+          ADR-0009 worker → ADR-0009 validation agent
+            ↓ (gate on PASS)
+          Phase 2 unblocks
+
+Phase 2 (Substrate; single worker):
+  Queen → ADR-0010 worker → ADR-0010 validation agent
+            ↓ (gate on PASS)
+          Phase 3 unblocks
+
+Phase 3 (Modules; six workers in parallel):
+  Queen spawns concurrently in ONE message:
+    ├── property module worker      ──→  property validation agent
+    ├── agent module worker         ──→  agent validation agent
+    ├── transaction module worker   ──→  transaction validation agent
+    ├── claim module worker         ──→  claim validation agent
+    ├── governance module worker    ──→  governance validation agent
+    └── descriptive module worker   ──→  descriptive validation agent
+  Queen synthesises across module outputs → one ADR-0011 commit.
+
+Phase 4 (Validation layer; six workers in parallel):
+  Same fan-out as Phase 3 but emitting shapes + annotations per module.
+
+Phase 5 (Overlays; per-overlay concurrent — BASPI5 first):
+  Queen spawns BASPI5 worker first (MVP-blocking).
+  On BASPI5 PASS: Queen spawns TA6/NTS/LPE1/etc. workers concurrently.
+
+Phase 6 (MVP harness; single worker):
+  Queen → ADR-0014 worker → ADR-0014 validation agent
+            ↓ (gate on PASS)
+          Programme retires.
+```
+
+### 8.3 Spawn discipline (per CLAUDE.md)
+
+- Each phase's worker spawns are issued in ONE message using the `Agent` tool with `run_in_background: true`.
+- Worker agents inherit the parent's MCP toolset; `ToolSearch` is available to each worker for loading any additional MCP tools needed.
+- Each worker writes its emitted artefacts to canonical paths (`source/03-standards/ontology/...` per ADR-0007 §"Architecture") + writes a structured implementation report to `docs/adr/implementation-reports/ADR-NNNN-implementation.md`.
+- After spawning, **stop and wait for results** (per CLAUDE.md "After spawning agents: STOP and wait for results. Do not poll."). The notification system signals completion.
+
+### 8.4 When to use swarm vs direct execution
+
+- **Use swarm:** Phase 3 (six concurrent module workers), Phase 4 (six concurrent shape workers), Phase 5 (multiple concurrent overlay workers).
+- **Direct execution:** Phase 1 (sequential bootstrap; one worker at a time), Phase 2 (single substrate worker), Phase 6 (single MVP harness worker).
+- **Validation always runs as a separate agent**, even when the implementation worker ran directly. Independence of the verifier is non-negotiable (the Council DA pattern).
+
+### 8.5 Swarm initialisation
+
+The Queen issues `/ruflo-swarm:swarm-init` at programme start with a hierarchical topology + 1 coordinator + N workers + N validators per phase. Memory namespace: `opda-ontology-implementation`. Swarm state persists across phases; per-phase task spawns are issued via `mcp__ruflo__agent_spawn` from the Queen's context.
+
+If `/ruflo-swarm:swarm` is unavailable in the execution environment (e.g. running outside Claude Code), the programme degrades cleanly to direct sequential execution by a single engineer following the ADR sequence. The swarm is an accelerator, not a hard dependency.
+
+## 9. Validation discipline — soundness + completeness per ADR
+
+Every ADR implementation passes a **structural validation gate** before moving `proposed → accepted`. The gate mirrors the Council programme's Devil's Advocate role: independent verification, attack-first, named withdrawal conditions.
+
+### 9.1 Three validation checks per ADR
+
+Every ADR's `### Confirmation` section is augmented with these three checks (in addition to its own ADR-specific criteria). Validation agent runs them; report committed alongside the emission.
+
+**Check 1 — Soundness.** Every emitted artefact MUST trace to a clause in a cited ODR's `## Rules` or `## Operational specifications`. Verification:
+
+- SPARQL/grep: extract `dct:source` URIs from emitted Turtle artefacts; verify each resolves to a ratified ODR section.
+- For code artefacts (generator modules; CLI commands): every implementation file has a doc-comment header citing the ADR + cited ODRs realised by that file.
+- Soundness FAILS if any emitted artefact lacks a traceable ODR/ADR source.
+
+**Check 2 — Completeness.** Every cited ODR's `## Rules` and `## Operational specifications` subsection MUST be realised by the implementation OR explicitly deferred with a named follow-up trigger. Verification:
+
+- Coverage matrix: enumerate each cited ODR's subsections (`§Q1a`, `§Q2a`, `§3a`, etc.); for each subsection, verify the implementation either:
+  - Emits an artefact that realises it (cite by path), OR
+  - Defers with named trigger (the deferral lives in the ADR's `### Confirmation` "explicit deferrals" sub-list).
+- Completeness FAILS if any cited subsection is silently missing.
+
+**Check 3 — Cross-ADR consistency.** The ADR's emissions MUST not violate downstream-ADR contracts. Verification:
+
+- For each subsequent ADR in the programme whose `depends-on:` list cites this ADR, verify the emission supports the downstream's confirmation criteria.
+- Example: ADR-0011 module classes MUST be referenceable by ADR-0012 shapes targeting (`sh:targetClass` resolves); ADR-0012 shapes MUST be composable by ADR-0013 overlay profiles (the three-rule interface contract holds).
+- Cross-ADR FAILS if a downstream confirmation criterion cannot be met given current emission.
+
+### 9.2 Validation agent role
+
+An **independent agent** (NOT the implementing worker) runs the three checks. Inputs:
+
+- ADR text (the implementation specification).
+- Cited ODRs — read each ODR's frontmatter + `## Rules` + `## Operational specifications`.
+- Cited prior ADRs (for cross-ADR consistency).
+- Emitted artefacts (from the implementing worker).
+- Implementation report (the worker's self-described output).
+
+Output: structured validation report at `docs/adr/validation/ADR-NNNN-validation-report.md`. Format template:
+
+```markdown
+# ADR-NNNN Validation Report
+
+**Validation agent:** <agent-id>
+**Validated:** <iso-date>
+**Implementing worker:** <worker-id>
+**Cited ODRs:** <list>
+**Cited prior ADRs:** <list>
+
+## Soundness check
+- [x] Every emitted opda:Class has dct:source resolving to cited ODR section ✓
+- [x] Every emitted SHACL shape has dct:source ✓
+- [ ] FAIL: <artefact> missing dct:source (cite the artefact path + line)
+- ...
+
+## Completeness check
+- [x] ODR-NNNN §Q1a realised by emission of <path> ✓
+- [x] ODR-NNNN §Q2a realised by emission of <path> ✓
+- [ ] DEFERRED: ODR-NNNN §Q3a — explicit deferral with trigger "<X>" ✓
+- [ ] FAIL: ODR-NNNN §Q4a NOT realised — no emission found
+- ...
+
+## Cross-ADR consistency check
+- [x] ADR-MMMM downstream confirmation criteria supported ✓
+- ...
+
+## Verdict
+PASS / FAIL / PASS-WITH-FOLLOW-UPS (named items)
+```
+
+### 9.3 Pre-`accepted` gate
+
+An ADR moves `proposed → accepted` ONLY when all five hold:
+
+1. All ADR-specific `### Confirmation` criteria green (the ADR's own self-validation).
+2. Soundness check PASS.
+3. Completeness check PASS (or all gaps recorded as explicit deferrals with named triggers).
+4. Cross-ADR consistency check PASS.
+5. Validation report committed at `docs/adr/validation/ADR-NNNN-validation-report.md`.
+
+A FAIL on any check blocks `accepted` status. The implementing worker amends; validation re-runs. Two consecutive validation failures escalate to a Council mini-session (per §9.4).
+
+### 9.4 Surfaced ambiguities → Council amendment
+
+If a validation check surfaces a genuine ODR ambiguity (the ratified `## Rules` text underspecifies the engineering decision OR two ODRs cite the same concern with conflicting framings), the engineer routes the ambiguity to an Author-only Council session per [ODR-0001 §Self-amendment process](../ontology/odr/ODR-0001-linked-data-council-methodology.md) — **NOT** a silent ADR-side interpretation.
+
+Engineering does not re-deliberate. Ambiguity discovery triggers Council; Council ratifies an amendment; engineering re-runs with the amended `## Rules`. This is the structural anti-drift mechanism the Council programme expects (per [ODR-0003 §"Status discipline"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md)).
+
+### 9.5 Validation directory convention
+
+```
+docs/adr/
+├── ADR-NNNN-<slug>.md              # the ADR
+├── validation/
+│   └── ADR-NNNN-validation-report.md   # the validation agent's report
+├── implementation-reports/
+│   └── ADR-NNNN-implementation.md  # the implementing worker's self-report
+└── ADR-programme-ontology-implementation.md  # this plan
+```
+
+## 10. Out of scope for this plan
 
 - **Real-world OPDA deployment.** Hosting the generated TTL at `https://openpropdata.org.uk/ontology/` is infrastructure work governed by the Astro site build (ADR-0003) + ADR-0006 (w3id.org redirect) — not a separate ADR in this programme.
 - **Ontology editor UI.** Third-party tools (Protégé, TopBraid Composer, VocBench) consume OPDA's TTL output without OPDA-side build integration.
@@ -138,23 +304,26 @@ The MVP gate is the methodology's operational pressure-test: if BASPI5 round-tri
 - **Non-BASPI5 overlays beyond named first batch.** TA6/NTS/LPE1 etc. land as ADR-0013-incremental commits; their MVP demonstrations are post-BASPI5 MVP.
 - **S016 W3C VC/DID Compatibility.** Deferred-until-trigger per Scope-Check 1 Q7c (no trigger fired). When triggered, S016 ratifies VC binding (modelling); a future ADR-NNNN realises it.
 
-## 9. Risk and mitigation
+## 11. Risk and mitigation
 
 | Risk | Mitigation |
 |---|---|
 | Byte-identity CI brittle to rdflib version drift | Lock rdflib version; custom canonical serialiser bypasses rdflib's own serialiser for final stage (ADR-0008) |
-| Module emission discovers ratified-ODR ambiguity | Spawn Council amendment cycle (ODR amendment); do not mutate ADR programme silently |
+| Module emission discovers ratified-ODR ambiguity | Validation agent surfaces it (§9); spawn Council amendment cycle (ODR amendment); do not mutate ADR programme silently |
 | BASPI5 round-trip fails on real data | Diagnostic exemplar harness (ADR-0014) isolates root cause to one of the seven ratified `kind: pattern` ODRs; convene Council remediation |
 | Overlay profile composition surfaces three-rule violations | Cagle's S010 Scope-Check 1 Q6 three-rule interface contract is CI-enforced (ADR-0013); violations are detected mechanically |
 | DPV annotation graph leakage into shapes or class graphs | ODR-0004 §3a five-part CI test catches at every emission (ADR-0009 ensures it runs from foundation onward) |
 | Generator scope creeps beyond ~1200 LOC | ADR-0008 sets scope cap; substantive feature additions land as new ADRs, not in-place scope expansion |
+| Validation agent rubber-stamps implementation | Validation agent runs as **independent** spawn (not the implementing worker); two consecutive failures escalate to Council mini-session; FAIL on any check blocks `accepted` (§9.3) |
+| Swarm worker silently drifts from cited ODR | Validation Check 1 (Soundness) catches missing `dct:source`; FAIL blocks `accepted`; ambiguities route to Council (§9.4) |
 
-## 10. ADR programme retirement
+## 12. ADR programme retirement
 
-This programme retires when **both** hold:
+This programme retires when **all** hold:
 
 1. **MVP gate cleared** — BASPI5 round-trip demonstrates end-to-end coherence (ADR-0014 §Confirmation).
 2. **Every ADR in this programme** (ADR-0008 through ADR-0014) is `status: accepted`.
+3. **Every ADR has a green validation report** at `docs/adr/validation/ADR-NNNN-validation-report.md` (§9.3 pre-`accepted` gate).
 
 Once retired, subsequent ontology-engineering work in OPDA (overlay additions; module amendments; consumer-profile additions) lands as fresh ADRs in the ADR corpus without revisiting this programme's sequencing.
 
