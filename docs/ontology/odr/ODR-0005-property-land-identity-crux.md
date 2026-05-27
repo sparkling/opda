@@ -7,7 +7,7 @@ scope: [pdtf-v3:propertyPack.uprn, pdtf-v3:propertyPack.address, pdtf-v3:energyE
 council: session-005
 supersedes: []
 depends-on: [ODR-0004]
-implements: [ODR-0003, ODR-0017]
+implements: [ODR-0003, ODR-0017, ODR-0018]
 ---
 
 # Property & Land: The Identity Crux

@@ -11,7 +11,7 @@ scope:
 council: session-009
 supersedes: []
 depends-on: [ODR-0004, ODR-0005, ODR-0006, ODR-0011, ODR-0015]
-implements: [ODR-0003, ODR-0017]
+implements: [ODR-0003, ODR-0017, ODR-0018]
 ---
 
 # Claims, Evidence & Provenance
