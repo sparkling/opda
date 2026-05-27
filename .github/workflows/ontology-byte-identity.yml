@@ -28,20 +28,28 @@ jobs:
         working-directory: tools/opda-gen
         run: pytest -q
 
-      # ADR-0009 will uncomment the foundation-diff step below once the first
-      # real foundation.ttl is committed. ADR-0008 ships infrastructure only;
-      # there are no reference TTLs to diff against yet.
-      #
-      # - name: Regenerate corpus
-      #   working-directory: tools/opda-gen
-      #   run: opda-gen emit --output /tmp/ontology
-      #
-      # - name: Byte-identity diff
-      #   run: diff -rq /tmp/ontology source/03-standards/ontology --exclude=exemplars --exclude=derived
-      #
-      # - name: Three-graph CI test
-      #   working-directory: tools/opda-gen
-      #   run: opda-gen ci-three-graph --ontology-dir ../../source/03-standards/ontology
+      # ----- Activated by ADR-0009 (foundation TTL emission) ------------
+      # The four foundation TTLs are now committed under
+      # source/03-standards/ontology/ — these three steps regenerate, diff
+      # for byte-identity, and run the ODR-0004 §3a five-part CI test
+      # against the real corpus.
+
+      - name: Regenerate corpus
+        working-directory: tools/opda-gen
+        run: opda-gen emit --output /tmp/ontology
+
+      - name: Byte-identity diff
+        run: diff -rq /tmp/ontology source/03-standards/ontology --exclude=exemplars --exclude=derived
+
+      - name: Three-graph CI test
+        working-directory: tools/opda-gen
+        run: opda-gen ci-three-graph --ontology-dir ../../source/03-standards/ontology
+
+      # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
+      # validate-exemplar runs pyshacl against a diagnostic exemplar and
+      # compares to the paired expected-report.ttl. Stays commented until
+      # the shapes graph has content (ADR-0012) and the exemplar harness
+      # lands (ADR-0014).
       #
       # - name: Validate sample exemplar
       #   working-directory: tools/opda-gen

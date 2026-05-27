@@ -4,14 +4,14 @@ OPDA ontology generator. Realises [ADR-0007](../../docs/adr/ADR-0007-ontology-ge
 
 ## Status
 
-**Phase 1 — Bootstrap.** This package ships the infrastructure (CLI, canonical
-serialiser, blank-node skolemiser, term-sourcing resolver, three-graph CI test,
-test fixtures). Emitter bodies that depend on later ADRs raise
-`NotImplementedError("realised in ADR-NNNN")` with the ADR number.
+**Phase 1 — Bootstrap.** Foundation emission landed (ADR-0009). Remaining
+emitter bodies raise `NotImplementedError("realised in ADR-NNNN")` with the
+ADR number.
 
 | Emitter | Realised in |
 |---|---|
-| `emit-foundation` | ADR-0009 |
+| `emit-foundation` | ADR-0009 — landed |
+| `emit` (umbrella) | extends per phase; currently emits foundation |
 | `emit-vocabularies` | ADR-0010 |
 | `emit-module <name>` | ADR-0011 |
 | `emit-shapes` | ADR-0012 |
@@ -47,13 +47,14 @@ formalised in ADR-0007 §"Deterministic emission rules".
 
 | Module | Realises |
 |---|---|
-| `cli.py` | ADR-0008 §"CLI design" |
-| `serialiser/canonical.py` | ADR-0007 §"Deterministic emission rules" #1–3 + #6 |
+| `cli.py` | ADR-0008 §"CLI design" + ADR-0009 §"Confirmation" #1/#2 |
+| `emitters/foundation.py` | ADR-0009 (foundation TTL emission) |
+| `serialiser/canonical.py` | ADR-0007 §"Deterministic emission rules" #1–3 + #6 + ADR-0009 G2 (Literal-IRI scan) |
 | `serialiser/blank_nodes.py` | ADR-0007 §"Deterministic emission rules" #4 |
 | `serialiser/ordering.py` | ADR-0007 §"Deterministic emission rules" #1–3 |
 | `term_sourcing.py` | ADR-0007 §"Term-sourcing five-line precedence" + ODR-0004 §7a |
-| `ci/three_graph_test.py` | ODR-0004 §3a five-part CI test |
-| `ci/byte_identity.py` | ODR-0004 §6a byte-identity CI sub-test #1 |
+| `ci/three_graph_test.py` | ODR-0004 §3a five-part CI test + ADR-0009 G3 (git-blame impl) |
+| `ci/byte_identity.py` | ODR-0004 §6a byte-identity CI + ADR-0009 §Confirmation #2 |
 | `inputs/glossary.py` | ADR-0007 §"Input layer" (business glossary) |
 | `inputs/data_dictionary.py` | ADR-0007 §"Input layer" (data dictionary) |
 | `inputs/odr_corpus.py` | ADR-0007 §"A9 per-kind discipline output" |

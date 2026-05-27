@@ -6,6 +6,10 @@ Realises:
   Turtle serialiser. Bypasses rdflib's own Turtle serialiser so byte-identity
   is contractually owned by OPDA (not by rdflib's release cadence).
 - ADR-0008 §"Repository structure" — `serialiser/canonical.py`, ~150 LOC.
+- ADR-0009 §"foundation.ttl — ontology header" — supports the `sh:declare`
+  blank-node + `sh:namespace "..."^^xsd:anyURI` Literal pattern by scanning
+  Literal lexical values for IRI-shaped strings (resolves ADR-0008
+  validation report follow-up G2; see ADR-0005 §G G2).
 - ODR-0004 §6a #1 — deterministic emission ordering operationalised.
 - ODR-0004 §6a #3 — byte-identity CI test contract: this serialiser is what
   the contract is enforced *on*.
@@ -118,6 +122,16 @@ def to_canonical_turtle(graph: Graph) -> bytes:
     # avoids the long rdflib auto-bind list polluting the output and makes
     # byte-identity robust against rdflib's internal default-binding table
     # changing between releases.
+    #
+    # Scanning rule (resolves ADR-0008 validation follow-up G2):
+    # - URIRef subjects/predicates/objects contribute their IRI directly.
+    # - Literal datatypes contribute their datatype IRI.
+    # - Literal lexical values that look like absolute IRIs (start with
+    #   "http://" or "https://") ALSO contribute their lexical value. This
+    #   is required for ADR-0009 foundation headers that bind namespace IRIs
+    #   as `^^xsd:anyURI` literals via `sh:namespace`; without this, the
+    #   `opda` prefix could be silently filtered out of a header-only graph
+    #   whose only opda-namespaced reference is a literal lexical value.
     referenced_iris: set[str] = set()
     for s, p, o in graph:
         if isinstance(s, URIRef):
@@ -126,8 +140,12 @@ def to_canonical_turtle(graph: Graph) -> bytes:
             referenced_iris.add(str(p))
         if isinstance(o, URIRef):
             referenced_iris.add(str(o))
-        if isinstance(o, Literal) and o.datatype is not None:
-            referenced_iris.add(str(o.datatype))
+        if isinstance(o, Literal):
+            if o.datatype is not None:
+                referenced_iris.add(str(o.datatype))
+            lex = str(o)
+            if lex.startswith("http://") or lex.startswith("https://"):
+                referenced_iris.add(lex)
 
     namespaces: list[tuple[str, str]] = []
     seen_pref: set[str] = set()

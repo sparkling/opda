@@ -7,15 +7,14 @@ Realises:
 - ADR-0007 §"Byte-identity CI test" — operationalises ODR-0004 §6a #3 as a
   GitHub Actions step.
 - ADR-0008 §"CI workflow" — invoked by `opda-gen ci-byte-identity`.
+- ADR-0009 §"Confirmation" #2 — first ADR to commit real reference TTLs;
+  this comparator runs against the foundation corpus (foundation.ttl +
+  opda-classes.ttl + opda-shapes.ttl + opda-annotations.ttl) as the
+  byte-identity gate.
 
 This module provides a `run()` function that compares a freshly-regenerated
 directory against a committed reference directory and returns a list of
 violations (empty == PASS).
-
-ADR-0008 ships the comparator only. ADR-0009 (foundation emission) is the
-first ADR to commit real reference TTLs and exercise the full diff. Until
-ADR-0009 lands, this comparator is exercised against the foundation stub
-emission in `test_byte_identity.py`.
 """
 
 from __future__ import annotations
@@ -23,14 +22,18 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from opda_gen.emitters.foundation import emit as emit_foundation
+from opda_gen.emitters.foundation import emit_foundation
 
 
 def run(reference_dir: Path) -> list[str]:
-    """Regenerate the foundation stub + diff against the reference dir.
+    """Regenerate the foundation corpus + diff against the reference dir.
 
     Returns a list of violation strings (empty == PASS). Per ADR-0007
     §"Byte-identity CI test", a non-empty list fails the CI run.
+
+    Per ADR-0009, the regeneration emits four files (foundation.ttl,
+    opda-classes.ttl, opda-shapes.ttl, opda-annotations.ttl); the diff is
+    a per-file byte-comparison. A missing reference is itself a violation.
     """
     violations: list[str] = []
     with tempfile.TemporaryDirectory() as tmp:

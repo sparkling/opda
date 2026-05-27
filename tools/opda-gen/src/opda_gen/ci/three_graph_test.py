@@ -4,10 +4,15 @@ Module three_graph_test.
 Realises:
 - ODR-0004 §3a — five-part CI test for three-graph separation. Build pipeline
   fails on any of the five MUST checks.
+- ODR-0004 §3a clause #5 — derived-profile provenance via git-blame
+  (`check_derived_provenance`); resolves ADR-0008 validation report
+  follow-up G3 (see ADR-0005 §G G3).
 - ADR-0007 §"Three-graph emission constraints" — generator MUST enforce the
   three-graph separation at emission time; this module is the CI gate that
   validates emitted outputs.
 - ADR-0008 §"CI workflow" — invoked by `opda-gen ci-three-graph`.
+- ADR-0009 — first ADR to commit a real corpus; activates the byte-identity
+  diff step + ci-three-graph step in the workflow.
 
 Each check is one function returning a list of violation strings. Empty list
 == PASS. The implementing functions document the exact ODR-0004 §3a clause
@@ -15,13 +20,14 @@ they enforce in the docstring.
 
 The full corpus check (`run_all`) executes all five checks across a directory
 containing `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`,
-and (per check #5) optionally `derived/` artefacts with a service-account
-provenance trail (the provenance trail check is a stub here; ADR-0009 wires
-git-blame evidence into it).
+and (per check #5) optionally `derived/` artefacts whose git history is
+inspected for non-service-account commits.
 """
 
 from __future__ import annotations
 
+import os
+import subprocess
 from pathlib import Path
 
 from rdflib import Graph, Namespace, URIRef
@@ -129,22 +135,98 @@ def check_target_class_resolves(
 # Check 5: derived consumer profiles have no commits outside the service
 # account (ODR-0004 §3a #5).
 # ---------------------------------------------------------------------------
-def check_derived_provenance(derived_dir: Path | None) -> list[str]:
+def _service_account_allowlist() -> list[str]:
+    """Return the configured service-account email allowlist.
+
+    Order of resolution:
+    1. ``OPDA_DERIVED_SERVICE_ACCOUNTS`` env var (comma-separated emails).
+    2. Hardcoded empty list (TODO: replace with a config-file plug-in
+       extension point once a service account is provisioned for the
+       OPDA build pipeline — tracked as a future-ADR follow-up).
+
+    Returning an empty list means **any** author is treated as
+    non-service-account. ADR-0009 leaves this as the safe-by-default
+    posture: if no derived artefacts have been emitted yet, no false
+    positives are possible; once derived emission lands (ADR-0013 build
+    step), the env var or config file is populated.
+    """
+    raw = os.environ.get("OPDA_DERIVED_SERVICE_ACCOUNTS", "").strip()
+    if not raw:
+        # TODO: when ADR-0013 lands the build-step composition, add a
+        # config-file plug-in extension point so the allowlist isn't
+        # only an env var. Tracked in the ADR-0009 implementation report.
+        return []
+    return [email.strip() for email in raw.split(",") if email.strip()]
+
+
+def _git_authors_for_file(file_path: Path) -> list[str]:
+    """Return the list of commit author emails that touched ``file_path``.
+
+    Uses ``git log --format=%ae -- <file>``. Each line of stdout is one
+    author email (one entry per commit; duplicates preserved so a callers
+    can spot repeated non-service-account authorship).
+
+    Returns an empty list when:
+    - the file is not tracked by git;
+    - git is not on PATH or the path is not inside a git working tree;
+    - the file has no commit history.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "log", "--format=%ae", "--", str(file_path)],
+            capture_output=True,
+            check=False,
+            text=True,
+            cwd=file_path.parent if file_path.parent.exists() else None,
+        )
+    except (FileNotFoundError, OSError):
+        return []
+    if result.returncode != 0:
+        return []
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def check_derived_provenance(
+    derived_dir: Path | None,
+    *,
+    service_accounts: list[str] | None = None,
+) -> list[str]:
     """Enforce ODR-0004 §3a clause #5:
 
       Consumer-profile artefacts have no commits outside the build-pipeline
       service account.
 
-    At ADR-0008, this is a stub: it returns an empty list (PASS) if no derived
-    dir is provided, or — if present — relies on the CI system to enforce
-    branch protection + signed commits. ADR-0009 wires up actual git-blame
-    inspection. Returning an empty list here is honest: at ADR-0008 we have
-    no derived artefacts yet, so there's nothing for an out-of-band commit to
-    have touched.
+    Walks ``derived_dir`` (the build-output composition directory; created by
+    ADR-0013's `compose` build-step). For each ``*.ttl`` file present, runs
+    ``git log --format=%ae`` and collects authors not in the configured
+    service-account allowlist.
+
+    Tolerates a missing ``derived_dir`` (returns ``[]``) — this is the
+    ADR-0009 state: foundation has emitted source graphs but no derived
+    profiles yet. Returns an empty list on PASS; a list of violation strings
+    on FAIL.
+
+    The service-account allowlist is resolved via
+    ``_service_account_allowlist()`` unless ``service_accounts`` is passed
+    explicitly (used by tests).
     """
     if derived_dir is None or not derived_dir.exists():
         return []
-    return []  # ADR-0009 will fill in git-blame check
+    allowlist = (
+        service_accounts
+        if service_accounts is not None
+        else _service_account_allowlist()
+    )
+    violations: list[str] = []
+    for ttl in sorted(derived_dir.rglob("*.ttl")):
+        authors = _git_authors_for_file(ttl)
+        non_service = sorted({a for a in authors if a not in allowlist})
+        for author in non_service:
+            violations.append(
+                f"derived artefact {ttl} touched by non-service-account "
+                f"author {author!r}"
+            )
+    return violations
 
 
 # ---------------------------------------------------------------------------
