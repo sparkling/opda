@@ -1,0 +1,42 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0006 (Agents & Roles).
+# Situation: a Person with a name change (deed-poll, 2019); they were the seller on a 2017
+# transaction under their former name, and the buyer on a 2024 transaction under their current name.
+# The IC must say this is one Person individual whose name-attribute changed, not two.
+# Status: provisional. Namespace pending — ODR-0004 status: proposed; ODR-0006 status: proposed.
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/person-with-name-change/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Person with name change — IC across name-mutation hard case" ;
+    dct:status "draft" ;
+    dct:references <ODR-0006> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Person IC over the name-change hard case. The same Person held distinct names on two transactions five years apart (deed-poll in 2019). Under S006 Q1 the IC for opda:Person must give one individual, not two. Candidate ICs: (a) date-of-birth + state-issued ID combination; (b) any single state-issued ID; (c) PROV-O wasDerivedFrom chain over name-attribute changes. The IC the Council settles must cope with the 2017-as-FormerName + 2024-as-CurrentName case without collapsing to owl:sameAs (which would propagate every triple from one context to the other; same anti-pattern as ODR-0005 Rule 5)." .
+
+# One Person individual; name-attribute changed over time (recorded via prov:wasRevisionOf).
+opda-x:person
+    a opda:Person ;
+    rdfs:label "Person individual — currently named Alex Wright (formerly Alex Smith)" ;
+    opda:dateOfBirth "1985-07-14"^^xsd:date ;
+    opda:niNumber "QQ123456C" ;
+    opda:currentName "Alex Wright" ;
+    opda:formerName "Alex Smith" ;
+    opda:nameChangeDate "2019-09-22"^^xsd:date ;
+    opda:nameChangeMechanism "deed-poll" .
+
+# Provenance of the name change — a registered deed-poll event.
+opda-x:name-change-event
+    a opda:NameChangeEvent ;
+    rdfs:label "Deed-poll filed 2019-09-22" ;
+    prov:atTime "2019-09-22T00:00:00Z"^^xsd:dateTime ;
+    opda:previousName "Alex Smith" ;
+    opda:newName "Alex Wright" ;
+    opda:appliesTo opda-x:person ;
+    dct:source <https://www.gov.uk/change-name-deed-poll> .

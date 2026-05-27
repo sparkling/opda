@@ -1,8 +1,12 @@
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
 # Situation: flat 5C Glasshouse Mansions. The building was subdivided; UPRN re-issued.
 # The physical flat is the same individual before and after — UPRN succession is administrative, not identity.
-# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed (WG-pending);
-# ODR-0005 status: proposed (S005 will settle the IC and the succession-reification shape).
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (council: session-005; namespace block carries).
+# Amended 2026-05-27 post-S005 close: scope-note updated to note reified opda:UPRNSuccessionEvent
+# is the canonical succession form (Gandon W3C-side recommendation, S005 Q4); literal-pair retained
+# as denormalised convenience for dash:uniqueValueForClass stale-reference checks. Cagle SHACL-AF
+# rule (S005 §6a) materialises the chain into the validation report at sh:Info severity.
 
 @prefix opda:    <https://opda.uk/ns/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/flat-with-split-uprn/> .
@@ -18,7 +22,7 @@ opda-x:exemplar
     dct:status "draft" ;
     dct:references <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
-        "Tests Rule 6: UPRN is a contingent administrative identifier; the same physical Property persists across re-numbering. The right answer is one Property individual (NOT two) whose current UPRN was derived from a predecessor. NO owl:sameAs anywhere. The reification shape for the succession history is deliberately open — Property carries both opda:uprn (current) and opda:previousUPRN (literal) AND a separate opda:UPRNSuccessionEvent resource; S005 will settle whether succession needs a reified event resource, a literal pair, or both." .
+        "Tests Rule 6: UPRN is a contingent administrative identifier; the same physical Property persists across re-numbering. The right answer is one Property individual (NOT two) whose current UPRN was derived from a predecessor. NO owl:sameAs anywhere. The reified opda:UPRNSuccessionEvent is canonical (S005 Q4 Gandon W3C-side recommendation — own URI, dereferenceable identity, audit trail); the literal opda:previousUPRN pair is retained as denormalised convenience for dash:uniqueValueForClass stale-reference checks. Both coexist; the reified event is authoritative. The Cagle SHACL-AF rule (ODR-0005 §6a) materialises the succession chain into the validation report at sh:Info severity, ensuring LLM consumers see the chain as structured data (per Hellmann et al. DBpedia 2017)." .
 
 # Physical Property — one individual, persists across the UPRN re-numbering.
 opda-x:property

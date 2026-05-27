@@ -2,8 +2,10 @@
 # Situation: a rural plot with an INSPIRE Identifier (cadastral feature) but no UPRN — the
 # plot is undeveloped land (no built dwelling, no postal delivery point), so AddressBase
 # has no UPRN to issue. The INSPIRE identifier is the only operational join surface.
-# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed;
-# ODR-0005 status: proposed; ODR-0015 status: proposed (S015 will settle the IC for Address).
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
+# Amended 2026-05-27 post-S015 close: added explicit opda:Address instance with addressVariant
+# "inspire" (S015 Q1 Kind commitment + Q2 IC rule 5 INSPIRE-only locatedness made manifest).
 
 @prefix opda:    <https://opda.uk/ns/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/rural-plot-inspire-no-uprn/> .
@@ -18,9 +20,9 @@ opda-x:exemplar
     dct:status "draft" ;
     dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
-        "Tests Address modelling when the Property has no postal address at all — only a cadastral identifier. A 2-hectare grazing plot near Hereford, with a registered freehold title (HMLR HE890123) and an INSPIRE Identifier (from Land Registry's INSPIRE polygon feed), but no UPRN (AddressBase issues UPRNs only to addressable objects with potential postal delivery). The Q1 UFO category answer must accommodate the case where opda:Property has an INSPIRE-derived spatial identifier but no postal opda:Address. The Q5 GeoSPARQL deferral is exercised — INSPIRE polygon is the only locator. The Q6 PII tagging is different — no postal delivery means a different privacy regime than a residential property." .
+        "Tests Address modelling when the Property has no postal address at all — only a cadastral identifier. A 2-hectare grazing plot near Hereford, with a registered freehold title (HMLR HE890123) and an INSPIRE Identifier (from Land Registry's INSPIRE polygon feed), but no UPRN (AddressBase issues UPRNs only to addressable objects with potential postal delivery). Under S015 Q1's Kind commitment: one opda:Property + one opda:LegalEstate (freehold) + one opda:RegisteredTitle + one opda:Address with addressVariant 'inspire' (Q2 IC rule 5 INSPIRE-only locatedness). The INSPIRE-variant Address bears opda:inspireFeatureId as Q4 operational key; structural fields empty/sparse (the cadastral feature has no derivable postal line1/postcode); opda:hasGeometry interface declared but not encoded (Q5 deferral honoured). Q7 PII regime: dpv:hasLawfulBasis dpv:PublicTask (INSPIRE Directive open-data; differs from residential PII regimes)." .
 
-# Physical Property — undeveloped rural plot
+# Physical Property — undeveloped rural plot.
 opda-x:property
     a opda:Property ;
     rdfs:label "Grazing plot near Hereford (no built dwelling; no postal address)" ;
@@ -28,22 +30,41 @@ opda-x:property
     opda:landUse "grazing" ;
     opda:areaHectares "2.04"^^xsd:decimal .
 # Deliberately NO opda:uprn — no AddressBase entry for an undeveloped plot.
-# Deliberately NO opda:postalAddress — no postal-delivery point exists.
-# The INSPIRE Identifier (HMLR polygon feed) is the only spatial-identifier surface.
 
-# Legal layer present (registered freehold title)
+# Legal estate (registered freehold; agricultural; S005 §3b — rights-bundle persistence).
+opda-x:estate
+    a opda:LegalEstate ;
+    rdfs:label "Freehold estate in the grazing plot" ;
+    opda:tenureKind "freehold" .
+
+# Registered title (S005 §3c — title-number lineage).
 opda-x:title
     a opda:RegisteredTitle ;
     rdfs:label "HMLR title HE890123 (freehold; agricultural)" ;
     opda:titleNumber "HE890123" ;
-    opda:tenureKind "freehold" ;
     opda:landRegistryDistrict "Hereford" ;
     opda:firstRegisteredOn "1987-04-22"^^xsd:date .
 
-# Co-reference: title <-> Property (NEVER owl:sameAs)
-opda-x:title opda:identifiesSameProperty opda-x:property .
+# INSPIRE-variant Address — manifests S015 Q2 IC rule 5 (INSPIRE-only locatedness).
+# Under S015 Q1 Kind commitment: opda:Address as resource with addressVariant tag.
+opda-x:address-inspire
+    a opda:Address ;
+    rdfs:label "INSPIRE-cadastral-derived Address (no postal locator)" ;
+    opda:addressVariant "inspire" ;
+    opda:inspireFeatureId "urn:opda:inspire:HMLR:200033333" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property .
+# Deliberately NO opda:line1, opda:line2, opda:postTown, opda:postcode — cadastral feature has no
+# derivable postal locator. All structural fields are sh:minCount 0 per S015 §3b.
+# Deliberately NO opda:uprn — AddressBase has no entry.
 
-# Q6 co-reference SHACL check: the title's location-of-land descriptor (typically a free-text
-# string on the Property Register of the title; not modelled here as a separate Address resource
-# pending S015 Q3 class-structure decision) MUST be reconcilable with the INSPIRE polygon. The
-# exemplar does NOT model the title's location-of-land textually; that ambiguity is S015's call.
+# Co-references (NEVER owl:sameAs):
+opda-x:title opda:identifiesSameProperty opda-x:property .
+opda-x:estate opda:identifiesSameProperty opda-x:property .
+opda-x:title opda:recordsEstate opda-x:estate .
+opda-x:property opda:hasAddress opda-x:address-inspire .
+
+# opda:hasGeometry interface declared but not encoded — S015 Q5 GeoSPARQL deferral honoured.
+# When a consumer requires polygon-feed content (one of four named triggers), encoded geometry
+# attaches to opda:address-inspire via opda:hasGeometry; until then, the INSPIRE Identifier
+# dereferenced upstream serves the polygon.

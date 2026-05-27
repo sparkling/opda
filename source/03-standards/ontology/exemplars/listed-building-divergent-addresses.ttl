@@ -2,8 +2,12 @@
 # Situation: a Grade II-listed building with three divergent address presentations —
 # the title address (as on the HMLR register), the marketing address (as on Rightmove),
 # and the INSPIRE-derived cadastral address. All three identify the same physical Property.
-# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed;
-# ODR-0005 status: proposed; ODR-0015 status: proposed (S015 will settle the IC for Address).
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
+# This exemplar was authored under the Kind reading natively (S015 Q1 Substance Kind verdict);
+# the structure matches the ratified ODR-0015 §3b class with property shapes.
+# Amended 2026-05-27 post-S015 close: added opda:hasAddress join predicate from Property side
+# (S005 §6b + S015 Q3 — opda:hasAddress is the canonical Property→Address join).
 
 @prefix opda:    <https://opda.uk/ns/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/listed-building-divergent-addresses/> .
@@ -58,8 +62,15 @@ opda-x:inspire-address
     opda:postcode "PE9 2RW" ;
     opda:country "GB" .
 
-# Co-reference: all three address surfaces refer to the same physical Property
-# (mechanism — Mode-via-property OR Kind-via-identifiesSameProperty — is S015 Q1's call)
+# Co-reference: all three Address resources identify the same physical Property
+# (S015 Q1 Kind commitment; Q2 IC rule 3 — cross-variant identity-claim never collapses).
 opda-x:title-address opda:identifiesSameProperty opda-x:property .
 opda-x:marketing-address opda:identifiesSameProperty opda-x:property .
 opda-x:inspire-address opda:identifiesSameProperty opda-x:property .
+
+# Property→Address join via opda:hasAddress (S005 §6b pre-commitment; S015 Q3).
+opda-x:property opda:hasAddress opda-x:title-address , opda-x:marketing-address , opda-x:inspire-address .
+
+# Note: under the S015 Q6 two-tier co-reference SHACL shape, opda:line2 disagreement
+# across variants (title: "Glebe Lane" vs marketing: "near Wothorpe") fires sh:Info
+# (cross-variant disagreement is legitimate per Q2 IC rule 3); no sh:Warning, no sh:Violation.

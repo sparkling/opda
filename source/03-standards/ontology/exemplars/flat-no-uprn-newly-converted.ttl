@@ -2,8 +2,10 @@
 # Situation: a freehold house was recently converted into two flats; the new flats have not yet
 # been issued UPRNs by AddressBase (typical lag is weeks-to-months post-conversion).
 # Each flat has an address (5A and 5B of the same street) but no UPRN.
-# Status: provisional. Namespace and predicate shapes pending — ODR-0004 status: proposed;
-# ODR-0005 status: proposed; ODR-0015 status: proposed (S015 will settle Address class commitment).
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
+# Amended 2026-05-27 post-S015 close: refactored from literal opda:postalAddress on Property to
+# opda:Address resource shape with addressVariant "marketing" (S015 Q1 Kind commitment).
 
 @prefix opda:    <https://opda.uk/ns/#> .
 @prefix opda-x:  <https://opda.uk/data/exemplar/flat-no-uprn-newly-converted/> .
@@ -19,26 +21,51 @@ opda-x:exemplar
     dct:status "draft" ;
     dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
     skos:scopeNote
-        "Tests Address modelling when UPRN is absent. The original freehold house had UPRN 100070555000; on conversion (2026-01-12) into two flats, the OS AddressBase issued no UPRNs to the flats yet (typical 6-week lag). Each flat now has an address (5A / 5B) but cannot key by UPRN. The right answer is two opda:Property individuals (Q5 3-class precedent from S005) each bearing an opda:Address that is structurally complete (line1 + town + postcode + country) but UPRN-less. The Council's Q1 UFO category choice (Kind/Quale/Mode) must accommodate the case where Address exists without UPRN; the Q6 co-reference SHACL must not fire violations from UPRN-absence." .
+        "Tests Address modelling when UPRN is absent. The original freehold house had UPRN 100070555000; on conversion (2026-01-12) into two flats, OS AddressBase issued no UPRNs to the flats yet (typical 6-week lag). Each flat now has an address (5A/5B) but cannot key by UPRN. Under S015 Q1's Kind commitment: two opda:Property individuals (S005 Q5 3-class precedent — subdivision per S005 §3a Rule 2) each bearing an opda:Address resource with addressVariant 'marketing' (the listing agent's address presentation; OS AddressBase variant absent pending UPRN issuance). UPRN absence handled by dash:uniqueValueForClass graceful degradation (S005 §6a). The marketing-variant Address has no opda:uprn predicate; structural fields are present per S015 §3b (line1/postTown/postcode/country)." .
 
-# Original (pre-conversion) Property — closed by subdivision (S005 IC §3a Rule 2)
+# Original (pre-conversion) Property — closed by subdivision (S005 §3a Rule 2).
 opda-x:property-predecessor
     a opda:Property ;
     rdfs:label "Predecessor freehold house at 5 Linden Road (subdivided 2026-01-12; ceased)" ;
-    opda:uprn "100070555000" ;
-    opda:postalAddress "5 Linden Road, Reading, RG1 4QT" .
+    opda:uprn "100070555000" .
 
-# Two new Property individuals (flats 5A and 5B) — both UPRN-less pending AddressBase issue
+# Two new Property individuals — both UPRN-less pending AddressBase issue.
 opda-x:property-5a
     a opda:Property ;
     rdfs:label "Flat 5A Linden Road — newly created from subdivision; UPRN pending" ;
-    opda:postalAddress "Flat 5A, 5 Linden Road, Reading, RG1 4QT" ;
     prov:wasDerivedFrom opda-x:property-predecessor .
 
 opda-x:property-5b
     a opda:Property ;
     rdfs:label "Flat 5B Linden Road — newly created from subdivision; UPRN pending" ;
-    opda:postalAddress "Flat 5B, 5 Linden Road, Reading, RG1 4QT" ;
     prov:wasDerivedFrom opda-x:property-predecessor .
-# Deliberately NO opda:uprn on either successor — AddressBase has not yet issued UPRNs.
-# Both Properties exist; Address-modelling must give a coherent answer without UPRN.
+
+# Marketing-variant Address for flat 5A — listing agent's address presentation.
+# Under S015 Q1 Kind commitment: opda:Address as resource with addressVariant tag.
+opda-x:address-5a-marketing
+    a opda:Address ;
+    rdfs:label "Marketing address for Flat 5A (listing agent's presentation)" ;
+    opda:addressVariant "marketing" ;
+    opda:line1 "Flat 5A" ;
+    opda:line2 "5 Linden Road" ;
+    opda:postTown "Reading" ;
+    opda:postcode "RG1 4QT" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property-5a .
+# Deliberately NO opda:uprn — AddressBase has not yet issued.
+
+opda-x:address-5b-marketing
+    a opda:Address ;
+    rdfs:label "Marketing address for Flat 5B (listing agent's presentation)" ;
+    opda:addressVariant "marketing" ;
+    opda:line1 "Flat 5B" ;
+    opda:line2 "5 Linden Road" ;
+    opda:postTown "Reading" ;
+    opda:postcode "RG1 4QT" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property-5b .
+# Deliberately NO opda:uprn — AddressBase has not yet issued.
+
+# Property hasAddress predicate (S005 §6b + S015 Q3 — opda:hasAddress is the join).
+opda-x:property-5a opda:hasAddress opda-x:address-5a-marketing .
+opda-x:property-5b opda:hasAddress opda-x:address-5b-marketing .

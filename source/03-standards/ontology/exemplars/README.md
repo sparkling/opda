@@ -27,13 +27,21 @@ documentation). Small files (≤ ~50 lines) per Davis's BBC test-suite disciplin
 | `unregistered-pre-first-registration-house.ttl` | Legal layer absent + UPRN absent. Guarino's "IC must work without legal anchor" + Cagle's graceful-degradation challenge. **Will be amended post-S005 to add the common-law LegalEstate individual explicitly** (Kendall+Davis cardinality-test requirement). |
 | `flat-with-split-uprn.ttl` | UPRN succession via re-numbering. Rule 6 (UPRN contingent, not IC); physical identity persists across administrative re-issue. |
 
-### Input to S015 — Address & Geography (pending; between-session prep)
+### Input to S015 — Address & Geography ✅ (closed 2026-05-27)
 
 | Exemplar | Hard case it isolates |
 |---|---|
-| `flat-no-uprn-newly-converted.ttl` | Address exists without UPRN; subdivision created two new Properties whose UPRN issuance lags AddressBase. Tests Q1 UFO category accommodation of UPRN-absence. |
-| `listed-building-divergent-addresses.ttl` | Three divergent address surfaces (title / marketing / INSPIRE) on one Property. Tests Q6 co-reference SHACL shape across address presentations. |
-| `rural-plot-inspire-no-uprn.ttl` | Undeveloped land with INSPIRE Identifier but no UPRN and no postal address. Tests Q5 GeoSPARQL-deferral interface; Q7 different PII regime (no postal delivery). |
+| `flat-no-uprn-newly-converted.ttl` | Address exists without UPRN; subdivision created two new Properties whose UPRN issuance lags AddressBase. Tests Q1 UFO category accommodation of UPRN-absence. Amended post-S015 to use `opda:Address` resource shape (S015 Q1 Kind verdict). |
+| `listed-building-divergent-addresses.ttl` | Three divergent address surfaces (title / marketing / INSPIRE) on one Property. Tests Q6 co-reference SHACL shape across address presentations. Amended post-S015 to add `opda:hasAddress` join predicates. |
+| `rural-plot-inspire-no-uprn.ttl` | Undeveloped land with INSPIRE Identifier but no UPRN and no postal address. Tests Q5 GeoSPARQL-deferral interface; Q7 different PII regime (no postal delivery). Amended post-S015 to manifest `opda:Address` instance with `addressVariant "inspire"`. |
+
+### Input to S006 — Agents & Roles (pending; between-session prep)
+
+| Exemplar | Hard case it isolates |
+|---|---|
+| `person-with-name-change.ttl` | Person IC over deed-poll name change. Tests Q1 — is name-mutation the same Person individual (yes; PROV-O captured) or two (no)? |
+| `organisation-with-merger.ttl` | Organisation IC over entity merger. Two predecessors dissolve; successor is a new individual with `prov:wasDerivedFrom` chains. Tests Q1 + Q6 (FIBO LegalEntity/LEI pattern vs entity-merger pattern). |
+| `proprietorship-relator-multi-proprietor.ttl` | Proprietorship as UFO Relator with multiple Proprietor Role instances. Tests Q3 (joint-tenancy multi-proprietor case) + Q2 (RoleMixin vs Role distinction). |
 
 ## Expected-report pairing
 
