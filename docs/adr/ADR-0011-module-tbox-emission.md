@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, modules, tbox, emission, property, agent, transaction, claim, address, descriptive]
 supersedes: []
@@ -456,3 +456,8 @@ A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker ame
   - DPV co-annotation triples (ADR-0012).
   - Overlay profile shapes (ADR-0013).
   - SHACL-AF rule emission (ADR-0012 emits rules into shapes graph).
+
+## Amendments
+
+- **2026-05-27 — Implementation landed (commit `e0e3e2d`).** Six module TTLs emitted at `source/03-standards/ontology/opda-{property,agent,transaction,claim,governance,descriptive}.ttl` (572 LOC; 35 classes; 9 ObjectProperties; 9 DatatypeProperties). Foundation expanded with `opda:RoleMixin`, `opda:Role`, `opda:Relator` (5 foundation classes total; `owl:versionIRI 0.2.0 → 0.3.0`). All 7 §Confirmation criteria PASS; 15/15 diagnostic exemplars validate; A9 per-kind discipline observed on every class; three-graph isolation clean. Queued follow-up G11 (44 remaining Q5a descriptive-attribute leaves; trigger amended to MVP-gate-discovery per validator recommendation). Tests grew 51 → 61. Implementation report at [`docs/adr/implementation-reports/ADR-0011-implementation.md`](./implementation-reports/ADR-0011-implementation.md).
+- **2026-05-27 — Independent validation PASS-WITH-FOLLOW-UPS (commit `3d941c4`).** Soundness 0 failures on A9 SPARQL attack; Completeness 53/53 cited subsections accounted for (37 REALISED + 12 DEFERRED-to-ADR-0012 + 4 N/A + 1 PARTIAL Q5a); Cross-ADR 5/5 + 4/4 probes. All 5 worker-flagged ambiguities (LeaseExtensionEvent placement; Document/Vouch short-name handling via `owl:equivalentClass`; Q5a subset; URL-fragment naming; UFO meta-class placement) independently affirmed as within-engineering. G11 recommendation: accept with closure-trigger tightened to "before ADR-0014 MVP gate". Status moves `proposed → accepted`. Validation report at [`docs/adr/validation/ADR-0011-validation-report.md`](./validation/ADR-0011-validation-report.md).
