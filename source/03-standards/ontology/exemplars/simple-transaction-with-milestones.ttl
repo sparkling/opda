@@ -11,7 +11,7 @@
 # completion + registration milestones to interval form (`prov:startedAtTime` + `prov:endedAtTime`).
 
 @prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://opda.uk/data/exemplar/simple-transaction-with-milestones/> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/simple-transaction-with-milestones/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .

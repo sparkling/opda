@@ -9,7 +9,7 @@
 # LegalEstate-without-RegisteredTitle case and shows the 3-class commitment gives the right answer.
 
 @prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://opda.uk/data/exemplar/unregistered-pre-first-registration-house/> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/unregistered-pre-first-registration-house/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .

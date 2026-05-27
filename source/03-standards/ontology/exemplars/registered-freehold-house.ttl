@@ -6,7 +6,7 @@
 # Amended 2026-05-27 post-S005 close: added opda:LegalEstate individual explicitly (3-class commitment from S005 Q5).
 
 @prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://opda.uk/data/exemplar/registered-freehold-house/> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/registered-freehold-house/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
