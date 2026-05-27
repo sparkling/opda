@@ -17,7 +17,12 @@ Realises:
   six per-module annotation graphs — plus extended foundation shapes
   carrying the three-rule interface-contract meta-shapes constitute the
   substrate's largest substantive expansion since Phase 1).
+- ADR-0013 — Overlay profile emission (minor version bump 0.4.0 → 0.5.0;
+  BASPI5 overlay profile + G8 scheme expansion (7 new schemes) + G9
+  placeholder replacement (4 schemes) + G10 TransactionStatus URI fix
+  + G11 DatatypeProperty expansion + ValidationContext class added to
+  foundation + class-graph version-IRI bump 0.3.0 → 0.4.0).
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

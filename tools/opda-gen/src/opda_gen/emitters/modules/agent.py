@@ -12,6 +12,10 @@ Realises:
   Proprietorship Relator; assertedCapacity / evidencedAuthority seam.
 - ODR-0006 §Operational specifications + S006 Q6 9-1 verdict —
   Organisation subClassOf org:Organization (Allemang held-as-live).
+- ADR-0013 G11 closure — additional Agent-domain DatatypeProperties
+  required by the BASPI5 overlay: ownerType (Seller / legal owner
+  discriminator), hasOthersAged17OrOver (occupier discriminator on
+  Seller).
 """
 
 from __future__ import annotations
@@ -48,6 +52,8 @@ OBJECT_PROPERTIES = (
 
 DATATYPE_PROPERTIES = (
     OPDA.hasAssertedCapacity,
+    OPDA.hasOthersAged17OrOver,
+    OPDA.ownerType,
 )
 
 
@@ -67,10 +73,10 @@ def build_graph() -> Graph:
     module_iri = URIRef("https://w3id.org/opda/agent/")
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title, Literal("OPDA Agent Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.3.0/")))
+    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
     g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/agent/0.3.0/")))
+           URIRef("https://w3id.org/opda/agent/0.4.0/")))
 
     # --- opda:Person — UFO Substance Kind (ODR-0006 §Q1) -----------------
     g.add((OPDA.Person, RDF.type, OWL.Class))
@@ -259,5 +265,38 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasEvidencedAuthority, DCTERMS.source, _ODR_0006_Q4))
+
+    # ==== G11 expansion (ADR-0013) ======================================
+    # --- DatatypeProperty: opda:ownerType (BASPI5 legalOwners[].ownerType) -
+    g.add((OPDA.ownerType, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.ownerType, RDFS.domain, OPDA.Proprietor))
+    g.add((OPDA.ownerType, RDFS.range, XSD.string))
+    g.add((OPDA.ownerType, RDFS.label, Literal("owner type", lang="en")))
+    g.add((OPDA.ownerType, RDFS.comment, Literal(
+        "Substance Kind label discriminating Private individual "
+        "(opda:Person) from Organisation (opda:Organisation) for a "
+        "Proprietor (legal owner). Bound to opda:OwnerTypeScheme via "
+        "SHACL sh:in in the BASPI5 profile. Distinct from opda:role "
+        "(transactional role) and opda:tenureKind (sub-Kind of "
+        "LegalEstate).",
+        lang="en",
+    )))
+    g.add((OPDA.ownerType, DCTERMS.source,
+           URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")))
+
+    # --- DatatypeProperty: opda:hasOthersAged17OrOver (occupier) ---------
+    g.add((OPDA.hasOthersAged17OrOver, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.hasOthersAged17OrOver, RDFS.domain, OPDA.Seller))
+    g.add((OPDA.hasOthersAged17OrOver, RDFS.range, XSD.string))
+    g.add((OPDA.hasOthersAged17OrOver, RDFS.label,
+           Literal("has others aged 17 or over", lang="en")))
+    g.add((OPDA.hasOthersAged17OrOver, RDFS.comment, Literal(
+        "Yes/No discriminator: does the Seller's household include "
+        "occupiers aged 17 or over (other than the Seller)? BASPI5 "
+        "occupiers question. Bound to opda:YesNoScheme.",
+        lang="en",
+    )))
+    g.add((OPDA.hasOthersAged17OrOver, DCTERMS.source,
+           URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")))
 
     return g

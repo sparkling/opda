@@ -94,7 +94,7 @@ _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
 # (`opda_gen.__version__`) does bump to 0.4.0 (semver minor: substantive
 # new substrate emitted by the toolchain), and that bump appears in
 # every TTL's generator-comment header.
-_VERSION_IRI = URIRef("https://w3id.org/opda/0.3.0/")
+_VERSION_IRI = URIRef("https://w3id.org/opda/0.4.0/")
 _SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
 _ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
 _OPDA_NS_LITERAL = Literal("https://w3id.org/opda/#", datatype=XSD.anyURI)
@@ -107,7 +107,7 @@ _ISSUED_DATE = "2026-05-27"
 # "when did the foundation TTLs last substantively change". Override via
 # the `emission_date` kwarg of `emit_foundation()` for ad-hoc tests; CI
 # MUST regenerate with this pinned default so the diff is zero.
-_FOUNDATION_LAST_MODIFIED = "2026-05-27"
+_FOUNDATION_LAST_MODIFIED = "2026-05-28"
 # The generator-comment header's "# Source commit:" line is pinned to a
 # sentinel string per ADR-0009 (not the live HEAD SHA). Rationale: the live
 # SHA changes on every unrelated commit and would break byte-identity CI.
@@ -118,7 +118,7 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-27"
 # ADR-0011 adds three UFO meta-classes (RoleMixin / Role / Relator) to
 # the foundation class graph plus bumps the foundation `owl:versionIRI`,
 # both substantive foundation mutations warranting the sentinel bump.
-_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0012"
+_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0013"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # Version-info string tracks the ADR responsible for the most recent
@@ -127,8 +127,9 @@ _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # the three UFO meta-classes and unblocks per-module emission.
 _VERSION_INFO = (
     f"{__version__} — foundation + SKOS vocabularies + UFO meta-classes "
-    "+ module shapes + DPV annotations "
-    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012)"
+    "+ module shapes + DPV annotations + overlay profiles + "
+    "ValidationContext "
+    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013)"
 )
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
@@ -368,6 +369,37 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.Relator, DCTERMS.source, _ODR_0006_SECTION_Q3))
 
+    # --- ADR-0013 — opda:ValidationContext (UFO Substance Kind) ---------
+    # Per ODR-0010 §Q1 (Guarino's accepted withdrawal condition): a
+    # profile is reified as a first-class opda:ValidationContext node so
+    # `sh:minCount 1` is a constraint of a named context — "required
+    # under the BASPI5 profile" — not a free-floating axiom. ADR-0013
+    # emits the per-profile reified node; this declaration provides the
+    # owl:Class typing the reified nodes assert.
+    g.add((OPDA.ValidationContext, RDF.type, OWL.Class))
+    g.add((OPDA.ValidationContext, RDFS.label,
+           Literal("Validation Context", lang="en")))
+    g.add((OPDA.ValidationContext, RDFS.comment, Literal(
+        "Reification of an overlay-profile validation context per "
+        "ODR-0010 §Q1 (Guarino withdrawal condition). Each instance "
+        "carries five properties: opda:profileURI, opda:requires, "
+        "opda:overlaysContext, opda:sourcedFrom, opda:formVersion. "
+        "Anchors per-profile cardinality/enum constraints in a named "
+        "context — converting conditionality from 'required (depending)' "
+        "to 'required relative to a named, dereferenceable context'. "
+        "ADR-0013 emits per-profile instances under "
+        "<https://w3id.org/opda/#Baspi5ValidationContext> etc.",
+        lang="en",
+    )))
+    g.add((OPDA.ValidationContext, SKOS.scopeNote, Literal(
+        "UFO: Substance Kind (informational). Reifies a SHACL profile as "
+        "a first-class subject so its constraints have determinate model "
+        "theory (Guarino's withdrawal condition discharged at S010).",
+        lang="en",
+    )))
+    g.add((OPDA.ValidationContext, DCTERMS.source,
+           URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q1")))
+
     return g
 
 
@@ -432,7 +464,8 @@ def build_annotations_graph() -> Graph:
     land via `opda_gen.emitters.annotations`.
 
     No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples;
-    no DPV triples (the five foundation classes carry no PII regime);
+    no DPV triples (the foundation classes — including
+    opda:ValidationContext added by ADR-0013 — carry no PII regime);
     only the ontology header declaring `opda:targetsClassGraph
     <https://w3id.org/opda/0.4.0/>`.
     """

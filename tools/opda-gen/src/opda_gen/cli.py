@@ -36,6 +36,11 @@ Realises:
   byte-identity diff covers the full Phase-4 corpus (4 foundation + 1
   vocabularies + 6 module classes + 6 module shapes + 6 module
   annotations = 23 files).
+- ADR-0013 §Confirmation #1 — `emit-profile baspi5` writes
+  `profiles/baspi5.ttl` to the canonical ontology directory (default).
+  The `emit` umbrella now invokes each overlay profile after the
+  modules/shapes/annotations so byte-identity diff covers the full
+  Phase-5 corpus (Phase-4 plus 1 overlay profile = 24 files).
 - ADR-0007 §"Architecture" — generator entry point in the data flow.
 - ODR-0004 §6a — generator-first contract surface exposed to CI.
 
@@ -143,6 +148,10 @@ def emit(output: Path | None) -> None:
     )
     from opda_gen.emitters.classes import emit_all_modules as _emit_modules
     from opda_gen.emitters.foundation import emit_foundation as _emit_foundation
+    from opda_gen.emitters.profiles import (
+        PROFILE_FILENAMES,
+        emit_profile as _emit_profile,
+    )
     from opda_gen.emitters.shapes import emit_shapes as _emit_shapes
     from opda_gen.emitters.vocabularies import (
         emit_vocabularies as _emit_vocabularies,
@@ -154,6 +163,11 @@ def emit(output: Path | None) -> None:
     written.update(_emit_modules(target))
     written.update(_emit_shapes(target))
     written.update(_emit_annotations(target))
+    # Phase 5 (ADR-0013) — emit each overlay profile. BASPI5 only for now;
+    # ADR-0013 §"Overlay catalogue" Phase 2-3 overlays land as separate
+    # commits per the incremental sequencing in the ADR.
+    for overlay in sorted(PROFILE_FILENAMES):
+        written.update(_emit_profile(overlay, target))
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
 
@@ -330,13 +344,28 @@ def emit_annotations(module: str | None, output: Path | None) -> None:
     "--output",
     "-o",
     type=click.Path(file_okay=False, path_type=Path),
-    required=True,
+    required=False,
+    default=None,
+    help=(
+        "Output directory for the regenerated overlay profile. The file "
+        "is written under `<output>/profiles/<overlay>.ttl`. Defaults "
+        "to source/03-standards/ontology/ relative to the OPDA repo "
+        "root."
+    ),
 )
-def emit_profile(overlay: str, output: Path) -> None:
-    """Emit one overlay profile (Phase 5)."""
-    from opda_gen.emitters.profiles import emit as _emit
+def emit_profile(overlay: str, output: Path | None) -> None:
+    """Emit one overlay profile (Phase 5 — ADR-0013).
 
-    _emit(overlay, output)
+    Supported overlays: baspi5. Other overlays (TA6, NTS, LPE1, CON29R,
+    etc.) follow incrementally per the catalogue in ADR-0013
+    §"Overlay catalogue (initial)" Phase 2-3.
+    """
+    from opda_gen.emitters.profiles import emit_profile as _emit
+
+    target = output if output is not None else _default_ontology_dir()
+    written = _emit(overlay, target)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
 
 
 @main.command(name="compose")
@@ -402,6 +431,35 @@ def ci_three_graph(ontology_dir: Path | None) -> None:
             click.echo(f"THREE-GRAPH VIOLATION: {v}", err=True)
         sys.exit(1)
     click.echo("three-graph CI: PASS (all 5 checks)")
+
+
+@main.command(name="ci-profile-contract")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the foundation/module TTLs + profiles/. "
+        "Defaults to source/03-standards/ontology/ relative to the OPDA "
+        "repo root."
+    ),
+)
+def ci_profile_contract(ontology_dir: Path | None) -> None:
+    """Run the ADR-0013 three-rule interface contract checks.
+
+    Three rules per overlay profile: sh:in semantics; sh:Violation
+    floor; no-identity-override gate. Failure on any rule blocks commit.
+    """
+    from opda_gen.ci.profile_contract_test import run_all
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    violations = run_all(target)
+    if violations:
+        for v in violations:
+            click.echo(f"PROFILE-CONTRACT VIOLATION: {v}", err=True)
+        sys.exit(1)
+    click.echo("profile contract CI: PASS (all 3 rules)")
 
 
 @main.command(name="validate-exemplar")

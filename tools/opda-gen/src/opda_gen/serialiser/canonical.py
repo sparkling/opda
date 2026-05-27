@@ -10,6 +10,12 @@ Realises:
   blank-node + `sh:namespace "..."^^xsd:anyURI` Literal pattern by scanning
   Literal lexical values for IRI-shaped strings (resolves ADR-0008
   validation report follow-up G2; see ADR-0005 §G G2).
+- ADR-0013 G12 closure — multi-object sort on blank-node objects now uses
+  the deterministic skolem hex as the sort key (not rdflib's
+  non-deterministic internal BNode label). This fixes a latent
+  byte-identity bug that surfaced when a profile shape carried multiple
+  blank-node references via `sh:property` — the in-graph order was
+  rdflib-dependent. Regression test in `tests/test_serialiser.py`.
 - ODR-0004 §6a #1 — deterministic emission ordering operationalised.
 - ODR-0004 §6a #3 — byte-identity CI test contract: this serialiser is what
   the contract is enforced *on*.
@@ -17,11 +23,13 @@ Realises:
 Pipeline:
   graph (rdflib) → skolemise blank nodes (`blank_nodes.py`) → group triples
   by subject → sort subjects by (type_rank, iri) → within each subject sort
-  predicate-objects per `ordering.predicate_rank` → emit Turtle with locked
-  formatting (LF endings, no trailing whitespace, 4-space indent, final
-  newline, no BOM, alphabetised prefix declarations).
+  predicate-objects per `ordering.predicate_rank` (with blank-node objects
+  sorted by skolem hex) → emit Turtle with locked formatting (LF endings,
+  no trailing whitespace, 4-space indent, final newline, no BOM,
+  alphabetised prefix declarations).
 
-Tested invariant: same input → identical bytes across 100 runs.
+Tested invariant: same input → identical bytes across 100 runs, including
+when the same input graph contains multi-object blank-node references.
 """
 
 from __future__ import annotations
@@ -109,6 +117,21 @@ def _subject_sort_key(graph: Graph, subject, blanks: dict[BNode, str]) -> tuple:
     return (rank, ident)
 
 
+def _object_sort_key(obj, blanks: dict[BNode, str]) -> str:
+    """Return a deterministic sort key for a triple object.
+
+    For BNodes the sort uses the skolem hex (stable across runs) rather
+    than rdflib's internal BNode label (which is `Nf3a2...`-style and
+    non-deterministic). This is the G12 fix: profile shapes can carry
+    `sh:property` lists referencing multiple blank-node sub-graphs, and
+    without skolem-keyed sort the emitted Turtle reorders between
+    invocations.
+    """
+    if isinstance(obj, BNode):
+        return "_:b" + blanks.get(obj, "")
+    return str(obj)
+
+
 def to_canonical_turtle(graph: Graph) -> bytes:
     """Serialise `graph` to canonical Turtle bytes.
 
@@ -177,9 +200,15 @@ def to_canonical_turtle(graph: Graph) -> bytes:
     for idx, subj in enumerate(subjects):
         triples = by_subject[subj]
         # 4. Within-term ordering: predicate_rank, then object lex.
+        # Object sort uses the deterministic skolem key so blank-node
+        # objects (per G12) order stably between runs.
         triples_sorted = sorted(
             triples,
-            key=lambda po: (predicate_rank(str(po[0]))[0], str(po[0]), str(po[1])),
+            key=lambda po: (
+                predicate_rank(str(po[0]))[0],
+                str(po[0]),
+                _object_sort_key(po[1], blanks),
+            ),
         )
         subj_label = (
             skolem_label(blanks.get(subj, "00000000")[:12])
@@ -199,7 +228,10 @@ def to_canonical_turtle(graph: Graph) -> bytes:
         lines.append(subj_label)
         last_pred = pred_order[-1] if pred_order else None
         for p in pred_order:
-            objects = sorted(per_pred[str(p)], key=lambda o: str(o))
+            # Same skolem-aware key for multi-object lists per G12.
+            objects = sorted(
+                per_pred[str(p)], key=lambda o: _object_sort_key(o, blanks),
+            )
             obj_parts = [_format_object(o, ns_map, blanks) for o in objects]
             objs_joined = ", ".join(obj_parts)
             pred_str = _format_uri(p, ns_map) if isinstance(p, URIRef) else str(p)

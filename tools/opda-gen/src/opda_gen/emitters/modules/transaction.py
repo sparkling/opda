@@ -70,10 +70,10 @@ def build_graph() -> Graph:
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title,
            Literal("OPDA Transaction Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.3.0/")))
+    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
     g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/transaction/0.3.0/")))
+           URIRef("https://w3id.org/opda/transaction/0.4.0/")))
 
     # --- opda:Transaction — UFO Relator (ODR-0007 §Q1) ------------------
     g.add((OPDA.Transaction, RDF.type, OWL.Class))

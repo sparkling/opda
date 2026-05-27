@@ -85,7 +85,8 @@ def test_all_six_modules_emit(emitted_modules: dict[str, Path]) -> None:
 def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> None:
     """Per ADR-0011 §Module emission template + §Confirmation #5: each
     module declares an owl:Ontology with owl:imports of foundation +
-    vocabularies and owl:versionIRI pinned to 0.3.0."""
+    vocabularies. ADR-0013 bumped the class-graph version IRI to 0.4.0
+    when opda:ValidationContext was added to the foundation."""
     for name, path in emitted_modules.items():
         g = Graph()
         g.parse(str(path), format="turtle")
@@ -94,7 +95,7 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
             f"module {name} missing owl:Ontology header at {module_iri}"
         )
         assert (
-            module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.3.0/")
+            module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")
         ) in g, f"module {name} missing foundation owl:imports"
         assert (
             module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")
@@ -102,8 +103,8 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
         assert (
             module_iri,
             OWL.versionIRI,
-            URIRef(f"https://w3id.org/opda/{name}/0.3.0/"),
-        ) in g, f"module {name} missing versionIRI 0.3.0"
+            URIRef(f"https://w3id.org/opda/{name}/0.4.0/"),
+        ) in g, f"module {name} missing versionIRI 0.4.0"
 
 
 # ---------------------------------------------------------------------------
@@ -260,8 +261,9 @@ def test_byte_identity_modules() -> None:
 # Foundation expansion — three UFO meta-classes folded into opda-classes.ttl
 # ---------------------------------------------------------------------------
 def test_foundation_includes_ufo_meta_classes() -> None:
-    """Per ADR-0011 + ODR-0006 §Q2/§Q3: foundation now declares
-    opda:RoleMixin + opda:Role + opda:Relator (5 classes total)."""
+    """Per ADR-0011 + ODR-0006 §Q2/§Q3: foundation declares
+    opda:RoleMixin + opda:Role + opda:Relator (5 classes initially).
+    ADR-0013 adds opda:ValidationContext (per ODR-0010 §Q1) — 6 total."""
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp)
         from opda_gen.emitters.foundation import emit_foundation
@@ -275,11 +277,12 @@ def test_foundation_includes_ufo_meta_classes() -> None:
             OPDA.RoleMixin,
             OPDA.Role,
             OPDA.Relator,
+            OPDA.ValidationContext,
         ):
             assert cls in classes, f"foundation missing class {cls}"
-        # Exactly five foundation classes after ADR-0011 expansion.
-        assert len(classes) == 5, (
-            f"expected 5 foundation classes, got {len(classes)}: {classes}"
+        # Exactly six foundation classes after ADR-0013 expansion.
+        assert len(classes) == 6, (
+            f"expected 6 foundation classes, got {len(classes)}: {classes}"
         )
 
 

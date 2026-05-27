@@ -6,6 +6,21 @@ Realises:
   Schemes emitted into `opda-vocabularies.ttl` (15 named schemes plus the
   Scottish `CouncilTaxBandSchemeScotland` variant called out as a separate
   scheme in the table).
+- ADR-0013 — Overlay profile emission preparation:
+  - **G8 closure** — 7 new schemes added for BASPI5 enum coverage:
+    YesNoScheme, YesNoNotApplicableScheme, YesNoNotKnownScheme,
+    YesNoNotRequiredScheme, PropertyTypeScheme,
+    OffMainsDrainageSystemTypeScheme, OwnerTypeScheme. Total scheme
+    count: 23.
+  - **G9 closure** — 4 PLACEHOLDER schemes replaced with real
+    per-member data (MilestoneKindScheme cites ODR-0007 §Q2;
+    AssuranceLevelScheme cites eIDAS Article 8 verbatim + ODR-0009
+    §Q3 PDTF-Standard; EvidenceMethodScheme cites OIDC4IDA verbatim;
+    AddressVariantScheme cites ODR-0015 §Q1).
+  - **G10 closure** — TransactionStatusScheme per-member dct:source
+    URIs fixed: cite ODR-0011 §8a (Council anchor) + prov:wasDerivedFrom
+    to the data-dictionary enum value the canonical label sources from
+    (lossless audit). Validator option (a)+(b) hybrid.
 - ADR-0010 §"Per-scheme metadata MUST-haves" — every scheme carries
   `skos:prefLabel @en`, `dct:title @en`, `skos:definition @en`,
   `dct:source`, `opda:ufoCategory`, `skos:scopeNote @en` (UFO + DOLCE
@@ -87,13 +102,14 @@ VOCABULARIES_FILENAME = "opda-vocabularies.ttl"
 
 # --- Sentinel-pinned constants per ADR-0010 + G6 convention --------------
 # `_VOCABULARIES_LAST_MODIFIED` advances only when a future ADR materially
-# mutates the vocabulary content (e.g. ADR-0010 scope expansion to additional
-# schemes); CI MUST regenerate with this pinned default so the diff is zero.
-_VOCABULARIES_LAST_MODIFIED = "2026-05-27"
+# mutates the vocabulary content (ADR-0013 G8 added 7 new schemes; ADR-0013
+# G9 replaced PLACEHOLDER warnings; ADR-0013 G10 reworked TransactionStatus
+# URIs). CI MUST regenerate with this pinned default so the diff is zero.
+_VOCABULARIES_LAST_MODIFIED = "2026-05-28"
 # Sentinel for the `# Source commit:` line in the generator-comment header,
 # matching the ADR-0009 sentinel convention. Advances when a future ADR
 # mutates the emitted vocabulary content.
-_VOCABULARIES_SOURCE_COMMIT = "pinned-by-ADR-0010"
+_VOCABULARIES_SOURCE_COMMIT = "pinned-by-ADR-0013"
 
 
 # --- Cagle SHACL-AF deprecation-chain rule body (ODR-0011 §5a) ----------
@@ -224,6 +240,13 @@ class Member:
     `slug` overrides the URI-segment slug; by default it is derived from
     `notation` via `_slugify_for_uri` (drops apostrophes, collapses
     whitespace to hyphens) so the member URI is RFC-3986-clean.
+
+    `derived_from` (optional) is an additional `prov:wasDerivedFrom`
+    URI emitted alongside `dct:source`. Used by G10 (closed by
+    ADR-0013) to preserve the lineage from a canonical UFO-aligned
+    label (e.g. `Listed`) to the underlying data-dictionary enum
+    value it sources from (e.g. `For sale`) — lossless audit per
+    validator option (a)+(b) hybrid.
     """
 
     notation: str
@@ -231,6 +254,7 @@ class Member:
     definition: str
     member_source: URIRef
     slug: str | None = None
+    derived_from: URIRef | None = None
 
     def uri_slug(self) -> str:
         if self.slug is not None:
@@ -684,19 +708,33 @@ def _participant_status_scheme() -> Scheme:
 
 
 def _transaction_status_scheme() -> Scheme:
-    leaf = "status"
     # Per ADR-0010 §"Scheme catalogue": Listed, Offered, Accepted, Exchanged,
     # Completed. The data dictionary's actual enum is broader (9 values
     # including 'active', 'For sale', 'Under offer', 'Sold subject to
     # contract', 'Contracts exchanged', 'Completed', 'Cancelled', 'To let',
     # 'Let agreed'). We emit the ADR-named five-phase canonical set; surfaced
     # ambiguity is recorded in the implementation report §Surfaced ambiguity.
+    #
+    # G10 (closed by ADR-0013 worker) — per-member dct:source URI
+    # fabrication audit. The original ADR-0010 emission cited fabricated
+    # `data-dictionary#status.Listed` etc. fragments which do NOT appear
+    # in the data-dictionary `status` enum. Per validator option (a) +
+    # (b) hybrid: per-member `dct:source` cites ODR-0011 §8a (the
+    # ratifying Council anchor); per-member `prov:wasDerivedFrom` links
+    # each canonical label to the underlying data-dictionary enum value
+    # it sources from (lossless audit). Only `Completed` is an exact
+    # match; the other four labels are UFO-aligned canonical re-labellings.
+    # Data-dictionary leaf: `status`.
     members_data = [
-        ("Listed", "Property is listed for sale."),
-        ("Offered", "An offer has been made on the property."),
-        ("Accepted", "An offer has been accepted, transaction is in progress."),
-        ("Exchanged", "Contracts have been exchanged."),
-        ("Completed", "Transaction has completed; legal title has transferred."),
+        ("Listed", "Property is listed for sale.", "For sale"),
+        ("Offered", "An offer has been made on the property.", "Under offer"),
+        ("Accepted",
+         "An offer has been accepted, transaction is in progress.",
+         "Sold subject to contract"),
+        ("Exchanged", "Contracts have been exchanged.", "Contracts exchanged"),
+        ("Completed",
+         "Transaction has completed; legal title has transferred.",
+         "Completed"),
     ]
     return Scheme(
         local_name="TransactionStatusScheme",
@@ -714,31 +752,53 @@ def _transaction_status_scheme() -> Scheme:
             "Data dictionary leaf `status` carries a broader 9-value enum "
             "(including marketing-side and let-side phases); the ADR-named "
             "five-phase canonical set is emitted here as the UFO phase set "
-            "for the sale lifecycle. Marketing-side / let-side phases "
-            "remain available in the data dictionary for downstream "
-            "consumers; admission to this scheme requires a Council "
-            "amendment (see implementation report §Surfaced ambiguity)."
+            "for the sale lifecycle. Per-member dct:source cites ODR-0011 "
+            "§8a (Council ratifying anchor); per-member prov:wasDerivedFrom "
+            "links each canonical label to the underlying data-dictionary "
+            "enum value it sources from (G10 closure per ADR-0013)."
         ),
         steward="Guizzardi (S007 Q3)",
         scheme_source=_ODR_0011_SECTION_8A,
         members=tuple(
-            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
-            for notation, definition in members_data
+            Member(
+                notation, notation, definition,
+                _ODR_0011_SECTION_8A,
+                derived_from=_dd_source(f"status.{dd_value}"),
+            )
+            for notation, definition, dd_value in members_data
         ),
     )
 
 
 def _milestone_kind_scheme() -> Scheme:
-    # External-only: no data-dictionary enum lists these milestone codes.
-    # The ADR table names them under Method/plan code (Guizzardi).
-    # Per ODR-0011 §"Surfaced ambiguity routing" option (a), we emit the
-    # scheme with a placeholder warning in scope-note.
+    # G9 (closed by ADR-0013) — real per-member data per PDTF process
+    # transaction-lifecycle stages. dct:source cites ODR-0007 §Q2
+    # (Council-ratified transaction-lifecycle pattern) which is the
+    # ratifying authority for these milestones.
+    odr_0007 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q2")
     members_data = [
-        ("instruction", "Property is instructed by the Seller to be marketed."),
-        ("offerAccepted", "An offer is accepted by the Seller."),
-        ("exchange", "Contracts are exchanged between Seller and Buyer."),
-        ("completion", "Transaction completes; legal title transfers."),
-        ("registration", "Title is registered with HM Land Registry."),
+        (
+            "instruction",
+            "Property instructed to market by Seller; transaction "
+            "lifecycle begins.",
+        ),
+        (
+            "offerAccepted",
+            "Offer accepted by Seller; transaction enters Under Offer "
+            "phase.",
+        ),
+        (
+            "exchange",
+            "Contracts exchanged; transaction binding on both parties.",
+        ),
+        (
+            "completion",
+            "Completion; legal title transfers; keys handed over.",
+        ),
+        (
+            "registration",
+            "Registration completed at HM Land Registry.",
+        ),
     ]
     return Scheme(
         local_name="MilestoneKindScheme",
@@ -753,26 +813,14 @@ def _milestone_kind_scheme() -> Scheme:
         ufo_category="Method/plan code",
         scope_note=(
             "UFO: Method/plan code (Guizzardi 2005 Ch. 4 + Guizzardi & "
-            "Wagner 2010 action-modelling). Codes are externally-specified "
-            "by the PDTF transaction-lifecycle process; the data dictionary "
-            "does not yet carry an enum for these (G-section follow-up "
-            "queued to populate)."
+            "Wagner 2010 action-modelling). Codes are ratified by ODR-0007 "
+            "§Q2 transaction-lifecycle pattern; each milestone corresponds "
+            "to a stage transition in the PDTF process."
         ),
         steward="Guizzardi (S007 Q2)",
-        scheme_source=_ODR_0011_SECTION_8A,
-        placeholder_warning=(
-            "Data-dictionary enum not yet populated; codes are PDTF "
-            "process-defined."
-        ),
+        scheme_source=odr_0007,
         members=tuple(
-            Member(
-                notation,
-                notation,
-                definition,
-                URIRef(
-                    f"https://w3id.org/opda/pdtf-process#milestone-{notation}"
-                ),
-            )
+            Member(notation, notation, definition, odr_0007)
             for notation, definition in members_data
         ),
     )
@@ -826,79 +874,93 @@ def _sellers_capacity_scheme() -> Scheme:
 
 
 def _assurance_level_scheme() -> Scheme:
-    # External-only: eIDAS LoA. Per ODR-0011 §"Surfaced ambiguity routing"
-    # option (a): scheme is conceptually well-defined (externally specified),
-    # so we emit it with a placeholder-warning scope-note.
+    # G9 (closed by ADR-0013) — eIDAS Article 8 verbatim per ODR-0011
+    # §4a regulator-citation discipline + ODR-0009 §Q3 PDTF-Standard
+    # intermediate level.
+    eidas = URIRef(
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
+    )
+    odr_0009 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q3")
     members_data = [
         (
             "Low",
-            "Limited degree of confidence in the claimed or asserted identity "
-            "of a person (eIDAS LoA Low).",
+            "Limited degree of confidence in the claimed or asserted "
+            "identity of a person (eIDAS Article 8(2)(a) Low).",
+            eidas,
         ),
         (
             "Substantial",
             "Substantial degree of confidence in the claimed or asserted "
-            "identity of a person (eIDAS LoA Substantial).",
+            "identity of a person (eIDAS Article 8(2)(b) Substantial).",
+            eidas,
         ),
         (
             "High",
-            "High degree of confidence in the claimed or asserted identity "
-            "of a person (eIDAS LoA High).",
+            "High degree of confidence in the claimed or asserted "
+            "identity of a person (eIDAS Article 8(2)(c) High).",
+            eidas,
+        ),
+        (
+            "PDTF-Standard",
+            "OPDA-specific intermediate assurance level per ODR-0009 §Q3, "
+            "applicable to PDTF transactions where eIDAS LoA mapping is "
+            "not directly available.",
+            odr_0009,
         ),
     ]
-    eidas = URIRef("https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910")
     return Scheme(
         local_name="AssuranceLevelScheme",
         slug_base="assuranceLevel",
         pref_label="Assurance Level",
-        title="Identity assurance level (eIDAS)",
+        title="Identity assurance level (eIDAS + PDTF)",
         definition=(
             "Quality Values for the eIDAS Levels of Assurance (Low, "
-            "Substantial, High) applied to identity-verification claims."
+            "Substantial, High) plus the OPDA-specific PDTF-Standard "
+            "intermediate level per ODR-0009 §Q3, applied to "
+            "identity-verification claims."
         ),
         ufo_category="Quality Value",
         scope_note=(
             "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). "
-            "Externally specified by Regulation (EU) No 910/2014 (eIDAS) "
-            "Article 8. The data dictionary does not yet carry an enum for "
-            "assurance level (G-section follow-up queued)."
+            "Low/Substantial/High inherit verbatim from Regulation (EU) "
+            "No 910/2014 (eIDAS) Article 8 per ODR-0011 §4a regulator-"
+            "citation discipline. PDTF-Standard ratified by ODR-0009 §Q3 "
+            "as an OPDA-specific intermediate level."
         ),
         steward="Moreau (S009 Q3)",
         scheme_source=eidas,
-        placeholder_warning=(
-            "Data-dictionary enum not yet populated; values inherited "
-            "verbatim from eIDAS Article 8."
-        ),
         members=tuple(
-            Member(notation, notation, definition, eidas)
-            for notation, definition in members_data
+            Member(notation, notation, definition, source)
+            for notation, definition, source in members_data
         ),
     )
 
 
 def _evidence_method_scheme() -> Scheme:
-    # External-only: OIDC4IDA evidence-type vocabulary. Conceptually
-    # well-defined externally, so option (a) applies.
-    members_data = [
-        (
-            "Document",
-            "Identity evidence obtained by inspecting a physical or digital "
-            "identity document (per OIDC4IDA `document` evidence type).",
-        ),
-        (
-            "Electronic-Record",
-            "Identity evidence obtained from an electronic record held by an "
-            "authoritative source (per OIDC4IDA `electronic_record`).",
-        ),
-        (
-            "Vouch",
-            "Identity evidence obtained through attestation by a trusted "
-            "third party (per OIDC4IDA `vouch`).",
-        ),
-    ]
+    # G9 (closed by ADR-0013) — OIDC4IDA evidence-type vocabulary per
+    # ODR-0011 §4a verbatim regulator-citation.
     oidc4ida = URIRef(
         "https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html"
     )
+    members_data = [
+        (
+            "Document",
+            "OIDC4IDA Document evidence: identity evidence obtained by "
+            "inspecting a physical or digital identity document (passport, "
+            "driving licence, identity card, etc.).",
+        ),
+        (
+            "Electronic-Record",
+            "OIDC4IDA ElectronicRecord evidence: identity evidence obtained "
+            "from a verified electronic record held by an authoritative "
+            "source.",
+        ),
+        (
+            "Vouch",
+            "OIDC4IDA Vouch evidence: identity evidence obtained through "
+            "attestation by a trusted third party.",
+        ),
+    ]
     return Scheme(
         local_name="EvidenceMethodScheme",
         slug_base="evidenceMethod",
@@ -911,16 +973,12 @@ def _evidence_method_scheme() -> Scheme:
         ufo_category="Quality Value",
         scope_note=(
             "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). "
-            "Externally specified by OpenID Connect for Identity Assurance "
-            "1.0. The data dictionary does not yet carry an enum for "
-            "evidence method (G-section follow-up queued)."
+            "Members inherited verbatim from OpenID Connect for Identity "
+            "Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-"
+            "citation discipline."
         ),
         steward="Moreau (S009 Q3)",
         scheme_source=oidc4ida,
-        placeholder_warning=(
-            "Data-dictionary enum not yet populated; values inherited "
-            "verbatim from OIDC4IDA."
-        ),
         members=tuple(
             Member(notation, notation, definition, oidc4ida)
             for notation, definition in members_data
@@ -929,31 +987,37 @@ def _evidence_method_scheme() -> Scheme:
 
 
 def _address_variant_scheme() -> Scheme:
-    # External-only: the variant-set is defined by ODR-0015 §S015 Q1
-    # (Address Substance Kind + Quality particularising).
-    members_data = [
-        (
-            "marketing",
-            "Marketing-presentation variant of the address (estate-agent "
-            "format).",
-        ),
-        (
-            "title",
-            "HM Land Registry registered-title variant of the address.",
-        ),
-        (
-            "inspire",
-            "INSPIRE Directive variant of the address (administrative "
-            "boundary alignment).",
-        ),
-        (
-            "postal",
-            "Royal Mail PAF-formatted variant of the address.",
-        ),
-    ]
+    # G9 (closed by ADR-0013) — variant-set ratified by ODR-0015 §Q1
+    # (Address Substance Kind + Quality particularising); members emit
+    # real per-member metadata sourced from the Council-ratified anchor.
     odr0015 = URIRef(
         "https://w3id.org/opda/odr/ODR-0015#section-2a-address-variant"
     )
+    members_data = [
+        (
+            "marketing",
+            "Marketing-presentation variant of an Address (estate-agent "
+            "advertising format; typically de-formalised street name + "
+            "town). Used in advertising and marketing contexts.",
+        ),
+        (
+            "title",
+            "HM Land Registry registered-title variant of an Address; "
+            "the address as recorded against the title at HMLR.",
+        ),
+        (
+            "inspire",
+            "INSPIRE Directive variant of an Address — the regulated "
+            "postal address structure published by INSPIRE-aligned "
+            "registers (administrative boundary alignment).",
+        ),
+        (
+            "postal",
+            "Royal Mail PAF-formatted variant of an Address (the "
+            "address as recognised by Royal Mail's Postcode Address "
+            "File).",
+        ),
+    ]
     return Scheme(
         local_name="AddressVariantScheme",
         slug_base="addressVariant",
@@ -963,22 +1027,16 @@ def _address_variant_scheme() -> Scheme:
             "Quality Values for the variant under which an Address is "
             "presented (marketing, title, inspire, postal). Each variant "
             "particularises an underlying Address Substance Kind per "
-            "ODR-0015 §2a."
+            "ODR-0015 §Q1."
         ),
         ufo_category="Quality Value",
         scope_note=(
             "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). "
             "Members particularise an Address Substance Kind per ODR-0015 "
-            "§2a. Externally specified by the PDTF address-handling "
-            "convention; the data dictionary does not yet carry an enum "
-            "for address variant (G-section follow-up queued)."
+            "§Q1. Ratified by the Council at session-015."
         ),
         steward="Guizzardi (S015 Q1)",
         scheme_source=odr0015,
-        placeholder_warning=(
-            "Data-dictionary enum not yet populated; variants defined by "
-            "ODR-0015 §S015 Q1."
-        ),
         members=tuple(
             Member(notation, notation, definition, odr0015)
             for notation, definition in members_data
@@ -986,14 +1044,318 @@ def _address_variant_scheme() -> Scheme:
     )
 
 
+def _yes_no_scheme() -> Scheme:
+    # G8 (closed by ADR-0013) — Yes/No binary register for the dozens
+    # of BASPI5 boolean-discriminator leaves (yesNo / hasGreenDealLoan
+    # / hasDelayFactors etc.).
+    odr_0011 = URIRef(
+        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+    )
+    members_data = [
+        ("Yes", "Affirmative answer to a binary BASPI5 question."),
+        ("No", "Negative answer to a binary BASPI5 question."),
+    ]
+    return Scheme(
+        local_name="YesNoScheme",
+        slug_base="yesNo",
+        pref_label="Yes/No",
+        title="Yes/No binary register",
+        definition=(
+            "Binary register for affirmative/negative answers to "
+            "BASPI5 discriminator questions (Yes / No)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Used by ~276 BASPI5 "
+            "discriminator questions; emitted as a shared scheme "
+            "per ODR-0011 §1a one-scheme-per-enum discipline."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=odr_0011,
+        members=tuple(
+            Member(notation, notation, definition, odr_0011)
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _yes_no_not_applicable_scheme() -> Scheme:
+    odr_0011 = URIRef(
+        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+    )
+    members_data = [
+        ("Yes", "Affirmative answer."),
+        ("No", "Negative answer."),
+        ("Not applicable", "Question does not apply in this context."),
+    ]
+    return Scheme(
+        local_name="YesNoNotApplicableScheme",
+        slug_base="yesNoNotApplicable",
+        pref_label="Yes/No/Not applicable",
+        title="Yes/No/Not applicable mode label register",
+        definition=(
+            "Mode label register for BASPI5 questions admitting "
+            "non-applicable as a third option (Yes / No / Not applicable)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register "
+            "for BASPI5 form questions; the 'Not applicable' member "
+            "captures absence-of-context rather than negative answer."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=odr_0011,
+        members=tuple(
+            Member(notation, notation, definition, odr_0011)
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _yes_no_not_known_scheme() -> Scheme:
+    odr_0011 = URIRef(
+        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+    )
+    members_data = [
+        ("Yes", "Affirmative answer."),
+        ("No", "Negative answer."),
+        ("Not known", "Answer is not known to the Seller."),
+    ]
+    return Scheme(
+        local_name="YesNoNotKnownScheme",
+        slug_base="yesNoNotKnown",
+        pref_label="Yes/No/Not known",
+        title="Yes/No/Not known mode label register",
+        definition=(
+            "Mode label register for BASPI5 questions admitting "
+            "unknown-to-Seller as a third option (Yes / No / Not known)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register "
+            "for BASPI5 form questions where the Seller may legitimately "
+            "not know the answer."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=odr_0011,
+        members=tuple(
+            Member(notation, notation, definition, odr_0011)
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _yes_no_not_required_scheme() -> Scheme:
+    odr_0011 = URIRef(
+        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+    )
+    members_data = [
+        ("Yes", "Affirmative answer."),
+        ("No", "Negative answer."),
+        ("Not required", "Answer is not required in this context."),
+    ]
+    return Scheme(
+        local_name="YesNoNotRequiredScheme",
+        slug_base="yesNoNotRequired",
+        pref_label="Yes/No/Not required",
+        title="Yes/No/Not required mode label register",
+        definition=(
+            "Mode label register for BASPI5 questions admitting "
+            "not-required as a third option (Yes / No / Not required)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register "
+            "for BASPI5 form questions where the question itself becomes "
+            "not-required in some discriminator branches."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=odr_0011,
+        members=tuple(
+            Member(notation, notation, definition, odr_0011)
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _property_type_scheme() -> Scheme:
+    # G8 — BASPI5 propertyPack.buildInformation.building.propertyType
+    # discriminator. UFO: Substance Kind label (House / Bungalow / etc.
+    # name physical-form Kinds, distinct from BuiltFormScheme which
+    # carries structural Quale-in-Region).
+    leaf = "propertyPack.buildInformation.building.propertyType"
+    members_data = [
+        (
+            "House",
+            "A self-contained dwelling occupying a complete structure.",
+        ),
+        (
+            "Bungalow",
+            "A single-storey detached dwelling.",
+        ),
+        (
+            "Park home",
+            "A detached single-storey dwelling sited within a residential "
+            "park.",
+        ),
+        (
+            "Flat",
+            "A self-contained dwelling forming part of a larger building.",
+        ),
+        (
+            "Maisonette",
+            "A self-contained dwelling within a larger building, typically "
+            "with its own external entrance.",
+        ),
+        (
+            "Other",
+            "Property type falling outside the standard categories.",
+        ),
+    ]
+    return Scheme(
+        local_name="PropertyTypeScheme",
+        slug_base="propertyType",
+        pref_label="Property Type",
+        title="Property type Substance Kind label",
+        definition=(
+            "Substance Kind labels for the physical-form kind of a "
+            "Property (House / Bungalow / Park home / Flat / Maisonette "
+            "/ Other). Distinct from BuiltFormScheme which carries the "
+            "structural Quale (Detached / Semi-detached / Terrace)."
+        ),
+        ufo_category="Substance Kind label",
+        scope_note=(
+            "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members "
+            "may bind to OWL sub-classes of opda:Property via "
+            "skos:exactMatch when conditional Building/Room class "
+            "promotions trigger (per ODR-0008 §Q4a held-as-live). "
+            "Distinct from BuiltFormScheme (Quale-in-Region)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0011_SECTION_8A,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _off_mains_drainage_scheme() -> Scheme:
+    # G8 — BASPI5 waterAndDrainage.drainage discriminator.
+    leaf = "propertyPack.waterAndDrainage.drainage.offMainsDrainageSystemType"
+    members_data = [
+        (
+            "Sustainable Drainage System",
+            "Drainage routed to a SuDS (Sustainable Drainage System) "
+            "designed to manage surface water close to source.",
+        ),
+        (
+            "Septic tank",
+            "On-site septic-tank treatment for foul sewerage.",
+        ),
+        (
+            "Cesspit",
+            "On-site cesspit (sealed underground container) collecting "
+            "foul sewerage for periodic removal.",
+        ),
+        (
+            "Sewerage treatment plant",
+            "On-site sewerage treatment plant treating foul sewerage "
+            "before discharge.",
+        ),
+        (
+            "Other",
+            "Drainage type falling outside the standard off-mains "
+            "categories.",
+        ),
+        (
+            "Not known",
+            "Off-mains drainage system type is not known to the Seller.",
+        ),
+    ]
+    return Scheme(
+        local_name="OffMainsDrainageSystemTypeScheme",
+        slug_base="offMainsDrainageSystemType",
+        pref_label="Off-Mains Drainage System Type",
+        title="Off-mains drainage system type",
+        definition=(
+            "Classification of a Property's off-mains drainage system "
+            "(SuDS / Septic tank / Cesspit / Sewerage treatment plant / "
+            "Other / Not known)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Applies only when the "
+            "Property is not connected to the mains sewerage system."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0011_SECTION_8A,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _owner_type_scheme() -> Scheme:
+    # G8 — BASPI5 legalOwners[].ownerType (Private individual vs
+    # Organisation). UFO: Substance Kind label (binds to Person vs
+    # Organisation Substance Kinds via skos:exactMatch).
+    leaf = "propertyPack.legalOwners[].ownerType"
+    members_data = [
+        (
+            "Private individual",
+            "Legal owner is a natural person (opda:Person Substance Kind).",
+        ),
+        (
+            "Organisation",
+            "Legal owner is an organisation (opda:Organisation Substance "
+            "Kind, e.g. company, trust, charity).",
+        ),
+    ]
+    return Scheme(
+        local_name="OwnerTypeScheme",
+        slug_base="ownerType",
+        pref_label="Owner Type",
+        title="Legal owner Substance Kind discriminator",
+        definition=(
+            "Substance Kind labels discriminating Private individual "
+            "(opda:Person) from Organisation (opda:Organisation) as "
+            "legal owner. Distinct from RoleScheme (transactional role) "
+            "and TenureKindScheme (sub-Kind of LegalEstate)."
+        ),
+        ufo_category="Substance Kind label",
+        scope_note=(
+            "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Each "
+            "member binds to the corresponding UFO Substance Kind via "
+            "skos:exactMatch (Private individual → opda:Person; "
+            "Organisation → opda:Organisation). NEVER owl:sameAs per "
+            "ODR-0005 Anti-pattern §5."
+        ),
+        steward="Guizzardi (S006 Q1)",
+        scheme_source=_ODR_0011_SECTION_8A,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
 def _all_schemes() -> tuple[Scheme, ...]:
-    """Return the 16 schemes in deterministic emission order.
+    """Return the schemes in deterministic emission order.
 
     Emission order follows the ADR-0010 §"Scheme catalogue" row sequence
     so the file is human-readable in the order the ADR lists. Within the
     canonical Turtle output the canonical serialiser then sorts subjects
     by `(type_rank, IRI)`, but the dict-construction order is preserved
     here for documentation purposes.
+
+    ADR-0013 G8 closure adds 7 new schemes (YesNoScheme,
+    YesNoNotApplicableScheme, YesNoNotKnownScheme, YesNoNotRequiredScheme,
+    PropertyTypeScheme, OffMainsDrainageSystemTypeScheme, OwnerTypeScheme)
+    + extended RoleScheme members (already in `_role_scheme`).
     """
     return (
         _builtForm_scheme(),
@@ -1012,6 +1374,14 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _assurance_level_scheme(),
         _evidence_method_scheme(),
         _address_variant_scheme(),
+        # G8 additions (ADR-0013) ----------------------------------------
+        _yes_no_scheme(),
+        _yes_no_not_applicable_scheme(),
+        _yes_no_not_known_scheme(),
+        _yes_no_not_required_scheme(),
+        _property_type_scheme(),
+        _off_mains_drainage_scheme(),
+        _owner_type_scheme(),
     )
 
 
@@ -1069,6 +1439,8 @@ def build_vocabularies_graph() -> Graph:
             g.add((member_uri, SKOS.notation, Literal(member.notation)))
             g.add((member_uri, SKOS.definition, Literal(member.definition, lang="en")))
             g.add((member_uri, DCTERMS.source, member.member_source))
+            if member.derived_from is not None:
+                g.add((member_uri, PROV.wasDerivedFrom, member.derived_from))
 
     return g
 
@@ -1093,11 +1465,13 @@ def _comment_header(emission_date: str, git_sha: str) -> str:
         "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
         "https://openpropdata.org.uk/adr/ADR-0010-skos-vocabulary-emission",
+        "# Scope expansion (G8/G9/G10): "
+        "https://openpropdata.org.uk/adr/ADR-0013-overlay-profile-emission",
         f"# Generator version: opda-gen-{__version__}",
         f"# Source commit: {git_sha}",
         "# Schemes per ODR-0011 §1a + ODR-0011 §8a seven-category UFO framework.",
         "# Per-scheme deprecation lifecycle per ODR-0011 §5a SHACL-AF pattern",
-        "# (rule body deferred to opda-shapes.ttl under ADR-0012).",
+        "# (rule body emitted into opda-shapes.ttl under ADR-0012).",
         "",
     ]
     return "\n".join(lines) + "\n"

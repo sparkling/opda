@@ -117,6 +117,25 @@ jobs:
             diff -q "/tmp/annotations-$mod/opda-$mod-annotations.ttl" "source/03-standards/ontology/opda-$mod-annotations.ttl"
           done
 
+      # ----- Activated by ADR-0013 (overlay profile emission) -----------
+      # BASPI5 overlay profile + three-rule interface-contract enforcement.
+      # The `opda-gen emit` umbrella above already regenerates the
+      # profile, and the directory-level `diff -rq` step already covers
+      # it (the diff walks profiles/ as well as the top-level ontology
+      # directory). The per-file gate below validates BASPI5 on its own
+      # per ADR-0013 §Confirmation #1.
+
+      - name: Regenerate BASPI5 profile only (per-file gate)
+        working-directory: tools/opda-gen
+        run: opda-gen emit-profile baspi5 --output /tmp/baspi5-only
+
+      - name: BASPI5 profile byte-identity
+        run: diff -q /tmp/baspi5-only/profiles/baspi5.ttl source/03-standards/ontology/profiles/baspi5.ttl
+
+      - name: Three-rule interface contract CI (ADR-0013)
+        working-directory: tools/opda-gen
+        run: opda-gen ci-profile-contract --ontology-dir ../../source/03-standards/ontology
+
       # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
       # validate-exemplar runs pyshacl against a diagnostic exemplar and
       # compares to the paired expected-report.ttl. Stays commented until

@@ -15,9 +15,15 @@ Realises:
   subclassing vcard:Address; addressVariant Quality; hasAddress join
   predicate.
 - ODR-0008 §Rules + §Q5a — descriptive attributes attach to Property /
-  LegalEstate; full Q5a binding table is deferred to G11 follow-up
-  (this module emits only the minimum needed for the diagnostic
-  exemplars).
+  LegalEstate; the minimum binding table for the diagnostic exemplars
+  emits here plus G11 expansion bound to BASPI5 (closed by ADR-0013).
+- ADR-0013 G11 closure — additional Property-domain DatatypeProperties
+  required by the BASPI5 overlay: propertyType, ownershipType,
+  heatingType, areBoundariesUniform, isLocatedOverCommercialPremises,
+  isSharedOwnership, isGroundRentPayable, hasSprayFoamInstalled,
+  isSupplyMetered, isInsured, hasBeenFlooded, hasSmartHomeSystems,
+  hasValidGuaranteesOrWarranties, soldWithVacantPossession,
+  offMainsDrainageSystemType, riskIndicator, sellerContributesToServiceCharge.
 
 LeaseExtensionEvent placement decision (within-engineering, per
 ADR-0011 §"Surfaced ambiguity routing"): emitted in opda-property.ttl
@@ -74,9 +80,27 @@ OBJECT_PROPERTIES = (
 
 DATATYPE_PROPERTIES = (
     OPDA.addressVariant,
+    OPDA.areBoundariesUniform,
     OPDA.builtForm,
+    OPDA.centralHeatingFuelType,
     OPDA.currentEnergyRating,
+    OPDA.hasBeenFlooded,
+    OPDA.hasSmartHomeSystems,
+    OPDA.hasSprayFoamInstalled,
     OPDA.hasUPRN,
+    OPDA.hasValidGuaranteesOrWarranties,
+    OPDA.heatingType,
+    OPDA.isGroundRentPayable,
+    OPDA.isInsured,
+    OPDA.isLocatedOverCommercialPremises,
+    OPDA.isSharedOwnership,
+    OPDA.isSupplyMetered,
+    OPDA.offMainsDrainageSystemType,
+    OPDA.ownershipType,
+    OPDA.propertyType,
+    OPDA.riskIndicator,
+    OPDA.sellerContributesToServiceCharge,
+    OPDA.soldWithVacantPossession,
     OPDA.tenureKind,
 )
 
@@ -103,10 +127,10 @@ def build_graph() -> Graph:
     module_iri = URIRef("https://w3id.org/opda/property/")
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title, Literal("OPDA Property Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.3.0/")))
+    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
     g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/property/0.3.0/")))
+           URIRef("https://w3id.org/opda/property/0.4.0/")))
 
     # --- opda:Property — UFO Substance Kind (ODR-0005 §2a) --------------
     g.add((OPDA.Property, RDF.type, OWL.Class))
@@ -392,5 +416,172 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.recordsEstate, DCTERMS.source, _ODR_0005_S3C))
+
+    # ==== G11 expansion (ADR-0013) ======================================
+    # Additional Property/LegalEstate DatatypeProperties required by the
+    # BASPI5 overlay. Each property carries rdfs:domain + rdfs:range +
+    # rdfs:label @en + rdfs:comment @en + dct:source. Constrained by
+    # `sh:in <scheme>` in profiles/baspi5.ttl per ODR-0008 §Q5a binding
+    # table + ODR-0010 §Q5 build-step replacement.
+    _g11_properties = [
+        (
+            OPDA.propertyType,
+            OPDA.Property,
+            "property type",
+            "Substance Kind label classifying the physical-form Kind of a "
+            "Property per opda:PropertyTypeScheme (House / Bungalow / "
+            "Park home / Flat / Maisonette / Other). Distinct from "
+            "opda:builtForm (Quale-in-Region structural classification). "
+            "Constrained by SHACL sh:in to the scheme members in the "
+            "BASPI5 profile.",
+        ),
+        (
+            OPDA.ownershipType,
+            OPDA.LegalEstate,
+            "ownership type",
+            "Ownership-type classification per opda:OwnershipTypeScheme "
+            "(Freehold / Leasehold / Commonhold / Managed Freehold / "
+            "Other). UFO Quale-in-Region of LegalEstate. Constrained by "
+            "SHACL sh:in to the scheme members in the BASPI5 profile.",
+        ),
+        (
+            OPDA.heatingType,
+            OPDA.Property,
+            "heating type",
+            "Property heating-system arrangement per opda:HeatingTypeScheme "
+            "(Central heating / Communal heating system / Room heaters "
+            "only / None). UFO Quale-in-Region. Constrained by SHACL "
+            "sh:in to the scheme members in the BASPI5 profile.",
+        ),
+        (
+            OPDA.centralHeatingFuelType,
+            OPDA.Property,
+            "central heating fuel type",
+            "Fuel classification for a Property's central heating system "
+            "per opda:CentralHeatingFuelTypeScheme (Mains gas / "
+            "Electricity / Oil / LPG / Biomass / Other). UFO "
+            "Quale-in-Region. Constrained by SHACL sh:in to the scheme "
+            "members in the BASPI5 profile.",
+        ),
+        (
+            OPDA.offMainsDrainageSystemType,
+            OPDA.Property,
+            "off-mains drainage system type",
+            "Off-mains drainage classification per "
+            "opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / "
+            "Cesspit / Sewerage treatment plant / Other / Not known). "
+            "Applies when not connected to mains sewerage.",
+        ),
+        (
+            OPDA.areBoundariesUniform,
+            OPDA.Property,
+            "are boundaries uniform",
+            "Yes/No discriminator: are the Property's legal and physical "
+            "boundaries uniform (i.e. do they match)? Bound to "
+            "opda:YesNoScheme via SHACL sh:in in the BASPI5 profile.",
+        ),
+        (
+            OPDA.isLocatedOverCommercialPremises,
+            OPDA.Property,
+            "is located over commercial premises",
+            "Yes/No discriminator: is the Property located over "
+            "commercial premises? Applies to Flats and Maisonettes per "
+            "BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.isSharedOwnership,
+            OPDA.LegalEstate,
+            "is shared ownership",
+            "Yes/No discriminator: is the LegalEstate a shared-ownership "
+            "lease? Applies to Leasehold ownership per BASPI5 question "
+            "A1.3.1. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.isGroundRentPayable,
+            OPDA.LegalEstate,
+            "is ground rent payable",
+            "Yes/No discriminator: is ground rent payable on the "
+            "Leasehold? BASPI5 ground-rent question. Bound to "
+            "opda:YesNoScheme.",
+        ),
+        (
+            OPDA.sellerContributesToServiceCharge,
+            OPDA.LegalEstate,
+            "seller contributes to service charge",
+            "Yes/No discriminator: does the Seller contribute to a "
+            "service charge for the Property? Applies to Leasehold / "
+            "Managed Freehold / Commonhold per BASPI5. Bound to "
+            "opda:YesNoScheme.",
+        ),
+        (
+            OPDA.hasSprayFoamInstalled,
+            OPDA.Property,
+            "has spray foam installed",
+            "Yes/No discriminator: has spray-foam insulation been "
+            "installed in the Property? Relevant for mortgage-eligibility "
+            "per BASPI5. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.isSupplyMetered,
+            OPDA.Property,
+            "is supply metered",
+            "Yes/No discriminator: is the Property's utility supply "
+            "(electricity / water / gas) metered? BASPI5 utility questions. "
+            "Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.isInsured,
+            OPDA.Property,
+            "is insured",
+            "Yes/No discriminator: is the Property currently insured? "
+            "BASPI5 insurance question. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.hasBeenFlooded,
+            OPDA.Property,
+            "has been flooded",
+            "Yes/No discriminator: has the Property been flooded? BASPI5 "
+            "environmental-issue question. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.hasSmartHomeSystems,
+            OPDA.Property,
+            "has smart home systems",
+            "Yes/No discriminator: does the Property have smart-home "
+            "systems installed? BASPI5 smart-home question. Bound to "
+            "opda:YesNoScheme.",
+        ),
+        (
+            OPDA.hasValidGuaranteesOrWarranties,
+            OPDA.Property,
+            "has valid guarantees or warranties",
+            "Yes/No discriminator: does the Property carry valid "
+            "guarantees, warranties, or indemnity insurances? BASPI5 "
+            "guarantees question. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.soldWithVacantPossession,
+            OPDA.Property,
+            "sold with vacant possession",
+            "Yes/No discriminator: is the Property sold with vacant "
+            "possession (vs sold subject to existing tenancies)? BASPI5 "
+            "completion question. Bound to opda:YesNoScheme.",
+        ),
+        (
+            OPDA.riskIndicator,
+            OPDA.Property,
+            "risk indicator",
+            "Yes/No-bearing risk indicator on a Property (e.g. flood "
+            "risk, radon risk, coal-mining risk). BASPI5 environmental "
+            "issues. Bound to opda:YesNoScheme variants.",
+        ),
+    ]
+    for prop, domain, label, comment in _g11_properties:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, XSD.string))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, DCTERMS.source, _ODR_0008_S5A))
 
     return g

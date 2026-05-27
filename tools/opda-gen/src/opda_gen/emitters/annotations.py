@@ -157,7 +157,7 @@ def _module_annotations_header(
         (module_iri, RDF.type, OWL.Ontology),
         (module_iri, DCTERMS.title, Literal(title, lang="en")),
         (module_iri, OPDA.targetsClassGraph,
-         URIRef("https://w3id.org/opda/0.3.0/")),
+         URIRef("https://w3id.org/opda/0.4.0/")),
         (module_iri, DCTERMS.references, DPV_PD),
     ]
 

@@ -58,17 +58,19 @@ def test_emit_vocabularies_produces_file(tmp_path: Path) -> None:
     assert list(written.keys()) == [tmp_path / VOCABULARIES_FILENAME]
 
 
-def test_emit_vocabularies_produces_16_schemes(emitted_graph: Graph) -> None:
-    """Per ADR-0010 §"Scheme catalogue (initial first batch)" — exactly the
-    16 named first-batch schemes appear (15 ADR rows + the Scottish
-    CouncilTaxBand variant called out separately in the body of the row)."""
+def test_emit_vocabularies_produces_23_schemes(emitted_graph: Graph) -> None:
+    """Per ADR-0010 §"Scheme catalogue (initial first batch)" — 16 named
+    first-batch schemes; ADR-0013 G8 adds 7 BASPI5-coverage schemes
+    (YesNo / YesNoNotApplicable / YesNoNotKnown / YesNoNotRequired /
+    PropertyType / OffMainsDrainageSystemType / OwnerType). Total: 23."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == 16, (
-        f"expected 16 schemes (ADR-0010 first batch), got {len(schemes)}: "
-        f"{sorted(str(s) for s in schemes)}"
+    assert len(schemes) == 23, (
+        f"expected 23 schemes (16 first-batch + 7 G8 additions), got "
+        f"{len(schemes)}: {sorted(str(s) for s in schemes)}"
     )
-    # Spot-check each of the 16 named schemes appears.
+    # Spot-check each of the 23 named schemes appears.
     named = {
+        # ADR-0010 first batch (16)
         "BuiltFormScheme",
         "CouncilTaxBandSchemeEW",
         "CouncilTaxBandSchemeScotland",
@@ -85,6 +87,14 @@ def test_emit_vocabularies_produces_16_schemes(emitted_graph: Graph) -> None:
         "AssuranceLevelScheme",
         "EvidenceMethodScheme",
         "AddressVariantScheme",
+        # ADR-0013 G8 additions (7)
+        "YesNoScheme",
+        "YesNoNotApplicableScheme",
+        "YesNoNotKnownScheme",
+        "YesNoNotRequiredScheme",
+        "PropertyTypeScheme",
+        "OffMainsDrainageSystemTypeScheme",
+        "OwnerTypeScheme",
     }
     emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
     assert emitted_names == named, f"diff: {named ^ emitted_names}"

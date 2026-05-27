@@ -276,3 +276,46 @@ def test_literal_url_lexical_value_does_not_bind_unbound_namespace() -> None:
             )
     # The opda prefix MUST still appear (the scheme IRI references it).
     assert "@prefix opda:" in out
+
+
+# --- G12 follow-up: multi-object blank-node sort uses skolem hex ---------
+def test_multi_object_blank_node_list_byte_identical_across_runs() -> None:
+    """G12 follow-up (closes ADR-0005 §G G12).
+
+    Scenario: a single subject carries multiple `sh:property` object
+    BNodes. Before G12, the multi-object sort used rdflib's internal
+    BNode label (non-deterministic across runs), so the emitted list
+    order would flicker. After G12, the sort uses the skolem hex from
+    the blank-node hasher, which is deterministic by construction.
+
+    This test builds a graph with 3 distinct blank-node objects on one
+    predicate and asserts byte-identity across 5 fresh `Graph()`
+    constructions. Each construction creates new rdflib BNode labels
+    (different internal IDs) but the same skolem hex sequence (because
+    the sub-graph contents are identical), so the canonical output
+    MUST be byte-identical.
+    """
+    from rdflib import BNode as _BN
+
+    def _build() -> Graph:
+        g = Graph()
+        g.bind("opda", OPDA)
+        g.bind("sh", SH)
+        shape = OPDA.MultiObjectShape
+        g.add((shape, RDF.type, SH.NodeShape))
+        for label in ["alpha", "beta", "gamma"]:
+            # We use a fresh BNode per Graph construction so the rdflib
+            # internal labels differ between iterations; the skolem hex
+            # (derived from sub-graph contents) is what makes the sort
+            # deterministic.
+            prop = _BN()
+            g.add((shape, SH.property, prop))
+            g.add((prop, SH.path, URIRef(f"https://w3id.org/opda/#{label}Path")))
+            g.add((prop, SH.minCount, Literal(1)))
+        return g
+
+    outputs = [to_canonical_turtle(_build()) for _ in range(5)]
+    assert all(o == outputs[0] for o in outputs), (
+        "multi-object blank-node sort produced non-deterministic output:\n"
+        + "\n--\n".join(out.decode("utf-8") for out in outputs)
+    )
