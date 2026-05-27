@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, emission, foundation, three-graph, ci]
 supersedes: []
@@ -192,3 +192,8 @@ A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker ame
   - DPV annotations content (ADR-0012).
   - SKOS vocabulary content (ADR-0010).
   - Overlay profile shapes (ADR-0013).
+
+## Amendments
+
+- **2026-05-27 — Implementation landed (commit `c5629e7`).** Four foundation TTLs emitted at `source/03-standards/ontology/{foundation,opda-classes,opda-shapes,opda-annotations}.ttl`; `opda-gen emit-foundation` wired; byte-identity CI green; three-graph CI green (all 5 checks); 15/15 diagnostic exemplars parse cleanly. Closed queued follow-ups G2 (prefix-filter Literal-IRI scan), G3 (`check_derived_provenance` git-blame impl + 4 regression tests), and G4 (CI workflow comment-block split). Test suite grew 28 → 34. Implementation report at [`docs/adr/implementation-reports/ADR-0009-implementation.md`](./implementation-reports/ADR-0009-implementation.md).
+- **2026-05-27 — Independent validation PASS-WITH-FOLLOW-UPS (commit `8894eb9`).** Soundness 13/13, Completeness 23 PASS + 8 deferrals + 1 N/A, Cross-ADR 5/5 + 4/4 probes. All 5 §Confirmation criteria PASS verified independently. Validator concurred with worker's sentinel git-sha + dct:modified pinning decision (within-engineering, not Council-route) and queued two cosmetic follow-ups (G6 template documentation; G7 prefix-filter edge-case regression test for first URL-bearing rdfs:comment). Status moves `proposed → accepted`. Validation report at [`docs/adr/validation/ADR-0009-validation-report.md`](./validation/ADR-0009-validation-report.md).
