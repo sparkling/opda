@@ -1,0 +1,32 @@
+{
+  "tier1-w3c-example": {
+    "id": "rdfs:label",
+    "prefLabel": "label (W3C)",
+    "definition": "RDF Schema label predicate.",
+    "source": "http://www.w3.org/2000/01/rdf-schema#label"
+  },
+  "tier2-tf-example": {
+    "id": "pdtf:aggregator",
+    "prefLabel": "Aggregator (TF)",
+    "definition": "A Third Party Provider connecting to multiple providers.",
+    "source": "https://trust.propdata.org.uk/vocab/aggregator"
+  },
+  "glossary-only-term": {
+    "id": "opda-glossary:propertyPack",
+    "prefLabel": "Property Pack",
+    "definition": "An OPDA-canonical bundle of property-conveyance facts.",
+    "source": "https://openpropdata.org.uk/glossary/propertyPack"
+  },
+  "another-glossary-term": {
+    "id": "opda-glossary:transactionStage",
+    "prefLabel": "Transaction Stage",
+    "definition": "A discrete phase in the property-transaction lifecycle.",
+    "source": "https://openpropdata.org.uk/glossary/transactionStage"
+  },
+  "third-glossary-term": {
+    "id": "opda-glossary:claimEvidence",
+    "prefLabel": "Claim Evidence",
+    "definition": "Provenance-bearing record supporting a property fact.",
+    "source": "https://openpropdata.org.uk/glossary/claimEvidence"
+  }
+}

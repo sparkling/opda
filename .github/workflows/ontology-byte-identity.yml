@@ -1,0 +1,48 @@
+name: Ontology byte-identity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  byte-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
+
+      - name: Version check
+        working-directory: tools/opda-gen
+        run: opda-gen --version
+
+      - name: Test suite
+        working-directory: tools/opda-gen
+        run: pytest -q
+
+      # ADR-0009 will uncomment the foundation-diff step below once the first
+      # real foundation.ttl is committed. ADR-0008 ships infrastructure only;
+      # there are no reference TTLs to diff against yet.
+      #
+      # - name: Regenerate corpus
+      #   working-directory: tools/opda-gen
+      #   run: opda-gen emit --output /tmp/ontology
+      #
+      # - name: Byte-identity diff
+      #   run: diff -rq /tmp/ontology source/03-standards/ontology --exclude=exemplars --exclude=derived
+      #
+      # - name: Three-graph CI test
+      #   working-directory: tools/opda-gen
+      #   run: opda-gen ci-three-graph --ontology-dir ../../source/03-standards/ontology
+      #
+      # - name: Validate sample exemplar
+      #   working-directory: tools/opda-gen
+      #   run: opda-gen validate-exemplar ../../source/03-standards/ontology/exemplars/registered-freehold-house.ttl

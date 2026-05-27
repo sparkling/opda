@@ -1,0 +1,32 @@
+{
+  "propertyPack.uprn": {
+    "type": "xsd:string",
+    "comment": "Unique Property Reference Number (Ordnance Survey).",
+    "cardinality": "0..1",
+    "source": "https://openpropdata.org.uk/dict/propertyPack.uprn"
+  },
+  "propertyPack.address.line1": {
+    "type": "xsd:string",
+    "comment": "First line of the postal address.",
+    "cardinality": "1",
+    "source": "https://openpropdata.org.uk/dict/propertyPack.address.line1"
+  },
+  "propertyPack.address.postcode": {
+    "type": "xsd:string",
+    "comment": "UK postcode (BS 7666).",
+    "cardinality": "1",
+    "source": "https://openpropdata.org.uk/dict/propertyPack.address.postcode"
+  },
+  "valuationComparisonData.propertyDetails.uprn": {
+    "type": "xsd:string",
+    "comment": "Comparison-property UPRN.",
+    "cardinality": "0..*",
+    "source": "https://openpropdata.org.uk/dict/valuationComparisonData.propertyDetails.uprn"
+  },
+  "dict-only-leaf": {
+    "type": "xsd:integer",
+    "comment": "A leaf only present in the dictionary tier.",
+    "cardinality": "0..1",
+    "source": "https://openpropdata.org.uk/dict/dict-only-leaf"
+  }
+}
