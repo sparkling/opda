@@ -1,8 +1,8 @@
 ---
 status: proposed
-date: 2026-05-20
+date: 2026-05-27
 kind: pattern
-tags: [agents, roles, ufo, module]
+tags: [agents, roles, ufo, module, council-cleared, namespace-blocked]
 scope:
   - pdtf-v3:propertyPack.participants
   - pdtf-v3:propertyPack.participants.role
@@ -13,10 +13,10 @@ scope:
   - pdtf-v3:propertyPack.participants.email
   - pdtf-v3:propertyPack.titleNumber.proprietors
   - pdtf-v3:propertyPack.sellersCapacity
-council: session-001
+council: session-006
 supersedes: []
-depends-on: [ODR-0004, ODR-0005, ODR-0011]
-implements: [ODR-0003]
+depends-on: [ODR-0004, ODR-0005, ODR-0011, ODR-0015]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Agents & Roles
