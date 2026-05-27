@@ -129,30 +129,52 @@ Chosen option: **C — Bespoke generator in Python with `rdflib`-backed primitiv
 
 ### Term-sourcing five-line precedence (formalising ODR-0004 §7a)
 
-Resolver pseudocode:
+ODR-0004 §7a names **five precedence slots**, but slot 3 (Other regulatory authorities) is **contextual, not authoritative** — it produces `skos:scopeNote` or `skos:closeMatch`, never the primary `dct:source`. The resolver therefore distinguishes (a) the primary `dct:source` lookup (slots 1, 2, 4, 5) from (b) parallel contextual-citation collection (slot 3). Resolver pseudocode:
 
 ```python
-def resolve_term(term_id: str) -> SourceRecord:
-    """Returns (source_url, source_text, precedence_tier) for a term."""
-    # 1. W3C / external standard
-    if term_id in W3C_REGISTRY:
-        return SourceRecord(url=W3C_REGISTRY[term_id], tier=1, ...)
-    # 2. OPDA Trust Framework (per Session 003c Item 3)
-    if term_id in OPDA_TF_REGISTRY:
-        return SourceRecord(url=OPDA_TF_REGISTRY[term_id], tier=2, ...)
-    # 3. Business glossary
-    if term_id in glossary:
-        return SourceRecord(url=glossary_url(term_id), tier=3, ...)
-    # 4. Data dictionary (canonical leaf path)
-    if term_id in dictionary:
-        return SourceRecord(url=dictionary_url(term_id), tier=4, ...)
-    # 5. External regulator (contextual; skos:scopeNote not dct:source)
+def resolve_term(term_id: str) -> ResolvedTerm:
+    """Returns (primary, contextual_citations) per ODR-0004 §7a five-slot rule.
+
+    Slot numbering follows ODR-0004 §7a verbatim:
+      1. W3C / external spec     (authoritative;  → dct:source)
+      2. OPDA Trust Framework    (authoritative;  → dct:source)
+      3. Other regulatory authorities (contextual; → skos:scopeNote / skos:closeMatch)
+      4. OPDA business glossary  (project-internal; → dct:source)
+      5. Schema-leaf annotation  (lowest-trust;   → dct:source)
+
+    The primary dct:source comes from the first of slots {1, 2, 4, 5} that matches.
+    Slot 3 (regulators) is always collected separately as contextual_citations and
+    emitted as skos:scopeNote / skos:closeMatch alongside the primary dct:source.
+    """
+    contextual_citations = []
+    # Slot 3 — collected in parallel (always; never primary dct:source)
     if term_id in EXTERNAL_REGULATORS:
-        return SourceRecord(url=..., tier=5, kind="contextual")
-    raise UnsourceableTerm(term_id)
+        contextual_citations.append(SourceRecord(
+            url=EXTERNAL_REGULATORS[term_id], tier=3, kind="contextual",
+        ))
+
+    # Primary dct:source resolution (skips slot 3 by ODR-0004 §7a design)
+    # Slot 1 — W3C / external spec
+    if term_id in W3C_REGISTRY:
+        primary = SourceRecord(url=W3C_REGISTRY[term_id], tier=1, kind="authoritative")
+    # Slot 2 — OPDA Trust Framework (per Session 003c Item 3)
+    elif term_id in OPDA_TF_REGISTRY:
+        primary = SourceRecord(url=OPDA_TF_REGISTRY[term_id], tier=2, kind="authoritative")
+    # Slot 4 — OPDA business glossary
+    elif term_id in glossary:
+        primary = SourceRecord(url=glossary_url(term_id), tier=4, kind="project-internal")
+    # Slot 5 — Data dictionary canonical leaf path
+    elif term_id in dictionary:
+        primary = SourceRecord(url=dictionary_url(term_id), tier=5, kind="lowest-trust")
+    else:
+        raise UnsourceableTerm(term_id)
+
+    return ResolvedTerm(primary=primary, contextual=contextual_citations)
 ```
 
 Conflicts (e.g. glossary and dictionary disagree on definition) produce a `## Change log` row in the consuming module ODR per ODR-0004 §7a "Conflict-recording protocol". Generator MUST fail on unresolved conflicts; the build-pipeline error message names the conflicting sources verbatim.
+
+**ADR-0007 amendment history.** The original pseudocode in this section had regulators at "tier 5" and glossary at "tier 3" — that mis-ordered ODR-0004 §7a's slot numbering. Independent validation of ADR-0008 (commit `6439b57`) surfaced the discrepancy; queued at [ADR-0005 §G item G1](./ADR-0005-deferred-work-register.md). Author-only Council amendment (2026-05-27): the pseudocode above now matches ODR-0004 §7a's slot ordering and contextual-citation distinction. ADR-0008's `term_sourcing.py` implementation predated this clarification and ranks "business glossary" at tier 3 in its `Tier` IntEnum; that code is amended in lockstep at ADR-0012's worker brief (the next worker touching `term_sourcing.py`) so the implementation matches the corrected pseudocode + ODR-0004 §7a.
 
 ### Three-graph emission constraints (formalising ODR-0004 §3a)
 

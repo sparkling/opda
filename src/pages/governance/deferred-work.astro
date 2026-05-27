@@ -381,6 +381,131 @@ import PageMeta from '@/components/PageMeta.astro';
         </tbody>
       </table>
 
+      <h2 id="ontology-programme">G. Ontology implementation programme</h2>
+      <p>
+        Surfaced by the ontology-implementation programme's per-ADR validation
+        discipline (see <a href="/resource.html?path=docs/plan/ontology-implementation.md"><code>docs/plan/ontology-implementation.md</code></a> §9.3 +
+        §9.4). Validation may surface (a) genuine ratified-rules ambiguity needing
+        a Council Author-only amendment, or (b) named follow-ups that are not
+        blockers but must be explicitly queued. Items below are queued from per-ADR
+        validation reports under <a class="resource-link" href="/resource.html?path=docs/adr/validation/"><code>docs/adr/validation/</code></a>.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Triggering condition / dependency</th>
+            <th>Status</th>
+            <th>Linked artefact</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>G1</td>
+            <td>Council Author-only amendment — reconcile term-sourcing precedence between ODR&nbsp;0004 §7a and ADR&nbsp;0007 §"Term-sourcing five-line precedence"</td>
+            <td>OPDA Author (per ODR&nbsp;0001 §"Self-amendment process")</td>
+            <td>Before any emitter branches on <code>tier == 3</code> semantics (no caller does today)</td>
+            <td>Doc amended 2026-05-27 (ADR&nbsp;0007); code change in lockstep at ADR&nbsp;0012 worker</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0007-ontology-generator-specification.md"><code>ADR-0007 §"Term-sourcing five-line precedence"</code></a></td>
+            <td>Discrepancy between ratified Council rule (regulators at tier 3, contextual) and engineering pseudocode (glossary at tier 3, regulator at 5). Amendment aligns ADR-0007 pseudocode + prose to ODR-0004 §7a's slot ordering.</td>
+          </tr>
+          <tr>
+            <td>G2</td>
+            <td>Prefix-filter heuristic refinement in <code>serialiser/canonical.py</code></td>
+            <td>ADR&nbsp;0009 worker</td>
+            <td>ADR&nbsp;0009 implementation start</td>
+            <td>Closed 2026-05-27 (commit <code>c5629e7</code>)</td>
+            <td><code>tools/opda-gen/src/opda_gen/serialiser/canonical.py:143-148</code></td>
+            <td>Literal lexical values scanned for IRI-shaped strings; two regression tests added. Verified by ADR-0009 validator.</td>
+          </tr>
+          <tr>
+            <td>G3</td>
+            <td><code>check_derived_provenance</code> git-blame implementation + regression test (ODR&nbsp;0004 §3a clause #5)</td>
+            <td>ADR&nbsp;0009 worker</td>
+            <td>ADR&nbsp;0009 implementation start</td>
+            <td>Closed 2026-05-27 (commit <code>c5629e7</code>)</td>
+            <td><code>tools/opda-gen/src/opda_gen/ci/three_graph_test.py:138-229</code></td>
+            <td><code>git log --format=%ae</code> walk over <code>derived/</code>; env-var allowlist (<code>OPDA_SERVICE_ACCOUNTS</code>); four regression tests using tmp git-repo fixture.</td>
+          </tr>
+          <tr>
+            <td>G4</td>
+            <td>Split CI workflow comment block by activation ADR</td>
+            <td>ADR&nbsp;0009 worker (cosmetic)</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-27 (commit <code>c5629e7</code>)</td>
+            <td><a class="resource-link" href="/resource.html?path=.github/workflows/ontology-byte-identity.yml"><code>.github/workflows/ontology-byte-identity.yml</code></a> lines 31–52</td>
+            <td>Two distinct activation markers: ADR-0009-activated steps and the ADR-0014-activated <code>validate-exemplar</code> step.</td>
+          </tr>
+          <tr>
+            <td>G5</td>
+            <td>Mirror Section G to <code>/governance/deferred-work</code> Astro page</td>
+            <td>Technical WG / next contributor touching the mirror</td>
+            <td>Before next quarterly publish</td>
+            <td>Closed 2026-05-27 (this commit)</td>
+            <td>This table (<a class="resource-link" href="/resource.html?path=src/pages/governance/deferred-work.astro"><code>src/pages/governance/deferred-work.astro</code></a>)</td>
+            <td>Astro mirror now carries the G1–G11 table with Status + Linked-artefact columns matching the other sections.</td>
+          </tr>
+          <tr>
+            <td>G6</td>
+            <td>Cosmetic ADR&nbsp;0009 template amendment — document sentinel-pinning convention</td>
+            <td>Author / opportunistic</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-27 (this commit)</td>
+            <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0009-foundation-ttl-emission.md"><code>ADR-0009 §"foundation.ttl"</code></a> prose preamble</td>
+            <td>Angle-bracket placeholders (<code>&lt;git-sha&gt;</code>, <code>&lt;emission-date&gt;</code>) are illustrative, not live-substitution directives; sentinel-pinned to satisfy byte-identity CI per ODR-0004 §6a.</td>
+          </tr>
+          <tr>
+            <td>G7</td>
+            <td>Prefix-filter edge-case regression test for URL-bearing rdfs:comment / skos:scopeNote Literals</td>
+            <td>ADR&nbsp;0010 worker</td>
+            <td>First URL-bearing Literal emission (gov.uk URLs in council-tax / EPC scope-notes)</td>
+            <td>Closed 2026-05-27 (commit <code>75337ec</code>)</td>
+            <td><code>tools/opda-gen/tests/test_serialiser.py</code></td>
+            <td>Two regression tests confirm gov.uk URLs inside Literals don't bind a spurious gov.uk prefix; G2's scan widens reference set but never the binding set.</td>
+          </tr>
+          <tr>
+            <td>G8</td>
+            <td>ADR&nbsp;0010 scope expansion — admit additional SKOS schemes beyond the named first batch</td>
+            <td>ADR&nbsp;0013 worker (bundled with overlay profile emission)</td>
+            <td>When a downstream module ADR or overlay profile cites a scheme not in the 16-row first-batch table</td>
+            <td>Bundled with ADR&nbsp;0013 worker brief</td>
+            <td>(forthcoming via ADR&nbsp;0013 commit)</td>
+            <td>Data dictionary carries ~1225 enum-bearing leaves; first batch covers 16 (88 concepts). Expansion happens scheme-by-scheme per BASPI5 overlay need.</td>
+          </tr>
+          <tr>
+            <td>G9</td>
+            <td>Populate placeholder schemes (MilestoneKind / AssuranceLevel / EvidenceMethod / AddressVariant) with real per-member data</td>
+            <td>ADR&nbsp;0013 worker (bundled with overlay profile emission)</td>
+            <td>Before ADR&nbsp;0014 BASPI5 round-trip MVP</td>
+            <td>Bundled with ADR&nbsp;0013 worker brief</td>
+            <td>(forthcoming via ADR&nbsp;0013 commit)</td>
+            <td>Four schemes emitted with PLACEHOLDER warnings; real per-member data from eIDAS / OIDC4IDA / ODR-0015 §S015 Q1 / PDTF process docs.</td>
+          </tr>
+          <tr>
+            <td>G10</td>
+            <td>TransactionStatusScheme per-member <code>dct:source</code> URI fix</td>
+            <td>ADR&nbsp;0014 worker (MVP-blocking)</td>
+            <td>MUST land before ADR&nbsp;0014 BASPI5 round-trip</td>
+            <td>Bundled with ADR&nbsp;0014 worker brief</td>
+            <td>(forthcoming via ADR&nbsp;0014 commit)</td>
+            <td>5 TransactionStatus members emit fabricated <code>&lt;...#status.Listed&gt;</code> fragments; remediation per validator option (a) — cite ODR-0011 §8a instead.</td>
+          </tr>
+          <tr>
+            <td>G11</td>
+            <td>ADR&nbsp;0011 Q5a binding table completion — remaining ~44 descriptive-attribute leaves</td>
+            <td>ADR&nbsp;0013 worker (bundled with overlay profile emission)</td>
+            <td>Before ADR&nbsp;0014 BASPI5 round-trip MVP</td>
+            <td>Bundled with ADR&nbsp;0013 worker brief</td>
+            <td>(forthcoming via ADR&nbsp;0013 commit)</td>
+            <td>ADR&nbsp;0011 worker emitted 6 of ~50 Q5a leaves (the minimum needed by 15 exemplars); remaining 44 land per BASPI5 overlay need.</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h2 id="lifecycle">How items leave this register</h2>
       <ul>
         <li><strong>Promoted to its own ADR.</strong> Item gets a dedicated ADR (typical for substantive workstreams). The register entry is updated to point at the new ADR and marked "promoted". Two reviews later it can be removed.</li>
