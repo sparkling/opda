@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, generator, python, infrastructure, ci]
 supersedes: []
@@ -248,3 +248,8 @@ A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker ame
   - SHACL profile composition mechanics (ADR-0013).
   - JSON-LD context emission (deferred per ODR-0011 Q3).
   - Ontology editor UI integration (third-party tools consume OPDA TTL).
+
+## Amendments
+
+- **2026-05-27 — Implementation landed (commit `2ac4ce2`).** 41 files / 2,713 lines added under `tools/opda-gen/`; 28/28 pytest green; CLI surface complete (all 10 subcommands per §"CLI design"); CI workflow at `.github/workflows/ontology-byte-identity.yml`. Implementation report at [`docs/adr/implementation-reports/ADR-0008-implementation.md`](./implementation-reports/ADR-0008-implementation.md).
+- **2026-05-27 — Independent validation PASS-WITH-FOLLOW-UPS (commit `6439b57`).** Soundness 28/28, Completeness 23 PASS + 8 explicit deferrals + 1 N/A, Cross-ADR 6/6 + 4/4 probes. Status moves `proposed → accepted` with five named follow-ups queued at [ADR-0005 §G](./ADR-0005-deferred-work-register.md) (G1–G5). Validation report at [`docs/adr/validation/ADR-0008-validation-report.md`](./validation/ADR-0008-validation-report.md).
