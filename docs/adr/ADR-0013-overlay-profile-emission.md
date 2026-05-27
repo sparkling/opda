@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, shacl, profiles, overlays, baspi5, dash, emission]
 supersedes: []
@@ -253,3 +253,8 @@ A FAIL on any of (a)–(d) blocks `accepted` status; the implementing worker ame
   - BASPI5 round-trip integration tests (ADR-0014).
   - Overlay schemas themselves (already in `source/03-standards/schemas/`; nested git repo).
   - DASH viewer/editor implementation (third-party tooling).
+
+## Amendments
+
+- **2026-05-27 — Implementation landed (commit `130e1e4`).** Largest single worker brief in the programme. `source/03-standards/ontology/profiles/baspi5.ttl` emitted (829 LOC; 7 NodeShapes; 28 form-question anchors; 9 PropertyGroups; 1 sh:xone branch). `opda:ValidationContext` added to foundation (class-graph 5 → 6 classes; `owl:versionIRI` bumped 0.3.0 → 0.4.0). Bundled five queued follow-ups closed inline: G8 (7 new schemes — YesNo* family + PropertyType + OffMainsDrainageSystemType + OwnerType; vocabularies 879→1164 LOC, 16→23 schemes, 88→137 members); G9 (4 PLACEHOLDER schemes replaced with real eIDAS/OIDC4IDA/ODR-cited per-member data); G10 (TransactionStatus URIs fixed per validator option (a) — cite ODR-0011 §8a + prov:wasDerivedFrom to actual data-dict enum); G11 (20 new DatatypeProperties across opda-property + opda-agent per ODR-0008 §Q5a, bound to schemes via sh:in in per-module shapes); G12 (canonical serialiser dedup + latent BNode byte-identity bug fixed via skolem-hex sort key). Three-rule interface contract CI tests all PASS. Generator bumped 0.4.0 → 0.5.0. Test suite grew 102 → 118 (+16). Implementation report at [`docs/adr/implementation-reports/ADR-0013-implementation.md`](./implementation-reports/ADR-0013-implementation.md).
+- **2026-05-27 — Independent validation PASS-WITH-FOLLOW-UPS (commit `6acdbca`).** All 6 §Confirmation + 4/4 programme-wide gates PASS. Three-rule contract 3/3 PASS. G8/G9/G10/G11/G12 all VERIFIED independently. Cross-ADR consistency for ADR-0014 CONFIRMED (24-file combined graph loads cleanly with 0 parse errors; 2,258 triples; only unresolved sh:targetClass is skos:Concept meta-shape, expected). 5 cosmetic follow-ups queued at G16–G20 (worker self-report under-counts; stale foundation doc-comment; opda:role declaration ergonomic; 4 anchor URL mismatches; anchor count self-report); none block acceptance. Status moves `proposed → accepted`. Validation report at [`docs/adr/validation/ADR-0013-validation-report.md`](./validation/ADR-0013-validation-report.md).
