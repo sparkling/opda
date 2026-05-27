@@ -1,13 +1,14 @@
 ---
-status: proposed
-date: 2026-05-20
+status: accepted
+date: 2026-05-27
 kind: pattern
 tags: [property, attributes, data-dictionary, module]
 scope: [pdtf-v3:propertyPack]
-council: session-001
+council: session-008
+wg-decision: session-003b
 supersedes: []
-depends-on: [ODR-0004, ODR-0005]
-implements: [ODR-0003]
+depends-on: [ODR-0004, ODR-0005, ODR-0006, ODR-0007, ODR-0009, ODR-0010, ODR-0011, ODR-0012, ODR-0013, ODR-0015, ODR-0017, ODR-0018]
+implements: [ODR-0003, ODR-0007, ODR-0011, ODR-0017, ODR-0018]
 ---
 
 # Property Descriptive Attributes
@@ -47,9 +48,64 @@ Adopt **Declare-once-reconcile-overlays**: flatten the `propertyPack` tree; decl
 
 **Enforcement** — SHACL shapes (ODR-0013) constrain numeric descriptive properties to plausible ranges and string-formatted ones to their patterns; the overlay profiles (ODR-0010) carry per-form `sh:minCount`/`sh:in` variation for reconciled spanning properties. Cross-context reconciliation is verified by checking that each data-dictionary spanning leaf maps to exactly one `opda:` property with all overlay occurrences resolving to it. The module is validated against the descriptive facets of the diagnostic exemplars (ODR-0005): the same property described through two different overlays must populate the *same* ontology properties.
 
-**Gate** — This module's TBox is not frozen until ODR-0005 clears its identity-criterion gate; descriptive properties attach to the Property/Title classes the crux defines.
+**Gate** — ✅ **CLEARED.** ODR-0005's 3-class identity-criterion gate ratified at S005; descriptive properties attach to `opda:Property`, `opda:LegalEstate`, `opda:RegisteredTitle` (and the named sub-Kinds promoted per Operational specifications §Q4 below). Namespace block cleared via S003b + ADR-0006.
 
 **Delegated** — Descriptive enumerations (built-form, property-type, units, EPC band, council-tax band, tenancy type) are SKOS concept schemes owned by ODR-0011, not resolved here.
+
+### Operational specifications (added by [Session 008](./council/session-008-property-descriptive-attributes.md))
+
+Session 008 (Full Council; Queen Allemang; DA Cagle — 6 of 7 questions WITHDRAWN/CONCEDED + 1 HELD-AS-LIVE + 1 PRIMARY VIGILANCE) operationalised the discipline through seven `## Operational specifications` subsections. Original `## Rules` above stand; subsections below add the build-time and CI-enforced disciplines.
+
+#### Q1a — Spanning-leaf detection (no arithmetic threshold)
+
+Mechanical-default + SHACL shape-target detection + consumer-query reconciliation trigger + reconciliation register + Pandit's PII discovery hook. Every annotated leaf emits one `opda:` datatype property; spanning leaves are detected by SHACL `?shape sh:targetClass opda:Property ; sh:path ?p` grouping (Knublauch); deliberation fires on consumer-query trigger; outcomes recorded in a per-leaf reconciliation register; new spanning-leaf candidates fire ODR-0017 SHACL-AF rule for DPV co-annotation per ODR-0018 §3a.
+
+#### Q2a — Sub-module spawn-triggers (monolithic-with-named-triggers)
+
+ODR-0008 stays monolithic. Spawn-rule fires on EITHER (a) **UFO meta-category crystallisation** — when ≥1 sub-module's leaf-set populates such that Quality / Mode / Substance-Kind-label distinctions are operationally load-bearing, spawn ODR-0008a/b/c by UFO axis with named stewards (Allemang on `property-qualities`; Guizzardi/Pandit on `property-modes`; Kendall on `legal-estate-attributes`); OR (b) **authority-retrieved-artefact provenance loss** — when Survey/EPC/Search/Title-Plan cannot be flat datatype bags without losing `prov:wasGeneratedBy`, spawn ODR-0008d "Authority-Retrieved Artefacts" with `implements: [ODR-0007, ODR-0017]`. Kendall's four-way alternative held-as-live (18 months or encumbrance-cardinality trigger).
+
+#### Q3a — Citation grain (per-property + per-overlay array)
+
+Per-property `dct:source` per ODR-0004 §7a with version-pinned URL. For spanning leaves, an array of `dct:source` triples (one per overlay leaf-path) — lossless audit in both directions. DPV co-annotations carry parallel per-property `dct:source` to regulator text per ODR-0018 §6. Round-trip equivalence SPARQL test verifies the per-property + per-overlay array recovers the data-dictionary cross-context table. Cagle's section-level opt-in HELD-AS-LIVE for 18-month review.
+
+#### Q4a — Three-criterion class-promotion test
+
+A leaf or leaf-cluster promotes to a Class iff ANY of: (a) authority-retrieved provenance (`prov:wasGeneratedBy` chain to regulator-issued or professional-issued activity); OR (b) distinct lifecycle (issued / superseded / re-issued / withdrawn); OR (c) distinct PII regime per ODR-0018. Definite Class promotions: `opda:Survey`, `opda:EPCCertificate`, `opda:Search`, `opda:Valuation`, `opda:Comparable` — each retrofitting `implements: [ODR-0007, ODR-0017, ODR-0018]`. Conditional Class promotions held-as-live (Davis dissent): `opda:Building`, `opda:Room` — convene on first named BASPI5 round-trip query exercising sub-Property reasoning.
+
+#### Q5a — Datatype vs SKOS per-leaf binding table
+
+ODR-0011 §8a-named schemes become SKOS concept schemes; non-§8a one-shot enums stay `xsd:string + sh:in`. Burden of SKOS promotion on the proposer per leaf. Initial binding table:
+
+| ODR-0008 leaf | UFO category | SHACL modelling |
+|---|---|---|
+| `currentEnergyRating` (A-G); `councilTaxBand` (A-I); `builtForm`; `ownershipType`; `centralHeatingFuelType`; `heatingType` | Quale-in-Region | SKOS scheme; Quality of `opda:Property` (or `opda:LegalEstate` for ownership) |
+| `tenureKind` (Freehold / Leasehold / Commonhold) | Substance Kind label | SKOS scheme; sub-Kind via `skos:exactMatch`; NEVER `owl:sameAs` |
+| `priceQualifier`, `marketingTenure` | Mode / Quality Value | SKOS scheme; Quality Value of listing Relator (S007 territory) |
+| `yesNoNotKnown` (and dozens of leaves carrying it as flag); `mediaType` per-leaf one-shot internal | (not §8a) | `owl:DatatypeProperty` with `sh:in ("Yes" "No" "Not known")` — no SKOS scheme |
+| `emailAddress`, `postcode` etc. (lexical-only one-shot) | (not §8a) | `xsd:string + sh:pattern` |
+| `description`, `summary` etc. (free text) | (not §8a) | plain `xsd:string` |
+
+Kendall's "SKOS for all category-likes" HELD-AS-LIVE with 18-month re-open trigger on downstream consumer demand.
+
+#### Q6a — Hierarchy admission discipline (flat-default + reasoner-independence)
+
+Flat default — every descriptive datatype property is `owl:DatatypeProperty` with no `rdfs:subPropertyOf` in initial emission. Hierarchy admission requires (i) named consumer query asking for parent-level entailment with query text reviewable; (ii) reasoner-independence test (UNION-over-children must equal entailed-parent answer-set; if they differ, the hierarchy is decorative under entailment-off SPARQL endpoints). SKOS broader/narrower for value-spaces (per ODR-0011 §Rules) — distinguished from predicate hierarchies. Kendall's `opda:hasUtilityConnection` parent HELD-AS-LIVE — re-open at first SHACL profile forced to UNION across utility-children.
+
+#### Q7a — Overlay-form variation: three boundary clauses + three CI tests
+
+Three explicit boundary clauses for the handoff to ODR-0010:
+
+1. **Base-cardinality clause**: base TBox `0..*` for every descriptive property; per-form `sh:minCount` lives in ODR-0010 profile shapes.
+2. **Enum union clause**: spanning leaves with differing per-overlay enum sets — base SKOS scheme carries the union of all overlay members; per-form `sh:in` restriction in ODR-0010 (per Cagle's Scope-Check 1 Q6 three-rule interface contract; `sh:in` semantics merged at build-time).
+3. **Advisory annotations clause**: form-ergonomic guidance lives in `opda-annotations.ttl` (NOT base TBox or profile shapes — re-instantiates S001 Q5 + ODR-0004 §3a).
+
+Three SHACL CI tests (added to ODR-0004 §3a five-part CI suite):
+
+1. `ASK { ?p a opda:DescriptiveProperty . ?p sh:minCount ?n . FILTER (?n > 0) }` returns FALSE in base `opda-shapes.ttl`.
+2. For each spanning leaf, the union of per-profile `sh:in` members equals the SKOS scheme's `skos:Concept` set.
+3. `ASK { GRAPH opda:annotations { ?s a sh:NodeShape } }` returns FALSE.
+
+Three-rule interface contract cross-cite to ODR-0010 + ODR-0013 is in §References.
 
 ## Alternatives
 
@@ -61,9 +117,12 @@ Adopt **Declare-once-reconcile-overlays**: flatten the `propertyPack` tree; decl
 - Each spanning leaf collapses to a single ontology property; the ontology gets one term per concept instead of per-form synonyms.
 - Every property carries `dct:source` + `rdfs:comment` from the dictionary, supporting the BASPI round-trip (loaded profile validates data *and* regenerates the form).
 - The mechanical leaf-to-property mapping is generated from the dictionary; scarce deliberation is reserved for ambiguous reconciliations.
-- Reconciling ~935 annotated base leaves (plus overlay-specific leaves) is high-volume work; cross-overlay synonymy must be adjudicated leaf by leaf to avoid over- or under-merging.
-- The module is gated by ODR-0005 and cannot freeze its TBox until the crux settles.
-- Per-form required/enum variation MUST be authored as SHACL profile shapes (ODR-0010); descriptive enumerations MUST be authored as SKOS schemes (ODR-0011).
+- Reconciling ~935 annotated base leaves (plus overlay-specific leaves) is high-volume work; spanning-leaf detection is now mechanical (SHACL shape-target convergence per Q1a) — adjudication fires only on consumer-query trigger, recorded in the reconciliation register.
+- Module gates ✅ CLEARED — S005 3-class ratified; S003b namespace ratified; full upstream TBox (S006/S007/S009/S010/S011/S012/S013/S015) ratified.
+- Per-form required/enum variation MUST be authored as SHACL profile shapes (ODR-0010) per Q7a three boundary clauses; descriptive enumerations follow Q5a binding table — §8a-named schemes as SKOS per ODR-0011; non-§8a one-shot enums as `xsd:string + sh:in`.
+- The mechanical 935-leaf walk now begins as implementation work: generator (ADR-0007) emits per-leaf binding table + class promotions per Q4a + reconciliation register per Q1a.
+- ODR-0008 is the seventh `kind: pattern` ODR to discharge under A9 — methodology pressure-test passes 7-of-7 clean.
+- Implementation depends on ADR-0007 generator + foundation.ttl emission; subsequent BASPI5 round-trip MVP gate (per ODR-0010 §Q7) exercises ODR-0008's mapping discipline against real overlay data.
 
 ## References
 
@@ -73,5 +132,7 @@ Adopt **Declare-once-reconcile-overlays**: flatten the `propertyPack` tree; decl
 - **Data dictionary**: `source/00-deliverables/semantic-models/data-dictionary.md` — `pdtf-transaction.json` base (1,556 unique leaves, 935 annotated) plus per-form overlays (baspi5 318, rds 196, piq 184, ta6 178, nts2 160, lpe1 136, …). The cross-context table is the authority for which leaves span overlays.
 - **Open questions**: whether to split into sub-module ODRs (built-form / energy / searches / encumbrances) once volume is understood — deferred to drafting; the defect/condition taxonomy (RICS classification) and EWS1 / Building Safety Act modelling — UK-specific, WG input required.
 - **Deliverables**: `property-attributes.ttl` (likely multiple files under one module namespace); the descriptive SKOS schemes (→ ODR-0011); authority-provenance patterns (→ ODR-0009); the generated leaf → datatype-property mapping with `dct:source`/`rdfs:comment` from the data dictionary.
-- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents & roles [ODR-0006](./ODR-0006-agents-and-roles.md); transactions & lifecycle [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); overlay profiles [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
-- **Council**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q3 (partition by concern; flatten `propertyPack`).
+- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents & roles [ODR-0006](./ODR-0006-agents-and-roles.md); transactions & lifecycle [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); overlay profiles [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); data-governance [ODR-0012](./ODR-0012-data-governance-layer.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); address & geography [ODR-0015](./ODR-0015-address-and-geography.md); SHACL-AF pattern [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md); DPV co-annotation pattern [ODR-0018](./ODR-0018-dpv-class-level-coannotation-pattern.md).
+- **Three-rule interface contract** (Scope-Check 1 Q6 / Cagle): ODR-0008 §Operational specifications Q7a cross-cite ODR-0010 + ODR-0013 on (i) `sh:in` semantics merged at build-time applied to closed schemes; (ii) `sh:Violation` floor; (iii) no-identity-override gate.
+- **Cross-corpus ADR dependency:** [ADR-0007 — Ontology generator specification](../../adr/ADR-0007-ontology-generator-specification.md) — implementation of ODR-0008 §Operational specifications depends on the generator's deterministic emission discipline.
+- **Council**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q3 (partition by concern; flatten `propertyPack`); [session-008](./council/session-008-property-descriptive-attributes.md) Full Council ratification (Allemang Queen; Cagle DA — 6 WITHDRAWN/CONCEDED + 1 HELD + 1 VIGILANCE; ten voices across five teammates). Status `proposed → accepted`. Seventh `kind: pattern` ODR to discharge under A9 — methodology 7-of-7 clean.

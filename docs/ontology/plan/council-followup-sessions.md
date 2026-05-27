@@ -36,9 +36,15 @@ is the authoritative session log.
 
 **All 14 sessions of the original plan executed + WG namespace ratification + status sweep.** 11 Full+Reduced Council sessions + 3 Author-only pattern records + ODR-0017 §2a amendment landed inline at S013 + Session 003b (WG namespace) + ADR-0006 (engineering realisation). 6 `kind: pattern` ODRs cleanly discharge A9; 5 `kind: architecture` ODRs land. Two-artefact discipline EXPAND threshold satisfied; B2/B3 pilots ratified.
 
-**Namespace block cleared (2026-05-27 via [Session 003b](../odr/council/session-003b-namespace-wg-decision.md) + [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)):** WG ratified `https://w3id.org/opda/#` (W3C PICG-redirected to `https://openpropdata.org.uk/ontology/`). Status sweep moved 13 ODRs `proposed → accepted` through the `depends-on:[ODR-0004]` chain (ODR-0002/0004/0005/0006/0007/0009/0010/0011/0012/0013/0015/0017/0018). Exemplar bulk-update applied across 14 .ttl files.
+**Namespace block cleared (2026-05-27 via [Session 003b](../odr/council/session-003b-namespace-wg-decision.md) + [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)):** WG ratified `https://w3id.org/opda/#` (W3C PICG-redirected to `https://openpropdata.org.uk/ontology/`). Status sweep moved 13 ODRs `proposed → accepted` through the `depends-on:[ODR-0004]` chain (ODR-0002/0004/0005/0006/0007/0009/0010/0011/0012/0013/0015/0017/0018). Exemplar bulk-update applied across 15 .ttl files.
 
-**Outstanding (post-plan-complete) — see §"Outstanding work after plan completion" below:** S008 deferred-on-cardinality; S016 deferred-until-trigger; Phase-3.5 audit; w3id.org redirect PR (asynchronous engineering); BASPI5 round-trip MVP demonstration.
+**S008 ratified (2026-05-27 via [Session 008](../odr/council/session-008-property-descriptive-attributes.md)):** Full Council (5 teammates + DA + Queen Allemang); all 7 questions 10-0; Cagle DA 6 of 7 WITHDRAWN/CONCEDED. ODR-0008 status: proposed → accepted; seventh `kind: pattern` discharge under A9 (7-of-7 clean methodology pressure-test). The 935-leaf-to-class mapping discipline is ratified; the mechanical walk is implementation-downstream of ADR-0007 generator + foundation.ttl emission.
+
+**Phase-3.5 audit ratified (2026-05-27 via [session-phase-3.5-audit](../odr/council/session-phase-3.5-audit-cross-vocabulary-mapping.md)):** Author-only; cross-vocabulary mapping discipline recorded — SSSOM/SEMAPV defer-until-trigger; inline `skos:exactMatch` case-by-case admission; OBO RO stays deferred.
+
+**WG housekeeping decisions ratified (2026-05-27 via [session-003c](../odr/council/session-003c-wg-housekeeping-decisions.md)):** Author-only; three small WG decisions — instance-URI namespace; hash-vs-slash reopening trigger; OPDA TF authoritative scope.
+
+**Outstanding (post-plan-complete + ratification close):** S016 deferred-until-trigger (no trigger fired); BASPI5 round-trip MVP demonstration (implementation programme — ADR-0007 generator → foundation.ttl + module .ttl + SHACL shapes + form regeneration); w3id.org redirect PR (asynchronous external engineering); `opda-x:` instance-URI bulk-update across 15 exemplars (mechanical follow-up sweep).
 
 ---
 
