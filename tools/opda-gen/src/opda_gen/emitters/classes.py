@@ -27,8 +27,10 @@ from opda_gen.serialiser.canonical import to_canonical_turtle
 
 # Sentinel-pinned constants per the G6 convention from ADR-0009.
 # Advance when a future ADR materially mutates a module file's content.
-_MODULES_LAST_MODIFIED = "2026-05-27"
-_MODULES_SOURCE_COMMIT = "pinned-by-ADR-0011"
+# ADR-0014: owl:imports of foundation + per-module versionIRI bumped
+# 0.4.0 → 1.0.0; opda-agent.ttl also gained opda:role declaration (G18).
+_MODULES_LAST_MODIFIED = "2026-05-28"
+_MODULES_SOURCE_COMMIT = "pinned-by-ADR-0014"
 
 
 # Per-module metadata used by `_comment_header()`. Each tuple:

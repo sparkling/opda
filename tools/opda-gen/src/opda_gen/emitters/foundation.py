@@ -24,8 +24,20 @@ Realises:
   ODR-0017); DeprecationChainRule (SHACL-AF rule per ODR-0011 §5a +
   ODR-0017). Per-module shapes live in `opda-<module>-shapes.ttl`.
 - ADR-0012 — foundation `opda-annotations.ttl` remains header-only;
-  the five foundation classes (DiagnosticExemplar, GeneratorRun,
-  RoleMixin, Role, Relator) are not PII-bearing.
+  the six foundation classes (DiagnosticExemplar, GeneratorRun,
+  RoleMixin, Role, Relator, ValidationContext) are not PII-bearing.
+- ADR-0014 G14 closure — `opda:hasSpecialCategoryData` declared as
+  foundation `owl:DatatypeProperty` so the Cat 4
+  `SpecialCategoryPIIWithoutLawfulBasisShape` (in
+  opda-agent-shapes.ttl) has a real predicate target. Engineering
+  placeholder per ADR-0005 §G14 — Council Author-only session via
+  S012 Q3 may rename or refine; this declaration preserves the route
+  via skos:scopeNote without blocking the Cat 4 shape's mechanical
+  operation.
+- ADR-0014 G17 closure — generator-comment header text refers to
+  "six foundation classes" (was "five"); ValidationContext was added
+  by ADR-0013 and this file's `extra_lines` for opda-classes.ttl
+  now lists all six.
 - ADR-0009 §"opda-shapes.ttl — initial shapes graph" — header-only graph
   pointing at the class-graph version IRI via `opda:targetsClassGraph`
   (now extended by ADR-0012).
@@ -89,12 +101,14 @@ _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
 # graph — that *was* a substantive class-graph extension, hence the bump
 # to 0.3.0. ADR-0012 adds shape graphs + annotation graphs + foundation
 # meta-shapes but does NOT extend the class graph; the class-graph IRI
-# stays at 0.3.0 and module shape files reference it as their
-# `opda:targetsClassGraph`. The generator package version
-# (`opda_gen.__version__`) does bump to 0.4.0 (semver minor: substantive
-# new substrate emitted by the toolchain), and that bump appears in
-# every TTL's generator-comment header.
-_VERSION_IRI = URIRef("https://w3id.org/opda/0.4.0/")
+# stayed at 0.3.0. ADR-0013 added opda:ValidationContext — bump to 0.4.0.
+# ADR-0014 adds opda:hasSpecialCategoryData (foundation DatatypeProperty
+# per G14) and crosses the MVP gate — bumps to 1.0.0 marking the v1 release
+# of the OPDA ontology. The generator package version
+# (`opda_gen.__version__`) tracks the toolchain's emitter capabilities;
+# 1.0.0 here marks the MVP-gate release per ODR-0003 §Programme
+# retirement criterion.
+_VERSION_IRI = URIRef("https://w3id.org/opda/1.0.0/")
 _SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
 _ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
 _OPDA_NS_LITERAL = Literal("https://w3id.org/opda/#", datatype=XSD.anyURI)
@@ -107,7 +121,7 @@ _ISSUED_DATE = "2026-05-27"
 # "when did the foundation TTLs last substantively change". Override via
 # the `emission_date` kwarg of `emit_foundation()` for ad-hoc tests; CI
 # MUST regenerate with this pinned default so the diff is zero.
-_FOUNDATION_LAST_MODIFIED = "2026-05-28"
+_FOUNDATION_LAST_MODIFIED = "2026-05-28"  # ADR-0014 G14 + version 1.0.0 bump
 # The generator-comment header's "# Source commit:" line is pinned to a
 # sentinel string per ADR-0009 (not the live HEAD SHA). Rationale: the live
 # SHA changes on every unrelated commit and would break byte-identity CI.
@@ -118,7 +132,7 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-28"
 # ADR-0011 adds three UFO meta-classes (RoleMixin / Role / Relator) to
 # the foundation class graph plus bumps the foundation `owl:versionIRI`,
 # both substantive foundation mutations warranting the sentinel bump.
-_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0013"
+_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0014"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # Version-info string tracks the ADR responsible for the most recent
@@ -128,8 +142,8 @@ _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 _VERSION_INFO = (
     f"{__version__} — foundation + SKOS vocabularies + UFO meta-classes "
     "+ module shapes + DPV annotations + overlay profiles + "
-    "ValidationContext "
-    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013)"
+    "ValidationContext + hasSpecialCategoryData "
+    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013 + ADR-0014)"
 )
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
@@ -146,6 +160,10 @@ _ODR_0006_SECTION_Q2 = URIRef(
 )
 _ODR_0006_SECTION_Q3 = URIRef(
     "https://w3id.org/opda/odr/ODR-0006#section-Q3"
+)
+# ADR-0014 G14 — Cat 4 placeholder predicate routes to S012 Q3.
+_ODR_0012_SECTION_Q5 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0012#section-Q5"
 )
 
 # Output file names.
@@ -179,7 +197,7 @@ def _comment_header(
         "# Implementation: "
         "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
-        "https://openpropdata.org.uk/adr/ADR-0012-shacl-and-dpv-annotation-emission",
+        "https://openpropdata.org.uk/adr/ADR-0014-baspi5-round-trip-mvp-harness",
         f"# Generator version: {_GENERATOR_VERSION_LABEL}",
         f"# Source commit: {git_sha}",
     ]
@@ -248,18 +266,22 @@ def build_foundation_graph(emission_date: str) -> Graph:
 
 
 def build_classes_graph() -> Graph:
-    """Build the initial OWL class graph per ADR-0009 §"opda-classes.ttl"
-    extended by ADR-0011 with three cross-module UFO meta-classes.
+    """Build the OWL class graph per ADR-0009/0011/0013/0014.
 
-    Five classes total after ADR-0011:
+    Six classes after ADR-0013 (ValidationContext); one DatatypeProperty
+    after ADR-0014 (hasSpecialCategoryData):
 
     - `opda:DiagnosticExemplar`, `opda:GeneratorRun` — foundation (ADR-0009).
     - `opda:RoleMixin`, `opda:Role`, `opda:Relator` — UFO meta-classes
       referenced by every per-module TBox (ADR-0011 + ODR-0006 §Q2/§Q3).
+    - `opda:ValidationContext` — profile reification per ODR-0010 §Q1
+      (ADR-0013).
+    - `opda:hasSpecialCategoryData` — Cat 4 SHACL shape target predicate
+      (ADR-0014 G14; Council S012 Q3 routing preserved).
 
     Each emitted with the ADR-0007 §"A9 per-kind discipline output"
-    triple set: `rdf:type owl:Class` + `rdfs:label` + `rdfs:comment` +
-    `skos:scopeNote` + `dct:source`.
+    triple set: `rdf:type owl:{Class|DatatypeProperty}` + `rdfs:label`
+    + `rdfs:comment` + `skos:scopeNote` + `dct:source`.
     """
     g = Graph()
     _bind_common(g)
@@ -400,6 +422,45 @@ def build_classes_graph() -> Graph:
     g.add((OPDA.ValidationContext, DCTERMS.source,
            URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q1")))
 
+    # --- ADR-0014 G14 — opda:hasSpecialCategoryData (Cat 4 target) -------
+    # The Cat 4 SHACL shape `SpecialCategoryPIIWithoutLawfulBasisShape`
+    # in `opda-agent-shapes.ttl` targets `opda:Person` and tests for
+    # `opda:hasSpecialCategoryData true` paired with `dpv:hasLegalBasis`
+    # minCount. Without this declaration the predicate has no TBox
+    # surface for downstream tooling (DASH editors, SPARQL query
+    # planners) even though SHACL operates on triples without prior
+    # declaration. Engineering placeholder per ADR-0005 §G14 —
+    # Council S012 Q3 ratification (the canonical predicate name)
+    # may rename or refine; the `skos:scopeNote` preserves the route.
+    g.add((OPDA.hasSpecialCategoryData, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.hasSpecialCategoryData, RDFS.range, XSD.boolean))
+    g.add((OPDA.hasSpecialCategoryData, RDFS.label,
+           Literal("has special-category data", lang="en")))
+    g.add((OPDA.hasSpecialCategoryData, RDFS.comment, Literal(
+        "Flag indicating that a record carries GDPR Article 9 / 10 "
+        "special-category personal data (race, religion, health, sex "
+        "life, sexual orientation, political opinion, trade-union "
+        "membership, biometric/genetic data, criminal convictions). "
+        "Domain unconstrained at foundation scope so the predicate may "
+        "be borne by Person records (the typical case targeted by the "
+        "Cat 4 SHACL shape in opda-agent-shapes.ttl) or by any other "
+        "Kind that carries article-9/10 data downstream. Engineering "
+        "placeholder pending S012 Q3 Council ratification of the "
+        "canonical predicate name.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSpecialCategoryData, SKOS.scopeNote, Literal(
+        "Placeholder predicate — Cat 4 SHACL shape "
+        "(SpecialCategoryPIIWithoutLawfulBasisShape) targets this "
+        "predicate per ADR-0012. Council Author-only session via "
+        "S012 Q3 may rename or refine the canonical name; ADR-0012 "
+        "shape updates in lockstep. Until then, this declaration "
+        "gives the Cat 4 shape a real TBox-level target.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSpecialCategoryData, DCTERMS.source,
+           _ODR_0012_SECTION_Q5))
+
     return g
 
 
@@ -457,17 +518,19 @@ def build_shapes_graph() -> Graph:
 def build_annotations_graph() -> Graph:
     """Build the foundation advisory annotations graph.
 
-    Per ADR-0009 + ADR-0012: header-only. The five foundation classes
-    (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator) are
-    NOT PII-bearing — none carry a DPV co-annotation. Per-module
-    annotations (DPV co-annotation per ODR-0018; LLM hints; UI hints)
-    land via `opda_gen.emitters.annotations`.
+    Per ADR-0009 + ADR-0012: header-only. The six foundation classes
+    (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator,
+    ValidationContext) are NOT PII-bearing — none carry a DPV
+    co-annotation. The opda:hasSpecialCategoryData property added by
+    ADR-0014 G14 is a Cat 4 shape target predicate; its DPV
+    co-annotation lands on the bearing class (opda:Person) in
+    opda-agent-annotations.ttl, not here.
 
     No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples;
-    no DPV triples (the foundation classes — including
-    opda:ValidationContext added by ADR-0013 — carry no PII regime);
-    only the ontology header declaring `opda:targetsClassGraph
-    <https://w3id.org/opda/0.4.0/>`.
+    no DPV triples (the foundation classes carry no PII regime); only
+    the ontology header declaring `opda:targetsClassGraph
+    <https://w3id.org/opda/1.0.0/>` (post-ADR-0014 G14 + MVP-gate
+    version bump).
     """
     g = Graph()
     _bind_common(g)
@@ -513,9 +576,13 @@ def emit_foundation(
             CLASSES_FILENAME,
             "OPDA OWL/RDFS class graph (foundation)",
             [
-                "Five foundation classes: two per ADR-0009 (DiagnosticExemplar,",
-                "GeneratorRun) plus three UFO meta-classes per ADR-0011",
-                "(RoleMixin, Role, Relator — referenced cross-module).",
+                "Six foundation classes: two per ADR-0009 (DiagnosticExemplar,",
+                "GeneratorRun); three UFO meta-classes per ADR-0011 (RoleMixin,",
+                "Role, Relator — referenced cross-module); ValidationContext per",
+                "ADR-0013 (ODR-0010 §Q1 profile reification). Plus one",
+                "DatatypeProperty added by ADR-0014 G14:",
+                "opda:hasSpecialCategoryData (Cat 4 SHACL shape target;",
+                "S012 Q3 Council ratification preserves the rename route).",
                 "Per-module classes land in opda-<module>.ttl via ADR-0011.",
             ],
             build_classes_graph(),
@@ -542,11 +609,11 @@ def emit_foundation(
             ANNOTATIONS_FILENAME,
             "OPDA advisory annotations graph (foundation header)",
             [
-                "Header-only per ADR-0012: the five foundation classes",
+                "Header-only per ADR-0012: the six foundation classes",
                 "(DiagnosticExemplar, GeneratorRun, RoleMixin, Role,",
-                "Relator) are not PII-bearing — no DPV co-annotation",
-                "baseline applies. Per-module DPV annotations live in",
-                "opda-<module>-annotations.ttl.",
+                "Relator, ValidationContext) are not PII-bearing — no DPV",
+                "co-annotation baseline applies. Per-module DPV annotations",
+                "live in opda-<module>-annotations.ttl.",
                 "MUST NOT contain sh:* or owl:Class triples",
                 "(ODR-0004 §3a three-graph separation).",
             ],

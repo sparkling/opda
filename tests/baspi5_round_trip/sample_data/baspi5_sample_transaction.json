@@ -1,0 +1,48 @@
+{
+  "transactionId": "OPDA-MVP-2026-001",
+  "status": "For sale",
+  "participants": [
+    {
+      "role": "Seller",
+      "name": {
+        "firstName": "Alex",
+        "lastName": "Riverdale"
+      },
+      "email": "alex@example.invalid",
+      "sellersCapacity": {
+        "capacity": "Legal Owner"
+      }
+    },
+    {
+      "role": "Buyer",
+      "name": {
+        "firstName": "Sam",
+        "lastName": "Brookhaven"
+      }
+    }
+  ],
+  "propertyPack": {
+    "uprn": 100070123456,
+    "address": {
+      "line1": "12 Linden Terrace",
+      "postcode": "BS5 9EX"
+    },
+    "buildInformation": {
+      "building": {
+        "propertyType": "House",
+        "builtForm": "Semi-detached"
+      }
+    },
+    "ownership": {
+      "ownershipsToBeTransferred": [
+        {
+          "titleNumber": "BR98765",
+          "ownershipType": "Freehold"
+        }
+      ]
+    },
+    "energyEfficiency": {
+      "currentEnergyRating": "C"
+    }
+  }
+}

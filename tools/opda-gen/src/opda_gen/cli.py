@@ -41,6 +41,13 @@ Realises:
   The `emit` umbrella now invokes each overlay profile after the
   modules/shapes/annotations so byte-identity diff covers the full
   Phase-5 corpus (Phase-4 plus 1 overlay profile = 24 files).
+- ADR-0014 §"Exemplar regression layer" + §Confirmation #2 —
+  `emit-exemplar-reports` writes the 15 `<stem>-expected-report.ttl`
+  pairings to `source/03-standards/ontology/exemplars/`.
+  `validate-exemplar` runs pyshacl against a single exemplar and
+  compares the actual report to the committed expected report (used
+  by the per-exemplar matrix job in
+  `.github/workflows/baspi5-round-trip.yml`).
 - ADR-0007 §"Architecture" — generator entry point in the data flow.
 - ODR-0004 §6a — generator-first contract surface exposed to CI.
 
@@ -462,13 +469,61 @@ def ci_profile_contract(ontology_dir: Path | None) -> None:
     click.echo("profile contract CI: PASS (all 3 rules)")
 
 
+@main.command(name="emit-exemplar-reports")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing foundation + module TTLs + exemplars/. "
+        "Defaults to source/03-standards/ontology/ relative to the OPDA "
+        "repo root."
+    ),
+)
+def emit_exemplar_reports(ontology_dir: Path | None) -> None:
+    """Emit `<stem>-expected-report.ttl` for each diagnostic exemplar.
+
+    Realises ADR-0014 §"Exemplar regression layer" lines 101-150 +
+    §Confirmation #2.
+    """
+    from opda_gen.emitters.exemplar_reports import (
+        emit_exemplar_reports as _emit,
+    )
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    written = _emit(target)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
+
+
 @main.command(name="validate-exemplar")
 @click.argument("path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
-def validate_exemplar(path: Path) -> None:
-    """Run pyshacl against an exemplar; compare to expected-report."""
-    raise NotImplementedError(
-        "Exemplar regression harness is realised in ADR-0014 (BASPI5 round-trip MVP)."
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing foundation + module shape TTLs. Defaults "
+        "to source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+def validate_exemplar(path: Path, ontology_dir: Path | None) -> None:
+    """Run pyshacl against an exemplar; compare to expected-report.
+
+    Realises ADR-0014 §"Exemplar regression layer" + §Confirmation #4.
+    Exit code: 0 = report matches committed expected; 1 = differs.
+    """
+    from opda_gen.emitters.exemplar_reports import (
+        validate_exemplar as _validate,
     )
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    ok, msg = _validate(path, target)
+    click.echo(msg)
+    if not ok:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

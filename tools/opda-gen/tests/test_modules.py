@@ -85,8 +85,9 @@ def test_all_six_modules_emit(emitted_modules: dict[str, Path]) -> None:
 def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> None:
     """Per ADR-0011 §Module emission template + §Confirmation #5: each
     module declares an owl:Ontology with owl:imports of foundation +
-    vocabularies. ADR-0013 bumped the class-graph version IRI to 0.4.0
-    when opda:ValidationContext was added to the foundation."""
+    vocabularies. ADR-0014 bumped the class-graph version IRI to 1.0.0
+    (MVP-gate release marker) and added opda:hasSpecialCategoryData
+    foundation DatatypeProperty per G14."""
     for name, path in emitted_modules.items():
         g = Graph()
         g.parse(str(path), format="turtle")
@@ -95,7 +96,7 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
             f"module {name} missing owl:Ontology header at {module_iri}"
         )
         assert (
-            module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")
+            module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")
         ) in g, f"module {name} missing foundation owl:imports"
         assert (
             module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")
@@ -103,8 +104,8 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
         assert (
             module_iri,
             OWL.versionIRI,
-            URIRef(f"https://w3id.org/opda/{name}/0.4.0/"),
-        ) in g, f"module {name} missing versionIRI 0.4.0"
+            URIRef(f"https://w3id.org/opda/{name}/1.0.0/"),
+        ) in g, f"module {name} missing versionIRI 1.0.0"
 
 
 # ---------------------------------------------------------------------------

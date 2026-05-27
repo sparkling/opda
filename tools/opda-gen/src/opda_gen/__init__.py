@@ -22,7 +22,15 @@ Realises:
   placeholder replacement (4 schemes) + G10 TransactionStatus URI fix
   + G11 DatatypeProperty expansion + ValidationContext class added to
   foundation + class-graph version-IRI bump 0.3.0 → 0.4.0).
+- ADR-0014 — BASPI5 round-trip MVP harness + diagnostic exemplar
+  regression (MAJOR version bump 0.5.0 → 1.0.0; the MVP gate is the
+  v1.0 release marker per ODR-0003 §"Programme retirement criterion").
+  Bundled G14 / G16-G20 closures; foundation class-graph version-IRI
+  bump 0.4.0 → 1.0.0 (opda:hasSpecialCategoryData DatatypeProperty
+  added). Per-module owl:imports + owl:versionIRI bumped in lockstep.
+  Round-trip harness, 15 expected-report.ttl pairings, and CI workflow
+  land in this version.
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "0.5.0"
+__version__ = "1.0.0"

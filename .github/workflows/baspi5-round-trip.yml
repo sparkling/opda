@@ -1,0 +1,117 @@
+name: BASPI5 round-trip MVP gate
+
+# Realises ADR-0014 §"CI integration" lines 174-229 + §Confirmation #3,
+# #4, #5 — the three-layer harness runs on every push and PR to main.
+# Activation gate: this workflow is the MVP-gate operational signal per
+# ODR-0010 §Q7 and ODR-0003 §"Programme retirement criterion" condition (i).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Layer 1 — round-trip equivalence + traceability + exemplar regression
+  # all run in one job so the merged ontology fixture is loaded once.
+  round-trip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install opda-gen + harness deps
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
+
+      - name: Round-trip equivalence (Confirmation #3, #6)
+        run: pytest tests/baspi5_round_trip/test_round_trip.py -v
+
+      - name: dct:source traceability (Confirmation #5)
+        run: pytest tests/baspi5_round_trip/test_traceability.py -v
+
+      - name: Exemplar regression — combined (Confirmation #4)
+        run: pytest tests/baspi5_round_trip/test_exemplar_regression.py -v
+
+  # Layer 2 — per-exemplar matrix job. Each exemplar validates in
+  # isolation so the CI matrix surfaces a precise failure target per
+  # ADR-0014 §"CI integration" lines 195-228.
+  exemplar-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        exemplar:
+          - registered-freehold-house
+          - unregistered-pre-first-registration-house
+          - flat-with-split-uprn
+          - flat-no-uprn-newly-converted
+          - rural-plot-inspire-no-uprn
+          - listed-building-divergent-addresses
+          - person-with-name-change
+          - organisation-with-merger
+          - proprietorship-relator-multi-proprietor
+          - simple-transaction-with-milestones
+          - lease-extension-transaction
+          - chain-of-transactions
+          - claim-with-document-evidence
+          - claim-with-electronic-record-evidence
+          - claim-with-vouch-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
+
+      - name: Validate exemplar via opda-gen validate-exemplar
+        run: |
+          opda-gen validate-exemplar \
+            source/03-standards/ontology/exemplars/${{ matrix.exemplar }}.ttl
+
+  # Layer 3 — generator-emitted expected-report.ttl files are
+  # byte-identical across regenerations. Catches drift in pyshacl
+  # output or shape semantics that would silently change the expected
+  # reports without anyone noticing.
+  expected-report-byte-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
+
+      - name: Regenerate expected reports
+        run: opda-gen emit-exemplar-reports --ontology-dir /tmp/exemplar-roundtrip
+
+      - name: Copy ontology fixtures
+        run: |
+          mkdir -p /tmp/exemplar-roundtrip/exemplars
+          cp -r source/03-standards/ontology/*.ttl /tmp/exemplar-roundtrip/
+          cp -r source/03-standards/ontology/exemplars/*.ttl /tmp/exemplar-roundtrip/exemplars/
+          opda-gen emit-exemplar-reports --ontology-dir /tmp/exemplar-roundtrip
+
+      - name: Compare regenerated vs committed expected-report.ttl
+        run: |
+          for f in source/03-standards/ontology/exemplars/*-expected-report.ttl; do
+            stem=$(basename "$f")
+            diff -q "$f" "/tmp/exemplar-roundtrip/exemplars/$stem"
+          done

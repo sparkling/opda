@@ -85,7 +85,7 @@ def test_baspi5_ontology_header(emitted_baspi5: Graph) -> None:
     titles = list(emitted_baspi5.objects(profile_iri, DCTERMS.title))
     assert any(t.language == "en" for t in titles)
     imports = list(emitted_baspi5.objects(profile_iri, OWL.imports))
-    assert URIRef("https://w3id.org/opda/0.4.0/") in imports
+    assert URIRef("https://w3id.org/opda/1.0.0/") in imports
     assert URIRef("https://w3id.org/opda/vocabularies/") in imports
     assert (
         profile_iri, OWL.versionIRI,
@@ -261,9 +261,11 @@ def test_three_rule_interface_contract_passes(tmp_path: Path) -> None:
 # --- BASPI5 question coverage --------------------------------------------
 def test_baspi5_emits_known_question_anchors(emitted_baspi5: Graph) -> None:
     """The profile emits dct:source URIs for the major BASPI5 question
-    anchors covered by the scope (A1, A1.1, A1.3, B1, B1.3, A1.8 etc.)."""
+    anchors covered by the scope (A1.1, A1.3, B1, B1.3, A1.8 etc.).
+    ADR-0014 G19 realigned 4 anchors against actual baspi5Ref values:
+    A1 → A1.1; A1.8.7 → A1.8.4.1; A7.5.1 → B4.6.2; B1.2 → B1.1."""
     expected_anchors = {
-        "A1", "A1.1", "A1.1.1", "A1.1.5", "A1.3", "A1.8", "B1", "B1.1",
+        "A1.1", "A1.1.1", "A1.1.5", "A1.3", "A1.8", "B1", "B1.1",
         "B1.3", "A1.8.3.1", "A1.8.3.1.1",
     }
     emitted_anchors = set()
@@ -273,3 +275,11 @@ def test_baspi5_emits_known_question_anchors(emitted_baspi5: Graph) -> None:
             emitted_anchors.add(anchor)
     missing = expected_anchors - emitted_anchors
     assert not missing, f"missing BASPI5 question anchors: {missing}"
+    # G19 acceptance check: the 4 corrected anchors are present and
+    # the 4 stale anchors are absent.
+    assert "A1.8.4.1" in emitted_anchors, "G19 spray-foam anchor missing"
+    assert "B4.6.2" in emitted_anchors, "G19 supply-meter anchor missing"
+    for stale in ("A1", "A1.8.7", "A7.5.1", "B1.2"):
+        assert stale not in emitted_anchors, (
+            f"G19 stale anchor {stale} still present"
+        )

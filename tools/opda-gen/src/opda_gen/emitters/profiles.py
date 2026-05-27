@@ -19,6 +19,16 @@ Realises:
   table; this module's per-class shapes bind them to schemes via
   `sh:in` (no new predicates declared here — declarations live in the
   TBox modules).
+- ADR-0014 G19 closure — four BASPI5 form-question anchors realigned
+  against the actual `baspi5Ref` values in
+  `source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json`:
+  the Property shape's overall anchor `A1` → `A1.1` (the property's
+  primary address anchor — there is no A1-only baspi5Ref); spray-foam
+  `A1.8.7` → `A1.8.4.1` (`sprayFoamInsulation.hasSprayFoamInstalled`);
+  supply-meter `A7.5.1` → `B4.6.2` (`waterAndDrainage.water.mainsWater.`
+  `waterMeter.isSupplyMetered`); seller name `B1.2` → `B1.1` (the
+  legal-owners namesOfLegalOwners level — no participants[].name
+  baspi5Ref exists). All four now exact-match a baspi5Ref value.
 - ADR-0008 §"CLI design" — `emit-profile <overlay>` subcommand.
 - ADR-0007 §"Deterministic emission rules" — canonical serialiser
   produces byte-identical output across runs.
@@ -59,8 +69,10 @@ PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
 # --- Sentinel-pinned constants per ADR-0013 + G6 convention --------------
+# ADR-0014 G19 + foundation version bump (0.4.0 → 1.0.0) makes the BASPI5
+# profile regenerate with new owl:imports + 4 corrected dct:source anchors.
 _PROFILE_LAST_MODIFIED = "2026-05-28"
-_PROFILE_SOURCE_COMMIT = "pinned-by-ADR-0013"
+_PROFILE_SOURCE_COMMIT = "pinned-by-ADR-0014"
 
 
 # --- BASPI5 form-question authority -------------------------------------
@@ -218,7 +230,7 @@ def _build_baspi5_profile() -> Graph:
         "the foundation + module TBox + base shapes per ODR-0010.",
         lang="en",
     )))
-    g.add((profile_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
+    g.add((profile_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
     g.add((profile_iri, OWL.imports,
            URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((profile_iri, OWL.versionIRI,
@@ -293,7 +305,10 @@ def _build_baspi5_profile() -> Graph:
     prop_shape = OPDA.Baspi5_PropertyShape
     g.add((prop_shape, RDF.type, SH.NodeShape))
     g.add((prop_shape, SH.targetClass, OPDA.Property))
-    g.add((prop_shape, DCTERMS.source, _baspi5_question("A1")))
+    # G19: anchor realigned from `A1` (no baspi5Ref) to `A1.1` (the
+    # property's primary address-bearing anchor; nearest stable
+    # baspi5Ref value covering the property's identity surface).
+    g.add((prop_shape, DCTERMS.source, _baspi5_question("A1.1")))
 
     # UPRN required (BASPI5 propertyPack.uprn — A1.1.5)
     _add_property_shape(
@@ -389,7 +404,10 @@ def _build_baspi5_profile() -> Graph:
         (OPDA.areBoundariesUniform, "A1.2.1", grp_built, 5, "boundaries uniform"),
         (OPDA.isLocatedOverCommercialPremises, "A1.8.6.1",
          grp_built, 6, "over commercial premises"),
-        (OPDA.hasSprayFoamInstalled, "A1.8.7", grp_built, 7,
+        # G19: anchor realigned from `A1.8.7` (no baspi5Ref) to
+        # `A1.8.4.1` (the actual sprayFoamInsulation.hasSprayFoamInstalled
+        # baspi5Ref leaf in baspi5.json).
+        (OPDA.hasSprayFoamInstalled, "A1.8.4.1", grp_built, 7,
          "spray foam installed"),
         (OPDA.hasBeenFlooded, "A4.1.1", grp_environmental, 21,
          "has been flooded"),
@@ -398,7 +416,11 @@ def _build_baspi5_profile() -> Graph:
         (OPDA.hasValidGuaranteesOrWarranties, "A9.1", grp_built, 9,
          "has valid guarantees or warranties"),
         (OPDA.isInsured, "A10.1.1", grp_built, 14, "is insured"),
-        (OPDA.isSupplyMetered, "A7.5.1", grp_heating, 13, "supply metered"),
+        # G19: anchor realigned from `A7.5.1` (no baspi5Ref) to
+        # `B4.6.2` (the actual mainsWater.waterMeter.isSupplyMetered
+        # baspi5Ref leaf — supply-metering is bound to the water
+        # subsystem in BASPI5, not heating).
+        (OPDA.isSupplyMetered, "B4.6.2", grp_heating, 13, "supply metered"),
         (OPDA.soldWithVacantPossession, "A11.1.1", grp_completion, 30,
          "vacant possession"),
     ]:
@@ -480,7 +502,11 @@ def _build_baspi5_profile() -> Graph:
         dash_viewer=DASH.LiteralViewer,
         dash_editor=DASH.TextFieldEditor,
         sh_order=2, sh_group=grp_participants,
-        form_question_anchor="B1.2",
+        # G19: anchor realigned from `B1.2` (no baspi5Ref) to
+        # `B1.1` (the namesOfLegalOwners level — the closest stable
+        # baspi5Ref covering the seller's name field; BASPI5 has no
+        # participants[].name baspi5Ref directly).
+        form_question_anchor="B1.1",
     )
     _add_property_shape(
         g, seller_shape,

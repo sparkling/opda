@@ -499,9 +499,80 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0011 Q5a binding table completion — remaining ~44 descriptive-attribute leaves</td>
             <td>ADR&nbsp;0013 worker (bundled with overlay profile emission)</td>
             <td>Before ADR&nbsp;0014 BASPI5 round-trip MVP</td>
-            <td>Bundled with ADR&nbsp;0013 worker brief</td>
-            <td>(forthcoming via ADR&nbsp;0013 commit)</td>
-            <td>ADR&nbsp;0011 worker emitted 6 of ~50 Q5a leaves (the minimum needed by 15 exemplars); remaining 44 land per BASPI5 overlay need.</td>
+            <td>Closed 2026-05-28 (ADR-0013 implementation)</td>
+            <td>17 + 2 = 19 DatatypeProperties emitted in opda-property.ttl / opda-agent.ttl per ODR-0008 §Q5a; (G16 correction: 18 + 2 = 20 by direct enumeration).</td>
+          </tr>
+          <tr>
+            <td>G12</td>
+            <td>Canonical serialiser blank-node deduplication for multi-target shared blank nodes</td>
+            <td>ADR&nbsp;0013 worker (bundled)</td>
+            <td>Cosmetic; opportunistic</td>
+            <td>Closed 2026-05-28 (ADR-0013 implementation)</td>
+            <td>Resolved beyond cosmetic scope: fixed latent byte-identity bug where multi-object sort used non-deterministic rdflib BNode labels.</td>
+          </tr>
+          <tr>
+            <td>G13</td>
+            <td>Housekeeping — confirm G1 closure</td>
+            <td>Author / 2026-05-27</td>
+            <td>Now</td>
+            <td>Closed 2026-05-27</td>
+            <td>G1 already closed in commit 5bd0c41; no further action.</td>
+          </tr>
+          <tr>
+            <td>G14</td>
+            <td>Cat 4 SHACL shape activation trigger — declare opda:hasSpecialCategoryData OR route Council S012 Q3</td>
+            <td>Council Author-only session + ADR-0014 worker engineering closure</td>
+            <td>Before MVP gate (ADR-0014)</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation; Council route preserved)</td>
+            <td>opda:hasSpecialCategoryData declared as foundation owl:DatatypeProperty with xsd:boolean range; skos:scopeNote preserves the S012 Q3 Council ratification route.</td>
+          </tr>
+          <tr>
+            <td>G15</td>
+            <td>Cosmetic ADR-0007 amendment — document __version__ vs owl:versionIRI decoupling rule</td>
+            <td>Author / opportunistic</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-27</td>
+            <td>ADR-0007 §"A9 per-kind discipline output" amended to document the decoupling rule.</td>
+          </tr>
+          <tr>
+            <td>G16</td>
+            <td>ADR-0013 implementation report DatatypeProperty count: 19 → 20 (worker under-counted)</td>
+            <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>ADR-0013 report § G11 updated 19 → 20 (18 property + 2 agent).</td>
+          </tr>
+          <tr>
+            <td>G17</td>
+            <td>Stale "five foundation classes" doc-comments in foundation.py + opda-classes.ttl header</td>
+            <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>Foundation generator docstrings + extra_lines now name the six foundation classes; opda-classes.ttl + opda-annotations.ttl headers regenerated.</td>
+          </tr>
+          <tr>
+            <td>G18</td>
+            <td>Declare opda:role as DatatypeProperty in opda-agent.ttl for DASH editor ergonomics</td>
+            <td>ADR&nbsp;0014 worker (bundled)</td>
+            <td>Before MVP gate</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>opda:role declared with rdfs:domain opda:RoleMixin + rdfs:range xsd:string + A9 metadata; typed encoding (a opda:Seller) remains canonical.</td>
+          </tr>
+          <tr>
+            <td>G19</td>
+            <td>Fix 4 BASPI5 profile anchor URL mismatches (A1.8.7, A7.5.1, B1.2, A1)</td>
+            <td>ADR&nbsp;0014 worker (bundled)</td>
+            <td>Before MVP gate (form-question IRI resolution)</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>A1 → A1.1; A1.8.7 → A1.8.4.1; A7.5.1 → B4.6.2; B1.2 → B1.1. All four now exact-match a baspi5Ref value in baspi5.json.</td>
+          </tr>
+          <tr>
+            <td>G20</td>
+            <td>ADR-0013 implementation report anchor count: 36 → 28 (worker over-counted)</td>
+            <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
+            <td>Opportunistic</td>
+            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>ADR-0013 report anchor counts updated to 28 distinct anchors (validator's canonical count).</td>
           </tr>
         </tbody>
       </table>

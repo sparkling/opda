@@ -16,6 +16,13 @@ Realises:
   required by the BASPI5 overlay: ownerType (Seller / legal owner
   discriminator), hasOthersAged17OrOver (occupier discriminator on
   Seller).
+- ADR-0014 G18 closure — `opda:role` declared as `owl:DatatypeProperty`
+  with domain `opda:RoleMixin` and range `xsd:string`. Constrained by
+  per-overlay profile shapes via `sh:in` over the SKOS `RoleScheme`
+  members. The role-bearing PATTERN remains encoded by
+  `opda:Seller`/`opda:Buyer`/`opda:Proprietor` typing per ODR-0006 §Q2;
+  this predicate exposes the notation for DASH editor ergonomics and
+  SPARQL convenience without overriding the typed encoding.
 """
 
 from __future__ import annotations
@@ -54,6 +61,7 @@ DATATYPE_PROPERTIES = (
     OPDA.hasAssertedCapacity,
     OPDA.hasOthersAged17OrOver,
     OPDA.ownerType,
+    OPDA.role,
 )
 
 
@@ -73,10 +81,10 @@ def build_graph() -> Graph:
     module_iri = URIRef("https://w3id.org/opda/agent/")
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title, Literal("OPDA Agent Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
+    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
     g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/agent/0.4.0/")))
+           URIRef("https://w3id.org/opda/agent/1.0.0/")))
 
     # --- opda:Person — UFO Substance Kind (ODR-0006 §Q1) -----------------
     g.add((OPDA.Person, RDF.type, OWL.Class))
@@ -298,5 +306,42 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.hasOthersAged17OrOver, DCTERMS.source,
            URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")))
+
+    # --- ADR-0014 G18 — opda:role DatatypeProperty (DASH ergonomics) -----
+    # Domain: foundation opda:RoleMixin (cross-sortal role pattern).
+    # Range: xsd:string (notation value; per-overlay shapes constrain
+    # via sh:in over opda:RoleScheme members). The role-bearing PATTERN
+    # remains encoded by opda:Seller/opda:Buyer/opda:Proprietor sub-typing
+    # of opda:RoleMixin/opda:Role per ODR-0006 §Q2; this predicate
+    # exposes the notation so DASH editors render the role enum and
+    # SPARQL queries can filter on `?seller opda:role "Seller"` without
+    # forcing a class-membership query. The TBox carries no
+    # `rdfs:domain` other than opda:RoleMixin so the predicate may
+    # also be borne by Buyer / Proprietor / Conveyancer / etc. without
+    # additional axioms.
+    g.add((OPDA.role, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.role, RDFS.domain, OPDA.RoleMixin))
+    g.add((OPDA.role, RDFS.range, XSD.string))
+    g.add((OPDA.role, RDFS.label, Literal("role", lang="en")))
+    g.add((OPDA.role, RDFS.comment, Literal(
+        "Notation value naming the transactional role borne by a "
+        "Seller / Buyer / Proprietor / Conveyancer / etc. Constrained "
+        "by per-overlay profile shapes via SHACL `sh:in` over the "
+        "SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing "
+        "pattern is encoded by `opda:Seller` / `opda:Buyer` / "
+        "`opda:Proprietor` sub-classes of `opda:RoleMixin`; this "
+        "predicate exposes the notation for DASH editor ergonomics "
+        "and SPARQL convenience.",
+        lang="en",
+    )))
+    g.add((OPDA.role, SKOS.scopeNote, Literal(
+        "Notation companion to the class-membership role encoding. "
+        "Both surfaces coexist: `?s a opda:Seller` AND "
+        "`?s opda:role \"Seller\"` are non-redundant — the typed "
+        "encoding is the canonical IC; the predicate is the notation "
+        "surface BASPI5 and other JSON-based overlays consume.",
+        lang="en",
+    )))
+    g.add((OPDA.role, DCTERMS.source, _ODR_0006_Q2))
 
     return g

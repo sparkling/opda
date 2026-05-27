@@ -12,7 +12,7 @@
 | Lines | 829 |
 | `sh:NodeShape` count | 7 (Property / Address / LegalEstate / Seller / Buyer / EPCCertificate / SellersCapacity) |
 | `sh:PropertyGroup` count | 9 (Participants, Address, BuiltForm, Energy, Heating, Ownership, Drainage, Environmental, Completion) |
-| BASPI5 form-question IRIs (`https://www.basp.uk/forms/baspi5#...`) | 36 distinct anchors |
+| BASPI5 form-question IRIs (`https://www.basp.uk/forms/baspi5#...`) | 28 distinct anchors (G20 worker over-counted as 36; verified by ADR-0013 validator + ADR-0014 G19/G20 closure) |
 | `sh:xone` discriminators | 1 (BASPI5 `sellersCapacity` two-branch oneOf) |
 | DASH UI predicates (`dash:viewer` + `dash:editor`) | 54 |
 | `opda:ValidationContext` instances | 1 (`Baspi5ValidationContext`) carrying 5 required properties (`profileURI`, `requires`×7, `overlaysContext`, `sourcedFrom`, `formVersion`) |
@@ -26,7 +26,7 @@
 | 3 | Three-rule interface contract CI tests pass | PASS | `opda-gen ci-profile-contract` → `PASS (all 3 rules)`; new `tools/opda-gen/src/opda_gen/ci/profile_contract_test.py` module + dedicated CLI command |
 | 4 | DASH UI form renders from `profiles/baspi5.ttl` | DEFERRED to ADR-0014 | Manual DASH-viewer rendering test depends on the ADR-0014 round-trip harness; the profile carries the DASH triples required (`dash:viewer`, `dash:editor`, `sh:order`, `sh:group`, `sh:PropertyGroup`). |
 | 5 | `opda:ValidationContext` instance present | PASS | `test_baspi5_validation_context_reification`; 1 instance with all 5 required predicates |
-| 6 | `dct:source` form-question IRIs resolve to BASPI5 anchors | PASS | 36 anchors emitted matching pattern `https://www.basp.uk/forms/baspi5#<id>`; `test_baspi5_emits_known_question_anchors` verifies the 11 highest-priority anchors emit |
+| 6 | `dct:source` form-question IRIs resolve to BASPI5 anchors | PASS | 28 distinct anchors emitted matching pattern `https://www.basp.uk/forms/baspi5#<id>`; `test_baspi5_emits_known_question_anchors` verifies the 10 highest-priority anchors emit. G20 cosmetic correction: worker over-counted as 36; validator's 28 is canonical. |
 
 ## 3. G-section closures (G8 / G9 / G10 / G11 / G12)
 
@@ -67,9 +67,12 @@ Validator option (a)+(b) hybrid implemented. The `Member` dataclass gained an op
 
 Verification: independent rdflib parse of `opda-vocabularies.ttl` confirms 0 fabricated URIs of the form `data-dictionary#status.Listed|Offered|Accepted|Exchanged`. The lineage to the actual data-dictionary `status` enum values is preserved via `prov:wasDerivedFrom`.
 
-### G11 — 19 new DatatypeProperties
+### G11 — 20 new DatatypeProperties
 
-17 added to `opda-property.ttl` (`opda:propertyType`, `opda:ownershipType`, `opda:heatingType`, `opda:centralHeatingFuelType`, `opda:offMainsDrainageSystemType`, `opda:areBoundariesUniform`, `opda:isLocatedOverCommercialPremises`, `opda:isSharedOwnership`, `opda:isGroundRentPayable`, `opda:sellerContributesToServiceCharge`, `opda:hasSprayFoamInstalled`, `opda:isSupplyMetered`, `opda:isInsured`, `opda:hasBeenFlooded`, `opda:hasSmartHomeSystems`, `opda:hasValidGuaranteesOrWarranties`, `opda:soldWithVacantPossession`, `opda:riskIndicator`).
+(G16 closure: worker self-counted 19 at commit time; validator's count
+of 20 is canonical — 18 in opda-property + 2 in opda-agent.)
+
+18 added to `opda-property.ttl` (`opda:propertyType`, `opda:ownershipType`, `opda:heatingType`, `opda:centralHeatingFuelType`, `opda:offMainsDrainageSystemType`, `opda:areBoundariesUniform`, `opda:isLocatedOverCommercialPremises`, `opda:isSharedOwnership`, `opda:isGroundRentPayable`, `opda:sellerContributesToServiceCharge`, `opda:hasSprayFoamInstalled`, `opda:isSupplyMetered`, `opda:isInsured`, `opda:hasBeenFlooded`, `opda:hasSmartHomeSystems`, `opda:hasValidGuaranteesOrWarranties`, `opda:soldWithVacantPossession`, `opda:riskIndicator`).
 
 2 added to `opda-agent.ttl` (`opda:ownerType`, `opda:hasOthersAged17OrOver`).
 
@@ -103,7 +106,11 @@ Independent re-run of all three rules during test execution via `test_three_rule
 | Baseline (post-ADR-0012) | 102 |
 | + `test_profiles.py` (ADR-0013) | +15 |
 | + `test_multi_object_blank_node_list_byte_identical_across_runs` (G12) | +1 |
-| **Final** | **118** |
+| **Final (pre-ADR-0014)** | **118** |
+
+(Post-ADR-0014: 154 — adds +9 G14/G18 regression tests in
+`tools/opda-gen/tests/` and +27 round-trip / traceability / exemplar-
+regression tests in `tests/baspi5_round_trip/`.)
 
 `pytest -q` → all pass. `opda-gen ci-byte-identity` PASS; `opda-gen ci-three-graph` PASS; `opda-gen ci-profile-contract` PASS.
 
@@ -117,7 +124,7 @@ Foundation version IRI bumped 0.3.0 → 0.4.0 (substantive class-graph addition:
 
 2. **`sh:in` member granularity.** The profile's `sh:in` lists currently carry `Literal` string members matching the scheme `skos:notation` values. ODR-0010 §Q5 supports either pattern (literal-notation or URI-by-skos-concept). Literal-notation chosen because (i) the BASPI5 JSON schema discriminators use string enum values directly; (ii) DASH editors typically consume `sh:in` as a string-enum list. URI-keyed alternative remains feasible if a downstream consumer requires URI dispatch.
 
-3. **`opda:role` predicate not declared in foundation.** The BASPI5 profile shapes use `opda:role` as the discriminator path on Seller/Buyer shapes, but `opda:role` is not declared as a `DatatypeProperty` in any TBox module. The role-bearing pattern is encoded via `opda:Seller`/`opda:Buyer` typing rather than via a `role` predicate per the ODR-0006 Role-layer commitment. For BASPI5 compatibility (the JSON schema discriminates `participants[].role` by string value), the profile carries `sh:in` on a path that does not have an explicit declaration. This is acceptable because SHACL operates on triples, not declarations — but a future cosmetic ADR-0014/ADR-0011 amendment may declare `opda:role` formally for tool ergonomics.
+3. **`opda:role` predicate not declared in foundation.** The BASPI5 profile shapes use `opda:role` as the discriminator path on Seller/Buyer shapes, but `opda:role` is not declared as a `DatatypeProperty` in any TBox module. The role-bearing pattern is encoded via `opda:Seller`/`opda:Buyer` typing rather than via a `role` predicate per the ODR-0006 Role-layer commitment. For BASPI5 compatibility (the JSON schema discriminates `participants[].role` by string value), the profile carries `sh:in` on a path that does not have an explicit declaration. This is acceptable because SHACL operates on triples, not declarations — but a future cosmetic ADR-0014/ADR-0011 amendment may declare `opda:role` formally for tool ergonomics. **CLOSED by ADR-0014 G18:** `opda:role` declared as `owl:DatatypeProperty` in `opda-agent.ttl` with domain `opda:RoleMixin` and range `xsd:string`; the typed encoding (`a opda:Seller`) remains canonical.
 
 **Genuine ambiguities surfaced for downstream attention (not blocking ADR-0013 acceptance):**
 

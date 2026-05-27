@@ -87,10 +87,10 @@ def build_graph() -> Graph:
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title,
            Literal("OPDA Governance Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/0.4.0/")))
+    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
     g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/governance/0.4.0/")))
+           URIRef("https://w3id.org/opda/governance/1.0.0/")))
     # Reference-not-import: dct:references documents the related DPV
     # vocabulary without importing it (per ODR-0012 + ODR-0018 §Rule 4).
     g.add((module_iri, DCTERMS.references, URIRef("https://w3id.org/dpv/pd")))

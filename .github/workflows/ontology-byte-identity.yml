@@ -138,10 +138,25 @@ jobs:
 
       # ----- Activated by ADR-0014 (BASPI5 round-trip MVP harness) ------
       # validate-exemplar runs pyshacl against a diagnostic exemplar and
-      # compares to the paired expected-report.ttl. Stays commented until
-      # the exemplar harness lands (ADR-0014). ADR-0012 shapes are now
-      # present; ADR-0014 will activate this step.
-      #
-      # - name: Validate sample exemplar
-      #   working-directory: tools/opda-gen
-      #   run: opda-gen validate-exemplar ../../source/03-standards/ontology/exemplars/registered-freehold-house.ttl
+      # compares to the paired expected-report.ttl. The full per-exemplar
+      # matrix runs in .github/workflows/baspi5-round-trip.yml; here we
+      # run two representative cases (a no-results case + a results-bearing
+      # case) so byte-identity CI catches drift even when the round-trip
+      # workflow is disabled.
+
+      - name: Validate baseline exemplar (registered-freehold-house)
+        working-directory: tools/opda-gen
+        run: opda-gen validate-exemplar ../../source/03-standards/ontology/exemplars/registered-freehold-house.ttl
+
+      - name: Validate results-bearing exemplar (chain-of-transactions)
+        working-directory: tools/opda-gen
+        run: opda-gen validate-exemplar ../../source/03-standards/ontology/exemplars/chain-of-transactions.ttl
+
+      - name: Regenerate exemplar expected-reports (byte-identity)
+        working-directory: tools/opda-gen
+        run: opda-gen emit-exemplar-reports
+
+      - name: Expected-report byte-identity
+        run: |
+          # Re-run is a no-op if reports are byte-identical with committed.
+          git diff --exit-code source/03-standards/ontology/exemplars/*-expected-report.ttl

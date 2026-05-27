@@ -83,8 +83,9 @@ TIME = Namespace("http://www.w3.org/2006/time#")
 
 
 # --- Sentinel-pinned constants per the G6 convention ---------------------
-_SHAPES_LAST_MODIFIED = "2026-05-27"
-_SHAPES_SOURCE_COMMIT = "pinned-by-ADR-0012"
+# ADR-0014: opda:targetsClassGraph refs bump 0.4.0 → 1.0.0 (post G14).
+_SHAPES_LAST_MODIFIED = "2026-05-28"
+_SHAPES_SOURCE_COMMIT = "pinned-by-ADR-0014"
 
 # Module ratifying-ODR metadata for per-module shape files.
 MODULE_SHAPE_METADATA: dict[str, tuple[str, str, str]] = {
@@ -187,7 +188,7 @@ def _module_shapes_header(
         (module_iri, RDF.type, OWL.Ontology),
         (module_iri, DCTERMS.title, Literal(title, lang="en")),
         (module_iri, OPDA.targetsClassGraph,
-         URIRef("https://w3id.org/opda/0.4.0/")),
+         URIRef("https://w3id.org/opda/1.0.0/")),
     ]
 
 
