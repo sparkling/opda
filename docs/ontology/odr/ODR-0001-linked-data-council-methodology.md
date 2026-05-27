@@ -108,6 +108,56 @@ Every expert position MUST cite a source meeting one of the following standards.
 
 **Verification.** The Queen verifies citation validity during synthesis. Where a teammate's position cites a source the Queen cannot cross-reference within the session's time budget, the citation is flagged and the position weight reduced (recorded explicitly: "Hendler cited a position attributed to ____, citation could not be verified within session — position not counted toward vote").
 
+### What an ODR records (per-kind discipline)
+
+*Amendment A9, adopted by [Session A9](../odr/council/session-a9-gandon-guizzardi-methodology-gap.md) (2026-05-27, Reduced Council, Queen Kendall, DA Guarino — withdrew on all four conditions met). Recorded per the Scope-Check 1 Q6 routing of the Gandon-vs-Guizzardi methodology gap to this self-amendment queue.*
+
+An Ontology Decision Record records one of two kinds of decision:
+
+1. **An ontological commitment** — a declaration about what *kinds* of entities the domain contains, what their identity criteria are, what Roles or Phases they pass through, what Relators bind them, what Modes they bear, what Qualities they particularise. Ontological commitments are language-independent: the same commitment may be encoded in OWL/RDFS/SHACL, in OntoUML, in Common Logic, or in plain prose, but the commitment persists across encodings. Commitments touch identity, rigidity, existential dependence, or Relator structure.
+2. **An artefact-engineering decision** — a decision about how to structure, name, govern, sequence, or process the *artefacts* that encode the ontology: URI policies, namespace topology, graph separation, build pipelines, governance workflow, vocabulary catalogue, validation severity schemes, deliverable phasing. Artefact-engineering decisions are language-coupled: changing the representation language would substantively change the decision. They do not touch identity, rigidity, dependence, or Relator structure — they touch encoding, presentation, and process.
+
+The boundary is the existing DCAP `kind` enum, made normative:
+
+| `kind` | Decision category | Load-bearing axis |
+|---|---|---|
+| `pattern` | **Ontological commitment** | Identity, rigidity, dependence, Relator/Role/Phase/Mode/Quale structure |
+| `mapping` | **Ontological commitment** (source→ontology) | Identity preservation across re-expression |
+| `architecture` | Artefact-engineering | URI policy, namespace, graph separation, validation severity, build pipelines |
+| `methodology` | Artefact-engineering (of governance itself) | Protocol, panel, citation, document conventions |
+| `programme` | Artefact-engineering (of workflow) | Sequencing, dependency, work-breakdown, MVP gates |
+
+The DCAP §Frontmatter prose for `pattern` already names "identity criteria, role/view pattern" as constitutive; this amendment makes the implicit discipline normative.
+
+**Per-kind ODR commitment requirements.**
+
+For `kind: pattern` and `kind: mapping`, the ODR's `## Rules` MUST include, for every class or scheme the ODR declares or commits to:
+
+- **(a) A UFO/DOLCE meta-category commitment.** State whether the class is a Substance Kind, a Role (RoleMixin / RoleType / Role-instance), a Phase, a Relator, a Mode, a Quality Region (with Qualia members), or an Abstract. The UFO ontological taxonomy (Guizzardi 2005, *Ontological Foundations for Conceptual Modeling with Applications*, Ch. 4; UFO 2007/2011/2015 lineage) is the canonical reference; equivalent DOLCE commitments (Masolo, Borgo, Gangemi, Guarino, Oltramari 2003, *The WonderWeb Library of Foundational Ontologies*, D18) are acceptable substitutes. BFO is also acceptable with a one-line equivalence note.
+- **(b) An identity criterion stated over named hard cases.** State the IC of the class or scheme over at least the hard cases the relevant Council session's panel identified or the adopting project's WG named. The IC is the *test* of the meta-category commitment; without it, the commitment is decorative (precedent: Session 001 Q1 amendment admitted diagnostic exemplars on this exact reasoning).
+- **(c) The artefact realisation.** URI minting, shape graph location, SHACL/DASH machinery, namespace, build composition. This remains load-bearing (the artefact is what is published, versioned, and dereferenced per the Linked Data Principles) but is insufficient by itself.
+
+For `kind: methodology`, `kind: architecture`, and `kind: programme`, requirements (a) and (b) are **relaxed**. These ODRs are constitutively about artefact, process, or organisation — they do not commit to what kinds of entities exist in the modelled domain. This methodology (ODR-0001) is the `kind: methodology` exemplar — it does not declare a UFO category or an IC and is correct in not doing so. Where these ODRs incidentally make commitments about modelled-domain entities, those commitments are themselves `pattern`-level content and MUST satisfy (a)–(c) inline or by reference to a `pattern` ODR cited via `depends-on` or `implements`.
+
+**Artefact identity test (operational rule for extracting `pattern` records).**
+
+Where an `architecture` ODR's `## Rules` contains a rule that is cited by another `architecture` ODR (cross-`architecture` rule-borrowing), that is the signal that the rule should have been promoted to a `pattern` ODR. The `pattern` ODR records the convention abstracted from any specific artefact; the realising `architecture` ODRs cite it via `implements`. The test for `pattern` extraction is three-part:
+
+1. **Same dereferenceable resource.** Do the candidate rule's instances share a single URI / `owl:versionIRI` lineage across the citing artefacts?
+2. **Same prefix and target topology.** Do they share namespace prefixes and graph-import topology?
+3. **Re-instantiability.** Would the rule apply to a *third* artefact not currently cited?
+
+If the answer to (3) is "yes" *and* the rule's content is a load-bearing ontological commitment per requirements (a)–(b) above, extract to a `pattern` record. If the answer to (3) is "no" *or* the content is purely artefact-engineering, leave the rule inside its `architecture` ODR.
+
+**Enforcement.**
+
+- **`odr-review` lint update** (specification to land in the next skill release): for `kind: pattern | mapping` records, verify `## Rules` names (a) a UFO/DOLCE meta-category commitment and (b) at least one identity criterion stated over named hard cases. Warning on `status: proposed`; **blocker on `status: accepted`**. The lint is text-pattern based per DCAP's prose-profile discipline; full SHACL-shape enforcement remains out of scope.
+- **Pre-flight scope check** (per §Pre-flight scope check): the Queen confirms the proposition's `kind` matches its load-bearing content per the table above. A mismatch — a record whose declared `kind` is `architecture` but whose load-bearing content is a Relator declaration or an IC — is grounds for re-scope. The Queen recommends extracting the commitment to a `pattern` record.
+
+**Rationale (cited).**
+
+The boundary is grounded in: Guarino 1998, *Formal Ontology and Information Systems*, §3 (the conceptualisation/ontology distinction); Guizzardi 2005 dissertation and the UFO 2007/2011/2015 lineage (the meta-category taxonomy); Masolo, Borgo, Gangemi, Guarino, Oltramari 2003, *The WonderWeb Library of Foundational Ontologies* (DOLCE); Guarino & Welty 2002/2009 (OntoClean meta-properties); Berners-Lee 2006 and Heath & Bizer 2011, Ch. 2 (Linked Data Principles — the artefact-cut side); RDF 1.1 Concepts §1.5 (the resource/dereference framing); the W3C GRDDL Recommendation (Gandon & Hawke, eds., 2007 — engineering act *is* the ontological act, for `kind: architecture`); the Truth-Maker framing (Guizzardi 2018, *ER 2018 Keynote*) — appended to deferred W3C VC / DID work; this corpus's Session 001 Q1 amendment (diagnostic exemplars admitted) as the load-bearing precedent for the IC-over-hard-cases discipline.
+
 ### Cross-talk transport
 
 Session-protocol rule 5 requires experts to discuss with each other, not just opine in parallel. Four transport options are available; the Queen picks one per session based on session shape. Listed in order of preference — pick the first whose preconditions are met.

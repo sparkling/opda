@@ -1,10 +1,10 @@
 ---
 status: proposed
-date: 2026-05-20
+date: 2026-05-27
 kind: architecture
 tags: [foundation, uri, namespace, spike]
 scope: [pdtf-v3]
-council: session-001
+council: session-004
 supersedes: []
 depends-on: [ODR-0002]
 implements: [ODR-0003]
@@ -48,6 +48,80 @@ These rules constrain every module and cross-cutting ODR in the PDTF ontology pr
    Every minted term carries `dct:source` to its glossary row or canonical schema-leaf path. **Precedence: W3C spec > business glossary > schema text.** Where a term is governed by a W3C/external standard (e.g. `Verifiable Credential`, `Issuer`, `Verifier`; `LEI` from ISO 17442) the external definition is normative and referenced, not restated. Applied downstream by ODR-0008, ODR-0011, ODR-0013. *Enforcement*: every minted class/property carries a `dct:source` resolving to a glossary row or canonical leaf path; labels/definitions on glossary-named concepts match the glossary.
 8. **Diagnostic exemplars are permitted, non-deliverable, and IC-only.** The round admits three or four worked individuals used *solely* to pressure-test identity criteria and rigidity — the canonical set: a registered freehold house, an unregistered house pre-first-registration, and a flat whose UPRN was split. TBox/ABox remains the *deliverable* boundary, not the *thinking* boundary. This ODR fixes what an exemplar is and where the harness lives; ODR-0005 is the first record to discharge its IC gate against this set.
 
+### Operational specifications (added by [Session 004](./council/session-004-pdtf-ontology-foundation.md))
+
+Session 004 (Full Council; Queen Gandon; DA Knublauch — withdrew on all four primary attacks) converted Rules 3, 6, 7, 8 from authoring-discipline statements into deployment-survivable contracts. The original numbered rules above stand; the operational specifications below extend them with the build-time and CI-enforced disciplines required for runtime survival.
+
+#### 3a. Three-graph separation — source graphs, derived consumer profiles, CI test (S004 Q3)
+
+The build pipeline emits **three source graphs** (canonical, Council-ratified) and derives **three consumer profiles** (generated, never hand-edited):
+
+| Source artefact (canonical) | Contents |
+|---|---|
+| `opda-classes.ttl` | OWL/RDFS class graph: `owl:Class`, `rdfs:subClassOf`, `owl:DatatypeProperty`/`ObjectProperty`, `rdfs:domain`/`range`, `rdfs:label`/`skos:prefLabel`/`skos:definition`. **No `sh:` triples.** |
+| `opda-shapes.ttl` | SHACL shapes: `sh:NodeShape`/`sh:PropertyShape` with `sh:targetClass`, `sh:path`, `sh:datatype`, `sh:minCount`/`sh:maxCount`, etc. **No `owl:Class` or `owl:imports` triples; no advisory annotations.** |
+| `opda-annotations.ttl` | Advisory graph: `opda:aiHint`, `opda:uiHint`, `opda:exampleValue`, generator notes, keyed to shape/class IRIs via `dct:relation` or `opda:appliesTo`. **No `sh:` triples; no `owl:Class` triples.** |
+
+| Derived consumer profile (build output) | Composition | Consumed by |
+|---|---|---|
+| `opda-validation.ttl` | `opda-classes.ttl` ⊕ `opda-shapes.ttl` | SHACL validators |
+| `opda-ui.ttl` | `opda-classes.ttl` ⊕ `opda-shapes.ttl` ⊕ `opda-annotations.ttl` | Form generators, LLM UIs |
+| `opda-inference.ttl` | `opda-classes.ttl` alone | OWL reasoners |
+
+**Shapes-graph version-pointer.** `<opda-shapes> opda:targetsClassGraph <opda-classes-version-IRI>`. A consumer loading mismatched versions gets a documented mismatch warning, not silent inconsistency.
+
+**Five-part CI test (build fails on any).** Per [Session 004 Q3 synthesis](./council/session-004-pdtf-ontology-foundation.md):
+
+1. `ASK { GRAPH opda:annotations { ?s ?p ?o . FILTER(STRSTARTS(STR(?p), "http://www.w3.org/ns/shacl#")) } }` MUST return `false` — no `sh:` triples in annotation graph.
+2. `ASK { GRAPH opda:shapes { ?s owl:imports ?g } }` MUST return `false` — no `owl:imports` from shapes to classes.
+3. `ASK { GRAPH opda:shapes { ?s opda:aiHint ?o } }` (and equivalent for the advisory-predicate whitelist) MUST return `false` — no advisory annotations in shapes graph.
+4. `SELECT ?c WHERE { ?s sh:targetClass ?c . FILTER NOT EXISTS { GRAPH opda:classes { ?c a owl:Class } } }` MUST return empty — every `sh:targetClass` resolves.
+5. Consumer-profile artefacts have no commits outside the build-pipeline service account.
+
+**Session 001 Q5 carry.** The annotation graph + `opda:ValidationContext` reification (Knublauch+Gandon prevail ~7-2; Cagle dissent recorded). The reification commitment is a re-instantiable convention across profile artefacts — routed to [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) and [ODR-0013](./ODR-0013-shacl-validation-and-severity.md) as a `pattern`-extraction candidate per ODR-0001 A9 §Artefact identity test.
+
+#### 6a. Generator-first — deterministic emission + byte-identity CI (S004 Q5)
+
+Rule 6 requires three operational disciplines:
+
+1. **Deterministic emission ordering.** Triples emitted in canonical order — `owl:Class` declarations alphabetised; then `owl:DatatypeProperty` alphabetised; then `owl:ObjectProperty` alphabetised; then `sh:NodeShape`/`sh:PropertyShape` alphabetised. Within-term order: `rdf:type` first, `rdfs:label` second, `rdfs:comment` third, then predicate-specific triples lexicographic. Blank nodes skolemised by SHA-256 of canonical N-Triples form. Prefix declarations alphabetised. LF line endings; no trailing whitespace; no BOM; final newline.
+2. **Generator version recorded** in the ontology header — `owl:versionIRI` (increments on every generator-version change OR schema-driven change), `owl:versionInfo` (human-readable), and `opda:generatorVersion` (machine-readable; e.g. `"opda-gen-1.4.2"`).
+3. **CI byte-identity test.** Build pipeline: regenerate, byte-compare against committed TTL, **fail on any byte difference** (not "reviewable diff" — failure is mechanical, not editorial). Reviewable PR diff is the consequence, not the primary check.
+
+**Four sub-tests** (Cagle's diff-explosion canary; falsifiable per regeneration):
+
+1. `diff <(gen input) <(gen input)` returns empty — byte-identical on consecutive runs.
+2. `sha256sum $(gen input) == sha256sum tests/generator/foundation-expected.ttl` — matches committed reference fixture.
+3. Adding one dictionary comment produces exactly one `rdfs:comment` diff in the TTL.
+4. Adding one dictionary leaf produces exactly one new `opda:DatatypeProperty` block.
+
+**Generator is three-graph-aware.** Emits three separate output files (`opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`) from one input source; build pipeline composes the three derived consumer profiles per §3a.
+
+#### 7a. Term-sourcing — five-line precedence + conflict-recording protocol (S004 Q4)
+
+Rule 7's precedence is refined to **five lines** (Knublauch DA's full demand; Pandit's four-line + OPDA TF separated from "other regulatory authorities"):
+
+1. **W3C / external spec** (where the term originates from a W3C, OMG, ISO, IETF, or equivalent standards-body spec). Authoritative.
+2. **OPDA Trust Framework** (authoritative within OPDA's scope; treated as W3C-equivalent for terms the TF defines).
+3. **Other regulatory authorities** (FCA, ICO, HMLR, EU eIDAS, etc.). **Contextual, not authoritative** — recorded as `skos:scopeNote` or `skos:closeMatch`, not as the term's primary definition.
+4. **OPDA business glossary** (project-internal ubiquitous language for project-internal terms; project-contextual-note via `skos:scopeNote` for W3C/regulatory-imported terms).
+5. **Schema-leaf annotation** (data-dictionary canonical leaf path; supplies `rdfs:comment` and datatype constraints; lowest-trust definition layer).
+
+**Conflict-recording protocol.** Every term-sourcing conflict produces a `## Change log` row in the consuming module ODR (per ODR-0002 §Change log discipline). Row records: conflicting sources; verbatim conflicting definitions; Council-attributed resolution; rejected definition preserved as `skos:note`/`skos:scopeNote` (Baker DCMI "loser is preserved" rule).
+
+**`dct:source` URI discipline.** For W3C-spec terms, the URI pins the version IRI (e.g. `https://www.w3.org/TR/2020/REC-shacl-20170720/#NodeShape`); generic IRIs that redirect to "latest" are forbidden. `dct:source` resolves to authoritative source, never project-internal mirror; mirrors sit behind `dct:isReferencedBy`.
+
+#### 8a. Diagnostic exemplars — CI-regression pairing + parent-repo storage (S004 Q6)
+
+Rule 8 is operationalised with two additions:
+
+- **Storage path explicitly in parent OPDA repo,** not the nested `source/03-standards/schemas/` git sub-repo (per the OPDA project-structure note on nested sub-repos). Path: `source/03-standards/ontology/exemplars/`.
+- **Each exemplar TTL paired with `expected-report.ttl`** — a `sh:ValidationReport` recording what the exemplar should produce when validated against the shapes graph. The exemplar becomes a CI regression test, not just documentation. Pattern: DASH `dash:GraphValidationTestCase`; BioPortal SHACL-Test framework.
+
+**Filename convention:** descriptive kebab-case (`registered-freehold-house.ttl`, `unregistered-pre-first-registration-house.ttl`, `flat-with-split-uprn.ttl`). FIBO test-case-naming discipline — the filename is the documentation. Small files (under 50 lines) per Davis's BBC test-suite discipline.
+
+**Citation from consuming ODR.** ODR-0005's `## Rules` (and downstream `kind: pattern` ODRs per A9 §Per-kind discipline (b)) cite exemplars by path AND one-line description of the named hard case (Pandit's amendment).
+
 ## Alternatives
 
 - **Per-form / per-overlay namespaces** (`baspi:`, `ta6:`, `nts:`) — rejected: overlays are *views*, not vocabularies; per-form prefixes re-import the documentation accident and scatter one concept across many namespaces.
@@ -64,6 +138,14 @@ These rules constrain every module and cross-cutting ODR in the PDTF ontology pr
 - SHACL and DASH are *declared* here; their shapes are authored in ODR-0010 / ODR-0013. The Foundation graph holds the class skeleton and header, not the constraints.
 - ODR-0005 must discharge its identity-criterion gate against the canonical exemplar set.
 
+**Added by [Session 004](./council/session-004-pdtf-ontology-foundation.md) — Knublauch DA primary withdrawal demand:**
+
+- **Namespace string is a blocker on `status: accepted`.** ODR-0004 stays `status: proposed` until the OPDA WG ratifies the namespace string. The WG decision is the gating event for the programme — downstream module ODRs (ODR-0005, ODR-0006, ODR-0008, ODR-0010, ODR-0013, etc.) carry `depends-on: [ODR-0004]` and inherit the block on `status: accepted`. Until ratification, generator output carries `dct:status "draft"` in the ontology header (so no consumer mistakes pre-ratification TTL for authoritative). DPV precedent: namespace switch (slash → hash 2019) took 6 ecosystem-months — the consumer-discovery problem is unsolvable post-publication; namespace cannot be deferred.
+- **`https://w3id.org/opda/` is named as the operationally-strongest alternative** to `https://opda.uk/ns/`. W3C Permanent Identifier Community Group (PICG) provides namespace persistence guarantee independent of OPDA's organisational lifecycle; survives consortium re-brand; lowers OPDA-side maintenance commitment. DPV adopted `w3id.org/dpv/` for exactly this reason (Pandit was principal author of that decision). The WG MUST consider it alongside the two ODR-0004 candidates.
+- **Reopening trigger for hash-vs-slash.** ODR-0004's hash decision is reversible only at high cost (DPV 6-ecosystem-month precedent). The WG SHOULD record a reopening trigger ("at scale criterion X, revisit hash-vs-slash") to avoid silently painting the programme into a corner. Suggested criterion: any single ontology file exceeds 1,000 terms in active dereference traffic OR a named consumer requests per-term content negotiation. WG names the specific threshold.
+- **`odr-review` lint update** flagged for the next skill release (consistent with the ODR-0001 A9 amendment's deferred Lint 4 update). Lint reads `## Rules` from every `kind: pattern` ODR, extracts (UFO category, class URI) pairs, and verifies the URI's CamelCase form vs the layer convention (Sortal/Kind = CamelCase noun; Role = `<Kind>Role` or noun-ending-in-`-er`; Phase = `<Kind>In<State>`; Relator = relator-noun like `Ownership`, `Tenancy`).
+- **Open `pattern`-extraction candidates:** `opda:ValidationContext` reification (Session 001 Q5 carry; re-instantiable across SHACL profile artefacts) is a candidate `pattern` ODR for ODR-0010 / ODR-0013 to extract per ODR-0001 A9 §Artefact identity test.
+
 ## References
 
 - **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
@@ -73,3 +155,4 @@ These rules constrain every module and cross-cutting ODR in the PDTF ontology pr
 - **Deliverables (when fleshed out)**: `foundation.ttl` skeleton + ontology-header template; namespace/URI policy note; diagnostic-exemplar harness location; generator spec for the mechanical slot→property half with its glossary/data-dictionary sourcing rules.
 - **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); adopts catalogue and `vann:` header pattern from [ODR-0002](./ODR-0002-ontology-language-adoption.md); identity-criterion gate first discharged by [ODR-0005](./ODR-0005-property-land-identity-crux.md); downstream consumers of the term-sourcing convention: [ODR-0008](./ODR-0008-property-descriptive-attributes.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); cross-cutting graph-separation feeds [ODR-0010](./ODR-0010-overlay-profile-mechanism.md).
 - **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) — Q1 (genuine modelling; generator-first; exemplars admitted 11-0-1, Guarino amendment), Q3 (partition by ontological concern; OWL class graph separated from SHACL shapes graph; flat published namespace), Q5 (advisory annotations exiled to a separate annotation graph keyed to shape IRIs; Knublauch/Gandon prevail, Cagle dissent ~7-2), Q7 (single `opda:` hash namespace 9-0; `sh:prefixes` for SHACL-SPARQL; spike-then-scale).
+- **Ratification provenance — [session-004](./council/session-004-pdtf-ontology-foundation.md)** (2026-05-27; Queen Gandon; DA Knublauch — withdrew on all four primary attacks). 7 questions × 9-0 votes. Operational subsections 3a/6a/7a/8a added; namespace-as-blocker + `w3id.org/opda/` alternative recorded in Consequences. Phase 1 Council gate cleared; formal Phase-1 close awaits WG namespace ratification.

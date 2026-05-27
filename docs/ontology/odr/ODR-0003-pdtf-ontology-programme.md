@@ -1,10 +1,10 @@
 ---
-status: proposed
-date: 2026-05-20
+status: accepted
+date: 2026-05-27
 kind: programme
 tags: [programme, anchor, pdtf]
 scope: [pdtf-v3]
-council: session-001
+council: session-003
 supersedes: []
 depends-on: [ODR-0001, ODR-0002]
 implements: []
@@ -77,6 +77,18 @@ Partition the PDTF→ontology programme **by ontological concern** (FIBO-style m
 
 - ~~[ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)~~ — **Retired** by Scope-Check 1 Q4 (vote 7-1-1; Hendler dissent on permanence recorded). Amendment rows folded into [ODR-0002](./ODR-0002-ontology-language-adoption.md)'s `## Change log`. ODR-0014 retained as historical anchor.
 
+**Phase ordering authority** (added per [Session 003 Item 1](./council/session-003-pdtf-ontology-programme.md#item-1--phase-ordering)).
+
+The canonical phase sequence is the [Council follow-up sessions plan §5](../plan/council-followup-sessions.md#5-sequencing-and-gates). The session table within the plan is not reproduced here (single source of truth). The phase order is **binding until amended**: a session cannot unilaterally re-sequence. Substantive re-cuts land as a joint amendment to both the plan and this anchor in one commit. Pre-Phase Session A9 (Gandon-Guizzardi methodology gap; Reduced Council; recommended before Session 005) and the two pilot sessions (S005 with `consensus-mode: hive-mind/byzantine` per Scope-Check 2 B2; S011 Q8 with `consensus-mode: hive-mind/typed-output` per Scope-Check 2 B3) are named in the plan.
+
+**Module count.** Post-Scope-Check 1: **3 modules + 5 cross-cutting + 1 substrate + 1 new gate + 1 deferred = 11 active ODRs** (plus retired ODR-0014, retained as historical anchor):
+
+- Modules (Phase 3a/3b): ODR-0006, ODR-0007, ODR-0008.
+- Cross-cutting: ODR-0009, ODR-0010, ODR-0011 (promoted to substrate Phase 2.5), ODR-0012, ODR-0013.
+- Substrate (Phase 0): ODR-0002 (absorbs former ODR-0014 amendments per Scope-Check 1 Q4).
+- New gate (Phase 2.6): ODR-0015 (spawned by Scope-Check 1 Q7a). **Address class location is owned by Session 015, not by Session 006 (Q5).**
+- Deferred (Phase 7): ODR-0016 (named per Scope-Check 1 Q7c; activates on trigger).
+
 **Dependency graph** (updated per Scope-Check 1, 2026-05-26).
 
 ```
@@ -105,14 +117,43 @@ Partition the PDTF→ontology programme **by ontological concern** (FIBO-style m
    ODR-0014 — RETIRED; folded into ODR-0002's ## Change log.
 ```
 
+**Shared-question routing** (added per [Session 003 Item 7](./council/session-003-pdtf-ontology-programme.md#item-7--shared-question-routing)).
+
+Several questions surface in more than one session. Each shared question is **owned** by one session; downstream sessions inherit. Routing is maintained in [plan §4.1](../plan/council-followup-sessions.md#41-shared-questions-across-sessions) as the single source of truth (full table not duplicated here). If a downstream session genuinely needs to deviate from the owning session's verdict, it records the deviation as a `## Supersession scope:` amendment on the owning ODR's `## Rules`. Routing failures (two sessions both producing a verdict on the same shared question) are a defect — the later session's verdict is invalid pending an explicit amendment cycle. Notable cross-cite: ODR-0010 ↔ ODR-0013 carry the three-rule SHACL interface contract (`sh:in` semantics; `sh:Violation` floor; no-identity-override gate) per Scope-Check 1 Q6 (Cagle).
+
 **Minimum viable subset.** Foundation (0004) → Property identity crux (0005, exemplar-gated) → Address & Geography (0015, gate before 006/008) → Agents & Roles (0006) + Claims/Provenance (0009) → one fully-worked BASPI5 SHACL profile (0010). The intra-MVP ordering places the PROV-O claims/assurance backbone before the profile scale-out (provenance is foundational to a *trust* framework and higher integrity-risk than a form overlay). See plan §5.1 for the MVP fast-path option.
+
+**Default sequence vs MVP fast-path** (added per [Session 003 Item 2](./council/session-003-pdtf-ontology-programme.md#item-2--default-sequence-vs-mvp-fast-path)).
+
+Two named, first-class alternatives:
+
+- **Default sequence** ([plan §5](../plan/council-followup-sessions.md#5-sequencing-and-gates)) — ratify all 13 active sessions plus deferred S016 before implementation begins. Cost: ~10–14 working days; ~87 agent runs in Phase 1.
+- **MVP fast-path** ([plan §5.1](../plan/council-followup-sessions.md#51-mvp-fast-path-option)) — ratify only the minimum subset (S003 / S002 / S004 / S005 / S011-light / S015 / S006 abridged / S009 PROV-O only / S010-BASPI5) to reach the BASPI5 round-trip handoff; resume the remaining sessions in parallel with or after implementation. Cost: ~6–8 working days; ~50 agent runs to handoff. Pays in two re-open cycles (S006 Q6 + S011 full) and deferred completeness on S007/S008/S012/S013.
+
+The OPDA Working Group chooses between these at the start of Phase 1; the choice is recorded in this anchor by an Author-only Session 003b when made. Switching after Phase 1 starts is expensive and discouraged.
 
 **Gate conditions (enforcement).**
 
 - The identity crux clears first. [ODR-0005](./ODR-0005-property-land-identity-crux.md) must (i) commit each property/title entity to a DOLCE category (Endurant), (ii) state an identity criterion over the hard cases (demolition / subdivision / merger / first-registration), and (iii) settle UPRN's status (checkable SHACL/DASH key vs contingent administrative identifier) — all validated against the diagnostic exemplars (registered freehold house; unregistered house pre-first-registration; flat whose UPRN was split). No module ODR (0006–0008) is drafted in anger until this clears.
 - **MVP round-trip gate.** The minimum-viable subset must round-trip one BASPI5 profile: `pdtf-transaction.json` → loaded SHACL profile → rendered BASPI form (via DASH) → validated provenance (PROV-O claims slice) with full `dct:source` traceability. If that round-trips, the remaining overlays and modules scale after.
 
-**Status discipline.** This anchor is updated as work-package ODRs move proposed → accepted → implemented. It is the single place to see programme state. Individual ODRs own their own analysis; this file owns the sequencing and the cross-links.
+**Programme retirement criterion** (added per [Session 003 Item 5](./council/session-003-pdtf-ontology-programme.md#item-5--programme-retirement-criterion)).
+
+The programme retires when **both** hold: (i) the MVP round-trip closes (termination signal 1 per plan §5 — `pdtf-transaction.json` → loaded SHACL profile → rendered BASPI form via DASH → validated transaction with `dct:source` traceability); and (ii) every linked ODR (the active 11 plus retired ODR-0014's historical anchor; ODR-0016 only if its trigger has fired) is `accepted`. Termination signals 3–6 (no duplicate constraint authoring; ≤3-ODR consumer-query traversal; ODR-0003 diff stability; PII never accretes silently) are *cumulative quality gates evaluated at session close*, not retirement conditions — their violation routes back to the ODR-0001 amendment queue.
+
+Once retired, ODR-0003 becomes a historical anchor; subsequent linked-data modelling work in OPDA produces fresh ODRs without revisiting this programme's sequencing.
+
+**Status discipline (bidirectional-update protocol)** (tightened per [Session 003 Item 6](./council/session-003-pdtf-ontology-programme.md#item-6--status-discipline)).
+
+This anchor is the single place to see programme state. The queen of the session that ratifies an ODR (`proposed` → `accepted`) is responsible for **three** bidirectional updates in the same commit as the session transcript and the ODR amendment:
+
+1. **This anchor's `## Rules` work-breakdown index** — flip the relevant Phase entry's status pointer; note cascading effects on downstream sessions if any.
+2. **The OPDA [adoption record §Track Record](./council/adoption.md#track-record) table** — add the session row (date, session ID, format, Queen, DA, subject, one-line verdict).
+3. **Session transcript and ODR cross-references** — verify the ODR's `## References` links the transcript; verify the transcript header links the ODR; run `odr-review` to lint frontmatter, section structure, and referential integrity; run `odr-index` to refresh AgentDB graph edges.
+
+Pilot sessions (S005, S011 Q8) carry an additional artefact per plan §8: a one-page **retire-or-extend evaluation** in the transcript; the outcome (RETIRE / EXTEND CAUTIOUSLY / EXPAND) is recorded in the track-record row's verdict column.
+
+Individual ODRs own their own analysis; this file owns the sequencing and the cross-links.
 
 ## Alternatives
 
@@ -140,7 +181,8 @@ Partition the PDTF→ontology programme **by ontological concern** (FIBO-style m
 - Cross-cutting: [ODR-0009](./ODR-0009-claims-evidence-provenance.md), [ODR-0010](./ODR-0010-overlay-profile-mechanism.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0012](./ODR-0012-data-governance-layer.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
 - **Phase 7 deferred**: [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md) — W3C VC / DID Compatibility Layer (named per Scope-Check 1 Q7c; activation triggered).
 - **Retired**: ~~[ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)~~ — folded into ODR-0002 per Scope-Check 1 Q4.
-- Deliberation provenance: Council Session 001 transcript — [session-001-pdtf-schema-to-ontology](./council/session-001-pdtf-schema-to-ontology.md). Full per-question positions, vote tallies, recorded dissents (including Guarino's Devil's-Advocate scorecard and DA withdrawals) live there; this anchor records sequencing and cross-links only.
+- Deliberation provenance — Session 001: [session-001-pdtf-schema-to-ontology](./council/session-001-pdtf-schema-to-ontology.md). Full per-question positions, vote tallies, recorded dissents (including Guarino's Devil's-Advocate scorecard and DA withdrawals) live there; this anchor records sequencing and cross-links only.
+- Ratification provenance — Session 003 (Author-only; 2026-05-27; Queen Kendall): [session-003-pdtf-ontology-programme](./council/session-003-pdtf-ontology-programme.md). Records phase ordering (plan §5), default-vs-fast-path option (plan §5.1), identity-crux gate check, module count, programme retirement criterion, status-discipline bidirectional-update protocol, and shared-question routing (plan §4.1) into the `## Rules` above. No fresh deliberation claimed; every item plan- or precedent-sourced.
 - Programme-level scope review: [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 8-1 APPROVE the cut with nine named amendments; spawned ODR-0015, named ODR-0016, retired ODR-0014, moved DPV co-annotation authoring to 0012, added Cagle's three-rule interface contract between 0010 and 0013, recorded Guizzardi's UFO-per-scheme sub-finding for 0011, surfaced Gandon-vs-Guizzardi methodology gap (routed to ODR-0001 amendment queue).
 - Methodology-tooling review: [Scope-Check 2 — Hive-mind vs Agent fan-out](./council/scope-check-2-hive-vs-swarm.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 5-1 SELECTIVE; Agent fan-out stays default. Two pilot sessions named for ruflo hive-mind consensus: **S005 (Identity crux) with `consensus-mode: hive-mind/byzantine`** (tests cross-conditional voting hypothesis), and **S011 Q8 (UFO meta-category per scheme) with `consensus-mode: hive-mind/typed-output`** (tests typed downstream consumption hypothesis). Scope-Check 2 B1 (consensus-mode framework) landed in ODR-0001 via direct amendment 2026-05-27 (Author-only self-amendment); pilots unblocked. A9 (Scope-Check 1 — Gandon-Guizzardi methodology gap) still pending but not strictly blocking — recommended before S005. Pilots are an evaluation budget, not an adoption commitment — retire-or-extend decision at session close.
 - Project adoption context: [OPDA Council adoption record](./council/adoption.md) — declares OPDA's project-specific instantiation of the methodology (panel weighting, pre-elected extended panel, governance handoff, track record, when-to-use additions, council directory path). Per ODR-0001's portable methodology design, project specifics live in the adoption record, not in the methodology body.

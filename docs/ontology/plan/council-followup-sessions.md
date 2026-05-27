@@ -14,9 +14,75 @@
 
 ## 1. Scope and method
 
-**Scope.** ODR-0002 … ODR-0014 — thirteen `proposed` ODRs that emerged from
-session-001 as planning stubs. Session-001 itself stays the inaugural transcript;
-ODR-0001 (methodology) is `accepted` and is not re-litigated.
+**What this plan does.** Operationalises the **research and improvement of the OPDA ODR corpus** through Council sessions — convening expert panels to ratify and flesh out each ODR's `## Rules` (the linked-data design decisions: identity criteria, vocabulary tiering, modelling conventions, validation patterns, etc.). Each session produces (a) a transcript with named-expert positions and per-question vote tallies; (b) an amended ODR with `status: accepted`; (c) a track-record row in the adoption record. The output is an *improved set of ODRs*, not implementation artefacts.
+
+**What this plan does NOT do.** It does NOT produce Turtle files, SHACL shape libraries, generator code, JSON-LD contexts, or any other implementation deliverable. **Implementation is handled by a separate ADR programme** — each accepted ODR will trigger one or more implementation ADRs (under `docs/adr/`) that specify how the ratified modelling decision is realised in code and serialisation. The ODR ratification done here *unblocks* implementation; the implementation itself is downstream.
+
+| This plan (Council sessions) | Separate ADR plan (implementation) |
+|---|---|
+| Ratifies ODR `## Rules` (design decisions) | Produces ADRs that engineer the realisation |
+| Output: amended ODRs, transcripts, track record | Output: Turtle files, SHACL shapes, generator code, CI hooks |
+| Corpus: `docs/ontology/odr/` | Corpus: `docs/adr/` |
+| Authority: ODR-0001 Linked Data Council | Authority: project ADR conventions |
+| Cross-corpus boundary per DCAP §"ODR/ADR boundary": ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs |
+
+**Current state.** This is OPDA's execution of the Linked Data Council methodology
+(ODR-0001) — the Council Hive pattern, per ODR-0001's pattern lineage. Convened
+sessions (Full / Reduced Council + Author-only amendments) live in the
+[adoption record's track record](../odr/council/adoption.md#§track-record); that
+is the authoritative session log.
+
+### Execution status (2026-05-27 — Phase 0 + Phase 1 + Phase 2 Council gates all cleared)
+
+**Sessions executed this programme cycle** (full detail in [adoption.md §Track Record](../odr/council/adoption.md#track-record); session transcripts under [`docs/ontology/odr/council/`](../odr/council/)):
+
+| Phase | Session | Format | Queen | DA | Outcome |
+|---|---|---|---|---|---|
+| Pre-Phase | A9 — Gandon-vs-Guizzardi methodology gap | Reduced Council | Kendall | Guarino (withdrew) | 2-1 BOTH-WITH-BOUNDARY at the `kind` enum. ODR-0001 amended with §What an ODR records (per-kind discipline) — for `kind: pattern \| mapping`, MUST state UFO/DOLCE category + IC over named hard cases + artefact realisation; `methodology`/`architecture`/`programme` relaxed. Gandon's artefact identity test adopted as operational supplement for `pattern` extraction. |
+| 0 | S003 — ODR-0003 programme anchor | Author-only | Kendall | — | ODR-0003 moves `proposed → accepted` (council: session-003). Phase ordering authority, default-vs-fast-path option, retirement criterion, status-discipline bidirectional-update protocol, shared-question routing all recorded into `## Rules`. |
+| 0 | S002 — ODR-0002 vocabulary catalogue (absorbs retired S014) | Full Council | Baker | Cagle (full withdrawal on 12/13 questions; partial on Q2) | 12 questions land 8-1 or 9-0 with operational checks adopted; Q11 OBO RO defers 5-2-2 with Kendall + Guizzardi held-as-live positions routed to ODR-0005. New `## Rules` subsections: Promotion and demotion criteria (four-condition Conditional→Core); Profile-pinning ownership (module-owner-proposes); Reference-not-import (normative) + three-value `adoption-mode` field. New Conditional-table columns (W3C status, Adoption mode, Profile pin). Per-question Change Log rows for Q7-Q13 codifying named-event triggers (OWL-Time demotion; DCAT promotion; SSSOM re-open; ODRL activation; cred/did activation). `status: proposed` retained per Scope-Check 1 Q4 framing. |
+| 1 | S004 — ODR-0004 Foundation (Phase 1 gate) | Full Council | Gandon | Knublauch (extended panel; full withdrawal on all 4 primary attacks) | 7 questions × 9-0 with all DA withdrawal conditions met. New §Operational specifications subsections 3a/6a/7a/8a — three-graph source-graphs + derived-consumer-profiles + five-part CI test (Q3); deterministic generator emission + version-pin + byte-identity CI + diff-explosion canary tests (Q5); five-line term-sourcing precedence + conflict-recording protocol + version-IRI pinning (Q4); exemplar `expected-report.ttl` pairing + parent-repo storage discipline (Q6). New `## Consequences` entries on namespace-as-blocker and `w3id.org/opda/` alternative. **ODR-0004 stays `status: proposed`** per Knublauch DA primary demand. |
+| 2 | **S005 — ODR-0005 Property & Land Identity Crux (Phase 2 gate; B2 pilot)** | **Full Council; `consensus-mode: hive-mind/byzantine`** | **Guarino** | **Allemang (full withdrawal on all 8 questions)** | **First `kind: pattern` ODR to discharge under A9 per-kind discipline.** Q1 9-0 FOR Endurant + Substance Kind for three classes (Property + LegalEstate + RegisteredTitle); Q2 9-0 FOR spatial-material continuity with Kendall+Davis legal-record-discontinuity-override hybrid; Q3 9-0 FOR distinct ICs (LegalEstate rights-bundle + RegisteredTitle title-number lineage); Q4 9-0 FOR both (SHACL/DASH operational + PROV-O contingent) + Cagle SHACL-AF succession-chain materialisation rule; Q5 **6-2-1 FOR 3-class** (Davis + Cagle held-as-live dissent preserved with named re-open triggers); Q6 9-0 FOR routing Address to ODR-0015 with DPV-pattern-consideration constraint; Q7 9-0 PASS with per-exemplar verdict walkthrough; Q8 9-0 FOR deliberative gate clearance. ODR-0005 amended: §Decision rewritten for 3-class; new §Operational specifications 2a/3a/3b/3c/6a/6b/7a/8a; §Consequences updated for downstream inheritance. **ODR-0005 stays `status: proposed`** per inherited ODR-0004 namespace block; `council: session-005` set. Guarino S001 Q4 dissent WITHDRAWN. Downstream: ODR-0006/0007/0015 unblocked; **ODR-0008 deferred** until cardinality crystallises (Kendall+Davis joint amendment). **B2 pilot verdict: EXTEND CAUTIOUSLY** to S015 + S011 Q8 (three-pilot threshold for EXPAND). |
+
+**Council Phase 1 + Phase 2 gates have cleared substantively.** Formal status-accepted close (and unblocking of downstream module sessions' `status: accepted`) awaits **WG namespace ratification** — see "Open WG decisions" below.
+
+### Open WG decisions (blockers on `status: accepted`)
+
+These items moved from "pending Council deliberation" to "pending OPDA Working Group decision". Each blocks one or more downstream ratifications.
+
+1. **Namespace string for `opda:`** — WG MUST ratify before ODR-0004 moves `proposed → accepted`. Three candidates ratified at S004 Q7 for WG consideration: `https://opda.uk/ns/` (institutional namespace; 7 voices); **`https://w3id.org/opda/` (operationally-strongest alternative; W3C PICG persistence guarantee — recorded by Knublauch DA primary demand)**; `https://trust.propdata.org.uk/ontology/` (rejected on programme-namespace-coupling grounds; no champion). Downstream module ODRs (S005, S006, S008, S010, S013) carry `depends-on: [ODR-0004]` and inherit the block.
+2. **Hash-vs-slash reopening threshold** — WG SHOULD record a concrete reopening trigger ("at scale criterion X, revisit hash-vs-slash"). Suggested: any single ontology file > 1,000 terms in active dereference traffic OR named consumer requests per-term content negotiation. Non-blocking; deferred recordkeeping.
+3. **MVP fast-path vs default sequence** (per §5.1) — WG chooses at start of Phase 1. Default sequence presumed unless WG selects fast-path explicitly. Recorded by an Author-only Session 003b when the WG decides.
+4. **OPDA Trust Framework vs other regulatory authorities** — S004 Q4 five-line term-sourcing precedence places the OPDA TF as authoritative within scope; other regulatory authorities (FCA, ICO, HMLR, EU eIDAS) are contextual (`skos:scopeNote`). WG SHOULD ratify the OPDA TF's authoritative scope in writing so downstream `pattern` ODRs (S009, S012) inherit a stable precedence.
+
+### Open items routed forward
+
+These items were recorded during execution but routed to a named downstream session for adjudication rather than re-litigated here:
+
+- **OBO RO admission** — S002 Q11 deferred 5-2-2 with named re-open trigger (an OPDA SPARQL query produces a wrong answer under `dct:isPartOf` that `ro:part-of` would correct, OR ODR-0005's IC discipline requires well-founded mereology unreachable via `dct:isPartOf` + `opda:` local predicates). Routed to ODR-0005's IC-discipline session (S005). Kendall + Guizzardi held-as-live positions preserved verbatim.
+- **`opda:ValidationContext` reification** (Session 001 Q5 carry; reaffirmed by S004 Q3 Knublauch DA position) — `pattern`-extraction candidate per A9 §Artefact identity test (re-instantiable across SHACL profile artefacts). Routed to ODR-0010 / ODR-0013 ratification sessions (S010 / S013) for extraction decision.
+- **Pandit's `dpv-pd` bundled-import divergence** (S002 Q4) — `slice-import` discipline at the catalogue level; module-level decision deferred to ODR-0012 (S012) where the lawful-basis class vocabulary surfaces.
+- **Davis Q1/Q5/Q6 held dissents** from Scope-Check 2 (B5 / B6 / B7) — preserved in §9 risks. Pilot retire-or-extend evaluations (B2 = S005 close; B3 = S011 Q8 close) test whether the pilots vindicate Davis's "ceremony pays every session; benefits speculative" position or the panel's selective-adoption verdict.
+- **`odr-review` lint updates** — two deferred to next skill release: (i) A9 per-kind discipline check (Lint 4 enhancement — for `kind: pattern | mapping`, verify `## Rules` names UFO/DOLCE category AND IC over named hard cases; warning on `proposed`, blocker on `accepted`); (ii) S004 Q2 URI-shape verification (lint reads `kind: pattern` ODRs' UFO commitments and verifies URI CamelCase form matches layer convention). Both flagged in the respective transcripts.
+
+### Pending sessions (next in priority order)
+
+The remaining 10 active sessions (S006–S013, S015; plus deferred S016) follow per §5 phasing. S005 closed 2026-05-27 (Phase 2 gate cleared).
+
+1. **S011 — Enumeration Vocabularies** (Phase 2.5 substrate). Q8 is **B3 pilot** with `consensus-mode: hive-mind/typed-output` (Scope-Check 2 B3). Queen Isaac/Miles (extended); DA Gandon. **Substrate ready; pilot unblocked** (S005's EXTEND-CAUTIOUSLY verdict on B2 pilot means B3 pilot proceeds with two-artefact discipline default). May parallel S015.
+2. **S015 — Address & Geography** (Phase 2.6 gate, Reduced Council, spawned by Scope-Check 1 Q7a). Queen Guizzardi or Gandon; DA Allemang. Lighter (~6 agent runs); gates S006 and S008. **S005-inherited constraint: Address-as-mode-vs-resource question must be resolved with explicit DPV-pattern consideration (Baker+Pandit S005 Q6 amendment). `opda:hasAddress` join predicate pre-committed.** Recommended consensus-mode: hive-mind/byzantine per S005 B2-pilot EXTEND-CAUTIOUSLY verdict.
+3. **S006 — Agents & Roles** (Phase 3a gate for 007, 008, 009, 012). Unblocked by S005 close. Inherits the 3-class commitment + IC discipline (SHACL primary; no `owl:sameAs`; PROV-O succession) for Person/Organisation identity.
+4. **S007 ∥ S008** (Phase 3b, parallel after S006). **NOTE: S008 deferred per S005 Q5+Q8 Kendall+Davis joint amendment** — the 935-annotated-leaf layer's leaf-to-class mapping depends on the 3-class commitment crystallising (encumbrances → LegalEstate; title-events → RegisteredTitle; physical condition → Property). S007 may proceed; S008 waits.
+5. **S009 → S012 → S010 → S013** (Phases 4/5/6) per §5.
+6. **S016 — W3C VC / DID Compatibility Layer** (Phase 7 deferred) — activates only on named trigger (S009 Q8 surfaces VC-side decisions OR S012 Phase-2 consent receipts land OR named wallet/DID consumer cites OPDA).
+
+The 11 remaining active sessions (S006–S013 + S015; S016 deferred) follow §5 phasing.
+
+**Scope.** ODR-0002 … ODR-0016 — fifteen records that emerged from session-001,
+Scope-Check 1, and Scope-Check 2 as planning stubs or spawned/named records.
+Session-001 itself stays the inaugural transcript;
+ODR-0001 (methodology) is `accepted` and is amended only through its own
+self-amendment process (§Self-amendment process in ODR-0001).
 
 **Authority.** This plan is the **source of truth for session sequencing**
 (§5) and the **shared-question routing** (§4.1). Session 003 (author-only)
@@ -34,82 +100,10 @@ adoption record at
 The methodology itself (ODR-0001) is project-agnostic; the adoption
 record is OPDA's specific instantiation.
 
-**Updated by Scope-Check 1** (2026-05-26, Queen Kendall, DA Davis — full transcript
-at [`docs/ontology/odr/council/scope-check-1-programme.md`](../odr/council/scope-check-1-programme.md)).
-The scope-check ratified the 13-ODR cut with nine amendments now reflected
-throughout this plan: ODR-0014 retired (folded into ODR-0002); ODR-0015
-(Address & Geography) spawned as a new gate; ODR-0016 (W3C VC/DID) named
-as deferred; DPV co-annotation authorship moved from 0009 to 0012; SKOS
-schemes carry UFO meta-category per scheme; ODR-0010/0013 cross-cite the
-three interface rules (Cagle); 0008 split deferred with named triggers;
-six convergent termination signals adopted (§5 gate check). A methodology
-gap exposed by the Gandon-Guizzardi divergence on Q6 ("ODR records
-artefact-engineering vs ontological commitment") is routed to ODR-0001
-amendment queue (separate work; not blocking).
+**Scope-Check history.** Two programme-level meta-Councils have run:
 
-**Further updated by Scope-Check 2** (2026-05-26, Queen Kendall, DA Davis —
-full transcript at
-[`docs/ontology/odr/council/scope-check-2-hive-vs-swarm.md`](../odr/council/scope-check-2-hive-vs-swarm.md)).
-The methodology-tooling scope-check answered "should the Council switch
-from Agent fan-out to ruflo hive-mind consensus for some session types?"
-with **5-1 SELECTIVE** — Agent fan-out stays the default; two pilots
-named for hive-mind consensus testing distinct hypotheses; Davis (DA)
-holds NONE pending a named operational failure. Eight amendments (B1–B8)
-reflected throughout this plan:
-
-- **B1 — LANDED 2026-05-27** as a direct amendment to ODR-0001 (Author-
-  only tier per the methodology's self-amendment process — the
-  consensus-mode framework was not disputed, only unspecified). ODR-0001
-  now carries the `consensus-mode` framework explicitly with all nine
-  modes named (agent-fan-out, six hive-mind variants, hive-mind/typed-
-  output, none), full swarm + hive-mind config tables, two-artefact
-  discipline, and Byzantine reframe to structural vote acknowledgement.
-  **Pilots B2 and B3 are no longer gated on B1 landing** — they can
-  proceed when the convening queen is ready.
-- **A9 (Scope-Check 1 — still PENDING).** The Gandon-Guizzardi methodology
-  gap — "does an ODR record an artefact-engineering decision (Gandon)
-  or an ontological commitment (Guizzardi)?" — was originally bundled
-  with B1 under a single ODR-0001 amendment session, but B1 landed
-  independently. A9 now stands alone as a **small Reduced Council**
-  whose subject is the methodology gap only. Not strictly blocking
-  for B2/B3 pilots, but **recommended before S005** since the IC
-  commitments S005 produces sit close to the gap. The default Guizzardi
-  reading (DCAP's current implicit posture) applies until A9 resolves.
-- **B2 pilot.** Session 005 (Identity crux) runs with
-  `consensus-mode: hive-mind/byzantine`. Hypothesis: structural vote
-  acknowledgement catches conditional-withdrawal patterns prose would
-  miss (Guarino's three-condition withdrawal). Retire-or-extend at
-  session close. **Now unblocked** (B1 landed); recommended to follow
-  A9 for methodology-gap clarity, but not strictly required.
-- **B3 pilot.** Session 011 Q8 (UFO meta-category per scheme) runs with
-  `consensus-mode: hive-mind/typed-output`. *One question only*, not
-  full session. Hypothesis: typed verdict object enables downstream
-  tooling consumption prose synthesis cannot. Retire-or-extend at
-  session close. **Now unblocked** (B1 landed).
-- **B4 deferred.** S015, S010↔S013 verification, and wholesale rollout
-  defer to post-pilot evaluation. Pilots are an **evaluation budget,
-  not an adoption commitment** (Davis Q6 dissent mitigation).
-- **B5 Byzantine reframe.** The framing "Byzantine consensus tolerates
-  malicious nodes" is **rejected programme-wide** (6-0). The
-  worth-paying-for property is **structural vote acknowledgement**
-  (Gandon's reframe) — the same protocol *as a side-effect* guarantees
-  every named expert's position is registered against every question.
-  ADR-0115 carve-out in this plan re-cast from *permission* to
-  *requirement* for B2/B3 pilots; CLAUDE.md may need a follow-up edit.
-- **B6 persistence.** Markdown + git is the default. Gandon's
-  typed-memory minority position (use `hive-mind_memory` for S009→S012
-  amendment loop + S016 deferred-activation triggers) **recorded but
-  not adopted** — Allemang's asymmetric-cost argument carries (markdown
-  → typed memory later is cheap; reverse is expensive). Revisit only
-  if `odr-review` lint produces a silent seam divergence.
-- **B7 Davis dissents.** Q1 (no session-type fitness named without a
-  past failure), Q5 (ceremony pays every session, benefits speculative),
-  and Q6 (selective is worst, not moderate — two protocols cost more
-  than one) **held as live methodological positions** in §9 risks —
-  not silenced. Re-evaluated at each pilot retire-or-extend decision.
-- **B8 pilot evaluation.** After each pilot session, the Queen writes a
-  one-page evaluation in the transcript noting whether the consensus-mode
-  added value, with retire-or-extend decision. Criteria specified by A9.
+- [Scope-Check 1](../odr/council/scope-check-1-programme.md) (2026-05-26) — programme cut review. 8-1 APPROVE with nine amendments (A1–A9) reflected throughout this plan: retire ODR-0014; spawn ODR-0015; name deferred ODR-0016; DPV co-annotation authorship moved to 0012; ODR-0011 UFO meta-category per scheme; ODR-0010/0013 three-rule cross-cite; defer 0008 split; six termination signals (§5 gate check); Gandon-Guizzardi methodology gap routed to **Session A9** (pending — see Pre-Phase blueprint in §5).
+- [Scope-Check 2](../odr/council/scope-check-2-hive-vs-swarm.md) (2026-05-26) — methodology-tooling review (hive-mind vs Agent fan-out). 5-1 SELECTIVE with eight amendments (B1–B8): B1 (consensus-mode framework) landed in ODR-0001 via direct amendment 2026-05-27; B2/B3 pilots unblocked (S005 hive-mind/byzantine; S011 Q8 hive-mind/typed-output); B4 wholesale deferred to post-pilot evaluation; B5 Byzantine framing rejected programme-wide (reframe: structural vote acknowledgement); B6 markdown persistence default; B7 Davis Q1/Q5/Q6 held dissents preserved (§9); B8 retire-or-extend evaluation per pilot at session close.
 
 **Output per session.**
 
@@ -156,27 +150,15 @@ Byzantine fault tolerance. The amended ODR-0001 carries this clarification;
 CLAUDE.md may still say "byzantine voting" until updated separately —
 ODR-0001's reading is now canonical.
 
-**Bidirectional linking — checked by review.**
+**Bidirectional linking** is checked by review per ODR-0001 §Session document conventions.
 
-| Direction | Mechanism | Lint |
-|---|---|---|
-| ODR → session | `council: session-NNN` frontmatter; link in `## References` | `odr-review` |
-| Session → ODR | Front-matter line "ODR/ADR under review: ODR-NNNN" (per ODR-0001 §"Session document conventions"); link in body | `odr-review` (extended) |
-| Session → ODR-0001 | "Format: ODR-0001 Linked Data Council with Devil's Advocate" line | (manual) |
-| ODR-0001 track-record table | Row added per session | (manual) |
+**Session format tiers** (Full Council / Reduced Council / Author-only) are defined in ODR-0001 §Format tiers. Each session below names its tier; track record lives in the [adoption record](../odr/council/adoption.md#§track-record).
 
-**Session format tiers.** Not every ODR needs the full nine-expert apparatus
-defined in ODR-0001. The methodology permits author-only decisions (no
-`council:` field). This plan tiers each session into one of three formats:
+**Cross-talk transport.** Default is queen-composed (per ODR-0001 §Cross-talk transport). For the S009→S012 amendment loop (DPV co-annotation supersession-scope), `SendMessage` via Agent Teams is the recommended transport — workers must respond to peer claims before settling. Other sessions use queen-composed unless the convening Queen documents otherwise.
 
-| Format | When | Apparatus | Cost |
-|---|---|---|---|
-| **Full Council** | Substantive linked-data decision with credible split | Queen + DA + 6 panel teammates writing position files | ~7–8 agent runs |
-| **Reduced Council** | Amendment / ratification-with-targeted-disputes | Queen + DA + 1–2 panel teammates on disputed questions only | ~3–4 agent runs |
-| **Author-only** | Recording a decision the plan or session-001 already settled; sequencing/index work; no panel split expected | Queen drafts the transcript and the ODR amendment from existing inputs; no fanned-out positions; `council:` field still set so the audit trail survives | ~1 agent run |
+**Substrate operations** (calling convention; sub-queen escalation for hierarchical-mesh) are governed by ODR-0001 §Substrate operations.
 
-Format per session is named in §4. The default is Full Council; deviations
-are justified inline.
+**Multi-day sessions.** Default presumption: one-sitting sessions. If a session genuinely spans days, use the resumability mechanism per ODR-0001 §Multi-day sessions and resumability — `hive-mind sessions checkpoint/export/import` + `resume`. Each resume cycle recorded in the synthesis.
 
 ## 2. Standing panel and per-session role allocation
 
@@ -1007,23 +989,9 @@ ODR-0016 stays `proposed` and the deferral is the verdict.
 
 ---
 
-### Session 014 — ~~ODR-0014 Vocabulary Catalogue Amendments~~ **[RETIRED — folded into Session 002]**
+### ~~Session 014~~ — RETIRED
 
-**Status of stub: RETIRED** by Scope-Check 1 (2026-05-26, Q4 vote 7-1-1).
-The amendment-ODR pattern is not retained; ODR-0014's content lives as
-`## Change log` rows in ODR-0002's `## Rules`. **Session 014 does not
-run.** ODR-0014 is marked `superseded` and retained as a historical
-anchor; the per-vocabulary amendment questions (OWL-Time / DCAT / SSSOM /
-ODRL / OBO RO / FOAF / DPV-Phase-1 / Dublin-Core-rationale) absorb into
-**Session 002's** agenda as a sub-section. Hendler's recorded dissent on
-permanence ("every governance act stays") is preserved in §9 risks below.
-
-**Effect on the cost table** (§10): saves ~3 agent runs (one Reduced Council
-session does not run). Session 002's question count grows by 1 (covering
-the six amendment-row decisions; Session 002 was Full Council already).
-
-**For audit:** see Scope-Check 1 transcript, Q4 deliberation; ODR-0014's
-`## Supersession scope:` and ODR-0002's `## Change log`.
+ODR-0014 is `superseded` per Scope-Check 1 Q4 (7-1-1); per-vocabulary amendments absorbed into Session 002. See Scope-Check 1 transcript Q4; ODR-0014's `## Rules` Supersession scope; ODR-0002's `## Change log`.
 
 ## 5. Sequencing and gates
 
@@ -1035,62 +1003,26 @@ attrs; Overlays and SHACL severity consume the ratified TBox; Claims and
 Governance share a tight DPV co-annotation loop. Phasing reflects those
 edges.
 
-**Pre-Phase — ODR-0001 amendment session A9 (Scope-Check 1 — methodology gap; PENDING).**
+**Pre-Phase — Session A9 — Gandon-Guizzardi methodology gap.** ✅ **COMPLETE (2026-05-27).**
 
-- **Status:** Scope-Check 2 B1 (consensus-mode framework) **landed
-  independently** as a direct amendment to ODR-0001 on 2026-05-27 (Author-
-  only tier, self-amendment process — framework was unspecified rather
-  than disputed). A9 is **no longer bundled with B1**; it carries only
-  the Gandon-Guizzardi methodology gap from Scope-Check 1.
-- **Session A9** — ODR-0001 amendment. **Reduced Council**, Agent fan-out
-  (deliberately not a hive-mind pilot — A9 deliberates the methodology's
-  own conceptual foundation, which is exactly the kind of citation-
-  grounded narrative deliberation the existing protocol is calibrated
-  for). Single amendment item:
-  - **Gandon-vs-Guizzardi methodology gap**: does an ODR record an
-    artefact-engineering decision (Gandon) or an ontological commitment
-    (Guizzardi)? The default Guizzardi reading (DCAP's current implicit
-    posture) applies until A9 resolves.
-- **A9 is NOT strictly blocking** for B2 (S005) or B3 (S011 Q8) pilots —
-  the consensus-mode substrate they need is already in ODR-0001 via the
-  2026-05-27 amendment. **However**: A9 is **recommended before S005**
-  because S005's IC commitments (Endurant categories, identity criteria)
-  sit close to the methodology gap. Running S005 without resolution
-  risks re-litigating the gap inside S005.
-- Queen: TBD at convening; suggested Kendall (continuity with both
-  scope-checks). DA: Guarino (DOLCE formal-ontology theorist; the
-  artefact-vs-commitment question is exactly his territory).
-- Output: ODR-0001's `## Rules` amended in-place per the self-amendment
-  process; DCAP commentary updated; future ODRs cite the chosen reading
-  consistently.
+- **Subject:** does an ODR record an artefact-engineering decision (Gandon) or an ontological commitment (Guizzardi)?
+- **Outcome:** 2-1 BOTH-WITH-BOUNDARY at the `kind` enum. ODR-0001 amended with §What an ODR records (per-kind discipline). For `kind: pattern | mapping`, MUST state UFO/DOLCE meta-category + IC over named hard cases + artefact realisation; `methodology`/`architecture`/`programme` relaxed. Gandon's artefact identity test adopted as operational supplement.
+- **Queen:** Kendall. **DA:** Guarino (withdrew on all four conditions met).
+- See: [session-a9-gandon-guizzardi-methodology-gap](../odr/council/session-a9-gandon-guizzardi-methodology-gap.md).
 
-**Phase 0 — Anchor + vocabulary substrate (sequential: 003 → 002).**
+**Phase 0 — Anchor + vocabulary substrate (sequential: 003 → 002).** ✅ **COMPLETE (2026-05-27).**
 
-- Session 003 — ODR-0003 anchor. **Author-only.** Records the phase order
-  this plan adopts (and the shared-question routing of §4.1). Runs first so
-  002 is committed to a published sequence; a Session 003b (author-only)
-  absorbs any catalogue-driven sequencing surprise that surfaces in 002.
-- Session 002 — ODR-0002 vocabulary catalogue. **Full Council.** Produces
-  the per-entry admission rule schema (tier criteria, metadata fields,
-  reference-not-import discipline). **Also absorbs the former Session 014
-  questions** (per Scope-Check 1 Q4 retirement) — OWL-Time, DCAT, SSSOM,
-  ODRL, OBO RO, FOAF disposition rows now land in 0002's `## Change log`.
-  Cred: and did: prefixes admitted to Defer (Scope-Check 1 Q7c).
+- Session 003 — ODR-0003 anchor. **Author-only.** ✅ Done — see [session-003-pdtf-ontology-programme](../odr/council/session-003-pdtf-ontology-programme.md). ODR-0003 → `accepted` (council: session-003); phase ordering / shared-question routing / fast-path option / retirement criterion / status-discipline protocol recorded.
+- Session 002 — ODR-0002 vocabulary catalogue. **Full Council.** ✅ Done — see [session-002-vocabulary-catalogue](../odr/council/session-002-vocabulary-catalogue.md). 12/13 questions land 8-1 or 9-0 with full Cagle DA withdrawal; Q11 OBO RO defers 5-2-2 to ODR-0005. New §Rules subsections: Promotion/demotion criteria, Profile-pinning ownership, Reference-not-import (normative) + `adoption-mode` field. ODR-0002 `status: proposed` retained per Scope-Check 1 Q4 framing.
 - ~~Session 014~~ — **RETIRED** by Scope-Check 1 Q4. Does not run.
 
-**Phase 1 — Foundation spike (gate).**
+**Phase 1 — Foundation spike (gate).** ✅ **Council gate cleared (2026-05-27); formal close awaits WG namespace ratification.**
 
-- Session 004 — ODR-0004 Foundation. **Must clear before sessions 005–013.**
+- Session 004 — ODR-0004 Foundation. **Full Council.** ✅ Done — see [session-004-pdtf-ontology-foundation](../odr/council/session-004-pdtf-ontology-foundation.md). 7 questions × 9-0 with full Knublauch DA withdrawal on all four primary attacks (Q3 three-graph operational rule; Q4 term-sourcing five-line precedence; Q5 generator byte-identity CI; Q7 namespace-as-blocker). New §Operational specifications subsections 3a/6a/7a/8a. **ODR-0004 stays `status: proposed`** per Knublauch DA primary demand — moves to `accepted` only when OPDA WG ratifies the namespace string. Downstream module ODRs inherit the block.
 
-**Phase 2 — Identity crux (gate). [PILOT — Scope-Check 2 B2]**
+**Phase 2 — Identity crux (gate). [PILOT — Scope-Check 2 B2]** ✅ **Council gate cleared (2026-05-27); formal close awaits WG namespace ratification.**
 
-- Session 005 — ODR-0005 Property identity crux. **Must clear before
-  sessions 006, 007, 008, 015.** Cross-cutting sessions wait further on
-  the substrate phase (2.5), the Address gate (2.6), and the Agents module
-  (3a). **Pilot for `consensus-mode: hive-mind/byzantine`** (Scope-Check 2
-  B2) — substrate landed in ODR-0001 (2026-05-27); A9 Gandon-Guizzardi
-  resolution recommended before this session but not strictly required;
-  retire-or-extend evaluation at session close.
+- Session 005 — ODR-0005 Property identity crux. **Full Council; B2 pilot.** ✅ Done — see [session-005-property-land-identity-crux](../odr/council/session-005-property-land-identity-crux.md). 8 questions: 7 × 9-0 + Q5 6-2-1 FOR 3-class (Davis + Cagle held-as-live dissent preserved); full Allemang DA withdrawal on all 8 questions. New §Operational specifications 2a/3a/3b/3c/6a/6b/7a/8a discharging A9 per-kind discipline. **First `kind: pattern` ODR to discharge under A9** — methodology pressure-test passes. **ODR-0005 stays `status: proposed`** per inherited ODR-0004 namespace block. Guarino S001 Q4 dissent WITHDRAWN. Downstream: ODR-0006/0007/0015 unblocked; **ODR-0008 deferred** until 3-class commitment crystallises. **B2 pilot verdict: EXTEND CAUTIOUSLY** — two-artefact discipline (narrative + structured tally) recommended for S015 + S011 Q8; three-pilot threshold for EXPAND. Pre-S005 between-session prep: three diagnostic exemplars authored per ODR-0004 §8a + parent-repo `.gitignore` allowlist for `source/03-standards/ontology/` (commit 01527e6).
 
 **Phase 2.5 — Enumeration substrate.**
 
@@ -1259,10 +1191,7 @@ gate (Phase 5 close).
 
 ### 5.1 MVP fast-path option
 
-The default sequence ratifies all 13 ODRs before implementation work begins.
-That's safe but slow. ODR-0003's `## Rules` "Minimum viable subset" calls
-for a different shape: Foundation → IC → Agents + Claims → one BASPI5 SHACL
-profile, with everything else scaling after the slice proves value.
+The default sequence ratifies all ODRs before the implementation ADR programme begins. That's safe but slow. ODR-0003's `## Rules` "Minimum viable subset" calls for a different shape: ratify the *minimum subset of ODRs* needed to unblock the BASPI5 vertical slice in implementation — Foundation → IC → Agents + Claims → Overlay mechanism — then resume the rest of the ratification programme in parallel with (or after) implementation begins on the slice. The **MVP gate is "BASPI5 round-trip demonstrated"** — that's an implementation milestone proving the minimum subset of ODRs is coherent enough to support real Turtle production; the round-trip itself happens in the implementation ADR programme, not here.
 
 The **MVP fast-path** runs only the sessions needed to ratify that slice,
 deferring the rest:
@@ -1298,20 +1227,15 @@ deferring the rest:
    S010-BASPI5 (Overlay mechanism deliberated against the BASPI5 slice
                 only; TA6/NTS/etc. deferred; cross-cites S013 on three rules)
 
-   ⟵⟵ MVP gate: BASPI5 round-trip demonstrated ⟶⟶
+   ⟵⟵ Hand off to implementation ADR programme: BASPI5 round-trip target ⟶⟶
 
-   then resume the full plan: S007, S008 (full), S011 (full), S006 (re-open
+   Then resume the rest of the ratification plan in parallel with (or after)
+   the implementation slice: S007, S008 (full), S011 (full), S006 (re-open
    Q6), S012, S010 (remaining overlays), S013. S016 (W3C VC/DID) activates
    only on trigger.
 ```
 
-The fast-path is **eight sessions** to reach the MVP gate (was 8 before
-Scope-Check 1; S015 added, S014 removed — net same count). Costs: two
-re-open cycles (S006 Q6 + S011 full) and deferred completeness on
-007/008/012/013. Choose this when (a) value-proving is more urgent than
-completeness, (b) the WG needs a working demonstration before committing
-to the full programme, or (c) resource constraints make 13 full sessions
-impractical.
+The fast-path is **eight sessions** to reach the handoff to implementation (vs ~13 for the full ratification programme). Costs: two re-open cycles (S006 Q6 + S011 full) and deferred completeness on 007/008/012/013. Choose this when (a) value-proving is more urgent than completeness, (b) the WG needs a working demonstration before committing to the full programme, or (c) resource constraints make 13 full sessions impractical.
 
 The default sequence (§5) and the fast-path (§5.1) are *named options* the
 WG chooses between at the start of Phase 1. Session 003 (anchor) is the
@@ -1342,33 +1266,9 @@ A session **may NOT spawn**:
 - An ADR (cross-corpus). Schema-encoding decisions that surface in deliberation
   are routed to a parallel ADR record; the ODR session does not create it.
 
-## 7. Working-file convention (session N > 1)
+## 7. Working-file convention
 
-Session-001 placed working files at `docs/ontology/odr/council/working/<teammate>.md`
-(flat). Continuing flat creates collisions (every session has an
-`allemang-hendler.md`). Continuing sessions use:
-
-```
-docs/ontology/odr/council/working/
-  session-002/
-    baker-queen.md          ← Queen's working file
-    cagle-da.md             ← Devil's Advocate's working file
-    pragmatic-pair.md       ← Allemang + Hendler
-    enterprise-pair.md      ← Kendall + Davis
-    formal-pair.md          ← Gandon + Guizzardi
-    governance-pair.md      ← Baker (in Queen file) + Pandit
-    …
-  session-003/
-    kendall-queen.md
-    davis-da.md
-    …
-```
-
-The Queen's file is named `<surname>-queen.md`; the DA's is `<surname>-da.md`;
-other pairs use the standing-panel pair name from §3.
-
-Session-001's existing flat-layout files are left in place (historical
-artefact); they are NOT migrated.
+Per ODR-0001 §Working-file convention. OPDA's council-directory path is `docs/ontology/odr/council/`; per-teammate files land at `working/session-N/<teammate>.md` for per-record sessions and `working/scope-check-N-<slug>/<teammate>.md` for meta-Councils. Session-001's flat-layout files (`working/allemang-hendler.md`, etc.) are left in place as historical artefact; subsequent sessions follow the subdir convention.
 
 ## 8. Execution checklist (per session)
 
@@ -1420,25 +1320,26 @@ For each session N covering ODR-MMMM:
 
 ## 9. Risks and mitigations
 
-| Risk | Mitigation |
-|---|---|
-| Session 005 (identity crux) fails the gate | ODR-0005 stays `proposed`; modules 006–008 do not spawn sessions; queen produces a remediation plan as part of the failed session's `## Synthesis`. |
-| Session 006 (Agents gate) drifts and blocks 007/008/009/012 | 006 is the longest fan-out in the programme. If its session drifts on Q4 (Capacity vs Authority) or Q5 (Address class location), 007/008/012 stall. Mitigation: timebox 006 to one session-cycle; if it overruns, queen splits the unresolved question into a follow-up sub-session (006b) and ratifies the rest. |
-| Session 011 (SKOS substrate) takes a position the modules then dispute | 011's verdicts on scheme membership and cardinality are *substrate* for 006/008/009/012. If a module session genuinely needs to break the 011 pattern (e.g. an enum that legitimately wants OWL `oneOf`), the module session records the exception and 011 is amended via a follow-up session. The substrate is normative-by-default, not unbreakable. |
-| Session 009 amendments by session 012 cascade further (e.g. 012 changes the assurance-level SKOS scheme, which 011 owns) | 012's right to amend is bounded to *DPV co-annotation*. Changes that touch 011's SKOS pattern or 006's Person Kind require a separate amendment session, not in-line edits to 009. |
-| Sessions stall on absent named-expert position (an expert "has nothing distinctive to add") | Vote `abstain` per ODR-0001 §"No silent vote-padding". Recorded, not faked. |
-| Two sessions reach conflicting verdicts on a shared question (e.g. ODR-0006 Q7 / ODR-0007 Q3 — `participantStatus` / `status` Phase question) | 006 owns the Phase-apparatus question by phase order (it ratifies first); 007 inherits the answer. If 007 genuinely needs to deviate, it records a `## Supersession scope:` entry on 006's `## Rules` and the deviation flows back as an amendment to 006. |
-| Spawned ODRs explode the count (a session triples the stub into three new ODRs) | The session must name the spawn explicitly and justify the split. The programme anchor (ODR-0003) is amended to absorb new records; the dependency graph is updated. |
-| Working-file artefacts (positions) become stale when an ODR is later amended | Position files are append-only; the *transcript* is the canonical record of what was decided. Amendments to an ODR create a new session (sub-letter or successor), not edits to old working files. |
-| **A session's question turns out to need OPDA WG input** (e.g. literal namespace string, versioning scheme, MLR-2017 procedural alignment, AGM ratification timing) | The Council session **does not block** on WG-owned answers. The session records the question and its scoping in the ODR's `## Rules` with the marker `**WG decision pending:**` and a stub for the answer. The session moves the ODR to `status: accepted` regardless. When the WG returns the answer, an author-only follow-up session fills the stub. Per ODR-0001 §"Consequences": Council shapes proposals; OPDA WG/Sub-Committee/AGM shapes adoption. |
-| **Session 011 (SKOS substrate) lacks module context to deliberate well** | 011 may need to run **twice**: a Phase-2.5 *substrate session* that fixes the SKOS *shape* (cardinality, definition source, lifecycle apparatus) from the schema alone, plus a Phase-3.5 *audit session* after the modules ratify that fixes specific *schemes* (`role`, `sellersCapacity`, `builtForm`, etc.) per the modules' usage. The audit session is recorded as ODR-0011b (spawned per §6) or as an in-place amendment to ODR-0011, at the substrate session's choice. |
-| **Plan length exceeds tractability** | The plan is intentionally repetitive in §4 (per-session blueprints) to make each session self-contained — a queen running session N should not need to re-derive its scope from cross-references. Trim only if the per-session checklist (§8) and shared-questions table (§4.1) prove sufficient in practice. |
-| **Hendler's preserved dissent on ODR-0014 retirement** (Scope-Check 1 Q4 vote 7-1-1) | Hendler: "every governance act stays permanently." Recorded as a *live methodological position*, not silenced. Implication: future amendment-pattern questions (DCAP) should revisit whether amendment-records are warranted as a class of artefact even if not for ODR-0014 specifically. ODR-0001 amendment queue. |
-| **Gandon-vs-Guizzardi methodology gap surfaced by Scope-Check 1 Q6** | Divergence on Q6 (combine 0010+0013?) exposed a real ambiguity in ODR-0001/DCAP: **does an ODR record an artefact-engineering decision (Gandon) or an ontological commitment (Guizzardi)?** DCAP implicitly favours Guizzardi but never says so. **Routed to ODR-0001 amendment queue (Amendment A9)** — runs as a small Reduced Council in Agent fan-out (DA: Guarino; the artefact-vs-commitment question is his territory). Scope-Check 2 B1 (consensus-mode framework) was originally bundled with A9 but **landed independently** as a direct ODR-0001 amendment on 2026-05-27 (Author-only tier, self-amendment process — the framework was unspecified rather than disputed). A9 now stands alone, narrowed to the methodology gap. **Not blocking for pilots** — recommended before S005 (IC commitments sit close to the gap) but not strictly required. Until A9 lands, default to the Guizzardi reading (Q6 verdict). |
-| **Davis (DA) Q1 held dissent on Scope-Check 2 selective adoption** | Davis: "no session type yet justifies hive-mind without a named operational failure." Recorded as live. Mitigation: B2/B3 pilots are framed as **experiments testing hypotheses** with retire-or-extend evaluation; if neither pilot demonstrates measurable benefit, hive-mind retires programme-wide. Davis's withdrawal condition is operationalised by the retire-trigger criteria on each pilot. |
-| **Davis (DA) Q5 held dissent on ceremony cost** | Davis: "ceremony pays every session; benefits speculative." Mitigation: pilots are bounded — A9 (small Reduced Council) + B2 (one Full Council session) + B3 (one question within an otherwise Agent-fan-out session) = ~12 incremental agent runs total. If pilots retire, no permanent two-protocol overhead. If pilots extend, the cost is justified by demonstrated benefit. |
-| **Davis (DA) Q6 held dissent — selective is worst, not moderate** | Davis: "two protocols cost more than one — two documentations, two training burdens, two audit-trail shapes." This dissent is the strongest. Mitigation: the two pilots are an **evaluation budget**, not an **adoption commitment**. If pilots fail, the methodology returns to single-protocol Agent fan-out — Davis's position vindicated. If pilots succeed, the two-protocol overhead is intentional and justified. |
-| **Gandon's typed-memory minority position on persistence (Scope-Check 2 Q4)** | Gandon: adopt `hive-mind_memory` for S009→S012 amendment loop + S016 deferred-activation triggers — W3C-style structured cross-meeting state is canonical. Outcome: NOT ADOPTED (5-1 against). Allemang's asymmetric-cost argument carries — markdown → typed memory later is cheap; typed memory → markdown later is expensive (vendor unwinding). Mitigation: revisit only if `odr-review` lint produces a silent seam divergence in practice that markdown discipline did not catch. Persistence layer for the programme is ODR-0003, not the Council. |
+Risks classified into three classes: **M** = methodology-level (often routed to ODR-0001 amendment queue); **E** = execution-level (specific to OPDA's session sequence); **S** = substrate / coordination.
+
+| Class | Risk | Mitigation |
+|---|---|---|
+| **E** | Session 005 (identity crux) fails the gate | ODR-0005 stays `proposed`; modules 006–008 do not spawn sessions; queen produces a remediation plan as part of the failed session's `## Synthesis`. |
+| **E** | Session 006 (Agents gate) drifts and blocks 007/008/009/012 | Timebox 006 to one session-cycle; if it overruns, queen splits the unresolved question into a follow-up sub-session (006b) and ratifies the rest. |
+| **E** | Session 011 (SKOS substrate) takes a position the modules then dispute | If a module session genuinely needs to break the 011 pattern (e.g. an enum that legitimately wants OWL `oneOf`), the module session records the exception and 011 is amended via a follow-up session. Substrate is normative-by-default, not unbreakable. |
+| **E** | Session 009 amendments by session 012 cascade further | 012's right to amend is bounded to *DPV co-annotation*. Changes that touch 011's SKOS pattern or 006's Person Kind require a separate amendment session, not in-line edits to 009. |
+| **E** | Two sessions reach conflicting verdicts on a shared question (ODR-0006 Q7 / ODR-0007 Q3 — `participantStatus` / `status` Phase question) | 006 owns the Phase-apparatus question by phase order (it ratifies first); 007 inherits. If 007 genuinely needs to deviate, it records a `## Supersession scope:` entry on 006 and the deviation flows back as an amendment to 006. |
+| **E** | A session's question turns out to need OPDA WG input (literal namespace string, versioning scheme, MLR-2017 alignment, AGM ratification timing) | Council does not block on WG-owned answers. Session records the question in the ODR's `## Rules` with the marker `**WG decision pending:**`; ODR moves to `accepted`; when WG returns the answer, an author-only follow-up session fills the stub. |
+| **E** | Session 011 (SKOS substrate) lacks module context to deliberate well | 011 may need to run twice: a substrate session (cardinality, definition source, lifecycle) from the schema alone, plus a Phase-3.5 audit session after modules ratify (fixing specific per-scheme decisions). Audit lands as ODR-0011 amendment or spawned ODR-0011b. |
+| **S** | Sessions stall on absent named-expert position | Vote `abstain` per ODR-0001 §"No silent vote-padding". Recorded, not faked. |
+| **S** | Spawned ODRs explode the count | Session must name the spawn explicitly and justify the split. ODR-0003 anchor + dependency graph updated. |
+| **S** | Working-file artefacts become stale when an ODR is later amended | Position files are append-only; transcript is canonical. Amendments create a new session (sub-letter or successor), not edits to old working files. |
+| **S** | Gandon's typed-memory minority position (Scope-Check 2 Q4) | Gandon: adopt `hive-mind_memory` for S009→S012 + S016 triggers. Outcome NOT ADOPTED (5-1; Allemang asymmetric-cost wins). Mitigation: revisit only if `odr-review` lint produces a silent seam divergence in practice. Persistence layer for the programme is ODR-0003, not the Council. |
+| **M** | Hendler's preserved dissent on ODR-0014 retirement (Scope-Check 1 Q4 vote 7-1-1) | Hendler: "every governance act stays permanently." Recorded as a live methodological position. Implication: future amendment-pattern questions (DCAP) should revisit whether amendment-records are warranted as a class. Routed to ODR-0001 amendment queue. |
+| **M** | Gandon-vs-Guizzardi methodology gap (Scope-Check 1 Q6) | "Does an ODR record an artefact-engineering decision (Gandon) or an ontological commitment (Guizzardi)?" DCAP implicitly favours Guizzardi but never says so. Routed to **Session A9** (Pre-Phase). Not blocking for B2/B3 pilots but recommended before S005. Default Guizzardi reading until A9 resolves. |
+| **M** | Davis (DA) Q1 held dissent on Scope-Check 2 selective adoption | Davis: "no session type yet justifies hive-mind without a named operational failure." Mitigation: pilots are experiments testing hypotheses with retire-or-extend evaluation. |
+| **M** | Davis (DA) Q5 held dissent on ceremony cost | Davis: "ceremony pays every session; benefits speculative." Mitigation: pilots are bounded (~12 incremental agent runs total). If pilots retire, no permanent two-protocol overhead. |
+| **M** | Davis (DA) Q6 held dissent — selective is worst, not moderate | Davis: "two protocols cost more than one." Mitigation: pilots are an **evaluation budget, not an adoption commitment**. If pilots fail, methodology returns to single-protocol Agent fan-out — Davis's position vindicated. |
 
 ## 10. Execution model
 
@@ -1528,43 +1429,13 @@ parallel (separate conversations, separate days, or the same day if the
 user is willing to run two conversations). Total programme: ~10–14
 working days. Fast-path: ~6–8 working days to the MVP gate.
 
-## 11. Pre-flight scope check (per session)
+## 11. Pre-flight scope check — OPDA candidates
 
-Before convening a session, the Queen runs a 5-minute scope check on the
-stub. The check answers one question: *is this ODR the right unit of
-decision?* Three possible outcomes:
+The scope-check protocol (three outcomes: ratify-as-is / re-scope / retire) is defined in ODR-0001 §Pre-flight scope check. This section names the OPDA-specific candidates the Queen should screen against before convening each session.
 
-**Precedent:** [Scope-Check 1 — Programme cut](../odr/council/scope-check-1-programme.md)
-(2026-05-26) ran this question at programme level, producing nine
-amendments (retire ODR-0014, spawn ODR-0015, name ODR-0016, etc.).
-[Scope-Check 2 — Hive-mind vs Agent fan-out](../odr/council/scope-check-2-hive-vs-swarm.md)
-(2026-05-26) ran the same shape at the methodology-tooling level —
-verdict 5-1 SELECTIVE, two pilots named (B2 = S005; B3 = S011 Q8); B1
-(consensus-mode framework) landed in ODR-0001 via direct amendment
-2026-05-27, unblocking the pilots; A9 (Gandon-Guizzardi methodology
-gap) still pending but not strictly blocking. Each session-level scope
-check follows the same shape; if the scope check itself produces
-substantive findings, escalate to a programme-level meta-Council (a
-"Scope-Check N" record).
+**Scope-check precedent:** [Scope-Check 1](../odr/council/scope-check-1-programme.md) and [Scope-Check 2](../odr/council/scope-check-2-hive-vs-swarm.md) were programme-level meta-Councils. Session-level scope checks follow the same shape; substantive findings escalate to a new Scope-Check N record.
 
-1. **Ratify-as-is.** The stub is coherent; the listed questions cover its
-   load-bearing decisions. Proceed with the session.
-2. **Re-scope.** The stub is too narrow (the decision needs more
-   surrounding context — fold into a neighbouring ODR) or too broad (the
-   decision is two independent decisions — recommend a spawn per §6).
-   Record the re-scope recommendation; the session may either proceed with
-   reduced scope or be postponed until the re-scope lands.
-3. **Retire.** The stub is the wrong ODR entirely (the decision belongs in
-   another corpus, e.g. ADR; or session-001 already settled it
-   substantively and only an author-only record is needed). Mark
-   `status: rejected` with `## Decision: "ODR retired"` and a pointer.
-
-Scope-check inputs: the stub's `## Context`, the stub's `## Decision`, the
-shared-question routing (§4.1), and a comparison to the adjacent ODRs
-(was this decision actually deliberated in a neighbouring session?).
-Output: a one-paragraph note appended to the session's convening block.
-
-Concrete pre-flight candidates from this plan:
+**OPDA candidates:**
 
 - **ODR-0008 (descriptive attributes) sub-module split** — Scope-Check 1 Q2
   vote 2-7 *deferred* the split. Two named candidate splits with triggers:
@@ -1595,15 +1466,10 @@ does not replace the session; it precedes it.
 
 ## 12. Out of scope for this plan
 
-- ADRs (cross-corpus). Any ADR-side amendment surfaced by these sessions is
-  routed to `adr-create` and tracked under the ADR programme.
-- Real-world OPDA governance (WGs, Sub-Committees, AGM ratification). Per
-  ODR-0001 §"Consequences": Council verdicts shape *proposals*; OPDA
-  governance shapes *adoption*. These sessions produce inputs to that
-  governance; they do not substitute for it.
-- Implementation work (Turtle files, SHACL shape libraries, generator code).
-  ODR ratification *unblocks* implementation; this plan covers the
-  ratification only.
+- **Implementation of the ratified ODRs** — Turtle files, SHACL shape libraries, generator code, JSON-LD contexts, CI hooks, build pipelines. This is the **separate ADR programme** referenced in §1. Each ODR accepted by Council triggers one or more implementation ADRs under `docs/adr/`; the ADR programme has its own plan (not this one). The boundary is the DCAP "ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs" rule.
+- **Cross-corpus ADR amendments surfaced during Council sessions** — routed to `adr-create` and tracked under the ADR programme, not this plan.
+- **Real-world OPDA governance** (WGs, Sub-Committees, AGM ratification). Per ODR-0001 §Consequences: Council verdicts shape *proposals*; OPDA governance shapes *adoption*. Council sessions produce inputs to that governance; they do not substitute for it. The handoff is declared in the [adoption record §Real-world Governance Handoff](../odr/council/adoption.md).
+- **Substrate operations details** — MCP tool internals, hive-mind sub-queen escalation algorithms, persistence backend choices. These are defined in ODR-0001 §Substrate operations + §Config options; the plan invokes them but does not re-specify them.
 
 ## References
 

@@ -1,9 +1,10 @@
 ---
 status: proposed
-date: 2026-05-20
+date: 2026-05-27
 kind: architecture
 tags: [vocabulary, catalogue]
 scope: []
+council: session-002
 supersedes: [ODR-0014]
 depends-on: [ODR-0001]
 implements: []
@@ -71,6 +72,63 @@ Listed explicitly so future modellers know the question has been asked and the a
 | **W3C Verifiable Credentials Data Model 2.0** | `cred` | Verifiable Credentials — `cred:VerifiableCredential`, `cred:VerifiablePresentation`, related issuer/holder/verifier roles. Catalogue-admitted by Scope-Check 1 (Q7c, 2026-05-26); activation deferred to [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md). | Session-009 Q8 surfaces real VC-side decisions, OR session-012 Phase-2 consent receipts land, OR a real wallet/DID consumer enters scope. |
 | **W3C DID Core 1.0** | `did` | Decentralised Identifiers — `did:web`, `did:key`, `did:jwk` resolution; DID Documents; signature suites. Catalogue-admitted by Scope-Check 1 (Q7c); activation deferred to [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md). | Same as `cred:` — VC ecosystem and DID resolution arrive together. |
 
+### Promotion and demotion criteria
+
+*Added by [Session 002](./council/session-002-vocabulary-catalogue.md) Q3, drawing on the DCMI Usage Board admission test (Baker, Bechhofer, Isaac, Miles 2013), FIBO Production-tier discipline (Kendall+Davis), W3C TAG cool-URIs persistence (Hendler), and Cagle DA's operational-check demand. 9-0 vote.*
+
+**Conditional → Core promotion.** ALL FOUR conditions must hold:
+
+1. **Named consumer.** At least one OPDA module ODR cites the vocabulary in its `## Rules`, with the vocabulary's terms appearing in published Turtle (not just plan-stage prose).
+2. **Layer count.** Used in ≥3 independent OPDA modules / layers.
+3. **SHACL gate.** A SHACL gate enforcing the Conditional-layer scope has been published (per H&M ADR-0147 R12 pattern referenced in `### Enforcement`).
+4. **Failure-mode test.** A diagnostic exemplar (per Session 001 Q1 amendment lineage) where *removing* the vocabulary causes a specific named test to fail, demonstrating load-bearing work rather than decorative annotation.
+
+**Demotion is asymmetric** (Allemang+Hendler joint position; Hendler's preserved Scope-Check 1 Q4 audit-trail concern):
+
+- **Core never demotes.** URI-graph break — every downstream module dereferences Core, every published header includes its prefix. Deprecation is recorded in `## Change log` (the term is `dcterms:isReplacedBy`-style retired) but the row stays. W3C Process precedent (REC + ERRATA + REC-revision keeps the lineage visible).
+- **Conditional → Defer** is editorial; requires (a) non-use across one full Phase OR (b) Core entry now provides the semantics. Named voter; Change Log row attribution mandatory.
+- **Defer rows never delete.** Audit-trail discipline — reviewed-and-not-adopted is a governance act; row stays so future maintainers don't re-litigate. FOAF / BBO / ArchiMate are canonical.
+- **One-step-per-Change-Log-row** (Hendler sub-rule): tier movements cross one boundary at a time (Defer → Conditional → Core; no Defer → Core skip).
+
+**De-listing** (Defer → out of catalogue) is reserved for:
+
+- The W3C / maintainer formally withdraws the vocabulary.
+- The OPDA WG (or adopting project's governance per ODR-0001 §Adoption) rules the vocabulary out by name.
+
+Otherwise Defer entries persist indefinitely — the recurring-question record is the value.
+
+**Review cadence** (Davis position). Annual author-only review reads current W3C status, refreshes the `W3C status` field per entry, and proposes movements per the four-condition test; only contested rows escalate to Reduced Council. New-vocabulary admission requires Reduced Council minimum (per ODR-0001 §When to use the Council).
+
+### Profile-pinning ownership
+
+*Added by [Session 002](./council/session-002-vocabulary-catalogue.md) Q5. Singapore Framework's DCAP-by-consumer pattern (Nilsson, Baker, Johnston 2008) is the precedent. 9-0 vote with Cagle DA full withdrawal.*
+
+When an admitted Conditional entry points at a *profile slice* of a large upstream vocabulary (DPV's `dpv-pd` slice; an eventual FIBO module slice; an ODRL Common Vocabulary slice; PROV-O qualified-attribution forms), the profile authoring rule chain is:
+
+1. **Module proposes.** Profile-pin proposals originate in the consuming module's Council session (e.g. ODR-0012 proposes `dpv-pd` slice; ODR-0010 proposes DASH-for-form-driving slice; ODR-0009 proposes PROV-O qualified-attribution slice).
+2. **Catalogue records.** This catalogue records the pin in the entry's `Profile pin` column with attribution to the consuming session, and adds a Change Log row.
+3. **Module veto.** Module owners retain veto over pins affecting their shape graphs.
+4. **Cross-module conflict default to union.** Where multiple modules consume the same vocabulary with different profile needs (e.g. DASH for ODR-0010 form-driving AND ODR-0013 identity-key validation), the catalogue records the **union** of pinned slices, not the most restrictive.
+5. **WG ratifies disputes only.** The adopting project's WG ratifies only when modules cannot agree; otherwise the chain is module-proposes → catalogue-records → consumed.
+
+The catalogue does NOT author profile shape internally.
+
+### Reference-not-import (normative)
+
+*Added by [Session 002](./council/session-002-vocabulary-catalogue.md) Q4. Hoists Adoption-pattern rule 3 to first-class normative status. 9-0 vote with Cagle DA full withdrawal on the three-value `adoption-mode` field qualification.*
+
+Every Conditional-tier entry adopts by **reference, not import**, as the default MUST. Each row declares its `adoption-mode`:
+
+| `adoption-mode` | When | Discipline |
+|---|---|---|
+| `reference-only` (default) | The vocabulary's terms are used as annotations, type assertions, or single-class hooks. The consumer's processor can dereference the canonical URI as needed. | Canonical URI used in OPDA ontologies; **no `owl:imports`**; local SHACL constraints written in the consuming OPDA layer. External consumers fetch the upstream vocabulary themselves. Berners-Lee 2006 LDP Principles 2–3; W3C TAG "Cool URIs Don't Change" (2008). |
+| `slice-import` | The vocabulary's class hierarchy is load-bearing on OPDA SHACL shapes (e.g. DPV lawful-basis; ODRL action hierarchy if activated; FIBO when activated), OR the vocabulary contributes a controlled vocabulary consumed by `sh:in` (e.g. SSSOM/SEMAPV when activated). | A *named* profile slice is imported via `owl:imports` of the slice URI, not the whole vocabulary. Used only where the slice is small and the reasoner / SHACL processor needs the axioms. Pair with the `Profile pin` field (per `### Profile-pinning ownership`). Per-row justification in `Notes`. |
+| `full-import` | The vocabulary is a spec the OPDA `## Rules` reference as authoritative (SHACL, OWL 2, RDF 1.2 — Core tier). | `owl:imports` of the whole vocabulary. Reserved for Core tier. Per-row justification in `Notes` if applied to Conditional. |
+
+A row MUST justify any choice other than `reference-only` with a one-line rationale in the row's `Notes` column. The Council session that authored the choice attributes via `## Change log`.
+
+Rationale: reference-only is the FIBO discipline (`fibo-fnd-utl-av` references `dct:` without `owl:imports`); the symmetric W3C TAG persistence rule applied to imports — don't import URIs you haven't committed to maintaining. Pandit's ODR-0012-side concern on `dpv-pd` bundled-import for runtime PII hierarchy validation is recorded as an ODR-0012 implementation concern (the catalogue rule is `reference-only`; ODR-0012 may author `slice-import` when the lawful-basis class vocabulary surfaces).
+
 ### Change log
 
 This catalogue is governed in place: amendments to tiering or rationale are recorded as rows here, attributed to the Council session that authored them. The amendment-ODR pattern (formerly ODR-0014) is **retired** by Scope-Check 1 (2026-05-26, Q4 vote 7-1-1) on FIBO / DCMI / W3C-WD-discipline grounds; provenance is preserved here, not in a parallel record. Hendler's dissent on the retirement ("every governance act stays permanently") is recorded in the follow-up plan's risks (`docs/ontology/plan/council-followup-sessions.md` §9), not silenced.
@@ -85,9 +143,17 @@ This catalogue is governed in place: amendments to tiering or rationale are reco
 | 2026-05-20 | Session 001 Q2 | Dublin Core | Rationale reclassified: "commons substrate" (was "administrative metadata"). No tier change. DCAT, PROV-O, SKOS, VANN all already depend transitively on `dct:` (Baker); adopting it formalises the implicit. |
 | 2026-05-20 | Session 001 Q2 | BBO, ArchiMate | Moved Conditional → Defer (out for this programme). Unanimous — no process- or capability-modelling task. |
 | 2026-05-20 | Session 001 Q2 | OBO RO | Question raised (Kendall: transitive part-of; Davis: biology-flavoured, use `dct:isPartOf`). No consensus; left open; routed to [ODR-0005](./ODR-0005-property-land-identity-crux.md). |
-| 2026-05-20 | Session 001 Q2 | FOAF | Briefly reopened; **ruled out programme-wide**. Defer-row negative on FOAF stands. Kind-layer choice (W3C Org vs bespoke `opda:`) routed to [ODR-0006](./ODR-0006-agents-and-roles.md); `prov:Agent` for provenance role only. |
+| 2026-05-20 | Session 001 Q2 | FOAF | Briefly reopened; **ruled out programme-wide**. Defer-row negative on FOAF stands. Kind-layer choice (W3C Org vs bespoke `opda:`) routed to [ODR-0006](./ODR-0006-agents-and-roles.md); `prov:Agent` for provenance role only. (Reason text tightened by Session 002 Q12 — see row below.) |
 | 2026-05-26 | [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md) Q7c | `cred:`, `did:` | Admitted to Defer tier (W3C VCDM 2.0; DID Core 1.0). Activation deferred to [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md). Vote 8-1 (Davis + Pandit spawn-now; majority defer-with-named-spawn; Cagle defer-without-spawn). |
 | 2026-05-26 | Scope-Check 1 Q4 | Catalogue governance pattern | ODR-0014 (Vocabulary Catalogue Amendments) retired. Amendments now live here as `## Change log` rows; no parallel amendment-record. Vote 7-1-1 (Hendler dissent on permanence preserved in plan §9). |
+| 2026-05-27 | [Session 002](./council/session-002-vocabulary-catalogue.md) (umbrella) | Catalogue meta-discipline | (Q1) Three-tier cut confirmed (8-1). (Q2) `W3C status`, `Adoption mode`, `Profile pin` fields added to Conditional table (9-0). (Q3) New `### Promotion and demotion criteria` subsection: four-condition Conditional→Core promotion (named consumer + layer count + SHACL gate + failure-mode test); asymmetric demotion; one-step-per-row sub-rule; annual review cadence (9-0; Cagle DA withdrew). (Q4) New `### Reference-not-import (normative)` subsection + three-value `adoption-mode` field (9-0; Cagle DA withdrew). (Q5) New `### Profile-pinning ownership` subsection — module-owner-proposes / catalogue-records / WG-disputes-only / cross-module-conflicts-default-to-union (9-0; Cagle DA withdrew). (Q6) `W3C status` three-part field (body + status + date) on Conditional + Core tables (9-0). |
+| 2026-05-27 | Session 002 Q7 | OWL-Time | Actively-adopted Conditional confirmed. Four-part demotion trigger named: (1) end-of-Phase-3 gate; (2) zero downstream consumers in published Turtle (`time:Interval`/`time:Instant` absent from build output); (3) published-Turtle audit by Queen of demotion session; (4) named voter ratifies. If demotion fires, the Allemang/Davis Session 001 dissent ("await a concrete consumer") is cited in the demotion row. |
+| 2026-05-27 | Session 002 Q8 | DCAT | Conditional confirmed with four-trigger Core-promotion gate (any one fires): (1) OPDA publishes `dcat:Dataset` to named third-party catalogue (data.gov.uk, data.europa.eu, HMLR, ONS, GOV.UK Open Data, data.world); (2) OPDA publishes own catalogue endpoint; (3) consuming application reads OPDA datasets via DCAT discovery; (4) OPDA ontology itself registered as `dcat:Dataset` on external catalogue. Davis Session 001 Core-push position vindicated by gate construction. |
+| 2026-05-27 | Session 002 Q9 | SSSOM / SEMAPV | Defer confirmed; named-event re-open trigger: (1) named external vocabulary mapping being authored — one of {FIBO, INSPIRE, HMLR RDF, ESCO, ISO 3166}; (2) named consumer for the mapping exists; (3) named Council session triggers re-evaluation. Activation moves Defer → Conditional with `Profile pin: mapping-records-only`. Cagle Session 001 dissent (≈5-4) preserved as live position. |
+| 2026-05-27 | Session 002 Q10 | ODRL | Vocabulary admission confirmed; policy-authoring activation owned by [ODR-0012](./ODR-0012-data-governance-layer.md) Q4 with three named-event triggers (any one activates): (1) ODR-0012 authors consent-receipt instance in published Turtle; (2) ODR-0009 authors VC-tied policy instance (`cred:VerifiableCredential` + `odrl:Policy`); (3) external policy-authoring consumer (data licensor; FCA / ICO / EU regulatory technical standards / UK MEES guidance) cites OPDA in architecture documentation OR requests ODRL-typed Turtle. Cross-references Q13 — consent-receipt instance is also a `cred:`/`did:` activation trigger; coupled-trigger event records single Change Log row. |
+| 2026-05-27 | Session 002 Q11 | OBO RO | **Defer** confirmed (5-2-2). Genuine formal-pair split recorded: Gandon DEFER (LDP Principle 3; biology-flavoured dereferenceability); Guizzardi ADOPT CONDITIONAL (well-founded mereology over `dct:isPartOf` editorial-strength; re-alias under `opda:` with `owl:equivalentProperty`). Kendall ADOPT-if-≥2-modules; Davis REJECT. Routing: question owned by [ODR-0005](./ODR-0005-property-land-identity-crux.md) follow-up session, where IC discipline + diagnostic exemplars over the flat→block→estate hard case (especially when flat UPRN is absent) adjudicate. Re-open trigger: an OPDA SPARQL query produces a wrong answer under `dct:isPartOf` that `ro:part-of` would correct, OR ODR-0005's IC discipline requires well-founded mereology unreachable via `dct:isPartOf` + `opda:` local predicates. Cagle DA withdrew (Defer + named re-open trigger meets withdrawal condition). |
+| 2026-05-27 | Session 002 Q12 | FOAF | Rule-out reason recorded. **(1) Superseded by composition**: `prov:Agent` (PROV-O Rec 2013) + W3C Org Ontology (Reynolds 2014, W3C Rec) + `dct:` (Core tier) + `opda:Person`/`opda:Organisation` ([ODR-0006](./ODR-0006-agents-and-roles.md)) covers the FOAF surface OPDA needs with UFO category commitments + ICs FOAF does not provide (per ODR-0001 A9 discipline for `kind: pattern` records). **(2) Shape-of-the-Web era + Kind-level category mismatch**: FOAF's "Friend of a Friend" social-Web semantics (Brickley & Miller 2014, FOAF 0.99 spec) is a category mismatch for property-data trust framework (regulated conveyancers, lenders, AML-checked participants — not a social acquaintance network). FOAF's structured-name surface (`foaf:firstName` / `foaf:familyName`) is superseded by `opda:Name` (ODR-0006 — structured datatype with UFO Mode commitment and IC over name-change / marriage / transliteration / dual-citizen multi-name hard cases). Defer-row negative on FOAF stands. |
+| 2026-05-27 | Session 002 Q13 | `cred:`, `did:` | Defer-tier admission confirmed (per Scope-Check 1 Q7c, 8-1). Third activation trigger operationalised: "real wallet/DID consumer enters scope" → **named wallet/DID consumer** (UK gov OneLogin; EU eIDAS 2.0 wallet provider; gov.uk Verify successor) cites OPDA in architecture documentation OR requests `cred:`/`did:`-typed Turtle from OPDA's namespace. Hendler one-step-per-Change-Log-row sub-rule (Defer → Conditional → Core; no skipping) recorded in `### Promotion and demotion criteria`. |
 
 ### Adoption pattern (applies to every Conditional entry)
 
