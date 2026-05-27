@@ -8,10 +8,10 @@ scope:
   - pdtf-v3:verifiedClaims.verification
   - pdtf-v3:verifiedClaims.verification.evidence
   - pdtf-v3:verifiedClaims.claims
-council: session-001
+council: session-009
 supersedes: []
-depends-on: [ODR-0004, ODR-0005]
-implements: [ODR-0003]
+depends-on: [ODR-0004, ODR-0005, ODR-0006, ODR-0011, ODR-0015]
+implements: [ODR-0003, ODR-0017]
 ---
 
 # Claims, Evidence & Provenance
