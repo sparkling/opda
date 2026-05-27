@@ -51,6 +51,14 @@ documentation). Small files (≤ ~50 lines) per Davis's BBC test-suite disciplin
 | `claim-with-electronic-record-evidence.ttl` | Identity claim supported by HMRC API tax-record. Tests electronic-record evidence-type at eIDAS Substantial. Q7 SHACL-over-PROV `sh:xone` evidence-type discrimination. |
 | `claim-with-vouch-evidence.ttl` | Residency claim supported by SRA-solicitor vouch. Tests vouch-evidence type at eIDAS Low (corroborative not authoritative regardless of voucher quality). Q2 `prov:hadRole opda:Voucher` for the voucher's qualified attribution alongside the subject's attribution. |
 
+### Input to S007 — Transactions & Lifecycle (pending; between-session prep)
+
+| Exemplar | Hard case it isolates |
+|---|---|
+| `simple-transaction-with-milestones.ttl` | Single freehold sale with five canonical milestones (instruction / offer accepted / exchange / completion / registration). Tests Q1 Transaction-as-Relator + Q2 milestones as `prov:atTime` instants + Q3 status as Phase + Q6 expected-vs-actual times. |
+| `chain-of-transactions.ttl` | Three-link chain via buyer-also-seller participants. Tests Q4 chain modelling — recursive Relator predicate (`opda:dependsOnTransaction`) AND first-class `opda:TransactionChain` resource side-by-side; the Council picks the canonical shape. |
+| `lease-extension-transaction.ttl` | Statutory lease extension under LRHUDA 1993 — leasehold term extended 99→189 years; LegalEstate persists (S005 §3b); RegisteredTitle records lifecycle event (S005 §3c). Tests Q5 lease term as `time:ProperInterval` + Q1 Transaction-vs-Event distinction. Hendler's S005 Q5 lease-extension consumer-fails case manifest. |
+
 ## Expected-report pairing
 
 Per ODR-0004 §8a each exemplar TTL **MUST** be paired with an

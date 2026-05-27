@@ -1,0 +1,104 @@
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0007 (Transactions & Lifecycle).
+# Situation: straightforward freehold sale; one transaction with all five canonical milestones
+# (instruction, offer accepted, exchange of contracts, completion, registration). No chain.
+# Tests Q1 Transaction-as-Relator framing; Q2 milestones as `prov:atTime` instants; Q6
+# expected-vs-actual milestone times via planned-vs-occurred PROV-O flavour.
+# Status: provisional. Namespace pending — ODR-0004 status: proposed (WG-pending);
+# ODR-0007 status: proposed (S007 to ratify).
+
+@prefix opda:    <https://opda.uk/ns/#> .
+@prefix opda-x:  <https://opda.uk/data/exemplar/simple-transaction-with-milestones/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Simple freehold sale — Transaction Relator with five milestones; no chain" ;
+    dct:status "draft" ;
+    dct:references <ODR-0007> , <ODR-0006> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Q1 Transaction-as-Relator: one opda:Transaction mediating Seller (Person via Role) + Buyer (Person via Role) + the LegalEstate being conveyed (per S005 3-class commitment). Q2 milestones as `prov:atTime` instants — each milestone is a reified `prov:Activity`. Q3 status as Phase — proposed/active/exchanged/completed; per S011 Phase label scheme. Q6 expected-vs-actual times — both recorded per milestone; actual is `prov:atTime` of the executed Activity, expected is `opda:plannedAtTime` on the Plan that prefigured it." .
+
+# Property (S005 3-class)
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Physical dwelling at 88 Forest Drive, Norwich" ;
+    opda:uprn "100070444000" .
+
+opda-x:estate
+    a opda:LegalEstate ;
+    rdfs:label "Freehold estate in 88 Forest Drive" ;
+    opda:tenureKind "freehold" .
+
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title NK445566 (freehold)" ;
+    opda:titleNumber "NK445566" .
+
+opda-x:title opda:identifiesSameProperty opda-x:property .
+opda-x:estate opda:identifiesSameProperty opda-x:property .
+
+# Persons + Roles
+opda-x:seller-person a opda:Person ; rdfs:label "Diana Foster (seller)" .
+opda-x:buyer-person  a opda:Person ; rdfs:label "Robert Khan (buyer)" .
+
+opda-x:seller-role
+    a opda:Seller ;
+    rdfs:label "Seller Role borne by Diana Foster in this transaction" ;
+    opda:rolePlayer opda-x:seller-person .
+
+opda-x:buyer-role
+    a opda:Buyer ;
+    rdfs:label "Buyer Role borne by Robert Khan in this transaction" ;
+    opda:rolePlayer opda-x:buyer-person .
+
+# Transaction (UFO Relator candidate per Q1)
+opda-x:transaction
+    a opda:Transaction ;
+    rdfs:label "Freehold sale of 88 Forest Drive (Foster → Khan, 2024)" ;
+    opda:status "completed" ;     # S011 Phase label scheme
+    opda:mediates opda-x:seller-role , opda-x:buyer-role ;
+    opda:concerns opda-x:estate .
+
+# Milestones (Q2 — instants as reified prov:Activity)
+opda-x:milestone-instruction
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Instruction milestone" ;
+    opda:milestoneKind "instruction" ;
+    prov:atTime "2024-04-10T09:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
+
+opda-x:milestone-offer-accepted
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Offer accepted milestone" ;
+    opda:milestoneKind "offerAccepted" ;
+    prov:atTime "2024-05-02T16:30:00Z"^^xsd:dateTime ;
+    opda:plannedAtTime "2024-04-25T00:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
+
+opda-x:milestone-exchange
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Exchange of contracts milestone" ;
+    opda:milestoneKind "exchange" ;
+    prov:atTime "2024-06-18T14:00:00Z"^^xsd:dateTime ;
+    opda:plannedAtTime "2024-06-15T00:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
+
+opda-x:milestone-completion
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Completion milestone" ;
+    opda:milestoneKind "completion" ;
+    prov:atTime "2024-07-12T12:00:00Z"^^xsd:dateTime ;
+    opda:plannedAtTime "2024-07-12T00:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
+
+opda-x:milestone-registration
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Registration at HMLR milestone" ;
+    opda:milestoneKind "registration" ;
+    prov:atTime "2024-08-30T10:15:00Z"^^xsd:dateTime ;
+    opda:plannedAtTime "2024-07-26T00:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
