@@ -29,6 +29,16 @@ jobs:
         working-directory: tools/opda-gen
         run: pip install -e .[dev]
 
+      # The traceability gate reads the upstream BASPI5 JSON schema at
+      # source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json. That
+      # tree is an external PDTF repo, gitignored locally (not a git submodule),
+      # so `submodules: recursive` does not provide it — clone it explicitly,
+      # pinned to the commit the ontology was traced against.
+      - name: Fetch PDTF schemas (external traceability dependency)
+        run: |
+          git clone --quiet https://github.com/Property-Data-Trust-Framework/schemas.git source/03-standards/schemas
+          git -C source/03-standards/schemas checkout --quiet 996a56adc297e762bbee935a9ae2883df791e1d4
+
       - name: Round-trip equivalence (Confirmation #3, #6)
         run: pytest tests/baspi5_round_trip/test_round_trip.py -v
 
@@ -99,10 +109,7 @@ jobs:
         working-directory: tools/opda-gen
         run: pip install -e .[dev]
 
-      - name: Regenerate expected reports
-        run: opda-gen emit-exemplar-reports --ontology-dir /tmp/exemplar-roundtrip
-
-      - name: Copy ontology fixtures
+      - name: Regenerate expected reports into a clean fixture dir
         run: |
           mkdir -p /tmp/exemplar-roundtrip/exemplars
           cp -r source/03-standards/ontology/*.ttl /tmp/exemplar-roundtrip/
