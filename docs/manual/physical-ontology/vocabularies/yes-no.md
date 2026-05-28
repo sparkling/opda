@@ -51,6 +51,35 @@ opda:YesNoScheme
     skos:notation "Yes" .
 ```
 
+## Scheme membership graph
+
+![opdayesnoscheme-membership-graph](diagrams/yes-no/opdayesnoscheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:YesNoScheme membership graph
+    accDescr: 2 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:YesNoScheme]:::scheme
+    C1[opda:yesNo/No]:::concept
+    C2[opda:yesNo/Yes]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 This is the most-referenced scheme. Used by every BASPI5 Yes/No discriminator question (e.g. `isInsured`, `hasBeenFlooded`, `hasSmartHomeSystems`, `hasSprayFoamInstalled`, `isSupplyMetered`, `isGroundRentPayable`, `isLocatedOverCommercialPremises`, `soldWithVacantPossession`, `sellerContributesToServiceCharge`, `areBoundariesUniform`, `hasValidGuaranteesOrWarranties`).

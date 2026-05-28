@@ -12,6 +12,63 @@ Statutory lease extension under LRHUDA 1993 — leasehold term extended 99→189
 
 Cross-link: [Concept tier — LeaseExtensionEvent hard cases](../../concept/property/lease-extension-event.md#hard-cases).
 
+## Exemplar instance graph
+
+![lease-extension-transaction-exemplar-instance-graph](diagrams/lease-extension-transaction/lease-extension-transaction-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: lease-extension-transaction exemplar instance graph
+    accDescr: Statutory lease extension. The LegalEstate persists through the event (S005 §3b Rule 1). Original LeaseTerm (99 years) is superseded by current LeaseTerm (189 years) via prov:wasDerivedFrom. The extension-activity co-types as Transaction AND LeaseExtensionEvent — the dual typing reflects the property-lifecycle vs relator perspectives.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction/>
+    %% @prefix prov: <http://www.w3.org/ns/prov#>
+    %% @prefix time: <http://www.w3.org/2006/time#>
+
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef event fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef interval fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:1px,color:#E65100
+
+    P["opda-x:property<br/>&lt;b&gt;Property&lt;/b&gt;<br/>Flat 12 Cedar House"]:::instance
+    E["opda-x:estate-leasehold<br/>&lt;b&gt;LegalEstate&lt;/b&gt;<br/>persists through extension"]:::instance
+    T["opda-x:title<br/>&lt;b&gt;RegisteredTitle&lt;/b&gt;<br/>MN777888"]:::instance
+
+    LT0["opda-x:lease-term-original<br/>&lt;b&gt;LeaseTerm&lt;/b&gt; (99 yrs)"]:::interval
+    LT1["opda-x:lease-term-current<br/>&lt;b&gt;LeaseTerm&lt;/b&gt; (189 yrs)"]:::interval
+
+    Ev["opda-x:extension-activity<br/>&lt;b&gt;Transaction AND LeaseExtensionEvent&lt;/b&gt;"]:::event
+
+    Premium["GBP 42500.00"]:::literal
+    EvTime["2024-09-30T15:00:00Z"]:::literal
+
+    E -->|opda:leaseTerm| LT1
+    LT1 -->|prov:wasDerivedFrom| LT0
+    LT0 -->|opda:retiredBy| Ev
+
+    T -->|opda:identifiesSameProperty| P
+    E -->|opda:identifiesSameProperty| P
+
+    Ev -->|prov:atTime| EvTime
+    Ev -->|opda:premiumPaid| Premium
+    Ev -->|opda:appliesTo| E
+    Ev -->|opda:updatesRegistryRecord| T
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

@@ -8,6 +8,92 @@ tags: [physical-ontology, shacl-af, sparql, non-blocking-rules]
 
 Per [ODR-0017](../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md) §1a, OPDA emits 11 non-blocking quality rules as SHACL Advanced Features (SHACL-AF) `sh:SPARQLRule` constructions. Each rule materialises a derived predicate at `sh:Info` severity (one exception: PII rule at `sh:Warning`); consumers can route on the materialised predicate without the rule itself blocking conformance.
 
+## Rule-to-ODR citation graph
+
+![shacl-af-rule-citation-graph--11-rules-and-the-odrs-that-cite-each-as-the-rule-source](diagrams/shacl-af-rules/shacl-af-rule-citation-graph--11-rules-and-the-odrs-that-cite-each-as-the-rule-source.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1F5FE", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: SHACL-AF rule citation graph — 11 rules and the ODRs that cite each as the rule source
+    accDescr: Each SHACL-AF rule materialises a derived predicate; this graph shows the rule, the ODR that names it as a citing site, the module it lives in, and the derived predicate it constructs.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+
+    classDef rule fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef odr fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+    classDef derived fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+
+    R1[opda:UPRNSuccessionRule<br/>property]:::rule
+    R2[opda:DeprecationChainRule<br/>foundation]:::rule
+    R3[opda:INSPIRESuccessionRule<br/>property]:::rule
+    R4[opda:PROVOClaimsRule<br/>claim]:::rule
+    R5[opda:IdentifierSuccessionRule<br/>agent]:::rule
+    R6[opda:CapacityAuthorityMatchRule<br/>agent]:::rule
+    R7[opda:LeaseTermSuccessionRule<br/>transaction]:::rule
+    R8[opda:MilestoneVarianceRule<br/>transaction]:::rule
+    R9[opda:VerificationActivitySuccessionRule<br/>claim]:::rule
+    R10[opda:PIIWithoutDPVCoAnnotationRule<br/>foundation cross-cutting]:::warning
+
+    O1[ODR-0005 §6a<br/>UPRN as contingent identifier]:::odr
+    O2[ODR-0011 §5a<br/>SKOS deprecation lifecycle]:::odr
+    O3[ODR-0015 §4a<br/>INSPIRE Identifier succession]:::odr
+    O4[ODR-0009 §Q7<br/>claims provenance chain]:::odr
+    O5[ODR-0006 §Q1<br/>Person IC over name-change]:::odr
+    O6[ODR-0006 §Q4<br/>Capacity / authority split]:::odr
+    O7[ODR-0007 §Q5<br/>Lease term as interval]:::odr
+    O8[ODR-0007 §Q6<br/>Expected-vs-actual variance]:::odr
+    O9[ODR-0009 §Q7<br/>Re-verification chains]:::odr
+    O10[ODR-0012 §Q5<br/>DPV co-annotation discipline]:::odr
+
+    D1[opda:hasUPRNSuccessionStatus]:::derived
+    D2[opda:hasDeprecationStatus + opda:hasSuccessor]:::derived
+    D3[opda:hasINSPIRESuccessionStatus]:::derived
+    D4[opda:hasProvenanceChainStatus]:::derived
+    D5[opda:hasIdentifierSuccessionEvent]:::derived
+    D6[opda:hasCapacityAuthorityMatchStatus]:::derived
+    D7[opda:hasLeaseTermSuccessionStatus]:::derived
+    D8[opda:hasVarianceStatus + opda:hasVarianceDays]:::derived
+    D9[opda:hasVerificationSuccessionStatus]:::derived
+    D10[opda:hasPIIWithoutCoAnnotationFlag]:::derived
+
+    R1 -->|dct:source| O1
+    R2 -->|dct:source| O2
+    R3 -->|dct:source| O3
+    R4 -->|dct:source| O4
+    R5 -->|dct:source| O5
+    R6 -->|dct:source| O6
+    R7 -->|dct:source| O7
+    R8 -->|dct:source| O8
+    R9 -->|dct:source| O9
+    R10 -->|dct:source| O10
+
+    R1 -->|sh:construct| D1
+    R2 -->|sh:construct| D2
+    R3 -->|sh:construct| D3
+    R4 -->|sh:construct| D4
+    R5 -->|sh:construct| D5
+    R6 -->|sh:construct| D6
+    R7 -->|sh:construct| D7
+    R8 -->|sh:construct| D8
+    R9 -->|sh:construct| D9
+    R10 -->|sh:construct| D10
+```
+
+</details>
+
 ## Pattern
 
 Each rule sits inside a `sh:NodeShape` that:

@@ -87,6 +87,43 @@ opda:SellersCapacityScheme
     skos:notation "Under Power of Attorney" .
 ```
 
+## Scheme membership graph
+
+![opdasellerscapacityscheme-membership-graph](diagrams/sellers-capacity/opdasellerscapacityscheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:SellersCapacityScheme membership graph
+    accDescr: 6 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:SellersCapacityScheme]:::scheme
+    C1[opda:sellersCapacity/Assistant]:::concept
+    C2[opda:sellersCapacity/Legal-Owner]:::concept
+    C3[opda:sellersCapacity/Mortgagee-in-Possession]:::concept
+    C4[opda:sellersCapacity/Other]:::concept
+    C5[opda:sellersCapacity/Personal-Representative-for-a-Deceased-Owner]:::concept
+    C6[opda:sellersCapacity/Under-Power-of-Attorney]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+    C3 -->|skos:inScheme| S
+    C4 -->|skos:inScheme| S
+    C5 -->|skos:inScheme| S
+    C6 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 - `opda:Baspi5_SellersCapacityShape` (overlay via `sh:xone` discriminating "Legal Owner" / "Mortgagee in Possession" simple cases from "Personal Representative" / "Power of Attorney" / "Assistant" / "Other" cases that require `opda:hasEvidencedAuthority`)

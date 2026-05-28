@@ -78,6 +78,41 @@ opda:BuiltFormScheme
     skos:notation "Semi-detached" .
 ```
 
+## Scheme membership graph
+
+![opdabuiltformscheme-membership-graph](diagrams/built-form/opdabuiltformscheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:BuiltFormScheme membership graph
+    accDescr: 5 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:BuiltFormScheme]:::scheme
+    C1[opda:builtForm/Detached]:::concept
+    C2[opda:builtForm/End-terrace]:::concept
+    C3[opda:builtForm/Mid-terrace]:::concept
+    C4[opda:builtForm/Other]:::concept
+    C5[opda:builtForm/Semi-detached]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+    C3 -->|skos:inScheme| S
+    C4 -->|skos:inScheme| S
+    C5 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 - `opda:Baspi5_PropertyShape` (overlay; `sh:in` subset Detached / Semi-detached / Mid-terrace / End-terrace / Other)

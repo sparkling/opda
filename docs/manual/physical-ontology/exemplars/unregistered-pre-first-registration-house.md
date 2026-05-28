@@ -12,6 +12,52 @@ LegalEstate-without-RegisteredTitle cardinality test (S005 Q5): a rural cottage 
 
 Cross-link: [Concept tier — Property hard cases](../../concept/property/property.md#hard-cases).
 
+## Exemplar instance graph
+
+![unregistered-pre-first-registration-house-exemplar-instance-graph](diagrams/unregistered-pre-first-registration-house/unregistered-pre-first-registration-house-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: unregistered-pre-first-registration-house exemplar instance graph
+    accDescr: Two RDF instances — Property and LegalEstate. No RegisteredTitle (first registration not yet completed). UPRN absent (Cagle graceful-degradation case).
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/unregistered-pre-first-registration-house/>
+
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef absent fill:#ECEFF1,stroke:#455A64,stroke-width:2px,stroke-dasharray:5 5,color:#263238
+
+    P["opda-x:property<br/>&lt;b&gt;Property&lt;/b&gt;"]:::instance
+    E["opda-x:estate<br/>&lt;b&gt;LegalEstate&lt;/b&gt;<br/>common-law freehold"]:::instance
+
+    Addr["7 Old Lane, Lower Slaughter, Gloucestershire"]:::literal
+    FirstReg["true (isFirstRegistration)"]:::literal
+    Tenure["freehold"]:::literal
+    RegStatus["unregistered"]:::literal
+
+    NoTitle["(no RegisteredTitle instance —<br/>first registration not yet completed)"]:::absent
+    NoUPRN["(no opda:uprn —<br/>graceful degradation case)"]:::absent
+
+    P -->|opda:postalAddress| Addr
+    P -->|opda:isFirstRegistration| FirstReg
+    P -.->|absent| NoUPRN
+    E -->|opda:tenureKind| Tenure
+    E -->|opda:registrationStatus| RegStatus
+    E -->|opda:identifiesSameProperty| P
+    P -.->|future| NoTitle
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

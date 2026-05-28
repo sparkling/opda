@@ -19,6 +19,122 @@ SHACL profile graph for the BASPI5 (British Association of Surveyors Property In
 | Production status | MVP gate (ODR-0010 §Q7) |
 | Source | [`profiles/baspi5.ttl`](../../../../source/03-standards/ontology/profiles/baspi5.ttl) |
 
+## Profile dependency graph
+
+![baspi5-overlay-profile-dependency-graph](diagrams/baspi5/baspi5-overlay-profile-dependency-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFE0B2", "primaryTextColor": "#BF360C", "primaryBorderColor": "#E65100", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: BASPI5 overlay profile dependency graph
+    accDescr: Shows the BASPI5 profile's owl:imports chain (foundation + vocabularies), the ValidationContext reification with its five properties, the seven per-Kind Baspi5 NodeShapes, and the SKOS scheme bindings that each shape uses via sh:in.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+    %% @prefix dash: <http://datashapes.org/dash#>
+
+    classDef profile fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef import fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef context fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+
+    Prof[Baspi5OverlayProfile<br/>owl:Ontology<br/>versionIRI 0.1.0]:::profile
+
+    Imp1["foundation<br/>opda 1.0.0"]:::import
+    Imp2["vocabularies<br/>23 SKOS schemes"]:::import
+
+    Prof -->|owl:imports| Imp1
+    Prof -->|owl:imports| Imp2
+
+    VC[Baspi5ValidationContext<br/>opda:ValidationContext instance]:::context
+
+    P1[opda:profileURI]:::context
+    P2[opda:requires<br/>7 Kinds]:::context
+    P3[opda:overlaysContext<br/>foundation]:::context
+    P4[opda:sourcedFrom<br/>basp.uk/forms/baspi5]:::context
+    P5[opda:formVersion<br/>5.0.3]:::context
+
+    VC --> P1
+    VC --> P2
+    VC --> P3
+    VC --> P4
+    VC --> P5
+
+    Prof -.->|reifies| VC
+
+    S1[Baspi5_PropertyShape<br/>17 sh:property]:::shape
+    S2[Baspi5_LegalEstateShape<br/>5 sh:property]:::shape
+    S3[Baspi5_AddressShape<br/>2 sh:property]:::shape
+    S4[Baspi5_EPCCertificateShape<br/>1 sh:property]:::shape
+    S5[Baspi5_BuyerShape<br/>1 sh:property]:::shape
+    S6[Baspi5_SellerShape<br/>3 sh:property]:::shape
+    S7[Baspi5_SellersCapacityShape<br/>sh:xone dispatch]:::shape
+
+    Prof --> S1
+    Prof --> S2
+    Prof --> S3
+    Prof --> S4
+    Prof --> S5
+    Prof --> S6
+    Prof --> S7
+
+    K1[opda:Property]:::cls
+    K2[opda:LegalEstate]:::cls
+    K3[opda:Address]:::cls
+    K4[opda:EPCCertificate]:::cls
+    K5[opda:Buyer]:::cls
+    K6[opda:Seller]:::cls
+
+    S1 -->|sh:targetClass| K1
+    S2 -->|sh:targetClass| K2
+    S3 -->|sh:targetClass| K3
+    S4 -->|sh:targetClass| K4
+    S5 -->|sh:targetClass| K5
+    S6 -->|sh:targetClass| K6
+    S7 -->|sh:targetClass| K6
+
+    Sch1[PropertyTypeScheme]:::scheme
+    Sch2[BuiltFormScheme]:::scheme
+    Sch3[YesNoScheme]:::scheme
+    Sch4[OwnershipTypeScheme]:::scheme
+    Sch5[TenureKindScheme]:::scheme
+    Sch6[CurrentEnergyRatingScheme]:::scheme
+    Sch7[HeatingTypeScheme]:::scheme
+    Sch8[CentralHeatingFuelTypeScheme]:::scheme
+    Sch9[OffMainsDrainageSystemTypeScheme]:::scheme
+    Sch10[RoleScheme]:::scheme
+    Sch11[SellersCapacityScheme]:::scheme
+
+    S1 -.->|sh:in| Sch1
+    S1 -.->|sh:in| Sch2
+    S1 -.->|sh:in| Sch3
+    S1 -.->|sh:in| Sch6
+    S1 -.->|sh:in| Sch7
+    S1 -.->|sh:in| Sch8
+    S1 -.->|sh:in| Sch9
+    S2 -.->|sh:in| Sch3
+    S2 -.->|sh:in| Sch4
+    S2 -.->|sh:in| Sch5
+    S4 -.->|sh:in| Sch6
+    S5 -.->|sh:in| Sch10
+    S6 -.->|sh:in| Sch10
+    S7 -.->|sh:xone branches| Sch11
+```
+
+</details>
+
 ## Ontology header
 
 ```turtle

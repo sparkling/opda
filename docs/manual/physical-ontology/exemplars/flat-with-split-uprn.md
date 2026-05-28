@@ -12,6 +12,57 @@ UPRN succession via re-numbering (S005 Rule 6): the same physical Property persi
 
 Cross-link: [Concept tier — Property hard cases](../../concept/property/property.md#hard-cases).
 
+## Exemplar instance graph
+
+![flat-with-split-uprn-exemplar-instance-graph](diagrams/flat-with-split-uprn/flat-with-split-uprn-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: flat-with-split-uprn exemplar instance graph
+    accDescr: One physical Property, one leasehold RegisteredTitle, and the reified UPRNSuccessionEvent linking the current UPRN to its retired predecessor. The literal opda:previousUPRN pair coexists as denormalised convenience.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/flat-with-split-uprn/>
+    %% @prefix prov: <http://www.w3.org/ns/prov#>
+
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef event fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+    P["opda-x:property<br/>&lt;b&gt;Property&lt;/b&gt;"]:::instance
+    T["opda-x:title-leasehold<br/>&lt;b&gt;RegisteredTitle&lt;/b&gt;"]:::instance
+    Ev["opda-x:uprn-succession-event<br/>&lt;b&gt;UPRNSuccessionEvent&lt;/b&gt;"]:::event
+
+    CurUPRN["100000000222"]:::literal
+    PrevUPRN["100000000111 (denormalised)"]:::literal
+    Addr["Flat 5C, Glasshouse Mansions"]:::literal
+    TitleN["TGL654321"]:::literal
+    Tenure["leasehold"]:::literal
+    EvTime["2022-09-01T00:00:00Z"]:::literal
+
+    P -->|opda:uprn| CurUPRN
+    P -->|opda:previousUPRN| PrevUPRN
+    P -->|opda:postalAddress| Addr
+    T -->|opda:titleNumber| TitleN
+    T -->|opda:tenureKind| Tenure
+    T -->|opda:identifiesSameProperty| P
+
+    Ev -->|prov:atTime| EvTime
+    Ev -->|opda:retiredUPRN| PrevUPRN
+    Ev -->|opda:issuedUPRN| CurUPRN
+    Ev -->|opda:appliesTo| P
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

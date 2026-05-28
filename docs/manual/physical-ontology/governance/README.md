@@ -45,6 +45,124 @@ External vocabularies referenced (not imported):
 
 See [`classes.md`](./classes.md) for per-class blocks.
 
+## Module class hierarchy
+
+![governance-module--class-hierarchy](diagrams/README/governance-module--class-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+classDiagram
+    accTitle: Governance module — class hierarchy
+    accDescr: Two OWL classes. DPVMappingRecord is the meta-record class. SpecialCategoryScheme subclasses skos:ConceptScheme. Three DPVMappingRecord instances shown (Claim, Organisation, Person).
+
+    class skosConceptScheme["skos_ConceptScheme (external)"]
+
+    class DPVMappingRecord["opda_DPVMappingRecord"] {
+        owl_Class
+        Information Particular
+        opda_baselineCategory
+        opda_targetsKind
+    }
+    class SpecialCategoryScheme["opda_SpecialCategoryScheme"] {
+        owl_Class
+        GDPR Art 10
+        Members deferred
+    }
+
+    class ClaimDPVMapping["opda_ClaimDPVMapping (instance)"]
+    class OrgDPVMapping["opda_OrganisationDPVMapping (instance)"]
+    class PersonDPVMapping["opda_PersonDPVMapping (instance)"]
+
+    skosConceptScheme <|-- SpecialCategoryScheme : rdfs_subClassOf
+    DPVMappingRecord <.. ClaimDPVMapping : rdf_type
+    DPVMappingRecord <.. OrgDPVMapping : rdf_type
+    DPVMappingRecord <.. PersonDPVMapping : rdf_type
+```
+
+</details>
+
+## Module shape-target graph
+
+![governance-shape-and-its-target-class](diagrams/README/governance-shape-and-its-target-class.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Governance shape and its target class
+    accDescr: Single identity-key shape — DPVMappingRecordIdentityKeyShape — targets DPVMappingRecord meta-records and enforces a single targetsKind binding per record.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+
+    classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S1[opda:DPVMappingRecordIdentityKeyShape]:::shape
+    C1[opda:DPVMappingRecord]:::cls
+
+    S1 -->|sh:targetClass| C1
+```
+
+</details>
+
+## Module DPV co-annotation graph
+
+![governance-module--dpv-co-annotations-header-only](diagrams/README/governance-module--dpv-co-annotations-header-only.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E0F2F1", "primaryTextColor": "#004D40", "primaryBorderColor": "#00695C", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Governance module — DPV co-annotations (header-only)
+    accDescr: Governance classes are meta-records — they declare the DPV regime; they themselves carry no DPV class-level baseline. The three DPVMappingRecord instances bind Kinds (Claim, Organisation, Person) to DPV categories.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
+
+    classDef note fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+    classDef record fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef kind fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef dpv fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+
+    Meta1[opda:DPVMappingRecord<br/>meta-class — no baseline]:::note
+    Meta2[opda:SpecialCategoryScheme<br/>meta-class — no baseline]:::note
+
+    R1[ClaimDPVMapping]:::record
+    R2[OrganisationDPVMapping]:::record
+    R3[PersonDPVMapping]:::record
+
+    KClaim[opda:Claim — claim module]:::kind
+    KOrg[opda:Organisation — agent module]:::kind
+    KPerson[opda:Person — agent module]:::kind
+
+    DOID[dpv-pd:OfficialID]:::dpv
+    DName[dpv-pd:Name]:::dpv
+
+    R1 -->|opda:targetsKind| KClaim
+    R1 -->|opda:baselineCategory| DOID
+    R2 -->|opda:targetsKind| KOrg
+    R3 -->|opda:targetsKind| KPerson
+    R3 -->|opda:baselineCategory| DName
+```
+
+</details>
+
 ## SHACL shapes (1)
 
 | Shape | Severity | Category |

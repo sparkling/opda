@@ -12,6 +12,61 @@ Organisation IC over entity merger: two predecessor Companies House CRNs dissolv
 
 Cross-link: [Concept tier — Organisation hard cases](../../concept/agent/organisation.md#hard-cases).
 
+## Exemplar instance graph
+
+![organisation-with-merger-exemplar-instance-graph](diagrams/organisation-with-merger/organisation-with-merger-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: organisation-with-merger exemplar instance graph
+    accDescr: Three Organisation individuals — two dissolved predecessors plus one successor with prov:wasDerivedFrom links to both. New CRN and LEI for the successor. No owl:sameAs anywhere.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/organisation-with-merger/>
+    %% @prefix prov: <http://www.w3.org/ns/prov#>
+
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+    P1["opda-x:org-predecessor-1<br/>&lt;b&gt;Organisation&lt;/b&gt;<br/>Acacia Estates Ltd"]:::instance
+    P2["opda-x:org-predecessor-2<br/>&lt;b&gt;Organisation&lt;/b&gt;<br/>Bramble Properties Ltd"]:::instance
+    Succ["opda-x:org-successor<br/>&lt;b&gt;Organisation&lt;/b&gt;<br/>Acacia and Bramble Ltd"]:::instance
+
+    CRN1["12345678"]:::literal
+    LEI1["5493001ACA01ACACIA12"]:::literal
+    Diss1["2023-04-30"]:::literal
+
+    CRN2["23456789"]:::literal
+    LEI2["5493001BRA02BRAMBLE21"]:::literal
+
+    CRN3["34567890"]:::literal
+    LEI3["5493001AB03ACACIA22"]:::literal
+    Inc["2023-05-01"]:::literal
+
+    P1 -->|opda:ukCRN| CRN1
+    P1 -->|opda:lei| LEI1
+    P1 -->|opda:dissolvedOn| Diss1
+    P2 -->|opda:ukCRN| CRN2
+    P2 -->|opda:lei| LEI2
+    P2 -->|opda:dissolvedOn| Diss1
+    Succ -->|opda:ukCRN| CRN3
+    Succ -->|opda:lei| LEI3
+    Succ -->|opda:incorporatedOn| Inc
+
+    Succ -->|prov:wasDerivedFrom| P1
+    Succ -->|prov:wasDerivedFrom| P2
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

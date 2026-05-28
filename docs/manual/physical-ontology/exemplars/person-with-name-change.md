@@ -12,6 +12,56 @@ Person IC over deed-poll name change (2019): one Person individual with name-att
 
 Cross-link: [Concept tier — Person hard cases](../../concept/agent/person.md#hard-cases).
 
+## Exemplar instance graph
+
+![person-with-name-change-exemplar-instance-graph](diagrams/person-with-name-change/person-with-name-change-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: person-with-name-change exemplar instance graph
+    accDescr: One Person individual whose name-attribute changed (former name Alex Smith, current name Alex Wright). The reified NameChangeEvent records the 2019 deed-poll; identity persists, no owl:sameAs.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/person-with-name-change/>
+    %% @prefix prov: <http://www.w3.org/ns/prov#>
+
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef event fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+    P["opda-x:person<br/>&lt;b&gt;Person&lt;/b&gt;"]:::instance
+    Ev["opda-x:name-change-event<br/>&lt;b&gt;NameChangeEvent&lt;/b&gt;"]:::event
+
+    DOB["1985-07-14"]:::literal
+    NI["QQ123456C"]:::literal
+    Cur["Alex Wright (current)"]:::literal
+    Prev["Alex Smith (former)"]:::literal
+    Date["2019-09-22"]:::literal
+    Mech["deed-poll"]:::literal
+
+    P -->|opda:dateOfBirth| DOB
+    P -->|opda:niNumber| NI
+    P -->|opda:currentName| Cur
+    P -->|opda:formerName| Prev
+    P -->|opda:nameChangeDate| Date
+    P -->|opda:nameChangeMechanism| Mech
+
+    Ev -->|prov:atTime| Date
+    Ev -->|opda:previousName| Prev
+    Ev -->|opda:newName| Cur
+    Ev -->|opda:appliesTo| P
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

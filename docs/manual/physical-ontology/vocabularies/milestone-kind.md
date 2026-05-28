@@ -78,6 +78,41 @@ opda:MilestoneKindScheme
     skos:notation "registration" .
 ```
 
+## Scheme membership graph
+
+![opdamilestonekindscheme-membership-graph](diagrams/milestone-kind/opdamilestonekindscheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:MilestoneKindScheme membership graph
+    accDescr: 5 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:MilestoneKindScheme]:::scheme
+    C1[opda:milestoneKind/completion]:::concept
+    C2[opda:milestoneKind/exchange]:::concept
+    C3[opda:milestoneKind/instruction]:::concept
+    C4[opda:milestoneKind/offerAccepted]:::concept
+    C5[opda:milestoneKind/registration]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+    C3 -->|skos:inScheme| S
+    C4 -->|skos:inScheme| S
+    C5 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 - Exemplar [`simple-transaction-with-milestones`](../exemplars/simple-transaction-with-milestones.md) instantiates all 5 milestones

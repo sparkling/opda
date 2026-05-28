@@ -53,6 +53,49 @@ opda:CurrentEnergyRatingScheme
 
 Full per-member Turtle: [`opda-vocabularies.ttl` lines 537–591](../../../../source/03-standards/ontology/opda-vocabularies.ttl).
 
+## Scheme membership graph
+
+![opdacurrentenergyratingscheme-membership-graph](diagrams/current-energy-rating/opdacurrentenergyratingscheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:CurrentEnergyRatingScheme membership graph
+    accDescr: 7 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:CurrentEnergyRatingScheme]:::scheme
+    C1[opda:currentEnergyRating/A]:::concept
+    C2[opda:currentEnergyRating/B]:::concept
+    C3[opda:currentEnergyRating/C]:::concept
+    C4[opda:currentEnergyRating/D]:::concept
+    C5[opda:currentEnergyRating/E]:::concept
+    C6[opda:currentEnergyRating/F]:::concept
+    C7[opda:currentEnergyRating/G]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+    C3 -->|skos:inScheme| S
+    C4 -->|skos:inScheme| S
+    C5 -->|skos:inScheme| S
+    C6 -->|skos:inScheme| S
+    C7 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 - [`opda:Baspi5_EPCCertificateShape`](../profiles/baspi5.md) — full scheme `sh:in` constraint (A-G required for BASPI5 v5.0.3)

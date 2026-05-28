@@ -67,6 +67,59 @@ opda:RoleScheme
 
 Full per-member Turtle: [`opda-vocabularies.ttl` lines 865–959](../../../../source/03-standards/ontology/opda-vocabularies.ttl).
 
+## Scheme membership graph
+
+![opdarolescheme-membership-graph](diagrams/role/opdarolescheme-membership-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: opda:RoleScheme membership graph
+    accDescr: 12 skos:Concept members bound to the scheme via skos:inScheme.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+    classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef concept fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    S[opda:RoleScheme]:::scheme
+    C1[opda:role/Buyer]:::concept
+    C2[opda:role/Buyers-Agent]:::concept
+    C3[opda:role/Buyers-Conveyancer]:::concept
+    C4[opda:role/Estate-Agent]:::concept
+    C5[opda:role/Landlord]:::concept
+    C6[opda:role/Lender]:::concept
+    C7[opda:role/Mortgage-Broker]:::concept
+    C8[opda:role/Prospective-Buyer]:::concept
+    C9[opda:role/Seller]:::concept
+    C10[opda:role/Sellers-Conveyancer]:::concept
+    C11[opda:role/Surveyor]:::concept
+    C12[opda:role/Tenant]:::concept
+
+    C1 -->|skos:inScheme| S
+    C2 -->|skos:inScheme| S
+    C3 -->|skos:inScheme| S
+    C4 -->|skos:inScheme| S
+    C5 -->|skos:inScheme| S
+    C6 -->|skos:inScheme| S
+    C7 -->|skos:inScheme| S
+    C8 -->|skos:inScheme| S
+    C9 -->|skos:inScheme| S
+    C10 -->|skos:inScheme| S
+    C11 -->|skos:inScheme| S
+    C12 -->|skos:inScheme| S
+```
+
+</details>
+
 ## Referenced by
 
 - `opda:Baspi5_BuyerShape` (overlay via `_:b78bd3625e376` + `_:b0654af6bc0f5` — subset: Buyer, Buyer's Conveyancer, Prospective Buyer, Buyer's Agent, Surveyor, Mortgage Broker, Lender, Landlord, Tenant, Estate Agent, Seller's Conveyancer)

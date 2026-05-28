@@ -8,6 +8,73 @@ tags: [physical-ontology, severity-tiers, shacl, governance]
 
 Per [ODR-0013 §Q1](../../ontology/odr/ODR-0013-shacl-validation-and-severity.md), every emitted SHACL shape carries an explicit `sh:severity`. The framework has four tiers; `sh:Violation` is further partitioned into 5 named subcategories.
 
+## Severity-tier landscape
+
+![severity-tier-framework--4-tiers-5-violation-subcategories-and-every-emitted-shape-grouped-as-a-leaf](diagrams/severity-tiers/severity-tier-framework--4-tiers-5-violation-subcategories-and-every-emitted-shape-grouped-as-a-leaf.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFCDD2", "primaryTextColor": "#B71C1C", "primaryBorderColor": "#C62828", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Severity tier framework — 4 tiers, 5 Violation subcategories, and every emitted shape grouped as a leaf
+    accDescr: Shows the four sh:severity tiers (Violation, Warning, Info, Pass) with the five Violation subcategories per ODR-0013 Q1, and each emitted SHACL shape attached to its category.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+
+    classDef violation fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    classDef info fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef pass fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef shape fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    Root[sh:severity tiers]
+    V[sh:Violation<br/>blocking]:::violation
+    W[sh:Warning<br/>non-blocking elevated]:::warning
+    I[sh:Info<br/>informative only]:::info
+    P["(Pass)<br/>no triple emitted"]:::pass
+
+    Root --> V
+    Root --> W
+    Root --> I
+    Root --> P
+
+    C1[Cat 1 — Identity-key]:::violation
+    C2[Cat 2 — IC breach]:::violation
+    C3[Cat 3 — No-identity-override]:::violation
+    C4[Cat 4 — Special-category PII]:::violation
+    C5[Cat 5 — Meta-shape drift]:::violation
+
+    V --> C1
+    V --> C2
+    V --> C3
+    V --> C4
+    V --> C5
+
+    C1 --> SC1["15 identity-key shapes<br/>Property / Address / LegalEstate<br/>Person / Organisation<br/>Milestone / Transaction<br/>Claim / Evidence<br/>Comparable / EPC / Search<br/>Survey / Valuation<br/>DPVMappingRecord"]:::shape
+    C2 --> SC2["opda:PropertyICBreachShape<br/>opda:UnprovenancedClaimShape"]:::shape
+    C3 --> SC3["opda:NoIdentityOverride_MetaShape"]:::shape
+    C4 --> SC4["opda:SpecialCategoryPIIWithoutLawfulBasisShape"]:::shape
+    C5 --> SC5["opda:MetaShapeOverShapeGraphMetaShape<br/>opda:ShInSemantics_MetaShape<br/>opda:ShViolationFloor_MetaShape"]:::shape
+
+    W --> WC1["opda:PIIWithoutDPVCoAnnotationRule<br/>(ADR-0012 explicit override)"]:::shape
+
+    I --> IC1["9 SHACL-AF rules<br/>UPRN / INSPIRE / Deprecation<br/>Identifier / Capacity<br/>LeaseTerm / Milestone<br/>PROVO-Claims / Verification"]:::shape
+
+    P --> PC1["Conforming case<br/>(every other instance)"]:::shape
+```
+
+</details>
+
 ## 4-tier framework
 
 | Tier | `sh:severity` IRI | Semantics | Typical use |

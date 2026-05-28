@@ -36,6 +36,154 @@ External vocabularies referenced (not imported):
 - `time:ProperInterval` — `opda:LeaseTerm rdfs:subClassOf time:ProperInterval`
 - `prov:Activity` — superclass of `opda:LeaseExtensionEvent` + `opda:UPRNSuccessionEvent`
 
+## Module class hierarchy
+
+![property-module--class-hierarchy](diagrams/README/property-module--class-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+classDiagram
+    accTitle: Property module — class hierarchy
+    accDescr: Seven OWL classes covering physical property, legal estate, registered title, address, the two reified PROV-O succession events, and the OWL-Time LeaseTerm. External superclasses shown for vcard:Address, time:ProperInterval, prov:Activity.
+
+    class vcardAddress["vcard_Address (external)"]
+    class timeProperInterval["time_ProperInterval (external)"]
+    class provActivity["prov_Activity (external)"]
+
+    class Property["opda_Property"] {
+        owl_Class
+        UFO Substance Kind
+        DOLCE Endurant or PhysicalObject
+    }
+    class LegalEstate["opda_LegalEstate"] {
+        owl_Class
+        UFO Substance Kind
+        DOLCE NonPhysicalEndurant
+    }
+    class RegisteredTitle["opda_RegisteredTitle"] {
+        owl_Class
+        UFO Substance Kind informational
+    }
+    class Address["opda_Address"] {
+        owl_Class
+        UFO Substance Kind
+    }
+    class LeaseTerm["opda_LeaseTerm"] {
+        owl_Class
+        Information Particular
+    }
+    class UPRNSuccessionEvent["opda_UPRNSuccessionEvent"] {
+        owl_Class
+        UFO Event particular
+    }
+    class LeaseExtensionEvent["opda_LeaseExtensionEvent"] {
+        owl_Class
+        UFO Event particular
+    }
+
+    vcardAddress <|-- Address : rdfs_subClassOf
+    timeProperInterval <|-- LeaseTerm : rdfs_subClassOf
+    provActivity <|-- UPRNSuccessionEvent : rdfs_subClassOf
+    provActivity <|-- LeaseExtensionEvent : rdfs_subClassOf
+```
+
+</details>
+
+## Module shape-target graph
+
+![property-shapes-and-their-target-classes](diagrams/README/property-shapes-and-their-target-classes.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Property shapes and their target classes
+    accDescr: Each SHACL shape in opda-property-shapes.ttl points to the Kind it targets via sh:targetClass. Identity-key shapes use Cat 1 severity; the IC-breach shape is Cat 2; the two SHACL-AF rules emit derived predicates at Info severity.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+
+    classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef rule fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S1[opda:AddressIdentityKeyShape]:::shape
+    S2[opda:LegalEstateIdentityKeyShape]:::shape
+    S3[opda:PropertyIdentityKeyShape]:::shape
+    S4[opda:PropertyICBreachShape]:::shape
+    R1[opda:UPRNSuccessionRule]:::rule
+    R2[opda:INSPIRESuccessionRule]:::rule
+
+    C1[opda:Address]:::cls
+    C2[opda:LegalEstate]:::cls
+    C3[opda:Property]:::cls
+
+    S1 -->|sh:targetClass| C1
+    S2 -->|sh:targetClass| C2
+    S3 -->|sh:targetClass| C3
+    S4 -->|sh:targetClass| C3
+    R1 -->|sh:targetClass| C3
+    R2 -->|sh:targetClass| C1
+```
+
+</details>
+
+## Module DPV co-annotation graph
+
+![property-module--dpv-personal-data-co-annotations](diagrams/README/property-module--dpv-personal-data-co-annotations.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E0F2F1", "primaryTextColor": "#004D40", "primaryBorderColor": "#00695C", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Property module — DPV personal-data co-annotations
+    accDescr: PII-bearing classes in the Property module and their dpv-pd:hasPersonalDataCategory baselines, plus the three Address variant refinements that scope lawful basis to title / marketing / inspire variants.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
+    %% @prefix dpv: <https://w3id.org/dpv#>
+
+    classDef pii fill:#E0F2F1,stroke:#00695C,stroke-width:2px,color:#004D40
+    classDef dpv fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef refinement fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+
+    A[opda:Address]:::pii
+    P[opda:Property]:::pii
+    T[opda:RegisteredTitle]:::pii
+
+    PA[dpv-pd:PostalAddress]:::dpv
+    PD[dpv-pd:PublicData]:::dpv
+
+    A -->|dpv-pd:hasPersonalDataCategory| PA
+    P -->|dpv-pd:hasPersonalDataCategory| PA
+    T -->|dpv-pd:hasPersonalDataCategory| PD
+
+    R1[AddressVariantTitleRefinement<br/>opda:lawfulBasis dpv:PublicTask]:::refinement
+    R2[AddressVariantMarketingRefinement<br/>opda:lawfulBasis dpv:Consent]:::refinement
+    R3[AddressVariantInspireRefinement<br/>opda:lawfulBasis dpv:PublicTask]:::refinement
+
+    R1 -->|opda:targetsKind| A
+    R2 -->|opda:targetsKind| A
+    R3 -->|opda:targetsKind| A
+```
+
+</details>
+
 ## Classes (7)
 
 - `opda:Address` — Substance Kind (Royal Mail / OS AddressBase / HMLR / INSPIRE locator); subclass of `vcard:Address`

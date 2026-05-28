@@ -12,6 +12,51 @@ Baseline easy case for S005 (Property and land identity crux): UPRN present, fre
 
 Cross-link: [Concept tier — Property hard cases](../../concept/property/property.md#hard-cases).
 
+## Exemplar instance graph
+
+![registered-freehold-house-exemplar-instance-graph](diagrams/registered-freehold-house/registered-freehold-house-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: registered-freehold-house exemplar instance graph
+    accDescr: Three RDF instances (Property, LegalEstate, RegisteredTitle) co-referring via opda:identifiesSameProperty and opda:recordsEstate. Single UPRN, freehold tenure, baseline easy case.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/registered-freehold-house/>
+
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+    P["opda-x:property<br/>&lt;b&gt;Property&lt;/b&gt;"]:::instance
+    E["opda-x:estate<br/>&lt;b&gt;LegalEstate&lt;/b&gt;"]:::instance
+    T["opda-x:title<br/>&lt;b&gt;RegisteredTitle&lt;/b&gt;"]:::instance
+
+    UPRN["100070123456"]:::literal
+    Tenure["freehold"]:::literal
+    TitleN["BM123456"]:::literal
+    Addr["24 Acacia Avenue, Birmingham"]:::literal
+
+    P -->|opda:uprn| UPRN
+    P -->|opda:postalAddress| Addr
+    E -->|opda:tenureKind| Tenure
+    T -->|opda:titleNumber| TitleN
+
+    T -->|opda:identifiesSameProperty| P
+    E -->|opda:identifiesSameProperty| P
+    T -->|opda:recordsEstate| E
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

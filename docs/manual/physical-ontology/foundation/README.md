@@ -40,6 +40,97 @@ _:b0bdbfe4f895a
     sh:prefix "opda" .
 ```
 
+## Module class hierarchy
+
+![foundation-module--class-hierarchy](diagrams/README/foundation-module--class-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+classDiagram
+    accTitle: Foundation module — class hierarchy
+    accDescr: Six foundation OWL classes. ValidationContext, DiagnosticExemplar, GeneratorRun are independent. RoleMixin, Role, Relator are UFO meta-classes referenced as superclasses by per-module Kinds.
+
+    class DiagnosticExemplar {
+        owl:Class
+        UFO Substance Kind (informational)
+    }
+    class GeneratorRun {
+        owl:Class
+        UFO Information Particular
+    }
+    class ValidationContext {
+        owl:Class
+        UFO Substance Kind (informational)
+        opda:profileURI
+        opda:requires
+        opda:overlaysContext
+        opda:sourcedFrom
+        opda:formVersion
+    }
+    class RoleMixin {
+        owl:Class
+        UFO RoleMixin meta-class
+    }
+    class Role {
+        owl:Class
+        UFO Role meta-class
+    }
+    class Relator {
+        owl:Class
+        UFO Relator meta-class
+    }
+```
+
+</details>
+
+## Module shape-target graph
+
+![foundation-meta-shapes-and-their-targets](diagrams/README/foundation-meta-shapes-and-their-targets.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Foundation meta-shapes and their targets
+    accDescr: Five meta-shapes plus two cross-cutting SHACL-AF rules. Each meta-shape targets sh:NodeShape (SPARQL-based) or skos:Concept or owl:Class.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+
+    classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef rule fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S1[opda:NoIdentityOverride_MetaShape]:::shape
+    S2[opda:ShInSemantics_MetaShape]:::shape
+    S3[opda:ShViolationFloor_MetaShape]:::shape
+    S4[opda:MetaShapeOverShapeGraphMetaShape]:::shape
+    R1[opda:DeprecationChainRule]:::rule
+    R2[opda:PIIWithoutDPVCoAnnotationRule]:::rule
+
+    T1[sh:NodeShape]:::cls
+    T2[skos:Concept]:::cls
+    T3[owl:Class]:::cls
+
+    S1 -->|sh:targetClass via sh:sparql| T1
+    S2 -->|sh:targetClass via sh:sparql| T1
+    S3 -->|sh:targetClass via sh:sparql| T1
+    S4 -->|sh:targetClass via sh:sparql| T1
+    R1 -->|sh:targetClass| T2
+    R2 -->|sh:targetClass| T3
+```
+
+</details>
+
 ## Six foundation classes
 
 | Class | UFO category | Role |

@@ -12,6 +12,72 @@ Three-link chain of dependent property sales via buyer-also-seller participants.
 
 Cross-link: [Concept tier — TransactionChain hard cases](../../concept/transaction/transaction-chain.md#hard-cases).
 
+## Exemplar instance graph
+
+![chain-of-transactions-exemplar-instance-graph](diagrams/chain-of-transactions/chain-of-transactions-exemplar-instance-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#B3E5FC", "primaryTextColor": "#01579B", "primaryBorderColor": "#0277BD", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: chain-of-transactions exemplar instance graph
+    accDescr: Three-link chain of Transactions linked by buyer-also-seller participants. Four Persons, three Properties, three Titles, three Transactions plus one TransactionChain Aggregate. Recursive opda:dependsOnTransaction predicate plus the parent chain resource — dual-mechanism per S007 Q4.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/chain-of-transactions/>
+
+    classDef person fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef prop fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef title fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef txn fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef chain fill:#FFCCBC,stroke:#D84315,stroke-width:2px,color:#BF360C
+
+    W["opda-x:person-w<br/>&lt;b&gt;Person W&lt;/b&gt;"]:::person
+    X["opda-x:person-x<br/>&lt;b&gt;Person X&lt;/b&gt;"]:::person
+    Y["opda-x:person-y<br/>&lt;b&gt;Person Y&lt;/b&gt;"]:::person
+    Z["opda-x:person-z<br/>&lt;b&gt;Person Z&lt;/b&gt;"]:::person
+
+    PA[opda-x:property-a]:::prop
+    PB[opda-x:property-b]:::prop
+    PC[opda-x:property-c]:::prop
+
+    TA[opda-x:title-a]:::title
+    TB[opda-x:title-b]:::title
+    TC[opda-x:title-c]:::title
+
+    TXA["opda-x:transaction-a<br/>&lt;b&gt;Transaction&lt;/b&gt;<br/>W → X"]:::txn
+    TXB["opda-x:transaction-b<br/>&lt;b&gt;Transaction&lt;/b&gt;<br/>X → Y"]:::txn
+    TXC["opda-x:transaction-c<br/>&lt;b&gt;Transaction&lt;/b&gt;<br/>Y → Z"]:::txn
+
+    Chain["opda-x:chain<br/>&lt;b&gt;TransactionChain&lt;/b&gt;<br/>length 3"]:::chain
+
+    TA -->|opda:identifiesSameProperty| PA
+    TB -->|opda:identifiesSameProperty| PB
+    TC -->|opda:identifiesSameProperty| PC
+
+    TXA -->|opda:concerns| TA
+    TXB -->|opda:concerns| TB
+    TXC -->|opda:concerns| TC
+
+    TXB -->|opda:dependsOnTransaction| TXA
+    TXC -->|opda:dependsOnTransaction| TXB
+
+    Chain -->|opda:chainMembers| TXA
+    Chain -->|opda:chainMembers| TXB
+    Chain -->|opda:chainMembers| TXC
+```
+
+</details>
+
 ## Exemplar Turtle
 
 ```turtle

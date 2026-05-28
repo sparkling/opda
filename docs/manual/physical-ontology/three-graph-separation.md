@@ -10,6 +10,81 @@ Per [ODR-0004 §3a](../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md): ev
 
 This is not a stylistic preference — it is a model-theoretic discipline. Mixing the three graphs collapses Tarski-grade extensional semantics into the implementation soup that PDTF v3 (untyped JSON) cannot avoid.
 
+## Three-graph separation overview
+
+![three-graph-separation--mustmust-not-triple-type-assignments--5-part-ci-test](diagrams/three-graph-separation/three-graph-separation--mustmust-not-triple-type-assignments--5-part-ci-test.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Three-graph separation — MUST/MUST-NOT triple-type assignments + 5-part CI test
+    accDescr: Shows how each module emits three disjoint files (classes, shapes, annotations) with strict triple-type isolation, and the five SPARQL ASK checks that the opda-gen ci-three-graph CI gate runs.
+
+    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix sh: <http://www.w3.org/ns/shacl#>
+    %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
+
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef prop fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef pass fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef fail fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    subgraph ClassesGraph["opda-module.ttl  (TBox)"]
+        C1[owl:Class]:::cls
+        C2[owl:DatatypeProperty]:::prop
+        C3[owl:ObjectProperty]:::prop
+        C4[rdfs:label / rdfs:comment]:::literal
+    end
+
+    subgraph ShapesGraph["opda-module-shapes.ttl  (constraints)"]
+        S1[sh:NodeShape]:::cls
+        S2[sh:PropertyShape]:::prop
+        S3[sh:targetClass / sh:path]:::prop
+        S4[sh:datatype / sh:in / sh:severity]:::prop
+        S5[sh:rule sh:SPARQLRule]:::prop
+    end
+
+    subgraph AnnotationsGraph["opda-module-annotations.ttl  (regulatory)"]
+        A1[dpv-pd:hasPersonalDataCategory]:::prop
+        A2[opda:aiHint / opda:uiHint]:::prop
+        A3[dct:references DPV]:::literal
+    end
+
+    subgraph CI["opda-gen ci-three-graph  (5-part SPARQL ASK gate)"]
+        T1[Check 1<br/>classes file has no sh:* triples]:::pass
+        T2[Check 2<br/>classes file has no DPV predicates]:::pass
+        T3[Check 3<br/>shapes file has no owl:Class declarations]:::pass
+        T4[Check 4<br/>shapes file has no owl:imports DPV]:::pass
+        T5[Check 5<br/>annotations file has no sh:* and no owl:Class]:::pass
+    end
+
+    ClassesGraph -->|enforced by| T1
+    ClassesGraph -->|enforced by| T2
+    ShapesGraph -->|enforced by| T3
+    ShapesGraph -->|enforced by| T4
+    AnnotationsGraph -->|enforced by| T5
+
+    Violation[Any check returns true<br/>CI gate fails; file named]:::fail
+    T1 -.->|on fail| Violation
+    T2 -.->|on fail| Violation
+    T3 -.->|on fail| Violation
+    T4 -.->|on fail| Violation
+    T5 -.->|on fail| Violation
+```
+
+</details>
+
 ## The discipline
 
 | File | MUST contain | MUST NOT contain |
