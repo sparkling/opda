@@ -59,6 +59,13 @@ opda:YesNoScheme
 <summary>Mermaid Source</summary>
 
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
 %%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 flowchart LR
     accTitle: opda:YesNoScheme membership graph
