@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hm.com/ns/ia/schemas/property-group.schema.json",
+  "title": "PropertyGroup",
+  "description": "A named grouping of related properties within a concept, used to organise form sections and UI layout.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name of this property group."
+    },
+    "order": {
+      "type": "integer",
+      "description": "Display order (lower numbers appear first)."
+    }
+  },
+  "required": ["name", "order"],
+  "additionalProperties": false
+}

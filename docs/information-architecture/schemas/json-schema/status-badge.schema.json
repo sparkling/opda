@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hm.com/ns/ia/schemas/status-badge.schema.json",
+  "title": "StatusBadge",
+  "description": "A visual indicator of a concept's editorial status, normalised from context-specific annotation properties.",
+  "type": "object",
+  "properties": {
+    "badgeType": {
+      "type": "string",
+      "enum": ["Deprecated", "Uncertain", "New", "ToDefine"],
+      "description": "The type of status badge."
+    }
+  },
+  "required": ["badgeType"],
+  "additionalProperties": false
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hm.com/ns/ia/schemas/enumeration-value.schema.json",
+  "title": "EnumerationValue",
+  "description": "A single allowed value within an enumeration scheme.",
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "Display label for this value."
+    },
+    "abbreviation": {
+      "type": "string",
+      "description": "Short code or abbreviation."
+    },
+    "definition": {
+      "type": "string",
+      "description": "Formal definition of this value."
+    }
+  },
+  "required": ["label"],
+  "additionalProperties": false
+}
