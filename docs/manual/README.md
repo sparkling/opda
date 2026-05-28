@@ -14,16 +14,16 @@ This manual is generated from the 24 emitted TTL files at `source/03-standards/o
 
 | Tier | Audience | What it answers | Entry point | Files | Diagrams |
 |---|---|---|---|---|---|
-| **Concept** | Property-industry SMEs (surveyors, conveyancers, lenders, government data leads, regulators) | *"What does an OPDA Property mean, and why does Identity Criterion matter?"* — business-language narrative, hard cases, IC. No jargon. | [`concept/`](./concept/index.md) | 50 | 64 |
-| **Logical** | Data engineers, solution architects, integration architects, technical product managers | *"What typed attributes does Property have, and how does it relate to Address, LegalEstate, Transaction?"* — ER diagrams, typed attribute tables, cardinalities. Platform-independent. | [`logical/`](./logical/index.md) | 81 | 100 |
-| **Physical — deployment / database** | Triplestore operators, SPARQL consumers, ontology integrators, devops | *"Which named graph holds `opda:Property`, what derived consumer profiles include it, and how do I fetch it from `w3id.org/opda/Property`?"* — deployment topology, named-graph layout, content-negotiation, CI gates. **Now per-module** with deployment views for each of the 6 modules + foundation. | [`physical-database/`](./physical-database/index.md) | 23 | 20 |
-| **Physical — ontology** | Ontology engineers, SHACL implementers, SPARQL consumers, regulators interpreting machine-readable artefacts | *"Which Turtle file emits `opda:Property`, what SHACL shapes constrain it, and what `dct:source` URIs trace its definition?"* — OWL / SHACL / SKOS / Turtle verbatim. | [`physical-ontology/`](./physical-ontology/index.md) | 74 | 55 |
+| **Concept** | Property-industry SMEs (surveyors, conveyancers, lenders, government data leads, regulators) | *"What does an OPDA Property mean, and why does Identity Criterion matter?"* — business-language narrative, hard cases, IC. No jargon. | [`concept/`](./concept/README.md) | 50 | 64 |
+| **Logical** | Data engineers, solution architects, integration architects, technical product managers | *"What typed attributes does Property have, and how does it relate to Address, LegalEstate, Transaction?"* — ER diagrams, typed attribute tables, cardinalities. Platform-independent. | [`logical/`](./logical/README.md) | 81 | 100 |
+| **Physical — deployment / database** | Triplestore operators, SPARQL consumers, ontology integrators, devops | *"Which named graph holds `opda:Property`, what derived consumer profiles include it, and how do I fetch it from `w3id.org/opda/Property`?"* — deployment topology, named-graph layout, content-negotiation, CI gates. **Now per-module** with deployment views for each of the 6 modules + foundation. | [`physical-database/`](./physical-database/README.md) | 23 | 20 |
+| **Physical — ontology** | Ontology engineers, SHACL implementers, SPARQL consumers, regulators interpreting machine-readable artefacts | *"Which Turtle file emits `opda:Property`, what SHACL shapes constrain it, and what `dct:source` URIs trace its definition?"* — OWL / SHACL / SKOS / Turtle verbatim. | [`physical-ontology/`](./physical-ontology/README.md) | 74 | 55 |
 
 **Total: 228 markdown files + 239 PNG diagrams** across the four tiers, plus this index and [`VALIDATION-REPORT.md`](./VALIDATION-REPORT.md). Every diagram authored via the [`/diagramming`](../../../../.claude/skills/diagramming/SKILL.md) skill (Cagle palette, `accTitle`/`accDescr`, validated, PNG-rendered with `<details>` source preserved for editing).
 
 ## How to navigate
 
-- **Start by audience.** Pick the tier that matches your role from the table above. Each tier's `index.md` lists every entity + scheme + exemplar in that tier with one-line descriptions.
+- **Start by audience.** Pick the tier that matches your role from the table above. Each tier's `README.md` lists every entity + scheme + exemplar in that tier with one-line descriptions.
 - **Follow an entity across tiers.** Every entity has a stable file path that mirrors across Concept + Logical + Physical-Ontology tiers: `<tier>/<module>/<entity>.md`. From any entity page, the cross-tier links at the bottom take you to its presentation in the other tiers.
 - **Trace from URI back to docs.** Every `opda:<EntityName>` URI in the source TTLs carries a `dct:source` URI that resolves into the Concept tier — the canonical narrative for that entity.
 

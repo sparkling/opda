@@ -23,8 +23,7 @@ Explain **what each business object means** and **why it is identified the way i
 
 ```
 docs/manual/concept/
-├── README.md                       Tier overview + reading order
-├── index.md                        Module catalogue + entity index
+├── README.md                       Tier overview + reading order + module catalogue + entity index
 ├── <module>/
 │   ├── README.md                   Module-level narrative + entity list
 │   └── <entity>.md                 One file per Concept entity

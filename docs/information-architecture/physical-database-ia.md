@@ -37,8 +37,7 @@ Show **how the ontology is shaped for consumption**: which named graphs hold whi
 
 ```
 docs/manual/physical-database/
-├── README.md                       Tier overview + reading order
-├── index.md                        Deployment topology + named-graph catalogue
+├── README.md                       Tier overview + reading order + deployment topology + named-graph catalogue
 ├── named-graphs.md                 Per-named-graph layout + load order
 ├── derived-profiles/
 │   ├── README.md                   Consumer-profile catalogue + composition rules

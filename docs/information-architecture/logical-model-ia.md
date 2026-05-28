@@ -23,8 +23,7 @@ Show the **entity-relationship structure** of OPDA's data model in platform-inde
 
 ```
 docs/manual/logical/
-├── README.md                       Tier overview + reading order
-├── index.md                        Module catalogue + entity index + master ER diagram
+├── README.md                       Tier overview + reading order + module catalogue + entity index + master ER diagram
 ├── <module>/
 │   ├── README.md                   Module-level entity inventory + module ER diagram
 │   ├── <entity>.md                 One file per Logical entity
