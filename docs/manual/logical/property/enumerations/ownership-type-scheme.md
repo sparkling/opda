@@ -3,7 +3,7 @@
 ## Summary
 
 Classification of a legal estate's ownership structure (Freehold, Leasehold, Commonhold, Other). [UFO Quale-in-Region / DOLCE Quality-Region]. NTS2 four-value canonical set used as authority. Steward: Kendall (LegalEstate steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/ownership-type-scheme.md)
+[Concept tier — LegalEstate →](../../../concept/property/legal-estate.md)
 
 ## Members
 

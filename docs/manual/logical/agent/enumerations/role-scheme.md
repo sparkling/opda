@@ -3,7 +3,7 @@
 ## Summary
 
 Role labels for the anti-rigid Roles a Person / Organisation plays as a Participant in a Transaction Relator. [UFO Role label / DOLCE Endurant-played-role]. Steward: Guizzardi (RoleMixin steward per S006 Q2).
-[Concept tier →](../../../concept/agent/enumerations/role-scheme.md)
+[Concept tier — RoleMixin →](../../../concept/foundation/role-mixin.md)
 
 ## Members
 

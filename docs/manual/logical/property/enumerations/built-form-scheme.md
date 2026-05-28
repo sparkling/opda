@@ -3,7 +3,7 @@
 ## Summary
 
 Classification of a Property's structural built-form (detached, semi-detached, terraced, etc.). [UFO Quale-in-Region / DOLCE Quality-Region]. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/built-form-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

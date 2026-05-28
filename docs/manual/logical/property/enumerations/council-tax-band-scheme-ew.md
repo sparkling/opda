@@ -3,7 +3,7 @@
 ## Summary
 
 Valuation Office Agency banding for England & Wales (Bands A–H) assigned to each domestic property for council tax calculation. [UFO Quale-in-Region / DOLCE Quality-Region]. Verbatim source: VOA council-tax bands. Steward: Baker (regulator-cited per ODR-0011 §4a; VOA-governed).
-[Concept tier →](../../../concept/property/enumerations/council-tax-band-scheme-ew.md)
+[Concept tier — Property module →](../../../concept/property/README.md)
 
 ## Members
 

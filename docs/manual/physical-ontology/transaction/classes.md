@@ -8,7 +8,9 @@ tags: [physical-ontology, transaction, classes, owl]
 
 Three OWL classes emitted by `opda-gen` into `opda-transaction.ttl`.
 
-## opda:Milestone
+## Classes
+
+### opda:Milestone
 
 ```turtle
 opda:Milestone
@@ -41,14 +43,14 @@ opda:Milestone
 
 - [Concept tier →](../../concept/transaction/milestone.md)
 - [Logical tier →](../../logical/transaction/milestone.md)
-- [Physical-DB tier →](../../physical-database/transaction/milestone.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0007 §Q2 + §Q6](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Transaction
+### opda:Transaction
 
 ```turtle
 opda:Transaction
@@ -80,14 +82,14 @@ opda:Transaction
 
 - [Concept tier →](../../concept/transaction/transaction.md)
 - [Logical tier →](../../logical/transaction/transaction.md)
-- [Physical-DB tier →](../../physical-database/transaction/transaction.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0007 §Q1](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:TransactionChain
+### opda:TransactionChain
 
 ```turtle
 opda:TransactionChain
@@ -114,7 +116,7 @@ None directly at the TBox; chain-length cap (`sh:maxInclusive 7`) emitted as par
 
 - [Concept tier →](../../concept/transaction/transaction-chain.md)
 - [Logical tier →](../../logical/transaction/transaction-chain.md)
-- [Physical-DB tier →](../../physical-database/transaction/transaction-chain.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

@@ -3,7 +3,7 @@
 ## Summary
 
 Method/plan codes for the procedural milestones authorising stages of a Transaction Activity (instruction → offerAccepted → exchange → completion → registration). [UFO Method/plan code]. Codes are ratified by ODR-0007 §Q2 transaction-lifecycle pattern; each milestone corresponds to a stage transition in the PDTF process. Steward: Guizzardi (S007 Q2).
-[Concept tier →](../../../concept/transaction/enumerations/milestone-kind-scheme.md)
+[Concept tier — Milestone →](../../../concept/transaction/milestone.md)
 
 ## Members
 

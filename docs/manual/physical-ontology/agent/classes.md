@@ -8,7 +8,9 @@ tags: [physical-ontology, agent, classes, owl]
 
 Seven OWL classes emitted by `opda-gen` into `opda-agent.ttl`.
 
-## opda:Buyer
+## Classes
+
+### opda:Buyer
 
 ```turtle
 opda:Buyer
@@ -40,14 +42,14 @@ None directly; identity-key shapes apply to the bearer Kind (Person / Organisati
 
 - [Concept tier →](../../concept/agent/buyer.md)
 - [Logical tier →](../../logical/agent/buyer.md)
-- [Physical-DB tier →](../../physical-database/agent/buyer.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:NameChangeEvent
+### opda:NameChangeEvent
 
 ```turtle
 opda:NameChangeEvent
@@ -79,14 +81,14 @@ opda:NameChangeEvent
 
 - [Concept tier →](../../concept/agent/name-change-event.md)
 - [Logical tier →](../../logical/agent/name-change-event.md)
-- [Physical-DB tier →](../../physical-database/agent/name-change-event.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Organisation
+### opda:Organisation
 
 ```turtle
 opda:Organisation
@@ -118,14 +120,14 @@ opda:Organisation
 
 - [Concept tier →](../../concept/agent/organisation.md)
 - [Logical tier →](../../logical/agent/organisation.md)
-- [Physical-DB tier →](../../physical-database/agent/organisation.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0006 §Q6](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Person
+### opda:Person
 
 ```turtle
 opda:Person
@@ -155,14 +157,14 @@ opda:Person
 
 - [Concept tier →](../../concept/agent/person.md)
 - [Logical tier →](../../logical/agent/person.md)
-- [Physical-DB tier →](../../physical-database/agent/person.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Proprietor
+### opda:Proprietor
 
 ```turtle
 opda:Proprietor
@@ -194,7 +196,7 @@ None directly (Anti-pattern §3 — NEVER key a Role).
 
 - [Concept tier →](../../concept/agent/proprietor.md)
 - [Logical tier →](../../logical/agent/proprietor.md)
-- [Physical-DB tier →](../../physical-database/agent/proprietor.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -202,7 +204,7 @@ None directly (Anti-pattern §3 — NEVER key a Role).
 - [ODR-0005 Anti-pattern §3](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Proprietorship
+### opda:Proprietorship
 
 ```turtle
 opda:Proprietorship
@@ -234,14 +236,14 @@ None directly (Relator's IC enforced by foundation `opda:Relator` discipline).
 
 - [Concept tier →](../../concept/agent/proprietorship.md)
 - [Logical tier →](../../logical/agent/proprietorship.md)
-- [Physical-DB tier →](../../physical-database/agent/proprietorship.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Seller
+### opda:Seller
 
 ```turtle
 opda:Seller
@@ -273,7 +275,7 @@ None directly at TBox; the BASPI5 overlay [`opda:Baspi5_SellerShape`](../profile
 
 - [Concept tier →](../../concept/agent/seller.md)
 - [Logical tier →](../../logical/agent/seller.md)
-- [Physical-DB tier →](../../physical-database/agent/seller.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

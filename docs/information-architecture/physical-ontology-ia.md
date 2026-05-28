@@ -80,7 +80,7 @@ docs/manual/physical-ontology/
    | `rdfs:comment @en` | "<IC + hard cases>" | ratifying ODR |
 4. **`#### Targeting shapes`** — list of `sh:NodeShape` IRIs that `sh:targetClass` this class (links to the per-shape sections).
 5. **`#### Subclass / equivalent-class relationships`** — list of `rdfs:subClassOf` / `owl:equivalentClass` triples + their semantic intent.
-6. **`#### Cross-tier links`** — links to Concept-tier narrative + Logical-tier attribute table + Physical-DB-tier JSON-paths table.
+6. **`#### Cross-tier links`** — links to Concept-tier narrative + Logical-tier attribute table + the Physical-DB tier's `index.md` (deployment overview). The Physical-DB tier is organised by deployment concern (named-graphs, derived-profiles, content-negotiation, overlay-deployment, operations) and has NO per-entity pages by design (per [`physical-database-ia.md`](./physical-database-ia.md)); the `[Physical-Database tier (deployment) →]` link is to the tier index, not to a per-entity page.
 7. **`#### Source ODR + ADR`** — ratifying Council session + implementation ADR.
 
 ## Per-shape section shape (mandatory)
@@ -219,7 +219,7 @@ opda:<LocalName>
 
 - [Concept tier →](../../concept/<module>/<entity>.md)
 - [Logical tier →](../../logical/<module>/<entity>.md)
-- [Physical-DB tier →](../../physical-database/<module>/<entity>.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

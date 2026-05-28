@@ -73,7 +73,7 @@ docs/manual/logical/
 ## Per-enumeration section shape (mandatory)
 
 1. **`# <SchemeName>`** — H1.
-2. **`## Summary`** — one paragraph; links to Concept (`[Concept tier →]`); names the UFO meta-category (one of the 7 per [ODR-0011 §8a](../ontology/odr/ODR-0011-enumeration-vocabularies.md)).
+2. **`## Summary`** — one paragraph; links to the using entity at Concept tier (the entity that primarily binds this scheme; if multiple entities bind it, link to the module's Concept-tier README) via `[Concept tier — <UsingEntity> →]`; names the UFO meta-category (one of the 7 per [ODR-0011 §8a](../ontology/odr/ODR-0011-enumeration-vocabularies.md)). The Concept tier has no per-scheme pages (Concept narrates Kinds, not Schemes — see [`concept-model-ia.md` §"Cross-tier traceability"](./concept-model-ia.md#cross-tier-traceability)); the link target is the using-entity narrative, not a scheme file.
 3. **`## Members`** — table:
 
    | Notation | Label | Definition | Source |

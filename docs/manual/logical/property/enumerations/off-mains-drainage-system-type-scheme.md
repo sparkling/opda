@@ -3,7 +3,7 @@
 ## Summary
 
 Classification of a Property's off-mains drainage system (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). [UFO Quale-in-Region / DOLCE Quality-Region]. Applies only when the Property is not connected to the mains sewerage system. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/off-mains-drainage-system-type-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

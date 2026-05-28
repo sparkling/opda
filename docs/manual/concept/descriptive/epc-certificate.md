@@ -8,6 +8,11 @@ EPCs are statutorily required for most residential transactions, have a 10-year 
 
 If you are a conveyancer, lender, or property-data integrator working with EPC data, this is the entity that captures the certificate's provenance and lifecycle.
 
+> **Editorial note.** The hard cases below are interpretive — derived from the
+> S008 Q4 three-criterion test recorded in the source TTL's `rdfs:comment`,
+> not lifted verbatim. Council ratification of a definitive hard-case
+> enumeration for this descriptive Kind is pending.
+
 ## Hard cases
 
 - **Re-assessed EPC.** A new EPC supersedes the previous one mid-validity. The new EPC is its own record with a provenance link to the predecessor; the predecessor is marked as superseded but persists in the audit trail.

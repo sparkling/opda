@@ -3,7 +3,7 @@
 ## Summary
 
 Substance Kind labels for the physical-form kind of a Property (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from `BuiltFormScheme` which carries the structural Quale (Detached / Semi-detached / Terrace). [UFO Substance Kind label]. Members may bind to OWL sub-classes of `Property` via `skos:exactMatch` when conditional Building/Room class promotions trigger. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/property-type-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

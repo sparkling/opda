@@ -36,7 +36,7 @@ Per ODR-0017 §1a, 11 ODRs cite the SHACL-AF pattern as their non-blocking-quali
 | 10 | `opda:PIIWithoutDPVCoAnnotationRule` | [ODR-0012 §Q5](../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md) | foundation (cross-cutting) |
 | 11 | (placeholder for future emission) | — | — |
 
-## opda:UPRNSuccessionRule
+### opda:UPRNSuccessionRule
 
 ```turtle
 opda:UPRNSuccessionRule
@@ -70,7 +70,7 @@ _:b16e82da2b31c
 - [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 - [ODR-0017 §1a — SHACL-AF quality rules pattern](../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 
-## opda:DeprecationChainRule
+### opda:DeprecationChainRule
 
 ```turtle
 opda:DeprecationChainRule
@@ -103,7 +103,7 @@ _:be6b6213de607
 - [ODR-0011 §5a](../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
 - [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:INSPIRESuccessionRule
+### opda:INSPIRESuccessionRule
 
 ```turtle
 opda:INSPIRESuccessionRule
@@ -136,7 +136,7 @@ _:becbeff0baa17
 - [ODR-0015 §4a](../../ontology/odr/ODR-0015-address-and-geography.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PROVOClaimsRule
+### opda:PROVOClaimsRule
 
 ```turtle
 opda:PROVOClaimsRule
@@ -169,7 +169,7 @@ _:bb11b45f9d7c0
 - [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:IdentifierSuccessionRule
+### opda:IdentifierSuccessionRule
 
 ```turtle
 opda:IdentifierSuccessionRule
@@ -202,7 +202,7 @@ _:b04ddc2ae8a10
 - [ODR-0006 §Q1](../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:CapacityAuthorityMatchRule
+### opda:CapacityAuthorityMatchRule
 
 ```turtle
 opda:CapacityAuthorityMatchRule
@@ -235,7 +235,7 @@ _:bcd856a2c693b
 - [ODR-0006 §Q4](../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:LeaseTermSuccessionRule
+### opda:LeaseTermSuccessionRule
 
 ```turtle
 opda:LeaseTermSuccessionRule
@@ -268,7 +268,7 @@ _:b6dbc2616d1c0
 - [ODR-0007 §Q5](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:MilestoneVarianceRule
+### opda:MilestoneVarianceRule
 
 ```turtle
 opda:MilestoneVarianceRule
@@ -301,7 +301,7 @@ _:b55cf070b367d
 - [ODR-0007 §Q6](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:VerificationActivitySuccessionRule
+### opda:VerificationActivitySuccessionRule
 
 ```turtle
 opda:VerificationActivitySuccessionRule
@@ -334,7 +334,7 @@ _:b28ba9d05939d
 - [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PIIWithoutDPVCoAnnotationRule
+### opda:PIIWithoutDPVCoAnnotationRule
 
 ```turtle
 opda:PIIWithoutDPVCoAnnotationRule

@@ -3,7 +3,7 @@
 ## Summary
 
 Substance Kind labels discriminating Private individual (`opda:Person`) from Organisation (`opda:Organisation`) as legal owner. Distinct from `RoleScheme` (transactional role) and `TenureKindScheme` (sub-Kind of LegalEstate). [UFO Substance Kind label]. Each member binds to the corresponding UFO Substance Kind via `skos:exactMatch` (NEVER `owl:sameAs` per ODR-0005 Anti-pattern §5). Steward: Guizzardi (S006 Q1).
-[Concept tier →](../../../concept/agent/enumerations/owner-type-scheme.md)
+[Concept tier — Proprietor →](../../../concept/agent/proprietor.md)
 
 ## Members
 

@@ -8,6 +8,11 @@ Valuations rest on comparables. A Valuation that names no comparables is opaque;
 
 If you are a valuer or auditor following the evidence chain behind a Valuation, this is the entity that closes the loop.
 
+> **Editorial note.** The hard cases below are interpretive — derived from the
+> S008 Q4 three-criterion test recorded in the source TTL's `rdfs:comment`,
+> not lifted verbatim. Council ratification of a definitive hard-case
+> enumeration for this descriptive Kind is pending.
+
 ## Hard cases
 
 - **Stale comparable.** A Land Registry record from years prior used in a current Valuation. The Comparable persists; its age is a property of the record that consumers can weight.

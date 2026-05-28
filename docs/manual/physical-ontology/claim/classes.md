@@ -8,7 +8,9 @@ tags: [physical-ontology, claim, classes, owl]
 
 Eleven OWL classes emitted by `opda-gen` into `opda-claim.ttl`.
 
-## opda:AssuranceLevel
+## Classes
+
+### opda:AssuranceLevel
 
 ```turtle
 opda:AssuranceLevel
@@ -35,14 +37,14 @@ None directly; values bound to `opda:AssuranceLevelScheme` via SKOS in `opda-voc
 
 - [Concept tier →](../../concept/claim/assurance-level.md)
 - [Logical tier →](../../logical/claim/assurance-level.md)
-- [Physical-DB tier →](../../physical-database/claim/assurance-level.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q3](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Claim
+### opda:Claim
 
 ```turtle
 opda:Claim
@@ -76,14 +78,14 @@ opda:Claim
 
 - [Concept tier →](../../concept/claim/claim.md)
 - [Logical tier →](../../logical/claim/claim.md)
-- [Physical-DB tier →](../../physical-database/claim/claim.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Document
+### opda:Document
 
 ```turtle
 opda:Document
@@ -115,7 +117,7 @@ opda:Document
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011 — within-engineering alias option (b)](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:DocumentEvidence
+### opda:DocumentEvidence
 
 ```turtle
 opda:DocumentEvidence
@@ -149,14 +151,14 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/document-evidence.md)
 - [Logical tier →](../../logical/claim/document-evidence.md)
-- [Physical-DB tier →](../../physical-database/claim/document-evidence.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:ElectronicRecord
+### opda:ElectronicRecord
 
 ```turtle
 opda:ElectronicRecord
@@ -188,7 +190,7 @@ opda:ElectronicRecord
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:ElectronicRecordEvidence
+### opda:ElectronicRecordEvidence
 
 ```turtle
 opda:ElectronicRecordEvidence
@@ -222,14 +224,14 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/electronic-record-evidence.md)
 - [Logical tier →](../../logical/claim/electronic-record-evidence.md)
-- [Physical-DB tier →](../../physical-database/claim/electronic-record-evidence.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Evidence
+### opda:Evidence
 
 ```turtle
 opda:Evidence
@@ -262,14 +264,14 @@ opda:Evidence
 
 - [Concept tier →](../../concept/claim/evidence.md)
 - [Logical tier →](../../logical/claim/evidence.md)
-- [Physical-DB tier →](../../physical-database/claim/evidence.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q1 + Rule 5](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:TrustFramework
+### opda:TrustFramework
 
 ```turtle
 opda:TrustFramework
@@ -296,14 +298,14 @@ None directly (citation pattern; `dct:conformsTo` carries the binding).
 
 - [Concept tier →](../../concept/claim/trust-framework.md)
 - [Logical tier →](../../logical/claim/trust-framework.md)
-- [Physical-DB tier →](../../physical-database/claim/trust-framework.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q5](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:VerificationActivity
+### opda:VerificationActivity
 
 ```turtle
 opda:VerificationActivity
@@ -335,14 +337,14 @@ opda:VerificationActivity
 
 - [Concept tier →](../../concept/claim/verification-activity.md)
 - [Logical tier →](../../logical/claim/verification-activity.md)
-- [Physical-DB tier →](../../physical-database/claim/verification-activity.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0009 §Q1 + §Q2 + §Q7](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Vouch
+### opda:Vouch
 
 ```turtle
 opda:Vouch
@@ -374,7 +376,7 @@ opda:Vouch
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:VouchEvidence
+### opda:VouchEvidence
 
 ```turtle
 opda:VouchEvidence
@@ -408,7 +410,7 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/vouch-evidence.md)
 - [Logical tier →](../../logical/claim/vouch-evidence.md)
-- [Physical-DB tier →](../../physical-database/claim/vouch-evidence.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

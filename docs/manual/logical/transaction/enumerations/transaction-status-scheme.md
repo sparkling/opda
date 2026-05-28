@@ -3,7 +3,7 @@
 ## Summary
 
 Phase labels for the lifecycle of a Transaction Substance Kind, tracking the five canonical phases (Listed → Offered → Accepted → Exchanged → Completed). [UFO Phase label]. Data dictionary leaf `status` carries a broader 9-value enum (including marketing-side and let-side phases); the ADR-named five-phase canonical set is emitted here as the UFO phase set for the sale lifecycle. Per-member `prov:wasDerivedFrom` links each canonical label to the underlying data-dictionary enum value it sources from (G10 closure per ADR-0013). Steward: Guizzardi (S007 Q3).
-[Concept tier →](../../../concept/transaction/enumerations/transaction-status-scheme.md)
+[Concept tier — Transaction →](../../../concept/transaction/transaction.md)
 
 ## Members
 

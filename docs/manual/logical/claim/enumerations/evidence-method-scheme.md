@@ -3,7 +3,7 @@
 ## Summary
 
 Quality Values for the method by which identity evidence was obtained, per the OIDC4IDA `evidence` taxonomy. [UFO Quality Value]. Members inherited verbatim from OpenID Connect for Identity Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-citation discipline. Steward: Moreau (S009 Q3).
-[Concept tier →](../../../concept/claim/enumerations/evidence-method-scheme.md)
+[Concept tier — Evidence →](../../../concept/claim/evidence.md)
 
 ## Members
 

@@ -3,7 +3,7 @@
 ## Summary
 
 Method/plan codes for the capacity under which a Seller is authorised to act in a sale. [UFO Method/plan code]. Codes authorise the Seller's Activity (the act of selling) under a defined legal arrangement. Steward: Guizzardi (S006 Q4).
-[Concept tier →](../../../concept/agent/enumerations/sellers-capacity-scheme.md)
+[Concept tier — Seller →](../../../concept/agent/seller.md)
 
 ## Members
 

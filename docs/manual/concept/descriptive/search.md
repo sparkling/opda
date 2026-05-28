@@ -8,6 +8,11 @@ Conveyancing depends on searches that surface restrictions, charges, environment
 
 If you are a conveyancer working with search packages, this is the entity that captures the per-search provenance and lifecycle.
 
+> **Editorial note.** The hard cases below are interpretive — derived from the
+> S008 Q4 three-criterion test recorded in the source TTL's `rdfs:comment`,
+> not lifted verbatim. Council ratification of a definitive hard-case
+> enumeration for this descriptive Kind is pending.
+
 ## Hard cases
 
 - **Same search re-ordered.** A CON29R that was stale at completion is re-ordered. The new Search is its own record; the predecessor persists with a superseded annotation.

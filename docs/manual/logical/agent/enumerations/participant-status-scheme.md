@@ -3,7 +3,7 @@
 ## Summary
 
 Phase labels for the lifecycle of a Participant Substance Kind (Active / Invited / Proposed / Removed). [UFO Phase label / DOLCE Stage of an Endurant]. Steward: Guizzardi (S006 Q7).
-[Concept tier →](../../../concept/agent/enumerations/participant-status-scheme.md)
+[Concept tier — Agent module →](../../../concept/agent/README.md)
 
 ## Members
 

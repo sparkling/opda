@@ -17,7 +17,7 @@ tags: [physical-ontology, transaction, shacl, shapes]
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:MilestoneIdentityKeyShape
+### opda:MilestoneIdentityKeyShape
 
 ```turtle
 opda:MilestoneIdentityKeyShape
@@ -51,7 +51,7 @@ For every `opda:Milestone` instance, `opda:plannedAtTime` MUST be at most one xs
 - [ODR-0007 §Q6](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:TransactionIdentityKeyShape
+### opda:TransactionIdentityKeyShape
 
 ```turtle
 opda:TransactionIdentityKeyShape
@@ -85,7 +85,7 @@ For every `opda:Transaction` instance, `opda:occurredAtTime` MUST be at most one
 - [ODR-0007 §Q1](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:LeaseTermSuccessionRule
+### opda:LeaseTermSuccessionRule
 
 ```turtle
 opda:LeaseTermSuccessionRule
@@ -120,7 +120,7 @@ _:b6dbc2616d1c0
 - [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:MilestoneVarianceRule
+### opda:MilestoneVarianceRule
 
 ```turtle
 opda:MilestoneVarianceRule

@@ -3,7 +3,7 @@
 ## Summary
 
 Classification of a Property's overall heating-system arrangement (central, communal, room-only, or none). [UFO Quale-in-Region / DOLCE Quality-Region]. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/heating-type-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

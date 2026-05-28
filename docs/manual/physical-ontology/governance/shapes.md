@@ -17,7 +17,7 @@ tags: [physical-ontology, governance, shacl, shapes]
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:DPVMappingRecordIdentityKeyShape
+### opda:DPVMappingRecordIdentityKeyShape
 
 ```turtle
 opda:DPVMappingRecordIdentityKeyShape

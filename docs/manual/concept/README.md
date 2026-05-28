@@ -33,7 +33,7 @@ For a jump-in reader: see **[index.md](./index.md)** for the full entity catalog
 - **OWL / SHACL / SKOS / Turtle syntax** — these live in the Physical-Ontology tier for ontology engineers and regulators auditing the shapes.
 - **UFO / DOLCE / Substance Kind / RoleMixin terminology** — these are deliberately absent at this tier; they appear in the Logical tier where engineers need the formal grounding.
 
-When this tier needs to point at typed detail, it links forward to the corresponding Logical-tier file with the convention `[Logical tier →](../../logical/<module>/<entity>.md)`.
+When this tier needs to point at typed detail, it links forward to the corresponding Logical-tier file with the convention `[Logical tier →]` pointing at `../../logical/<MODULE>/<ENTITY>.md` (replace `<MODULE>` / `<ENTITY>` with the actual module + entity slug).
 
 ## Provenance
 

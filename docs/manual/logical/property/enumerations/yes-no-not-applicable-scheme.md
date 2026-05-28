@@ -3,7 +3,7 @@
 ## Summary
 
 Mode label register for BASPI5 questions admitting non-applicable as a third option (Yes / No / Not applicable). [UFO Quale-in-Region]. Mode register for BASPI5 form questions; the `Not applicable` member captures absence-of-context rather than negative answer. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/yes-no-not-applicable-scheme.md)
+[Concept tier — Property module →](../../../concept/property/README.md)
 
 ## Members
 

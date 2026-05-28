@@ -3,7 +3,7 @@
 ## Summary
 
 Scottish Assessors Association banding for Scotland (Bands A–I) assigned to each domestic property for council tax calculation. Band I is Scotland-specific. [UFO Quale-in-Region / DOLCE Quality-Region]. Verbatim source: SAA council-tax bands. Steward: Baker (regulator-cited per ODR-0011 §4a; SAA-governed).
-[Concept tier →](../../../concept/property/enumerations/council-tax-band-scheme-scotland.md)
+[Concept tier — Property module →](../../../concept/property/README.md)
 
 ## Members
 

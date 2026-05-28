@@ -17,7 +17,7 @@ Six SHACL shapes (4 identity-key + 1 IC-breach + 1 INSPIRE rule) plus 1 UPRN suc
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:AddressIdentityKeyShape
+### opda:AddressIdentityKeyShape
 
 ```turtle
 opda:AddressIdentityKeyShape
@@ -51,7 +51,7 @@ For every `opda:Address` instance, pyshacl checks that `opda:addressVariant` is 
 - [ODR-0015 §Rule 6 — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
 - [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:LegalEstateIdentityKeyShape
+### opda:LegalEstateIdentityKeyShape
 
 ```turtle
 opda:LegalEstateIdentityKeyShape
@@ -85,7 +85,7 @@ For every `opda:LegalEstate` instance, `opda:tenureKind` MUST be at most one xsd
 - [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PropertyIdentityKeyShape
+### opda:PropertyIdentityKeyShape
 
 ```turtle
 opda:PropertyIdentityKeyShape
@@ -119,7 +119,7 @@ For every `opda:Property` instance, `opda:hasUPRN` MUST be at most one xsd:strin
 - [ODR-0005 §6a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PropertyICBreachShape
+### opda:PropertyICBreachShape
 
 ```turtle
 opda:PropertyICBreachShape
@@ -152,7 +152,7 @@ For every `opda:Property` instance, `opda:identifiesSameProperty` MUST be IRI-va
 - [ODR-0005 §Rule 5 — Anti-pattern §5 (NEVER `owl:sameAs`)](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:UPRNSuccessionRule
+### opda:UPRNSuccessionRule
 
 ```turtle
 opda:UPRNSuccessionRule
@@ -186,7 +186,7 @@ _:b16e82da2b31c
 - [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:INSPIRESuccessionRule
+### opda:INSPIRESuccessionRule
 
 ```turtle
 opda:INSPIRESuccessionRule

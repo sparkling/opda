@@ -3,7 +3,7 @@
 ## Summary
 
 Classification of the fuel used by a Property's central heating system. [UFO Quale-in-Region / DOLCE Quality-Region]. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/central-heating-fuel-type-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

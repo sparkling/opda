@@ -8,7 +8,9 @@ tags: [physical-ontology, governance, classes, owl]
 
 Two OWL classes + 3 `opda:DPVMappingRecord` instances emitted by `opda-gen` into `opda-governance.ttl`.
 
-## opda:DPVMappingRecord
+## Classes
+
+### opda:DPVMappingRecord
 
 ```turtle
 opda:DPVMappingRecord
@@ -35,7 +37,7 @@ opda:DPVMappingRecord
 
 - [Concept tier →](../../concept/governance/dpv-mapping-record.md)
 - [Logical tier →](../../logical/governance/dpv-mapping-record.md)
-- [Physical-DB tier →](../../physical-database/governance/dpv-mapping-record.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -43,7 +45,7 @@ opda:DPVMappingRecord
 - [ODR-0012 — Evidence co-annotation](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
 - [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:SpecialCategoryScheme
+### opda:SpecialCategoryScheme
 
 ```turtle
 opda:SpecialCategoryScheme

@@ -3,7 +3,7 @@
 ## Summary
 
 Substance Kind labels for tenure (Freehold, Leasehold, Commonhold). Each member binds to its corresponding OWL sub-class via `skos:exactMatch` per ODR-0011 §8a Substance Kind label cross-scheme consistency check (NEVER `owl:sameAs` per ODR-0005 Anti-pattern §5). [UFO Substance Kind label]. Steward: Kendall (LegalEstate steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/tenure-kind-scheme.md)
+[Concept tier — LegalEstate →](../../../concept/property/legal-estate.md)
 
 ## Members
 

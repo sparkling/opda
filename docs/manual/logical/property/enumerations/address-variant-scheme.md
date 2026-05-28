@@ -3,7 +3,7 @@
 ## Summary
 
 Quality Values for the variant under which an Address is presented (`marketing`, `title`, `inspire`, `postal`). Each variant particularises an underlying Address Substance Kind per ODR-0015 §Q1. [UFO Quality Value]. Steward: Guizzardi (S015 Q1).
-[Concept tier →](../../../concept/property/enumerations/address-variant-scheme.md)
+[Concept tier — Address →](../../../concept/property/address.md)
 
 ## Members
 

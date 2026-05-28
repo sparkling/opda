@@ -3,7 +3,7 @@
 ## Summary
 
 EPC current energy rating banding (A–G) published by DESNZ (Department for Energy Security and Net Zero) for residential properties in England & Wales. [UFO Quale-in-Region / DOLCE Quality-Region]. Verbatim source: DESNZ Energy Performance Certificate guidance. Steward: Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed).
-[Concept tier →](../../../concept/property/enumerations/current-energy-rating-scheme.md)
+[Concept tier — Property →](../../../concept/property/property.md)
 
 ## Members
 

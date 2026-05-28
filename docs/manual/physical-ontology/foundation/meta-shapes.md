@@ -17,7 +17,7 @@ Five meta-shapes + two cross-cutting SHACL-AF rules, emitted into `opda-shapes.t
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:NoIdentityOverride_MetaShape
+### opda:NoIdentityOverride_MetaShape
 
 ```turtle
 opda:NoIdentityOverride_MetaShape
@@ -51,7 +51,7 @@ For any candidate overlay shape, pyshacl runs the SPARQL select. If the overlay 
 - [ODR-0013 §Q1 — SHACL validation and severity (Cat 3)](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
 - [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:ShInSemantics_MetaShape
+### opda:ShInSemantics_MetaShape
 
 ```turtle
 opda:ShInSemantics_MetaShape
@@ -85,7 +85,7 @@ For every overlay shape with `sh:in` constraints, pyshacl checks each enumerated
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:ShViolationFloor_MetaShape
+### opda:ShViolationFloor_MetaShape
 
 ```turtle
 opda:ShViolationFloor_MetaShape
@@ -119,7 +119,7 @@ For every overlay shape, pyshacl looks for `sh:property` blocks with severity le
 - [ODR-0013 §Q1 — SHACL validation and severity](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:MetaShapeOverShapeGraphMetaShape
+### opda:MetaShapeOverShapeGraphMetaShape
 
 ```turtle
 opda:MetaShapeOverShapeGraphMetaShape
@@ -153,7 +153,7 @@ For every meta-shape (i.e. shape targeting `sh:NodeShape`) declaring `sh:severit
 - [ODR-0013 §Q1 Category 5](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## SHACL-AF rule: opda:DeprecationChainRule
+### SHACL-AF rule: opda:DeprecationChainRule
 
 See [shacl-af-rules.md#opdadeprecationchainrule](../shacl-af-rules.md#opdadeprecationchainrule) for the full Turtle block + SPARQL body.
 
@@ -185,7 +185,7 @@ opda:DeprecationChainRule
 - [ODR-0017 §2a — escalation note](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## SHACL-AF rule: opda:PIIWithoutDPVCoAnnotationRule
+### SHACL-AF rule: opda:PIIWithoutDPVCoAnnotationRule
 
 See [shacl-af-rules.md#opdapiiwithoutdpvcoannotationrule](../shacl-af-rules.md#opdapiiwithoutdpvcoannotationrule) for the full Turtle block + SPARQL body.
 

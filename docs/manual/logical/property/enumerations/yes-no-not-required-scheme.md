@@ -3,7 +3,7 @@
 ## Summary
 
 Mode label register for BASPI5 questions admitting not-required as a third option (Yes / No / Not required). [UFO Quale-in-Region]. Mode register for BASPI5 form questions where the question itself becomes not-required in some discriminator branches. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/yes-no-not-required-scheme.md)
+[Concept tier — Property module →](../../../concept/property/README.md)
 
 ## Members
 

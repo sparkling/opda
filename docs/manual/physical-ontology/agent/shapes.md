@@ -17,7 +17,7 @@ tags: [physical-ontology, agent, shacl, shapes]
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:OrganisationIdentityKeyShape
+### opda:OrganisationIdentityKeyShape
 
 ```turtle
 opda:OrganisationIdentityKeyShape
@@ -51,7 +51,7 @@ For every `opda:Organisation` instance, `opda:hasAssertedCapacity` MUST be at mo
 - [ODR-0006 §Q4 + §Q6](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PersonIdentityKeyShape
+### opda:PersonIdentityKeyShape
 
 ```turtle
 opda:PersonIdentityKeyShape
@@ -85,7 +85,7 @@ For every `opda:Person` instance, `opda:hasAssertedCapacity` MUST be at most one
 - [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:SpecialCategoryPIIWithoutLawfulBasisShape
+### opda:SpecialCategoryPIIWithoutLawfulBasisShape
 
 ```turtle
 opda:SpecialCategoryPIIWithoutLawfulBasisShape
@@ -118,7 +118,7 @@ For every `opda:Person` instance carrying `opda:hasSpecialCategoryData true`, py
 - [ODR-0013 §Q1 Category 4](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
 - [ADR-0014 — BASPI5 round-trip MVP harness (G14)](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
 
-## opda:IdentifierSuccessionRule
+### opda:IdentifierSuccessionRule
 
 ```turtle
 opda:IdentifierSuccessionRule
@@ -152,7 +152,7 @@ _:b04ddc2ae8a10
 - [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:CapacityAuthorityMatchRule
+### opda:CapacityAuthorityMatchRule
 
 ```turtle
 opda:CapacityAuthorityMatchRule

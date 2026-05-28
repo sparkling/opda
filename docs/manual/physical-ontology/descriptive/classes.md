@@ -8,7 +8,9 @@ tags: [physical-ontology, descriptive, classes, owl]
 
 Five OWL classes emitted by `opda-gen` into `opda-descriptive.ttl`.
 
-## opda:Comparable
+## Classes
+
+### opda:Comparable
 
 ```turtle
 opda:Comparable
@@ -40,14 +42,14 @@ opda:Comparable
 
 - [Concept tier →](../../concept/descriptive/comparable.md)
 - [Logical tier →](../../logical/descriptive/comparable.md)
-- [Physical-DB tier →](../../physical-database/descriptive/comparable.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:EPCCertificate
+### opda:EPCCertificate
 
 ```turtle
 opda:EPCCertificate
@@ -80,14 +82,14 @@ opda:EPCCertificate
 
 - [Concept tier →](../../concept/descriptive/epc-certificate.md)
 - [Logical tier →](../../logical/descriptive/epc-certificate.md)
-- [Physical-DB tier →](../../physical-database/descriptive/epc-certificate.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Search
+### opda:Search
 
 ```turtle
 opda:Search
@@ -119,14 +121,14 @@ opda:Search
 
 - [Concept tier →](../../concept/descriptive/search.md)
 - [Logical tier →](../../logical/descriptive/search.md)
-- [Physical-DB tier →](../../physical-database/descriptive/search.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Survey
+### opda:Survey
 
 ```turtle
 opda:Survey
@@ -158,14 +160,14 @@ opda:Survey
 
 - [Concept tier →](../../concept/descriptive/survey.md)
 - [Logical tier →](../../logical/descriptive/survey.md)
-- [Physical-DB tier →](../../physical-database/descriptive/survey.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Valuation
+### opda:Valuation
 
 ```turtle
 opda:Valuation
@@ -197,7 +199,7 @@ opda:Valuation
 
 - [Concept tier →](../../concept/descriptive/valuation.md)
 - [Logical tier →](../../logical/descriptive/valuation.md)
-- [Physical-DB tier →](../../physical-database/descriptive/valuation.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

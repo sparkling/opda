@@ -3,7 +3,7 @@
 ## Summary
 
 Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus the OPDA-specific PDTF-Standard intermediate level per ODR-0009 §Q3, applied to identity-verification claims. [UFO Quality Value]. Low/Substantial/High inherit verbatim from Regulation (EU) No 910/2014 (eIDAS) Article 8 per ODR-0011 §4a regulator-citation discipline. PDTF-Standard ratified by ODR-0009 §Q3 as an OPDA-specific intermediate level. Steward: Moreau (S009 Q3).
-[Concept tier →](../../../concept/claim/enumerations/assurance-level-scheme.md)
+[Concept tier — AssuranceLevel →](../../../concept/claim/assurance-level.md)
 
 ## Members
 

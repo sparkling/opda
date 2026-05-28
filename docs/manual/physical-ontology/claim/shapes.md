@@ -17,7 +17,7 @@ tags: [physical-ontology, claim, shacl, shapes]
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 ```
 
-## opda:ClaimIdentityKeyShape
+### opda:ClaimIdentityKeyShape
 
 ```turtle
 opda:ClaimIdentityKeyShape
@@ -51,7 +51,7 @@ For every `opda:Claim` instance, `opda:digest` MUST be at most one xsd:string wh
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:EvidenceIdentityKeyShape
+### opda:EvidenceIdentityKeyShape
 
 ```turtle
 opda:EvidenceIdentityKeyShape
@@ -85,7 +85,7 @@ For every `opda:Evidence` instance (including subtypes), `opda:digest` MUST be a
 - [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:UnprovenancedClaimShape
+### opda:UnprovenancedClaimShape
 
 ```turtle
 opda:UnprovenancedClaimShape
@@ -119,7 +119,7 @@ For every `opda:Claim` instance, at least one `prov:wasDerivedFrom` triple MUST 
 - [ODR-0013 §Q1 Cat 2](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:PROVOClaimsRule
+### opda:PROVOClaimsRule
 
 ```turtle
 opda:PROVOClaimsRule
@@ -153,7 +153,7 @@ _:bb11b45f9d7c0
 - [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:VerificationActivitySuccessionRule
+### opda:VerificationActivitySuccessionRule
 
 ```turtle
 opda:VerificationActivitySuccessionRule

@@ -8,7 +8,9 @@ tags: [physical-ontology, property, classes, owl]
 
 Seven OWL classes emitted by `opda-gen` into `opda-property.ttl`.
 
-## opda:Address
+## Classes
+
+### opda:Address
 
 ```turtle
 opda:Address
@@ -41,14 +43,14 @@ opda:Address
 
 - [Concept tier →](../../concept/property/address.md)
 - [Logical tier →](../../logical/property/address.md)
-- [Physical-DB tier →](../../physical-database/property/address.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0015 §2a — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
 - [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:LeaseExtensionEvent
+### opda:LeaseExtensionEvent
 
 ```turtle
 opda:LeaseExtensionEvent
@@ -80,14 +82,14 @@ None directly (lifecycle attaches to `opda:LegalEstate` via successor LeaseTerm 
 
 - [Concept tier →](../../concept/property/lease-extension-event.md)
 - [Logical tier →](../../logical/property/lease-extension-event.md)
-- [Physical-DB tier →](../../physical-database/property/lease-extension-event.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:LeaseTerm
+### opda:LeaseTerm
 
 ```turtle
 opda:LeaseTerm
@@ -119,14 +121,14 @@ opda:LeaseTerm
 
 - [Concept tier →](../../concept/property/lease-term.md)
 - [Logical tier →](../../logical/property/lease-term.md)
-- [Physical-DB tier →](../../physical-database/property/lease-term.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0007 §Q5](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:LegalEstate
+### opda:LegalEstate
 
 ```turtle
 opda:LegalEstate
@@ -153,14 +155,14 @@ opda:LegalEstate
 
 - [Concept tier →](../../concept/property/legal-estate.md)
 - [Logical tier →](../../logical/property/legal-estate.md)
-- [Physical-DB tier →](../../physical-database/property/legal-estate.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Property
+### opda:Property
 
 ```turtle
 opda:Property
@@ -190,14 +192,14 @@ opda:Property
 
 - [Concept tier →](../../concept/property/property.md)
 - [Logical tier →](../../logical/property/property.md)
-- [Physical-DB tier →](../../physical-database/property/property.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0005 §2a + §3a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:RegisteredTitle
+### opda:RegisteredTitle
 
 ```turtle
 opda:RegisteredTitle
@@ -224,14 +226,14 @@ None directly at TBox level (identity-key shape lives at `opda:LegalEstate` per 
 
 - [Concept tier →](../../concept/property/registered-title.md)
 - [Logical tier →](../../logical/property/registered-title.md)
-- [Physical-DB tier →](../../physical-database/property/registered-title.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
 - [ODR-0005 §3c](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
 - [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:UPRNSuccessionEvent
+### opda:UPRNSuccessionEvent
 
 ```turtle
 opda:UPRNSuccessionEvent
@@ -263,7 +265,7 @@ opda:UPRNSuccessionEvent
 
 - [Concept tier →](../../concept/property/uprn-succession-event.md)
 - [Logical tier →](../../logical/property/uprn-succession-event.md)
-- [Physical-DB tier →](../../physical-database/property/uprn-succession-event.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

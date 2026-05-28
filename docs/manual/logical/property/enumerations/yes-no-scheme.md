@@ -3,7 +3,7 @@
 ## Summary
 
 Binary register for affirmative/negative answers to BASPI5 discriminator questions (Yes / No). [UFO Quale-in-Region / DOLCE Quality-Region]. Used by ~276 BASPI5 discriminator questions across the Property, LegalEstate, and Agent modules; emitted as a shared scheme per ODR-0011 §1a one-scheme-per-enum discipline. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
-[Concept tier →](../../../concept/property/enumerations/yes-no-scheme.md)
+[Concept tier — Property module →](../../../concept/property/README.md)
 
 ## Members
 

@@ -8,6 +8,11 @@ Valuations are not facts about the Property — they are *judgements* about its 
 
 If you are a valuer, lender, or audit-trail tooling integrator, this is the entity that captures the judgement and its supporting evidence.
 
+> **Editorial note.** The hard cases below are interpretive — derived from the
+> S008 Q4 three-criterion test recorded in the source TTL's `rdfs:comment`,
+> not lifted verbatim. Council ratification of a definitive hard-case
+> enumeration for this descriptive Kind is pending.
+
 ## Hard cases
 
 - **Valuation superseded by a fresh instruction.** A lender re-orders a Valuation closer to completion. The new Valuation is its own record; the previous persists with a superseded annotation.

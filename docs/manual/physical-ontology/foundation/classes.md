@@ -8,7 +8,9 @@ tags: [physical-ontology, foundation, classes, owl]
 
 Six classes + one datatype property emitted by `opda-gen` into `opda-classes.ttl`.
 
-## opda:DiagnosticExemplar
+## Classes
+
+### opda:DiagnosticExemplar
 
 ```turtle
 opda:DiagnosticExemplar
@@ -45,7 +47,7 @@ None.
 - [ODR-0004 §8a — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
 - [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md)
 
-## opda:GeneratorRun
+### opda:GeneratorRun
 
 ```turtle
 opda:GeneratorRun
@@ -78,7 +80,7 @@ None (instances minted by build pipeline; no SHACL gate at TBox).
 - [ODR-0004 §6a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
 - [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md)
 
-## opda:Relator
+### opda:Relator
 
 ```turtle
 opda:Relator
@@ -115,7 +117,7 @@ Superclass of `opda:Transaction` (transaction module) + `opda:Proprietorship` (a
 - [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:Role
+### opda:Role
 
 ```turtle
 opda:Role
@@ -152,7 +154,7 @@ Superclass of `opda:Proprietor` (agent module).
 - [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:RoleMixin
+### opda:RoleMixin
 
 ```turtle
 opda:RoleMixin
@@ -189,7 +191,7 @@ Superclass of `opda:Seller` + `opda:Buyer` (agent module).
 - [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
 - [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
 
-## opda:ValidationContext
+### opda:ValidationContext
 
 ```turtle
 opda:ValidationContext
@@ -222,7 +224,7 @@ None directly — instances (e.g. `opda:Baspi5ValidationContext`) are reified pe
 - [ODR-0010 §Q1 — Overlay profile mechanism](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
 - [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md)
 
-## opda:hasSpecialCategoryData
+### opda:hasSpecialCategoryData
 
 ```turtle
 opda:hasSpecialCategoryData
@@ -248,8 +250,7 @@ opda:hasSpecialCategoryData
 
 #### Cross-tier links
 
-- [Concept tier →](../../concept/foundation/has-special-category-data.md)
-- [Logical tier →](../../logical/foundation/has-special-category-data.md)
+`opda:hasSpecialCategoryData` is an `owl:DatatypeProperty` (engineering placeholder per ADR-0012), not a Substance Kind — no Concept- or Logical-tier narrative entity files exist. Council Author-only session S012 Q3 will ratify the canonical predicate name; cross-tier narrative coverage tracks that decision.
 
 #### Source ODR + ADR
 

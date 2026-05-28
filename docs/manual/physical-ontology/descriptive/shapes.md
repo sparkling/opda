@@ -31,7 +31,7 @@ _:b218dcfc815ed
 
 The property shape requires at least one `prov:wasGeneratedBy` triple on every class-promoted descriptive Kind. This is the IC discriminator that justifies class-promotion per the three-criterion test (authority-retrieved provenance).
 
-## opda:ComparableIdentityKeyShape
+### opda:ComparableIdentityKeyShape
 
 ```turtle
 opda:ComparableIdentityKeyShape
@@ -58,7 +58,7 @@ Every `opda:Comparable` instance MUST carry at least one `prov:wasGeneratedBy` t
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:EPCCertificateIdentityKeyShape
+### opda:EPCCertificateIdentityKeyShape
 
 ```turtle
 opda:EPCCertificateIdentityKeyShape
@@ -85,7 +85,7 @@ Every `opda:EPCCertificate` instance MUST carry at least one `prov:wasGeneratedB
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:SearchIdentityKeyShape
+### opda:SearchIdentityKeyShape
 
 ```turtle
 opda:SearchIdentityKeyShape
@@ -112,7 +112,7 @@ Every `opda:Search` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:SurveyIdentityKeyShape
+### opda:SurveyIdentityKeyShape
 
 ```turtle
 opda:SurveyIdentityKeyShape
@@ -139,7 +139,7 @@ Every `opda:Survey` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 - [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
 - [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
 
-## opda:ValuationIdentityKeyShape
+### opda:ValuationIdentityKeyShape
 
 ```turtle
 opda:ValuationIdentityKeyShape
