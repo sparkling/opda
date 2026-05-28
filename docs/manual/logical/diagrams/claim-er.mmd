@@ -1,0 +1,12 @@
+erDiagram
+    Claim }o--o{ Evidence : "supportedBy / prov:wasDerivedFrom"
+    Evidence ||--o| DocumentEvidence : "subtype"
+    Evidence ||--o| ElectronicRecordEvidence : "subtype"
+    Evidence ||--o| VouchEvidence : "subtype"
+    DocumentEvidence ||--|| Document : "owl:equivalentClass"
+    ElectronicRecordEvidence ||--|| ElectronicRecord : "owl:equivalentClass"
+    VouchEvidence ||--|| Vouch : "owl:equivalentClass"
+    VerificationActivity }o--|| Claim : "produces"
+    VerificationActivity }o--o| TrustFramework : "dct:conformsTo"
+    VouchEvidence }o--|| Person : "attestedBy"
+    Claim }o--o{ AssuranceLevel : "assuranceLevel"

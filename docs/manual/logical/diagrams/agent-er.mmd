@@ -1,0 +1,11 @@
+erDiagram
+    Seller }o--|| Person : "borneBy"
+    Seller }o--|| Organisation : "borneBy"
+    Buyer }o--|| Person : "borneBy"
+    Buyer }o--|| Organisation : "borneBy"
+    Proprietorship }o--|| RegisteredTitle : "bindsTitle"
+    Proprietorship ||--o{ Proprietor : "founds"
+    Proprietor }o--|| Person : "borneBy"
+    Proprietor }o--|| Organisation : "borneBy (sub-Role)"
+    NameChangeEvent }o--|| Person : "prov:wasAssociatedWith"
+    Seller ||--o{ Claim : "hasEvidencedAuthority"

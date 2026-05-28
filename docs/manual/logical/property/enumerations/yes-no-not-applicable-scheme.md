@@ -1,0 +1,23 @@
+# YesNoNotApplicableScheme
+
+## Summary
+
+Mode label register for BASPI5 questions admitting non-applicable as a third option (Yes / No / Not applicable). [UFO Quale-in-Region]. Mode register for BASPI5 form questions; the `Not applicable` member captures absence-of-context rather than negative answer. Steward: Allemang (property-qualities sub-module steward per S008 Q2).
+[Concept tier →](../../../concept/property/enumerations/yes-no-not-applicable-scheme.md)
+
+## Members
+
+| Notation | Label | Definition | Source |
+|---|---|---|---|
+| `No` | No | Negative answer | [ODR-0011 §1a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) |
+| `Not applicable` | Not applicable | Question does not apply in this context | [ODR-0011 §1a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) |
+| `Yes` | Yes | Affirmative answer | [ODR-0011 §1a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) |
+
+## Cardinality discipline
+
+Bound by BASPI5 questions where non-applicable is a meaningful answer (i.e. the question may not apply at all in some discriminator branches). No core-tier attribute binds this scheme directly; binding lives in BASPI5 and equivalent overlay profiles. Closed scheme — strict three-member.
+
+## Source ODR + ADR
+
+- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §1a scheme-steward
+- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation

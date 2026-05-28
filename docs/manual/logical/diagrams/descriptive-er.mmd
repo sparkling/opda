@@ -1,0 +1,11 @@
+erDiagram
+    Survey }o--|| Property : "concerns"
+    Valuation }o--|| Property : "concerns"
+    EPCCertificate }o--|| Property : "concerns"
+    Search }o--|| Property : "concerns"
+    Comparable }o--|| Valuation : "supports (via prov:wasInformedBy)"
+    Survey }o--|| Activity : "prov:wasGeneratedBy"
+    Valuation }o--|| Activity : "prov:wasGeneratedBy"
+    EPCCertificate }o--|| Activity : "prov:wasGeneratedBy"
+    Search }o--|| Activity : "prov:wasGeneratedBy"
+    Comparable }o--|| Activity : "prov:wasGeneratedBy"

@@ -1,0 +1,11 @@
+erDiagram
+    Property ||--o{ Address : "hasAddress"
+    Property }o--o| LegalEstate : "vests"
+    Property }o--o{ RegisteredTitle : "identifiedBy"
+    RegisteredTitle ||--|| LegalEstate : "recordsEstate"
+    RegisteredTitle }o--|| Property : "identifiesSameProperty"
+    LegalEstate }o--|| Property : "identifiesSameProperty"
+    LegalEstate ||--o| LeaseTerm : "leaseTerm"
+    LeaseExtensionEvent }o--|| LegalEstate : "extends"
+    LeaseExtensionEvent }o--|| LeaseTerm : "produces successor"
+    UPRNSuccessionEvent }o--|| Property : "succeeds (PROV-O wasDerivedFrom)"

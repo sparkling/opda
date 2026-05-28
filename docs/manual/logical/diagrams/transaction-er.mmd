@@ -1,0 +1,8 @@
+erDiagram
+    Transaction ||--o{ Milestone : "hasMilestone"
+    Transaction ||--o{ Seller : "founds"
+    Transaction ||--o{ Buyer : "founds"
+    Transaction }o--o| TransactionChain : "hasChainPosition"
+    TransactionChain ||--o{ Transaction : "chainMembers"
+    Transaction }o--o{ LegalEstate : "concerns"
+    Milestone }o--o| Plan : "qualifiedAssociation → hadPlan (plannedAtTime)"

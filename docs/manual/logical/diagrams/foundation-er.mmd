@@ -1,0 +1,8 @@
+erDiagram
+    Role ||--o{ Proprietor : "specialised by"
+    RoleMixin ||--o{ Seller : "specialised by"
+    RoleMixin ||--o{ Buyer : "specialised by"
+    Relator ||--o{ Transaction : "specialised by"
+    Relator ||--o{ Proprietorship : "specialised by"
+    ValidationContext ||--o{ BASPI5Profile : "reifies (per overlay)"
+    GeneratorRun ||--o{ EmittedArtefact : "produces (per opda-gen run)"
