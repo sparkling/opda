@@ -8,18 +8,37 @@
 
 ## Composition recipe
 
+<img src="diagrams/opda-ui/composition-recipe.png" alt="opda-ui composition recipe" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
-    foundation[foundation.ttl]
-    classes[opda-classes.ttl]
-    shapesf[opda-shapes.ttl]
-    annf[opda-annotations.ttl]
-    vocabularies[opda-vocabularies.ttl]
-    modules[opda-property/agent/transaction/claim/governance/descriptive.ttl × 6]
-    moduleshapes[opda-<module>-shapes.ttl × 6]
-    moduleannotations[opda-<module>-annotations.ttl × 6]
-    composer[opda-gen compose]
-    output[opda-ui.ttl]
+    accTitle: opda-ui composition recipe
+    accDescr: Shows the source TTLs the composer projects into opda-ui, including DPV annotation TTLs that drive UI consent affordances.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    foundation["foundation.ttl"]:::data
+    classes["opda-classes.ttl"]:::data
+    shapesf["opda-shapes.ttl"]:::data
+    annf["opda-annotations.ttl"]:::data
+    vocabularies["opda-vocabularies.ttl"]:::data
+    modules["opda-MODULE.ttl × 6"]:::data
+    moduleshapes["opda-MODULE-shapes.ttl × 6"]:::data
+    moduleannotations["opda-MODULE-annotations.ttl × 6"]:::data
+    composer["opda-gen compose"]:::process
+    output["opda-ui.ttl<br/>classes + shapes + annotations"]:::data
     foundation --> composer
     classes --> composer
     shapesf --> composer
@@ -30,6 +49,8 @@ flowchart LR
     moduleannotations --> composer
     composer --> output
 ```
+
+</details>
 
 ## Included graphs
 

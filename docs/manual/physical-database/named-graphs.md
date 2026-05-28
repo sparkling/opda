@@ -4,24 +4,180 @@ One section per named graph the deployment exposes. Triple counts measured by `r
 
 ## Load order summary
 
+<img src="diagrams/named-graphs/load-order.png" alt="Named-graph load order" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
-    F[foundation.ttl<br/>https://w3id.org/opda/<br/>versionIRI 1.0.0/]
-    V[opda-vocabularies.ttl<br/>https://w3id.org/opda/vocabularies/<br/>uses dct:references for DPV]
-    C[opda-classes.ttl<br/>no ontology IRI<br/>class declarations]
-    SH[opda-shapes.ttl<br/>https://w3id.org/opda/shapes<br/>foundation meta-shapes]
-    AN[opda-annotations.ttl<br/>https://w3id.org/opda/annotations<br/>meta-annotations]
-    P[opda-property/ + 5 other modules]
-    PS[opda-property-shapes/ + 5 others]
-    PA[opda-property-annotations/ + 5 others]
-    B[profiles/baspi5.ttl<br/>https://w3id.org/opda/profiles/baspi5]
-    F --> P
-    V --> P
-    P --> PS
-    P --> PA
-    F --> B
-    V --> B
+    accTitle: Named-graph load order
+    accDescr: Shows the load order of foundation, vocabularies, class, shape, and annotation named graphs and how owl:imports chains link them.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+
+    F["foundation.ttl<br/>w3id.org/opda/<br/>versionIRI 1.0.0/"]:::data
+    V["opda-vocabularies.ttl<br/>w3id.org/opda/vocabularies/<br/>dct:references DPV"]:::data
+    Cl["opda-classes.ttl<br/>no ontology IRI<br/>class declarations"]:::data
+    SH["opda-shapes.ttl<br/>w3id.org/opda/shapes<br/>foundation meta-shapes"]:::data
+    AN["opda-annotations.ttl<br/>w3id.org/opda/annotations<br/>meta-annotations"]:::data
+    P["opda-MODULE.ttl × 6<br/>module TBoxes"]:::data
+    PS["opda-MODULE-shapes.ttl × 6<br/>module shapes"]:::data
+    PA["opda-MODULE-annotations.ttl × 6<br/>DPV annotations"]:::data
+    B["profiles/baspi5.ttl<br/>w3id.org/opda/profiles/baspi5"]:::data
+
+    F -->|owl:imports| P
+    V -->|owl:imports| P
+    P -.->|loads alongside| PS
+    P -.->|loads alongside| PA
+    F -->|owl:imports| B
+    V -->|owl:imports| B
+    PS -.->|loads alongside| B
 ```
+
+</details>
+
+## Named-graph layout — clusters
+
+The 25 named graphs cluster by role. Foundation graphs are loaded first; module-TBox graphs import the foundation substrate; module-shape and module-annotation graphs ride alongside their matching TBox graph; overlay profiles cite the foundation but the consumer typically merges all six module-shape graphs for full BASPI5 validation.
+
+<img src="diagrams/named-graphs/named-graph-clusters.png" alt="Named-graph layout clusters" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
+flowchart TB
+    accTitle: Named-graph layout by cluster
+    accDescr: Groups the 25 named graphs by role - foundation, vocabularies, module-classes, module-shapes, module-annotations, and overlay profiles - with version IRI annotations on the TBox graphs.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+
+    subgraph FND["Foundation cluster"]
+        FN1["w3id.org/opda/<br/>1.0.0/"]:::infra
+        FN2["opda-classes<br/>(no IRI)"]:::data
+        FN3["w3id.org/opda/shapes"]:::infra
+        FN4["w3id.org/opda/annotations"]:::infra
+    end
+
+    subgraph VOC["Vocabularies cluster"]
+        VC1["opda-vocabularies<br/>(no IRI; SKOS aggregate)"]:::data
+    end
+
+    subgraph MCLS["Module-TBox cluster (6)"]
+        MC1["w3id.org/opda/property/<br/>1.0.0/"]:::infra
+        MC2["w3id.org/opda/agent/<br/>1.0.0/"]:::infra
+        MC3["w3id.org/opda/transaction/<br/>1.0.0/"]:::infra
+        MC4["w3id.org/opda/claim/<br/>1.0.0/"]:::infra
+        MC5["w3id.org/opda/governance/<br/>1.0.0/"]:::infra
+        MC6["w3id.org/opda/descriptive/<br/>1.0.0/"]:::infra
+    end
+
+    subgraph MSH["Module-shape cluster (6)"]
+        MS1["w3id.org/opda/property-shapes/"]:::infra
+        MS2["w3id.org/opda/agent-shapes/"]:::infra
+        MS3["w3id.org/opda/transaction-shapes/"]:::infra
+        MS4["w3id.org/opda/claim-shapes/"]:::infra
+        MS5["w3id.org/opda/governance-shapes/"]:::infra
+        MS6["w3id.org/opda/descriptive-shapes/"]:::infra
+    end
+
+    subgraph MAN["Module-annotation cluster (6)"]
+        MA1["w3id.org/opda/property-annotations/"]:::infra
+        MA2["w3id.org/opda/agent-annotations/"]:::infra
+        MA3["w3id.org/opda/transaction-annotations/"]:::infra
+        MA4["w3id.org/opda/claim-annotations/"]:::infra
+        MA5["w3id.org/opda/governance-annotations/"]:::infra
+        MA6["w3id.org/opda/descriptive-annotations/"]:::infra
+    end
+
+    subgraph OVR["Overlay-profile cluster"]
+        OB1["w3id.org/opda/profiles/baspi5<br/>versionIRI 0.1.0/"]:::infra
+    end
+
+    FND --> MCLS
+    VOC --> MCLS
+    MCLS -.-> MSH
+    MCLS -.-> MAN
+    FND --> OVR
+    VOC --> OVR
+    MSH -.-> OVR
+```
+
+</details>
+
+## Named-graph dependency graph
+
+`owl:imports` chains across the deployment. The foundation versionIRI `https://w3id.org/opda/1.0.0/` is imported by every module-TBox graph and by every overlay profile. The vocabularies graph (cited as `https://w3id.org/opda/vocabularies/`) is imported alongside the foundation in every module TBox and overlay. Shape graphs declare no `owl:imports` (per ODR-0004 §3a separation rule 3) and load alongside their matching TBox graph.
+
+<img src="diagrams/named-graphs/named-graph-dependency.png" alt="Named-graph dependency graph" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Named-graph owl-imports dependency graph
+    accDescr: Shows how every module-TBox graph and overlay profile imports the foundation versionIRI and the vocabularies graph via owl:imports.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+
+    F["w3id.org/opda/1.0.0/<br/>foundation versionIRI"]:::data
+    V["w3id.org/opda/vocabularies/<br/>SKOS schemes"]:::data
+
+    P["w3id.org/opda/property/"]:::data
+    A["w3id.org/opda/agent/"]:::data
+    T["w3id.org/opda/transaction/"]:::data
+    Cl["w3id.org/opda/claim/"]:::data
+    G["w3id.org/opda/governance/"]:::data
+    D["w3id.org/opda/descriptive/"]:::data
+
+    B["w3id.org/opda/profiles/baspi5"]:::data
+
+    F -->|owl:imports| P
+    F -->|owl:imports| A
+    F -->|owl:imports| T
+    F -->|owl:imports| Cl
+    F -->|owl:imports| G
+    F -->|owl:imports| D
+    F -->|owl:imports| B
+
+    V -->|owl:imports| P
+    V -->|owl:imports| A
+    V -->|owl:imports| T
+    V -->|owl:imports| Cl
+    V -->|owl:imports| G
+    V -->|owl:imports| D
+    V -->|owl:imports| B
+```
+
+</details>
 
 ## Foundation graphs
 

@@ -31,17 +31,38 @@ The profile carries one `opda:Baspi5ValidationContext` instance per [ODR-0010 §
 
 ## Deployable composition
 
+<img src="diagrams/baspi5/deployable-composition.png" alt="BASPI5 deployable composition" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
-    foundation[foundation.ttl<br/>https://w3id.org/opda/]
-    vocabularies[opda-vocabularies.ttl]
-    classes[opda-classes.ttl]
-    shapesf[opda-shapes.ttl]
-    moduleclasses[opda-property/agent/transaction/claim/governance/descriptive.ttl × 6]
-    moduleshapes[opda-<module>-shapes.ttl × 6]
-    baspi5[profiles/baspi5.ttl<br/>488 triples]
-    composer[opda-gen compose]
-    output[Deployable BASPI5 validation graph]
+    accTitle: BASPI5 deployable composition
+    accDescr: Shows how the BASPI5 profile composes over the foundation vocabularies classes shapes and module-shape graphs to produce a deployable validation graph for pyshacl.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef service fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    foundation["foundation.ttl<br/>w3id.org/opda/"]:::data
+    vocabularies["opda-vocabularies.ttl"]:::data
+    classes["opda-classes.ttl"]:::data
+    shapesf["opda-shapes.ttl"]:::data
+    moduleclasses["opda-MODULE.ttl × 6"]:::data
+    moduleshapes["opda-MODULE-shapes.ttl × 6"]:::data
+    baspi5["profiles/baspi5.ttl<br/>488 triples"]:::data
+    composer["opda-gen compose"]:::process
+    output["Deployable BASPI5<br/>validation graph"]:::data
+    pyshacl["pyshacl validator"]:::service
     foundation --> composer
     vocabularies --> composer
     classes --> composer
@@ -50,7 +71,43 @@ flowchart LR
     moduleshapes --> composer
     baspi5 --> composer
     composer --> output
+    output --> pyshacl
 ```
+
+</details>
+
+## Round-trip pipeline
+
+The three-layer harness at [`tests/baspi5_round_trip/`](../../../../tests/baspi5_round_trip/) drives a BASPI5 JSON instance through JSON-to-RDF, SHACL validation, RDF-to-JSON, and an equivalence check. The sequence below shows the layer-1 round-trip path; layer 2 (per-exemplar matrix) and layer 3 (expected-report byte-identity) run as separate CI jobs.
+
+<img src="diagrams/baspi5/round-trip-pipeline.png" alt="BASPI5 round-trip pipeline" width="80%">
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+sequenceDiagram
+    autonumber
+    accTitle: BASPI5 round-trip pipeline
+    accDescr: Shows the layer-1 round-trip pipeline JSON to RDF to SHACL validation back to JSON with an equivalence check at the end.
+
+    participant J as BASPI5 JSON instance
+    participant R as JSON to RDF converter
+    participant S as pyshacl + deployable BASPI5 graph
+    participant Q as RDF to JSON converter
+    participant E as Equivalence check
+
+    J->>R: BASPI5 JSON payload
+    R->>S: Turtle (with dct:source URIs)
+    S-->>R: SHACL validation report<br/>(matches expected-report.ttl)
+    R->>Q: Validated Turtle
+    Q->>E: Round-tripped JSON
+    J->>E: Original JSON
+    E-->>E: assert structural + value equality<br/>(test_round_trip.py)
+```
+
+</details>
 
 A consumer running BASPI5 validation loads:
 

@@ -8,20 +8,34 @@
 
 ## Composition recipe
 
+<img src="diagrams/opda-inference/composition-recipe.png" alt="opda-inference composition recipe" width="70%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
-    foundation[foundation.ttl]
-    classes[opda-classes.ttl]
-    vocabularies[opda-vocabularies.ttl]
-    modules[opda-property/agent/transaction/claim/governance/descriptive.ttl × 6]
-    composer[opda-gen compose]
-    output[opda-inference.ttl]
+    accTitle: opda-inference composition recipe
+    accDescr: Shows the source TTLs the composer projects into opda-inference - classes only, no shapes or annotations.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    foundation["foundation.ttl"]:::data
+    classes["opda-classes.ttl"]:::data
+    vocabularies["opda-vocabularies.ttl"]:::data
+    modules["opda-MODULE.ttl × 6"]:::data
+    composer["opda-gen compose"]:::process
+    output["opda-inference.ttl<br/>classes alone"]:::data
     foundation --> composer
     classes --> composer
     vocabularies --> composer
     modules --> composer
     composer --> output
 ```
+
+</details>
 
 ## Included graphs
 

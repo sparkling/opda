@@ -8,26 +8,45 @@
 
 ## Composition recipe
 
+<img src="diagrams/opda-validation/composition-recipe.png" alt="opda-validation composition recipe" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
-    foundation[foundation.ttl]
-    classes[opda-classes.ttl]
-    shapesfoundation[opda-shapes.ttl]
-    vocabularies[opda-vocabularies.ttl]
-    propertymod[opda-property.ttl]
-    agentmod[opda-agent.ttl]
-    transactionmod[opda-transaction.ttl]
-    claimmod[opda-claim.ttl]
-    governancemod[opda-governance.ttl]
-    descriptivemod[opda-descriptive.ttl]
-    propertyshapes[opda-property-shapes.ttl]
-    agentshapes[opda-agent-shapes.ttl]
-    transactionshapes[opda-transaction-shapes.ttl]
-    claimshapes[opda-claim-shapes.ttl]
-    governanceshapes[opda-governance-shapes.ttl]
-    descriptiveshapes[opda-descriptive-shapes.ttl]
-    composer[opda-gen compose]
-    output[opda-validation.ttl]
+    accTitle: opda-validation composition recipe
+    accDescr: Shows the source TTLs the composer projects into opda-validation, with annotation TTLs excluded.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    foundation["foundation.ttl"]:::data
+    classes["opda-classes.ttl"]:::data
+    shapesfoundation["opda-shapes.ttl"]:::data
+    vocabularies["opda-vocabularies.ttl"]:::data
+    propertymod["opda-property.ttl"]:::data
+    agentmod["opda-agent.ttl"]:::data
+    transactionmod["opda-transaction.ttl"]:::data
+    claimmod["opda-claim.ttl"]:::data
+    governancemod["opda-governance.ttl"]:::data
+    descriptivemod["opda-descriptive.ttl"]:::data
+    propertyshapes["opda-property-shapes.ttl"]:::data
+    agentshapes["opda-agent-shapes.ttl"]:::data
+    transactionshapes["opda-transaction-shapes.ttl"]:::data
+    claimshapes["opda-claim-shapes.ttl"]:::data
+    governanceshapes["opda-governance-shapes.ttl"]:::data
+    descriptiveshapes["opda-descriptive-shapes.ttl"]:::data
+    composer["opda-gen compose"]:::process
+    output["opda-validation.ttl<br/>classes + shapes"]:::data
     foundation --> composer
     classes --> composer
     shapesfoundation --> composer
@@ -46,6 +65,8 @@ flowchart LR
     descriptiveshapes --> composer
     composer --> output
 ```
+
+</details>
 
 ## Included graphs
 

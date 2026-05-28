@@ -4,9 +4,18 @@ OPDA's persistent namespace is `https://w3id.org/opda/*`, served via the W3C PIC
 
 ## The redirect chain
 
+<img src="diagrams/README/redirect-chain.png" alt="W3id redirect chain" width="80%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
 sequenceDiagram
     autonumber
+    accTitle: w3id.org redirect chain for ontology dereference
+    accDescr: Shows a consumer GETting an OPDA entity at w3id.org, getting a 302 redirect to openpropdata.org.uk, then GETting the redirect target and receiving Turtle.
+
     participant C as Consumer
     participant W as w3id.org
     participant O as openpropdata.org.uk
@@ -15,6 +24,42 @@ sequenceDiagram
     C->>O: GET https://openpropdata.org.uk/ontology/Property<br/>Accept: text/turtle
     O-->>C: 200 OK<br/>Content-Type: text/turtle<br/>(opda-property.ttl fragment containing opda:Property)
 ```
+
+</details>
+
+## Accept-header content-negotiation flow
+
+<img src="diagrams/README/content-negotiation-flow.png" alt="Accept-header content-negotiation flow" width="80%">
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+sequenceDiagram
+    autonumber
+    accTitle: Accept-header content-negotiation flow
+    accDescr: Shows the four Accept-header response paths the deployment supports (Turtle JSON-LD RDF-XML HTML) and which source the server returns for each.
+
+    participant C as Client
+    participant S as openpropdata.org.uk
+
+    alt Accept text/turtle
+        C->>S: GET .../opda/Property<br/>Accept: text/turtle
+        S-->>C: 200 OK<br/>Content-Type: text/turtle<br/>(opda-property.ttl)
+    else Accept application/ld+json
+        C->>S: GET .../opda/Property<br/>Accept: application/ld+json
+        S-->>C: 200 OK<br/>Content-Type: application/ld+json<br/>(TTL transformed via shared @context)
+    else Accept application/rdf+xml
+        C->>S: GET .../opda/Property<br/>Accept: application/rdf+xml
+        S-->>C: 200 OK<br/>Content-Type: application/rdf+xml<br/>(TTL re-serialised via rdflib)
+    else Accept text/html or */*
+        C->>S: GET .../opda/Property<br/>Accept: text/html
+        S-->>C: 302 Found<br/>Location: /docs/manual/concept/property/Property
+    end
+```
+
+</details>
 
 The redirect is `302 Found` (not `301 Moved Permanently`) per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md): the redirect target stays editable without breaking cached consumers, until the hosting target stabilises.
 

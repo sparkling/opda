@@ -24,30 +24,51 @@ The three profiles are **graph-union compositions**, not entailment closures. Th
 
 ## Composer pipeline
 
+<img src="diagrams/README/composer-pipeline.png" alt="Composer pipeline" width="90%">
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: false
+    nodePlacementStrategy: BRANDES_KOEPF
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#FFF8E1", "primaryTextColor": "#E65100", "primaryBorderColor": "#F57F17", "lineColor": "#37474F"}}}%%
 flowchart LR
+    accTitle: Composer pipeline producing three derived consumer profiles
+    accDescr: Shows source TTLs flowing into the opda-gen compose step, which projects three derived consumer profiles each with a different projection rule.
+
+    classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+
     subgraph IN["Per-module source TTLs"]
-        F[foundation.ttl + opda-classes + opda-shapes + opda-annotations]
-        V[opda-vocabularies.ttl]
-        M[opda-property/agent/transaction/claim/governance/descriptive.ttl × 6]
-        S[opda-<module>-shapes.ttl × 6]
-        A[opda-<module>-annotations.ttl × 6]
+        F["foundation.ttl + opda-classes<br/>+ opda-shapes + opda-annotations"]:::data
+        V["opda-vocabularies.ttl"]:::data
+        M["opda-MODULE.ttl × 6"]:::data
+        S["opda-MODULE-shapes.ttl × 6"]:::data
+        A["opda-MODULE-annotations.ttl × 6"]:::data
     end
-    C{composer<br/>opda-gen compose}
+    C["opda-gen compose"]:::process
     subgraph OUT["Derived profiles"]
-        DV[opda-validation.ttl]
-        DU[opda-ui.ttl]
-        DI[opda-inference.ttl]
+        DV["opda-validation.ttl"]:::data
+        DU["opda-ui.ttl"]:::data
+        DI["opda-inference.ttl"]:::data
     end
     F --> C
     V --> C
     M --> C
     S --> C
     A --> C
-    C -->|classes ⊕ shapes| DV
-    C -->|classes ⊕ shapes ⊕ annotations| DU
-    C -->|classes alone| DI
+    C -->|classes + shapes| DV
+    C -->|classes + shapes + annotations| DU
+    C -->|classes only| DI
 ```
+
+</details>
 
 The composer enforces three invariants per [ODR-0004 §3a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md):
 

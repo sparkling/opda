@@ -21,6 +21,8 @@ then this tier is for you. It is operational, not deliberative — the Physical-
 5. Read **[overlay-deployment/README.md](./overlay-deployment/README.md)** — overlay profile deployment, starting with BASPI5 (the MVP gate).
 6. Read **[operations/byte-identity-ci.md](./operations/byte-identity-ci.md)**, **[operations/three-graph-ci.md](./operations/three-graph-ci.md)**, **[operations/round-trip-ci.md](./operations/round-trip-ci.md)** — the three CI gates the deployment depends on.
 
+For "what's deployed for this module" queries, the **[modules/](./modules/)** subdirectory carries a per-module deployment view (foundation + 6 business modules). Use it when you have a module name in hand and want to chase its source TTLs, named graphs, derived-profile membership, overlay bindings, and content-negotiation entry points in one place.
+
 ## What is *not* in this tier
 
 - **Business narrative — Identity Criterion, Hard Cases** — see [Concept tier](../concept/).
