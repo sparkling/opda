@@ -12,6 +12,10 @@ import { rehypeFrontmatterUriExtraction } from './src/lib/remark/frontmatter-uri
 // (validation report) at build/dev start; the page serves the generated output.
 import { reportGenerator } from './src/integrations/generate-report-html.mjs';
 
+// ADR-0022: generate diagram-links manifest (public/data/diagram-links.json)
+// at build/dev start so client.js can wire SVG node clicks to entity routes.
+import { diagramLinksGenerator } from './src/integrations/generate-diagram-links.mjs';
+
 import tailwindcss from '@tailwindcss/vite';
 
 // Dev-only Vite plugin: expose project sub-trees (source/, _build/) that
@@ -152,7 +156,7 @@ export default defineConfig({
   outDir:  './dist',
   // ADR-0021 §"Separate task": the report generator emits static HTML for
   // embedded meta-reports before build/dev resolves the page imports.
-  integrations: [reportGenerator()],
+  integrations: [reportGenerator(), diagramLinksGenerator()],
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.

@@ -266,10 +266,101 @@
     injectInlineThemeDirective(themeVars, isDark);
     try {
       window.mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: themeVars, securityLevel: 'loose' });
-      window.mermaid.run({ querySelector: '.mermaid' });
+      var runPromise = window.mermaid.run({ querySelector: '.mermaid' });
+      if (runPromise && typeof runPromise.then === 'function') {
+        runPromise.then(function () { loadDiagramLinks().then(wireDiagramClicks); });
+      } else {
+        loadDiagramLinks().then(wireDiagramClicks);
+      }
     } catch (err) {
       console.warn('[OPDA] mermaid run failed:', err);
     }
+  }
+
+  // ── Diagram click navigation (ADR-0022) ──────────────────────────────────
+
+  /** Fetch the diagram-links manifest once; cache in window.__diagramLinks. */
+  function loadDiagramLinks() {
+    if (window.__diagramLinks) return Promise.resolve(window.__diagramLinks);
+    return fetch('/data/diagram-links.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (data && typeof data === 'object') {
+          window.__diagramLinks = data;
+        } else {
+          window.__diagramLinks = {};
+        }
+        return window.__diagramLinks;
+      })
+      .catch(function () { window.__diagramLinks = {}; return {}; });
+  }
+
+  /**
+   * Walk every rendered mermaid SVG, match node labels to the manifest,
+   * and attach click navigation. Manifest-gated: no dead links emitted.
+   */
+  function wireDiagramClicks() {
+    var links = window.__diagramLinks;
+    if (!links || !Object.keys(links).length) return;
+
+    document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+      // Cover flowchart/graph nodes, class diagram nodes, state diagram nodes,
+      // and ER diagram entity boxes.
+      var nodeEls = svg.querySelectorAll(
+        'g.node, g.nodeLabel, g.er.entityBox, g[class*="node"]'
+      );
+      nodeEls.forEach(function (el) {
+        attachClickIfMatched(el, links);
+      });
+    });
+  }
+
+  /** Extract visible text from an element (recursively, skipping aria-hidden). */
+  function extractNodeText(el) {
+    var parts = [];
+    el.childNodes.forEach(function (n) {
+      if (n.nodeType === 3) {
+        parts.push(n.textContent);
+      } else if (n.nodeType === 1) {
+        var tag = n.tagName ? n.tagName.toLowerCase() : '';
+        if (tag !== 'title' && n.getAttribute('aria-hidden') !== 'true') {
+          parts.push(extractNodeText(n));
+        }
+      }
+    });
+    return parts.join('').trim();
+  }
+
+  /** Normalise a label for manifest lookup. */
+  function normaliseLabel(text) {
+    return text.replace(/\s+/g, ' ').trim().toLowerCase();
+  }
+
+  /**
+   * Given a node element and the manifest, look up its text and attach
+   * navigation if a route is found.
+   */
+  function attachClickIfMatched(el, links) {
+    if (el.dataset.diagramNav) return; // already wired
+    var text = extractNodeText(el);
+    if (!text) return;
+    var route = links[normaliseLabel(text)];
+    if (!route) return;
+    el.dataset.diagramNav = route;
+    el.style.cursor = 'pointer';
+    el.setAttribute('role', 'link');
+    el.setAttribute('aria-label', text + ' — navigate to ' + route);
+    el.addEventListener('click', function (e) {
+      e.stopPropagation();
+      location.assign(route);
+    });
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        location.assign(route);
+      }
+    });
+    el.setAttribute('tabindex', '0');
   }
 
   // Cagle Color System (per diagramming skill /09-STYLING-GUIDE.md).

@@ -34,6 +34,7 @@ dist/
 /_build/
 /public/ui/tailwind.built.css
 /src/generated/
+/public/data/diagram-links.json
 
 # TailwindPlus downloader workspace (credentials, session, component dump)
 # — see tailwindplus plugin in legacybridge-tech/claude-plugins
