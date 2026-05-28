@@ -1,0 +1,104 @@
+---
+status: proposed
+date: 2026-05-28
+tags: [physical-ontology, exemplars, agent, relator]
+---
+
+# proprietorship-relator-multi-proprietor
+
+## Summary
+
+Proprietorship as UFO Relator with multiple Proprietor Role instances. Two Persons jointly own a freehold (joint tenants per HMLR Practice Guide 24). Each Role borrows identity from its Person bearer (S005 Anti-pattern §3 — never key a Role). The Relator's IC = the (Title, Persons-set) tuple. Joint-tenancy vs tenants-in-common is a property of the Relator.
+
+Cross-link: [Concept tier — Proprietorship hard cases](../../concept/agent/proprietorship.md#hard-cases).
+
+## Exemplar Turtle
+
+```turtle
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0006 (Agents & Roles).
+# Situation: a registered title with two joint proprietors (a married couple). The
+# Proprietorship relator binds two Person Role instances (Proprietor-A, Proprietor-B) to one
+# RegisteredTitle. Each Proprietor borrows identity from its Person bearer; the Relator
+# itself has no independent identity beyond the Title + Persons it mediates.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
+
+@prefix opda:    <https://w3id.org/opda/#> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/proprietorship-relator-multi-proprietor/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Proprietorship Relator — joint-tenancy multi-proprietor hard case" ;
+    dct:status "ratified" ;
+    dct:references <ODR-0006> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests S006 Q3: Proprietorship modelled as a UFO Relator with mediating Role instances (Proprietor) for each natural person on title. Two Persons jointly own a freehold (registered as joint tenants per HMLR Practice Guide 24); the title's Proprietorship register lists both. Under UFO: one opda:Proprietorship Relator binds two opda:Proprietor Roles (one per Person). Each Role has no identity qua-Role (S005 Anti-pattern §3 — never key a Role); each Role borrows identity from its Person bearer. The Relator's IC = the (Title, Persons-set) tuple. Joint-tenancy vs tenants-in-common is a property of the Relator (S006 may settle), NOT of the Roles." .
+
+# Two natural persons (joint proprietors)
+opda-x:person-a
+    a opda:Person ;
+    rdfs:label "Person A — Sarah Holroyd" ;
+    opda:dateOfBirth "1981-11-03"^^xsd:date ;
+    opda:niNumber "QQ234567D" .
+
+opda-x:person-b
+    a opda:Person ;
+    rdfs:label "Person B — James Holroyd" ;
+    opda:dateOfBirth "1979-05-18"^^xsd:date ;
+    opda:niNumber "QQ345678E" .
+
+# One RegisteredTitle (S005 §3c)
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title NK112233 (freehold; joint proprietors)" ;
+    opda:titleNumber "NK112233" .
+
+# Two Proprietor Roles — each borrows identity from its Person bearer
+opda-x:proprietor-role-a
+    a opda:Proprietor ;
+    rdfs:label "Proprietor Role borne by Person A" ;
+    opda:rolePlayer opda-x:person-a .
+
+opda-x:proprietor-role-b
+    a opda:Proprietor ;
+    rdfs:label "Proprietor Role borne by Person B" ;
+    opda:rolePlayer opda-x:person-b .
+
+# Proprietorship Relator — binds the two Roles to the Title
+opda-x:proprietorship
+    a opda:Proprietorship ;
+    rdfs:label "Joint-tenancy proprietorship of title NK112233" ;
+    opda:tenancyKind "joint-tenancy" ;
+    opda:mediates opda-x:proprietor-role-a , opda-x:proprietor-role-b ;
+    opda:proprietorshipOf opda-x:title .
+```
+
+## Expected report Turtle
+
+```turtle
+# proprietorship-relator-multi-proprietor-expected-report.ttl
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/data/exemplar-reports/report>
+    rdf:type sh:ValidationReport ;
+    dct:source <https://openpropdata.org.uk/data/exemplar/proprietorship-relator-multi-proprietor> ;
+    sh:conforms "true"^^xsd:boolean .
+```
+
+## SHACL outcome
+
+`sh:conforms true`. Both Persons satisfy `opda:PersonIdentityKeyShape`. Proprietor Roles carry no identity-key shapes (Anti-pattern §3 — NEVER key a Role). Proprietorship Relator has no targeting shape at TBox (identity enforced by foundation Relator discipline).
+
+## Source ODR + ADR
+
+- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0006 §Q2 + §Q3 — Agents and roles (Role / RoleMixin / Relator)](../../../ontology/odr/ODR-0006-agents-and-roles.md)
+- [ODR-0005 Anti-pattern §3 — NEVER key a Role](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
+- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)

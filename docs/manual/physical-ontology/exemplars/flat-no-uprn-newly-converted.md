@@ -1,0 +1,120 @@
+---
+status: proposed
+date: 2026-05-28
+tags: [physical-ontology, exemplars, address]
+---
+
+# flat-no-uprn-newly-converted
+
+## Summary
+
+Address exists without UPRN — subdivision created two new Properties whose UPRN issuance lags AddressBase. Tests S015 Q1 UFO category accommodation of UPRN-absence. Two `opda:Property` individuals each bearing an `opda:Address` resource with `addressVariant "marketing"`.
+
+Cross-link: [Concept tier — Address hard cases](../../concept/property/address.md#hard-cases).
+
+## Exemplar Turtle
+
+```turtle
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0015 (Address & Geography).
+# Situation: a freehold house was recently converted into two flats; the new flats have not yet
+# been issued UPRNs by AddressBase (typical lag is weeks-to-months post-conversion).
+# Each flat has an address (5A and 5B of the same street) but no UPRN.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
+# Amended 2026-05-27 post-S015 close: refactored from literal opda:postalAddress on Property to
+# opda:Address resource shape with addressVariant "marketing" (S015 Q1 Kind commitment).
+
+@prefix opda:    <https://w3id.org/opda/#> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/flat-no-uprn-newly-converted/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Flat with no UPRN — newly converted from one freehold" ;
+    dct:status "ratified" ;
+    dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Address modelling when UPRN is absent. The original freehold house had UPRN 100070555000; on conversion (2026-01-12) into two flats, OS AddressBase issued no UPRNs to the flats yet (typical 6-week lag). Each flat now has an address (5A/5B) but cannot key by UPRN. Under S015 Q1's Kind commitment: two opda:Property individuals (S005 Q5 3-class precedent — subdivision per S005 §3a Rule 2) each bearing an opda:Address resource with addressVariant 'marketing' (the listing agent's address presentation; OS AddressBase variant absent pending UPRN issuance). UPRN absence handled by dash:uniqueValueForClass graceful degradation (S005 §6a). The marketing-variant Address has no opda:uprn predicate; structural fields are present per S015 §3b (line1/postTown/postcode/country)." .
+
+# Original (pre-conversion) Property — closed by subdivision (S005 §3a Rule 2).
+opda-x:property-predecessor
+    a opda:Property ;
+    rdfs:label "Predecessor freehold house at 5 Linden Road (subdivided 2026-01-12; ceased)" ;
+    opda:uprn "100070555000" .
+
+# Two new Property individuals — both UPRN-less pending AddressBase issue.
+opda-x:property-5a
+    a opda:Property ;
+    rdfs:label "Flat 5A Linden Road — newly created from subdivision; UPRN pending" ;
+    prov:wasDerivedFrom opda-x:property-predecessor .
+
+opda-x:property-5b
+    a opda:Property ;
+    rdfs:label "Flat 5B Linden Road — newly created from subdivision; UPRN pending" ;
+    prov:wasDerivedFrom opda-x:property-predecessor .
+
+# Marketing-variant Address for flat 5A — listing agent's address presentation.
+# Under S015 Q1 Kind commitment: opda:Address as resource with addressVariant tag.
+opda-x:address-5a-marketing
+    a opda:Address ;
+    rdfs:label "Marketing address for Flat 5A (listing agent's presentation)" ;
+    opda:addressVariant "marketing" ;
+    opda:line1 "Flat 5A" ;
+    opda:line2 "5 Linden Road" ;
+    opda:postTown "Reading" ;
+    opda:postcode "RG1 4QT" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property-5a .
+# Deliberately NO opda:uprn — AddressBase has not yet issued.
+
+opda-x:address-5b-marketing
+    a opda:Address ;
+    rdfs:label "Marketing address for Flat 5B (listing agent's presentation)" ;
+    opda:addressVariant "marketing" ;
+    opda:line1 "Flat 5B" ;
+    opda:line2 "5 Linden Road" ;
+    opda:postTown "Reading" ;
+    opda:postcode "RG1 4QT" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property-5b .
+# Deliberately NO opda:uprn — AddressBase has not yet issued.
+
+# Property hasAddress predicate (S005 §6b + S015 Q3 — opda:hasAddress is the join).
+opda-x:property-5a opda:hasAddress opda-x:address-5a-marketing .
+opda-x:property-5b opda:hasAddress opda-x:address-5b-marketing .
+```
+
+## Expected report Turtle
+
+```turtle
+# flat-no-uprn-newly-converted-expected-report.ttl — paired SHACL validation report
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/data/exemplar-reports/report>
+    rdf:type sh:ValidationReport ;
+    dct:source <https://openpropdata.org.uk/data/exemplar/flat-no-uprn-newly-converted> ;
+    sh:conforms "true"^^xsd:boolean .
+```
+
+## SHACL outcome
+
+`sh:conforms true`. UPRN absence on both new flats is admissible. The exemplar satisfies:
+
+- `opda:PropertyIdentityKeyShape` (Cat 1): both successor Properties have no `opda:hasUPRN` (admissible)
+- `opda:AddressIdentityKeyShape` (Cat 1): each Address has cardinality 1 on `opda:addressVariant`
+- `opda:INSPIRESuccessionRule`: does not fire (addresses are `marketing` variant, not `inspire`)
+
+## Source ODR + ADR
+
+- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0015 §3a + §3b (Q1 Kind commitment)](../../../ontology/odr/ODR-0015-address-and-geography.md)
+- [ODR-0005 §3a Rule 2 (subdivision)](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
+- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)

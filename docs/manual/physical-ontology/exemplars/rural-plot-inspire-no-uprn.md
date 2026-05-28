@@ -1,0 +1,114 @@
+---
+status: proposed
+date: 2026-05-28
+tags: [physical-ontology, exemplars, address]
+---
+
+# rural-plot-inspire-no-uprn
+
+## Summary
+
+Undeveloped rural land with INSPIRE Identifier but no UPRN and no postal address. Tests S015 Q5 GeoSPARQL-deferral interface; Q7 different PII regime (no postal delivery → `dpv:PublicTask` lawful basis under INSPIRE Directive open-data). One `opda:Property` + `opda:LegalEstate` + `opda:RegisteredTitle` + `opda:Address` (addressVariant "inspire").
+
+Cross-link: [Concept tier — Address hard cases](../../concept/property/address.md#hard-cases).
+
+## Exemplar Turtle
+
+```turtle
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0015 (Address & Geography).
+# Situation: a rural plot with an INSPIRE Identifier (cadastral feature) but no UPRN — the
+# plot is undeveloped land (no built dwelling, no postal delivery point), so AddressBase
+# has no UPRN to issue. The INSPIRE identifier is the only operational join surface.
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
+# Amended 2026-05-27 post-S015 close: added explicit opda:Address instance with addressVariant
+# "inspire" (S015 Q1 Kind commitment + Q2 IC rule 5 INSPIRE-only locatedness made manifest).
+
+@prefix opda:    <https://w3id.org/opda/#> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/rural-plot-inspire-no-uprn/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Rural plot with INSPIRE Identifier but no UPRN — undeveloped land" ;
+    dct:status "ratified" ;
+    dct:references <ODR-0015> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Address modelling when the Property has no postal address at all — only a cadastral identifier. A 2-hectare grazing plot near Hereford, with a registered freehold title (HMLR HE890123) and an INSPIRE Identifier (from Land Registry's INSPIRE polygon feed), but no UPRN (AddressBase issues UPRNs only to addressable objects with potential postal delivery). Under S015 Q1's Kind commitment: one opda:Property + one opda:LegalEstate (freehold) + one opda:RegisteredTitle + one opda:Address with addressVariant 'inspire' (Q2 IC rule 5 INSPIRE-only locatedness). The INSPIRE-variant Address bears opda:inspireFeatureId as Q4 operational key; structural fields empty/sparse (the cadastral feature has no derivable postal line1/postcode); opda:hasGeometry interface declared but not encoded (Q5 deferral honoured). Q7 PII regime: dpv:hasLawfulBasis dpv:PublicTask (INSPIRE Directive open-data; differs from residential PII regimes)." .
+
+# Physical Property — undeveloped rural plot.
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Grazing plot near Hereford (no built dwelling; no postal address)" ;
+    opda:inspireId "urn:opda:inspire:HMLR:200033333" ;
+    opda:landUse "grazing" ;
+    opda:areaHectares "2.04"^^xsd:decimal .
+# Deliberately NO opda:uprn — no AddressBase entry for an undeveloped plot.
+
+# Legal estate (registered freehold; agricultural; S005 §3b — rights-bundle persistence).
+opda-x:estate
+    a opda:LegalEstate ;
+    rdfs:label "Freehold estate in the grazing plot" ;
+    opda:tenureKind "freehold" .
+
+# Registered title (S005 §3c — title-number lineage).
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title HE890123 (freehold; agricultural)" ;
+    opda:titleNumber "HE890123" ;
+    opda:landRegistryDistrict "Hereford" ;
+    opda:firstRegisteredOn "1987-04-22"^^xsd:date .
+
+# INSPIRE-variant Address — manifests S015 Q2 IC rule 5 (INSPIRE-only locatedness).
+# Under S015 Q1 Kind commitment: opda:Address as resource with addressVariant tag.
+opda-x:address-inspire
+    a opda:Address ;
+    rdfs:label "INSPIRE-cadastral-derived Address (no postal locator)" ;
+    opda:addressVariant "inspire" ;
+    opda:inspireFeatureId "urn:opda:inspire:HMLR:200033333" ;
+    opda:country "GB" ;
+    opda:identifiesSameProperty opda-x:property .
+# Deliberately NO opda:line1, opda:line2, opda:postTown, opda:postcode — cadastral feature has no
+# derivable postal locator. All structural fields are sh:minCount 0 per S015 §3b.
+# Deliberately NO opda:uprn — AddressBase has no entry.
+
+# Co-references (NEVER owl:sameAs):
+opda-x:title opda:identifiesSameProperty opda-x:property .
+opda-x:estate opda:identifiesSameProperty opda-x:property .
+opda-x:title opda:recordsEstate opda-x:estate .
+opda-x:property opda:hasAddress opda-x:address-inspire .
+
+# opda:hasGeometry interface declared but not encoded — S015 Q5 GeoSPARQL deferral honoured.
+# When a consumer requires polygon-feed content (one of four named triggers), encoded geometry
+# attaches to opda:address-inspire via opda:hasGeometry; until then, the INSPIRE Identifier
+# dereferenced upstream serves the polygon.
+```
+
+## Expected report Turtle
+
+```turtle
+# rural-plot-inspire-no-uprn-expected-report.ttl
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/data/exemplar-reports/report>
+    rdf:type sh:ValidationReport ;
+    dct:source <https://openpropdata.org.uk/data/exemplar/rural-plot-inspire-no-uprn> ;
+    sh:conforms "true"^^xsd:boolean .
+```
+
+## SHACL outcome
+
+`sh:conforms true`. UPRN absence on Property and Address is admissible. The `opda:INSPIRESuccessionRule` materialises `opda:hasINSPIRESuccessionStatus "inspire-primary"` on `opda-x:address-inspire` (no `prov:wasDerivedFrom`).
+
+## Source ODR + ADR
+
+- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0015 §3b (Q5 GeoSPARQL deferral) + §4a (INSPIRE succession) + §7a (Q7 PII regime)](../../../ontology/odr/ODR-0015-address-and-geography.md)
+- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)

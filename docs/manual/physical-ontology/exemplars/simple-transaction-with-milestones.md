@@ -1,0 +1,212 @@
+---
+status: proposed
+date: 2026-05-28
+tags: [physical-ontology, exemplars, transaction, milestones]
+---
+
+# simple-transaction-with-milestones
+
+## Summary
+
+Single freehold sale with five canonical milestones (instruction / offer accepted / exchange / completion / registration). Tests Q1 Transaction-as-Relator + Q2 hybrid PROV-O (instants for offer-accepted + exchange; intervals for completion-process + registration-process) + Q3 status as Phase + Q6 expected-vs-actual variance via PROV-O Plan-vs-Activity reification.
+
+Cross-link: [Concept tier — Transaction hard cases](../../concept/transaction/transaction.md#hard-cases).
+
+## Exemplar Turtle
+
+```turtle
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0007 (Transactions & Lifecycle).
+# Situation: straightforward freehold sale; one transaction with all five canonical milestones
+# (instruction, offer accepted, exchange of contracts, completion, registration). No chain.
+# Tests Q1 Transaction-as-Relator framing; Q2 hybrid PROV-O milestones (instants for offer-accepted
+# and exchange; intervals for completion-process and registration-process); Q6 expected-vs-actual
+# milestone times via PROV-O Plan-vs-Activity reification (planned-time-on-Plan; actual-time-on-Activity).
+# Status: post-S007 amendment + post-003b namespace ratification. ODR-0007 status: accepted (council: session-007);
+# ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
+# Amended 2026-05-27 post-S007 close: (i) Q6 refactor to strict `prov:Plan` resource carrying
+# opda:plannedAtTime with `prov:qualifiedAssociation` linkage from Activity; (ii) Q2 refactor of
+# completion + registration milestones to interval form (`prov:startedAtTime` + `prov:endedAtTime`).
+
+@prefix opda:    <https://w3id.org/opda/#> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/simple-transaction-with-milestones/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Simple freehold sale — Transaction Relator with five milestones; no chain" ;
+    dct:status "ratified" ;
+    dct:references <ODR-0007> , <ODR-0006> , <ODR-0005> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Q1 Transaction-as-Relator: one opda:Transaction mediating Seller (Person via Role) + Buyer (Person via Role) + the LegalEstate being conveyed (per S005 3-class commitment). Q2 hybrid PROV-O milestones — instants for offer-accepted + exchange; intervals (`prov:startedAtTime` + `prov:endedAtTime`) for completion-process + registration-process per Moreau W3C-grade discipline. Q3 status as Phase — proposed/active/exchanged/completed; per S011 Phase label scheme. Q6 expected-vs-actual via strict PROV-O Plan-vs-Activity reification — each milestone Activity has a `prov:Plan` companion carrying `opda:plannedAtTime`; `prov:qualifiedAssociation` links Activity to Plan; Cagle's `opda:MilestoneVarianceRule` (ODR-0017 8th citing site candidate) materialises variance at `sh:Info` (<14d) or `sh:Warning` (>14d or overdue)." .
+
+# Property (S005 3-class)
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Physical dwelling at 88 Forest Drive, Norwich" ;
+    opda:uprn "100070444000" .
+
+opda-x:estate
+    a opda:LegalEstate ;
+    rdfs:label "Freehold estate in 88 Forest Drive" ;
+    opda:tenureKind "freehold" .
+
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title NK445566 (freehold)" ;
+    opda:titleNumber "NK445566" .
+
+opda-x:title opda:identifiesSameProperty opda-x:property .
+opda-x:estate opda:identifiesSameProperty opda-x:property .
+
+# Persons + Roles
+opda-x:seller-person a opda:Person ; rdfs:label "Diana Foster (seller)" .
+opda-x:buyer-person  a opda:Person ; rdfs:label "Robert Khan (buyer)" .
+
+opda-x:seller-role
+    a opda:Seller ;
+    rdfs:label "Seller Role borne by Diana Foster in this transaction" ;
+    opda:rolePlayer opda-x:seller-person .
+
+opda-x:buyer-role
+    a opda:Buyer ;
+    rdfs:label "Buyer Role borne by Robert Khan in this transaction" ;
+    opda:rolePlayer opda-x:buyer-person .
+
+# Transaction (UFO Relator per Q1; S007 §Rules Transaction-as-Relator IC over 5 hard cases)
+opda-x:transaction
+    a opda:Transaction ;
+    rdfs:label "Freehold sale of 88 Forest Drive (Foster → Khan, 2024)" ;
+    opda:status "completed" ;     # S011 Phase label scheme
+    opda:mediates opda-x:seller-role , opda-x:buyer-role ;
+    opda:concerns opda-x:estate .
+
+# Milestones — Q2 hybrid PROV-O (instants for instantaneous events; intervals for processes).
+# Q6 PROV-O Plan-vs-Activity — each Activity has a paired prov:Plan; prov:qualifiedAssociation links them.
+
+# Instruction milestone — instant; no prior plan (start of the transaction by definition).
+opda-x:milestone-instruction
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Instruction milestone (Activity)" ;
+    opda:milestoneKind "instruction" ;
+    prov:atTime "2024-04-10T09:00:00Z"^^xsd:dateTime ;
+    opda:partOfTransaction opda-x:transaction .
+
+# Offer accepted milestone — instant. Q6: planned-time on Plan; actual-time on Activity.
+opda-x:milestone-offer-accepted-plan
+    a prov:Plan ;
+    rdfs:label "Offer accepted milestone (Plan)" ;
+    opda:milestoneKind "offerAccepted" ;
+    opda:plannedAtTime "2024-04-25T00:00:00Z"^^xsd:dateTime .
+
+opda-x:milestone-offer-accepted
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Offer accepted milestone (Activity)" ;
+    opda:milestoneKind "offerAccepted" ;
+    prov:atTime "2024-05-02T16:30:00Z"^^xsd:dateTime ;
+    prov:qualifiedAssociation [
+        a prov:Association ;
+        prov:hadPlan opda-x:milestone-offer-accepted-plan
+    ] ;
+    opda:partOfTransaction opda-x:transaction .
+# MilestoneVarianceRule (ODR-0017 8th citing site candidate): planned 2024-04-25 → actual 2024-05-02
+# (delta +7 days) → sh:Info (under 14d threshold). Materialised in opda-annotations.ttl.
+
+# Exchange of contracts — instant. Q6 Plan-vs-Activity.
+opda-x:milestone-exchange-plan
+    a prov:Plan ;
+    rdfs:label "Exchange of contracts milestone (Plan)" ;
+    opda:milestoneKind "exchange" ;
+    opda:plannedAtTime "2024-06-15T00:00:00Z"^^xsd:dateTime .
+
+opda-x:milestone-exchange
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Exchange of contracts milestone (Activity)" ;
+    opda:milestoneKind "exchange" ;
+    prov:atTime "2024-06-18T14:00:00Z"^^xsd:dateTime ;
+    prov:qualifiedAssociation [
+        a prov:Association ;
+        prov:hadPlan opda-x:milestone-exchange-plan
+    ] ;
+    opda:partOfTransaction opda-x:transaction .
+# MilestoneVarianceRule: planned 2024-06-15 → actual 2024-06-18 (delta +3 days) → sh:Info.
+
+# Completion process — Q2 INTERVAL FORM (process spans hours: key release, funds transfer, post-completion
+# notifications). prov:startedAtTime + prov:endedAtTime per Moreau.
+opda-x:milestone-completion-plan
+    a prov:Plan ;
+    rdfs:label "Completion milestone (Plan)" ;
+    opda:milestoneKind "completion" ;
+    opda:plannedAtTime "2024-07-12T00:00:00Z"^^xsd:dateTime .
+
+opda-x:milestone-completion
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Completion milestone (Activity — interval)" ;
+    opda:milestoneKind "completion" ;
+    prov:startedAtTime "2024-07-12T09:30:00Z"^^xsd:dateTime ;
+    prov:endedAtTime   "2024-07-12T15:45:00Z"^^xsd:dateTime ;
+    prov:qualifiedAssociation [
+        a prov:Association ;
+        prov:hadPlan opda-x:milestone-completion-plan
+    ] ;
+    opda:partOfTransaction opda-x:transaction .
+# MilestoneVarianceRule: planned 2024-07-12 (date) → actual interval started same date → sh:Info.
+
+# Registration at HMLR — Q2 INTERVAL FORM (submission → priority-search → register entry; days-to-weeks).
+opda-x:milestone-registration-plan
+    a prov:Plan ;
+    rdfs:label "Registration milestone (Plan)" ;
+    opda:milestoneKind "registration" ;
+    opda:plannedAtTime "2024-07-26T00:00:00Z"^^xsd:dateTime .
+
+opda-x:milestone-registration
+    a prov:Activity , opda:Milestone ;
+    rdfs:label "Registration at HMLR milestone (Activity — interval)" ;
+    opda:milestoneKind "registration" ;
+    prov:startedAtTime "2024-07-15T10:00:00Z"^^xsd:dateTime ;
+    prov:endedAtTime   "2024-08-30T10:15:00Z"^^xsd:dateTime ;
+    prov:qualifiedAssociation [
+        a prov:Association ;
+        prov:hadPlan opda-x:milestone-registration-plan
+    ] ;
+    opda:partOfTransaction opda-x:transaction .
+# MilestoneVarianceRule: planned 2024-07-26 → actual ended 2024-08-30 (delta +35 days) → sh:Warning
+# (over 14d threshold). Materialised in opda-annotations.ttl.
+```
+
+## Expected report Turtle
+
+```turtle
+# simple-transaction-with-milestones-expected-report.ttl
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/data/exemplar-reports/report>
+    rdf:type sh:ValidationReport ;
+    dct:source <https://openpropdata.org.uk/data/exemplar/simple-transaction-with-milestones> ;
+    sh:conforms "true"^^xsd:boolean .
+```
+
+## SHACL outcome
+
+`sh:conforms true`. All identity-key shapes satisfied:
+
+- `opda:TransactionIdentityKeyShape` (Cat 1): no `opda:occurredAtTime` — admissible
+- `opda:MilestoneIdentityKeyShape` (Cat 1): each Milestone Plan carries single `opda:plannedAtTime` xsd:dateTime
+- `opda:PropertyIdentityKeyShape` + `opda:LegalEstateIdentityKeyShape` (Cat 1): satisfied
+
+SHACL-AF rules materialise:
+
+- `opda:MilestoneVarianceRule` → for each milestone with both `opda:occurredAtTime` + `opda:plannedAtTime`: variance days computed; `opda:hasVarianceStatus` materialised ("info-flagged" for <14d slips, "warning-flagged" for the registration milestone's +35-day slip)
+- `opda:LeaseTermSuccessionRule` → does not fire (no LeaseTerm instances)
+
+## Source ODR + ADR
+
+- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0007 §Q1 + §Q2 + §Q3 + §Q6 — Transactions and lifecycle](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
+- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)

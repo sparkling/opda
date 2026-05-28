@@ -1,0 +1,122 @@
+---
+status: proposed
+date: 2026-05-28
+tags: [physical-ontology, exemplars, transaction, lease]
+---
+
+# lease-extension-transaction
+
+## Summary
+
+Statutory lease extension under LRHUDA 1993 — leasehold term extended 99→189 years. LegalEstate identity PERSISTS (S005 §3b Rule 1 — rights-bundle modified, not dissolved); RegisteredTitle records lifecycle event (§3c Rule 1); successor LeaseTerm derives from predecessor via `prov:wasDerivedFrom`. Hendler's S005 Q5 lease-extension consumer-fails case manifest. The same node co-types as `opda:Transaction` AND `opda:LeaseExtensionEvent`.
+
+Cross-link: [Concept tier — LeaseExtensionEvent hard cases](../../concept/property/lease-extension-event.md#hard-cases).
+
+## Exemplar Turtle
+
+```turtle
+# Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0007 (Transactions & Lifecycle).
+# Situation: statutory lease extension — leaseholder pays a premium to the freeholder to extend
+# the lease term by 90 years (per Leasehold Reform, Housing and Urban Development Act 1993).
+# The Transaction modifies an existing LegalEstate (the leasehold) and updates the RegisteredTitle.
+# Tests Q5 lease term as OWL-Time interval (`time:ProperInterval`); Q1 Transaction-vs-Event
+# (this is a lifecycle event on an existing estate, not a new estate vesting); cross-cite
+# Hendler S005 Q5 lease-extension consumer-fails case (charge-event on title-record, not on estate).
+# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
+
+@prefix opda:    <https://w3id.org/opda/#> .
+@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix time:    <http://www.w3.org/2006/time#> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+opda-x:exemplar
+    a opda:DiagnosticExemplar ;
+    dct:title "Lease extension transaction — leasehold term extended by 90 years (LRHUDA 1993)" ;
+    dct:status "ratified" ;
+    dct:references <ODR-0007> , <ODR-0006> , <ODR-0005> , <ODR-0011> , <ODR-0004> ;
+    skos:scopeNote
+        "Tests Q5 lease term as OWL-Time `time:ProperInterval` with `time:hasBeginning` + `time:hasDurationDescription`. Tests Q1 Transaction-as-Relator framing under a lifecycle-event-on-existing-Kind: the LegalEstate (leasehold) PERSISTS through the extension (its rights-bundle is modified, not dissolved per S005 §3b Rule 1 estate transfer / Rule 4 charges-and-easements don't change identity); the RegisteredTitle records the extension as a registry-event (S005 §3c Rule 1 — title persists; new registry-event timestamp). This is Hendler's S005 Q5 'lease extension' consumer-fails case: the property of being-extended attaches to the RegisteredTitle's lifecycle event, NOT to the LegalEstate (which retains the same identity) and NOT to the Property (which is unchanged)." .
+
+# The Property (S005 3-class)
+opda-x:property
+    a opda:Property ;
+    rdfs:label "Flat 12 Cedar House, Manchester" ;
+    opda:uprn "100070666666" .
+
+# The LegalEstate (leasehold; persists through extension per S005 §3b)
+opda-x:estate-leasehold
+    a opda:LegalEstate ;
+    rdfs:label "Leasehold estate in Flat 12 Cedar House (since 2007; extended 2024)" ;
+    opda:tenureKind "leasehold" ;
+    opda:leaseTerm opda-x:lease-term-current .
+
+# The lease term as an OWL-Time interval (Q5)
+opda-x:lease-term-original
+    a time:ProperInterval , opda:LeaseTerm ;
+    rdfs:label "Original lease term (99 years from 2007-01-01; expired by extension)" ;
+    time:hasBeginning [ time:inXSDDate "2007-01-01"^^xsd:date ] ;
+    time:hasDurationDescription [ time:years 99 ] ;
+    opda:retiredBy opda-x:extension-activity .   # historical interval; superseded
+
+opda-x:lease-term-current
+    a time:ProperInterval , opda:LeaseTerm ;
+    rdfs:label "Current lease term (189 years from 2007-01-01 — 99 original + 90 extension)" ;
+    time:hasBeginning [ time:inXSDDate "2007-01-01"^^xsd:date ] ;
+    time:hasDurationDescription [ time:years 189 ] ;
+    prov:wasDerivedFrom opda-x:lease-term-original .
+
+# The RegisteredTitle (records the extension as a registry-event per S005 §3c)
+opda-x:title
+    a opda:RegisteredTitle ;
+    rdfs:label "HMLR title MN777888 (leasehold of Flat 12 Cedar House)" ;
+    opda:titleNumber "MN777888" .
+
+opda-x:title opda:identifiesSameProperty opda-x:property .
+opda-x:estate-leasehold opda:identifiesSameProperty opda-x:property .
+
+# The extension activity (lifecycle event on the title record + the leasehold estate)
+opda-x:extension-activity
+    a prov:Activity , opda:LeaseExtensionEvent , opda:Transaction ;
+    rdfs:label "Statutory lease extension (LRHUDA 1993; completed 2024-09-30)" ;
+    opda:status "completed" ;
+    opda:legalBasis <https://www.legislation.gov.uk/ukpga/1993/28/contents> ;
+    prov:atTime "2024-09-30T15:00:00Z"^^xsd:dateTime ;
+    opda:appliesTo opda-x:estate-leasehold ;
+    opda:updatesRegistryRecord opda-x:title ;
+    opda:premiumPaid "42500.00"^^xsd:decimal ;
+    opda:premiumCurrency "GBP" .
+```
+
+## Expected report Turtle
+
+```turtle
+# lease-extension-transaction-expected-report.ttl
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/data/exemplar-reports/report>
+    rdf:type sh:ValidationReport ;
+    dct:source <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction> ;
+    sh:conforms "true"^^xsd:boolean .
+```
+
+## SHACL outcome
+
+`sh:conforms true`. Identity-key shapes satisfied. The SHACL-AF rule [`opda:LeaseTermSuccessionRule`](../transaction/shapes.md#opdaleasetermsuccessionrule) materialises:
+
+- `opda-x:lease-term-current opda:hasLeaseTermSuccessionStatus "extended-from-predecessor"` (because it carries `prov:wasDerivedFrom opda-x:lease-term-original`)
+- `opda-x:lease-term-original opda:hasLeaseTermSuccessionStatus "primary-term"` (the predecessor, no `prov:wasDerivedFrom`)
+
+## Source ODR + ADR
+
+- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0007 §Q1 + §Q5 — Transactions and lifecycle (lease term + Transaction-vs-Event)](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
+- [ODR-0005 §3b Rule 1 + §3c Rule 1 — LegalEstate / RegisteredTitle persistence](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
+- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
