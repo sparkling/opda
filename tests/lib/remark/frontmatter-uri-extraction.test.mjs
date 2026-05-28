@@ -4,7 +4,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createJiti } from '/Users/henrik/source/opda/node_modules/.pnpm/jiti@2.7.0/node_modules/jiti/lib/jiti.mjs';
+import { createJiti } from 'jiti';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { rehypeFrontmatterUriExtraction } = await jiti.import(

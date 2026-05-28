@@ -4,9 +4,9 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createJiti } from '/Users/henrik/source/opda/node_modules/.pnpm/jiti@2.7.0/node_modules/jiti/lib/jiti.mjs';
-import { unified } from '/Users/henrik/source/opda/node_modules/.pnpm/unified@11.0.5/node_modules/unified/index.js';
-import remarkParse from '/Users/henrik/source/opda/node_modules/.pnpm/remark-parse@11.0.0/node_modules/remark-parse/index.js';
+import { createJiti } from 'jiti';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { remarkUnwrapMermaidDetails } = await jiti.import(

@@ -25,6 +25,9 @@
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.3.0"
+    "@tailwindcss/cli": "^4.3.0",
+    "jiti": "^2.7.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   }
 }
