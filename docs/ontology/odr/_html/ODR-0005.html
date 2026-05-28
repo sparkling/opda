@@ -1,0 +1,296 @@
+<!-- ODR-0005 enriched HTML artefact
+     Provenance : generated 2026-05-29 per ADR-0023 (build-time immutable enriched ODR pages)
+     Source     : docs/ontology/odr/ODR-0005-property-land-identity-crux.md
+     Produced by: initial pilot wave (2-ODR pilot establishing the pattern)
+     Immutable  : DO NOT regenerate — ODRs are frozen once accepted (ODR-0001 §Immutability).
+                  To update: supersede with a new ODR; leave this artefact unchanged.
+     Status     : accepted | kind: pattern | date: 2026-05-27
+     Council    : session-005 (Full Council; B2 pilot hive-mind/byzantine; Queen Guarino; DA Allemang — 8/8 withdrawn)
+     Depends-on : ODR-0004
+     Implements : ODR-0003, ODR-0017, ODR-0018
+-->
+<h1>ODR-0005 — Property &amp; Land: The Identity Crux</h1>
+
+<div class="odr-meta">
+  <span class="pill pill--warn">pattern</span>
+  <span class="pill pill--ok">accepted</span>
+  <time datetime="2026-05-27">2026-05-27</time>
+  <span class="odr-meta__council">Council: <a href="/modelling/odr/odr-0001">ODR-0001</a> §methodology · session-005</span>
+</div>
+
+<h2 id="context">Context</h2>
+
+<p>PDTF v3 has no <code>Property</code> class. The thing every transaction is <em>about</em> is reconstructed at read time from scattered surfaces with zero schema-level joins: UPRN appears in four leaf paths (<code>propertyPack.uprn</code>, <code>energyEfficiency.certificate.uprn</code>, <code>chain.onwardPurchase[].uprn</code>, <code>valuationComparisonData.propertyDetails[].uprn</code>); address appears in many more; INSPIRE ID and title-linked address add further surfaces; the data dictionary defines <code>uprn</code> only as "a unique identifier for the property" and carries an <code>isFirstRegistration</code> leaf.</p>
+
+<p>In ontological terms this is a missing class with no identity criterion — the <strong>implicit-Property defect</strong>. Council Session 001 (Q4) confirmed the diagnosis unanimously (12-0) and converged on a multi-class split, but explicitly deferred the identity criterion to this ODR as the programme's gate. An ontology whose central endurant has no identity criterion is, in Guarino's words, <em>"not an ontology — it is a schema with RDF syntax."</em></p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Adopt the <strong>three-class Property pattern</strong> ratified by Council Session 005 (Phase 2 gate; B2 pilot consensus-mode hive-mind/byzantine; Queen Guarino, DA Allemang withdrew on 8 of 8 questions):</p>
+
+<ul>
+<li><strong><code>opda:Property</code></strong> — physical Substance Kind; IC = spatial-material continuity with legal-record discontinuity override</li>
+<li><strong><code>opda:LegalEstate</code></strong> — legal-institutional Substance Kind; IC = rights-bundle persistence; may be unregistered</li>
+<li><strong><code>opda:RegisteredTitle</code></strong> — registry-record Substance Kind; IC = title-number lineage; carries distinct published-personal-data PII regime under HMLR open-register</li>
+</ul>
+
+<h2 id="diagram-three-class">Three-Class Property Model</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0005 Three-Class Property Model
+    accDescr: Shows the three UFO Substance Kinds committed by ODR-0005 — Property (physical), LegalEstate (legal-institutional), and RegisteredTitle (registry-record) — with their identity criteria and relationships
+
+    classDef substanceKind fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef identifier fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef event fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef ic fill:#C8E6C9,stroke:#2E7D32,stroke-width:1px,color:#1B5E20
+
+    PROP["opda:Property<br/>UFO: Substance Kind<br/>DOLCE: PhysicalObject"]:::substanceKind
+    LE["opda:LegalEstate<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
+    RT["opda:RegisteredTitle<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
+
+    UPRN["opda:uprn<br/>UFO Quality<br/>(contingent identifier)"]:::identifier
+    ADDR["opda:hasAddress<br/>join predicate<br/>(IC deferred to ODR-0015)"]:::identifier
+    SUCCESSION["opda:UPRNSuccessionEvent<br/>reified prov:Activity"]:::event
+
+    IC_PROP["IC: spatial-material continuity<br/>with legal-record<br/>discontinuity override"]:::ic
+    IC_LE["IC: rights-bundle persistence<br/>(survives transfer, charges,<br/>easements)"]:::ic
+    IC_RT["IC: title-number lineage<br/>+ registry-event history"]:::ic
+
+    PROP -->|"opda:identifiesSameProperty"| LE
+    LE -->|"registered as"| RT
+    PROP -->|"has quality"| UPRN
+    UPRN -->|"prov:wasDerivedFrom"| SUCCESSION
+    PROP -->|"opda:hasAddress"| ADDR
+
+    PROP -.->|"has IC"| IC_PROP
+    LE -.->|"has IC"| IC_LE
+    RT -.->|"has IC"| IC_RT
+</div>
+
+<details>
+<summary>Mermaid source — Three-Class Property Model</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0005 Three-Class Property Model
+    accDescr: Shows the three UFO Substance Kinds committed by ODR-0005 — Property (physical), LegalEstate (legal-institutional), and RegisteredTitle (registry-record) — with their identity criteria and relationships
+
+    classDef substanceKind fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef identifier fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef event fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef ic fill:#C8E6C9,stroke:#2E7D32,stroke-width:1px,color:#1B5E20
+
+    PROP["opda:Property<br/>UFO: Substance Kind<br/>DOLCE: PhysicalObject"]:::substanceKind
+    LE["opda:LegalEstate<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
+    RT["opda:RegisteredTitle<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
+
+    UPRN["opda:uprn<br/>UFO Quality<br/>(contingent identifier)"]:::identifier
+    ADDR["opda:hasAddress<br/>join predicate<br/>(IC deferred to ODR-0015)"]:::identifier
+    SUCCESSION["opda:UPRNSuccessionEvent<br/>reified prov:Activity"]:::event
+
+    IC_PROP["IC: spatial-material continuity<br/>with legal-record<br/>discontinuity override"]:::ic
+    IC_LE["IC: rights-bundle persistence<br/>(survives transfer, charges,<br/>easements)"]:::ic
+    IC_RT["IC: title-number lineage<br/>+ registry-event history"]:::ic
+
+    PROP -->|"opda:identifiesSameProperty"| LE
+    LE -->|"registered as"| RT
+    PROP -->|"has quality"| UPRN
+    UPRN -->|"prov:wasDerivedFrom"| SUCCESSION
+    PROP -->|"opda:hasAddress"| ADDR
+
+    PROP -.->|"has IC"| IC_PROP
+    LE -.->|"has IC"| IC_LE
+    RT -.->|"has IC"| IC_RT
+```
+
+</details>
+
+<h2 id="diagram-hard-cases">Identity Hard Cases — Property Lifecycle</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: ODR-0005 Property Identity Hard Cases
+    accDescr: State diagram showing how opda:Property identity behaves across the five named hard cases — demolition, subdivision, merger, rebuild, and boundary modification
+
+    [*] --> Existing : Property exists
+
+    state Existing {
+        [*] --> Active
+        Active --> BoundaryModified : boundary change (easement / transfer-of-part)
+        BoundaryModified --> Active : identity PERSISTS<br/>LegalEstate changes, not Property
+        Active --> Rebuilding : knock-down-rebuild
+        Rebuilding --> Active : identity PERSISTS if no<br/>registry discontinuity
+        Rebuilding --> NewProperty : new UPRN issued<br/>OR registry discontinuity
+    }
+
+    Active --> Demolished : demolition + site bare
+    Active --> Subdividing : subdivision
+    Active --> Merging : merger with adjacent
+
+    Demolished --> [*] : Property ceases
+    Subdividing --> NewP1 : new Property p1
+    Subdividing --> NewP2 : new Property p2
+    NewP1 --> [*] : prov:wasDerivedFrom predecessor
+    NewP2 --> [*] : prov:wasDerivedFrom predecessor
+    Merging --> MergedProp : new merged Property
+    MergedProp --> [*] : prov:wasDerivedFrom both predecessors
+    NewProperty --> [*] : prov:wasDerivedFrom predecessor
+</div>
+
+<details>
+<summary>Mermaid source — Property Identity Hard Cases</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: ODR-0005 Property Identity Hard Cases
+    accDescr: State diagram showing how opda:Property identity behaves across the five named hard cases — demolition, subdivision, merger, rebuild, and boundary modification
+
+    [*] --> Existing : Property exists
+
+    state Existing {
+        [*] --> Active
+        Active --> BoundaryModified : boundary change (easement / transfer-of-part)
+        BoundaryModified --> Active : identity PERSISTS<br/>LegalEstate changes, not Property
+        Active --> Rebuilding : knock-down-rebuild
+        Rebuilding --> Active : identity PERSISTS if no<br/>registry discontinuity
+        Rebuilding --> NewProperty : new UPRN issued<br/>OR registry discontinuity
+    }
+
+    Active --> Demolished : demolition + site bare
+    Active --> Subdividing : subdivision
+    Active --> Merging : merger with adjacent
+
+    Demolished --> [*] : Property ceases
+    Subdividing --> NewP1 : new Property p1
+    Subdividing --> NewP2 : new Property p2
+    NewP1 --> [*] : prov:wasDerivedFrom predecessor
+    NewP2 --> [*] : prov:wasDerivedFrom predecessor
+    Merging --> MergedProp : new merged Property
+    MergedProp --> [*] : prov:wasDerivedFrom both predecessors
+    NewProperty --> [*] : prov:wasDerivedFrom predecessor
+```
+
+</details>
+
+<h2 id="diagram-downstream">Downstream ODR Dependencies</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0005 Downstream Dependency Graph
+    accDescr: Shows which downstream ODRs are unblocked, deferred, or inherit specific inputs from the ODR-0005 three-class commitment
+
+    classDef gate fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef unblocked fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef deferred fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef inherits fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+
+    ODR0005["ODR-0005<br/>Property Identity Gate<br/>(this record)"]:::gate
+    ODR0004["ODR-0004<br/>Foundation<br/>(depends-on)"]:::inherits
+
+    ODR0006["ODR-0006<br/>Agents &amp; Roles<br/>UNBLOCKED"]:::unblocked
+    ODR0007["ODR-0007<br/>Transactions &amp; Lifecycle<br/>UNBLOCKED"]:::unblocked
+    ODR0015["ODR-0015<br/>Address &amp; Geography<br/>UNBLOCKED"]:::unblocked
+    ODR0008["ODR-0008<br/>Property Descriptive Attrs<br/>DEFERRED"]:::deferred
+
+    ODR0009["ODR-0009<br/>Claims &amp; Provenance<br/>inherits PROV-O pattern"]:::inherits
+    ODR0010["ODR-0010<br/>Overlay Profile<br/>inherits SHACL-AF rule"]:::inherits
+    ODR0012["ODR-0012<br/>Data Governance<br/>inherits PII regime distinction"]:::inherits
+    ODR0013["ODR-0013<br/>SHACL Severity<br/>inherits sh:Info tier"]:::inherits
+
+    ODR0004 -->|"namespace gate"| ODR0005
+    ODR0005 -->|"3-class commitment<br/>IC discipline"| ODR0006
+    ODR0005 -->|"3-class load-bearing"| ODR0007
+    ODR0005 -->|"opda:hasAddress<br/>DPV constraint"| ODR0015
+    ODR0005 -.->|"cardinality pending"| ODR0008
+    ODR0005 -->|"PROV-O succession pattern"| ODR0009
+    ODR0005 -->|"succession rule"| ODR0010
+    ODR0005 -->|"PII regime + PROV history"| ODR0012
+    ODR0005 -->|"sh:Info severity"| ODR0013
+</div>
+
+<details>
+<summary>Mermaid source — Downstream dependency graph</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0005 Downstream Dependency Graph
+    accDescr: Shows which downstream ODRs are unblocked, deferred, or inherit specific inputs from the ODR-0005 three-class commitment
+
+    classDef gate fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef unblocked fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef deferred fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef inherits fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+
+    ODR0005["ODR-0005<br/>Property Identity Gate<br/>(this record)"]:::gate
+    ODR0004["ODR-0004<br/>Foundation<br/>(depends-on)"]:::inherits
+
+    ODR0006["ODR-0006<br/>Agents &amp; Roles<br/>UNBLOCKED"]:::unblocked
+    ODR0007["ODR-0007<br/>Transactions &amp; Lifecycle<br/>UNBLOCKED"]:::unblocked
+    ODR0015["ODR-0015<br/>Address &amp; Geography<br/>UNBLOCKED"]:::unblocked
+    ODR0008["ODR-0008<br/>Property Descriptive Attrs<br/>DEFERRED"]:::deferred
+
+    ODR0009["ODR-0009<br/>Claims &amp; Provenance<br/>inherits PROV-O pattern"]:::inherits
+    ODR0010["ODR-0010<br/>Overlay Profile<br/>inherits SHACL-AF rule"]:::inherits
+    ODR0012["ODR-0012<br/>Data Governance<br/>inherits PII regime distinction"]:::inherits
+    ODR0013["ODR-0013<br/>SHACL Severity<br/>inherits sh:Info tier"]:::inherits
+
+    ODR0004 -->|"namespace gate"| ODR0005
+    ODR0005 -->|"3-class commitment<br/>IC discipline"| ODR0006
+    ODR0005 -->|"3-class load-bearing"| ODR0007
+    ODR0005 -->|"opda:hasAddress<br/>DPV constraint"| ODR0015
+    ODR0005 -.->|"cardinality pending"| ODR0008
+    ODR0005 -->|"PROV-O succession pattern"| ODR0009
+    ODR0005 -->|"succession rule"| ODR0010
+    ODR0005 -->|"PII regime + PROV history"| ODR0012
+    ODR0005 -->|"sh:Info severity"| ODR0013
+```
+
+</details>
+
+<h2 id="rules">Rules</h2>
+
+<h3>Settled rules (the cure)</h3>
+<ol>
+<li><strong>Explicit Property class.</strong> The four-surface, zero-join defect is restored to a class. No implicit-Property.</li>
+<li><strong>Three-class split</strong> (Session 005 Q5; 6-2-1 FOR three-class with Davis + Cagle held-as-live dissent preserved): a physical <code>opda:Property</code>, a legal-institutional <code>opda:LegalEstate</code> (which may be unregistered at common law), and an HMLR registry-record <code>opda:RegisteredTitle</code>. Each is its own UFO Substance Kind with its own IC.</li>
+<li><strong>Operational key is SHACL/DASH uniqueness.</strong> <code>dash:uniqueValueForClass true</code> on <code>opda:uprn</code> is the primary, checkable mechanism: it fires a violation report and degrades gracefully when UPRN is absent.</li>
+<li><strong><code>owl:hasKey</code> is optional/secondary</strong> — a semantic annotation valid only where UPRN is truly identifying. Never on a Role.</li>
+<li><strong>No <code>owl:sameAs</code></strong> across the UPRN surfaces (unanimous — irreversible inference propagation). Join uses the key + SHACL co-reference, or a controlled <code>opda:identifiesSameProperty</code>.</li>
+<li><strong>UPRN is a contingent identifier</strong>, not the IC — operationally, a UFO Quality on <code>opda:Property</code>. Model retire/split/merge/re-issue via <code>prov:wasDerivedFrom</code> succession, with the chain materialised into the validation report via a SHACL-AF rule at <code>sh:Info</code> severity.</li>
+</ol>
+
+<h3>Anti-patterns (forbidden)</h3>
+<ul>
+<li><code>owl:sameAs</code> between any two UPRN-bearing nodes.</li>
+<li><code>owl:hasKey (opda:uprn)</code> as the <em>sole</em> identity mechanism (inert when UPRN is absent).</li>
+<li>A keyed Role (a Proprietor has no identity <em>qua</em> Proprietor).</li>
+<li>Treating UPRN or address as the identity criterion (they are administratively contingent).</li>
+<li>Treating <code>opda:RegisteredTitle</code> as a UFO Mode of <code>opda:LegalEstate</code> (fails the temporal-extent test).</li>
+</ul>
+
+<h2 id="consequences">Consequences</h2>
+<ul>
+<li><strong>Namespace block carries forward.</strong> ODR-0005 stays <code>status: proposed</code> until WG ratifies the namespace string per ODR-0004's Knublauch DA primary demand.</li>
+<li><strong>Held-as-live dissents on Q5</strong> (3-class commitment). Davis preserves the 2-class-with-<code>RegisteredTitle ⊑ LegalEstate</code>-upgradeable position. Cagle preserves the 2-class-with-commonhold-spawn-rule position.</li>
+<li><strong>A9 pressure-test passes.</strong> ODR-0005 is the first <code>kind: pattern</code> ODR to discharge under ODR-0001's A9 amendment (the per-kind discipline).</li>
+<li><strong>B2 pilot verdict: EXTEND CAUTIOUSLY.</strong> The <code>consensus-mode: hive-mind/byzantine</code> two-artefact discipline is recommended for Sessions 011 Q8 and 015.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ul>
+<li><strong>Depends-on</strong>: <a href="/modelling/odr/odr-0004">ODR-0004</a> (Foundation — namespace gate)</li>
+<li><strong>Implements</strong>: ODR-0003 (Programme), ODR-0017 (SHACL-AF), ODR-0018 (DPV co-annotation)</li>
+<li><strong>Council</strong>: session-005-property-land-identity-crux (2026-05-27; Full Council; B2 pilot consensus-mode hive-mind/byzantine; Queen Guarino; DA Allemang — full withdrawal 8/8)</li>
+<li><strong>Diagnostic exemplars</strong>: <code>registered-freehold-house.ttl</code>, <code>unregistered-pre-first-registration-house.ttl</code>, <code>flat-with-split-uprn.ttl</code></li>
+<li><strong>Foundational ontology</strong>: Guizzardi 2005 (UFO); Masolo et al. 2003 (DOLCE); Guarino &amp; Welty 2002/2009 (OntoClean); Searle 1995 (legal-institutional objects)</li>
+<li><strong>W3C standards</strong>: RDF 1.1 Semantics §6 (<code>owl:sameAs</code> propagation); PROV-O §3; SHACL + DASH + SHACL-AF</li>
+<li><strong>Authoritative external sources</strong>: OS AddressBase Plus Technical Specification §UPRN lifecycle; HMLR Practice Guide 1, PG 16, PG 40; ICO Guidance on Public Authorities Lawful Bases 2023 §HMLR open-register</li>
+</ul>

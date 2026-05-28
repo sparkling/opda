@@ -159,6 +159,11 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/modelling/shacl-shapes',     title: 'SHACL shapes' },
         { url: '/modelling/jsonld-mappings',  title: 'JSON-LD mappings' },
       ]},
+      { heading: 'ODR corpus', items: [
+        { url: '/modelling/odr',              title: 'All ODRs (index)' },
+        { url: '/modelling/odr/odr-0001',     title: 'ODR-0001 · Methodology' },
+        { url: '/modelling/odr/odr-0005',     title: 'ODR-0005 · Property identity' },
+      ]},
     ],
   },
 

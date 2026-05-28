@@ -1,0 +1,109 @@
+---
+/**
+ * ODR corpus listing page — ADR-0023 (build-time immutable enriched ODR pages).
+ *
+ * Lists all 18 ODRs in the corpus. Enriched ODRs (with committed artefacts)
+ * link to their /modelling/odr/<id> detail page. Non-enriched ODRs are shown
+ * as pending with no link target (artefact not yet committed).
+ *
+ * This page DOES NOT convert or generate anything — it serves the registry
+ * from src/lib/odr-pages.mjs which reflects the committed artefact state.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { ODR_REGISTRY } from '@/lib/odr-pages.mjs';
+
+const kindPillClass = {
+  methodology:  'pill--brand',
+  pattern:      'pill--info',
+  mapping:      'pill--info',
+  architecture: 'pill--warn',
+  programme:    'pill--warn',
+};
+
+const statusPillClass = {
+  accepted: 'pill--ok',
+  proposed: 'pill--warn',
+  rejected: 'pill--error',
+};
+---
+<Layout
+  title="ODR Corpus"
+  description="The Linked Data Council's 18 Ontology Decision Records — the deliberation audit trail behind the OPDA ontology."
+>
+  <h1>ODR Corpus</h1>
+  <p class="lead">
+    The <strong>Ontology Decision Records (ODRs)</strong> are the Linked Data
+    Council's deliberation audit trail — the <em>why</em> behind every significant
+    ontology-modelling decision in the OPDA programme. Each record captures the
+    options considered, the chosen outcome, the voting rationale, and the
+    downstream consequences.
+  </p>
+  <p>
+    18 records in total. Pages marked <em>pending</em> have not yet been enriched;
+    their artefacts will be committed in subsequent waves per
+    <a href="/modelling">ADR-0023</a>.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Title</th>
+        <th>Kind</th>
+        <th>Status</th>
+        <th>Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ODR_REGISTRY.map((odr) => (
+        <tr>
+          <td><code>{odr.number}</code></td>
+          <td>
+            {odr.enriched
+              ? <a href={`/modelling/odr/${odr.id}`}>{odr.title}</a>
+              : odr.title
+            }
+          </td>
+          <td><span class={`pill ${kindPillClass[odr.kind] ?? 'pill--brand'}`}>{odr.kind}</span></td>
+          <td><span class={`pill ${statusPillClass[odr.status] ?? ''}`}>{odr.status}</span></td>
+          <td>
+            {odr.enriched
+              ? <a href={`/modelling/odr/${odr.id}`}>view</a>
+              : <span class="muted">pending</span>
+            }
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>About ODRs</h2>
+  <p>
+    An ODR is one of two kinds of decision:
+  </p>
+  <ul>
+    <li>
+      An <strong>ontological commitment</strong> (<code>kind: pattern</code> or <code>mapping</code>) —
+      a declaration about what kinds of entities the domain contains, what their identity
+      criteria are, what Roles or Phases they pass through.
+    </li>
+    <li>
+      An <strong>artefact-engineering decision</strong> (<code>kind: architecture</code>,
+      <code>methodology</code>, or <code>programme</code>) — a decision about how to structure,
+      name, govern, sequence, or process the artefacts that encode the ontology.
+    </li>
+  </ul>
+  <p>
+    Each accepted ODR is frozen. A later decision <em>supersedes</em> it with a new ODR;
+    the old record is never edited. This immutability is the basis for the
+    produce-once / freeze / commit / serve-static model described in ADR-0023.
+  </p>
+
+  <h2>Methodology</h2>
+  <p>
+    All ODRs are ratified by the <strong>Linked Data Council</strong> — a simulated panel
+    of 9 named linked-data and ontology authorities whose published positions are used
+    to evaluate modelling decisions from multiple perspectives. See
+    <a href="/modelling/odr/odr-0001">ODR-0001</a> for the full methodology.
+  </p>
+</Layout>

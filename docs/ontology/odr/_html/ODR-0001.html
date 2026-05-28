@@ -1,0 +1,412 @@
+<!-- ODR-0001 enriched HTML artefact
+     Provenance : generated 2026-05-29 per ADR-0023 (build-time immutable enriched ODR pages)
+     Source     : docs/ontology/odr/ODR-0001-linked-data-council-methodology.md
+     Produced by: initial pilot wave (2-ODR pilot establishing the pattern)
+     Immutable  : DO NOT regenerate — ODRs are frozen once accepted (ODR-0001 §Immutability).
+                  To update: supersede with a new ODR; leave this artefact unchanged.
+     Status     : accepted | kind: methodology | date: 2026-05-27
+-->
+<h1>ODR-0001 — Linked Data Council: Review Methodology</h1>
+
+<div class="odr-meta">
+  <span class="pill pill--brand">methodology</span>
+  <span class="pill pill--ok">accepted</span>
+  <time datetime="2026-05-27">2026-05-27</time>
+</div>
+
+<h2 id="context">Context</h2>
+
+<p>Ontology mapping and ontology modelling projects require balancing formal correctness, pragmatic tooling constraints, industry precedent, and the domain-specific realities of the source data they translate. No single perspective covers all of them: an OWL purist may overlook tooling gaps; a pragmatist may miss formal pitfalls; a standards expert may not account for the domain's existing data shape; an enterprise-architecture expert may not weigh open-data and public-sector linked-data conventions.</p>
+
+<p>A reproducible, multi-perspective review process is needed whose outputs are auditable and citable, and whose verdicts can be revisited as the experts' published positions are stable across sessions. Real-expert consultation is slow and non-reproducible; generic best-practice appeals produce vague rationale future maintainers cannot interrogate. The methodology must be grounded in authority, reproducible, and self-documenting — and it must be <strong>portable across projects</strong> without each adoption rewriting the protocol.</p>
+
+<p>This methodology was developed in two ontology-modelling programmes — the H&amp;M semantic-modelling programme and the OPDA (Open Property Data Association) linked-data programme — and is published here as a general-purpose instruction set. Adopting projects supply their own context via declared adoption hooks (§Adoption); the methodology body itself is project-agnostic.</p>
+
+<p><strong>Pattern lineage.</strong> This methodology codifies the <strong>Council Hive</strong> pattern — a dialectic review of a proposition by N named experts citing their published methodology, with one Devil's Advocate, producing a verdict with structured transcript.</p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Adopt the <strong>Linked Data Council</strong> — a simulated panel of named linked-data and ontology authorities whose published positions, W3C specifications, books, and deployment experience are used to evaluate ontology-modelling design decisions from multiple perspectives — because it is the only option that simultaneously delivers multi-perspective coverage, authority-grounded rationale, reproducibility, and an auditable record at a cost proportionate to the significance of the decision.</p>
+
+<h2 id="diagram-session-protocol">Session Protocol: From Question to Verdict</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0001 Council Session Protocol
+    accDescr: Flowchart showing the full lifecycle of a Linked Data Council session from pre-flight scope check through to synthesis and ODR amendment
+
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef warning fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    PROP["Proposition raised<br/>(question + input docs)"]:::process
+    PF["Pre-flight scope check<br/>(Queen, 5 min)"]:::process
+    PF_OUT{Scope check<br/>outcome}:::decision
+    RETIRE["Mark rejected +<br/>pointer to correct record"]:::warning
+    RESCOPE["Re-scope or split<br/>proposition"]:::process
+    META["Escalate to<br/>meta-Council"]:::warning
+    CONVENE["Convene session<br/>(declare format tier +<br/>consensus-mode)"]:::process
+    SPAWN["Spawn panel in ONE message<br/>(Queen + DA + N teammates)"]:::actor
+    DELIBERATE["Per-question deliberation<br/>(named citations, cross-talk,<br/>N-M-K vote tally)"]:::process
+    DA_CHECK{DA withdraws<br/>or holds?}:::decision
+    DA_HOLD["Record held dissent<br/>verbatim + re-open trigger"]:::warning
+    SYNTH["Queen writes synthesis<br/>(narrative + tally appendix)"]:::output
+    ODR_AMEND["Amend or produce ODR<br/>(new record or inline amendment)"]:::output
+
+    PROP --> PF
+    PF --> PF_OUT
+    PF_OUT -->|"Retire"| RETIRE
+    PF_OUT -->|"Re-scope"| RESCOPE
+    PF_OUT -->|"Meta-Council"| META
+    PF_OUT -->|"Ratify as-is"| CONVENE
+    RESCOPE --> CONVENE
+    META --> CONVENE
+    CONVENE --> SPAWN
+    SPAWN --> DELIBERATE
+    DELIBERATE --> DA_CHECK
+    DA_CHECK -->|"Withdraws"| SYNTH
+    DA_CHECK -->|"Holds dissent"| DA_HOLD
+    DA_HOLD --> SYNTH
+    SYNTH --> ODR_AMEND
+</div>
+
+<details>
+<summary>Mermaid source — Session Protocol flowchart</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0001 Council Session Protocol
+    accDescr: Flowchart showing the full lifecycle of a Linked Data Council session from pre-flight scope check through to synthesis and ODR amendment
+
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef warning fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    PROP["Proposition raised<br/>(question + input docs)"]:::process
+    PF["Pre-flight scope check<br/>(Queen, 5 min)"]:::process
+    PF_OUT{Scope check<br/>outcome}:::decision
+    RETIRE["Mark rejected +<br/>pointer to correct record"]:::warning
+    RESCOPE["Re-scope or split<br/>proposition"]:::process
+    META["Escalate to<br/>meta-Council"]:::warning
+    CONVENE["Convene session<br/>(declare format tier +<br/>consensus-mode)"]:::process
+    SPAWN["Spawn panel in ONE message<br/>(Queen + DA + N teammates)"]:::actor
+    DELIBERATE["Per-question deliberation<br/>(named citations, cross-talk,<br/>N-M-K vote tally)"]:::process
+    DA_CHECK{DA withdraws<br/>or holds?}:::decision
+    DA_HOLD["Record held dissent<br/>verbatim + re-open trigger"]:::warning
+    SYNTH["Queen writes synthesis<br/>(narrative + tally appendix)"]:::output
+    ODR_AMEND["Amend or produce ODR<br/>(new record or inline amendment)"]:::output
+
+    PROP --> PF
+    PF --> PF_OUT
+    PF_OUT -->|"Retire"| RETIRE
+    PF_OUT -->|"Re-scope"| RESCOPE
+    PF_OUT -->|"Meta-Council"| META
+    PF_OUT -->|"Ratify as-is"| CONVENE
+    RESCOPE --> CONVENE
+    META --> CONVENE
+    CONVENE --> SPAWN
+    SPAWN --> DELIBERATE
+    DELIBERATE --> DA_CHECK
+    DA_CHECK -->|"Withdraws"| SYNTH
+    DA_CHECK -->|"Holds dissent"| DA_HOLD
+    DA_HOLD --> SYNTH
+    SYNTH --> ODR_AMEND
+```
+
+</details>
+
+<h2 id="diagram-panel">Standing Panel (9 Experts)</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#F3E5F5", "primaryTextColor": "#4A148C", "primaryBorderColor": "#7B1FA2", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Standing Panel Expertise Map
+    accDescr: Map of the 9 standing panel experts grouped by their primary expertise cluster
+
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef cluster fill:#E3F2FD,stroke:#1565C0,stroke-width:1px,color:#0D47A1
+    classDef role fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    QUEEN["Queen / Moderator<br/>(named per session)"]:::role
+    DA["Devil's Advocate<br/>(named per session)"]:::role
+
+    subgraph PragmaticRDF["Pragmatic RDF &amp; Enterprise"]
+        ALLE["Dean Allemang<br/>Working Ontologist"]:::actor
+        DAVIS["Ian Davis<br/>BBC / UK Gov"]:::actor
+    end
+
+    subgraph FormalOWL["Formal OWL &amp; Web Architecture"]
+        HENDLER["Jim Hendler<br/>W3C / RPI"]:::actor
+        GANDON["Fabien Gandon<br/>W3C / Inria"]:::actor
+    end
+
+    subgraph EnterpriseOntology["Enterprise Ontology"]
+        KENDALL["Elisa Kendall<br/>OMG / EDM Council"]:::actor
+        CAGLE["Kurt Cagle<br/>The Ontologist"]:::actor
+    end
+
+    subgraph FoundationalOntology["Foundational Ontology"]
+        GUIZZARDI["Giancarlo Guizzardi<br/>NEMO / UniLu"]:::actor
+        GUARINO["Nicola Guarino<br/>ISTC-CNR"]:::actor
+    end
+
+    subgraph Vocabulary["Vocabulary &amp; Namespace"]
+        BAKER["Tom Baker<br/>Dublin Core"]:::actor
+    end
+
+    QUEEN -.->|"votes + synthesises"| PragmaticRDF
+    QUEEN -.->|"votes + synthesises"| FormalOWL
+    QUEEN -.->|"votes + synthesises"| EnterpriseOntology
+    QUEEN -.->|"votes + synthesises"| FoundationalOntology
+    QUEEN -.->|"votes + synthesises"| Vocabulary
+    DA -.->|"attacks proposal"| PragmaticRDF
+</div>
+
+<details>
+<summary>Mermaid source — Standing Panel map</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#F3E5F5", "primaryTextColor": "#4A148C", "primaryBorderColor": "#7B1FA2", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Standing Panel Expertise Map
+    accDescr: Map of the 9 standing panel experts grouped by their primary expertise cluster
+
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef cluster fill:#E3F2FD,stroke:#1565C0,stroke-width:1px,color:#0D47A1
+    classDef role fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    QUEEN["Queen / Moderator<br/>(named per session)"]:::role
+    DA["Devil's Advocate<br/>(named per session)"]:::role
+
+    subgraph PragmaticRDF["Pragmatic RDF &amp; Enterprise"]
+        ALLE["Dean Allemang<br/>Working Ontologist"]:::actor
+        DAVIS["Ian Davis<br/>BBC / UK Gov"]:::actor
+    end
+
+    subgraph FormalOWL["Formal OWL &amp; Web Architecture"]
+        HENDLER["Jim Hendler<br/>W3C / RPI"]:::actor
+        GANDON["Fabien Gandon<br/>W3C / Inria"]:::actor
+    end
+
+    subgraph EnterpriseOntology["Enterprise Ontology"]
+        KENDALL["Elisa Kendall<br/>OMG / EDM Council"]:::actor
+        CAGLE["Kurt Cagle<br/>The Ontologist"]:::actor
+    end
+
+    subgraph FoundationalOntology["Foundational Ontology"]
+        GUIZZARDI["Giancarlo Guizzardi<br/>NEMO / UniLu"]:::actor
+        GUARINO["Nicola Guarino<br/>ISTC-CNR"]:::actor
+    end
+
+    subgraph Vocabulary["Vocabulary &amp; Namespace"]
+        BAKER["Tom Baker<br/>Dublin Core"]:::actor
+    end
+
+    QUEEN -.->|"votes + synthesises"| PragmaticRDF
+    QUEEN -.->|"votes + synthesises"| FormalOWL
+    QUEEN -.->|"votes + synthesises"| EnterpriseOntology
+    QUEEN -.->|"votes + synthesises"| FoundationalOntology
+    QUEEN -.->|"votes + synthesises"| Vocabulary
+    DA -.->|"attacks proposal"| PragmaticRDF
+```
+
+</details>
+
+<h2 id="diagram-format-tiers">Format Tiers</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Format Tier Selection
+    accDescr: Decision tree for selecting the correct Council format tier based on the nature of the proposition
+
+    classDef full fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef reduced fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef author fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef question fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    Q1{"Substantive decision<br/>with credible split?"}:::question
+    Q2{"Amendment on<br/>narrow axis?"}:::question
+    Q3{"Precedent or<br/>methodology settled?"}:::question
+
+    FULL["Full Council<br/>Queen + DA + 6 panel<br/>~8 agent runs"]:::full
+    REDUCED["Reduced Council<br/>Queen + DA + 1-2 panel<br/>~3-4 agent runs"]:::reduced
+    AUTHOR["Author-only<br/>Queen drafts directly<br/>~1 agent run"]:::author
+
+    Q1 -->|"Yes"| FULL
+    Q1 -->|"No"| Q2
+    Q2 -->|"Yes"| REDUCED
+    Q2 -->|"No"| Q3
+    Q3 -->|"Yes — recording only"| AUTHOR
+    Q3 -->|"No — check scope"| Q1
+</div>
+
+<details>
+<summary>Mermaid source — Format Tier selection flowchart</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Format Tier Selection
+    accDescr: Decision tree for selecting the correct Council format tier based on the nature of the proposition
+
+    classDef full fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef reduced fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef author fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef question fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    Q1{"Substantive decision<br/>with credible split?"}:::question
+    Q2{"Amendment on<br/>narrow axis?"}:::question
+    Q3{"Precedent or<br/>methodology settled?"}:::question
+
+    FULL["Full Council<br/>Queen + DA + 6 panel<br/>~8 agent runs"]:::full
+    REDUCED["Reduced Council<br/>Queen + DA + 1-2 panel<br/>~3-4 agent runs"]:::reduced
+    AUTHOR["Author-only<br/>Queen drafts directly<br/>~1 agent run"]:::author
+
+    Q1 -->|"Yes"| FULL
+    Q1 -->|"No"| Q2
+    Q2 -->|"Yes"| REDUCED
+    Q2 -->|"No"| Q3
+    Q3 -->|"Yes — recording only"| AUTHOR
+    Q3 -->|"No — check scope"| Q1
+```
+
+</details>
+
+<h2 id="diagram-supersession">Supersession Graph — ODR Dependencies</h2>
+
+<div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Supersession and Dependency Graph
+    accDescr: Shows ODR-0001 as the methodology foundation that all other ODRs depend on, and the self-amendment mechanism
+
+    classDef methodology fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef pattern fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef architecture fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef programme fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef amendment fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    ODR0001["ODR-0001<br/>Methodology<br/>(this record)"]:::methodology
+    ODR0003["ODR-0003<br/>Programme"]:::programme
+    ODR0004["ODR-0004<br/>Foundation"]:::architecture
+    ODR0005["ODR-0005<br/>Property Identity"]:::pattern
+    OTHERS["ODR-0006 … ODR-0018<br/>(all depend on methodology)"]:::architecture
+
+    A9["Amendment A9<br/>per-kind discipline<br/>2026-05-27"]:::amendment
+    SC1["Scope-Check-1<br/>meta-Council"]:::amendment
+    SC2["Scope-Check-2<br/>B2 pilot eval"]:::amendment
+
+    ODR0001 -->|"governs"| ODR0003
+    ODR0001 -->|"governs"| ODR0004
+    ODR0001 -->|"governs"| ODR0005
+    ODR0001 -->|"governs"| OTHERS
+    ODR0001 -->|"self-amends via"| A9
+    SC1 -->|"produced"| A9
+    SC2 -->|"B2 pilot verdict"| ODR0005
+</div>
+
+<details>
+<summary>Mermaid source — Supersession and dependency graph</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Supersession and Dependency Graph
+    accDescr: Shows ODR-0001 as the methodology foundation that all other ODRs depend on, and the self-amendment mechanism
+
+    classDef methodology fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef pattern fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef architecture fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef programme fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef amendment fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    ODR0001["ODR-0001<br/>Methodology<br/>(this record)"]:::methodology
+    ODR0003["ODR-0003<br/>Programme"]:::programme
+    ODR0004["ODR-0004<br/>Foundation"]:::architecture
+    ODR0005["ODR-0005<br/>Property Identity"]:::pattern
+    OTHERS["ODR-0006 … ODR-0018<br/>(all depend on methodology)"]:::architecture
+
+    A9["Amendment A9<br/>per-kind discipline<br/>2026-05-27"]:::amendment
+    SC1["Scope-Check-1<br/>meta-Council"]:::amendment
+    SC2["Scope-Check-2<br/>B2 pilot eval"]:::amendment
+
+    ODR0001 -->|"governs"| ODR0003
+    ODR0001 -->|"governs"| ODR0004
+    ODR0001 -->|"governs"| ODR0005
+    ODR0001 -->|"governs"| OTHERS
+    ODR0001 -->|"self-amends via"| A9
+    SC1 -->|"produced"| A9
+    SC2 -->|"B2 pilot verdict"| ODR0005
+```
+
+</details>
+
+<h2 id="rules">Rules</h2>
+
+<h3>Standing Panel (9 experts)</h3>
+
+<table>
+<thead><tr><th>Expert</th><th>Affiliation</th><th>Perspective</th></tr></thead>
+<tbody>
+<tr><td>Dean Allemang</td><td><em>Working Ontologist</em></td><td>Pragmatic RDF modelling, enterprise KG practice</td></tr>
+<tr><td>Jim Hendler</td><td>W3C / RPI</td><td>OWL formal semantics, web architecture</td></tr>
+<tr><td>Elisa Kendall</td><td>OMG / EDM Council</td><td>Enterprise ontology patterns, FIBO methodology</td></tr>
+<tr><td>Kurt Cagle</td><td><em>The Ontologist</em></td><td>SHACL practitioner, taxonomy design, AI integration</td></tr>
+<tr><td>Fabien Gandon</td><td>W3C / Inria</td><td>RDF/RDFS/OWL standards, linked-data principles</td></tr>
+<tr><td>Tom Baker</td><td>Dublin Core</td><td>Namespace design, metadata standards, vocabulary governance</td></tr>
+<tr><td>Ian Davis</td><td>BBC / UK Gov</td><td>Linked-data deployment at scale, government data patterns</td></tr>
+<tr><td>Giancarlo Guizzardi</td><td>NEMO / UniLu</td><td>Foundational ontology (Kind/Role/Phase), UFO, OntoUML</td></tr>
+<tr><td>Nicola Guarino</td><td>ISTC-CNR</td><td>Formal ontology theory, identity criteria, DOLCE</td></tr>
+</tbody>
+</table>
+
+<h3>Session protocol</h3>
+<ol>
+<li>Convene with a context block (question, input documents, prior related ODRs, constraints).</li>
+<li>Run pre-flight scope check. Three outcomes: ratify-as-is / re-scope / retire.</li>
+<li>Always use named experts — never generic role titles.</li>
+<li>Each expert must state rationale from their published methodology per §Citation grounding.</li>
+<li>Experts must discuss with each other, not just opine in parallel.</li>
+<li>Per-question vote: tally as <code>N-M-K</code> (in-favour / against / abstain).</li>
+<li>Synthesis report: Queen writes closing section with per-expert positions, vote tallies, dissent records, recommended approach.</li>
+<li>No silent vote-padding. Abstain is the correct vote when an expert has nothing distinctive to say.</li>
+<li>The Queen composes; the Queen does not fabricate. Every quotation traces to actual teammate output.</li>
+<li>One-message parallel spawn (Full Council and Reduced Council).</li>
+<li>Worker failure protocol: retry once, default-abstain on second failure, record explicitly.</li>
+</ol>
+
+<h3>Format tiers</h3>
+<table>
+<thead><tr><th>Tier</th><th>When</th><th>Apparatus</th><th>Cost (rough)</th></tr></thead>
+<tbody>
+<tr><td><strong>Full Council</strong></td><td>Substantive linked-data decision with credible split</td><td>Queen + DA + 6 panel teammates writing position files</td><td>~8 agent runs</td></tr>
+<tr><td><strong>Reduced Council</strong></td><td>Amendment / ratification-with-targeted-disputes</td><td>Queen + DA + 1–2 panel teammates on disputed questions only</td><td>~3–4 agent runs</td></tr>
+<tr><td><strong>Author-only</strong></td><td>Recording a decision the methodology or precedent has already settled</td><td>Queen drafts the transcript and the record amendment from existing inputs; no fanned-out positions</td><td>~1 agent run</td></tr>
+</tbody>
+</table>
+
+<h2 id="consequences">Consequences</h2>
+<ul>
+<li>Significant linked-data decisions MUST be routed through a Council session per the when-to-use criteria.</li>
+<li>Routine work MUST NOT trigger a session; padding the agenda dilutes the methodology.</li>
+<li>Every Council session produces a transcript at the project's council-directory path, cited from the resulting record's <code>council:</code> frontmatter field.</li>
+<li>The Devil's-Advocate role and recorded dissent are mandatory guards against rubber-stamping.</li>
+<li>Council verdicts are inputs to proposals, not adoption decisions.</li>
+<li>The methodology is self-amending — substantive changes flow through its own Council protocol.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ul>
+<li><strong>Source methodology</strong>: direct adaptation of the H&amp;M Expert Hive (ONT-0021, external).</li>
+<li><strong>W3C process precedent</strong>: W3C Process Document §"Decision-making".</li>
+<li><strong>FIBO/OMG precedent</strong>: multi-stage ratification pattern.</li>
+<li><strong>DCMI precedent</strong>: vocabulary governance with single-record change logs.</li>
+<li><strong>Amendment A9</strong>: per-kind ODR discipline, 2026-05-27, Reduced Council, Queen Kendall, DA Guarino.</li>
+</ul>
