@@ -1,0 +1,118 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Logical-tier typed-attribute table.
+ * Building block for future frontmatter-driven attribute tables (ADR-0020).
+ * Currently unused by the dispatcher — shipped for future use.
+ */
+
+export interface Attribute {
+  /** Attribute name / predicate local name. */
+  name: string;
+  /** XSD type or SKOS scheme reference. */
+  type: string;
+  /** OWL/SHACL cardinality string, e.g. "0..1". */
+  cardinality: string;
+  /** Whether this attribute is required. */
+  required: boolean;
+  /** Whether this attribute is identity-bearing. */
+  identityBearing: boolean;
+  /** Human-readable description. */
+  description: string;
+}
+
+interface Props {
+  attributes: Attribute[];
+}
+
+const { attributes } = Astro.props;
+---
+
+{attributes.length > 0 && (
+  <div class="attribute-table-wrap">
+    <table class="attribute-table">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Type</th>
+          <th scope="col">Cardinality</th>
+          <th scope="col">Required</th>
+          <th scope="col">Identity-bearing</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {attributes.map((attr) => (
+          <tr class={attr.identityBearing ? 'attribute-table__row--identity' : ''}>
+            <td><code class="attribute-table__name">{attr.name}</code></td>
+            <td><code class="attribute-table__type">{attr.type}</code></td>
+            <td class="attribute-table__cardinality">{attr.cardinality}</td>
+            <td class="attribute-table__flag">{attr.required ? 'Y' : 'N'}</td>
+            <td class="attribute-table__flag">{attr.identityBearing ? 'Y' : 'N'}</td>
+            <td>{attr.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+<style>
+  .attribute-table-wrap {
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+  }
+
+  .attribute-table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+    color: var(--color-text);
+  }
+
+  .attribute-table th {
+    background: var(--color-surface-tint);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .attribute-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .attribute-table__row--identity td {
+    background: var(--color-surface-tint);
+  }
+
+  .attribute-table__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-link);
+  }
+
+  .attribute-table__type {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .attribute-table__cardinality {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  .attribute-table__flag {
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+</style>

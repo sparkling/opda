@@ -1,0 +1,95 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Turtle code block with copy-to-clipboard + namespace tooltip.
+ * `source` prop accepts the raw Turtle string; alternatively use the slot
+ * for pre-rendered content.
+ */
+interface Props {
+  /** Raw Turtle source string. When provided, renders directly. */
+  source?: string;
+}
+
+const { source } = Astro.props;
+---
+
+<div class="turtle-block">
+  <div class="turtle-block__toolbar">
+    <span class="turtle-block__lang">Turtle</span>
+    <button
+      class="turtle-block__copy"
+      data-copy-turtle
+      title="Copy Turtle to clipboard"
+      aria-label="Copy Turtle source"
+    >
+      Copy
+    </button>
+  </div>
+  <pre class="turtle-block__pre"><code class="language-turtle">{source ?? <slot />}</code></pre>
+</div>
+
+<script>
+  // Copy-to-clipboard wiring — vanilla, no framework dependency.
+  document.addEventListener('click', (e: MouseEvent) => {
+    const btn = (e.target as Element).closest('[data-copy-turtle]') as HTMLButtonElement | null;
+    if (!btn) return;
+    const pre = btn.closest('.turtle-block')?.querySelector('.turtle-block__pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.textContent ?? '').then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    });
+  });
+</script>
+
+<style>
+  .turtle-block {
+    margin: var(--space-4) 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .turtle-block__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface-tint);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .turtle-block__lang {
+    font: 500 var(--text-xs) / 1 var(--font-mono);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .turtle-block__copy {
+    font: 500 var(--text-xs) / 1 var(--font-sans);
+    padding: 0.2em var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease),
+                color var(--duration-fast) var(--ease);
+  }
+
+  .turtle-block__copy:hover {
+    background: var(--color-surface-inset);
+    color: var(--color-text);
+  }
+
+  .turtle-block__pre {
+    margin: 0;
+    padding: var(--space-4);
+    overflow-x: auto;
+    font: 400 var(--text-sm) / var(--leading-relaxed) var(--font-mono);
+    color: var(--color-text);
+    background: var(--color-surface-card);
+  }
+</style>

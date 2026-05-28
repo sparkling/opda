@@ -1,0 +1,98 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Cross-cutting topic pages — three-graph-separation, severity-tiers,
+ * shacl-af-rules, per-module-deployment, derived-profile, overlay-deployment,
+ * operations. Content slot + linked-tier callout strip.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { deriveTitle } from '@/lib/manual';
+
+interface Props {
+  entry: CollectionEntry<'manual'>;
+  tier: string;
+  module?: string | null;
+}
+
+const { entry, tier, module: mod } = Astro.props;
+const title = deriveTitle(entry.data.title, entry.id, entry.body);
+
+const tierLabel: Record<string, string> = {
+  concept: 'Concept tier',
+  logical: 'Logical tier',
+  'physical-database': 'Physical — deployment',
+  'physical-ontology': 'Physical — ontology',
+};
+---
+
+<article class="cross-cutting-page">
+  <header class="cross-cutting-page__header">
+    <div class="cross-cutting-page__meta">
+      <span class={`cross-cutting-page__tier-badge tier-badge--${tier}`}>
+        {tierLabel[tier] ?? tier}
+      </span>
+      {mod && <span class="cross-cutting-page__module">{mod}</span>}
+    </div>
+    <h1 class="cross-cutting-page__title">{title}</h1>
+  </header>
+  <div class="cross-cutting-page__body">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .cross-cutting-page__header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cross-cutting-page__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .cross-cutting-page__tier-badge {
+    display: inline-block;
+    padding: 0.1em var(--space-2);
+    border-radius: var(--radius-sm);
+    font: 500 var(--text-xs) / 1.4 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+
+  .tier-badge--concept {
+    background: var(--accent-tier-concept-bg);
+    color: var(--accent-tier-concept-text);
+  }
+
+  .tier-badge--logical {
+    background: var(--accent-tier-logical-bg);
+    color: var(--accent-tier-logical-text);
+  }
+
+  .tier-badge--physical-database {
+    background: var(--accent-tier-physical-database-bg);
+    color: var(--accent-tier-physical-database-text);
+  }
+
+  .tier-badge--physical-ontology {
+    background: var(--accent-tier-physical-ontology-bg);
+    color: var(--accent-tier-physical-ontology-text);
+  }
+
+  .cross-cutting-page__module {
+    font: 400 var(--text-sm) / 1 var(--font-sans);
+    color: var(--color-text-muted);
+    text-transform: capitalize;
+  }
+
+  .cross-cutting-page__title {
+    margin: 0;
+    font: 700 var(--text-3xl) / var(--leading-tight) var(--font-serif);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-strong);
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * SKOS scheme wrapper — content slot + optional SchemeMembersTable.
+ */
+import type { CollectionEntry } from 'astro:content';
+import EntityHeader from './EntityHeader.astro';
+import { deriveTitle } from '@/lib/manual';
+
+interface Props {
+  entry: CollectionEntry<'manual'>;
+  tier: string;
+  module?: string | null;
+}
+
+const { entry, tier, module: mod } = Astro.props;
+const entityUri: string | undefined = entry.data.entityUri;
+const title = deriveTitle(entry.data.title, entry.id, entry.body);
+---
+
+<article class="scheme-page">
+  <EntityHeader entityUri={entityUri} tier={tier} module={mod ?? null} title={title} />
+  <div class="scheme-page__body">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .scheme-page {
+    /* Inherits Layout article prose wrapper styles. */
+  }
+</style>

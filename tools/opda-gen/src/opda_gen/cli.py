@@ -177,6 +177,13 @@ def emit(output: Path | None) -> None:
         written.update(_emit_profile(overlay, target))
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
+    # Phase 5 (ADR-0020) — emit collection-valid frontmatter to manual markdowns.
+    from opda_gen.emitters.manual import _default_manual_dir
+    from opda_gen.emitters.manual import emit_manual as _emit_manual
+
+    manual_result = _emit_manual(_default_manual_dir())
+    for path in sorted(manual_result.touched):
+        click.echo(f"emitted: {path}")
 
 
 @main.command(name="emit-foundation")
@@ -373,6 +380,53 @@ def emit_profile(overlay: str, output: Path | None) -> None:
     written = _emit(overlay, target)
     for path in sorted(written.keys()):
         click.echo(f"emitted: {path}")
+
+
+@main.command(name="emit-manual")
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Root of the manual directory tree. Defaults to docs/manual/ "
+        "relative to the OPDA repo root."
+    ),
+)
+@click.option(
+    "--tier",
+    "-t",
+    type=str,
+    required=False,
+    default=None,
+    help=(
+        "Restrict emission to a single tier "
+        "(concept / logical / physical-database / physical-ontology). "
+        "If omitted, all four tiers are processed."
+    ),
+)
+def emit_manual(output: Path | None, tier: str | None) -> None:
+    """Emit collection-valid frontmatter to manual markdowns (ADR-0020).
+
+    Walks docs/manual/ (or --output dir) for in-scope .md files and
+    inserts or merges YAML frontmatter matching the ADR-0016 Zod schema.
+    Tier READMEs, module READMEs, and the umbrella README / VALIDATION-REPORT
+    are skipped (G19a option c — preserve Phase 4 editorial content).
+    Second run is idempotent: produces zero changes if frontmatter is already
+    complete.
+    """
+    from opda_gen.emitters.manual import _default_manual_dir
+    from opda_gen.emitters.manual import emit_manual as _emit
+
+    target = output if output is not None else _default_manual_dir()
+    result = _emit(target, tier=tier)
+    for path in sorted(result.touched):
+        click.echo(f"emitted: {path}")
+    click.echo(
+        f"emit-manual: {result.touched_count} files updated, "
+        f"{result.skipped_count} files skipped."
+    )
 
 
 @main.command(name="compose")

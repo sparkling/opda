@@ -1,0 +1,33 @@
+---
+/**
+ * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
+ * Static page linking to the 4-tier documentation validation report.
+ */
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Manual — validation report">
+  <h1>4-tier documentation validation report</h1>
+
+  <p class="lead">
+    The validation report below covers the independent validation of the four-tier
+    OPDA ontology manual at <code>docs/manual/</code>, confirming cross-tier entity
+    inventory, cross-tier link coherence, source-of-truth discipline, and diagram quality.
+  </p>
+
+  <p>
+    <strong>Overall status:</strong> PASS-WITH-FOLLOW-UPS (all follow-up items closed inline).
+    Validated 2026-05-28 against worker commits
+    <code>6328d03</code> (Concept) ·
+    <code>0c3619d</code> (Logical) ·
+    <code>fbf8d85</code> (Physical-DB) ·
+    <code>4c16c58</code> (Physical-Ontology) ·
+    <code>b93deb2</code> (remediation).
+  </p>
+
+  <p>
+    Full report:
+    <a href="/resource.html?path=docs/manual/VALIDATION-REPORT.md">
+      docs/manual/VALIDATION-REPORT.md
+    </a>
+  </p>
+</Layout>

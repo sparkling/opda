@@ -1,0 +1,100 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Hero + tier-summary + audience callout for tier-readme entries.
+ * Slot receives the rendered markdown body.
+ */
+interface Props {
+  /** Tier key. */
+  tier: string;
+  /** Target audience label, e.g. "SMEs + surveyors". */
+  audience?: string;
+  /** One-sentence summary for the hero sub-heading. */
+  summary?: string;
+}
+
+const { tier, audience, summary } = Astro.props;
+
+const tierMeta: Record<string, { label: string; audience: string; summary: string }> = {
+  concept: {
+    label: 'Concept tier',
+    audience: 'SMEs, surveyors, conveyancers',
+    summary: 'Narrative definitions and identity criteria for the real-world objects OPDA models.',
+  },
+  logical: {
+    label: 'Logical tier',
+    audience: 'Data engineers, system architects',
+    summary: 'Typed entity-relationship view — attributes, cardinalities, relationships, and SKOS enumerations.',
+  },
+  'physical-database': {
+    label: 'Physical — deployment',
+    audience: 'Triplestore operators, DevOps',
+    summary: 'Named-graph layout, derived profiles, overlay deployment topology, and CI gates.',
+  },
+  'physical-ontology': {
+    label: 'Physical — ontology',
+    audience: 'Ontology engineers, SPARQL consumers',
+    summary: 'Turtle source, SHACL shapes, SKOS vocabularies, and diagnostic exemplars.',
+  },
+};
+
+const meta = tierMeta[tier] ?? { label: tier, audience: '', summary: '' };
+const displayAudience = audience ?? meta.audience;
+const displaySummary = summary ?? meta.summary;
+---
+
+<div class={`tier-landing tier-landing--${tier}`}>
+  <header class="tier-landing__hero">
+    <p class="tier-landing__label">{meta.label}</p>
+    {displaySummary && <p class="tier-landing__summary">{displaySummary}</p>}
+    {displayAudience && (
+      <p class="tier-landing__audience">
+        <span class="tier-landing__audience-label">Audience:</span>
+        {displayAudience}
+      </p>
+    )}
+  </header>
+  <div class="tier-landing__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tier-landing__hero {
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-inset);
+    border: 1px solid var(--color-border);
+  }
+
+  .tier-landing__label {
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  .tier-landing__summary {
+    font: 400 var(--text-lg) / var(--leading-snug) var(--font-serif);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3);
+  }
+
+  .tier-landing__audience {
+    font: 400 var(--text-sm) / 1.5 var(--font-sans);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .tier-landing__audience-label {
+    font-weight: 600;
+    color: var(--color-text);
+    margin-right: var(--space-1);
+  }
+
+  .tier-landing__body {
+    /* Inherits prose styles from parent Layout article wrapper. */
+  }
+</style>

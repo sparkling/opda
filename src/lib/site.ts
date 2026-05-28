@@ -42,6 +42,7 @@ export const HEADER_ORDER = [
   'governance',
   'engagement',
   'modelling',
+  'manual',
   'schema',
   'implementation',
   'adoption',
@@ -158,6 +159,73 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/modelling/shacl-shapes',     title: 'SHACL shapes' },
         { url: '/modelling/jsonld-mappings',  title: 'JSON-LD mappings' },
       ]},
+    ],
+  },
+
+  manual: {
+    key: 'manual',
+    title: 'Ontology manual',
+    summary:
+      'Four-tier presentation of the OPDA ontology model — concept narrative for SMEs, logical entity-relationship view for engineers, physical deployment topology for triplestore operators, and physical-ontology Turtle for ontology engineers.',
+    groups: [
+      {
+        heading: 'Overview',
+        items: [
+          { url: '/manual',                            title: 'Section overview' },
+          { url: '/manual/information-architecture',   title: 'Information architecture' },
+          { url: '/manual/validation-report',          title: 'Validation report' },
+        ],
+      },
+      {
+        heading: 'Concept tier — for SMEs',
+        items: [
+          { url: '/manual/concept',                    title: 'Tier overview' },
+          { url: '/manual/concept/foundation',         title: 'Foundation' },
+          { url: '/manual/concept/property',           title: 'Property' },
+          { url: '/manual/concept/agent',              title: 'Agent' },
+          { url: '/manual/concept/transaction',        title: 'Transaction' },
+          { url: '/manual/concept/claim',              title: 'Claim' },
+          { url: '/manual/concept/governance',         title: 'Governance' },
+          { url: '/manual/concept/descriptive',        title: 'Descriptive' },
+        ],
+      },
+      {
+        heading: 'Logical tier — for engineers',
+        items: [
+          { url: '/manual/logical',                    title: 'Tier overview' },
+          { url: '/manual/logical/foundation',         title: 'Foundation' },
+          { url: '/manual/logical/property',           title: 'Property' },
+          { url: '/manual/logical/agent',              title: 'Agent' },
+          { url: '/manual/logical/transaction',        title: 'Transaction' },
+          { url: '/manual/logical/claim',              title: 'Claim' },
+          { url: '/manual/logical/governance',         title: 'Governance' },
+          { url: '/manual/logical/descriptive',        title: 'Descriptive' },
+        ],
+      },
+      {
+        heading: 'Physical — deployment',
+        items: [
+          { url: '/manual/physical-database',                              title: 'Tier overview' },
+          { url: '/manual/physical-database/named-graphs',                 title: 'Named graphs' },
+          { url: '/manual/physical-database/derived-profiles',             title: 'Derived profiles' },
+          { url: '/manual/physical-database/content-negotiation',          title: 'Content negotiation' },
+          { url: '/manual/physical-database/overlay-deployment/baspi5',    title: 'BASPI5 deployment' },
+          { url: '/manual/physical-database/operations',                   title: 'CI gates' },
+          { url: '/manual/physical-database/modules',                      title: 'Per-module deployment views' },
+        ],
+      },
+      {
+        heading: 'Physical — ontology',
+        items: [
+          { url: '/manual/physical-ontology',                              title: 'Tier overview' },
+          { url: '/manual/physical-ontology/three-graph-separation',       title: 'Three-graph separation' },
+          { url: '/manual/physical-ontology/severity-tiers',               title: 'Severity tiers' },
+          { url: '/manual/physical-ontology/shacl-af-rules',               title: 'SHACL-AF rules' },
+          { url: '/manual/physical-ontology/vocabularies',                 title: 'SKOS schemes' },
+          { url: '/manual/physical-ontology/profiles/baspi5',              title: 'BASPI5 profile' },
+          { url: '/manual/physical-ontology/exemplars',                    title: 'Diagnostic exemplars' },
+        ],
+      },
     ],
   },
 

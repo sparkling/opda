@@ -1,0 +1,42 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Entity wrapper for Concept / Logical / Physical-Ontology entity pages.
+ * Composes EntityHeader + content slot + CrossTierLinks footer.
+ */
+import type { CollectionEntry } from 'astro:content';
+import EntityHeader from './EntityHeader.astro';
+import CrossTierLinks from './CrossTierLinks.astro';
+import { deriveTitle } from '@/lib/manual';
+
+interface Props {
+  entry: CollectionEntry<'manual'>;
+  tier: string;
+  module: string | null;
+}
+
+const { entry, tier, module: mod } = Astro.props;
+const entityUri: string | undefined = entry.data.entityUri;
+const title = deriveTitle(entry.data.title, entry.id, entry.body);
+
+// Derive a display name for cross-tier link generation.
+const entityName = title !== mod ? title : undefined;
+---
+
+<article class="entity-page">
+  <EntityHeader entityUri={entityUri} tier={tier} module={mod} title={title} />
+  <div class="entity-page__body">
+    <slot />
+  </div>
+  <CrossTierLinks entityUri={entityUri} tier={tier} module={mod} entityName={entityName} />
+</article>
+
+<style>
+  .entity-page {
+    /* Inherits max-width + prose styles from Layout article wrapper. */
+  }
+
+  .entity-page__body {
+    /* Content rendered from markdown; prose class on Layout handles typography. */
+  }
+</style>

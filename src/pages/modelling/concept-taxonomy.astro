@@ -13,6 +13,16 @@ import Diagram from '@/components/Diagram.astro';
       <p class="lead">Terminology layer for PDTF. Three families of SKOS concept scheme: one cross-cutting <strong>Core</strong>, one per <strong>bounded context</strong> (six in total), and a growing set of small <strong>code-list</strong> (enumeration) schemes for controlled vocabularies. Concepts that mean the same thing across contexts are defined once and tagged with multiple <code>skos:inScheme</code> memberships — not duplicated, not collapsed into one tree.</p>
 
       <div class="callout callout--note">
+        <div class="callout__label">See also: Ontology manual — Physical-Ontology tier (SKOS vocabularies)</div>
+        <p>
+          This page describes the <em>design</em> of the SKOS scheme structure (multi-scheme, multi-membership,
+          bounded-context alignment). The <a href="/manual/physical-ontology/vocabularies">SKOS schemes</a>
+          page in the Ontology manual documents the 23 generator-emitted SKOS concept schemes (137 concepts)
+          that the ontology currently ships — the realised output of the design described here.
+        </p>
+      </div>
+
+      <div class="callout callout--note">
         <div class="callout__label">Status</div>
         <p>This is a stub for upcoming work. The shape below replaces the earlier nine-branch single-scheme proposal — see <a href="#whyMultipleSchemes">why multiple schemes</a> for the reasoning.</p>
       </div>

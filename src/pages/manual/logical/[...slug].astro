@@ -1,0 +1,53 @@
+---
+/**
+ * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Dynamic route for the Logical tier — emits one static HTML page per entry.
+ * Kind-keyed dispatcher replaces the Phase 1 placeholder render.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { deriveSlug, deriveTitle, deriveTier, deriveKind, deriveModule } from '@/lib/manual';
+import TierLanding from '@/components/manual/TierLanding.astro';
+import ModuleLanding from '@/components/manual/ModuleLanding.astro';
+import EntityPage from '@/components/manual/EntityPage.astro';
+import SchemePage from '@/components/manual/SchemePage.astro';
+import ExemplarPage from '@/components/manual/ExemplarPage.astro';
+import CrossCuttingPage from '@/components/manual/CrossCuttingPage.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('manual', (e) => e.id.startsWith('logical/'));
+  return entries.map((entry) => {
+    const tier = deriveTier(entry.id)!;
+    const slug = deriveSlug(entry.id, tier);
+    return { params: { slug: slug || undefined }, props: { entry } };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const tier = deriveTier(entry.id)!;
+const kind = deriveKind(entry.id);
+const module = deriveModule(entry.id);
+const title = deriveTitle(entry.data.title, entry.id, entry.body);
+
+const KIND_COMPONENT = {
+  'tier-readme':           TierLanding,
+  'module-readme':         ModuleLanding,
+  'entity':                EntityPage,
+  'scheme':                SchemePage,
+  'exemplar':              ExemplarPage,
+  'cross-cutting':         CrossCuttingPage,
+  'per-module-deployment': CrossCuttingPage,
+  'derived-profile':       CrossCuttingPage,
+  'overlay-deployment':    CrossCuttingPage,
+  'operations':            CrossCuttingPage,
+} as const;
+
+const Component = KIND_COMPONENT[kind] ?? CrossCuttingPage;
+---
+<Layout title={title}>
+  <Component entry={entry} tier={tier} module={module}>
+    <Content />
+  </Component>
+</Layout>

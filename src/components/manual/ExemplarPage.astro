@@ -1,0 +1,55 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Exemplar + paired expected-report wrapper.
+ * Slot receives the rendered markdown body (exemplar instance graph + Turtle source).
+ */
+import type { CollectionEntry } from 'astro:content';
+import { deriveTitle } from '@/lib/manual';
+
+interface Props {
+  entry: CollectionEntry<'manual'>;
+}
+
+const { entry } = Astro.props;
+const title = deriveTitle(entry.data.title, entry.id, entry.body);
+---
+
+<article class="exemplar-page">
+  <header class="exemplar-page__header">
+    <span class="exemplar-page__badge">Diagnostic exemplar</span>
+    <h1 class="exemplar-page__title">{title}</h1>
+  </header>
+  <div class="exemplar-page__body">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .exemplar-page__header {
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exemplar-page__badge {
+    display: inline-block;
+    padding: 0.1em var(--space-2);
+    border-radius: var(--radius-sm);
+    font: 500 var(--text-xs) / 1.4 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    background: var(--accent-ufo-generator-run-bg);
+    color: var(--accent-ufo-generator-run-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .exemplar-page__title {
+    margin: 0;
+    font: 700 var(--text-3xl) / var(--leading-tight) var(--font-serif);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-text-strong);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+  }
+</style>

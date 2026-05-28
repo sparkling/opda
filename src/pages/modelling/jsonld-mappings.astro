@@ -12,6 +12,18 @@ import PageMeta from '@/components/PageMeta.astro';
       <p class="lead">Per-overlay JSON-LD @context files that map each overlay's JSON property names to ontology terms. Bridges the JSON-Schema world to the RDF world.</p>
 
       <div class="callout callout--note">
+        <div class="callout__label">See also: Ontology manual — Physical-Database tier</div>
+        <p>
+          The <a href="/manual/physical-database/content-negotiation">Content negotiation</a> page
+          in the Ontology manual covers the HTTP-layer side: how
+          <code>Accept: application/ld+json</code> requests against
+          <code>https://w3id.org/opda/&lt;resource&gt;</code> URIs resolve to JSON-LD responses,
+          and which named graphs back those responses. This page covers the authoring of the
+          <code>@context</code> files that make JSON-LD round-tripping work.
+        </p>
+      </div>
+
+      <div class="callout callout--note">
         <div class="callout__label">Status</div>
         <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
       </div>

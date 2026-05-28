@@ -1,0 +1,80 @@
+---
+/**
+ * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
+ * Static page linking to the four IA-spec documents in docs/information-architecture/.
+ */
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Manual — information architecture">
+  <h1>Ontology-manual information architecture</h1>
+
+  <p class="lead">
+    The four IA-spec documents below govern how the OPDA ontology model is documented.
+    They specify the structure, conventions, and audience routing for each tier of the
+    <a href="/manual">Ontology manual</a>.
+  </p>
+
+  <p>
+    These specs are the authoritative source for the documentation structure — not for
+    the ontology model itself (which is governed by the
+    <a href="/modelling">Modelling section</a> ADRs).
+  </p>
+
+  <h2>IA specifications</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Audience</th>
+        <th>IA specification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="/manual/concept">Concept</a></td>
+        <td>Property-industry SMEs</td>
+        <td>
+          <a href="/resource.html?path=docs/information-architecture/concept-model-ia.md">
+            concept-model-ia.md
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/logical">Logical</a></td>
+        <td>Data engineers, solution architects</td>
+        <td>
+          <a href="/resource.html?path=docs/information-architecture/logical-model-ia.md">
+            logical-model-ia.md
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/physical-database">Physical — deployment</a></td>
+        <td>Triplestore operators, SPARQL consumers</td>
+        <td>
+          <a href="/resource.html?path=docs/information-architecture/physical-database-ia.md">
+            physical-database-ia.md
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/physical-ontology">Physical — ontology</a></td>
+        <td>Ontology engineers, SHACL implementers</td>
+        <td>
+          <a href="/resource.html?path=docs/information-architecture/physical-ontology-ia.md">
+            physical-ontology-ia.md
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    The cross-tier traceability requirement (every entity must carry a stable URI resolving
+    across all four tiers) is specified in
+    <a href="/resource.html?path=docs/information-architecture/README.md">
+      docs/information-architecture/README.md
+    </a>.
+  </p>
+</Layout>

@@ -1,7 +1,11 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// ADR-0018: build-time remark + rehype plugins for the manual content collection
+import { remarkUnwrapMermaidDetails } from './src/lib/remark/unwrap-mermaid-details.ts';
+import { rehypeFrontmatterUriExtraction } from './src/lib/remark/frontmatter-uri-extraction.ts';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -141,6 +145,16 @@ const serveProjectRoots = {
 export default defineConfig({
   site:    'https://opda-kb.pages.dev',
   outDir:  './dist',
+  // No sharp installed; pass PNG/JPG through without optimisation.
+  // Manual content collection renders PNG images from docs/manual/ diagrams/;
+  // pre-existing site pages also triggered this. ADR-0016.
+  image: { service: passthroughImageService() },
+  // ADR-0018: unwrap <details>-wrapped mermaid blocks → <div class="mermaid">
+  // and extract OPDA entity URIs from markdown body into frontmatter.
+  markdown: {
+    remarkPlugins: [remarkUnwrapMermaidDetails],
+    rehypePlugins: [rehypeFrontmatterUriExtraction],
+  },
   // Directory format + bare-slug URLs per docs/adr/ADR-0002 (folder hierarchy).
   // `format: 'directory'` outputs `foo/index.html` so URLs canonicalise to
   // `/foo` without a `.html` suffix; `trailingSlash: 'never'` makes Astro's

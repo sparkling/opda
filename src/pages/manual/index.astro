@@ -1,0 +1,91 @@
+---
+/**
+ * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
+ * Section landing — audience-routing overview of the four ontology-manual tiers.
+ */
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Ontology manual">
+  <h1>Ontology manual</h1>
+
+  <p class="lead">
+    Four-tier presentation of the OPDA ontology model. Each tier targets a distinct audience
+    and presents the same underlying data model at a different level of abstraction.
+    The tiers are linked by stable per-entity URIs so a reader can traverse from business
+    narrative to deployed Turtle without losing the thread.
+  </p>
+
+  <p>
+    This manual is generated from the 24 emitted TTL files at{' '}
+    <code>source/03-standards/ontology/</code> per the
+    <a href="/manual/information-architecture">information-architecture blueprint</a>.
+  </p>
+
+  <h2>Tier index</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Audience</th>
+        <th>What it answers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="/manual/concept"><strong>Concept</strong></a></td>
+        <td>Property-industry SMEs — surveyors, conveyancers, lenders, government data leads</td>
+        <td>
+          <em>"What does an OPDA Property mean, and why does Identity Criterion matter?"</em>
+          — business-language narrative, hard cases, IC. No jargon.
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/logical"><strong>Logical</strong></a></td>
+        <td>Data engineers, solution architects, integration architects</td>
+        <td>
+          <em>"What typed attributes does Property have, and how does it relate to Address, LegalEstate, Transaction?"</em>
+          — ER diagrams, typed attribute tables, cardinalities. Platform-independent.
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/physical-database"><strong>Physical — deployment</strong></a></td>
+        <td>Triplestore operators, SPARQL consumers, devops</td>
+        <td>
+          <em>"Which named graph holds <code>opda:Property</code>, and how do I fetch it from <code>w3id.org/opda/Property</code>?"</em>
+          — deployment topology, named-graph layout, content-negotiation, CI gates.
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/manual/physical-ontology"><strong>Physical — ontology</strong></a></td>
+        <td>Ontology engineers, SHACL implementers, regulators</td>
+        <td>
+          <em>"Which Turtle file emits <code>opda:Property</code>, what SHACL shapes constrain it?"</em>
+          — OWL / SHACL / SKOS / Turtle verbatim.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>How to navigate</h2>
+  <ul>
+    <li>
+      <strong>Start by audience.</strong> Pick the tier that matches your role from the table above.
+      Each tier's overview page lists every entity, scheme, and exemplar in that tier.
+    </li>
+    <li>
+      <strong>Follow an entity across tiers.</strong> Every entity has a stable file path that mirrors
+      across Concept, Logical, and Physical-Ontology tiers. Cross-tier links at the bottom of each
+      entity page take you to its presentation in the other tiers.
+    </li>
+    <li>
+      <strong>Trace from URI back to docs.</strong> Every <code>opda:&lt;EntityName&gt;</code> URI
+      in the source TTLs carries a <code>dct:source</code> URI that resolves into the Concept tier.
+    </li>
+  </ul>
+
+  <p>
+    See also: <a href="/manual/validation-report">Validation report</a> ·
+    <a href="/manual/information-architecture">Information architecture</a>
+  </p>
+</Layout>

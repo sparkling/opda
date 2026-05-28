@@ -1,0 +1,110 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Footer strip linking the 4 tier versions of the same entity.
+ *
+ * `entityUri` is populated by ADR-0018 (Phase 3).
+ * When undefined (Phase 2 runtime) this component renders nothing.
+ * `entityName` is a human-readable fallback when entityUri is unavailable.
+ */
+interface Props {
+  /** OPDA entity URI — undefined until Phase 3 lands. */
+  entityUri?: string;
+  /** Current tier — to mark the active link. */
+  tier: string;
+  /** Module slug, e.g. "property". */
+  module: string | null;
+  /** Human-readable entity name for link text, e.g. "Property". */
+  entityName?: string;
+}
+
+const { entityUri, tier, module: mod, entityName } = Astro.props;
+
+// Without a URI or module, there is nothing useful to link — render nothing.
+if (!entityUri && !mod) return;
+
+const tiers = [
+  { key: 'concept', label: 'Concept', path: '/manual/concept' },
+  { key: 'logical', label: 'Logical', path: '/manual/logical' },
+  { key: 'physical-database', label: 'Physical — deployment', path: '/manual/physical-database' },
+  { key: 'physical-ontology', label: 'Physical — ontology', path: '/manual/physical-ontology' },
+] as const;
+
+// Build tier links using module + entityName as best-effort path when entityUri absent.
+const name = entityName ?? (entityUri ? entityUri.split(/[/#]/).pop() : null);
+---
+
+{(entityUri || mod) && (
+  <aside class="cross-tier-links">
+    <p class="cross-tier-links__label">This entity across tiers</p>
+    <ul class="cross-tier-links__list">
+      {tiers.map((t) => {
+        const isCurrent = t.key === tier;
+        const href = mod && name
+          ? `${t.path}/${mod}/${name.toLowerCase()}`
+          : t.path;
+        return (
+          <li>
+            {isCurrent
+              ? <span class="cross-tier-links__current" aria-current="page">{t.label}</span>
+              : <a href={href} class="cross-tier-links__link">{t.label}</a>
+            }
+          </li>
+        );
+      })}
+    </ul>
+  </aside>
+)}
+
+<style>
+  .cross-tier-links {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cross-tier-links__label {
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  .cross-tier-links__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cross-tier-links__link,
+  .cross-tier-links__current {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    font: 500 var(--text-sm) / 1.4 var(--font-sans);
+    text-decoration: none;
+    transition: background var(--duration-fast) var(--ease);
+  }
+
+  .cross-tier-links__link {
+    background: var(--color-surface-tint);
+    color: var(--color-link);
+    border: 1px solid var(--color-border);
+  }
+
+  .cross-tier-links__link:hover {
+    background: var(--color-surface-inset);
+    text-decoration: none;
+  }
+
+  .cross-tier-links__current {
+    background: var(--color-surface-inset);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border-strong);
+    cursor: default;
+  }
+</style>

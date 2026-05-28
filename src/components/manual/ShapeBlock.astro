@@ -1,0 +1,83 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * SHACL shape block with severity-tier badge.
+ * Slot receives rendered Turtle / constraint description.
+ */
+interface Props {
+  /** Shape local name, e.g. "PropertyIdentityKeyShape". */
+  shape: string;
+  /** SHACL severity: "Violation" | "Warning" | "Info". Defaults to "Violation". */
+  severity?: 'Violation' | 'Warning' | 'Info';
+}
+
+const { shape, severity = 'Violation' } = Astro.props;
+const severityKey = severity.toLowerCase() as 'violation' | 'warning' | 'info';
+---
+
+<div class={`shape-block shape-block--${severityKey}`}>
+  <header class="shape-block__header">
+    <code class="shape-block__name">{shape}</code>
+    <span class={`shape-block__severity severity-badge--${severityKey}`}>
+      sh:{severity}
+    </span>
+  </header>
+  <div class="shape-block__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .shape-block {
+    margin: var(--space-4) 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .shape-block--violation { border-left: 3px solid var(--accent-severity-violation); }
+  .shape-block--warning   { border-left: 3px solid var(--accent-severity-warning); }
+  .shape-block--info      { border-left: 3px solid var(--accent-severity-info); }
+
+  .shape-block__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface-tint);
+    border-bottom: 1px solid var(--color-border);
+    gap: var(--space-3);
+  }
+
+  .shape-block__name {
+    font: 600 var(--text-sm) / 1 var(--font-mono);
+    color: var(--color-text-strong);
+  }
+
+  .shape-block__severity {
+    display: inline-block;
+    padding: 0.1em var(--space-2);
+    border-radius: var(--radius-sm);
+    font: 600 var(--text-xs) / 1.4 var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .severity-badge--violation {
+    background: var(--accent-severity-violation-bg);
+    color: var(--accent-severity-violation-text);
+  }
+
+  .severity-badge--warning {
+    background: var(--accent-severity-warning-bg);
+    color: var(--accent-severity-warning-text);
+  }
+
+  .severity-badge--info {
+    background: var(--accent-severity-info-bg);
+    color: var(--accent-severity-info-text);
+  }
+
+  .shape-block__body {
+    padding: var(--space-3) var(--space-4);
+  }
+</style>

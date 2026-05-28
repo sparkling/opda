@@ -1,0 +1,101 @@
+---
+/**
+ * Realises ADR-0017 (manual component library) per ADR-0015.
+ * SKOS scheme members table with sortable notation column.
+ */
+
+export interface SchemeMember {
+  /** SKOS concept URI or local IRI fragment. */
+  uri: string;
+  /** skos:prefLabel. */
+  prefLabel: string;
+  /** skos:notation. */
+  notation: string;
+  /** skos:definition. */
+  definition?: string;
+  /** Source reference (dct:source or similar). */
+  source?: string;
+}
+
+interface Props {
+  members: SchemeMember[];
+}
+
+const { members } = Astro.props;
+const sorted = [...members].sort((a, b) => a.notation.localeCompare(b.notation));
+---
+
+{sorted.length > 0 && (
+  <div class="scheme-members-table-wrap">
+    <table class="scheme-members-table">
+      <thead>
+        <tr>
+          <th scope="col">Notation</th>
+          <th scope="col">Preferred label</th>
+          {sorted.some(m => m.definition) && <th scope="col">Definition</th>}
+          {sorted.some(m => m.source) && <th scope="col">Source</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {sorted.map((member) => (
+          <tr>
+            <td><code class="scheme-members-table__notation">{member.notation}</code></td>
+            <td>{member.prefLabel}</td>
+            {sorted.some(m => m.definition) && <td class="scheme-members-table__definition">{member.definition ?? ''}</td>}
+            {sorted.some(m => m.source) && <td class="scheme-members-table__source">{member.source ?? ''}</td>}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+<style>
+  .scheme-members-table-wrap {
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+  }
+
+  .scheme-members-table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+    color: var(--color-text);
+  }
+
+  .scheme-members-table th {
+    background: var(--color-surface-tint);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .scheme-members-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .scheme-members-table__notation {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-link);
+  }
+
+  .scheme-members-table__definition {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .scheme-members-table__source {
+    font-size: var(--text-xs);
+    color: var(--color-text-deprecated);
+    font-family: var(--font-mono);
+  }
+</style>
