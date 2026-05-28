@@ -27,11 +27,48 @@ None.
 
 ## ER diagram
 
+![survey--entity-relationship-diagram](diagrams/survey/survey--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Survey — Entity-Relationship Diagram
+    accDescr: Survey — concerns a Property and carries PROV-O wasGeneratedBy to its issuing professional-survey Activity.
+
     Survey }o--|| Property : "concerns"
     Survey }o--|| Activity : "prov:wasGeneratedBy"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Survey lifecycle per S008 Q4 three-criterion test — issued, superseded by re-survey, re-issued (corrected), withdrawn.
+
+![survey--lifecycle-state-transition-diagram](diagrams/survey/survey--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Survey — Lifecycle State-Transition Diagram
+    accDescr: Survey lifecycle states — Issued by a professional-survey Activity, Superseded on re-survey, Reissued for correction, Withdrawn on rescission.
+
+    [*] --> Issued : professional-survey Activity completes
+    Issued --> Superseded : re-survey (new Survey supersedes prior)
+    Issued --> Reissued : correction (same Survey identity)
+    Reissued --> Superseded : re-survey
+    Issued --> Withdrawn : withdrawal
+    Superseded --> [*]
+    Withdrawn --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

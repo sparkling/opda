@@ -1,4 +1,8 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F", "secondaryColor": "#B3E5FC", "tertiaryColor": "#FFF8E1"}}}%%
 erDiagram
+    accTitle: OPDA Logical Model — Master Entity-Relationship Diagram
+    accDescr: Cross-module ER diagram showing all 41 entities across 7 modules (foundation, property, agent, transaction, claim, governance, descriptive) and their inter-module relationships.
+
     Property ||--o{ Address : "hasAddress"
     RegisteredTitle ||--|| LegalEstate : "recordsEstate"
     RegisteredTitle }o--|| Property : "identifiesSameProperty"
@@ -24,8 +28,12 @@ erDiagram
 
     Seller ||--o{ Claim : "hasEvidencedAuthority"
     Claim }o--o{ Evidence : "supportedBy"
+    Evidence ||--o| DocumentEvidence : "subtype"
+    Evidence ||--o| ElectronicRecordEvidence : "subtype"
+    Evidence ||--o| VouchEvidence : "subtype"
     VerificationActivity }o--|| Claim : "produces"
     VerificationActivity }o--o| TrustFramework : "conformsTo"
+    Claim }o--o{ AssuranceLevel : "assuranceLevel"
     VouchEvidence }o--|| Person : "attestedBy"
 
     DPVMappingRecord }o--|| Person : "targetsKind"

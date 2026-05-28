@@ -18,6 +18,36 @@ Quality Values for the variant under which an Address is presented (`marketing`,
 
 Bound by [`Address.addressVariant`](../address.md#attributes) (`1..1`, identity-bearing). Closed scheme — overlays may subset (e.g. BASPI5 may restrict to {`marketing`, `title`} for sales-context Address payloads) but may NOT extend beyond the four members ratified at S015 Q1.
 
+## Concept hierarchy
+
+![addressvariantscheme--concept-hierarchy](diagrams/address-variant-scheme/addressvariantscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: AddressVariantScheme — Concept Hierarchy
+    accDescr: Four Quality Value members of AddressVariantScheme — inspire, marketing, postal, title.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[AddressVariantScheme]:::scheme
+    inspire[inspire]:::member
+    marketing[marketing]:::member
+    postal[postal]:::member
+    title[title]:::member
+
+    S --> inspire
+    S --> marketing
+    S --> postal
+    S --> title
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0015 — Address](../../../ontology/odr/ODR-0015-address.md), §2a Address variant

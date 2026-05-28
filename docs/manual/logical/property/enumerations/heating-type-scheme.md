@@ -18,6 +18,36 @@ Classification of a Property's overall heating-system arrangement (central, comm
 
 Bound by [`Property.heatingType`](../property.md#attributes) (`0..1`, optional). Closed scheme — overlays may subset but may NOT extend.
 
+## Concept hierarchy
+
+![heatingtypescheme--concept-hierarchy](diagrams/heating-type-scheme/heatingtypescheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: HeatingTypeScheme — Concept Hierarchy
+    accDescr: Four Quale-in-Region members of HeatingTypeScheme — Central heating, Communal heating system, None, Room heaters only.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[HeatingTypeScheme]:::scheme
+    Central["Central heating"]:::member
+    Communal["Communal heating system"]:::member
+    None["None"]:::member
+    RoomHeaters["Room heaters only"]:::member
+
+    S --> Central
+    S --> Communal
+    S --> None
+    S --> RoomHeaters
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category

@@ -27,11 +27,46 @@ None.
 
 ## ER diagram
 
+![epccertificate--entity-relationship-diagram](diagrams/epc-certificate/epccertificate--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: EPCCertificate — Entity-Relationship Diagram
+    accDescr: EPCCertificate — concerns a Property and carries PROV-O wasGeneratedBy to issuing DESNZ register-issuance Activity.
+
     EPCCertificate }o--|| Property : "concerns"
     EPCCertificate }o--|| Activity : "prov:wasGeneratedBy"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+EPC certificates follow DESNZ-governed lifecycle — issued with a 10-year validity, optionally superseded by a re-assessment within the validity window, expired at the 10-year boundary.
+
+![epccertificate--lifecycle-state-transition-diagram](diagrams/epc-certificate/epccertificate--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: EPCCertificate — Lifecycle State-Transition Diagram
+    accDescr: EPCCertificate lifecycle — Issued by DESNZ Activity, valid for 10 years, optionally Superseded on re-assessment, Expired at end of validity.
+
+    [*] --> Issued : DESNZ Activity issues certificate
+    Issued --> Superseded : re-assessment within validity window
+    Issued --> Expired : 10-year validity reached
+    Superseded --> Expired : 10-year validity (of successor)
+    Expired --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

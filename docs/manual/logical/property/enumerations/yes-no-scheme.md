@@ -22,6 +22,32 @@ Bound by many Yes/No-bearing attributes across multiple modules:
 
 All bindings are `0..1` (optional). Closed scheme — strict two-member binary; questions admitting a third option use [`YesNoNotApplicableScheme`](./yes-no-not-applicable-scheme.md), [`YesNoNotKnownScheme`](./yes-no-not-known-scheme.md), or [`YesNoNotRequiredScheme`](./yes-no-not-required-scheme.md).
 
+## Concept hierarchy
+
+![yesnoscheme--concept-hierarchy](diagrams/yes-no-scheme/yesnoscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: YesNoScheme — Concept Hierarchy
+    accDescr: Two Quale-in-Region members of YesNoScheme — No, Yes.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[YesNoScheme]:::scheme
+    No[No]:::member
+    Yes[Yes]:::member
+
+    S --> No
+    S --> Yes
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §1a scheme-steward / one-scheme-per-enum discipline

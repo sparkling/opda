@@ -27,10 +27,21 @@ None.
 
 ## ER diagram
 
+![electronicrecord--entity-relationship-diagram](diagrams/electronic-record/electronicrecord--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: ElectronicRecord — Entity-Relationship Diagram
+    accDescr: Short-name alias view — ElectronicRecord is owl:equivalentClass of ElectronicRecordEvidence.
+
     ElectronicRecordEvidence ||--|| ElectronicRecord : "owl:equivalentClass"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

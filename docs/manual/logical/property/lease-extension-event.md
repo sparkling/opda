@@ -27,12 +27,23 @@ None on the event itself — the LeaseTerm succession status (whether a given Le
 
 ## ER diagram
 
+![leaseextensionevent--entity-relationship-diagram](diagrams/lease-extension-event/leaseextensionevent--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: LeaseExtensionEvent — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of LeaseExtensionEvent — extends a LegalEstate (identity PERSISTS per ODR-0005 §3b Rule 1) and links predecessor and successor LeaseTerm via PROV-O.
+
     LeaseExtensionEvent }o--|| LegalEstate : "extends"
     LeaseExtensionEvent }o--|| LeaseTerm : "produces successor"
     LeaseExtensionEvent }o--|| LeaseTerm : "supersedes (predecessor)"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

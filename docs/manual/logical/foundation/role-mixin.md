@@ -32,11 +32,22 @@ None at the meta-class level.
 
 ## ER diagram
 
+![rolemixin--entity-relationship-diagram](diagrams/role-mixin/rolemixin--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: RoleMixin — Entity-Relationship Diagram
+    accDescr: UFO RoleMixin meta-class — specialised by cross-sortal RoleMixins Seller and Buyer (each borne by Person OR Organisation).
+
     RoleMixin ||--o{ Seller : "specialised by"
     RoleMixin ||--o{ Buyer : "specialised by"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

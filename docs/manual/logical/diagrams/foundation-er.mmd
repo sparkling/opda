@@ -1,4 +1,8 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Foundation Module — Entity-Relationship Diagram
+    accDescr: Six foundation entities (UFO meta-classes Role/RoleMixin/Relator, plus ValidationContext, GeneratorRun, DiagnosticExemplar) and their specialisation links to downstream module Kinds.
+
     Role ||--o{ Proprietor : "specialised by"
     RoleMixin ||--o{ Seller : "specialised by"
     RoleMixin ||--o{ Buyer : "specialised by"
@@ -6,3 +10,5 @@ erDiagram
     Relator ||--o{ Proprietorship : "specialised by"
     ValidationContext ||--o{ BASPI5Profile : "reifies (per overlay)"
     GeneratorRun ||--o{ EmittedArtefact : "produces (per opda-gen run)"
+    DiagnosticExemplar }o--o{ Property : "exemplifies"
+    DiagnosticExemplar }o--o{ LegalEstate : "exemplifies"

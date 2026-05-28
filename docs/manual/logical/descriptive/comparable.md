@@ -27,11 +27,22 @@ None.
 
 ## ER diagram
 
+![comparable--entity-relationship-diagram](diagrams/comparable/comparable--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Comparable — Entity-Relationship Diagram
+    accDescr: Comparable — sourced via PROV-O wasGeneratedBy from Land Registry or VOA-records extraction Activity; informs Valuation via prov:wasInformedBy.
+
     Comparable }o--|| Activity : "prov:wasGeneratedBy"
     Valuation }o--o{ Comparable : "prov:wasInformedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

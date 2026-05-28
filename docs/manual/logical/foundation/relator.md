@@ -32,11 +32,22 @@ None at the meta-class level.
 
 ## ER diagram
 
+![relator--entity-relationship-diagram](diagrams/relator/relator--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Relator — Entity-Relationship Diagram
+    accDescr: UFO Relator meta-class — specialised by concrete Relators Transaction and Proprietorship.
+
     Relator ||--o{ Transaction : "specialised by"
     Relator ||--o{ Proprietorship : "specialised by"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

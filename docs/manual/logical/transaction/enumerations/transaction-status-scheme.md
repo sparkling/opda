@@ -19,6 +19,38 @@ Phase labels for the lifecycle of a Transaction Substance Kind, tracking the fiv
 
 No core-tier attribute in the emitted TBox currently binds this scheme directly. Used by overlay-profile transaction-status attributes to discriminate the canonical five-phase sale lifecycle. Closed scheme — broader data-dictionary status values are mapped to the canonical five via `prov:wasDerivedFrom`.
 
+## Concept hierarchy
+
+![transactionstatusscheme--concept-hierarchy](diagrams/transaction-status-scheme/transactionstatusscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: TransactionStatusScheme — Concept Hierarchy
+    accDescr: Five Phase label members of TransactionStatusScheme — Accepted, Completed, Exchanged, Listed, Offered (canonical sale lifecycle).
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[TransactionStatusScheme]:::scheme
+    Accepted[Accepted]:::member
+    Completed[Completed]:::member
+    Exchanged[Exchanged]:::member
+    Listed[Listed]:::member
+    Offered[Offered]:::member
+
+    S --> Accepted
+    S --> Completed
+    S --> Exchanged
+    S --> Listed
+    S --> Offered
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0007 — Transaction lifecycle](../../../ontology/odr/ODR-0007-transaction-lifecycle.md), §Q3 Transaction status

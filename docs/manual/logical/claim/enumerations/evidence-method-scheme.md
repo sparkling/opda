@@ -17,6 +17,34 @@ Quality Values for the method by which identity evidence was obtained, per the O
 
 No core-tier attribute in the emitted TBox currently binds this scheme directly. Used by [Evidence](../evidence.md) subtypes to discriminate the OIDC4IDA evidence category at the typed-class level (each scheme member binds to one of `DocumentEvidence` / `ElectronicRecordEvidence` / `VouchEvidence` via `skos:exactMatch`). Closed scheme — OIDC4IDA-governed; members track upstream spec changes only.
 
+## Concept hierarchy
+
+![evidencemethodscheme--concept-hierarchy](diagrams/evidence-method-scheme/evidencemethodscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: EvidenceMethodScheme — Concept Hierarchy
+    accDescr: Three Quality Value members of EvidenceMethodScheme per OIDC4IDA — Document, Electronic-Record, Vouch.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[EvidenceMethodScheme]:::scheme
+    Document[Document]:::member
+    ElectronicRecord["Electronic-Record"]:::member
+    Vouch[Vouch]:::member
+
+    S --> Document
+    S --> ElectronicRecord
+    S --> Vouch
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), Rule 5 three-subtype discipline

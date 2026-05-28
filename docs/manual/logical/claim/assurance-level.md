@@ -27,11 +27,22 @@ None.
 
 ## ER diagram
 
+![assurancelevel--entity-relationship-diagram](diagrams/assurance-level/assurancelevel--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: AssuranceLevel — Entity-Relationship Diagram
+    accDescr: AssuranceLevel Quale-in-Region — bound to Claim via assuranceLevel and member of AssuranceLevelScheme (eIDAS + PDTF-Standard).
+
     Claim }o--|| AssuranceLevel : "assuranceLevel"
     AssuranceLevel }o--|| AssuranceLevelScheme : "skos:inScheme"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

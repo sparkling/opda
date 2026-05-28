@@ -27,12 +27,23 @@ None.
 
 ## ER diagram
 
+![diagnosticexemplar--entity-relationship-diagram](diagrams/diagnostic-exemplar/diagnosticexemplar--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: DiagnosticExemplar — Entity-Relationship Diagram
+    accDescr: DiagnosticExemplar — named hard-case fragment exemplifying Property, LegalEstate, or Address IC surfaces for Council session validation.
+
     DiagnosticExemplar }o--o{ Property : "exemplifies"
     DiagnosticExemplar }o--o{ LegalEstate : "exemplifies"
     DiagnosticExemplar }o--o{ Address : "exemplifies"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

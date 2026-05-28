@@ -27,12 +27,23 @@ None.
 
 ## ER diagram
 
+![electronicrecordevidence--entity-relationship-diagram](diagrams/electronic-record-evidence/electronicrecordevidence--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: ElectronicRecordEvidence — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of ElectronicRecordEvidence — Evidence subtype with ElectronicRecord short-name alias and Claim supportedBy.
+
     Evidence ||--o| ElectronicRecordEvidence : "subtype"
     ElectronicRecordEvidence ||--|| ElectronicRecord : "owl:equivalentClass"
     Claim }o--o{ ElectronicRecordEvidence : "supportedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

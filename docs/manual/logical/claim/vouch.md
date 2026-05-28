@@ -27,10 +27,21 @@ None.
 
 ## ER diagram
 
+![vouch--entity-relationship-diagram](diagrams/vouch/vouch--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Vouch — Entity-Relationship Diagram
+    accDescr: Short-name alias view — Vouch is owl:equivalentClass of VouchEvidence.
+
     VouchEvidence ||--|| Vouch : "owl:equivalentClass"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

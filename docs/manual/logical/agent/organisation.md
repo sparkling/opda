@@ -29,13 +29,24 @@ None at this tier.
 
 ## ER diagram
 
+![organisation--entity-relationship-diagram](diagrams/organisation/organisation--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Organisation — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Organisation — bearer for Seller, Buyer, Proprietor (sub-Role) RoleMixins, target of DPVMappingRecord.
+
     Organisation ||--o{ Seller : "borne by (Role)"
     Organisation ||--o{ Buyer : "borne by (Role)"
     Organisation ||--o{ Proprietor : "borne by (sub-Role)"
     DPVMappingRecord }o--|| Organisation : "targetsKind"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

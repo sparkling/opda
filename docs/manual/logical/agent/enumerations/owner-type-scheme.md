@@ -16,6 +16,32 @@ Substance Kind labels discriminating Private individual (`opda:Person`) from Org
 
 Bound by [`Proprietor.ownerType`](../proprietor.md#attributes) (`0..1`, optional). Members bind to Substance Kind classes via `skos:exactMatch`. Closed scheme — strict two-member binary discriminating natural-person vs organisational legal ownership.
 
+## Concept hierarchy
+
+![ownertypescheme--concept-hierarchy](diagrams/owner-type-scheme/ownertypescheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: OwnerTypeScheme — Concept Hierarchy
+    accDescr: Two Substance Kind label members of OwnerTypeScheme — Organisation, Private individual.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[OwnerTypeScheme]:::scheme
+    Org[Organisation]:::member
+    Private["Private individual"]:::member
+
+    S --> Org
+    S --> Private
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category

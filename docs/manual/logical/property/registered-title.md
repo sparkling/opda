@@ -30,12 +30,49 @@ None at this tier.
 
 ## ER diagram
 
+![registeredtitle--entity-relationship-diagram](diagrams/registered-title/registeredtitle--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: RegisteredTitle — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of RegisteredTitle — records LegalEstate, identifies Property, bound by Proprietorship.
+
     RegisteredTitle ||--|| LegalEstate : "recordsEstate"
     RegisteredTitle }o--|| Property : "identifiesSameProperty"
     Proprietorship }o--|| RegisteredTitle : "bindsTitle"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+RegisteredTitle identity persists through five hard-case registry events per ODR-0005 §3c. Identity is the title-number lineage plus reified registry-event history; title-numbers may be reissued but identity persists.
+
+![registeredtitle--lifecycle-state-transition-diagram](diagrams/registered-title/registeredtitle--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: RegisteredTitle — Lifecycle State-Transition Diagram
+    accDescr: RegisteredTitle identity persists through first registration, title merger, transfer between registers, and title reissue. Identity terminates only on title closure.
+
+    [*] --> Opened : first registration<br/>(title opening)
+    Opened --> Open : record live
+    Open --> Open : title merger<br/>(identity persists via PROV)
+    Open --> Open : transfer between registers
+    Open --> Open : title reissue<br/>(corrupt-plan replacement)
+    Open --> Closed : title closure
+    Closed --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

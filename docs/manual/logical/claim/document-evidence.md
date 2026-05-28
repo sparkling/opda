@@ -27,12 +27,23 @@ None.
 
 ## ER diagram
 
+![documentevidence--entity-relationship-diagram](diagrams/document-evidence/documentevidence--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: DocumentEvidence — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of DocumentEvidence — Evidence subtype with Document short-name alias and Claim supportedBy.
+
     Evidence ||--o| DocumentEvidence : "subtype"
     DocumentEvidence ||--|| Document : "owl:equivalentClass"
     Claim }o--o{ DocumentEvidence : "supportedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

@@ -34,11 +34,22 @@ Identity key = `addressVariant` + authority-record identifier (within the varian
 
 ## ER diagram
 
+![address--entity-relationship-diagram](diagrams/address/address--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Address — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Address — Property hasAddress join with optional PROV-O wasDerivedFrom chain within the same address variant.
+
     Property ||--o{ Address : "hasAddress"
     Address }o--|| Address : "prov:wasDerivedFrom (within variant)"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

@@ -29,12 +29,48 @@ No SHACL Violation/Warning shapes emitted on LeaseTerm at this tier — the OWL-
 
 ## ER diagram
 
+![leaseterm--entity-relationship-diagram](diagrams/lease-term/leaseterm--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: LeaseTerm — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of LeaseTerm — bounded by LegalEstate, succeeded by LeaseExtensionEvent, and chained via PROV-O wasDerivedFrom to its predecessor.
+
     LegalEstate ||--o| LeaseTerm : "leaseTerm"
     LeaseExtensionEvent }o--|| LeaseTerm : "produces successor"
     LeaseTerm }o--|| LeaseTerm : "prov:wasDerivedFrom"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+LeaseTerm is parasitic on its parent LegalEstate. Each LeaseExtensionEvent mints a successor LeaseTerm via `prov:wasDerivedFrom`, forming a PROV chain of predecessor → successor terms.
+
+![leaseterm--lifecycle-state-transition-diagram](diagrams/lease-term/leaseterm--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: LeaseTerm — Lifecycle State-Transition Diagram
+    accDescr: LeaseTerm lifecycle — primary term minted on lease grant, successor terms minted on LeaseExtensionEvent forming a PROV-O lineage chain.
+
+    [*] --> Primary : lease grant
+    Primary --> Successor : LeaseExtensionEvent<br/>prov:wasDerivedFrom
+    Successor --> Successor : further extension<br/>(chain continues)
+    Primary --> Expired : term reached time:hasEnd
+    Successor --> Expired : term reached time:hasEnd
+    Expired --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

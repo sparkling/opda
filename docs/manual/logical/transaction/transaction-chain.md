@@ -30,11 +30,22 @@ The chain-status derivation is overlay-profile-scoped and does not surface as an
 
 ## ER diagram
 
+![transactionchain--entity-relationship-diagram](diagrams/transaction-chain/transactionchain--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: TransactionChain — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of TransactionChain Aggregate — chainMembers list with inverse hasChainPosition on each member Transaction.
+
     TransactionChain ||--o{ Transaction : "chainMembers"
     Transaction }o--o| TransactionChain : "hasChainPosition"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

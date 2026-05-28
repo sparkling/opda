@@ -35,13 +35,24 @@ The `hasCapacityAuthorityMatchStatus` derived attribute lives on the bearer Pers
 
 ## ER diagram
 
+![seller--entity-relationship-diagram](diagrams/seller/seller--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Seller — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Seller RoleMixin — borne by Person or Organisation, founded by Transaction, links to Claim via hasEvidencedAuthority.
+
     Seller }o--|| Person : "borneBy"
     Seller }o--|| Organisation : "borneBy"
     Transaction ||--o{ Seller : "founds"
     Seller ||--o{ Claim : "hasEvidencedAuthority"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

@@ -1,4 +1,8 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Claim Module — Entity-Relationship Diagram
+    accDescr: Claim module entities (Claim, Evidence supertype with three subtypes, three short-name aliases, VerificationActivity, AssuranceLevel, TrustFramework) with intra-module relationships.
+
     Claim }o--o{ Evidence : "supportedBy / prov:wasDerivedFrom"
     Evidence ||--o| DocumentEvidence : "subtype"
     Evidence ||--o| ElectronicRecordEvidence : "subtype"

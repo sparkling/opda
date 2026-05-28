@@ -27,11 +27,22 @@ None on the event itself — the materialised back-reference `Person.hasIdentifi
 
 ## ER diagram
 
+![namechangeevent--entity-relationship-diagram](diagrams/name-change-event/namechangeevent--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: NameChangeEvent — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of NameChangeEvent — reified PROV-O activity associated with a Person, with name attribute lineage tracked via prov:wasRevisionOf.
+
     NameChangeEvent }o--|| Person : "prov:wasAssociatedWith"
     Person }o--|| Person : "prov:wasRevisionOf (name attribute lineage)"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

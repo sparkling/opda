@@ -51,8 +51,17 @@ Identity key = spatial-material continuity (cf. Kendall S005 Q4 + Davis legal-re
 
 ## ER diagram
 
+![property--entity-relationship-diagram](diagrams/property/property--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Property — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Property and its relationships to Address, LegalEstate, RegisteredTitle, UPRNSuccessionEvent, Survey, and EPCCertificate.
+
     Property ||--o{ Address : "hasAddress"
     Property }o--o{ LegalEstate : "identifiedBy (via identifiesSameProperty)"
     Property }o--o{ RegisteredTitle : "identifiedBy (via identifiesSameProperty)"
@@ -60,6 +69,34 @@ erDiagram
     Survey }o--|| Property : "concerns"
     EPCCertificate }o--|| Property : "concerns"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Property identity persists through hard-case lifecycle events per ODR-0005 §2a (Kendall + Davis hybrid). The Kendall-side IC anchors spatial-material continuity; the Davis-side override admits legal-record-discontinuity through UPRN re-numbering and first-registration boundaries.
+
+![property--lifecycle-state-transition-diagram](diagrams/property/property--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Property — Lifecycle State-Transition Diagram
+    accDescr: Property identity persists through demolition reversal, subdivision/merger continuity, replacement, first-registration, and UPRN re-numbering. Identity terminates only on actual physical termination.
+
+    [*] --> Unregistered : pre-first-registration
+    Unregistered --> Registered : first-registration<br/>(identity persists across<br/>registry-event boundary)
+    Registered --> Registered : UPRNSuccessionEvent<br/>(prov:wasDerivedFrom)
+    Registered --> Registered : subdivision/merger<br/>continuity
+    Registered --> Registered : demolition reversal<br/>(rebuilding)
+    Registered --> Replaced : replacement<br/>(new individual minted via PROV)
+    Replaced --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

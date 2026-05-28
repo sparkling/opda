@@ -30,13 +30,24 @@ None on the supertype.
 
 ## ER diagram
 
+![evidence--entity-relationship-diagram](diagrams/evidence/evidence--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Evidence — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Evidence supertype — three named subtypes (DocumentEvidence, ElectronicRecordEvidence, VouchEvidence) plus Claim supportedBy.
+
     Evidence ||--o| DocumentEvidence : "subtype"
     Evidence ||--o| ElectronicRecordEvidence : "subtype"
     Evidence ||--o| VouchEvidence : "subtype"
     Claim }o--o{ Evidence : "supportedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

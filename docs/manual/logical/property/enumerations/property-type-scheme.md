@@ -20,6 +20,40 @@ Substance Kind labels for the physical-form kind of a Property (House / Bungalow
 
 Bound by [`Property.propertyType`](../property.md#attributes) (`0..1`, optional). Members are Substance Kind labels — when a member binds to a forthcoming OWL sub-class (e.g. `opda:Flat`, `opda:House`), `skos:exactMatch` is the only admissible binding mechanism per ODR-0005 Anti-pattern §5 (NEVER `owl:sameAs`). Closed scheme.
 
+## Concept hierarchy
+
+![propertytypescheme--concept-hierarchy](diagrams/property-type-scheme/propertytypescheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: PropertyTypeScheme — Concept Hierarchy
+    accDescr: Six Substance Kind label members of PropertyTypeScheme — Bungalow, Flat, House, Maisonette, Park home, Other.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[PropertyTypeScheme]:::scheme
+    Bungalow[Bungalow]:::member
+    Flat[Flat]:::member
+    House[House]:::member
+    Maisonette[Maisonette]:::member
+    Other[Other]:::member
+    ParkHome[Park home]:::member
+
+    S --> Bungalow
+    S --> Flat
+    S --> House
+    S --> Maisonette
+    S --> Other
+    S --> ParkHome
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category

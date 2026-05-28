@@ -30,12 +30,23 @@ None at this tier.
 
 ## ER diagram
 
+![proprietor--entity-relationship-diagram](diagrams/proprietor/proprietor--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Proprietor — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Proprietor Role — borne by Person or by Organisation under a named sub-Role, founded by Proprietorship.
+
     Proprietor }o--|| Person : "borneBy"
     Proprietor }o--|| Organisation : "borneBy (sub-Role)"
     Proprietorship ||--o{ Proprietor : "founds"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

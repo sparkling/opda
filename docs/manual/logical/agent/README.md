@@ -33,8 +33,17 @@ The agent module also reuses [`YesNoScheme`](../property/enumerations/yes-no-sch
 
 ## ER diagram
 
+![agent-module--entity-relationship-diagram](diagrams/README/agent-module--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Agent Module — Entity-Relationship Diagram
+    accDescr: Agent module entities (Person, Organisation as Substance Kinds; Buyer, Seller, Proprietor as Roles; Proprietorship as Relator) plus NameChangeEvent and Claim link.
+
     Seller }o--|| Person : "borneBy"
     Seller }o--|| Organisation : "borneBy"
     Buyer }o--|| Person : "borneBy"
@@ -47,4 +56,90 @@ erDiagram
     Seller ||--o{ Claim : "hasEvidencedAuthority"
 ```
 
+</details>
+
 Source file: [`../diagrams/agent-er.mmd`](../diagrams/agent-er.mmd).
+
+## Class hierarchy
+
+OWL/RDFS subclass relationships. Person and Organisation are Substance Kinds (Organisation subclasses `org:Organization`). Buyer, Seller, Proprietor specialise foundation Role and RoleMixin meta-classes. Proprietorship specialises Relator. NameChangeEvent specialises `prov:Activity`.
+
+![agent-module--class-hierarchy](diagrams/README/agent-module--class-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+classDiagram
+    accTitle: Agent Module — Class Hierarchy
+    accDescr: OWL/RDFS subclass relationships — Person and Organisation as substantial Kinds, Buyer and Seller as RoleMixins, Proprietor as Role, Proprietorship as Relator, NameChangeEvent as PROV-O Activity.
+
+    class orgOrganization["org:Organization"]
+    class Role
+    class RoleMixin
+    class Relator
+    class provActivity["prov:Activity"]
+
+    class Person {
+        hasAssertedCapacity
+        hasSpecialCategoryData
+    }
+    class Organisation {
+        hasAssertedCapacity
+    }
+    class Buyer {
+        role
+    }
+    class Seller {
+        hasAssertedCapacity
+        hasOthersAged17OrOver
+        role
+    }
+    class Proprietor {
+        ownerType
+        role
+    }
+    class Proprietorship {
+        joint-tenancy discriminator
+    }
+    class NameChangeEvent {
+        prov:atTime
+    }
+
+    orgOrganization <|-- Organisation
+    RoleMixin <|-- Buyer
+    RoleMixin <|-- Seller
+    Role <|-- Proprietor
+    Relator <|-- Proprietorship
+    provActivity <|-- NameChangeEvent
+```
+
+</details>
+
+## Identity-key summary
+
+![agent-module--identity-key-summary](diagrams/README/agent-module--identity-key-summary.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Agent Module — Identity-Key Summary
+    accDescr: Identity Criterion key surfaces for the seven agent-module entities — FIBO multi-identifier bundle for Person and Organisation, parasitic identity for Buyer/Seller/Proprietor Roles, Relator-tuple for Proprietorship, PROV-O tuple for NameChangeEvent.
+
+    classDef icCell fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef entityCell fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    PersonE[Person]:::entityCell -->|"IC"| PIC["FIBO multi-identifier bundle<br/>NI + passport + driving-licence<br/>+ name + DoB"]:::icCell
+    OrganisationE[Organisation]:::entityCell -->|"IC"| OIC["registration-record bundle<br/>LEI + Companies House CRN"]:::icCell
+    BuyerE[Buyer]:::entityCell -->|"IC"| BIC["bearer-identity +<br/>founding Transaction<br/>(parasitic, NEVER keyed)"]:::icCell
+    SellerE[Seller]:::entityCell -->|"IC"| SIC["bearer-identity +<br/>founding Transaction<br/>(parasitic, NEVER keyed)"]:::icCell
+    ProprietorE[Proprietor]:::entityCell -->|"IC"| PrIC["bearer-identity +<br/>founding Proprietorship<br/>(parasitic, NEVER keyed)"]:::icCell
+    ProprietorshipE[Proprietorship]:::entityCell -->|"IC"| PsIC["(RegisteredTitle,<br/>Persons-set)"]:::icCell
+    NameChangeEventE[NameChangeEvent]:::entityCell -->|"IC"| NCIC["(Person,<br/>prov-timestamp)"]:::icCell
+```
+
+</details>

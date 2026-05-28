@@ -34,14 +34,50 @@ Identity key = FIBO-style multi-identifier bundle (NI number / passport / drivin
 
 ## ER diagram
 
+![person--entity-relationship-diagram](diagrams/person/person--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Person — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Person — bearer for Seller, Buyer, Proprietor Roles, associated with NameChangeEvent via PROV-O, target of DPVMappingRecord.
+
     Person ||--o{ Seller : "borne by (Role)"
     Person ||--o{ Buyer : "borne by (Role)"
     Person ||--o{ Proprietor : "borne by (Role)"
     NameChangeEvent }o--|| Person : "prov:wasAssociatedWith"
     DPVMappingRecord }o--|| Person : "targetsKind"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Person identity persists through name-change, gender-recognition, and other identifier-mutating events per S006 Q1. Each lifecycle event reifies as a PROV Activity with `prov:wasRevisionOf` on the affected attribute.
+
+![person--lifecycle-state-transition-diagram](diagrams/person/person--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Person — Lifecycle State-Transition Diagram
+    accDescr: Person identity persists through name-change (deed poll, marriage, gender recognition) and other identifier-mutating events. Identity terminates only on death; the deceased Person retains a PROV-O lineage from prior name-attribute revisions.
+
+    [*] --> Live : birth / identifier-bundle minted
+    Live --> Live : NameChangeEvent<br/>(name attribute revised<br/>via prov:wasRevisionOf)
+    Live --> Live : gender recognition<br/>(identity persists)
+    Live --> Live : address change<br/>(non-identity-bearing)
+    Live --> Deceased : death
+    Deceased --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

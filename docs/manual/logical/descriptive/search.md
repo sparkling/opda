@@ -27,11 +27,46 @@ None.
 
 ## ER diagram
 
+![search--entity-relationship-diagram](diagrams/search/search--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Search — Entity-Relationship Diagram
+    accDescr: Search — concerns a Property and carries PROV-O wasGeneratedBy to issuing local-authority Activity (CON29R, LLC1, environmental, flood, coal-mining searches).
+
     Search }o--|| Property : "concerns"
     Search }o--|| Activity : "prov:wasGeneratedBy"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Search lifecycle per S008 Q4 — ordered with the issuing authority, returned (with results), optionally superseded by a re-order.
+
+![search--lifecycle-state-transition-diagram](diagrams/search/search--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Search — Lifecycle State-Transition Diagram
+    accDescr: Search lifecycle — Ordered with issuing authority, Returned (results available), Superseded on re-order.
+
+    [*] --> Ordered : Search order placed
+    Ordered --> Returned : issuing authority returns results<br/>(prov:wasGeneratedBy)
+    Returned --> Superseded : re-order during transaction
+    Returned --> [*]
+    Superseded --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

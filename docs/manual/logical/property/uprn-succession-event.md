@@ -27,11 +27,22 @@ None on the event itself — see [`Property.hasUPRNSuccessionStatus`](./property
 
 ## ER diagram
 
+![uprnsuccessionevent--entity-relationship-diagram](diagrams/uprn-succession-event/uprnsuccessionevent--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: UPRNSuccessionEvent — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of UPRNSuccessionEvent — reified administrative UPRN re-numbering activity referencing the affected Property and the PROV-O wasDerivedFrom predecessor link.
+
     UPRNSuccessionEvent }o--|| Property : "succeeds"
     Property }o--|| Property : "prov:wasDerivedFrom (predecessor-UPRN side)"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

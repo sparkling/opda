@@ -32,10 +32,21 @@ None at the meta-class level.
 
 ## ER diagram
 
+![role--entity-relationship-diagram](diagrams/role/role--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Role — Entity-Relationship Diagram
+    accDescr: UFO Role meta-class — specialised by sortal concrete Roles. In scope OPDA Role: Proprietor.
+
     Role ||--o{ Proprietor : "specialised by"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

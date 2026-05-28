@@ -31,10 +31,21 @@ None.
 
 ## ER diagram
 
+![generatorrun--entity-relationship-diagram](diagrams/generator-run/generatorrun--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: GeneratorRun — Entity-Relationship Diagram
+    accDescr: GeneratorRun provenance unit — produces emitted TTL artefacts linked via PROV-O wasGeneratedBy.
+
     GeneratorRun ||--o{ EmittedArtefact : "produces"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

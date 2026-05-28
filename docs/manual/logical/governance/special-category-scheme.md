@@ -27,11 +27,22 @@ None.
 
 ## ER diagram
 
+![specialcategoryscheme--entity-relationship-diagram](diagrams/special-category-scheme/specialcategoryscheme--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: SpecialCategoryScheme — Entity-Relationship Diagram
+    accDescr: SpecialCategoryScheme — class declaration subclassing skos:ConceptScheme; future Person.hasSpecialCategoryData binding deferred.
+
     SpecialCategoryScheme ||--o| SKOSConceptScheme : "subClassOf"
     Person }o--o| SpecialCategoryScheme : "hasSpecialCategoryData (typed by future members)"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

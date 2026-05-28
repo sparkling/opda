@@ -23,6 +23,50 @@ Scottish Assessors Association banding for Scotland (Bands A–I) assigned to ea
 
 Used by overlay-profile council-tax attributes (Scotland jurisdiction). No core-tier attribute in the emitted TBox currently binds this scheme directly; binding lives in BASPI5 and equivalent overlay profiles. Closed scheme — SAA-governed; members track upstream regulator changes only.
 
+## Concept hierarchy
+
+![counciltaxbandschemescotland--concept-hierarchy](diagrams/council-tax-band-scheme-scotland/counciltaxbandschemescotland--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: CouncilTaxBandSchemeScotland — Concept Hierarchy
+    accDescr: Nine Quale-in-Region members of CouncilTaxBandSchemeScotland — bands A through I per SAA for Scotland (band I is Scotland-specific).
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[CouncilTaxBandSchemeScotland]:::scheme
+    A[A]:::member
+    B[B]:::member
+    C[C]:::member
+    D[D]:::member
+    E[E]:::member
+    F[F]:::member
+    G[G]:::member
+    H[H]:::member
+    I[I]:::member
+
+    S --> A
+    S --> B
+    S --> C
+    S --> D
+    S --> E
+    S --> F
+    S --> G
+    S --> H
+    S --> I
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §4a regulator-citation discipline

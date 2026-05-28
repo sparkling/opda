@@ -29,12 +29,23 @@ No SHACL Violation/Warning shapes emitted on VerificationActivity at this tier. 
 
 ## ER diagram
 
+![verificationactivity--entity-relationship-diagram](diagrams/verification-activity/verificationactivity--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: VerificationActivity — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of VerificationActivity — produces Claim via PROV-O wasGeneratedBy, optionally conformsTo a TrustFramework, and chained via prov:wasInformedBy for re-verifications.
+
     VerificationActivity }o--|| Claim : "produces (Claim prov:wasGeneratedBy this)"
     VerificationActivity }o--o| TrustFramework : "dct:conformsTo"
     VerificationActivity }o--|| VerificationActivity : "prov:wasInformedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

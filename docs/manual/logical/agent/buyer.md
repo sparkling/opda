@@ -29,12 +29,23 @@ None at this tier.
 
 ## ER diagram
 
+![buyer--entity-relationship-diagram](diagrams/buyer/buyer--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Buyer — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Buyer RoleMixin — borne by Person or Organisation, founded by Transaction (mirror of Seller).
+
     Buyer }o--|| Person : "borneBy"
     Buyer }o--|| Organisation : "borneBy"
     Transaction ||--o{ Buyer : "founds"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

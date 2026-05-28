@@ -33,11 +33,22 @@ None.
 
 ## ER diagram
 
+![validationcontext--entity-relationship-diagram](diagrams/validation-context/validationcontext--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: ValidationContext — Entity-Relationship Diagram
+    accDescr: ValidationContext reification — one instance per overlay profile (e.g. BASPI5Profile) declaring required Kinds and the dereferenceable profile URI.
+
     ValidationContext ||--o| BASPI5Profile : "reifies"
     ValidationContext }o--o{ Kind : "requires"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

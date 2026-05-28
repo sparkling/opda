@@ -33,11 +33,47 @@ Identity key = `(Transaction, MilestoneKind)` tuple — each transaction has at 
 
 ## ER diagram
 
+![milestone--entity-relationship-diagram](diagrams/milestone/milestone--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Milestone — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Milestone — inverse hasMilestone from Transaction with optional PROV-O qualifiedAssociation hadPlan companion.
+
     Transaction ||--o{ Milestone : "hasMilestone"
-    Milestone }o--o| Plan : "qualifiedAssociation → hadPlan"
+    Milestone }o--o| Plan : "qualifiedAssociation hadPlan"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Five canonical MilestoneKind events drive Transaction progression per ODR-0007 §Q2. Each milestone is a PROV-O Activity with hybrid instant/interval typing.
+
+![milestone--lifecycle-state-transition-diagram](diagrams/milestone/milestone--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Milestone — Lifecycle State-Transition Diagram
+    accDescr: Five canonical MilestoneKind values (instruction, offerAccepted, exchange, completion, registration) form a strict-ordering chain of PROV-O Activities driving Transaction lifecycle.
+
+    [*] --> instruction : property instructed<br/>(instant: prov:atTime)
+    instruction --> offerAccepted : offer accepted<br/>(instant: prov:atTime)
+    offerAccepted --> exchange : contracts exchanged<br/>(instant: prov:atTime)
+    exchange --> completion : completion process<br/>(interval: prov:startedAtTime<br/>+ prov:endedAtTime)
+    completion --> registration : registration process<br/>(interval: prov:startedAtTime<br/>+ prov:endedAtTime)
+    registration --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

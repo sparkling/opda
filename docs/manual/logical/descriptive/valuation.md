@@ -27,12 +27,47 @@ None.
 
 ## ER diagram
 
+![valuation--entity-relationship-diagram](diagrams/valuation/valuation--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Valuation — Entity-Relationship Diagram
+    accDescr: Valuation — concerns a Property, carries PROV-O wasGeneratedBy to issuing RICS-regulated Activity, informed by Comparable instances via prov:wasInformedBy.
+
     Valuation }o--|| Property : "concerns"
     Valuation }o--|| Activity : "prov:wasGeneratedBy"
     Comparable }o--|| Valuation : "supports (prov:wasInformedBy)"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Valuation lifecycle per S008 Q4 — instructed, delivered (by the valuation Activity), and may be superseded by a later valuation.
+
+![valuation--lifecycle-state-transition-diagram](diagrams/valuation/valuation--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Valuation — Lifecycle State-Transition Diagram
+    accDescr: Valuation lifecycle — Instructed by client, Delivered by RICS-regulated Activity, Superseded by a subsequent valuation.
+
+    [*] --> Instructed : client instructs valuation
+    Instructed --> Delivered : RICS Activity completes<br/>(prov:wasGeneratedBy)
+    Delivered --> Superseded : later valuation supersedes
+    Delivered --> [*]
+    Superseded --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

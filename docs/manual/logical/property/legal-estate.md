@@ -38,14 +38,52 @@ None at this tier — the LeaseTerm succession status is materialised on `LeaseT
 
 ## ER diagram
 
+![legalestate--entity-relationship-diagram](diagrams/legal-estate/legalestate--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: LegalEstate — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of LegalEstate — recorded by RegisteredTitle, vested in Property, bounded by optional LeaseTerm, mutated by LeaseExtensionEvent, concerned by Transaction.
+
     LegalEstate }o--|| Property : "identifiesSameProperty"
     LegalEstate ||--o| LeaseTerm : "leaseTerm"
     RegisteredTitle ||--|| LegalEstate : "recordsEstate"
     LeaseExtensionEvent }o--|| LegalEstate : "extends"
     Transaction }o--o{ LegalEstate : "concerns"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+LegalEstate identity persists through grant / transfer / registration / discharge hard cases per ODR-0005 §3b. Identity is the rights-bundle; lifecycle events mutate the bundle but do not collapse identity (Rule 1: identity PERSISTS through LeaseExtensionEvent).
+
+![legalestate--lifecycle-state-transition-diagram](diagrams/legal-estate/legalestate--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: LegalEstate — Lifecycle State-Transition Diagram
+    accDescr: LegalEstate identity persists through grant, transfer, registration, lease extension, and discharge. Tenure change, lease grant, lease termination, and commonhold conversion are mutations of the rights-bundle, not identity-collapsing events.
+
+    [*] --> Granted : grant of rights-bundle
+    Granted --> Registered : first registration
+    Registered --> Registered : transfer<br/>(rights-bundle persists)
+    Registered --> Registered : LeaseExtensionEvent<br/>(LeaseTerm successor minted)
+    Registered --> Registered : tenure change<br/>(mutation, not collapse)
+    Registered --> Registered : commonhold conversion
+    Registered --> Discharged : discharge<br/>(rights-bundle dissolved)
+    Discharged --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

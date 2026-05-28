@@ -27,12 +27,23 @@ None at this tier.
 
 ## ER diagram
 
+![proprietorship--entity-relationship-diagram](diagrams/proprietorship/proprietorship--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Proprietorship — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Proprietorship Relator — binds RegisteredTitle, founds Proprietor Roles, mediates Property.
+
     Proprietorship }o--|| RegisteredTitle : "bindsTitle"
     Proprietorship ||--o{ Proprietor : "founds"
     Proprietorship }o--|| Property : "mediates"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

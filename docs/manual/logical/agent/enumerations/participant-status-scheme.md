@@ -18,6 +18,36 @@ Phase labels for the lifecycle of a Participant Substance Kind (Active / Invited
 
 No core-tier attribute in the emitted TBox currently binds this scheme directly. Used by overlay-profile participant-status attributes (e.g. BASPI5 `participantStatus`). Closed scheme — strict four-member phase lifecycle.
 
+## Concept hierarchy
+
+![participantstatusscheme--concept-hierarchy](diagrams/participant-status-scheme/participantstatusscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ParticipantStatusScheme — Concept Hierarchy
+    accDescr: Four Phase label members of ParticipantStatusScheme — Active, Invited, Proposed, Removed.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[ParticipantStatusScheme]:::scheme
+    Active[Active]:::member
+    Invited[Invited]:::member
+    Proposed[Proposed]:::member
+    Removed[Removed]:::member
+
+    S --> Active
+    S --> Invited
+    S --> Proposed
+    S --> Removed
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category

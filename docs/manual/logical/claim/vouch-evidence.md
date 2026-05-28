@@ -29,13 +29,24 @@ None.
 
 ## ER diagram
 
+![vouchevidence--entity-relationship-diagram](diagrams/vouch-evidence/vouchevidence--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: VouchEvidence — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of VouchEvidence — Evidence subtype with Vouch short-name alias, Claim supportedBy, attestedBy a Person (typically a regulated professional).
+
     Evidence ||--o| VouchEvidence : "subtype"
     VouchEvidence ||--|| Vouch : "owl:equivalentClass"
     VouchEvidence }o--|| Person : "attestedBy"
     Claim }o--o{ VouchEvidence : "supportedBy"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

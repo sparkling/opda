@@ -26,6 +26,56 @@ Role labels for the anti-rigid Roles a Person / Organisation plays as a Particip
 
 Bound by [`RoleMixin.role`](../seller.md#attributes) notation surface (`0..1` on Seller, Buyer, Proprietor). Constrained by per-overlay profile shapes via SHACL `sh:in` over the scheme members. The typed encoding (`?s a opda:Seller`) is the canonical IC; this enum is the notation surface for DASH / SPARQL convenience. Closed scheme — new roles require Council ratification.
 
+## Concept hierarchy
+
+![rolescheme--concept-hierarchy](diagrams/role-scheme/rolescheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: RoleScheme — Concept Hierarchy
+    accDescr: Twelve Role label members of RoleScheme — Buyer, Buyer's Agent, Buyer's Conveyancer, Estate Agent, Landlord, Lender, Mortgage Broker, Prospective Buyer, Seller, Seller's Conveyancer, Surveyor, Tenant.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[RoleScheme]:::scheme
+    Buyer[Buyer]:::member
+    BuyerAgent["Buyer's Agent"]:::member
+    BuyerConveyancer["Buyer's Conveyancer"]:::member
+    EstateAgent["Estate Agent"]:::member
+    Landlord[Landlord]:::member
+    Lender[Lender]:::member
+    Broker["Mortgage Broker"]:::member
+    ProspectiveBuyer["Prospective Buyer"]:::member
+    Seller[Seller]:::member
+    SellerConveyancer["Seller's Conveyancer"]:::member
+    Surveyor[Surveyor]:::member
+    Tenant[Tenant]:::member
+
+    S --> Buyer
+    S --> BuyerAgent
+    S --> BuyerConveyancer
+    S --> EstateAgent
+    S --> Landlord
+    S --> Lender
+    S --> Broker
+    S --> ProspectiveBuyer
+    S --> Seller
+    S --> SellerConveyancer
+    S --> Surveyor
+    S --> Tenant
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q2 RoleMixin discipline

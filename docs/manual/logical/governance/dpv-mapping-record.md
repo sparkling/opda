@@ -31,12 +31,23 @@ None.
 
 ## ER diagram
 
+![dpvmappingrecord--entity-relationship-diagram](diagrams/dpv-mapping-record/dpvmappingrecord--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: DPVMappingRecord — Entity-Relationship Diagram
+    accDescr: DPVMappingRecord — targets Person, Organisation, or Claim Kinds with a DPV-PD baseline personal-data category.
+
     DPVMappingRecord }o--|| Person : "targetsKind"
     DPVMappingRecord }o--|| Organisation : "targetsKind"
     DPVMappingRecord }o--|| Claim : "targetsKind"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

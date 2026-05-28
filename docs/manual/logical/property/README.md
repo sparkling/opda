@@ -42,8 +42,17 @@ The physical Property, its socially-recognised Address(es), the legal rights-bun
 
 ## ER diagram
 
+![property-module--entity-relationship-diagram](diagrams/README/property-module--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Property Module — Entity-Relationship Diagram
+    accDescr: Property module entities (Property, Address, LegalEstate, RegisteredTitle, LeaseTerm) and lifecycle events (LeaseExtensionEvent, UPRNSuccessionEvent) with intra-module relationships.
+
     Property ||--o{ Address : "hasAddress"
     Property }o--o| LegalEstate : "vests"
     Property }o--o{ RegisteredTitle : "identifiedBy"
@@ -56,4 +65,88 @@ erDiagram
     UPRNSuccessionEvent }o--|| Property : "succeeds (PROV-O wasDerivedFrom)"
 ```
 
+</details>
+
 Source file: [`../diagrams/property-er.mmd`](../diagrams/property-er.mmd).
+
+## Class hierarchy
+
+OWL/RDFS subclass relationships in the property module. Property, LegalEstate, and Address are Substance Kinds at root level. Address inherits from `vcard:Address`. Events specialise the foundation `Event particular` shape via PROV-O Activity.
+
+![property-module--class-hierarchy](diagrams/README/property-module--class-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+classDiagram
+    accTitle: Property Module — Class Hierarchy
+    accDescr: OWL/RDFS subclass relationships in the property module — Property as Substance Kind, Address subclasses vcard:Address, LegalEstate carries tenure, RegisteredTitle records Estate, lifecycle Events as PROV-O Activities.
+
+    class vcardAddress["vcard:Address"]
+    class provActivity["prov:Activity"]
+    class timeProperInterval["time:ProperInterval"]
+
+    class Property {
+        hasUPRN
+        propertyType
+        builtForm
+        currentEnergyRating
+        + many Yes/No discriminators
+    }
+    class Address {
+        addressVariant : AddressVariantScheme
+    }
+    class LegalEstate {
+        tenureKind : TenureKindScheme
+        ownershipType
+        isGroundRentPayable
+    }
+    class RegisteredTitle {
+        title-number lineage
+    }
+    class LeaseTerm {
+        OWL-Time bounded interval
+    }
+    class LeaseExtensionEvent {
+        prov:atTime
+    }
+    class UPRNSuccessionEvent {
+        prov:atTime
+    }
+
+    vcardAddress <|-- Address
+    timeProperInterval <|-- LeaseTerm
+    provActivity <|-- LeaseExtensionEvent
+    provActivity <|-- UPRNSuccessionEvent
+```
+
+</details>
+
+## Identity-key summary
+
+![property-module--identity-key-summary](diagrams/README/property-module--identity-key-summary.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: Property Module — Identity-Key Summary
+    accDescr: Identity Criterion key surfaces for the seven property-module entities — spatial-material continuity for Property, variant + authority-record for Address, rights-bundle for LegalEstate, title-lineage for RegisteredTitle, OWL-Time pair for LeaseTerm, PROV-O tuples for the two Events.
+
+    classDef icCell fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef entityCell fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    PropertyE[Property]:::entityCell -->|"IC"| PIC["spatial-material continuity<br/>Kendall + Davis hybrid<br/>(hasUPRN is contingent)"]:::icCell
+    AddressE[Address]:::entityCell -->|"IC"| AIC["addressVariant +<br/>authority-record-id"]:::icCell
+    LegalEstateE[LegalEstate]:::entityCell -->|"IC"| LEIC["rights-bundle persistence<br/>(tenureKind surface)"]:::icCell
+    RegisteredTitleE[RegisteredTitle]:::entityCell -->|"IC"| RTIC["title-number lineage +<br/>registry-event history"]:::icCell
+    LeaseTermE[LeaseTerm]:::entityCell -->|"IC"| LTIC["(LegalEstate,<br/>time:hasBeginning,<br/>time:hasEnd)"]:::icCell
+    LeaseExtensionEventE[LeaseExtensionEvent]:::entityCell -->|"IC"| LEEIC["(LegalEstate,<br/>prov-timestamp)"]:::icCell
+    UPRNSuccessionEventE[UPRNSuccessionEvent]:::entityCell -->|"IC"| USEIC["(Property,<br/>prov-timestamp)"]:::icCell
+```
+
+</details>

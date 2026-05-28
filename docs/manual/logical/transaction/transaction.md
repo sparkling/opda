@@ -33,14 +33,52 @@ None at this tier (the Milestone variance derived attribute lives on `Milestone`
 
 ## ER diagram
 
+![transaction--entity-relationship-diagram](diagrams/transaction/transaction--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Transaction — Entity-Relationship Diagram
+    accDescr: Direct-neighbour view of Transaction Relator — hasMilestone Milestones, founds Seller and Buyer Roles, optional TransactionChain position, concerns LegalEstate.
+
     Transaction ||--o{ Milestone : "hasMilestone"
     Transaction ||--o{ Seller : "founds"
     Transaction ||--o{ Buyer : "founds"
     Transaction }o--o| TransactionChain : "hasChainPosition"
     Transaction }o--o{ LegalEstate : "concerns"
 ```
+
+</details>
+
+## Lifecycle state-transition diagram
+
+Transaction status follows the canonical five-phase sale lifecycle per ODR-0007 §Q3 (TransactionStatusScheme). The broader 9-value data-dictionary `status` enum maps to these five via `prov:wasDerivedFrom`.
+
+![transaction--lifecycle-state-transition-diagram](diagrams/transaction/transaction--lifecycle-state-transition-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Transaction — Lifecycle State-Transition Diagram
+    accDescr: Transaction lifecycle in five canonical phases — Listed, Offered, Accepted, Exchanged, Completed — corresponding to MilestoneKind events (instruction, offerAccepted, exchange, completion).
+
+    [*] --> Listed : Milestone instruction
+    Listed --> Offered : offer received
+    Offered --> Accepted : Milestone offerAccepted
+    Offered --> Listed : offer withdrawn (back to market)
+    Accepted --> Exchanged : Milestone exchange
+    Accepted --> Listed : transaction aborted<br/>(back to market)
+    Exchanged --> Completed : Milestone completion
+    Completed --> [*]
+```
+
+</details>
 
 ## Source ODR + ADR
 

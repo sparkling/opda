@@ -18,6 +18,36 @@ Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus t
 
 Members are the instances of [AssuranceLevel](../assurance-level.md). The scheme is closed at the eIDAS three plus the OPDA-specific PDTF-Standard. eIDAS members track upstream regulator changes; PDTF-Standard is governed by ODR-0009.
 
+## Concept hierarchy
+
+![assurancelevelscheme--concept-hierarchy](diagrams/assurance-level-scheme/assurancelevelscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: AssuranceLevelScheme — Concept Hierarchy
+    accDescr: Four Quality Value members of AssuranceLevelScheme — High, Low, PDTF-Standard, Substantial (eIDAS three plus OPDA-specific intermediate).
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[AssuranceLevelScheme]:::scheme
+    High[High]:::member
+    Low[Low]:::member
+    PDTF["PDTF-Standard"]:::member
+    Substantial[Substantial]:::member
+
+    S --> High
+    S --> Low
+    S --> PDTF
+    S --> Substantial
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q3 PDTF-Standard

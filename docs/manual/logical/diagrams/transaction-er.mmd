@@ -1,8 +1,12 @@
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Transaction Module — Entity-Relationship Diagram
+    accDescr: Transaction Relator, lifecycle Milestones, and TransactionChain aggregate with intra-module relationships and cross-module ties to Seller, Buyer, and LegalEstate.
+
     Transaction ||--o{ Milestone : "hasMilestone"
     Transaction ||--o{ Seller : "founds"
     Transaction ||--o{ Buyer : "founds"
     Transaction }o--o| TransactionChain : "hasChainPosition"
     TransactionChain ||--o{ Transaction : "chainMembers"
     Transaction }o--o{ LegalEstate : "concerns"
-    Milestone }o--o| Plan : "qualifiedAssociation → hadPlan (plannedAtTime)"
+    Milestone }o--o| Plan : "qualifiedAssociation hadPlan (plannedAtTime)"

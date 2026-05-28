@@ -20,6 +20,40 @@ Method/plan codes for the capacity under which a Seller is authorised to act in 
 
 Bound by [`Seller.hasAssertedCapacity`](../seller.md#attributes) (`0..1`, optional). The notation lives on the Sales side; the evidence link lives on the Conveyancing side via `Seller.hasEvidencedAuthority` per the two-predicate Capacity/Authority split (ODR-0006 §Q4). Closed scheme.
 
+## Concept hierarchy
+
+![sellerscapacityscheme--concept-hierarchy](diagrams/sellers-capacity-scheme/sellerscapacityscheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: SellersCapacityScheme — Concept Hierarchy
+    accDescr: Six Method/plan code members of SellersCapacityScheme — Assistant, Legal Owner, Mortgagee in Possession, Other, Personal Representative for a Deceased Owner, Under Power of Attorney.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[SellersCapacityScheme]:::scheme
+    Assistant[Assistant]:::member
+    LegalOwner["Legal Owner"]:::member
+    Mortgagee["Mortgagee in Possession"]:::member
+    Other[Other]:::member
+    PR["Personal Representative<br/>for a Deceased Owner"]:::member
+    PoA["Under Power of Attorney"]:::member
+
+    S --> Assistant
+    S --> LegalOwner
+    S --> Mortgagee
+    S --> Other
+    S --> PR
+    S --> PoA
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q4 Capacity/Authority split

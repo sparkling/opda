@@ -27,10 +27,21 @@ None.
 
 ## ER diagram
 
+![trustframework--entity-relationship-diagram](diagrams/trust-framework/trustframework--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: TrustFramework — Entity-Relationship Diagram
+    accDescr: TrustFramework citation — referenced by VerificationActivity via dct:conformsTo (the S009 5-residue local term).
+
     VerificationActivity }o--o| TrustFramework : "dct:conformsTo"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

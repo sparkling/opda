@@ -27,10 +27,21 @@ None.
 
 ## ER diagram
 
+![document--entity-relationship-diagram](diagrams/document/document--entity-relationship-diagram.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 erDiagram
+    accTitle: Document — Entity-Relationship Diagram
+    accDescr: Short-name alias view — Document is owl:equivalentClass of DocumentEvidence (one OWL identity, two readable names).
+
     DocumentEvidence ||--|| Document : "owl:equivalentClass"
 ```
+
+</details>
 
 ## Source ODR + ADR
 

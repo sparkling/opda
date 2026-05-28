@@ -20,6 +20,40 @@ Classification of a Property's off-mains drainage system (SuDS / Septic tank / C
 
 Bound by [`Property.offMainsDrainageSystemType`](../property.md#attributes) (`0..1`, optional; conditional on not-connected-to-mains). Closed scheme — overlays may subset but may NOT extend.
 
+## Concept hierarchy
+
+![offmainsdrainagesystemtypescheme--concept-hierarchy](diagrams/off-mains-drainage-system-type-scheme/offmainsdrainagesystemtypescheme--concept-hierarchy.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: OffMainsDrainageSystemTypeScheme — Concept Hierarchy
+    accDescr: Six Quale-in-Region members of OffMainsDrainageSystemTypeScheme — Cesspit, Not known, Other, Septic tank, Sewerage treatment plant, Sustainable Drainage System.
+
+    classDef scheme fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef member fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    S[OffMainsDrainageSystemTypeScheme]:::scheme
+    Cesspit[Cesspit]:::member
+    NotKnown["Not known"]:::member
+    Other[Other]:::member
+    Septic["Septic tank"]:::member
+    Treatment["Sewerage treatment plant"]:::member
+    SuDS["Sustainable Drainage System"]:::member
+
+    S --> Cesspit
+    S --> NotKnown
+    S --> Other
+    S --> Septic
+    S --> Treatment
+    S --> SuDS
+```
+
+</details>
+
 ## Source ODR + ADR
 
 - [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category
