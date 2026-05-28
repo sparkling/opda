@@ -343,3 +343,71 @@ def test_emit_manual_tier_filter(mini_manual: Path) -> None:
         f"Non-concept files touched: {result.touched}"
     )
     assert result.touched_count >= 1
+
+
+# ---------------------------------------------------------------------------
+# CI-safety: _default_manual_dir + umbrella isolation (ADR-0020 G20a)
+# ---------------------------------------------------------------------------
+
+def test_default_manual_dir_is_file_relative_not_cwd(tmp_path: Path) -> None:
+    """_default_manual_dir() resolves via __file__, not CWD.
+
+    Proves R1: when CWD is an arbitrary directory (simulating CI running from
+    tools/opda-gen or /tmp), the helper still returns the real docs/manual/
+    path anchored to the repo root via __file__ walk — not a CWD-relative
+    fallback.  Regression guard for ADR-0020 G20a.
+    """
+    import os
+    from opda_gen.emitters.manual import _default_manual_dir
+
+    original_cwd = os.getcwd()
+    try:
+        os.chdir(tmp_path)  # Move CWD away from repo — simulate CI context
+        result = _default_manual_dir()
+    finally:
+        os.chdir(original_cwd)
+
+    # Must resolve to the actual docs/manual/ inside the repo, not inside tmp_path
+    assert result.exists(), f"_default_manual_dir() returned non-existent path: {result}"
+    assert (result / "concept").exists() or result.name == "manual", (
+        f"Resolved path does not look like the manual tree: {result}"
+    )
+    assert str(tmp_path) not in str(result), (
+        f"_default_manual_dir() used CWD-relative fallback: {result}"
+    )
+
+
+def test_emit_umbrella_redirected_output_does_not_mutate_docs_manual(
+    tmp_path: Path,
+) -> None:
+    """opda-gen emit --output <tmp> must not modify the committed docs/manual/.
+
+    Proves R2: the umbrella calls emit_manual(_default_manual_dir()), which
+    is idempotent (frontmatter is already committed), so git sees no changes
+    in docs/manual/ after a redirected emit run.  Regression guard for
+    ADR-0020 G20a umbrella integration.
+    """
+    import subprocess
+    import sys
+
+    from opda_gen.emitters.manual import _default_manual_dir
+
+    manual_dir = _default_manual_dir()
+
+    # Snapshot mtimes before running emit with a redirected --output
+    before = {p: p.stat().st_mtime for p in sorted(manual_dir.rglob("*.md"))}
+
+    result = subprocess.run(
+        [sys.executable, "-m", "opda_gen.cli", "emit", "--output", str(tmp_path)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, f"emit failed:\n{result.stderr}"
+
+    # No .md file in docs/manual/ should have been modified
+    after = {p: p.stat().st_mtime for p in sorted(manual_dir.rglob("*.md"))}
+    mutated = [p for p in before if after.get(p, before[p]) != before[p]]
+    assert mutated == [], (
+        f"emit --output <tmp> mutated {len(mutated)} docs/manual/ file(s):\n"
+        + "\n".join(str(p) for p in mutated)
+    )
