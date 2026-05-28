@@ -14,6 +14,11 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'tsconfig.json'
+      # ADR-0021: entity pages are generated from the ontology at build time, so
+      # the triplestore inputs + build-time API + orchestration must also trigger.
+      - 'docker-compose.yml'
+      - 'scripts/**'
+      - 'source/03-standards/ontology/**'
       - '.github/workflows/deploy.yml'
   # Manual escape hatch: force a deploy from the Actions tab when a change
   # outside the paths above needs publishing, or to re-run a build.
@@ -39,7 +44,15 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm exec astro build
+      # Build-time GRLC API's own deps (express, js-yaml).
+      - run: npm --prefix src/api install --no-audit --no-fund
+
+      # ADR-0021: bring up Fuseki (Docker) + load the ontology TTLs + start the
+      # GRLC API on localhost, run `astro build` (which queries the API to
+      # generate entity pages), then tear it all down. The triplestore + API are
+      # build-exclusive + ephemeral — only dist/ (static HTML) is deployed;
+      # production never runs, reaches, or exposes them.
+      - run: npm run build:data
 
       - uses: cloudflare/wrangler-action@v4
         with:
