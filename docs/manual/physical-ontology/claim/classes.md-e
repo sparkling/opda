@@ -37,7 +37,7 @@ None directly; values bound to `opda:AssuranceLevelScheme` via SKOS in `opda-voc
 
 - [Concept tier →](../../concept/claim/assurance-level.md)
 - [Logical tier →](../../logical/claim/assurance-level.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -78,7 +78,7 @@ opda:Claim
 
 - [Concept tier →](../../concept/claim/claim.md)
 - [Logical tier →](../../logical/claim/claim.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -151,7 +151,7 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/document-evidence.md)
 - [Logical tier →](../../logical/claim/document-evidence.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -224,7 +224,7 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/electronic-record-evidence.md)
 - [Logical tier →](../../logical/claim/electronic-record-evidence.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -264,7 +264,7 @@ opda:Evidence
 
 - [Concept tier →](../../concept/claim/evidence.md)
 - [Logical tier →](../../logical/claim/evidence.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -298,7 +298,7 @@ None directly (citation pattern; `dct:conformsTo` carries the binding).
 
 - [Concept tier →](../../concept/claim/trust-framework.md)
 - [Logical tier →](../../logical/claim/trust-framework.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -337,7 +337,7 @@ opda:VerificationActivity
 
 - [Concept tier →](../../concept/claim/verification-activity.md)
 - [Logical tier →](../../logical/claim/verification-activity.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -410,7 +410,7 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 - [Concept tier →](../../concept/claim/vouch-evidence.md)
 - [Logical tier →](../../logical/claim/vouch-evidence.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

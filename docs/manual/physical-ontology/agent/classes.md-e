@@ -42,7 +42,7 @@ None directly; identity-key shapes apply to the bearer Kind (Person / Organisati
 
 - [Concept tier →](../../concept/agent/buyer.md)
 - [Logical tier →](../../logical/agent/buyer.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -81,7 +81,7 @@ opda:NameChangeEvent
 
 - [Concept tier →](../../concept/agent/name-change-event.md)
 - [Logical tier →](../../logical/agent/name-change-event.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -120,7 +120,7 @@ opda:Organisation
 
 - [Concept tier →](../../concept/agent/organisation.md)
 - [Logical tier →](../../logical/agent/organisation.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -157,7 +157,7 @@ opda:Person
 
 - [Concept tier →](../../concept/agent/person.md)
 - [Logical tier →](../../logical/agent/person.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -196,7 +196,7 @@ None directly (Anti-pattern §3 — NEVER key a Role).
 
 - [Concept tier →](../../concept/agent/proprietor.md)
 - [Logical tier →](../../logical/agent/proprietor.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -236,7 +236,7 @@ None directly (Relator's IC enforced by foundation `opda:Relator` discipline).
 
 - [Concept tier →](../../concept/agent/proprietorship.md)
 - [Logical tier →](../../logical/agent/proprietorship.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -275,7 +275,7 @@ None directly at TBox; the BASPI5 overlay [`opda:Baspi5_SellerShape`](../profile
 
 - [Concept tier →](../../concept/agent/seller.md)
 - [Logical tier →](../../logical/agent/seller.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

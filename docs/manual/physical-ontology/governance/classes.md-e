@@ -37,7 +37,7 @@ opda:DPVMappingRecord
 
 - [Concept tier →](../../concept/governance/dpv-mapping-record.md)
 - [Logical tier →](../../logical/governance/dpv-mapping-record.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

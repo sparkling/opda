@@ -43,7 +43,7 @@ opda:Milestone
 
 - [Concept tier →](../../concept/transaction/milestone.md)
 - [Logical tier →](../../logical/transaction/milestone.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -82,7 +82,7 @@ opda:Transaction
 
 - [Concept tier →](../../concept/transaction/transaction.md)
 - [Logical tier →](../../logical/transaction/transaction.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -116,7 +116,7 @@ None directly at the TBox; chain-length cap (`sh:maxInclusive 7`) emitted as par
 
 - [Concept tier →](../../concept/transaction/transaction-chain.md)
 - [Logical tier →](../../logical/transaction/transaction-chain.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 

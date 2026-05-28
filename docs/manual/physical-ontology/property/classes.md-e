@@ -43,7 +43,7 @@ opda:Address
 
 - [Concept tier →](../../concept/property/address.md)
 - [Logical tier →](../../logical/property/address.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -82,7 +82,7 @@ None directly (lifecycle attaches to `opda:LegalEstate` via successor LeaseTerm 
 
 - [Concept tier →](../../concept/property/lease-extension-event.md)
 - [Logical tier →](../../logical/property/lease-extension-event.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -121,7 +121,7 @@ opda:LeaseTerm
 
 - [Concept tier →](../../concept/property/lease-term.md)
 - [Logical tier →](../../logical/property/lease-term.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -155,7 +155,7 @@ opda:LegalEstate
 
 - [Concept tier →](../../concept/property/legal-estate.md)
 - [Logical tier →](../../logical/property/legal-estate.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -192,7 +192,7 @@ opda:Property
 
 - [Concept tier →](../../concept/property/property.md)
 - [Logical tier →](../../logical/property/property.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -226,7 +226,7 @@ None directly at TBox level (identity-key shape lives at `opda:LegalEstate` per 
 
 - [Concept tier →](../../concept/property/registered-title.md)
 - [Logical tier →](../../logical/property/registered-title.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
@@ -265,7 +265,7 @@ opda:UPRNSuccessionEvent
 
 - [Concept tier →](../../concept/property/uprn-succession-event.md)
 - [Logical tier →](../../logical/property/uprn-succession-event.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
+- [Physical-Database tier (deployment) →](../../physical-database/index.md)
 
 #### Source ODR + ADR
 
