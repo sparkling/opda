@@ -184,7 +184,7 @@ Tier README at `docs/manual/physical-ontology/severity-tiers.md` lists each emit
 
 - Business-language narrative — see [`concept-model-ia.md`](./concept-model-ia.md).
 - Platform-independent typed attributes — see [`logical-model-ia.md`](./logical-model-ia.md).
-- JSON Schema / PDTF paths / overlay form-question anchors — see [`physical-database-ia.md`](./physical-database-ia.md).
+- Named-graph layout, derived consumer profiles, content negotiation, BASPI5 deployable composition, CI-gate operations — see [`physical-database-ia.md`](./physical-database-ia.md).
 - Generator implementation details — those live in `tools/opda-gen/` source + [ADR-0008](../adr/ADR-0008-generator-implementation-infrastructure.md).
 
 ## Worked-template excerpt (one class, schematic)

@@ -77,7 +77,7 @@ The Concept tier is the **canonical narrative**; the other tiers cite it via thi
 ## Out of scope for this tier
 
 - Typed attributes and cardinalities — see [`logical-model-ia.md`](./logical-model-ia.md).
-- JSON paths and overlay-form bindings — see [`physical-database-ia.md`](./physical-database-ia.md).
+- Deployment topology, named-graph layout, derived consumer profiles, content negotiation — see [`physical-database-ia.md`](./physical-database-ia.md).
 - OWL classes, SHACL shapes, SKOS schemes, Turtle syntax — see [`physical-ontology-ia.md`](./physical-ontology-ia.md).
 
 ## Worked-template excerpt (one entity, schematic)
@@ -115,6 +115,16 @@ Cross-link to logical tier for typed details: [Logical tier →](../logical/<mod
 
 ## Generation discipline
 
-Content authors generate Concept-tier files from the ratified ODR corpus + the data dictionary. The hard cases for each entity are already enumerated in the ODR `## Rules` sections (per [ODR-0001 §"What an ODR records"](../ontology/odr/ODR-0001-linked-data-council-methodology.md)); the Concept-tier file rewrites them in business language. The Identity Criterion is paraphrased from the ODR's IC clause. Cross-references are mechanical.
+Concept-tier files generate mechanically from the source TTLs. The A9 per-kind discipline (per [ADR-0007 §"A9 per-kind discipline output"](../adr/ADR-0007-ontology-generator-specification.md)) was designed so each emitted class carries everything this tier needs:
 
-Mechanical generation should be possible from `docs/ontology/odr/*.md` + `source/00-deliverables/semantic-models/data-dictionary-canonical.json`; manual review confirms business voice.
+| Concept-tier section | Source in `opda-<module>.ttl` |
+|---|---|
+| H1 entity name | `rdfs:label @en` |
+| One-sentence definition | first sentence of `rdfs:comment @en` |
+| Hard cases | "Hard cases:" enumeration within `rdfs:comment @en` |
+| Identity Criterion | "IC:" clause within `rdfs:comment @en` |
+| Related Kinds | derived from `rdfs:domain` / `rdfs:range` triples + foreign-key `opda:ObjectProperty` references |
+| Source ODR link | `dct:source` URI (resolves to the ratifying ODR anchor; used as a link target only — the ODR text itself is **not** read) |
+| UFO category context (footnote-only) | `skos:scopeNote @en` |
+
+The generator walks each `opda-<module>.ttl`, paraphrases the `rdfs:comment` from technical voice into business voice (the only manual review step), and emits one Markdown file per `owl:Class`. **The ODR corpus is not a source** — it is the audit trail behind the modelling decisions; the TTL embeds the outcome via A9. The PDTF JSON Schemas are upstream Council input, not a source for documentation.

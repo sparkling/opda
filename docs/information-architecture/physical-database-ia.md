@@ -1,190 +1,202 @@
 ---
 status: proposed
 date: 2026-05-28
-tags: [information-architecture, physical-model, database, json-schema, documentation]
+tags: [information-architecture, physical-model, deployment, triplestore, documentation]
 supersedes: []
 depends-on: []
 implements: []
 ---
 
-# IA spec — Physical-tier presentation (JSON / database)
+# IA spec — Physical-tier presentation (deployment / database)
 
-This document specifies how the **Physical-tier (JSON / database) presentation** of OPDA's data model is laid out. It is a *blueprint*: the actual Physical-DB-tier docs that follow this spec are a separate deliverable.
+This document specifies how the **Physical-tier (deployment / database) presentation** of OPDA's ontology is laid out. It is a *blueprint*: the actual Physical-DB-tier docs that follow this spec are a separate deliverable.
 
 ## What "physical database" means for OPDA
 
-OPDA does not have a SQL database. The PDTF (Property Data Trust Framework) JSON Schema is the canonical wire format the property industry consumes — submitters generate JSON instances matching the schema, consumers parse those instances, and the schema is the contract between them. For OPDA's documentation purposes, **the PDTF JSON Schema is the physical database**: it is the on-the-wire encoding that integrators bind to.
+OPDA's "database" is the **deployed form of the ontology** — the published graph at `https://w3id.org/opda/#`, the named-graph layout that a triplestore consumer loads, the derived consumer profiles assembled by the build-step composer, and the HTTP content-negotiation that delivers each consumer profile in the right format.
+
+The Physical-Ontology tier documents the *source* TTLs as they live in the repository; the Physical-Database tier documents the *deployed* form those TTLs take when a downstream consumer loads them into a triplestore, queries them via SPARQL, or fetches them as JSON-LD over HTTP.
 
 Inputs to this tier:
 
-- `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` — base PDTF schema (1,557 leaves)
-- `source/03-standards/schemas/src/schemas/v3/overlays/<form>.json` — overlay schemas (BASPI5, TA6, NTS, LPE1, etc.; 10+ overlays)
-- `source/00-deliverables/semantic-models/data-dictionary-canonical.json` — 8,458 path entries; the canonical leaf inventory
-
-These are a nested git repo (`source/03-standards/schemas/` per CLAUDE.md). The Physical-DB tier documents but does not own them.
+- The 24 source TTLs at `source/03-standards/ontology/` (the Physical-Ontology tier owns these; the Physical-DB tier documents their deployment)
+- `source/03-standards/ontology/derived/*.ttl` — consumer profiles (`opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl`) assembled by the build-step composer per [ADR-0007 §"Module pluralism"](../adr/ADR-0007-ontology-generator-specification.md)
+- The w3id.org redirect record (per [ADR-0006](../adr/ADR-0006-w3id-opda-ontology-namespace.md))
+- The Astro site routing at `src/pages/` that serves content-negotiated responses
+- BASPI5 overlay composer output per [ADR-0013](../adr/ADR-0013-overlay-profile-emission.md)
 
 ## Audience
 
-API consumers, application developers, exchange-format implementers, integrators wiring property-industry forms to OPDA-aligned systems. Fluent in JSON Schema; familiar with REST and wire-format engineering; does not need RDF / SHACL / SKOS at this tier.
+Triplestore operators, SPARQL endpoint consumers, downstream ontology integrators, devops engineers running the deployment, JSON-LD client developers. Reader is comfortable with named-graph semantics, content negotiation, and consumer-profile composition; reader is not implementing or extending the ontology itself.
 
 ## Purpose
 
-Show **which JSON paths carry which data**, **how overlays bind to BASPI5 / TA6 / NTS / LPE1 form questions**, **which enumerations constrain which fields**, and **how the JSON schema fragment for a given OPDA Kind looks**. Reader should be able to implement a producer or consumer against the schema using only this tier + the PDTF schema files.
+Show **how the ontology is shaped for consumption**: which named graphs hold which TTLs, what load order produces a coherent graph, how the three derived consumer profiles compose, how HTTP requests to `https://w3id.org/opda/<resource>` resolve to TTL / JSON-LD / RDF/XML representations, how BASPI5 profile composition lands a deployable validation graph.
 
 ## File layout
 
 ```
 docs/manual/physical-database/
-├── README.md                       Tier overview + PDTF version pin + reading order
-├── index.md                        Module catalogue + leaf-path inventory by module
-├── <module>/
-│   ├── README.md                   Module-level path summary
-│   ├── <entity>.md                 One file per OPDA entity (mirrors Concept + Logical tiers)
-│   └── enumerations/
-│       └── <scheme>.md             One file per SKOS scheme (Physical-DB view)
-├── overlays/
-│   ├── README.md                   Overlay catalogue + handoff discipline
-│   ├── baspi5.md                   One file per overlay
-│   ├── ta6.md
-│   └── …
-└── diagrams/
-    └── leaf-inventory-by-module.md Tables + sunburst-style visualisations
+├── README.md                       Tier overview + reading order
+├── index.md                        Deployment topology + named-graph catalogue
+├── named-graphs.md                 Per-named-graph layout + load order
+├── derived-profiles/
+│   ├── README.md                   Consumer-profile catalogue + composition rules
+│   ├── opda-validation.md          Classes ⊕ shapes; for SHACL validation
+│   ├── opda-ui.md                  Classes ⊕ shapes ⊕ annotations; for form rendering
+│   └── opda-inference.md           Classes alone; for OWL reasoning
+├── content-negotiation/
+│   ├── README.md                   Accept-header routing + format catalogue
+│   ├── jsonld-context.md           Shared JSON-LD @context spec
+│   └── format-matrix.md            Per-resource format availability
+├── overlay-deployment/
+│   ├── README.md                   Per-overlay deployment notes
+│   └── baspi5.md                   BASPI5 composer output + deployable shapes graph
+└── operations/
+    ├── byte-identity-ci.md         The regenerate-and-diff CI gate
+    ├── three-graph-ci.md           The 5-part separation CI gate
+    └── round-trip-ci.md            The BASPI5 round-trip MVP CI gate
 ```
 
-- One file per OPDA entity, mirroring Concept and Logical tiers for cross-tier traceability.
-- Overlays get their own subdirectory because their structure is per-form, not per-entity.
-- Enumeration files document the JSON-string values (with their canonical scheme membership shown as a back-link to the Logical tier).
+- Tier organised by **consumption concern** (named graphs / derived profiles / content negotiation / overlay deployment / CI operations), not by entity. The entity-by-entity view is the Physical-Ontology tier's job.
 
-## Per-entity section shape (mandatory)
+## Per-named-graph section shape (mandatory)
 
-1. **`# <Entity name>`** — H1, matches Concept + Logical tier names.
-2. **`## Summary`** — one paragraph linking back to Concept (`[Concept tier →]`) and Logical (`[Logical tier →]`); names the PDTF schema fragment URL.
-3. **`## JSON paths`** — table of every PDTF path that carries data for this entity:
+Used in `named-graphs.md`. One section per named graph the deployment exposes.
 
-   | JSON path | Logical attribute | Type | Cardinality | Required | Enum scheme | Overlay bindings |
-   |---|---|---|---|---|---|---|
-   | `propertyPack.buildInformation.building.builtForm` | `builtForm` | `string` | `0..1` | N | `BuiltFormScheme` | BASPI5 §B1.3.2 |
+1. **`### <graph-iri>`** — H3 with the named graph IRI as title (e.g. `### https://w3id.org/opda/0.4.0/`).
+2. **`#### Source TTL(s)`** — which repository TTLs this graph aggregates (e.g. `foundation.ttl` + `opda-classes.ttl`).
+3. **`#### Purpose`** — what consumers load this graph for (validation / inference / UI / round-trip).
+4. **`#### Load order`** — list of `owl:imports` resolution: which other named graphs must be loaded first.
+5. **`#### Triple count`** — measured count; updated per release.
+6. **`#### Version IRI`** — the `owl:versionIRI` this graph carries and the bump history.
 
-   - `JSON path` is the dotted-path notation against the base PDTF schema.
-   - `Logical attribute` cites the Logical-tier attribute name (linked).
-   - `Type` is the JSON Schema `type` (`string` / `integer` / `boolean` / `array` / `object`).
-   - `Cardinality` derives from JSON Schema `required` + array `minItems` / `maxItems`.
-   - `Required` is Y when the leaf is in a `required` array AT THE BASE schema level (overlays may add requireds — see §"Overlay bindings").
-   - `Enum scheme` cites the SKOS scheme if the leaf has an `enum`.
-   - `Overlay bindings` lists each overlay that constrains this leaf, with the form-question anchor (e.g. `BASPI5 §B1.3.2`, `TA6 §3.1`).
-4. **`## JSON Schema fragment`** — copy of the relevant `pdtf-transaction.json` substructure for this entity, with `// ←` annotations linking back to OPDA terms. Generated from `pdtf-transaction.json`; do not hand-edit.
-5. **`## Sample JSON instance`** — one representative JSON object exercising every required field. Cross-links to the Logical tier's Identity Criterion: shows which fields jointly identify a unique instance.
-6. **`## Validation`** — JSON Schema validation command (`ajv validate -s <schema> -d <instance>`); links to the BASPI5 round-trip MVP harness at `tests/baspi5_round_trip/` per [ADR-0014](../adr/ADR-0014-baspi5-round-trip-mvp-harness.md).
-7. **`## Source ADR`** — typically [ADR-0011](../adr/ADR-0011-module-tbox-emission.md) (TBox emission) + the per-entity ratifying ODR.
+## Per-consumer-profile section shape (mandatory)
 
-## Per-enumeration section shape (mandatory)
+Used in `derived-profiles/<profile>.md`. One file per derived profile in `source/03-standards/ontology/derived/`.
 
-1. **`# <SchemeName>`** — H1, matches Logical-tier name.
-2. **`## Summary`** — links to Concept + Logical tiers.
-3. **`## JSON values`** — table of valid `enum` values as they appear in PDTF:
+1. **`# <profile-name>`** — H1.
+2. **`## Summary`** — one paragraph naming the consumer scenario this profile serves.
+3. **`## Composition recipe`** — how the build-step composer assembles this profile from the per-module source TTLs. Mermaid `flowchart LR` showing inputs → composer → output.
+4. **`## Included graphs`** — table of source named graphs that contribute to this profile + the projection rule (everything / classes-only / shapes-only / annotations-only).
+5. **`## Excluded`** — explicit list of source named graphs that are deliberately NOT in this profile, with one-line rationale per exclusion.
+6. **`## Deployment artefact`** — the deployed file path / URL the consumer fetches; content-type; size; checksum.
+7. **`## Source ADR`** — typically [ADR-0007 §"Module pluralism"](../adr/ADR-0007-ontology-generator-specification.md) + [ADR-0012](../adr/ADR-0012-shacl-and-dpv-annotation-emission.md).
 
-   | JSON value | Scheme member URI | Notes |
-   |---|---|---|
-   | `"Detached"` | `opda:builtForm/Detached` | … |
+## Per-overlay deployment section shape (mandatory)
 
-4. **`## JSON paths that bind this scheme`** — list of PDTF paths where this enum is referenced. Cross-link to the per-entity files for context.
-5. **`## Source ADR`** — typically [ADR-0010](../adr/ADR-0010-skos-vocabulary-emission.md).
+Used in `overlay-deployment/<overlay>.md`. One file per overlay profile that has landed (currently BASPI5; TA6 / NTS / LPE1 etc. follow as Phase-2/3 adds).
 
-## Per-overlay section shape (mandatory)
+1. **`# <OverlayName>`** — H1.
+2. **`## Summary`** — overlay authority + form version + production status.
+3. **`## Source profile TTL`** — `profiles/<overlay>.ttl` reference.
+4. **`## Deployable composition`** — how the composer assembles `<overlay>.ttl` + foundation + vocabularies + module shapes into a single validatable graph; output artefact path.
+5. **`## Round-trip status`** — current state per [ADR-0014](../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) round-trip harness: pyshacl validation outcome on the 15 exemplars; round-trip equivalence on the synthetic BASPI5 sample.
+6. **`## Three-rule interface contract`** — CI status: `sh:in` semantics PASS; `sh:Violation` floor PASS; no-identity-override PASS. Links to `opda-gen ci-profile-contract`.
+7. **`## Source ADR`** — typically [ADR-0013](../adr/ADR-0013-overlay-profile-emission.md) + [ADR-0014](../adr/ADR-0014-baspi5-round-trip-mvp-harness.md).
 
-1. **`# <OverlayName>`** — H1 (e.g. `# BASPI5`).
-2. **`## Summary`** — one paragraph naming the authority, the form version, and the production status.
-3. **`## Overlay context`** — fields lifted from `opda:ValidationContext` per [ODR-0010 §Q1](../ontology/odr/ODR-0010-overlay-profile-mechanism.md): `profileURI`, `requires`, `overlaysContext`, `sourcedFrom`, `formVersion`.
-4. **`## Form-question inventory`** — table:
+## Content-negotiation section shape (mandatory)
 
-   | Form question | PDTF path | OPDA entity | Cardinality (overlay) | Enum subset | DASH UI group |
-   |---|---|---|---|---|---|
-   | `B1.3.2` | `propertyPack.buildInformation.building.builtForm` | Property | `1..1` (BASPI5 requires) | full BuiltFormScheme | "Built form" group |
+Used in `content-negotiation/format-matrix.md`. Table:
 
-5. **`## Three-rule interface contract checks`** — per [ODR-0010 §Q1 + ODR-0013 §Q1](../ontology/odr/ODR-0013-shacl-validation-and-severity.md): `sh:in` semantics OK; `sh:Violation` floor honoured; no-identity-override gate clear.
-6. **`## Round-trip status`** — per [ADR-0014](../adr/ADR-0014-baspi5-round-trip-mvp-harness.md): which exemplars round-trip cleanly, which have known gaps.
-7. **`## Source ADR`** — typically [ADR-0013](../adr/ADR-0013-overlay-profile-emission.md).
+| Resource path | TTL | JSON-LD | RDF/XML | HTML | Notes |
+|---|---|---|---|---|---|
+| `https://w3id.org/opda/` | ✅ | ✅ | ✅ | redirect to docs | Foundation namespace |
+| `https://w3id.org/opda/0.4.0/` | ✅ | ✅ | ✅ | ✅ | Version-IRI; immutable |
+| `https://w3id.org/opda/profiles/baspi5` | ✅ | ✅ | ✅ | docs | Overlay profile |
+| `https://w3id.org/opda/<EntityLocalName>` | ✅ | ✅ | ✅ | Concept-tier page | Per-entity dereference |
+
+The JSON-LD `@context` is canonical: one shared context across all JSON-LD responses, documented in `content-negotiation/jsonld-context.md`.
+
+## Operations section shape (mandatory)
+
+`operations/` documents the three CI gates that the deployment depends on:
+
+- `byte-identity-ci.md` — `opda-gen ci-byte-identity` + how the GitHub Actions workflow at `.github/workflows/ontology-byte-identity.yml` enforces regenerate-and-diff
+- `three-graph-ci.md` — `opda-gen ci-three-graph` + the 5-part SHACL-AF separation test per [ODR-0004 §3a](../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- `round-trip-ci.md` — `opda-gen ci-profile-contract` + `tests/baspi5_round_trip/` + the matrix CI job at `.github/workflows/baspi5-round-trip.yml`
+
+Each file: what the gate enforces, the command, the expected output, what a failure looks like, how to remediate.
 
 ## Diagram conventions
 
-- Path-inventory visualisations: prefer dense tables over diagrams (the reader is searching, not browsing).
-- Overlay binding diagrams: simple two-column layouts (form question → JSON path) rendered as Mermaid `flowchart LR` if a visual helps.
-- No ER diagrams here (those live in the Logical tier).
+- Deployment topology: Mermaid `flowchart LR` showing source TTLs → composer → derived profiles → deployment artefacts.
+- Named-graph dependency: Mermaid `flowchart` with `owl:imports` arrows between named graph IRIs.
+- Content-negotiation flow: simple sequence diagram showing client `Accept:` header → server response.
+- No ER diagrams (those live in the Logical tier). No class hierarchies (those live in the Physical-Ontology tier).
 
 ## Voice and style
 
-- Tables, tables, tables. Prose only for the §Summary opener and the §Round-trip status narrative.
-- Code blocks with annotated JSON for fragments + samples.
-- `// ←` annotation arrows linking JSON Schema fragments back to OPDA terms.
-- Form-question anchors use the authority's official numbering (BASPI5: `B1.3.2`; TA6: `3.1`); cross-link to the form's published canonical anchor URL.
+- Operational. Reader is configuring a deployment or building against an endpoint; not deliberating about modelling.
+- Tables for catalogues; Mermaid for flow; minimal narrative.
+- Every named graph IRI is a fully-qualified URL (no prefixes; reader is doing HTTP).
+- Every CLI command shown verbatim; copy-paste-runnable.
 
 ## Cross-tier traceability
 
-- File-path mapping: `<concept-tier>/property/property.md` ↔ `<logical-tier>/property/property.md` ↔ `<physical-db-tier>/property/property.md`. Identical `<module>/<entity>.md` shape across tiers.
-- Per-path mapping: every JSON path in the §"JSON paths" table cites the Logical attribute row it implements (`[Logical →](../../logical/property/property.md#attributes)`).
-- Per-overlay mapping: every form-question row cites the BASPI5 / TA6 / NTS profile shape in the Physical-Ontology tier that emits the corresponding SHACL constraint.
-- Cross-tier consistency CI: the planned cross-tier walker (see [`logical-model-ia.md`](./logical-model-ia.md) §"Cross-tier traceability") covers Physical-DB ↔ Logical ↔ Physical-Ontology consistency.
+- Per-named-graph mapping: every named graph cites the source TTLs from the Physical-Ontology tier (`[Source TTL →](../physical-ontology/...)`) so the reader can chase from "what's deployed" to "what's in the source".
+- Per-derived-profile mapping: each profile lists the per-module shapes / classes / annotations files it composes (Physical-Ontology tier links).
+- Per-overlay mapping: each overlay deployment cites the overlay profile file in the Physical-Ontology tier.
+- Concept and Logical tiers don't appear at this tier — they're modelling-side concerns and the Physical-DB reader doesn't need them.
 
 ## Out of scope for this tier
 
 - Business-language narrative — see [`concept-model-ia.md`](./concept-model-ia.md).
-- Typed attribute inventory at platform-independent level — see [`logical-model-ia.md`](./logical-model-ia.md).
-- OWL / SHACL / SKOS / Turtle syntax — see [`physical-ontology-ia.md`](./physical-ontology-ia.md).
-- The PDTF schemas themselves (they are documented HERE but owned by the nested git repo at `source/03-standards/schemas/`).
+- Platform-independent typed attributes — see [`logical-model-ia.md`](./logical-model-ia.md).
+- OWL / SHACL / SKOS / Turtle syntax of the source files — see [`physical-ontology-ia.md`](./physical-ontology-ia.md).
+- The PDTF JSON Schemas (`source/03-standards/schemas/`) — they are upstream Council programme input, not deployment output. They have their own documentation in the schemas nested repo.
 
-## Worked-template excerpt (one entity, schematic)
+## Worked-template excerpt (one consumer profile, schematic)
 
 ```markdown
-# <EntityName>
+# <profile-name>
 
 ## Summary
 
-<Linking paragraph: [Concept tier →] · [Logical tier →] · PDTF schema fragment at `<path>`.>
+<One paragraph: what consumer scenario this profile serves.>
 
-## JSON paths
+## Composition recipe
 
-| JSON path | Logical attribute | Type | Cardinality | Required | Enum scheme | Overlay bindings |
-|---|---|---|---|---|---|---|
-| `<dotted.path>` | `<attr>` | `string` | `0..1` | N | `<Scheme>` | BASPI5 §<anchor>, TA6 §<anchor> |
-
-## JSON Schema fragment
-
-```json
-{
-  "<entity>": {
-    "type": "object",
-    "properties": {
-      "<attr>": { "type": "string", "enum": ["A", "B", "C"] }  // ← <opda:term>
-    }
-  }
-}
+```mermaid
+flowchart LR
+    foundation[foundation.ttl] --> composer
+    classes[opda-classes.ttl] --> composer
+    modules[opda-<module>.ttl × 6] --> composer
+    composer[build-step composer] --> output[<profile-name>.ttl]
 ```
 
-## Sample JSON instance
+## Included graphs
 
-```json
-{ "<entity>": { "<attr>": "A" } }
-```
+| Source graph | Projection rule |
+|---|---|
+| `foundation.ttl` | all triples |
+| `opda-classes.ttl` | `owl:Class` + `owl:DatatypeProperty` + `owl:ObjectProperty` only |
+| `opda-vocabularies.ttl` | <…> |
 
-## Validation
+## Excluded
 
-```bash
-ajv validate -s source/03-standards/schemas/.../pdtf-transaction.json -d sample.json
-```
+- `opda-<module>-annotations.ttl` × 6 — DPV co-annotations don't apply at this profile
+
+## Deployment artefact
+
+- Path: `source/03-standards/ontology/derived/<profile-name>.ttl`
+- Content-type: `text/turtle`
+- Size: <…>
+- Checksum: <sha256>
 
 ## Source ADR
 
-- [ADR-0011 — Module TBox emission](../../../docs/adr/ADR-0011-module-tbox-emission.md)
-- [ODR-NNNN — <ratifying ODR>](../../../docs/ontology/odr/ODR-NNNN-<slug>.md)
+- [ADR-0007 — Ontology generator specification](../../../docs/adr/ADR-0007-ontology-generator-specification.md), §"Module pluralism"
 ```
 
 ## Generation discipline
 
-Physical-DB-tier files generate from:
+Physical-DB-tier files generate mechanically from:
 
-- `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` — base path inventory
-- `source/03-standards/schemas/src/schemas/v3/overlays/*.json` — overlay path inventory + form-question anchors (where the source carries `baspi5Ref` / `ta6Ref` markers)
-- `source/00-deliverables/semantic-models/data-dictionary-canonical.json` — canonical leaf path + name + source attribution
-- `source/03-standards/ontology/profiles/baspi5.ttl` — for overlay context + DASH UI groups + cardinality
+- The 24 source TTLs at `source/03-standards/ontology/` (read named-graph IRIs from each TTL's `owl:Ontology` header)
+- `source/03-standards/ontology/derived/*.ttl` once the composer runs (read each derived profile's actual content + computed checksum)
+- `profiles/baspi5.ttl` (read `opda:ValidationContext` for overlay deployment context)
+- `.github/workflows/*.yml` (read CI gate definitions for the operations section)
+- ADR text only for governance backlinks — **no** ODR reads, **no** PDTF JSON reads
 
-Mechanical generation should produce a complete first draft from these inputs; review confirms overlay narrative and round-trip status accuracy.
+The composer + CI workflows are already in place; this tier documents their output as deployed artefacts.

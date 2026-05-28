@@ -107,7 +107,7 @@ docs/manual/logical/
 ## Out of scope for this tier
 
 - Business-language narrative — see [`concept-model-ia.md`](./concept-model-ia.md).
-- JSON paths, BASPI5 overlay bindings, wire-format field names — see [`physical-database-ia.md`](./physical-database-ia.md).
+- Deployment topology, named-graph layout, derived consumer profiles, BASPI5 overlay composition — see [`physical-database-ia.md`](./physical-database-ia.md).
 - OWL / SHACL / SKOS / Turtle syntax — see [`physical-ontology-ia.md`](./physical-ontology-ia.md).
 
 ## Worked-template excerpt (one entity, schematic)
@@ -167,11 +167,12 @@ erDiagram
 
 ## Generation discipline
 
-Logical-tier files generate from:
+Logical-tier files generate mechanically from the source TTLs only:
 
-- `docs/ontology/odr/*.md` — for entity inventory, ICs, hard cases (cross-checked against Concept-tier files)
-- `source/03-standards/ontology/opda-<module>.ttl` — for the canonical attribute set (each `owl:DatatypeProperty` / `owl:ObjectProperty` becomes one row)
-- `source/03-standards/ontology/opda-<module>-shapes.ttl` — for cardinalities (`sh:minCount` / `sh:maxCount` → `cardinality` column)
-- `source/03-standards/ontology/opda-vocabularies.ttl` — for enumeration members + per-scheme metadata
+- `source/03-standards/ontology/opda-<module>.ttl` — entity inventory (one entity per `owl:Class`); canonical attribute set (one row per `owl:DatatypeProperty` / `owl:ObjectProperty` with `rdfs:domain` matching the entity); identity criterion paraphrase from `rdfs:comment` "IC:" clause; UFO meta-category from `skos:scopeNote`
+- `source/03-standards/ontology/opda-<module>-shapes.ttl` — cardinalities (`sh:minCount` / `sh:maxCount` → `cardinality` column); identity-key column (Cat 1 IdentityKey shapes flag attributes as identity-bearing); constraint rows (each shape with severity tier); derived-attribute rows (each `sh:rule` SHACL-AF rule)
+- `source/03-standards/ontology/opda-vocabularies.ttl` — enumeration member tables + per-scheme metadata (`opda:ufoCategory`, `dct:source`, `opda:hasSteward`)
 
-Mechanical generation should produce a complete first draft from these inputs; review confirms naming and constraint-prose voice.
+**The ODR corpus is not a source** — it is the modelling-decision audit trail; the A9 per-kind discipline embedded the IC + hard cases + UFO citation directly in the TTL's `rdfs:comment` + `skos:scopeNote` (per [ADR-0007 §"A9 per-kind discipline output"](../adr/ADR-0007-ontology-generator-specification.md)). The PDTF JSON Schemas are upstream input to the Council programme, not a source for this tier.
+
+Generation produces a complete first draft from the TTLs alone; manual review tightens platform-independent naming + constraint-prose voice.
