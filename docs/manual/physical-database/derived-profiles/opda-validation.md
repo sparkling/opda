@@ -1,3 +1,9 @@
+---
+kind: derived-profile
+tier: physical-database
+title: opda-validation
+---
+
 # opda-validation
 
 **Status: spec only; composer activation pending.** The composer body has not yet been implemented (see [README.md](./README.md) §"Activation status"). The composition rules below are the contract the composer body will realise.

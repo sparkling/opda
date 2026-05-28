@@ -1,3 +1,12 @@
+---
+entityUri: opda:GeneratorRun
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Generator Run
+---
+
 # Generator Run
 
 A Generator Run is a single execution of OPDA's `opda-gen` build pipeline that produced a specific set of emitted ontology files.

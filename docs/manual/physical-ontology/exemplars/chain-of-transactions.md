@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, transaction, chain]
+entityUri: opda:ChainOfTransactions
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/chain-of-transactions.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- transaction
+- chain
+tier: physical-ontology
+title: chain-of-transactions
 ---
 
 # chain-of-transactions

@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+tier: physical-database
+title: Governance — deployment view
+---
+
 # Governance — deployment view
 
 The Governance module is the smallest business module by triple count (54 across three TTLs). It carries the **DPV mapping records** that link OPDA kinds to GDPR personal-data categories — the load-bearing surface for the consent / data-category / data-subject-rights affordances that the UI consumer profile exposes.

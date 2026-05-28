@@ -1,3 +1,12 @@
+---
+entityUri: opda:Seller
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Seller
+---
+
 # Seller
 
 A Seller is the role borne by the party disposing of a Property in a Transaction. Seller is a Role Mixin: it can be borne by a Person *or* an Organisation, and it gets its identity from the (Transaction, bearer) pair.

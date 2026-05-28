@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, vocabularies, skos, energy-rating]
+entityUri: opda:CurrentEnergyRating
+kind: scheme
+sourceTtl: source/03-standards/ontology/opda-vocabularies.ttl
+status: proposed
+tags:
+- physical-ontology
+- vocabularies
+- skos
+- energy-rating
+tier: physical-ontology
+title: opda:CurrentEnergyRatingScheme
 ---
 
 # opda:CurrentEnergyRatingScheme

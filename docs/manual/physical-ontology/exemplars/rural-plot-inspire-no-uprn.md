@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, address]
+entityUri: opda:RuralPlotInspireNoUprn
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/rural-plot-inspire-no-uprn.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- address
+tier: physical-ontology
+title: rural-plot-inspire-no-uprn
 ---
 
 # rural-plot-inspire-no-uprn

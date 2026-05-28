@@ -1,3 +1,12 @@
+---
+entityUri: opda:LegalEstate
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Legal Estate
+---
+
 # Legal Estate
 
 A Legal Estate is the **bundle of legal rights** vested in a Property — Freehold, Leasehold, Commonhold, or a managed variant. It is the answer to "what does one *own* when one owns this Property?".

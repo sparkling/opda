@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, transaction, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+status: proposed
+tags:
+- physical-ontology
+- transaction
+- classes
+- owl
+tier: physical-ontology
+title: Transaction classes
 ---
 
 # Transaction classes

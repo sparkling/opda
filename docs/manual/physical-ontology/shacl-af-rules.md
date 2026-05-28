@@ -1,7 +1,14 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, shacl-af, sparql, non-blocking-rules]
+kind: cross-cutting
+status: proposed
+tags:
+- physical-ontology
+- shacl-af
+- sparql
+- non-blocking-rules
+tier: physical-ontology
+title: SHACL-AF rules
 ---
 
 # SHACL-AF rules

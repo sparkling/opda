@@ -1,3 +1,12 @@
+---
+entityUri: opda:ElectronicRecordEvidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Electronic Record Evidence
+---
+
 # Electronic Record Evidence
 
 An Electronic Record Evidence is a structured record retrieved by API from an authoritative source — for example, a tax record from HMRC's API or a registration record from Companies House.

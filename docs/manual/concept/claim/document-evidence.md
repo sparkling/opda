@@ -1,3 +1,12 @@
+---
+entityUri: opda:DocumentEvidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Document Evidence
+---
+
 # Document Evidence
 
 A Document Evidence is a paper or scanned artefact issued by an authoritative source — for example, a grant of probate issued by HM Courts and Tribunals Service.

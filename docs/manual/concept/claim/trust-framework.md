@@ -1,3 +1,12 @@
+---
+entityUri: opda:TrustFramework
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Trust Framework
+---
+
 # Trust Framework
 
 A Trust Framework is a **governance regime** that scopes claim validity — for example, the UK Property Data Trust Framework. A Verification Activity cites its Trust Framework so consumers know under which governance the Claim was verified.

@@ -1,3 +1,12 @@
+---
+entityUri: opda:Property
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: Property
+---
+
 # Property
 
 ## Summary

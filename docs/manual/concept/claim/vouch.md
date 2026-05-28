@@ -1,3 +1,12 @@
+---
+entityUri: opda:Vouch
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Vouch
+---
+
 # Vouch
 
 Vouch is the **short-name alias** for [Vouch Evidence](./vouch-evidence.md). The two names refer to the same OWL identity — Vouch exists so worked-example data (the diagnostic exemplar set) can use the short form without losing alignment with the long-name canonical form that downstream shapes and annotations target.

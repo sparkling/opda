@@ -1,3 +1,12 @@
+---
+entityUri: opda:Evidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Evidence
+---
+
 # Evidence
 
 Evidence is the supporting artefact behind a Claim. OPDA recognises three deliberately-distinct kinds of evidence — Document, Electronic Record, and Vouch — and explicitly does *not* collapse them, because they carry different lifecycles, different verification mechanics, and different assurance ceilings.

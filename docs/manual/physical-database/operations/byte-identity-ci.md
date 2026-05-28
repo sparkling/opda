@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Byte-identity CI gate
+---
+
 # Byte-identity CI gate
 
 The byte-identity gate guarantees the 24 committed TTLs at `source/03-standards/ontology/` plus the overlay profile at `source/03-standards/ontology/profiles/baspi5.ttl` are **bit-for-bit reproducible** from the source via the canonical serialiser. A second `opda-gen emit` run produces output that `diff -rq` reports as identical to the committed corpus, or the gate fails and CI blocks the commit.

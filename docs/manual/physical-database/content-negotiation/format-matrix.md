@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Format matrix
+---
+
 # Format matrix
 
 Per-resource format availability against the OPDA namespace `https://w3id.org/opda/*`. The 302 redirect via W3C PICG resolves each URL to the OPDA institutional domain (`https://openpropdata.org.uk/ontology/`); the matrix below shows what the origin server returns at the redirect target per `Accept` header.

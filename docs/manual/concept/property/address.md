@@ -1,3 +1,12 @@
+---
+entityUri: opda:Address
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Address
+---
+
 # Address
 
 An Address is a socially-recognised locator for a Property, constructed by an issuing authority — Royal Mail (postal), OS AddressBase (UPRN), HMLR (title address), or INSPIRE (geospatial). The Address persists as a record-entity in that authority's stewardship.

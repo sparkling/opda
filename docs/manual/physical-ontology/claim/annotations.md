@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, claim, annotations, dpv]
+entityUri: opda:Annotations
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim-annotations.ttl
+status: proposed
+tags:
+- physical-ontology
+- claim
+- annotations
+- dpv
+tier: physical-ontology
+title: Claim annotations
 ---
 
 # Claim annotations

@@ -1,3 +1,12 @@
+---
+entityUri: opda:Proprietor
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Proprietor
+---
+
 # Proprietor
 
 A Proprietor is the **legal owner** of a Property as named in a Registered Title. Proprietor is a Role: it is borne by a Person (or, under a named specialisation, by an Organisation) and gets its identity from that bearer.

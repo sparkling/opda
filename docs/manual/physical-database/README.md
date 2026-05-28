@@ -16,6 +16,10 @@ OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six m
 
 A build-step composer ([ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md)) projects the 24 source TTLs into **three derived consumer profiles** — `opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl` — and the deployment serves each via HTTP content negotiation.
 
+## See also: Modelling section
+
+The [PDTF overlays](/modelling/overlays) and [JSON-LD mappings](/modelling/jsonld-mappings) pages in the Modelling section cover the schema-layer artefacts that correspond to what is deployed here. The PDTF overlays page catalogues the 34 JSON Schema overlay files whose per-overlay ontology profiles are deployed as named graphs from this tier. The JSON-LD mappings page covers the authoring of the `@context` files that underpin the content-negotiation responses this tier serves.
+
 ## Reading order
 
 1. Start with this tier overview — deployment topology + named-graph catalogue at a glance (below).

@@ -1,3 +1,12 @@
+---
+entityUri: opda:EpcCertificate
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: concept
+title: EPC Certificate
+---
+
 # EPC Certificate
 
 An EPC Certificate is an **Energy Performance Certificate** — a DESNZ-governed authority-retrieved artefact recording a Property's energy-efficiency rating.

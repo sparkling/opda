@@ -1,3 +1,12 @@
+---
+entityUri: opda:Relator
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Relator
+---
+
 # Relator
 
 A Relator is a relational kind: it stands between two or more parties and carries properties that don't belong to any single party. A Relator's existence is *founded* by an external event — without that founding event, the Relator does not exist.

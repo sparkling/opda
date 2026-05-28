@@ -1,3 +1,12 @@
+---
+entityUri: opda:VerificationActivity
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: logical
+title: Verification Activity
+---
+
 # Verification Activity
 
 ## Summary

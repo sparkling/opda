@@ -1,3 +1,12 @@
+---
+entityUri: opda:AssuranceLevelScheme
+kind: scheme
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: logical
+title: AssuranceLevelScheme
+---
+
 # AssuranceLevelScheme
 
 ## Summary

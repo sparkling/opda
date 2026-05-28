@@ -1,3 +1,12 @@
+---
+entityUri: opda:VouchEvidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: logical
+title: Vouch Evidence
+---
+
 # Vouch Evidence
 
 ## Summary

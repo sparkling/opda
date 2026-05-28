@@ -1,3 +1,12 @@
+---
+entityUri: opda:Buyer
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: Buyer
+---
+
 # Buyer
 
 ## Summary

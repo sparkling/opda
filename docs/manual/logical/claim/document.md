@@ -1,3 +1,12 @@
+---
+entityUri: opda:Document
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: logical
+title: Document
+---
+
 # Document
 
 ## Summary

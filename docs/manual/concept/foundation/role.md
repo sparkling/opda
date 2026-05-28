@@ -1,3 +1,12 @@
+---
+entityUri: opda:Role
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Role
+---
+
 # Role
 
 A Role is a part you play — borne by exactly one underlying Kind of party. A Proprietor is a Role borne by a Person (or, under a named specialisation, by an Organisation — but never by both kinds simultaneously).

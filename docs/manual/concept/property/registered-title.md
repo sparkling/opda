@@ -1,3 +1,12 @@
+---
+entityUri: opda:RegisteredTitle
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Registered Title
+---
+
 # Registered Title
 
 A Registered Title is the **HMLR title-register record** documenting a Legal Estate. It is the registry's representation of the estate, not the estate itself.

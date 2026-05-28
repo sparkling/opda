@@ -1,3 +1,12 @@
+---
+entityUri: opda:Transaction
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: concept
+title: Transaction
+---
+
 # Transaction
 
 A Transaction is the **binding** that links Sellers, Buyers, and the Legal Estate being conveyed, founded by a transaction-starting event (typically offer acceptance). It is a Relator — a thing-in-its-own-right with its own identity and properties.

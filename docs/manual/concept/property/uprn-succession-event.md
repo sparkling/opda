@@ -1,3 +1,12 @@
+---
+entityUri: opda:UprnSuccessionEvent
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: UPRN Succession Event
+---
+
 # UPRN Succession Event
 
 A UPRN Succession Event is the reified record of an administrative re-numbering of a Property's UPRN (Unique Property Reference Number, assigned by OS AddressBase). The Property's identity **persists** through the succession.

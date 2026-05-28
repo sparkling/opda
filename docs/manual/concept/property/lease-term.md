@@ -1,3 +1,12 @@
+---
+entityUri: opda:LeaseTerm
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Lease Term
+---
+
 # Lease Term
 
 A Lease Term is the **time interval bounding a leasehold tenure** — its beginning, its duration (or end), and any intervening modifications.

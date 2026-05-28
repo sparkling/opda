@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, property]
+entityUri: opda:UnregisteredPreFirstRegistrationHouse
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/unregistered-pre-first-registration-house.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- property
+tier: physical-ontology
+title: unregistered-pre-first-registration-house
 ---
 
 # unregistered-pre-first-registration-house

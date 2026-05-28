@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, foundation, shacl, meta-shapes]
+entityUri: opda:MetaShapes
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- foundation
+- shacl
+- meta-shapes
+tier: physical-ontology
+title: Foundation meta-shapes
 ---
 
 # Foundation meta-shapes

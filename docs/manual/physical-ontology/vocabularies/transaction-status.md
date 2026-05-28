@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, vocabularies, skos, transaction-status]
+entityUri: opda:TransactionStatus
+kind: scheme
+sourceTtl: source/03-standards/ontology/opda-vocabularies.ttl
+status: proposed
+tags:
+- physical-ontology
+- vocabularies
+- skos
+- transaction-status
+tier: physical-ontology
+title: opda:TransactionStatusScheme
 ---
 
 # opda:TransactionStatusScheme

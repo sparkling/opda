@@ -1,3 +1,12 @@
+---
+entityUri: opda:Organisation
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: Organisation
+---
+
 # Organisation
 
 ## Summary

@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, vocabularies, skos, role]
+entityUri: opda:Role
+kind: scheme
+sourceTtl: source/03-standards/ontology/opda-vocabularies.ttl
+status: proposed
+tags:
+- physical-ontology
+- vocabularies
+- skos
+- role
+tier: physical-ontology
+title: opda:RoleScheme
 ---
 
 # opda:RoleScheme

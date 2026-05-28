@@ -1,3 +1,12 @@
+---
+entityUri: opda:DpvMappingRecord
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+tier: concept
+title: DPV Mapping Record
+---
+
 # DPV Mapping Record
 
 A DPV Mapping Record is a **mapping** from an OPDA Kind class to its baseline personal-data category under the Data Privacy Vocabulary — for example, *Person* → *Name*, *Claim* → *OfficialID*. Variant-conditional refinements can be attached for kinds whose PII profile varies by context.

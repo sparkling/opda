@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Round-trip MVP CI gate
+---
+
 # Round-trip MVP CI gate
 
 The round-trip gate is the **MVP gate** for the OPDA ontology-implementation programme per [ODR-0010 §Q7](../../../ontology/odr/) and [ODR-0003 §"Programme retirement criterion" condition (i)](../../../ontology/odr/). It guarantees that BASPI5 instance data validates against the BASPI5 overlay profile + foundation + module shape graphs without false positives or false negatives across the 15 diagnostic exemplars. **Three layers** run in two GitHub Actions workflows:

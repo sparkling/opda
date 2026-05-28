@@ -1,3 +1,12 @@
+---
+entityUri: opda:LeaseExtensionEvent
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: Lease Extension Event
+---
+
 # Lease Extension Event
 
 ## Summary

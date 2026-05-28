@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, descriptive, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- descriptive
+- shacl
+- shapes
+tier: physical-ontology
+title: Descriptive shapes
 ---
 
 # Descriptive shapes

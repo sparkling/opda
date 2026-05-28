@@ -1,3 +1,12 @@
+---
+entityUri: opda:Person
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Person
+---
+
 # Person
 
 A Person is a natural person — an individual human being. Person is the anchor for PII (Personally Identifiable Information) regimes in OPDA: it is where GDPR Article 5–10 lawful-basis discipline lands.

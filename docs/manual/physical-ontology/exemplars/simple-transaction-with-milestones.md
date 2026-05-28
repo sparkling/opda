@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, transaction, milestones]
+entityUri: opda:SimpleTransactionWithMilestones
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/simple-transaction-with-milestones.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- transaction
+- milestones
+tier: physical-ontology
+title: simple-transaction-with-milestones
 ---
 
 # simple-transaction-with-milestones

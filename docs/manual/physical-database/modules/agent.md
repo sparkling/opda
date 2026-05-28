@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: physical-database
+title: Agent — deployment view
+---
+
 # Agent — deployment view
 
 The Agent module covers Person, Organisation, Proprietor + Proprietorship Relator, Seller / Buyer roles, NameChangeEvent. It is the second module bound by the BASPI5 overlay (Seller + Buyer participate as roles in the conveyancing form).

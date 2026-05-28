@@ -1,3 +1,12 @@
+---
+entityUri: opda:OffMainsDrainageSystemTypeScheme
+kind: scheme
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: OffMainsDrainageSystemTypeScheme
+---
+
 # OffMainsDrainageSystemTypeScheme
 
 ## Summary

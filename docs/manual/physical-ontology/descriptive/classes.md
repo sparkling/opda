@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, descriptive, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+status: proposed
+tags:
+- physical-ontology
+- descriptive
+- classes
+- owl
+tier: physical-ontology
+title: Descriptive classes
 ---
 
 # Descriptive classes

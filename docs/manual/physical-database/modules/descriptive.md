@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: physical-database
+title: Descriptive — deployment view
+---
+
 # Descriptive — deployment view
 
 The Descriptive module covers EPCCertificate, Search, Survey, Valuation, Comparable — the descriptive-record entities that surround a Property and underpin BASPI5's energy-performance, search, and survey form fields. EPCCertificate is the one Descriptive class bound by the BASPI5 overlay today.

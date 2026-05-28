@@ -49,6 +49,10 @@ Per ADR-0011 (module TBox emission) + ADR-0010 (SKOS vocabulary emission) + ADR-
 
 Profiles are loaded after the base ontology + shapes; they compose without modifying upstream graphs.
 
+## See also: Modelling section
+
+The [Ontology (OWL)](/modelling/ontology), [SHACL shapes](/modelling/shacl-shapes), and [Concept taxonomy (SKOS)](/modelling/concept-taxonomy) pages in the Modelling section describe the design intent and authoring approach for the artefacts documented in this tier. This tier is the generator-emitted realisation (verbatim Turtle from source TTLs); those pages are the editorial framing and design rationale.
+
 ## Tier overview
 
 ![physical-ontology-tier-file-layout-and-owlimports-chain](diagrams/README/physical-ontology-tier-file-layout-and-owlimports-chain.png)

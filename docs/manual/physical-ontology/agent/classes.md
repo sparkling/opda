@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, agent, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+status: proposed
+tags:
+- physical-ontology
+- agent
+- classes
+- owl
+tier: physical-ontology
+title: Agent classes
 ---
 
 # Agent classes

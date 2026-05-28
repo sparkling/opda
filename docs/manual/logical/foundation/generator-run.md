@@ -1,3 +1,12 @@
+---
+entityUri: opda:GeneratorRun
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: logical
+title: Generator Run
+---
+
 # Generator Run
 
 ## Summary

@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, claim, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+status: proposed
+tags:
+- physical-ontology
+- claim
+- classes
+- owl
+tier: physical-ontology
+title: Claim classes
 ---
 
 # Claim classes

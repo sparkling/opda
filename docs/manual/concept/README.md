@@ -10,6 +10,10 @@ If you have ever asked questions like:
 
 then this tier is for you. Identity Criterion (IC) is the load-bearing concept: it is the answer to the question *"when are two records about the same thing?"* — and every entity in this tier states its IC in business language.
 
+## See also: Modelling section
+
+The [Bounded contexts (DDD)](/modelling/bounded-contexts) and [Business glossary](/modelling/business-glossary) pages in the Modelling section are complementary editorial registers: the bounded-contexts page explains the DDD framing and industry context map that motivates this module structure; the business-glossary page is the pre-ontology SKOS seed (54 OPDA business terms + 500 schema-derived concepts) from which this tier's entity definitions grew.
+
 ## Reading order
 
 You can read this tier top-down (a guided tour) or jump straight to the entity you care about.

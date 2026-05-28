@@ -1,3 +1,12 @@
+---
+entityUri: opda:Organisation
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Organisation
+---
+
 # Organisation
 
 An Organisation is a corporate or unincorporated body party to a property transaction — a limited company, an LLP, a charity, a trust, a public body. Organisations can be Sellers, Buyers, Proprietors, and Conveyancers.

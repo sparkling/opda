@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, transaction, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- transaction
+- shacl
+- shapes
+tier: physical-ontology
+title: Transaction shapes
 ---
 
 # Transaction shapes

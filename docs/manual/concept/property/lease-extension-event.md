@@ -1,3 +1,12 @@
+---
+entityUri: opda:LeaseExtensionEvent
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Lease Extension Event
+---
+
 # Lease Extension Event
 
 A Lease Extension Event is the reified record of a statutory lease extension — in England & Wales, typically under the Leasehold Reform, Housing and Urban Development Act 1993. It mutates the Lease Term of an existing leasehold without dissolving the leasehold itself.

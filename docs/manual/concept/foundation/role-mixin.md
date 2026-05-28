@@ -1,3 +1,12 @@
+---
+entityUri: opda:RoleMixin
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Role Mixin
+---
+
 # Role Mixin
 
 A Role Mixin is a part you play — but unlike a Role, it can be borne by **more than one Kind of party**. A Seller is a Role Mixin borne by either a Person or an Organisation; the model does not assume Sellers are always natural persons.

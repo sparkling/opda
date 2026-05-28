@@ -1,3 +1,12 @@
+---
+entityUri: opda:CouncilTaxBandSchemeEw
+kind: scheme
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: CouncilTaxBandSchemeEW
+---
+
 # CouncilTaxBandSchemeEW
 
 ## Summary

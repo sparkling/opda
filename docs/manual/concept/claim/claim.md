@@ -1,3 +1,12 @@
+---
+entityUri: opda:Claim
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Claim
+---
+
 # Claim
 
 A Claim is a **verifiable assertion** — about a Property, about a Transaction, about a party — supported by evidence and given a trust grade through a Verification Activity.

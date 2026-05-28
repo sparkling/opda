@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, governance, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+status: proposed
+tags:
+- physical-ontology
+- governance
+- classes
+- owl
+tier: physical-ontology
+title: Governance classes
 ---
 
 # Governance classes

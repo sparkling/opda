@@ -1,3 +1,12 @@
+---
+entityUri: opda:RegisteredTitle
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: Registered Title
+---
+
 # Registered Title
 
 ## Summary

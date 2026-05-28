@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, transaction, annotations, dpv]
+entityUri: opda:Annotations
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction-annotations.ttl
+status: proposed
+tags:
+- physical-ontology
+- transaction
+- annotations
+- dpv
+tier: physical-ontology
+title: Transaction annotations
 ---
 
 # Transaction annotations

@@ -1,3 +1,12 @@
+---
+entityUri: opda:DiagnosticExemplar
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Diagnostic Exemplar
+---
+
 # Diagnostic Exemplar
 
 A Diagnostic Exemplar is a minimal worked-example dataset that exposes exactly one Identity-Criterion-bearing surface, used as input to a Council session's validation of that Identity Criterion.

@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, profiles, baspi5, overlay]
+kind: overlay-deployment
+sourceTtl: source/03-standards/ontology/profiles/baspi5.ttl
+status: proposed
+tags:
+- physical-ontology
+- profiles
+- baspi5
+- overlay
+tier: physical-ontology
+title: opda:Baspi5OverlayProfile
 ---
 
 # opda:Baspi5OverlayProfile

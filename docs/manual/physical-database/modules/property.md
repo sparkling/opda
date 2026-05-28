@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: physical-database
+title: Property — deployment view
+---
+
 # Property — deployment view
 
 The Property module is the **Identity-Criterion crux** of OPDA. Property, LegalEstate, RegisteredTitle, Address + variant-specific subclasses, Lease-Term, UPRNSuccessionEvent, LeaseExtensionEvent — the deployment graph for the Property module is the largest of the six business modules.

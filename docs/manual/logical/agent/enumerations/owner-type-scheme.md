@@ -1,3 +1,12 @@
+---
+entityUri: opda:OwnerTypeScheme
+kind: scheme
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: OwnerTypeScheme
+---
+
 # OwnerTypeScheme
 
 ## Summary

@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, agent, annotations, dpv]
+entityUri: opda:Annotations
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent-annotations.ttl
+status: proposed
+tags:
+- physical-ontology
+- agent
+- annotations
+- dpv
+tier: physical-ontology
+title: Agent annotations
 ---
 
 # Agent annotations

@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, address]
+entityUri: opda:FlatNoUprnNewlyConverted
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/flat-no-uprn-newly-converted.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- address
+tier: physical-ontology
+title: flat-no-uprn-newly-converted
 ---
 
 # flat-no-uprn-newly-converted

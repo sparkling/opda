@@ -1,3 +1,12 @@
+---
+entityUri: opda:Valuation
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: concept
+title: Valuation
+---
+
 # Valuation
 
 A Valuation is a **RICS-regulated professional valuation or an automated-model output** of a Property's market value. It is the basis for lender decisions, capital-gains calculations, and chain feasibility.

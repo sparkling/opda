@@ -1,3 +1,12 @@
+---
+entityUri: opda:VouchEvidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Vouch Evidence
+---
+
 # Vouch Evidence
 
 A Vouch Evidence is a **formal attestation** by a regulated professional — for example, an SRA-licensed solicitor vouching for a client's identity, or a regulated accountant vouching for source-of-funds.

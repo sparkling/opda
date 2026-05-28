@@ -1,3 +1,12 @@
+---
+entityUri: opda:NameChangeEvent
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: Name Change Event
+---
+
 # Name Change Event
 
 ## Summary

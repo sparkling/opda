@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Shared JSON-LD `@context`
+---
+
 # Shared JSON-LD `@context`
 
 OPDA serves a **single canonical JSON-LD `@context`** across every `Accept: application/ld+json` response, independent of which resource is requested. The context is published at `https://w3id.org/opda/context.jsonld` and embedded inline in every JSON-LD response.

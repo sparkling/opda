@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, descriptive, annotations, dpv]
+entityUri: opda:Annotations
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive-annotations.ttl
+status: proposed
+tags:
+- physical-ontology
+- descriptive
+- annotations
+- dpv
+tier: physical-ontology
+title: Descriptive annotations
 ---
 
 # Descriptive annotations

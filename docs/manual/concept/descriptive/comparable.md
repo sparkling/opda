@@ -1,3 +1,12 @@
+---
+entityUri: opda:Comparable
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: concept
+title: Comparable
+---
+
 # Comparable
 
 A Comparable is a **comparable-sale or comparable-rental record** supporting a Valuation — typically sourced from Land Registry Price Paid Data or VOA records.

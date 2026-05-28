@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, agent, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- agent
+- shacl
+- shapes
+tier: physical-ontology
+title: Agent shapes
 ---
 
 # Agent shapes

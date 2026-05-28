@@ -1,3 +1,12 @@
+---
+entityUri: opda:Buyer
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Buyer
+---
+
 # Buyer
 
 A Buyer is the role borne by the party acquiring a Property in a Transaction. Buyer is a Role Mixin: it can be borne by a Person *or* an Organisation, and it gets its identity from the (Transaction, bearer) pair.

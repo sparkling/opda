@@ -1,3 +1,12 @@
+---
+entityUri: opda:ValidationContext
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: logical
+title: Validation Context
+---
+
 # Validation Context
 
 ## Summary

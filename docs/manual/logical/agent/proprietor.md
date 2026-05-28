@@ -1,3 +1,12 @@
+---
+entityUri: opda:Proprietor
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: Proprietor
+---
+
 # Proprietor
 
 ## Summary

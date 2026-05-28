@@ -1,3 +1,12 @@
+---
+entityUri: opda:ElectronicRecordEvidence
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: logical
+title: Electronic Record Evidence
+---
+
 # Electronic Record Evidence
 
 ## Summary

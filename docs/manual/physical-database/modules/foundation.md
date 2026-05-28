@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: physical-database
+title: Foundation — deployment view
+---
+
 # Foundation — deployment view
 
 The foundation module is the base of every other module. It declares the OPDA namespace, the cross-cutting UFO meta-classes, the foundation meta-shapes (no-identity-override, three-rule interface contract, meta-shape justification), and the header-only annotation graph.

@@ -1,3 +1,12 @@
+---
+entityUri: opda:Milestone
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: concept
+title: Milestone
+---
+
 # Milestone
 
 A Milestone is a point — or an interval — in a Transaction's lifecycle: instruction, offer accepted, exchange, completion, registration, and the processes between them.

@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, property]
+entityUri: opda:RegisteredFreeholdHouse
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/registered-freehold-house.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- property
+tier: physical-ontology
+title: registered-freehold-house
 ---
 
 # registered-freehold-house

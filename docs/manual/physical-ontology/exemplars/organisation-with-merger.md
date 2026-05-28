@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, agent]
+entityUri: opda:OrganisationWithMerger
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/organisation-with-merger.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- agent
+tier: physical-ontology
+title: organisation-with-merger
 ---
 
 # organisation-with-merger

@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, claim, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- claim
+- shacl
+- shapes
+tier: physical-ontology
+title: Claim shapes
 ---
 
 # Claim shapes

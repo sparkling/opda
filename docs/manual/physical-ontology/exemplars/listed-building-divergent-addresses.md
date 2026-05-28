@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, address]
+entityUri: opda:ListedBuildingDivergentAddresses
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/listed-building-divergent-addresses.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- address
+tier: physical-ontology
+title: listed-building-divergent-addresses
 ---
 
 # listed-building-divergent-addresses

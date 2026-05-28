@@ -1,3 +1,12 @@
+---
+entityUri: opda:CentralHeatingFuelTypeScheme
+kind: scheme
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: CentralHeatingFuelTypeScheme
+---
+
 # CentralHeatingFuelTypeScheme
 
 ## Summary

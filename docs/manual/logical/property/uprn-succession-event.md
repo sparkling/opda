@@ -1,3 +1,12 @@
+---
+entityUri: opda:UprnSuccessionEvent
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: UPRN Succession Event
+---
+
 # UPRN Succession Event
 
 ## Summary

@@ -1,3 +1,12 @@
+---
+entityUri: opda:MilestoneKindScheme
+kind: scheme
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: logical
+title: MilestoneKindScheme
+---
+
 # MilestoneKindScheme
 
 ## Summary

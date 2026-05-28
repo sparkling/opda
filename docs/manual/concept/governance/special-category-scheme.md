@@ -1,3 +1,12 @@
+---
+entityUri: opda:SpecialCategoryScheme
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+tier: concept
+title: Special Category Scheme
+---
+
 # Special Category Scheme
 
 A Special Category Scheme is the **GDPR Article 10 / DPA 2018 special-category personal-data scheme** — flagging PII categories that carry elevated lawful-basis discipline (caution-or-conviction records; AML results; biometric data; race; religion; trade-union membership; health; sex life and orientation; political opinion; genetic data).

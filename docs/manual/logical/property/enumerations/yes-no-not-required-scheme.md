@@ -1,3 +1,12 @@
+---
+entityUri: opda:YesNoNotRequiredScheme
+kind: scheme
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: logical
+title: YesNoNotRequiredScheme
+---
+
 # YesNoNotRequiredScheme
 
 ## Summary

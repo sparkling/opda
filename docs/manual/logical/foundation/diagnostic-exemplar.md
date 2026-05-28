@@ -1,3 +1,12 @@
+---
+entityUri: opda:DiagnosticExemplar
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: logical
+title: Diagnostic Exemplar
+---
+
 # Diagnostic Exemplar
 
 ## Summary

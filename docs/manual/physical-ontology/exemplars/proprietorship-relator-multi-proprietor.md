@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, agent, relator]
+entityUri: opda:ProprietorshipRelatorMultiProprietor
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/proprietorship-relator-multi-proprietor.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- agent
+- relator
+tier: physical-ontology
+title: proprietorship-relator-multi-proprietor
 ---
 
 # proprietorship-relator-multi-proprietor

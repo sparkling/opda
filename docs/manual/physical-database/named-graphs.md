@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Per-named-graph layout
+---
+
 # Per-named-graph layout
 
 One section per named graph the deployment exposes. Triple counts measured by `rdflib.Graph().parse(<file>)` against the committed TTLs at HEAD. Load order resolves `owl:imports` chains; graphs without `owl:Ontology` declarations (`opda-classes.ttl`, `opda-vocabularies.ttl`) participate in the default-graph union and have no `owl:imports` of their own.

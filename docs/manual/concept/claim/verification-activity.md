@@ -1,3 +1,12 @@
+---
+entityUri: opda:VerificationActivity
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Verification Activity
+---
+
 # Verification Activity
 
 A Verification Activity is the **activity that produces a verified Claim from Evidence**. It records the verifier, the verification method, the completion timestamp, and the resulting Assurance Level.

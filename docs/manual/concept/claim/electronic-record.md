@@ -1,3 +1,12 @@
+---
+entityUri: opda:ElectronicRecord
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Electronic Record
+---
+
 # Electronic Record
 
 Electronic Record is the **short-name alias** for [Electronic Record Evidence](./electronic-record-evidence.md). The two names refer to the same OWL identity — Electronic Record exists so worked-example data (the diagnostic exemplar set) can use the short form without losing alignment with the long-name canonical form that downstream shapes and annotations target.

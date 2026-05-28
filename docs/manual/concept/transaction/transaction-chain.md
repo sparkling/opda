@@ -1,3 +1,12 @@
+---
+entityUri: opda:TransactionChain
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: concept
+title: Transaction Chain
+---
+
 # Transaction Chain
 
 A Transaction Chain is an aggregate of dependent Transactions linked by **buyer-also-seller overlap** — the buyer in one Transaction is the seller in the next, all the way up or down the chain.

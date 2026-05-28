@@ -1,3 +1,12 @@
+---
+entityUri: opda:Valuation
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: logical
+title: Valuation
+---
+
 # Valuation
 
 ## Summary

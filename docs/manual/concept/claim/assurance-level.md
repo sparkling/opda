@@ -1,3 +1,12 @@
+---
+entityUri: opda:AssuranceLevel
+kind: entity
+module: claim
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: concept
+title: Assurance Level
+---
+
 # Assurance Level
 
 An Assurance Level is the **quality grade** on a Claim's verification — Low, Substantial, or High, per the eIDAS framework adopted by OPDA.

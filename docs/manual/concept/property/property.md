@@ -1,3 +1,12 @@
+---
+entityUri: opda:Property
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property.ttl
+tier: concept
+title: Property
+---
+
 # Property
 
 A Property is the physical residential property — the bricks-and-mortar object: a house, a flat, a bungalow, a maisonette.

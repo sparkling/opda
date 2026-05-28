@@ -1,3 +1,12 @@
+---
+entityUri: opda:SpecialCategoryScheme
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+tier: logical
+title: Special Category Scheme
+---
+
 # Special Category Scheme
 
 ## Summary

@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, foundation, classes, owl]
+entityUri: opda:Classes
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+status: proposed
+tags:
+- physical-ontology
+- foundation
+- classes
+- owl
+tier: physical-ontology
+title: Foundation classes
 ---
 
 # Foundation classes

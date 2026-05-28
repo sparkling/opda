@@ -1,3 +1,12 @@
+---
+entityUri: opda:NameChangeEvent
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Name Change Event
+---
+
 # Name Change Event
 
 A Name Change Event is the reified record of a Person's name change — by deed-poll, by marriage, by gender recognition, or by other lawful means.

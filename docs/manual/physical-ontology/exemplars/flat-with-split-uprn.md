@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, property, uprn]
+entityUri: opda:FlatWithSplitUprn
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/flat-with-split-uprn.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- property
+- uprn
+tier: physical-ontology
+title: flat-with-split-uprn
 ---
 
 # flat-with-split-uprn

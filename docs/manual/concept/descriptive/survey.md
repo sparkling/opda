@@ -1,3 +1,12 @@
+---
+entityUri: opda:Survey
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: concept
+title: Survey
+---
+
 # Survey
 
 A Survey is an **authority-retrieved professional survey report** for a Property — for example, a RICS HomeBuyer Report or a Building Survey.

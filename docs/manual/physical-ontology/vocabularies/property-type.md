@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, vocabularies, skos, property-type]
+entityUri: opda:PropertyType
+kind: scheme
+sourceTtl: source/03-standards/ontology/opda-vocabularies.ttl
+status: proposed
+tags:
+- physical-ontology
+- vocabularies
+- skos
+- property-type
+tier: physical-ontology
+title: opda:PropertyTypeScheme
 ---
 
 # opda:PropertyTypeScheme

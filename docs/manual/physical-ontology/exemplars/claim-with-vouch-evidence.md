@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, claim, evidence]
+entityUri: opda:ClaimWithVouchEvidence
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/claim-with-vouch-evidence.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- claim
+- evidence
+tier: physical-ontology
+title: claim-with-vouch-evidence
 ---
 
 # claim-with-vouch-evidence

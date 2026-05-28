@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, vocabularies, skos, participant-status]
+entityUri: opda:ParticipantStatus
+kind: scheme
+sourceTtl: source/03-standards/ontology/opda-vocabularies.ttl
+status: proposed
+tags:
+- physical-ontology
+- vocabularies
+- skos
+- participant-status
+tier: physical-ontology
+title: opda:ParticipantStatusScheme
 ---
 
 # opda:ParticipantStatusScheme

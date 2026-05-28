@@ -1,3 +1,12 @@
+---
+entityUri: opda:ValidationContext
+kind: entity
+module: foundation
+sourceTtl: source/03-standards/ontology/opda-foundation.ttl
+tier: concept
+title: Validation Context
+---
+
 # Validation Context
 
 A Validation Context names the **overlay profile** — for example, BASPI5 — under which a record was validated. It is the answer to "this field is required" with the qualifier "required *under which profile*".

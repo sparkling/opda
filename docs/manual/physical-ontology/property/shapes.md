@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, property, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- property
+- shacl
+- shapes
+tier: physical-ontology
+title: Property shapes
 ---
 
 # Property shapes

@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: physical-database
+title: Transaction — deployment view
+---
+
 # Transaction — deployment view
 
 The Transaction module covers the Transaction Relator, Milestones, and TransactionChain. It is the smallest of the six business modules by triple count (82 triples across three TTLs). No overlay currently binds Transaction classes; BASPI5 references Transaction implicitly via Property + Seller + Buyer, but does not target Transaction shapes directly.

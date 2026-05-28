@@ -1,3 +1,10 @@
+---
+kind: per-module-deployment
+sourceTtl: source/03-standards/ontology/opda-claim.ttl
+tier: physical-database
+title: Claim — deployment view
+---
+
 # Claim — deployment view
 
 The Claim module covers Claim, three Evidence subtypes (Document, ElectronicRecord, Vouch), VerificationActivity, AssuranceLevel, and TrustFramework. It is the trust-and-evidence substrate of OPDA — every other module's data ultimately rests on Claims with attached Evidence and a measurable AssuranceLevel.

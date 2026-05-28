@@ -1,3 +1,9 @@
+---
+kind: derived-profile
+tier: physical-database
+title: opda-inference
+---
+
 # opda-inference
 
 **Status: spec only; composer activation pending.** See [README.md](./README.md) §"Activation status".

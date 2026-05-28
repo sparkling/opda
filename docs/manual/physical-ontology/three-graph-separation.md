@@ -1,7 +1,14 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, three-graph-separation, ci, governance]
+kind: cross-cutting
+status: proposed
+tags:
+- physical-ontology
+- three-graph-separation
+- ci
+- governance
+tier: physical-ontology
+title: Three-graph separation
 ---
 
 # Three-graph separation

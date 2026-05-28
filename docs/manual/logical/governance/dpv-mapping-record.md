@@ -1,3 +1,12 @@
+---
+entityUri: opda:DpvMappingRecord
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance.ttl
+tier: logical
+title: DPV Mapping Record
+---
+
 # DPV Mapping Record
 
 ## Summary

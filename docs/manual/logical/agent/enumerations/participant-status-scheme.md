@@ -1,3 +1,12 @@
+---
+entityUri: opda:ParticipantStatusScheme
+kind: scheme
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: logical
+title: ParticipantStatusScheme
+---
+
 # ParticipantStatusScheme
 
 ## Summary

@@ -1,3 +1,9 @@
+---
+kind: operations
+tier: physical-database
+title: Three-graph CI gate
+---
+
 # Three-graph CI gate
 
 The three-graph gate enforces [ODR-0004 §3a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)'s **five-part class / shape / annotation separation contract** across the committed corpus. The contract says: classes, shapes, and annotations live in different graphs; no graph contains material that belongs to another. The gate runs five SHACL-AF queries against the emitted directory and fails on any violation.

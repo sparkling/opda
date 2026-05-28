@@ -14,6 +14,10 @@ This tier shows the entity-relationship structure of OPDA's ontology in platform
 
 OPDA's Logical-tier inventory: 41 entities (including three short-name aliases under `owl:equivalentClass`) across seven modules + 23 enumeration schemes.
 
+## See also: Modelling section
+
+The [Data dictionary](/modelling/data-dictionary) page in the Modelling section is the complementary schema-level register: 1,538 PDTF schema-derived data elements (broad, schema-level, with suggested RDF URIs) sourced from the 16 canonical overlays and OPDA Glossary spreadsheets. This tier is the refined ontology reference (41 entities, deep, generator-emitted); the data dictionary is the raw schema material it grew from.
+
 ## Reading order
 
 1. This tier overview — module catalogue, entity index, master ER diagram (below)

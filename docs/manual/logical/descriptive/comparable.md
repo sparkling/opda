@@ -1,3 +1,12 @@
+---
+entityUri: opda:Comparable
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: logical
+title: Comparable
+---
+
 # Comparable
 
 ## Summary

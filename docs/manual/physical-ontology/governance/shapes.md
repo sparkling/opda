@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, governance, shacl, shapes]
+entityUri: opda:Shapes
+kind: entity
+module: governance
+sourceTtl: source/03-standards/ontology/opda-governance-shapes.ttl
+status: proposed
+tags:
+- physical-ontology
+- governance
+- shacl
+- shapes
+tier: physical-ontology
+title: Governance shapes
 ---
 
 # Governance shapes

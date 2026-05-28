@@ -1,7 +1,14 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, severity-tiers, shacl, governance]
+kind: cross-cutting
+status: proposed
+tags:
+- physical-ontology
+- severity-tiers
+- shacl
+- governance
+tier: physical-ontology
+title: Severity tiers
 ---
 
 # Severity tiers

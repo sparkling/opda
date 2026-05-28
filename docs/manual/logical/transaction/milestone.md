@@ -1,3 +1,12 @@
+---
+entityUri: opda:Milestone
+kind: entity
+module: transaction
+sourceTtl: source/03-standards/ontology/opda-transaction.ttl
+tier: logical
+title: Milestone
+---
+
 # Milestone
 
 ## Summary

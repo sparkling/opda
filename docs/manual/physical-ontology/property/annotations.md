@@ -1,7 +1,17 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, property, annotations, dpv]
+entityUri: opda:Annotations
+kind: entity
+module: property
+sourceTtl: source/03-standards/ontology/opda-property-annotations.ttl
+status: proposed
+tags:
+- physical-ontology
+- property
+- annotations
+- dpv
+tier: physical-ontology
+title: Property annotations
 ---
 
 # Property annotations

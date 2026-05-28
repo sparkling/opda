@@ -1,7 +1,15 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, agent]
+entityUri: opda:PersonWithNameChange
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/person-with-name-change.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- agent
+tier: physical-ontology
+title: person-with-name-change
 ---
 
 # person-with-name-change

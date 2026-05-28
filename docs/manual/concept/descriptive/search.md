@@ -1,3 +1,12 @@
+---
+entityUri: opda:Search
+kind: entity
+module: descriptive
+sourceTtl: source/03-standards/ontology/opda-descriptive.ttl
+tier: concept
+title: Search
+---
+
 # Search
 
 A Search is a **local-authority or environmental search result** — for example, a CON29R local-authority search, an LLC1 land-charges search, a flood search, or a coal-mining search.

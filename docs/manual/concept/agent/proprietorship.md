@@ -1,3 +1,12 @@
+---
+entityUri: opda:Proprietorship
+kind: entity
+module: agent
+sourceTtl: source/03-standards/ontology/opda-agent.ttl
+tier: concept
+title: Proprietorship
+---
+
 # Proprietorship
 
 A Proprietorship is the **binding** that links one or more Proprietors to a Registered Title. It is a Relator: it carries its own properties (joint tenancy vs tenants in common; ownership shares; registration date) that don't belong to any single Proprietor.

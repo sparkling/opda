@@ -1,7 +1,16 @@
 ---
-status: proposed
 date: 2026-05-28
-tags: [physical-ontology, exemplars, transaction, lease]
+entityUri: opda:LeaseExtensionTransaction
+kind: exemplar
+sourceTtl: source/03-standards/ontology/exemplars/lease-extension-transaction.ttl
+status: proposed
+tags:
+- physical-ontology
+- exemplars
+- transaction
+- lease
+tier: physical-ontology
+title: lease-extension-transaction
 ---
 
 # lease-extension-transaction
