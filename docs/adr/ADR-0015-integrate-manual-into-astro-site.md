@@ -335,8 +335,24 @@ The ADR is honoured when ALL of these hold:
 
 Manual confirmation test: `npm run build && npx serve dist && open http://localhost:3000/manual/concept/property/property` — verifies the page renders, the sidebar shows the manual section, the breadcrumb path is correct, the master-entity diagram renders (mermaid + ELK), the dark-mode toggle works.
 
+## Implementation programme
+
+This ADR is the architectural anchor; the engineering work to realise its `### Confirmation` 10-item gate is sequenced as a 5-ADR programme. **The implementing session reads [`docs/plan/manual-astro-integration.md`](../plan/manual-astro-integration.md) first** — that plan is the handover doc for cold-starting the implementation.
+
+| Phase | ADR | Realises ADR-0015 §Confirmation | Dependency |
+|---|---|---|---|
+| 1 — Bootstrap | [ADR-0016 — Manual content-collection wiring + site nav](./ADR-0016-manual-content-collection-wiring.md) | #1 site.ts; #2 collection; #3 routes; #10 build | ADR-0015 |
+| 2 — Components | [ADR-0017 — Manual component library (12 components + accent tokens)](./ADR-0017-manual-component-library.md) | #4 components; #6 dark/light; #9 token discipline | ADR-0016 |
+| 3 — Plumbing | [ADR-0018 — Manual remark + rehype plugins](./ADR-0018-manual-remark-rehype-plugins.md) | #5 Diagram.astro unchanged; #7 ELK renders; #8 no _export/ refs | ADR-0016 |
+| 4 — Handshake | [ADR-0019 — Modelling-section / manual handshake](./ADR-0019-modelling-manual-handshake.md) | (orthogonal — navigation coherence) | ADR-0016, ADR-0017 |
+| 5 — Regeneration | [ADR-0020 — Generator emission of manual frontmatter](./ADR-0020-manual-generator-frontmatter.md) | implicit (frontmatter ownership) | ADR-0017, ADR-0018 |
+
+Phases 2 + 3 run in parallel after Phase 1; Phase 4 + 5 gate on the parallel pair. Validation discipline (per programme plan §8) mirrors the ontology programme's §9: independent validator per ADR; PASS gate on soundness + completeness + cross-ADR consistency + report committed.
+
 ## More Information
 
+* **Implementation programme plan (handover doc):** [`docs/plan/manual-astro-integration.md`](../plan/manual-astro-integration.md). **Read this first when picking up the work in a new session** — it sequences the 5 sub-ADRs, defines validation discipline, names inherited open items, and gives the implementing session its reading order.
+* **Sister implementation programme (precedent):** [`docs/plan/ontology-implementation.md`](../plan/ontology-implementation.md) — the 7-ADR ontology programme this plan's swarm + validation pattern is modelled on.
 * **Predecessor ADRs:** [ADR-0003 — Idiomatic Astro refactor](./ADR-0003-idiomatic-astro-refactor.md) (site architecture); [ADR-0002 — Folder hierarchy + slug taxonomy](./ADR-0002-folder-hierarchy-and-slug-taxonomy.md) (URL convention); [ADR-0007 — Ontology generator specification](./ADR-0007-ontology-generator-specification.md) (the regenerator); [ADR-0011 — Module TBox emission](./ADR-0011-module-tbox-emission.md) (source of entity content).
 * **IA blueprint:** [`docs/information-architecture/`](../information-architecture/) — defines the 4 tier structures the integration mirrors.
 * **Content source:** [`docs/manual/README.md`](../manual/README.md) — the canonical 228-markdown content surface this ADR integrates.
@@ -348,4 +364,4 @@ Manual confirmation test: `npm run build && npx serve dist && open http://localh
   - PDF export from the site (the local `_export/` workflow handles offline PDF; the Astro site is HTML-only).
   - Per-overlay route templates for TA6 / NTS / LPE1 etc. (defer until those overlay profiles emit; ADR-0013 Phase-2/3 work).
   - JSON-LD HTTP content negotiation for `https://w3id.org/opda/<EntityLocalName>` URI dereference (separate deployment-layer work; the manual page is the HTML landing target for those redirects but the redirect setup itself is in ADR-0006).
-  - Migrating the existing `src/pages/modelling/` content into content collections (out of scope; modelling pages stay hand-authored).
+  - Migrating the existing `src/pages/modelling/` content into content collections — owned by [ADR-0019](./ADR-0019-modelling-manual-handshake.md) per-page decision.
