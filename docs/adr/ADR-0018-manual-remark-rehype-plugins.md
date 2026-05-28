@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-28
 tags: [website, astro, remark, rehype, mermaid, build-pipeline]
 supersedes: []
@@ -40,15 +40,24 @@ Realises ADR-0015 `§Confirmation` criteria 5 (`Diagram.astro` unchanged — sit
 
 ## Decision Outcome
 
-*TBD by implementing session per programme plan §7.* Expected outcome: option A; both plugins shipped at `src/lib/remark/` + wired in `astro.config.mjs` + tested with fixture markdowns from `docs/manual/`.
+Chosen option: **A — Two custom plugins** at `src/lib/remark/unwrap-mermaid-details.ts` + `src/lib/remark/frontmatter-uri-extraction.ts`, wired in `astro.config.mjs` via `markdown.remarkPlugins` + `markdown.rehypePlugins`.
+
+**`remarkUnwrapMermaidDetails`** performs a linear pass over the mdast root's children. For each `<details><summary>Mermaid Source</summary>` open-html node followed by a `code: mermaid` node followed by `</details>`, it: strips the immediately-preceding diagram image reference (both markdown `![]()` and raw HTML `<img src="diagrams/...">` forms), and replaces the three nodes with `<div class="mermaid">…</div>`. The entire mermaid source (including ELK YAML frontmatter) is preserved verbatim inside the div.
+
+**`rehypeFrontmatterUriExtraction`** derives the entry id from `file.path`, calls `deriveKind()` (Phase 1's helper), and for `entity`/`scheme` entries: searches the hast tree for the first `opda:<Name>` heading, falling back to filename-based UpperCamelCase derivation. The derived URI is written to `file.data.astro.frontmatter.entityUri`. Exemplars are skipped (no stable URI). Idempotent.
 
 ### Consequences
 
-*TBD by implementing session.*
+* Good, because the build now emits zero `<details><summary>Mermaid Source</summary>` blocks and zero `<img src="diagrams/...">` PNG references — both offline-only artefacts are fully suppressed in the site output.
+* Good, because 292 pages carry `<div class="mermaid">` blocks that the existing `client.js` loader picks up client-side — dark-mode toggling and ELK layout work without any additional wiring.
+* Good, because the two plugins together are ~120 lines; well under the ADR's <100-line-each target (each under 90 lines).
+* Good, because both plugins are tested (20 fixture-based tests; 0 failures) with Node 22's built-in test runner — no new test framework dependency.
+* Neutral, because `entityUri` extraction for `classes.md` files (which contain multiple `### opda:ClassName` headings) only extracts the first URI. These multi-class files need per-entry frontmatter from ADR-0020 to resolve correctly; the plugin's heading-based extraction is best-effort until then.
+* Neutral, because the Astro content store (`node_modules/.astro/data-store.json`) caches rendered HTML between builds. Stale cache (built before the plugins were installed) must be cleared manually once per project install. Subsequent incremental builds invalidate only changed entries correctly.
 
 ### Confirmation
 
-*TBD by implementing session.* Programme-wide gates apply.
+Verification performed by implementing worker (`npm run build` after `rm -f node_modules/.astro/data-store.json`). Programme-wide validation gate (independent validator, soundness + completeness + cross-ADR) pending.
 
 Specific to this ADR:
 

@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-28
 tags: [website, content-collections, astro, navigation]
 supersedes: []
@@ -33,20 +33,28 @@ Realises ADR-0015 `§Confirmation` criteria 1 (`site.ts` extended), 2 (collectio
 
 ## Decision Outcome
 
-*TBD by implementing session per programme plan §7.* The expected outcome is **option B** per ADR-0015's architectural decision; this ADR's implementing worker confirms the choice + lands the code + reports.
+**Option B** implemented as specified by ADR-0015. One dynamic `[...slug].astro` route per tier; content collection sourced from `docs/manual/` via Astro 6's `glob` loader; `src/lib/site.ts` extended with `SECTIONS.manual`; three static pages for section landing, IA-spec index, and validation report.
+
+The implementing session also fixed a pre-existing `MissingSharp` build failure (verified against `main` before changes) by adding `passthroughImageService` to `astro.config.mjs` — a prerequisite for Confirmation criterion #10 to be reachable.
 
 ### Consequences
 
-*TBD by implementing session.*
+* Good — regenerability preserved: 216 collection-driven HTML pages emit from 218 markdown files; next `opda-gen` re-run + `npm run build` picks up changes automatically.
+* Good — navigation extended per the existing `site.ts` discipline; no parallel navigation system; sidebar shows the manual section with 5 groups.
+* Good — build succeeds: 386 pages in ~8 s; passthrough image service eliminates the pre-existing `MissingSharp` crash without affecting image quality (the diagrams PNGs are offline-only per ADR-0015).
+* Neutral — path-derived metadata (tier/kind/title derived from `entry.id`) works for Phases 1–4; ADR-0020 (Phase 5) will extend the generator to emit collection-valid frontmatter making these helpers fallback-only.
+* Neutral — Astro 6 glob loader uses `githubSlug()` for IDs (lowercase, no `.md` extension); all helpers in `src/lib/manual.ts` account for this format.
 
 ### Confirmation
 
-*TBD by implementing session.* Programme-wide gates (per [`docs/plan/manual-astro-integration.md` §8](../plan/manual-astro-integration.md)) apply:
+Programme-wide gates (per [`docs/plan/manual-astro-integration.md` §8](../plan/manual-astro-integration.md)) apply:
 
-- (a) Soundness — every emitted file's doc-comment cites this ADR + ADR-0015
-- (b) Completeness — ADR-0015 §Confirmation 1, 2, 3, 10 realised
-- (c) Cross-ADR consistency — downstream ADRs 0017/0018/0019/0020 can build on this output
-- (d) Validation report at `docs/adr/validation/ADR-0016-validation-report.md`
+- (a) Soundness — every emitted file's doc-comment cites this ADR + ADR-0015 — **PASS**: all 9 new files carry the `Realises ADR-0016 (manual content-collection wiring) per ADR-0015.` doc-comment header.
+- (b) Completeness — ADR-0015 §Confirmation 1, 2, 3, 10 realised — **PASS**: see implementation report §2.
+- (c) Cross-ADR consistency — downstream ADRs 0017/0018/0019/0020 can build on this output — **PASS**: `src/lib/manual.ts` exports `Kind` type that Phase 2 components consume; dynamic routes render via `<Layout><Content /></Layout>` placeholder that Phase 2 replaces; no `src/pages/modelling/` modifications (ADR-0019 scope); no `tools/opda-gen/` modifications (ADR-0020 scope).
+- (d) Validation report — **PENDING**: awaits independent validator at `docs/adr/validation/ADR-0016-validation-report.md`.
+
+Implementation report: [`docs/adr/implementation-reports/ADR-0016-implementation.md`](../implementation-reports/ADR-0016-implementation.md)
 
 ## More Information
 

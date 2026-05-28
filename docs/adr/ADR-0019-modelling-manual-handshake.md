@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-28
 tags: [website, navigation, content-strategy, deprecation]
 supersedes: []
@@ -48,28 +48,42 @@ Not a sub-claim of ADR-0015 §Confirmation — orthogonal but necessary for navi
 
 ## Decision Outcome
 
-*TBD by implementing session per programme plan §7.* Expected outcome: **option C (per-page decision)** because the modelling section's content is heterogeneous — some pages are pure editorial (standards-stack, bounded-contexts narrative), some are summaries of TTL content (data-dictionary, business-glossary, ontology, shacl-shapes) that the manual now covers comprehensively.
+Chosen option: **C — Mix per-page decision**. All 9 pages were assessed; the outcome is **0 Replace / 8 Cross-link / 1 Keep standalone**.
 
-The implementing session decides per page:
-- **Replace** (modelling page becomes a redirect to its manual counterpart) — for pure summaries of TTL content
-- **Cross-link** (both pages exist; bidirectional "see also" + clear delineation of what each covers) — for pages with editorial framing the manual lacks
-- **Keep standalone** (no manual analogue) — for pages with no TTL counterpart
+| Page | Decision | Manual target |
+|---|---|---|
+| `/modelling/standards-stack` | Keep standalone | — |
+| `/modelling/bounded-contexts` | Cross-link | `/manual/concept` |
+| `/modelling/overlays` | Cross-link | `/manual/physical-database/overlay-deployment/baspi5` |
+| `/modelling/data-dictionary` | Cross-link | `/manual/logical` |
+| `/modelling/business-glossary` | Cross-link | `/manual/concept` |
+| `/modelling/concept-taxonomy` | Cross-link | `/manual/physical-ontology/vocabularies` |
+| `/modelling/ontology` | Cross-link | `/manual/physical-ontology` |
+| `/modelling/shacl-shapes` | Cross-link | `/manual/physical-ontology/severity-tiers` + `/manual/physical-ontology/shacl-af-rules` |
+| `/modelling/jsonld-mappings` | Cross-link | `/manual/physical-database/content-negotiation` |
+
+No Replace decisions were made. The key finding: even the pages that look like TTL-content summaries (data-dictionary, business-glossary) serve a PDTF-schema audience with interactive data browsers (`OPDA.DataBrowser`) that have no equivalent in the manual. Cross-link routes each audience to the complementary register without destroying either.
+
+Cross-links are bidirectional: each modelling page gains a `callout callout--note` "See also: Ontology manual" callout; each of the four relevant manual tier READMEs gains a "See also: Modelling section" prose block.
 
 ### Consequences
 
-*TBD by implementing session.*
+- Good, because both editorial registers (PDTF-schema narrative and ontology reference) survive and serve different audiences without confusion — the callouts make the distinction clear.
+- Good, because no redirects were needed — no `astro.config.mjs` changes; no new mechanism introduced.
+- Good, because the interactive data browsers on `/modelling/data-dictionary` and `/modelling/business-glossary` are preserved; they have no manual equivalent.
+- Good, because `src/lib/site.ts` is unchanged — all modelling URLs remain in the sidebar navigation tree.
+- Neutral, because the modelling "stub" pages (ontology, shacl-shapes, jsonld-mappings, concept-taxonomy) remain stubs with cross-links pointing to the manual's realised content — this is appropriate: the stubs describe design intent; the manual documents the outcome.
 
 ### Confirmation
 
-*TBD by implementing session.* Programme-wide gates apply.
-
 Specific to this ADR:
 
-1. Per-page decision table committed at `docs/plan/manual-astro-integration.md` appendix
-2. Cross-tier link sweep: every modelling page that survives has a "see also: manual" call-out; every manual tier landing has a "see also: modelling-section editorial" call-out where relevant
-3. Redirects in place for replaced modelling pages (Astro `redirect` config or `<meta http-equiv="refresh">` per existing site convention)
-4. Link-check (existing CI or one-shot via `lychee` / `linkinator`) passes — no broken `/modelling/*` URLs
-5. Validation report at `docs/adr/validation/ADR-0019-validation-report.md`
+1. Per-page decision table committed at `docs/plan/manual-astro-integration.md` appendix — done
+2. Cross-tier link sweep: every modelling page that survives has a "see also: manual" callout (8/8); every relevant manual tier landing has a "see also: modelling-section editorial" block (4/4) — done
+3. Redirects in place for replaced modelling pages — N/A (no Replace decisions)
+4. `npm run build` passes — exit 0, 386 pages, no broken `/modelling/*` URLs — done
+5. Implementation report at `docs/adr/implementation-reports/ADR-0019-implementation.md` — done
+6. Validation report at `docs/adr/validation/ADR-0019-validation-report.md` — pending (Queen gates validation)
 
 ## More Information
 

@@ -225,6 +225,30 @@ The implementing session reads THIS file first. From here:
 - Cron job `b712ef63` (15-min heartbeat used during the ontology programme) was deleted; do not recreate unless the implementing session needs a similar long-run loop.
 - The 4 tier-worker outputs are committed; the local PNG export at `docs/manual/_export/` is gitignored — rebuild on demand via `node ~/.claude/tools/markdown-export/convert.js "docs/manual/**/*.md" --format=html --out=docs/manual/_export`.
 
+### Appendix A — modelling-section handshake decisions
+
+Phase 4 (ADR-0019) final per-page decisions, committed 2026-05-28:
+
+| Modelling page | Decision | Manual target | Notes |
+|---|---|---|---|
+| `/modelling/standards-stack` | **Keep standalone** | — | Pure PDTF-layer editorial; no TTL-emitted counterpart. |
+| `/modelling/bounded-contexts` | **Cross-link** | `/manual/concept` | DDD framing ↔ seven-module structure. Bidirectional. |
+| `/modelling/overlays` | **Cross-link** | `/manual/physical-database/overlay-deployment/baspi5` | JSON Schema overlays (schema layer) vs ontology overlay profile (deployment layer) — different artefacts, same domain. Callout notes the distinction. |
+| `/modelling/data-dictionary` | **Cross-link** | `/manual/logical` | 1,538 schema-derived elements (broad/shallow) ↔ 41 ontology entities (deep/typed). Complementary levels; different audiences. Interactive data browser preserved. |
+| `/modelling/business-glossary` | **Cross-link** | `/manual/concept` | Pre-ontology SKOS seed (54+500 concepts) ↔ generator-emitted entity definitions. Different registers; data browser preserved. |
+| `/modelling/concept-taxonomy` | **Cross-link** | `/manual/physical-ontology/vocabularies` | Scheme design + URI strategy ↔ 23 generator-emitted SKOS schemes. Design ↔ realisation. |
+| `/modelling/ontology` | **Cross-link** | `/manual/physical-ontology` | OWL class design stub ↔ verbatim-Turtle documentation of emitted artefacts. |
+| `/modelling/shacl-shapes` | **Cross-link** | `/manual/physical-ontology/severity-tiers` + `/manual/physical-ontology/shacl-af-rules` | Generation model ↔ emitted severity-tier classification + SHACL-AF rules. |
+| `/modelling/jsonld-mappings` | **Cross-link** | `/manual/physical-database/content-negotiation` | `@context` authoring ↔ HTTP content-negotiation delivery. Different concerns at the same layer. |
+
+**Outcome: 0 Replace / 8 Cross-link / 1 Keep.** No `astro.config.mjs` redirect block required. `src/lib/site.ts` sidebar unchanged.
+
+**Rationale for "Cross-link" over "Replace" on data-dictionary + business-glossary:** Both pages embed interactive `OPDA.DataBrowser` instances (loaded from `/data/properties.js` and `/data/entities.js`) providing filterable, sortable exploration of 1,538 / 752 concepts. The manual tier READMEs are static markdown — no equivalent browser. Replacing the modelling pages would lose this functionality with no substitute.
+
+**Implementation report:** [`docs/adr/implementation-reports/ADR-0019-implementation.md`](../adr/implementation-reports/ADR-0019-implementation.md)
+
+**Validation report:** [`docs/adr/validation/ADR-0019-validation-report.md`](../adr/validation/ADR-0019-validation-report.md) — pending Queen review.
+
 ## References
 
 - **Anchor ADR:** [ADR-0015 — Integrate 4-tier ontology manual into the Astro site](../adr/ADR-0015-integrate-manual-into-astro-site.md). This plan operationalises its §Confirmation.

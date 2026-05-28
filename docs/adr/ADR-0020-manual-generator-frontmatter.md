@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-28
 tags: [generator, opda-gen, content-collections, frontmatter, regeneration]
 supersedes: []
@@ -45,25 +45,34 @@ Implicit in ADR-0015 §"Bad" item ("`docs/manual/` content needs frontmatter for
 
 ## Decision Outcome
 
-*TBD by implementing session per programme plan §7.* Expected outcome: **option A** — `opda-gen emit-manual --tier <name>` and `opda-gen emit-manual` (umbrella) subcommands ship at `tools/opda-gen/src/opda_gen/emitters/manual.py`; CLI wired in `tools/opda-gen/src/opda_gen/cli.py`.
+**Option A** — `opda-gen emit-manual --tier <name>` and `opda-gen emit-manual` (umbrella) subcommands shipped at `tools/opda-gen/src/opda_gen/emitters/manual.py`; CLI wired in `tools/opda-gen/src/opda_gen/cli.py`.
+
+**G19a scope decision: option (c)** — Tier READMEs, module READMEs, umbrella README, and VALIDATION-REPORT are excluded from generator scope. Their editorial body (including Phase 4's "See also: Modelling section" blocks) is preserved intact. See [implementation report §"Scope decision"](implementation-reports/ADR-0020-implementation.md#scope-decision--g19a-option-c) for rationale.
 
 ### Consequences
 
-*TBD by implementing session.*
+**Positive:**
+- All 184 in-scope manual markdowns now carry collection-valid frontmatter matching the ADR-0016 Zod schema.
+- `opda-gen emit-manual` is idempotent: second run produces zero changes.
+- Phase 4 "See also: Modelling section" blocks in 4 tier READMEs are fully preserved.
+- Astro build exits 0 with 386 pages and zero Zod validation errors post-emission.
+
+**Neutral:**
+- Tier READMEs and module READMEs remain without `kind` / `tier` / `module` frontmatter fields in the generated output; `src/lib/manual.ts` path-derived helpers remain the source of truth for those entries.
+- `pyyaml` is a new runtime dependency for the emitter; not yet declared in `pyproject.toml` (follow-up for validator).
+
+**Negative / open items:**
+- `physical-ontology/<module>/classes.md` and sibling files get `kind: entity` and a synthetic `entityUri` (e.g. `opda:Classes`) because they cover all classes in a module rather than a single entity. A future ADR could add `kind: module-classes` / `kind: module-shapes` enum values.
 
 ### Confirmation
 
-*TBD by implementing session.* Programme-wide gates apply.
-
-Specific to this ADR:
-
-1. `tools/opda-gen/src/opda_gen/emitters/manual.py` exists with `emit_manual(output_dir, *, tier=None)` API
-2. `opda-gen emit-manual` CLI subcommand wired (verify via `opda-gen --help`)
-3. `opda-gen emit` umbrella runs `emit-manual` at the end of the existing pipeline (after foundation / vocabularies / modules / shapes / annotations / profiles / exemplar-reports)
-4. Running `opda-gen emit-manual --output /tmp/manual-revalidate` then `diff -rq /tmp/manual-revalidate docs/manual/` produces **zero diff** (idempotent regeneration)
-5. Running `astro build` after regeneration produces zero Zod validation errors against the ADR-0016 collection schema
-6. Tests in `tools/opda-gen/tests/test_manual.py` cover: per-tier emission; frontmatter fields populated; byte-identity across two runs
-7. Validation report at `docs/adr/validation/ADR-0020-validation-report.md`
+1. `tools/opda-gen/src/opda_gen/emitters/manual.py` exists with `emit_manual(output_dir, *, tier=None)` API — CONFIRMED
+2. `opda-gen emit-manual` CLI subcommand wired — CONFIRMED (verify via `opda-gen --help`)
+3. `opda-gen emit` umbrella runs `emit-manual` at the end of the existing pipeline — CONFIRMED
+4. `opda-gen emit-manual --output docs/manual` twice → second run: `0 files updated, 218 files skipped` — CONFIRMED (idempotency)
+5. `astro build` after regeneration: exit 0, 386 pages, zero Zod validation errors — CONFIRMED
+6. 31 tests in `tools/opda-gen/tests/test_manual.py` covering per-tier emission, frontmatter fields, byte-identity, merge discipline; 158 total passing — CONFIRMED
+7. Implementation report: `docs/adr/implementation-reports/ADR-0020-implementation.md` — CONFIRMED
 
 ### Programme retirement
 
