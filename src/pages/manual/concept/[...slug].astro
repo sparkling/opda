@@ -2,34 +2,60 @@
 /**
  * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
  * Realises ADR-0017 (manual component library) per ADR-0015.
+ * Realises ADR-0021: entity pages additionally rendered from API data.
  * Dynamic route for the Concept tier — emits one static HTML page per entry.
  * Kind-keyed dispatcher replaces the Phase 1 placeholder render.
+ *
+ * When kind === 'entity' and entityData is present in props (fetched from
+ * the GRLC API at build time), EntityApiPage renders structured data.
+ * All other kinds continue to render from the markdown content slot.
+ *
+ * INTEGRATION POINT (Phase 2): remove the fixture fallback inside
+ * fetchEntityDetail() in src/lib/entity-api.ts once the live API is up.
  */
 import Layout from '@/layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
-import { deriveSlug, deriveTitle, deriveTier, deriveKind, deriveModule } from '@/lib/manual';
+import { deriveSlug, deriveTitle, deriveTier, deriveKind, deriveModule, slugToPascal } from '@/lib/manual';
+import { fetchEntityDetail } from '@/lib/entity-api.ts';
 import TierLanding from '@/components/manual/TierLanding.astro';
 import ModuleLanding from '@/components/manual/ModuleLanding.astro';
 import EntityPage from '@/components/manual/EntityPage.astro';
+import EntityApiPage from '@/components/manual/EntityApiPage.astro';
 import SchemePage from '@/components/manual/SchemePage.astro';
 import ExemplarPage from '@/components/manual/ExemplarPage.astro';
 import CrossCuttingPage from '@/components/manual/CrossCuttingPage.astro';
+import type { EntityDetail } from '@/lib/entity-api.ts';
 
 export async function getStaticPaths() {
   const entries = await getCollection('manual', (e) => e.id.startsWith('concept/'));
-  return entries.map((entry) => {
+  return Promise.all(entries.map(async (entry) => {
     const tier = deriveTier(entry.id)!;
     const slug = deriveSlug(entry.id, tier);
-    return { params: { slug: slug || undefined }, props: { entry } };
-  });
+    const kind = deriveKind(entry.id);
+    const mod = deriveModule(entry.id);
+
+    // For entity kind: attempt to fetch structured data from the API.
+    // Falls back to the Property fixture when the API is not running (Phase 1).
+    // INTEGRATION POINT (Phase 2): the catch path in fetchEntityDetail is removed
+    // once the live Fuseki+GRLC API is available in CI.
+    let entityData: EntityDetail | null = null;
+    if (kind === 'entity' && mod) {
+      const localName = entry.id.split('/').pop() ?? '';
+      // Convert kebab-case slug to PascalCase local name for the API.
+      const localNamePascal = slugToPascal(localName);
+      entityData = await fetchEntityDetail(tier, mod, localNamePascal);
+    }
+
+    return { params: { slug: slug || undefined }, props: { entry, entityData } };
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, entityData } = Astro.props;
 const { Content } = await render(entry);
 const tier = deriveTier(entry.id)!;
 const kind = deriveKind(entry.id);
 const module = deriveModule(entry.id);
-const title = deriveTitle(entry.data.title, entry.id, entry.body);
+const title = entityData?.label ?? deriveTitle(entry.data.title, entry.id, entry.body);
 
 const KIND_COMPONENT = {
   'tier-readme':           TierLanding,
@@ -47,7 +73,8 @@ const KIND_COMPONENT = {
 const Component = KIND_COMPONENT[kind] ?? CrossCuttingPage;
 ---
 <Layout title={title}>
-  <Component entry={entry} tier={tier} module={module}>
-    <Content />
-  </Component>
+  {kind === 'entity' && entityData
+    ? <EntityApiPage entityData={entityData} tier={tier} />
+    : <Component entry={entry} tier={tier} module={module}><Content /></Component>
+  }
 </Layout>

@@ -135,6 +135,15 @@ export function deriveTitle(
 }
 
 /**
+ * Convert a kebab-case slug to PascalCase for API lookups.
+ * Examples: "legal-estate" → "LegalEstate", "property" → "Property",
+ * "diagnostic-exemplar" → "DiagnosticExemplar".
+ */
+export function slugToPascal(slug: string): string {
+  return slug.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+}
+
+/**
  * Compute the URL slug within the tier for a collection entry.
  * Strips tier prefix; converts readme → '' for tier root, or parent path for module root.
  * Returns '' for tier-level readme (maps to [...slug] with undefined → tier root URL).

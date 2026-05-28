@@ -1,0 +1,12 @@
+#+ summary: Count total owl:Class entities in opda namespace (companion to list-entities)
+#+ endpoint: /api/entities-count
+#+ method: GET
+
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX opda: <https://w3id.org/opda/#>
+
+SELECT (COUNT(DISTINCT ?uri) AS ?total)
+WHERE {
+  GRAPH ?g { ?uri a owl:Class }
+  FILTER(STRSTARTS(STR(?uri), "https://w3id.org/opda/#"))
+}

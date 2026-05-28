@@ -15,6 +15,7 @@
     "css:watch": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --watch",
     "tailwindplus:download": "bash scripts/tailwindplus-download.sh",
     "test": "node --test tests/lib/remark/*.test.mjs",
+    "build:data": "node scripts/build-with-data.mjs",
     "deploy": "bash deploy.sh"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.0",
     "jiti": "^2.7.0",
+    "marked": "^18.0.4",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.5"
   }

@@ -5,7 +5,12 @@ import path from 'node:path';
 
 // ADR-0018: build-time remark + rehype plugins for the manual content collection
 import { remarkUnwrapMermaidDetails } from './src/lib/remark/unwrap-mermaid-details.ts';
+import { remarkRewriteManualLinks } from './src/lib/remark/rewrite-manual-links.ts';
 import { rehypeFrontmatterUriExtraction } from './src/lib/remark/frontmatter-uri-extraction.ts';
+
+// ADR-0021 §"Separate task": generate static HTML for embedded meta-reports
+// (validation report) at build/dev start; the page serves the generated output.
+import { reportGenerator } from './src/integrations/generate-report-html.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -145,14 +150,18 @@ const serveProjectRoots = {
 export default defineConfig({
   site:    'https://opda-kb.pages.dev',
   outDir:  './dist',
+  // ADR-0021 §"Separate task": the report generator emits static HTML for
+  // embedded meta-reports before build/dev resolves the page imports.
+  integrations: [reportGenerator()],
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.
   image: { service: passthroughImageService() },
-  // ADR-0018: unwrap <details>-wrapped mermaid blocks → <div class="mermaid">
-  // and extract OPDA entity URIs from markdown body into frontmatter.
+  // ADR-0018: unwrap <details>-wrapped mermaid blocks → <div class="mermaid">,
+  // rewrite relative .md cross-links to /manual/ routes, and extract OPDA
+  // entity URIs from markdown body into frontmatter.
   markdown: {
-    remarkPlugins: [remarkUnwrapMermaidDetails],
+    remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks],
     rehypePlugins: [rehypeFrontmatterUriExtraction],
   },
   // Directory format + bare-slug URLs per docs/adr/ADR-0002 (folder hierarchy).

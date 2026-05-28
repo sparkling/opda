@@ -1,0 +1,299 @@
+---
+/**
+ * Realises ADR-0021: entity page rendered from API data (not markdown).
+ *
+ * Receives a fully-typed EntityDetail from entity-api.ts and wires the
+ * existing ADR-0017 components with real structured data, closing G17.
+ *
+ * Integration with [...slug].astro dispatcher:
+ *   When kind === 'entity' and entityData is provided in props, the
+ *   dispatcher renders this component instead of EntityPage (markdown slot).
+ */
+import type { EntityDetail } from '@/lib/entity-api.ts';
+import type { Attribute } from './AttributeTable.astro';
+import EntityHeader from './EntityHeader.astro';
+import AttributeTable from './AttributeTable.astro';
+import ShapeBlock from './ShapeBlock.astro';
+
+interface Props {
+  entityData: EntityDetail;
+  /** Current tier, for the cross-tier link active-state. */
+  tier: string;
+}
+
+const { entityData, tier } = Astro.props;
+
+// Adapt API attributes to the AttributeTable contract.
+// identityBearing is not yet in the API response; default false.
+// INTEGRATION POINT (Phase 2): add identityBearing to the API response and
+// the SPARQL query so this field is populated from the ontology.
+const attributes: Attribute[] = entityData.attributes.map((a) => ({
+  name: a.localName,
+  type: a.type,
+  cardinality: a.cardinality,
+  required: a.required,
+  identityBearing: false, // INTEGRATION POINT (Phase 2): from API
+  description: a.description,
+}));
+
+// Build the cross-tier link list from the pre-computed API URLs.
+// Only include tiers where a page actually exists (non-null URL).
+const TIER_LABELS: Record<string, string> = {
+  concept:           'Concept',
+  logical:           'Logical',
+  'physical-database': 'Physical — deployment',
+  'physical-ontology': 'Physical — ontology',
+};
+
+type TierEntry = { key: string; label: string; href: string };
+const crossTierLinks: TierEntry[] = [
+  { key: 'concept',           href: entityData.crossTier.concept },
+  { key: 'logical',           href: entityData.crossTier.logical },
+  { key: 'physical-database', href: entityData.crossTier.physicalDatabase },
+  { key: 'physical-ontology', href: entityData.crossTier.physicalOntology },
+].filter((t): t is TierEntry => t.href !== null)
+ .map((t) => ({ ...t, label: TIER_LABELS[t.key] ?? t.key }));
+---
+
+<article class="entity-page">
+  <!-- EntityHeader: label + tier badge + module + URI (G17 closes) -->
+  <EntityHeader
+    entityUri={entityData.uri}
+    tier={tier}
+    module={entityData.module}
+    title={entityData.label}
+  />
+
+  <!-- Summary / scope note block -->
+  {entityData.summary && (
+    <section class="entity-section">
+      <p class="entity-summary">{entityData.summary}</p>
+    </section>
+  )}
+
+  {entityData.scopeNote && (
+    <section class="entity-section">
+      <h2 class="entity-section__heading">Classification</h2>
+      <p class="entity-scope-note">{entityData.scopeNote}</p>
+    </section>
+  )}
+
+  <!-- Attributes table (G17) -->
+  {attributes.length > 0 && (
+    <section class="entity-section">
+      <h2 class="entity-section__heading">Attributes</h2>
+      <AttributeTable attributes={attributes} />
+    </section>
+  )}
+
+  <!-- Relationships table (G17) -->
+  {entityData.relationships.length > 0 && (
+    <section class="entity-section">
+      <h2 class="entity-section__heading">Relationships</h2>
+      <div class="attribute-table-wrap">
+        <table class="attribute-table">
+          <thead>
+            <tr>
+              <th scope="col">Predicate</th>
+              <th scope="col">Target</th>
+              <th scope="col">Cardinality</th>
+              <th scope="col">Inverse</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entityData.relationships.map((rel) => (
+              <tr>
+                <td><code>{rel.predicate}</code></td>
+                <td><code>{rel.target}</code></td>
+                <td>{rel.cardinality}</td>
+                <td>{rel.inverse ? <code>{rel.inverse}</code> : '—'}</td>
+                <td>{rel.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  <!-- SHACL constraints (G17) -->
+  {entityData.constraints.length > 0 && (
+    <section class="entity-section">
+      <h2 class="entity-section__heading">Constraints</h2>
+      {entityData.constraints.map((c) => (
+        <ShapeBlock shape={c.shape} severity={c.severity}>
+          <p>{c.message}</p>
+        </ShapeBlock>
+      ))}
+    </section>
+  )}
+
+  <!-- Source references -->
+  {entityData.dctSource.length > 0 && (
+    <section class="entity-section">
+      <h2 class="entity-section__heading">Sources</h2>
+      <ul class="entity-sources">
+        {entityData.dctSource.map((src) => (
+          <li><code>{src}</code></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <!-- Cross-tier link strip (G17 — uses pre-computed API URLs, not guesses) -->
+  {crossTierLinks.length > 0 && (
+    <aside class="cross-tier-links">
+      <p class="cross-tier-links__label">This entity across tiers</p>
+      <ul class="cross-tier-links__list">
+        {crossTierLinks.map((t) => (
+          <li>
+            {t.key === tier
+              ? <span class="cross-tier-links__current" aria-current="page">{t.label}</span>
+              : <a href={t.href} class="cross-tier-links__link">{t.label}</a>
+            }
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
+</article>
+
+<style>
+  .entity-page { /* inherits Layout prose wrapper */ }
+
+  .entity-section {
+    margin: var(--space-6) 0;
+  }
+
+  .entity-section__heading {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .entity-summary {
+    font: 400 var(--text-base) / var(--leading-relaxed) var(--font-sans);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .entity-scope-note {
+    font: 400 var(--text-sm) / var(--leading-relaxed) var(--font-sans);
+    color: var(--color-text-muted);
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-tint);
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .entity-sources {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .entity-sources code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint);
+    padding: 0.2em var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Inline relationship table — reuse attribute-table styles from AttributeTable.astro */
+  .attribute-table-wrap {
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+  }
+
+  .attribute-table {
+    width: 100%;
+    border-collapse: collapse;
+    font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+    color: var(--color-text);
+  }
+
+  .attribute-table th {
+    background: var(--color-surface-tint);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .attribute-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .attribute-table code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* Cross-tier strip — mirrors CrossTierLinks.astro */
+  .cross-tier-links {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cross-tier-links__label {
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  .cross-tier-links__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cross-tier-links__link,
+  .cross-tier-links__current {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    font: 500 var(--text-sm) / 1.4 var(--font-sans);
+    text-decoration: none;
+    transition: background var(--duration-fast) var(--ease);
+  }
+
+  .cross-tier-links__link {
+    background: var(--color-surface-tint);
+    color: var(--color-link);
+    border: 1px solid var(--color-border);
+  }
+
+  .cross-tier-links__link:hover {
+    background: var(--color-surface-inset);
+    text-decoration: none;
+  }
+
+  .cross-tier-links__current {
+    background: var(--color-surface-inset);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border-strong);
+    cursor: default;
+  }
+</style>

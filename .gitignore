@@ -33,6 +33,7 @@ dist/
 # Build intermediates (regenerated; not tracked)
 /_build/
 /public/ui/tailwind.built.css
+/src/generated/
 
 # TailwindPlus downloader workspace (credentials, session, component dump)
 # — see tailwindplus plugin in legacybridge-tech/claude-plugins

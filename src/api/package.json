@@ -1,0 +1,15 @@
+{
+  "name": "opda-ontology-api",
+  "version": "0.1.0",
+  "description": "Build-time GRLC SPARQL→REST API for the OPDA ontology — ADR-0021",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "js-yaml": "^4.1.1"
+  }
+}

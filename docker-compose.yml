@@ -1,0 +1,46 @@
+services:
+  fuseki:
+    image: stain/jena-fuseki:latest
+    container_name: opda-fuseki
+    ports:
+      - "3031:3030"
+    volumes:
+      - fuseki-data:/fuseki
+    environment:
+      FUSEKI_DATASET_1: opda
+      ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD:-admin}
+      JVM_ARGS: "-Xmx2g"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3030/$$/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  api:
+    build:
+      context: ./src/api
+      dockerfile: Dockerfile
+    container_name: opda-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      fuseki:
+        condition: service_healthy
+    environment:
+      FUSEKI_ENDPOINT: http://fuseki:3030/opda/sparql
+      FUSEKI_URL: http://fuseki:3030
+      ONTOLOGY_VERSION: "${ONTOLOGY_VERSION:-0.1.0}"
+      NODE_ENV: production
+      PORT: "3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{process.exit(r.ok?0:1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  fuseki-data:

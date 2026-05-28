@@ -1,0 +1,65 @@
+{
+  "uri": "https://w3id.org/opda/#Property",
+  "localName": "Property",
+  "label": "Property",
+  "module": "property",
+  "tier": "concept",
+  "summary": "A Property is the physical residential property — the bricks-and-mortar object: a house, a flat, a bungalow, a maisonette.",
+  "scopeNote": "UFO: Physical Object (Substantial Individual). Identity Criterion: spatial-material continuity, with legal-record-discontinuity override (registry evidence of replacement title).",
+  "dctSource": [
+    "opda:ODR-0005",
+    "opda:ADR-0011"
+  ],
+  "attributes": [
+    {
+      "localName": "uprn",
+      "label": "UPRN",
+      "type": "xsd:string",
+      "cardinality": "0..*",
+      "required": false,
+      "description": "Unique Property Reference Number(s) assigned by OS AddressBase. A single property may bear multiple UPRNs."
+    },
+    {
+      "localName": "registeredTitleNumber",
+      "label": "Registered title number",
+      "type": "xsd:string",
+      "cardinality": "0..1",
+      "required": false,
+      "description": "HMLR title number, if the property has been registered. Absence does not imply the property does not exist."
+    }
+  ],
+  "relationships": [
+    {
+      "predicate": "opda:isVestedIn",
+      "target": "opda:LegalEstate",
+      "cardinality": "0..*",
+      "inverse": "opda:isVestedInProperty",
+      "description": "Legal estates vested in this property."
+    },
+    {
+      "predicate": "opda:isDocumentedBy",
+      "target": "opda:RegisteredTitle",
+      "cardinality": "0..*",
+      "inverse": null,
+      "description": "Registered titles that document this property at HMLR."
+    }
+  ],
+  "constraints": [
+    {
+      "message": "A Property must have at least one address or UPRN to be unambiguously identified.",
+      "severity": "Warning",
+      "shape": "PropertyIdentityKeyShape"
+    },
+    {
+      "message": "UPRN, when present, must match the pattern [0-9]{1,12}.",
+      "severity": "Violation",
+      "shape": "PropertyUPRNFormatShape"
+    }
+  ],
+  "crossTier": {
+    "concept": "/manual/concept/property/property",
+    "logical": "/manual/logical/property/property",
+    "physicalDatabase": null,
+    "physicalOntology": "/manual/physical-ontology/property/classes#Property"
+  }
+}

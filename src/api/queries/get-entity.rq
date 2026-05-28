@@ -1,0 +1,146 @@
+#+ summary: Get full entity detail — core + attributes + relationships + constraints + sources
+#+ description: Returns typed rows (rowType = core|source|attribute|relationship|constraint)
+#+   assembled by grlc-handler into the ADR-0021 contract shape.
+#+   Path params: tier (concept|logical|physical-ontology), module, localName.
+#+ endpoint: /api/entities/{tier}/{module}/{localName}
+#+ method: GET
+#+ mime: application/json
+#+ querytype: detail
+
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sh:   <http://www.w3.org/ns/shacl#>
+PREFIX dct:  <http://purl.org/dc/terms/>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX opda: <https://w3id.org/opda/#>
+
+SELECT ?rowType ?uri ?localName ?label ?module ?summary ?scopeNote
+       ?dctSourceUri
+       ?attrName ?attrLabel ?attrType ?minCount ?maxCount ?attrDescription
+       ?predLocalName ?predLabel ?targetLocalName ?targetLabel ?inverseLocalName ?relCardinality ?relDescription
+       ?constraintMessage ?constraintSeverity ?shapeName
+WHERE {
+  # Resolve localName to opda: IRI
+  BIND(IRI(CONCAT("https://w3id.org/opda/#", ?_localName_literal)) AS ?uri)
+
+  # All data is in named graphs; confirm the class exists somewhere
+  GRAPH ?classGraph { ?uri a owl:Class }
+
+  # ── Core row ─────────────────────────────────────────────────────────────
+  {
+    BIND("core" AS ?rowType)
+    OPTIONAL { GRAPH ?labelG { ?uri rdfs:label ?rawLabel . FILTER(LANG(?rawLabel) = "en") } }
+    BIND(COALESCE(?rawLabel, ?_localName_literal) AS ?label)
+    BIND(?_localName_literal AS ?localName)
+    # Derive module from named graph IRI (e.g. .../graph/property → property)
+    BIND(REPLACE(STR(?classGraph), "^https://w3id.org/opda/graph/", "") AS ?module)
+    OPTIONAL { GRAPH ?cg { ?uri rdfs:comment ?summary } }
+    OPTIONAL { GRAPH ?sg { ?uri skos:scopeNote ?scopeNote } }
+  }
+
+  UNION
+
+  # ── dct:source rows ───────────────────────────────────────────────────────
+  {
+    BIND("source" AS ?rowType)
+    GRAPH ?srcG { ?uri dct:source ?dctSourceUri }
+  }
+
+  UNION
+
+  # ── Attribute rows (owl:DatatypeProperty with rdfs:domain = this class) ──
+  {
+    BIND("attribute" AS ?rowType)
+    GRAPH ?attrG {
+      ?attrProp a owl:DatatypeProperty ;
+                rdfs:domain ?uri .
+    }
+    BIND(REPLACE(STR(?attrProp), "^.*[/#]", "") AS ?attrName)
+    OPTIONAL { GRAPH ?alg { ?attrProp rdfs:label ?rawAttrLabel . FILTER(LANG(?rawAttrLabel) = "en") } }
+    BIND(COALESCE(?rawAttrLabel, ?attrName) AS ?attrLabel)
+    OPTIONAL {
+      GRAPH ?rg { ?attrProp rdfs:range ?rangeUri }
+      BIND(
+        IF(STRSTARTS(STR(?rangeUri), "http://www.w3.org/2001/XMLSchema#"),
+           CONCAT("xsd:", REPLACE(STR(?rangeUri), "^.*[/#]", "")),
+           REPLACE(STR(?rangeUri), "^.*[/#]", ""))
+        AS ?attrType)
+    }
+    OPTIONAL { GRAPH ?adg { ?attrProp rdfs:comment ?attrDescription } }
+    # SHACL cardinality join via sh:path (in shapes graphs)
+    OPTIONAL {
+      GRAPH ?shG {
+        ?shape a sh:NodeShape ;
+               sh:targetClass ?uri ;
+               sh:property ?propShape .
+        ?propShape sh:path ?attrProp .
+      }
+      OPTIONAL { GRAPH ?mcg { ?propShape sh:minCount ?minCount } }
+      OPTIONAL { GRAPH ?mxg { ?propShape sh:maxCount ?maxCount } }
+    }
+  }
+
+  UNION
+
+  # ── Relationship rows (owl:ObjectProperty with rdfs:domain = this class) ─
+  {
+    BIND("relationship" AS ?rowType)
+    GRAPH ?relG {
+      ?objProp a owl:ObjectProperty ;
+               rdfs:domain ?uri .
+    }
+    BIND(REPLACE(STR(?objProp), "^.*[/#]", "") AS ?predLocalName)
+    OPTIONAL { GRAPH ?plg { ?objProp rdfs:label ?rawPredLabel . FILTER(LANG(?rawPredLabel) = "en") } }
+    BIND(COALESCE(?rawPredLabel, ?predLocalName) AS ?predLabel)
+    OPTIONAL {
+      GRAPH ?tg { ?objProp rdfs:range ?targetUri }
+      BIND(REPLACE(STR(?targetUri), "^.*[/#]", "") AS ?targetLocalName)
+      OPTIONAL { GRAPH ?tlg { ?targetUri rdfs:label ?rawTargetLabel . FILTER(LANG(?rawTargetLabel) = "en") } }
+      BIND(COALESCE(?rawTargetLabel, ?targetLocalName) AS ?targetLabel)
+    }
+    OPTIONAL {
+      GRAPH ?ig { ?objProp owl:inverseOf ?invProp }
+      BIND(REPLACE(STR(?invProp), "^.*[/#]", "") AS ?inverseLocalName)
+    }
+    OPTIONAL { GRAPH ?rdg { ?objProp rdfs:comment ?relDescription } }
+    OPTIONAL {
+      GRAPH ?rshG {
+        ?shape a sh:NodeShape ;
+               sh:targetClass ?uri ;
+               sh:property ?relPropShape .
+        ?relPropShape sh:path ?objProp .
+      }
+      OPTIONAL {
+        GRAPH ?rcg {
+          ?relPropShape sh:minCount ?relMinC .
+          ?relPropShape sh:maxCount ?relMaxC .
+        }
+        BIND(CONCAT(STR(COALESCE(?relMinC, "0")), "..", IF(BOUND(?relMaxC), STR(?relMaxC), "*")) AS ?relCardinality)
+      }
+    }
+  }
+
+  UNION
+
+  # ── Constraint rows (SHACL sh:NodeShape targeting this class) ────────────
+  {
+    BIND("constraint" AS ?rowType)
+    GRAPH ?cshG {
+      ?shape a sh:NodeShape ;
+             sh:targetClass ?uri .
+    }
+    BIND(REPLACE(STR(?shape), "^.*[/#]", "") AS ?shapeName)
+    {
+      GRAPH ?pmg { ?shape sh:property ?propShape }
+      GRAPH ?mmg { ?propShape sh:message ?constraintMessage }
+      OPTIONAL { GRAPH ?sevg { ?propShape sh:severity ?constraintSeverity } }
+    }
+    UNION
+    {
+      GRAPH ?smg { ?shape sh:message ?constraintMessage }
+      OPTIONAL { GRAPH ?ssg { ?shape sh:severity ?constraintSeverity } }
+    }
+  }
+}

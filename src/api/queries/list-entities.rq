@@ -1,0 +1,40 @@
+#+ summary: List all owl:Class entities across opda modules
+#+ description: Returns one record per owl:Class with label, module derivation,
+#+   and tier availability flags. tiers = concept+logical always; physical-ontology
+#+   where a sh:NodeShape with sh:targetClass exists.
+#+ endpoint: /api/entities
+#+ method: GET
+#+ pagination: 200
+
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sh:   <http://www.w3.org/ns/shacl#>
+PREFIX opda: <https://w3id.org/opda/#>
+
+SELECT DISTINCT
+  ?uri
+  ?label
+  (REPLACE(STR(?uri), "^.*[/#]", "") AS ?localName)
+  ?module
+  ("true" AS ?hasConcept)
+  ("true" AS ?hasLogical)
+  (IF(BOUND(?shapeTarget), "true", "false") AS ?hasPhysicalOntology)
+WHERE {
+  # All data is in named graphs — use GRAPH * to search across all graphs
+  GRAPH ?g { ?uri a owl:Class }
+  FILTER(STRSTARTS(STR(?uri), "https://w3id.org/opda/#"))
+
+  OPTIONAL { GRAPH ?lg { ?uri rdfs:label ?rawLabel . FILTER(LANG(?rawLabel) = "en") } }
+  BIND(COALESCE(?rawLabel, REPLACE(STR(?uri), "^.*[/#]", "")) AS ?label)
+
+  # Derive module from the named graph IRI
+  # Each TTL is loaded into https://w3id.org/opda/graph/{name} by fuseki-load.mjs.
+  # opda-property.ttl → graph/property; foundation.ttl → graph/foundation
+  BIND(REPLACE(STR(?g), "^https://w3id.org/opda/graph/", "") AS ?rawModule)
+  BIND(REPLACE(?rawModule, "-(shapes|annotations|annotation)s?$", "") AS ?module)
+
+  # Detect SHACL shapes targeting this class (→ physical-ontology tier page exists)
+  OPTIONAL { GRAPH ?sg { ?shape a sh:NodeShape ; sh:targetClass ?uri } BIND(?uri AS ?shapeTarget) }
+}
+ORDER BY ?label
