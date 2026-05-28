@@ -64,6 +64,13 @@ async function ensureDataset() {
     },
     body: new URLSearchParams({ dbName: DATASET, dbType: 'tdb2' }),
   });
+  if (createRes.status === 409) {
+    // The docker-compose FUSEKI_DATASET_1 env auto-registers the dataset on
+    // startup; the listing above can race that registration on a fresh
+    // container (CI), so a 409 here means "already exists" — proceed.
+    console.log(`[fuseki-load] Dataset '${DATASET}' already registered (409) — proceeding`);
+    return;
+  }
   if (!createRes.ok) {
     const body = await createRes.text();
     throw new Error(`Dataset creation failed: ${createRes.status} ${body}`);
