@@ -399,14 +399,27 @@
     runMermaid();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
+  // Guard against the first-load double-init: with <ClientRouter /> enabled,
+  // astro:page-load fires on the initial load too, so an unguarded init() would
+  // run once here and again on page-load — double-binding every toggle's click
+  // listener so each click fires twice and cancels out. The flag makes init
+  // run once per document; astro:after-swap clears it so the fresh DOM that a
+  // view-transition navigation swaps in re-binds correctly.
+  let initialised = false;
+  function runInitOnce() {
+    if (initialised) return;
+    initialised = true;
     init();
   }
 
-  // Re-init after Astro view-transition navigation
-  document.addEventListener('astro:page-load', init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInitOnce);
+  } else {
+    runInitOnce();
+  }
+
+  document.addEventListener('astro:after-swap', function () { initialised = false; });
+  document.addEventListener('astro:page-load', runInitOnce);
 
   window.OPDA = { init: init };
 })();
