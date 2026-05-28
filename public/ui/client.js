@@ -312,9 +312,12 @@
   function spliceCageClassDefs(src, classDefBlock) {
     var lines = src.split('\n');
     var insertIdx = -1;
-    var diagramTypeRe = /^\s*(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram|gantt|pie|journey|gitGraph|mindmap|timeline|quadrantChart|requirementDiagram|sankey-beta|xychart-beta|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)\b/i;
+    // `classDef` is only valid in these diagram types. Injecting it into others
+    // (sequenceDiagram, pie, gantt, journey, gitGraph, mindmap, timeline,
+    // erDiagram, C4, …) is a syntax error that makes the diagram fail to render.
+    var classDefTypeRe = /^\s*(flowchart|graph|classDiagram|stateDiagram(?:-v2)?)\b/i;
     for (var i = 0; i < lines.length; i++) {
-      if (diagramTypeRe.test(lines[i])) { insertIdx = i + 1; break; }
+      if (classDefTypeRe.test(lines[i])) { insertIdx = i + 1; break; }
     }
     if (insertIdx === -1) return src;
     var before = lines.slice(0, insertIdx);
