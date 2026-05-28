@@ -56,6 +56,10 @@ Thumbs.db
 __pycache__/
 *.pyc
 
+# Generated HTML/PDF exports from docs/manual/ (via sc:markdown-export skill).
+# Source markdown is canonical; export/ folders are rebuilt on demand.
+docs/manual/**/export/
+
 # Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
 # .claude/ is tracked — curated config + ruflo-init resources (agents, commands,
 # helpers, scripts). Agent memory (memory.db*) and machine-local overrides are ignored.
