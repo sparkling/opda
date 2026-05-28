@@ -58,7 +58,10 @@ __pycache__/
 
 # Generated HTML/PDF exports from docs/manual/ (via sc:markdown-export skill).
 # Source markdown is canonical; export/ folders are rebuilt on demand.
+# Covers both default per-directory layout (**/export/) and consolidated-tree
+# layout (--out=docs/manual/_export → docs/manual/_export/).
 docs/manual/**/export/
+docs/manual/_export/
 
 # Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
 # .claude/ is tracked — curated config + ruflo-init resources (agents, commands,
