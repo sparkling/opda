@@ -68,6 +68,8 @@ docs/manual/_export/
 # helpers, scripts). Agent memory (memory.db*) and machine-local overrides are ignored.
 .claude/settings.local.json
 .claude/memory.db*
+.claude/*.lock
+.claude/settings.json.before-*
 .claude-flow/
 .swarm/
 ruvector.db
