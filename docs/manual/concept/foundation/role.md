@@ -24,6 +24,34 @@ A Role-instance is identified by its **(bearer, context) tuple** — the Person 
 - [Relator](./relator.md) — Roles sit *within* a Relator's context
 - [Proprietor](../agent/proprietor.md) — the canonical OPDA Role (Person → Proprietor in a Title context)
 
+### Related-Kinds graph
+
+![role-related-kinds-neighbourhood-graph](diagrams/role/role-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Role related-Kinds neighbourhood graph
+    accDescr: Role as the pattern Kind specialised by Proprietor (the canonical OPDA Role); related to RoleMixin (cross-Kind variant) and sitting within a Relator's context.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Role["Role<br/>(pattern)"]:::centre
+    RoleMixin["RoleMixin<br/>(cross-Kind)"]:::cls
+    Relator["Relator"]:::cls
+    Proprietor["Proprietor<br/>(canonical Role)"]:::cls
+
+    Role -->|"sitsWithin"| Relator
+    Role -.->|"contrast with"| RoleMixin
+    Proprietor -.->|"specialises"| Role
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)

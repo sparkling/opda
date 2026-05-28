@@ -25,6 +25,36 @@ A Relator's identity is the **(mediated-parties, founding-event) tuple**. Two Re
 - [Transaction](../transaction/transaction.md) — the canonical OPDA Relator: binds Seller, Buyer, and Legal Estate
 - [Proprietorship](../agent/proprietorship.md) — binds Proprietors to a Registered Title
 
+### Related-Kinds graph
+
+![relator-related-kinds-neighbourhood-graph](diagrams/relator/relator-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Relator related-Kinds neighbourhood graph
+    accDescr: Relator as the pattern Kind specialised by Transaction (binds Seller + Buyer + LegalEstate, founded by offer-acceptance) and Proprietorship (binds Proprietors to a RegisteredTitle, founded by registration activity); hosts Role and RoleMixin instances within its context.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Relator["Relator<br/>(pattern)"]:::centre
+    Role["Role"]:::cls
+    RoleMixin["RoleMixin"]:::cls
+    Transaction["Transaction<br/>(canonical)"]:::cls
+    Proprietorship["Proprietorship<br/>(canonical)"]:::cls
+
+    Role -->|"sitsWithin"| Relator
+    RoleMixin -->|"sitsWithin"| Relator
+    Transaction -.->|"specialises"| Relator
+    Proprietorship -.->|"specialises"| Relator
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md)

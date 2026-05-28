@@ -23,6 +23,47 @@ If you are a surveyor, conveyancer, or lender asking "is this the same Property 
 
 Two Property records refer to the same Property if they describe the same **spatial-material continuant** — the same bricks-and-mortar object — *unless* legal-record evidence (a registry replacement, a demolition certificate) overrides the spatial reading. The override is the IC's response to "the bricks look the same but the legal record says otherwise". See the [Logical tier →](../../logical/property/property.md) for the typed structure.
 
+### IC walk-through: per hard case
+
+How each named hard case resolves under the IC:
+
+![property-ic-walk-through-per-hard-case](diagrams/property/property-ic-walk-through-per-hard-case.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Property IC walk-through per hard case
+    accDescr: Six named hard cases map to one of three outcomes — Property identity persists, identity breaks (new Property), or splits into multiple Properties — by combining the spatial-material and legal-record evidence.
+
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef success fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    classDef errorState fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    Demolition["Demolition<br/>(new build, same footprint)"]:::cls
+    Subdivision["Subdivision<br/>(one becomes two)"]:::cls
+    Merger["Merger<br/>(two become one)"]:::cls
+    Replacement["Replacement<br/>(partial rebuild)"]:::cls
+    FirstReg["First registration<br/>(unregistered → HMLR)"]:::cls
+    SplitUPRN["Split UPRN<br/>(one flat, two UPRNs)"]:::cls
+
+    Persists(["Property persists"]):::success
+    NewProperty(["NEW Property"]):::errorState
+    Splits(["Splits / merges"]):::warning
+
+    Demolition --> NewProperty
+    Replacement --> NewProperty
+    Subdivision --> Splits
+    Merger --> Splits
+    FirstReg --> Persists
+    SplitUPRN --> Persists
+```
+
+</details>
+
 ## Related Kinds
 
 - [Address](./address.md) — a Property has one or more Addresses (title / marketing / INSPIRE variants)
@@ -30,6 +71,39 @@ Two Property records refer to the same Property if they describe the same **spat
 - [Registered Title](./registered-title.md) — a Property may be documented by one or more Registered Titles
 - [UPRN Succession Event](./uprn-succession-event.md) — a Property's UPRN may be re-issued without breaking Property identity
 - [Transaction](../transaction/transaction.md) — every Transaction concerns a Property
+
+### Related-Kinds graph
+
+![property-related-kinds-neighbourhood-graph](diagrams/property/property-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Property related-Kinds neighbourhood graph
+    accDescr: One-hop neighbourhood of Property — direct connections to Address, Legal Estate, Registered Title, UPRN Succession Event, and Transaction.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    Property["Property"]:::centre
+    Address["Address"]:::cls
+    LegalEstate["LegalEstate"]:::cls
+    RegisteredTitle["RegisteredTitle"]:::cls
+    UPRNSucc["UPRNSuccessionEvent"]:::cls
+    Transaction["Transaction"]:::ext
+
+    Property -->|"hasAddress"| Address
+    Property -->|"hasLegalEstate"| LegalEstate
+    Property -->|"documentedBy"| RegisteredTitle
+    UPRNSucc -->|"re-numbers"| Property
+    Transaction -->|"concerns"| Property
+```
+
+</details>
 
 ## Source ODR
 

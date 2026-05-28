@@ -26,6 +26,146 @@ For a guided tour:
 
 For a jump-in reader: see **[index.md](./index.md)** for the full entity catalogue.
 
+## Module catalogue at a glance
+
+The seven Concept-tier modules and their primary concerns:
+
+![opda-concept-tier-module-catalogue](diagrams/README/opda-concept-tier-module-catalogue.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: OPDA Concept-tier module catalogue
+    accDescr: Seven Concept modules — foundation, property, agent, transaction, claim, governance, descriptive — and their high-level responsibilities, with arrows showing module reuse direction.
+
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    Foundation["foundation<br/>Cross-cutting kinds<br/>(Role, Relator, ValidationContext)"]:::cls
+    Property["property<br/>Property + LegalEstate +<br/>RegisteredTitle + Address"]:::cls
+    Agent["agent<br/>Person, Organisation,<br/>Seller/Buyer/Proprietor roles"]:::cls
+    Transaction["transaction<br/>Transaction Relator +<br/>Milestone + Chain"]:::cls
+    Claim["claim<br/>Claim, Evidence,<br/>Verification, Assurance"]:::cls
+    Governance["governance<br/>DPV mapping +<br/>Special-category scheme"]:::cls
+    Descriptive["descriptive<br/>EPC, Survey, Valuation,<br/>Search, Comparable"]:::cls
+
+    Foundation -->|"reused by"| Property
+    Foundation -->|"reused by"| Agent
+    Foundation -->|"reused by"| Transaction
+    Foundation -->|"reused by"| Claim
+    Property -->|"vested rights bear"| Agent
+    Property -->|"conveyed in"| Transaction
+    Agent -->|"plays roles in"| Transaction
+    Transaction -->|"claim-bearing"| Claim
+    Property -->|"PII surfaces inform"| Governance
+    Agent -->|"PII surfaces inform"| Governance
+    Property -->|"riding artefacts"| Descriptive
+```
+
+</details>
+
+## Master entity-relationship flow
+
+How the central OPDA Kinds connect across modules — the load-bearing joins that an integrator must understand before going further:
+
+![opda-concept-tier-master-entity-relationship-flow](diagrams/README/opda-concept-tier-master-entity-relationship-flow.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: OPDA Concept-tier master entity-relationship flow
+    accDescr: Property-Address-LegalEstate-RegisteredTitle quartet at the centre; agents (Person/Organisation) bear Seller/Buyer/Proprietor roles via the Transaction and Proprietorship Relators; Claims attach to Transactions and roles via Evidence and Verification; descriptive artefacts ride alongside Property.
+
+    classDef cls fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef rel fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    %% Property quartet
+    Property["Property"]:::cls
+    Address["Address"]:::cls
+    LegalEstate["LegalEstate"]:::cls
+    RegisteredTitle["RegisteredTitle"]:::cls
+    LeaseTerm["LeaseTerm"]:::cls
+
+    %% Agent
+    Person["Person"]:::cls
+    Organisation["Organisation"]:::cls
+
+    %% Relators + roles
+    Transaction["Transaction<br/>(Relator)"]:::rel
+    Proprietorship["Proprietorship<br/>(Relator)"]:::rel
+    Seller["Seller<br/>(RoleMixin)"]:::cls
+    Buyer["Buyer<br/>(RoleMixin)"]:::cls
+    Proprietor["Proprietor<br/>(Role)"]:::cls
+    Milestone["Milestone"]:::cls
+    Chain["TransactionChain"]:::cls
+
+    %% Claim chain
+    Claim["Claim"]:::cls
+    Evidence["Evidence"]:::cls
+    Verification["VerificationActivity"]:::cls
+    Assurance["AssuranceLevel"]:::cls
+    Framework["TrustFramework"]:::cls
+
+    %% Descriptive ride-alongs
+    EPC["EPC Certificate"]:::ext
+    Survey["Survey"]:::ext
+    Valuation["Valuation"]:::ext
+    Search["Search"]:::ext
+
+    %% Property quartet
+    Property -->|"hasAddress"| Address
+    Property -->|"hasLegalEstate"| LegalEstate
+    LegalEstate -->|"documentedBy"| RegisteredTitle
+    LegalEstate -->|"leaseTerm"| LeaseTerm
+
+    %% Proprietorship binding
+    Proprietorship -->|"bindsTitle"| RegisteredTitle
+    Proprietorship -->|"bears"| Proprietor
+    Proprietor -->|"borneBy"| Person
+    Proprietor -.->|"alternatively"| Organisation
+
+    %% Transaction binding
+    Transaction -->|"conveys"| LegalEstate
+    Transaction -->|"founds"| Seller
+    Transaction -->|"founds"| Buyer
+    Seller -->|"borneBy"| Person
+    Seller -.->|"or"| Organisation
+    Buyer -->|"borneBy"| Person
+    Buyer -.->|"or"| Organisation
+    Transaction -->|"hasMilestone"| Milestone
+    Transaction -->|"memberOf"| Chain
+
+    %% Claim chain
+    Claim -->|"supportedBy"| Evidence
+    Verification -->|"verifies"| Claim
+    Verification -->|"uses"| Evidence
+    Verification -->|"assigns"| Assurance
+    Verification -->|"underFramework"| Framework
+    Seller -.->|"attestedBy"| Claim
+
+    %% Descriptive
+    EPC -->|"concerns"| Property
+    Survey -->|"concerns"| Property
+    Valuation -->|"concerns"| Property
+    Search -->|"concerns"| Property
+```
+
+</details>
+
 ## What is *not* in this tier
 
 - **Attribute lists, cardinalities, data types** — these live in the [Logical tier](../logical/) for engineers integrating against the model.

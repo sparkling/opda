@@ -28,6 +28,35 @@ An EPC Certificate is identified by its **(DESNZ register-id, certificate-number
 - [Property](../property/property.md) — an EPC Certificate concerns a Property
 - [Survey](./survey.md) — a sibling authority-issued artefact (different provenance, different lifecycle)
 
+### Related-Kinds graph
+
+![epc-certificate-related-kinds-neighbourhood-graph](diagrams/epc-certificate/epc-certificate-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: EPC Certificate related-Kinds neighbourhood graph
+    accDescr: EPC Certificate as a DESNZ-governed authority-retrieved artefact concerning a Property; 10-year validity window; sibling to other descriptive ride-along artefacts; itself a PII-bearing Kind under DPV.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    EPC["EPC Certificate<br/>(DESNZ, 10y validity)"]:::centre
+    Property["Property"]:::cls
+    Survey["Survey<br/>(sibling artefact)"]:::cls
+    DPV["DPVMappingRecord<br/>(governance)"]:::ext
+
+    EPC -->|"concerns"| Property
+    EPC -.->|"siblingArtefact"| Survey
+    DPV -.->|"targets"| EPC
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)

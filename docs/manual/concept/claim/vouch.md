@@ -18,6 +18,30 @@ See [Vouch Evidence](./vouch-evidence.md) — Vouch inherits the same IC by OWL 
 
 - [Vouch Evidence](./vouch-evidence.md) — the canonical long-name form
 
+### Related-Kinds graph
+
+![vouch-short-name-alias-related-kinds-neighbourhood-graph](diagrams/vouch/vouch-short-name-alias-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Vouch short-name alias related-Kinds neighbourhood graph
+    accDescr: Vouch as the OWL-equivalent short-name alias for Vouch Evidence; used by worked-example data while SHACL shapes and DPV annotations target the long-name form.
+
+    classDef centre fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#E65100
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Vouch["Vouch<br/>(alias)"]:::centre
+    VouchEv["VouchEvidence<br/>(canonical)"]:::cls
+
+    Vouch ===|"owl:equivalentClass"| VouchEv
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

@@ -25,6 +25,34 @@ Two Address records refer to the same Address only if they share the same **auth
 - [Property](./property.md) — a Property may have multiple Address records (one per variant)
 - [Registered Title](./registered-title.md) — the title Address variant is the one HMLR records
 
+### Related-Kinds graph
+
+![address-related-kinds-neighbourhood-graph](diagrams/address/address-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Address related-Kinds neighbourhood graph
+    accDescr: Address as one of multiple authority-issued locators for one Property; title variant cited by Registered Title; UPRN Succession Event affects the OS AddressBase variant.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Address["Address<br/>(per variant)"]:::centre
+    Property["Property"]:::cls
+    Title["RegisteredTitle"]:::cls
+    UPRNSucc["UPRNSuccessionEvent"]:::cls
+
+    Property -->|"hasAddress (1..*)"| Address
+    Title -->|"titleAddress variant"| Address
+    UPRNSucc -->|"accompanies OS variant"| Address
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0015 — Address and geography §2a](../../../ontology/odr/ODR-0015-address-and-geography.md)

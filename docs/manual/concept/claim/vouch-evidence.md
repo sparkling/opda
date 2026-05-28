@@ -26,6 +26,40 @@ A Vouch Evidence record is identified by its **(voucher agent, attestation date,
 - [Verification Activity](./verification-activity.md) — verifies a Claim using Vouch Evidence
 - [Assurance Level](./assurance-level.md) — Vouch Evidence caps at eIDAS Low
 
+### Related-Kinds graph
+
+![vouch-evidence-related-kinds-neighbourhood-graph](diagrams/vouch-evidence/vouch-evidence-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Vouch Evidence related-Kinds neighbourhood graph
+    accDescr: Vouch Evidence as one of three Evidence subtypes, with short-name alias Vouch; identified by (voucher agent, attestation date, attested fact); caps at eIDAS Low Assurance regardless of voucher quality.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef alias fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+
+    VouchEv["VouchEvidence"]:::centre
+    Evidence["Evidence<br/>(supertype)"]:::cls
+    Vouch["Vouch<br/>(alias)"]:::alias
+    Claim["Claim"]:::cls
+    Verification["VerificationActivity"]:::cls
+    LowAssurance["AssuranceLevel<br/>(Low — capped)"]:::warning
+
+    VouchEv -.->|"isA"| Evidence
+    VouchEv ===|"owl:equivalentClass"| Vouch
+    Claim -->|"supportedBy"| VouchEv
+    Verification -->|"uses"| VouchEv
+    VouchEv -.->|"caps at"| LowAssurance
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

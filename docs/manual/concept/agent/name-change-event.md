@@ -22,6 +22,34 @@ Two records refer to the same Name Change Event if they describe the same **admi
 
 - [Person](./person.md) — Name Change Events affect a Person's name without breaking Person identity
 
+### Related-Kinds graph
+
+![name-change-event-related-kinds-neighbourhood-graph](diagrams/name-change-event/name-change-event-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Name Change Event related-Kinds neighbourhood graph
+    accDescr: Name Change Event records a Person's name change as a reified provenance event; the Person identity persists across the event; the new-name attribute is linked back to the old name via prov:wasDerivedFrom.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    NameChange["NameChangeEvent"]:::centre
+    Person["Person<br/>(identity persists)"]:::cls
+    NewName["Name<br/>(new attribute value)"]:::cls
+    OldName["Name<br/>(old attribute value)"]:::cls
+
+    NameChange -->|"affects"| Person
+    NameChange -->|"produces"| NewName
+    NewName -.->|"prov:wasDerivedFrom"| OldName
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)

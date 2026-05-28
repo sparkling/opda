@@ -21,6 +21,30 @@ See [Document Evidence](./document-evidence.md) — Document inherits the same I
 
 - [Document Evidence](./document-evidence.md) — the canonical long-name form
 
+### Related-Kinds graph
+
+![document-short-name-alias-related-kinds-neighbourhood-graph](diagrams/document/document-short-name-alias-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Document short-name alias related-Kinds neighbourhood graph
+    accDescr: Document as the OWL-equivalent short-name alias for Document Evidence; used by worked-example data while SHACL shapes and DPV annotations target the long-name form.
+
+    classDef centre fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#E65100
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Doc["Document<br/>(alias)"]:::centre
+    DocEv["DocumentEvidence<br/>(canonical)"]:::cls
+
+    Doc ===|"owl:equivalentClass"| DocEv
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

@@ -23,6 +23,32 @@ Two records refer to the same UPRN Succession Event if they describe the same **
 - [Property](./property.md) — UPRN Succession Events affect a Property's UPRN without breaking Property identity
 - [Address](./address.md) — UPRN changes typically accompany Address-record changes in OS AddressBase
 
+### Related-Kinds graph
+
+![uprn-succession-event-related-kinds-neighbourhood-graph](diagrams/uprn-succession-event/uprn-succession-event-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: UPRN Succession Event related-Kinds neighbourhood graph
+    accDescr: UPRN Succession Event records an administrative re-numbering on a Property (identity persists); it accompanies a change in the OS AddressBase variant of the Property's Address.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    UPRNSucc["UPRNSuccessionEvent"]:::centre
+    Property["Property<br/>(identity persists)"]:::cls
+    Address["Address<br/>(OS AddressBase variant)"]:::cls
+
+    UPRNSucc -->|"re-numbers"| Property
+    UPRNSucc -->|"accompanies"| Address
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0005 — Property/Land identity crux §6a](../../../ontology/odr/ODR-0005-property-land-identity-crux.md)

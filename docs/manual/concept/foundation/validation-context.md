@@ -23,6 +23,32 @@ Each Validation Context is identified by its **profile URI** — for example, `h
 - [Diagnostic Exemplar](./diagnostic-exemplar.md) — exemplars are validated against a named Validation Context before the profile is ratified
 - [Generator Run](./generator-run.md) — Validation Contexts are emitted by the same build pipeline, tagged with the Run that produced them
 
+### Related-Kinds graph
+
+![validation-context-related-kinds-neighbourhood-graph](diagrams/validation-context/validation-context-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Validation Context related-Kinds neighbourhood graph
+    accDescr: Validation Context as the named overlay profile (e.g. BASPI5) emitted by a Generator Run and validated against Diagnostic Exemplars before ratification.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    VC["ValidationContext<br/>(e.g. BASPI5)"]:::centre
+    Exemplar["DiagnosticExemplar"]:::cls
+    Run["GeneratorRun"]:::cls
+
+    Run -->|"emits"| VC
+    VC -->|"validatedAgainst"| Exemplar
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0010 — Overlay profile mechanism §Q1](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)

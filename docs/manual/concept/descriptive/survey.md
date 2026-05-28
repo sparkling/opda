@@ -24,6 +24,34 @@ A Survey is identified by its **(issuing surveyor, survey-id, issue date)** trip
 - [Valuation](./valuation.md) — Valuations often rely on Survey content
 - [EPC Certificate](./epc-certificate.md) — a sibling authority-issued artefact
 
+### Related-Kinds graph
+
+![survey-related-kinds-neighbourhood-graph](diagrams/survey/survey-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Survey related-Kinds neighbourhood graph
+    accDescr: Survey as a professional surveyor's report concerning a Property; often informs a Valuation; sibling to other descriptive artefacts; identified by (surveyor, survey-id, issue-date).
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Survey["Survey<br/>(RICS surveyor)"]:::centre
+    Property["Property"]:::cls
+    Valuation["Valuation"]:::cls
+    EPC["EPC Certificate<br/>(sibling)"]:::cls
+
+    Survey -->|"concerns"| Property
+    Survey -->|"informs (often)"| Valuation
+    Survey -.->|"siblingArtefact"| EPC
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)

@@ -25,6 +25,39 @@ A DPV Mapping Record is identified by its **target Kind** — the OPDA class who
 - [Claim](../claim/claim.md) — Claim DPV Mapping baseline is `dpv-pd:OfficialID`
 - [Special Category Scheme](./special-category-scheme.md) — for Article 10 special-category PII
 
+### Related-Kinds graph
+
+![dpv-mapping-record-related-kinds-neighbourhood-graph](diagrams/dpv-mapping-record/dpv-mapping-record-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: DPV Mapping Record related-Kinds neighbourhood graph
+    accDescr: DPV Mapping Record targets one OPDA Kind per record, citing baseline personal-data category from the external DPV vocabulary; may reference Special Category Scheme for Article 10 elevated-discipline PII.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    DPVMapping["DPVMappingRecord"]:::centre
+    Person["Person"]:::cls
+    Organisation["Organisation"]:::cls
+    Claim["Claim"]:::cls
+    SCS["SpecialCategoryScheme"]:::cls
+    DPVRef["dpv-pd:* category<br/>(external)"]:::ext
+
+    DPVMapping -->|"targets (1)"| Person
+    DPVMapping -->|"or targets"| Organisation
+    DPVMapping -->|"or targets"| Claim
+    DPVMapping -->|"citesBaseline"| DPVRef
+    DPVMapping -.->|"may reference"| SCS
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0018 — DPV class-level co-annotation pattern §Rule 4](../../../ontology/odr/ODR-0018-dpv-class-level-coannotation-pattern.md)

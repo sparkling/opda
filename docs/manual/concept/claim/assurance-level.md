@@ -24,6 +24,43 @@ Each Assurance Level is identified by its **scheme member URI** — e.g. `eidas:
 - [Claim](./claim.md) — inherits its Assurance Level from the Verification Activity that produced its verified form
 - [Trust Framework](./trust-framework.md) — defines the assurance-level scheme
 
+### Related-Kinds graph
+
+![assurance-level-related-kinds-neighbourhood-graph](diagrams/assurance-level/assurance-level-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Assurance Level related-Kinds neighbourhood graph
+    accDescr: Assurance Level as a closed three-member enumeration (eIDAS Low, Substantial, High) assigned by a Verification Activity; the scheme is defined by the Trust Framework; Vouch Evidence is capped at Low.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
+    classDef success fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef info fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+
+    Assurance["AssuranceLevel"]:::centre
+    Low["eIDAS Low"]:::warning
+    Sub["eIDAS Substantial"]:::info
+    High["eIDAS High"]:::success
+    Verification["VerificationActivity"]:::cls
+    Claim["Claim"]:::cls
+    Framework["TrustFramework"]:::cls
+
+    Assurance --> Low
+    Assurance --> Sub
+    Assurance --> High
+    Verification -->|"assigns"| Assurance
+    Claim -->|"inheritsFrom Verification"| Assurance
+    Framework -->|"defines scheme"| Assurance
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q3](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

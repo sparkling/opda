@@ -28,6 +28,41 @@ A Seller Role-Mixin instance is identified by its **(Transaction, bearer) tuple*
 - [Transaction](../transaction/transaction.md) — the Relator within which the Seller Role Mixin is borne
 - [Claim](../claim/claim.md) — a Seller's evidenced authority links to a Claim of authority (e.g. probate, power of attorney)
 
+### Related-Kinds graph
+
+![seller-related-kinds-neighbourhood-graph](diagrams/seller/seller-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Seller related-Kinds neighbourhood graph
+    accDescr: Seller as a RoleMixin borne by either a Person or an Organisation, founded by a Transaction, mirrored by Buyer; a Seller's authority links to a Claim.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    Seller["Seller<br/>(RoleMixin)"]:::centre
+    Person["Person"]:::cls
+    Organisation["Organisation"]:::cls
+    Transaction["Transaction"]:::cls
+    Buyer["Buyer<br/>(mirror)"]:::cls
+    Claim["Claim<br/>(authority)"]:::ext
+    RoleMixin["RoleMixin<br/>(pattern)"]:::ext
+
+    Seller -->|"borneBy"| Person
+    Seller -->|"or borneBy"| Organisation
+    Transaction -->|"founds"| Seller
+    Transaction -->|"founds (mirror)"| Buyer
+    Seller -.->|"asserts authority via"| Claim
+    Seller -.->|"specialises"| RoleMixin
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)

@@ -27,6 +27,41 @@ A Buyer Role-Mixin instance is identified by its **(Transaction, bearer) tuple**
 - [Transaction](../transaction/transaction.md) — the Relator within which the Buyer Role Mixin is borne
 - [Transaction Chain](../transaction/transaction-chain.md) — chains are built from buyer-also-seller participant overlap
 
+### Related-Kinds graph
+
+![buyer-related-kinds-neighbourhood-graph](diagrams/buyer/buyer-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Buyer related-Kinds neighbourhood graph
+    accDescr: Buyer as a RoleMixin borne by either a Person or an Organisation, founded by a Transaction, mirrored by Seller; the buyer-also-seller overlap is the join into a Transaction Chain.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    Buyer["Buyer<br/>(RoleMixin)"]:::centre
+    Person["Person"]:::cls
+    Organisation["Organisation"]:::cls
+    Transaction["Transaction"]:::cls
+    Seller["Seller<br/>(mirror)"]:::cls
+    Chain["TransactionChain"]:::cls
+    RoleMixin["RoleMixin<br/>(pattern)"]:::ext
+
+    Buyer -->|"borneBy"| Person
+    Buyer -->|"or borneBy"| Organisation
+    Transaction -->|"founds"| Buyer
+    Buyer -.->|"buyer-also-seller<br/>overlap to next link"| Seller
+    Chain -->|"composed via overlap"| Buyer
+    Buyer -.->|"specialises"| RoleMixin
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)

@@ -22,6 +22,32 @@ The Special Category Scheme is identified by its **scheme URI** — `opda:Specia
 - [DPV Mapping Record](./dpv-mapping-record.md) — DPV mappings may reference Article 10 categories
 - [Person](../agent/person.md) — the Kind most commonly carrying Article 10 PII
 
+### Related-Kinds graph
+
+![special-category-scheme-related-kinds-neighbourhood-graph](diagrams/special-category-scheme/special-category-scheme-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Special Category Scheme related-Kinds neighbourhood graph
+    accDescr: Special Category Scheme as the class-declared SKOS scheme for GDPR Article 10 elevated-discipline PII; flagged on Person (primary current consumer); referenced by DPV Mapping Records.
+
+    classDef centre fill:#FFF9C4,stroke:#F9A825,stroke-width:3px,color:#F57F17
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    SCS["SpecialCategoryScheme<br/>(GDPR Art. 10)"]:::centre
+    Person["Person"]:::cls
+    DPVMapping["DPVMappingRecord"]:::cls
+
+    SCS -->|"flagsArticle10PIIOn"| Person
+    DPVMapping -.->|"may reference"| SCS
+```
+
+</details>
+
 ## Source ODR
 
 [GDPR Article 10](https://gdpr-info.eu/art-10-gdpr/) (external citation per the TTL `dct:source`)

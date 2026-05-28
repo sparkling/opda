@@ -26,6 +26,38 @@ An Evidence record is identified by its **(subtype, source-authority record-id)*
 - [Claim](./claim.md) — Claims are supported by Evidence
 - [Verification Activity](./verification-activity.md) — verifies a Claim using Evidence
 
+### Related-Kinds graph
+
+![evidence-related-kinds-neighbourhood-graph](diagrams/evidence/evidence-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Evidence related-Kinds neighbourhood graph
+    accDescr: Evidence as the supertype of three deliberately-distinct subtypes — Document, Electronic Record, Vouch — each with its own provenance chain and assurance ceiling; supports Claims and is used by Verification Activities.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Evidence["Evidence<br/>(supertype)"]:::centre
+    DocEv["DocumentEvidence<br/>(HMCTS, etc.)"]:::cls
+    ERecEv["ElectronicRecordEvidence<br/>(HMRC API, etc.)"]:::cls
+    VouchEv["VouchEvidence<br/>(SRA-licensed)"]:::cls
+    Claim["Claim"]:::cls
+    Verification["VerificationActivity"]:::cls
+
+    Evidence --> DocEv
+    Evidence --> ERecEv
+    Evidence --> VouchEv
+    Claim -->|"supportedBy"| Evidence
+    Verification -->|"uses"| Evidence
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

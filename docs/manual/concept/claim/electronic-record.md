@@ -18,6 +18,30 @@ See [Electronic Record Evidence](./electronic-record-evidence.md) — Electronic
 
 - [Electronic Record Evidence](./electronic-record-evidence.md) — the canonical long-name form
 
+### Related-Kinds graph
+
+![electronic-record-short-name-alias-related-kinds-neighbourhood-graph](diagrams/electronic-record/electronic-record-short-name-alias-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Electronic Record short-name alias related-Kinds neighbourhood graph
+    accDescr: Electronic Record as the OWL-equivalent short-name alias for Electronic Record Evidence; used by worked-example data while SHACL shapes and DPV annotations target the long-name form.
+
+    classDef centre fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#E65100
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    ERec["ElectronicRecord<br/>(alias)"]:::centre
+    ERecEv["ElectronicRecordEvidence<br/>(canonical)"]:::cls
+
+    ERec ===|"owl:equivalentClass"| ERecEv
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

@@ -25,6 +25,36 @@ A Role Mixin instance is identified by its **(Relator-context, bearer) tuple** �
 - [Seller](../agent/seller.md) — the canonical OPDA Role Mixin (Person or Organisation → Seller in a Transaction context)
 - [Buyer](../agent/buyer.md) — the mirror Role Mixin (Person or Organisation → Buyer in a Transaction context)
 
+### Related-Kinds graph
+
+![role-mixin-related-kinds-neighbourhood-graph](diagrams/role-mixin/role-mixin-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Role Mixin related-Kinds neighbourhood graph
+    accDescr: Role Mixin as the pattern Kind specialised by Seller and Buyer (the canonical OPDA Role Mixins); contrasts with Role (single-Kind sortal); sits within a Relator's context.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    RoleMixin["RoleMixin<br/>(pattern)"]:::centre
+    Role["Role<br/>(single-Kind)"]:::cls
+    Relator["Relator"]:::cls
+    Seller["Seller<br/>(canonical)"]:::cls
+    Buyer["Buyer<br/>(mirror)"]:::cls
+
+    RoleMixin -->|"sitsWithin"| Relator
+    RoleMixin -.->|"contrast with"| Role
+    Seller -.->|"specialises"| RoleMixin
+    Buyer -.->|"specialises"| RoleMixin
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)

@@ -28,6 +28,32 @@ A Search is identified by its **(issuing authority, search-type, search-referenc
 - [Property](../property/property.md) — a Search concerns a Property
 - [Survey](./survey.md) — a sibling authority-issued artefact (different provenance, different lifecycle)
 
+### Related-Kinds graph
+
+![search-related-kinds-neighbourhood-graph](diagrams/search/search-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Search related-Kinds neighbourhood graph
+    accDescr: Search as a local-authority or environmental search result (CON29R, LLC1, flood, coal-mining) concerning a Property with its own ordered/returned/superseded lifecycle.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Search["Search<br/>(CON29R / LLC1 / etc.)"]:::centre
+    Property["Property"]:::cls
+    Survey["Survey<br/>(sibling artefact)"]:::cls
+
+    Search -->|"concerns"| Property
+    Search -.->|"siblingArtefact"| Survey
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)

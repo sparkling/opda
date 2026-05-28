@@ -28,6 +28,34 @@ A Comparable is identified by its **(source-authority, record-id, retrieval date
 - [Valuation](./valuation.md) — Valuations cite Comparables as supporting evidence
 - [Property](../property/property.md) — Comparables are related to (but distinct from) the Property being valued
 
+### Related-Kinds graph
+
+![comparable-related-kinds-neighbourhood-graph](diagrams/comparable/comparable-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Comparable related-Kinds neighbourhood graph
+    accDescr: Comparable as a sourced sale or rental record (Land Registry Price Paid or VOA) cited by a Valuation as supporting evidence; the source Property is distinct from the Property being valued.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Comparable["Comparable<br/>(LR / VOA)"]:::centre
+    Valuation["Valuation"]:::cls
+    Source["Property<br/>(source of Comparable)"]:::cls
+    Target["Property<br/>(being valued)"]:::cls
+
+    Valuation -->|"cites (0..*)"| Comparable
+    Comparable -->|"sourcedFrom"| Source
+    Valuation -->|"concerns"| Target
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)

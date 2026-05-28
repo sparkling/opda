@@ -26,6 +26,39 @@ A Claim is identified by its **subject + predicate + value** triple within a def
 - [Trust Framework](./trust-framework.md) — governance regime scoping the Claim's validity
 - [Seller](../agent/seller.md) — a Seller's evidenced authority links to a Claim of authority
 
+### Related-Kinds graph
+
+![claim-related-kinds-neighbourhood-graph](diagrams/claim/claim-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Claim related-Kinds neighbourhood graph
+    accDescr: Claim as a verifiable assertion supported by Evidence; verified by a Verification Activity that assigns an Assurance Level under a Trust Framework; Seller and other roles assert authority via a Claim.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    Claim["Claim<br/>(subject + predicate + value)"]:::centre
+    Evidence["Evidence"]:::cls
+    Verification["VerificationActivity"]:::cls
+    Assurance["AssuranceLevel"]:::cls
+    Framework["TrustFramework"]:::cls
+    Seller["Seller<br/>(asserter)"]:::ext
+
+    Claim -->|"supportedBy (1..*)"| Evidence
+    Verification -->|"verifies"| Claim
+    Verification -->|"assigns"| Assurance
+    Verification -->|"underFramework"| Framework
+    Seller -.->|"assertsAuthorityVia"| Claim
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

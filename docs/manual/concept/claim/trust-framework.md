@@ -24,6 +24,34 @@ A Trust Framework is identified by its **(framework URI, version)** pair. Two re
 - [Claim](./claim.md) — scoped by a Trust Framework via its Verification
 - [Assurance Level](./assurance-level.md) — scheme defined by the Trust Framework
 
+### Related-Kinds graph
+
+![trust-framework-related-kinds-neighbourhood-graph](diagrams/trust-framework/trust-framework-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Trust Framework related-Kinds neighbourhood graph
+    accDescr: Trust Framework as the governance regime cited by every Verification Activity; defines the Assurance Level scheme; identified by (framework URI, version); scopes Claim validity.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Framework["TrustFramework<br/>(URI + version)"]:::centre
+    Verification["VerificationActivity"]:::cls
+    Claim["Claim"]:::cls
+    Assurance["AssuranceLevel"]:::cls
+
+    Verification -->|"underFramework"| Framework
+    Claim -->|"scopedBy (via Verification)"| Framework
+    Framework -->|"definesScheme"| Assurance
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q5](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)

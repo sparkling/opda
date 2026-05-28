@@ -29,6 +29,34 @@ A Valuation is identified by its **(valuer, Property, instruction date)** triple
 - [Comparable](./comparable.md) — supports a Valuation
 - [Survey](./survey.md) — Surveys often inform Valuations
 
+### Related-Kinds graph
+
+![valuation-related-kinds-neighbourhood-graph](diagrams/valuation/valuation-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Valuation related-Kinds neighbourhood graph
+    accDescr: Valuation as a RICS-regulated or AVM judgement concerning a Property; cites (0..*) Comparables as supporting evidence; often informed by a Survey; identified by (valuer, Property, instruction-date).
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Valuation["Valuation<br/>(RICS or AVM)"]:::centre
+    Property["Property"]:::cls
+    Comparable["Comparable"]:::cls
+    Survey["Survey"]:::cls
+
+    Valuation -->|"concerns"| Property
+    Valuation -->|"cites (0..*)"| Comparable
+    Survey -->|"informs (often)"| Valuation
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)

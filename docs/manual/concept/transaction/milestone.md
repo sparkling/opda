@@ -22,6 +22,36 @@ A Milestone is identified by its **(Transaction, Milestone-kind, occurrence)** t
 
 - [Transaction](./transaction.md) — Milestones belong to a Transaction
 
+### Related-Kinds graph
+
+![milestone-related-kinds-neighbourhood-graph](diagrams/milestone/milestone-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Milestone related-Kinds neighbourhood graph
+    accDescr: Milestone as a point or interval in a Transaction lifecycle, with planned and actual timestamps and a derived variance feeding regulator-grade on-time performance reports.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Milestone["Milestone<br/>(instant or interval)"]:::centre
+    Transaction["Transaction"]:::cls
+    Planned["Planned timestamp"]:::cls
+    Actual["Actual timestamp"]:::cls
+    Variance["Variance<br/>(derived)"]:::cls
+
+    Transaction -->|"hasMilestone"| Milestone
+    Milestone -->|"planned"| Planned
+    Milestone -->|"actual"| Actual
+    Variance -.->|"derived from planned vs actual"| Milestone
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0007 — Transactions and lifecycle §Q2](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)

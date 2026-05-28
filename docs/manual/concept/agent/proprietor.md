@@ -26,6 +26,39 @@ A Proprietor Role-instance is identified by its **(Proprietorship, bearer) tuple
 - [Proprietorship](./proprietorship.md) — the Relator binding Proprietors to a Registered Title
 - [Registered Title](../property/registered-title.md) — the registry-side context for a Proprietorship
 
+### Related-Kinds graph
+
+![proprietor-related-kinds-neighbourhood-graph](diagrams/proprietor/proprietor-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Proprietor related-Kinds neighbourhood graph
+    accDescr: Proprietor as a Role borne by a Person (or, under a specialisation, by an Organisation), bound to a Registered Title via the Proprietorship Relator.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    Proprietor["Proprietor<br/>(Role)"]:::centre
+    Person["Person"]:::cls
+    Organisation["Organisation<br/>(specialisation)"]:::cls
+    Proprietorship["Proprietorship<br/>(Relator)"]:::cls
+    Title["RegisteredTitle"]:::cls
+    Role["Role<br/>(pattern)"]:::ext
+
+    Proprietor -->|"borneBy"| Person
+    Proprietor -.->|"specialised borneBy"| Organisation
+    Proprietorship -->|"bears"| Proprietor
+    Proprietorship -->|"binds"| Title
+    Proprietor -.->|"specialises"| Role
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)

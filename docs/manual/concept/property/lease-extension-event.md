@@ -25,6 +25,37 @@ Two records refer to the same Lease Extension Event if they describe the same **
 - [Registered Title](./registered-title.md) — the same event typically updates the Title's registry record
 - [Transaction](../transaction/transaction.md) — a Lease Extension Event may co-type as a Transaction (S007 Q1 Transaction-as-Relator dual typing)
 
+### Related-Kinds graph
+
+![lease-extension-event-related-kinds-neighbourhood-graph](diagrams/lease-extension-event/lease-extension-event-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Lease Extension Event related-Kinds neighbourhood graph
+    accDescr: Lease Extension Event as a single registry-recorded event that extends a leasehold Legal Estate, produces a successor Lease Term, updates the Registered Title's registry record, and may co-type as a Transaction.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef ext fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
+
+    LeaseExt["LeaseExtensionEvent"]:::centre
+    LegalEstate["LegalEstate<br/>(leasehold,<br/>identity persists)"]:::cls
+    LeaseTerm["LeaseTerm<br/>(successor)"]:::cls
+    Title["RegisteredTitle<br/>(updated)"]:::cls
+    Transaction["Transaction<br/>(possible co-type)"]:::ext
+
+    LeaseExt -->|"extends"| LegalEstate
+    LeaseExt -->|"producesSuccessor"| LeaseTerm
+    LeaseExt -->|"updates"| Title
+    LeaseExt -.->|"co-types as"| Transaction
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0005 — Property/Land identity crux §3b](../../../ontology/odr/ODR-0005-property-land-identity-crux.md)

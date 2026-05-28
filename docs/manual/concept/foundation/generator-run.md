@@ -23,6 +23,34 @@ Each Generator Run is identified by the **(generator version, source commit SHA,
 - [Diagnostic Exemplar](./diagnostic-exemplar.md) — exemplars are emitted alongside the ontology TTLs by the same Generator Run
 - [Validation Context](./validation-context.md) — overlay profiles are emitted by the same pipeline and tagged with the Run that produced them
 
+### Related-Kinds graph
+
+![generator-run-related-kinds-neighbourhood-graph](diagrams/generator-run/generator-run-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Generator Run related-Kinds neighbourhood graph
+    accDescr: Generator Run as a single opda-gen execution emitting ontology TTLs, Diagnostic Exemplars, and Validation Contexts; identified by the (generator-version, source-commit, timestamp) triple.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Run["GeneratorRun"]:::centre
+    Exemplar["DiagnosticExemplar"]:::cls
+    VC["ValidationContext"]:::cls
+    TTL["Ontology TTLs<br/>(opda-*.ttl)"]:::cls
+
+    Run -->|"emits"| TTL
+    Run -->|"emits"| Exemplar
+    Run -->|"emits"| VC
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0004 — PDTF ontology foundation §6a (generator-first)](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)

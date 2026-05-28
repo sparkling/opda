@@ -23,6 +23,32 @@ Each Diagnostic Exemplar is identified by the **named hard case** it exposes —
 - [Generator Run](./generator-run.md) — the build pipeline emits Exemplars alongside the ontology TTLs, paired so every emission is reproducible from a recorded (version, commit) pair
 - [Validation Context](./validation-context.md) — overlay profiles are validated against Exemplars before the profile is ratified
 
+### Related-Kinds graph
+
+![diagnostic-exemplar-related-kinds-neighbourhood-graph](diagrams/diagnostic-exemplar/diagnostic-exemplar-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Diagnostic Exemplar related-Kinds neighbourhood graph
+    accDescr: Diagnostic Exemplar as a Council-validation receipt; emitted by a Generator Run; used by a Validation Context to confirm an Identity Criterion handles its named hard case.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Exemplar["DiagnosticExemplar<br/>(per named hard case)"]:::centre
+    Run["GeneratorRun"]:::cls
+    VC["ValidationContext"]:::cls
+
+    Run -->|"emits alongside TTLs"| Exemplar
+    VC -->|"validatedAgainst"| Exemplar
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0004 — PDTF ontology foundation §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)

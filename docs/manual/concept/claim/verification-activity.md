@@ -25,6 +25,36 @@ A Verification Activity is identified by its **(Claim, verifier, completion time
 - [Assurance Level](./assurance-level.md) — the grade the Activity assigns
 - [Trust Framework](./trust-framework.md) — the governance regime the Activity conforms to
 
+### Related-Kinds graph
+
+![verification-activity-related-kinds-neighbourhood-graph](diagrams/verification-activity/verification-activity-related-kinds-neighbourhood-graph.png)
+
+<details>
+<summary>Mermaid Source</summary>
+
+```mermaid
+%%{init: {"theme": "base"}}%%
+flowchart LR
+    accTitle: Verification Activity related-Kinds neighbourhood graph
+    accDescr: Verification Activity verifies a Claim using one or more Evidence records, assigns an Assurance Level, and cites the Trust Framework under which it was performed; identified by the (Claim, verifier, completion-timestamp) triple.
+
+    classDef centre fill:#E1BEE7,stroke:#6A1B9A,stroke-width:3px,color:#4A148C
+    classDef cls fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+
+    Verification["VerificationActivity"]:::centre
+    Claim["Claim"]:::cls
+    Evidence["Evidence<br/>(any subtype)"]:::cls
+    Assurance["AssuranceLevel"]:::cls
+    Framework["TrustFramework"]:::cls
+
+    Verification -->|"verifies"| Claim
+    Verification -->|"uses"| Evidence
+    Verification -->|"assigns"| Assurance
+    Verification -->|"underFramework"| Framework
+```
+
+</details>
+
 ## Source ODR
 
 [ODR-0009 — Claims, evidence, provenance §Q1](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)
