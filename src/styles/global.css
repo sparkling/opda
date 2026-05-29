@@ -1,10 +1,18 @@
-/* Full Tailwind v4 import (theme + Preflight + utilities).
-   Preflight is enabled — it normalises browser defaults (form-element
-   borders, list bullets, heading sizes, body margin, button reset,
-   etc.) so utility classes have full control. The hand-authored
-   design-system.css still owns .prose / .db-table / theme colours and
-   is linked AFTER this file in HTML, so its rules win where they
-   overlap. */
+/* Full Tailwind v4 import (theme + Preflight + utilities). Preflight is enabled
+   because the @tailwindplus/elements schema toolbar needs it (without it, native
+   <input>/<button> borders double up with Tailwind's inset-ring). See ADR-0025.
+
+   CASCADE CONTRACT (ADR-0025 — read before changing this):
+   - public/ui/design-system.css (Claude Design) is the AUTHORITATIVE system. It is
+     UNLAYERED, so it out-ranks Tailwind's layered base/components/utilities by the
+     CSS cascade — regardless of <link> order. (It is in fact linked BEFORE this
+     file; load order is irrelevant because unlayered always beats layered.)
+   - Therefore design-system.css MUST stay unlayered, and MUST explicitly declare
+     any element property it relies on — never inherit a browser default that
+     Preflight resets (list-style, heading sizes/weights, table border-collapse,
+     hr, blockquote margins, …). The vanished prose list markers were exactly this:
+     marker colour was set but list-style-type was not. Do NOT switch to
+     skip-preflight without re-fixing the toolbar and updating ADR-0025. */
 @import "tailwindcss";
 
 /* Site uses [data-theme="dark"] (not prefers-color-scheme); rewire

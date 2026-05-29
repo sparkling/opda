@@ -719,6 +719,15 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .prose p, .prose ul, .prose ol { margin: 0; }
 .prose p { text-wrap: pretty; max-width: 68ch; }
 .prose ul, .prose ol { padding-left: 1.25em; max-width: 64ch; }
+/* Restore the default list markers the design system relies on for visual
+   rhythm (README §"Bullet markers… carry visual rhythm"). The original CSS only
+   recoloured the markers, relying on the browser-default disc/circle/square +
+   decimal hierarchy — which Tailwind Preflight (`ol,ul{list-style:none}`, added
+   in the Astro build) zeroed out. Re-assert the default hierarchy explicitly. */
+.prose ul { list-style-type: disc; }
+.prose ul ul { list-style-type: circle; }
+.prose ul ul ul { list-style-type: square; }
+.prose ol { list-style-type: decimal; }
 .prose li + li { margin-top: var(--space-2); }
 .prose ul li::marker { color: var(--terracotta-500); }
 .prose ol li::marker { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }

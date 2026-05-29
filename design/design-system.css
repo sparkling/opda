@@ -1,4 +1,12 @@
 /* ==========================================================================
+   ⚠ FROZEN SNAPSHOT — NOT THE LIVE STYLESHEET. See docs/adr/ADR-0025.
+   This is the original Claude Design export (pre-Tailwind). The authoritative,
+   deployed source of truth is public/ui/design-system.css, which has since
+   diverged significantly (manual section, ADR-0017 components, dark mode, the
+   Preflight list-marker fix). DO NOT re-import, deploy, or merge this file over
+   public/ui/ — doing so would delete ~1150 lines of live styling. Reference only.
+   ==========================================================================
+
    OPDA Knowledge Base — design-system.css (Claude-inspired restyle)
    Imports colors_and_type.css for tokens. Same class hooks as upstream:
      .home-hero  .home-section-card  .card  .card-grid  .callout (+ variants)
