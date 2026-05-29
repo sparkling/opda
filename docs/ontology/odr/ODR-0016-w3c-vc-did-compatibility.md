@@ -65,6 +65,130 @@ Name **ODR-0016 (W3C VC / DID Compatibility Layer)** as a deferred-but-named rec
 - The first OPDA-issued credential is signed for a real wallet consumer.
 - ODR-0012 (Governance) ratifies consent-receipt instances, if Phase-2 activates.
 
+### ODR Dependency Graph
+
+The diagram below shows how ODR-0016 sits in the programme graph: which records it depends on and which downstream records point back to it.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0016 dependency graph
+    accDescr: Shows ODR-0016 depends-on ODR-0002 and ODR-0009, implements ODR-0003, and is consumed by ODR-0012.
+    classDef upstream fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef thisOdr fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef downstream fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    ODR0002["ODR-0002<br/>Ontology Language<br/>Adoption"]:::upstream
+    ODR0003["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::upstream
+    ODR0009["ODR-0009<br/>Claims, Evidence<br/>& Provenance"]:::upstream
+    ODR0016["ODR-0016<br/>W3C VC / DID<br/>Compatibility Layer"]:::thisOdr
+    ODR0012["ODR-0012<br/>Data Governance<br/>Layer"]:::downstream
+
+    ODR0002 -->|"admits cred: did:<br/>Defer tier"| ODR0016
+    ODR0009 -->|"Q8 defers into"| ODR0016
+    ODR0003 -->|"implemented by"| ODR0016
+    ODR0016 -->|"consent-receipt<br/>target for"| ODR0012
+```
+
+### OPDA Claims and Evidence mapped to W3C VC Structures
+
+The diagram below traces how OPDA's existing claim and evidence concepts (from ODR-0009) correspond to the roles and structures named in the W3C Verifiable Credentials Data Model 2.0.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: OPDA claim and evidence mapping to W3C VC structures
+    accDescr: Shows how opda:Claim, opda:Evidence, opda:assuranceLevel, and PROV-O derivation map to cred:VerifiableCredential, Issuer, Holder, Verifier, and cred:CredentialStatus.
+    classDef opdaClass fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef vcClass fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef question fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    subgraph OPDA["OPDA (ODR-0009)"]
+        C["opda:Claim"]:::opdaClass
+        E["opda:Evidence"]:::opdaClass
+        AL["opda:assuranceLevel<br/>(SKOS)"]:::opdaClass
+        PV["prov:Entity /<br/>derivation chain"]:::opdaClass
+    end
+
+    subgraph VC["W3C VCDM 2.0"]
+        VC1["cred:VerifiableCredential"]:::vcClass
+        ISS["Issuer"]:::vcClass
+        HOL["Holder"]:::vcClass
+        VER["Verifier"]:::vcClass
+        CS["cred:CredentialStatus<br/>(StatusList2021)"]:::vcClass
+    end
+
+    Q{"Binding<br/>(Q8 — deferred<br/>to ODR-0016)"}:::question
+
+    C -->|"subClassOf?"| Q
+    Q --> VC1
+    E -->|"supports"| C
+    AL -->|"maps to eIDAS /<br/>ToIP assurance"| VC1
+    PV -->|"truth-maker 1:<br/>derivation"| Q
+    VC1 -->|"truth-maker 2:<br/>cryptographic signature"| Q
+    AL -->|"truth-maker 3:<br/>regulatory judgement"| Q
+    VC1 --> CS
+    VC1 --- ISS
+    VC1 --- HOL
+    VC1 --- VER
+```
+
+### VC Issuance and Verification Sequence
+
+The diagram below illustrates the issuance and verification flow for an OPDA claim presented as a W3C Verifiable Credential, incorporating the Issuer, Holder, and Verifier roles that this ODR will bind to the RoleMixin pattern from ODR-0006.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+sequenceDiagram
+    accTitle: OPDA VC issuance and verification sequence
+    accDescr: Shows Issuer creating a signed VerifiableCredential from an opda:Claim, Holder storing it, and Verifier checking the credential status and trust framework.
+    participant Issuer as Issuer<br/>(OPDA Trust Framework)
+    participant Holder as Holder<br/>(e.g. Buyer wallet)
+    participant Verifier as Verifier<br/>(e.g. Conveyancer)
+    participant Registry as Status Registry<br/>(StatusList2021)
+
+    Issuer->>Issuer: Assemble opda:Claim<br/>+ prov:derivation chain
+    Issuer->>Issuer: Apply signature suite<br/>(Ed25519 / BBS+)
+    Issuer->>Holder: Issue VerifiableCredential<br/>(signed, with assuranceLevel)
+    Holder->>Holder: Store in wallet
+    Holder->>Verifier: Present VerifiablePresentation
+    Verifier->>Registry: Check cred:CredentialStatus
+    Registry-->>Verifier: Status (active / revoked)
+    Verifier->>Verifier: Verify signature suite
+    Verifier->>Verifier: Confirm trust_framework +<br/>assurance_level mapping
+    Verifier-->>Holder: Accept / Reject presentation
+```
+
+### Activation Triggers — Decision Flowchart
+
+The diagram below shows the three named activation triggers and how any one of them convenes Session 016 to ratify the substantive rules of this ODR.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0016 activation trigger decision flowchart
+    accDescr: Shows three named activation triggers — ODR-0009 Q8, Pandit Phase-2 consent receipts, and a real wallet or DID consumer — each leading to Session 016.
+    classDef trigger fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef outcome fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef deferred fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    T1["Trigger 1:<br/>ODR-0009 Q8 surfaces<br/>real VC-side decisions"]:::trigger
+    T2["Trigger 2:<br/>Pandit Phase-2 consent /<br/>lawful-basis ambition lands"]:::trigger
+    T3["Trigger 3:<br/>Real wallet or<br/>DID-method consumer enters scope"]:::trigger
+
+    D{"Any trigger<br/>fires?"}:::decision
+
+    T1 --> D
+    T2 --> D
+    T3 --> D
+
+    D -->|"yes"| S016["Convene Session 016<br/>(Full Council)"]:::outcome
+    D -->|"no"| DEFER["ODR-0016 stays proposed;<br/>reviewed at programme retirement"]:::deferred
+
+    S016 --> RULES["Ratify substantive ## Rules:<br/>Claim binding · DID method ·<br/>Signature suites · Status lists ·<br/>JSON-LD context · Truth-makers ·<br/>Consent receipts · eIDAS mapping"]:::outcome
+```
+
 ## Alternatives
 
 - **Defer indefinitely, refresh ODR-0009's Q8 ad hoc.** Rejected by scope-check (8-1 NAME): the URI cost of late naming + the catalogue-admission cost of `cred:`/`did:` prefixes are both better paid up front.

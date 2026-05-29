@@ -71,6 +71,143 @@ The mapping is validated against worked PROV-O Turtle examples rendered alongsid
 
 Method, evidence-type and assurance-level SKOS concepts (ODR-0011) carry `skos:prefLabel`/`skos:definition` and `dct:source` back to the verifiedClaims schema leaf or the business-glossary external VC/eIDAS terms. This record fixes the *structure*; the *vocabulary fill* is delegated to ODR-0011 (enumerations) and ODR-0012 (DPV).
 
+## Diagrams
+
+### PROV-O class model
+
+The diagram below maps the seven PROV-O subclasses introduced by this record onto their PROV-DM supertypes and shows the load-bearing PROV relations that connect them.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+classDiagram
+    accTitle: PROV-O class model for ODR-0009
+    accDescr: Shows opda subclasses of prov Entity, Activity and Agent with their PROV relations for claims, evidence and verification.
+
+    class `prov:Entity` {
+        <<PROV-O>>
+    }
+    class `prov:Activity` {
+        <<PROV-O>>
+        +endedAtTime
+        +generatedAtTime
+    }
+    class `prov:Agent` {
+        <<PROV-O>>
+    }
+    class `opda:Claim` {
+        <<rdfs:subClassOf prov:Entity>>
+        +assuranceLevel
+    }
+    class `opda:Verification` {
+        <<rdfs:subClassOf prov:Activity>>
+        +trust_framework
+        +txn
+    }
+    class `opda:DocumentEvidence` {
+        <<rdfs:subClassOf prov:Entity>>
+        +document_details
+        +digest
+    }
+    class `opda:ElectronicRecordEvidence` {
+        <<rdfs:subClassOf prov:Entity>>
+        +record.source
+        +digest
+    }
+    class `opda:VouchEvidence` {
+        <<rdfs:subClassOf prov:Entity>>
+        +attestation
+        +voucher
+    }
+    class `opda:Verifier` {
+        <<rdfs:subClassOf prov:Agent>>
+        +organization
+    }
+
+    `prov:Entity` <|-- `opda:Claim`
+    `prov:Entity` <|-- `opda:DocumentEvidence`
+    `prov:Entity` <|-- `opda:ElectronicRecordEvidence`
+    `prov:Entity` <|-- `opda:VouchEvidence`
+    `prov:Activity` <|-- `opda:Verification`
+    `prov:Agent` <|-- `opda:Verifier`
+
+    `opda:Verification` --> `opda:DocumentEvidence` : prov:used
+    `opda:Verification` --> `opda:ElectronicRecordEvidence` : prov:used
+    `opda:Verification` --> `opda:VouchEvidence` : prov:used
+    `opda:Claim` --> `opda:DocumentEvidence` : prov:wasDerivedFrom
+    `opda:Claim` --> `opda:ElectronicRecordEvidence` : prov:wasDerivedFrom
+    `opda:VouchEvidence` --> `opda:Verifier` : prov:wasAttributedTo
+    `opda:Verification` --> `opda:Verifier` : prov:qualifiedAttribution
+```
+
+### Assurance layer — five eIDAS/OIDC4IDA exceptions
+
+The five envelope elements that PROV-O cannot natively carry are each routed to the vocabulary that can express them; this diagram visualises that routing as described in the decision table.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Assurance layer — five eIDAS exceptions
+    accDescr: Routes the five eIDAS/OIDC4IDA envelope elements that PROV-O cannot carry to their target vocabulary or local term.
+
+    classDef envelope  fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef vocab     fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef local     fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    TF["trust_framework<br/>(uk_pdtf)"]:::envelope
+    VM["validation_method /<br/>verification_method"]:::envelope
+    DG["cryptographic digest<br/>(alg + value)"]:::envelope
+    AL["assurance level<br/>(eIDAS LoA)"]:::envelope
+    TX["txn<br/>(verifier reference)"]:::envelope
+
+    DCT1["dct:conformsTo<br/>on Verification activity"]:::vocab
+    SKOS["SKOS method scheme<br/>(→ ODR-0011)"]:::vocab
+    LOC1["opda:digestAlg /<br/>opda:digestValue"]:::local
+    LOC2["opda:assuranceLevel<br/>(SKOS-coded, → ODR-0011)"]:::local
+    DCT2["dct:identifier<br/>on Verification activity"]:::vocab
+
+    TF --> DCT1
+    VM --> SKOS
+    DG --> LOC1
+    AL --> LOC2
+    TX --> DCT2
+```
+
+### ODR dependency graph
+
+This record depends on and implements the ODRs listed in the frontmatter; the graph below makes those relationships explicit.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0009 dependency graph
+    accDescr: Shows which ODRs ODR-0009 depends on and which it implements, as declared in the frontmatter.
+
+    classDef current   fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
+    classDef dep       fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef impl      fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    O9["ODR-0009<br/>Claims, Evidence<br/>&amp; Provenance"]:::current
+
+    O3["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::impl
+    O17["ODR-0017"]:::impl
+    O18["ODR-0018"]:::impl
+
+    O4["ODR-0004<br/>PDTF Ontology<br/>Foundation"]:::dep
+    O5["ODR-0005<br/>Property/Land<br/>Identity Crux"]:::dep
+    O6["ODR-0006<br/>Agents &amp; Roles"]:::dep
+    O11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::dep
+    O15["ODR-0015"]:::dep
+
+    O9 -->|"depends-on"| O4
+    O9 -->|"depends-on"| O5
+    O9 -->|"depends-on"| O6
+    O9 -->|"depends-on"| O11
+    O9 -->|"depends-on"| O15
+    O9 -->|"implements"| O3
+    O9 -->|"implements"| O17
+    O9 -->|"implements"| O18
+```
+
 ## Alternatives
 
 - **PROV-O only** — flattens evidential weight into a causal trace and requires inventing `prov:` extensions for signatures and assurance tiers that PROV-DM deliberately does not model.

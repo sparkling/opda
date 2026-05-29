@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: superseded by ADR-0024
 date: 2026-05-29
 tags: [website, odr, documentation, immutable, mermaid, diagramming, build-pipeline]
 supersedes: []
@@ -8,6 +8,12 @@ implements: []
 ---
 
 # Build-time ODR pages: convert markdown to enriched HTML once, freeze, and commit
+
+> **Superseded by [ADR-0024](./ADR-0024-odr-enrichment-in-markdown-generate-html-every-build.md)** (2026-05-29).
+> The locus of enrichment moved from a separate committed HTML artefact into the
+> canonical ODR markdown, and the refresh policy from freeze-forever to
+> regenerate-every-build. The flaw this corrects: authoring diagrams into the HTML
+> divorced them from the record people actually read and diff. Retained for history.
 
 ## Context and Problem Statement
 

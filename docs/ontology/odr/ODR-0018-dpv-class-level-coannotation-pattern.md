@@ -27,9 +27,75 @@ This ODR extracts the pattern. The four citing sites retrofit `implements: [ODR-
 
 The pattern is `kind: pattern` per A9; it discharges (a)/(b)/(c) inline per A9 §Per-kind discipline.
 
+### RDF graph: DPV annotations co-attaching at class level
+
+The diagram below shows how class-level, variant-conditional, and property-level DPV triples all land in `opda-annotations.ttl`, separate from the class graph and the shapes graph.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: RDF co-annotation placement
+    accDescr: Shows opda class nodes receiving dpv-pd annotations in the annotation graph, not the class or shapes graph.
+    classDef kind fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef annot fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef graph fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef dpv fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    subgraph CG["opda:classes (class graph)"]
+        P["opda:Person"]:::kind
+        A["opda:Address"]:::kind
+        DE["opda:DocumentEvidence"]:::kind
+    end
+
+    subgraph AG["opda:annotations (annotation graph)"]
+        T1["dpv-pd:hasPersonalDataCategory<br/>dpv-pd:Person"]:::annot
+        T2["dpv-pd:hasPersonalDataCategory<br/>dpv-pd:Address"]:::annot
+        T3["dpv-pd:hasPersonalDataCategory<br/>dpv-pd:OfficialID"]:::annot
+        T4["opda:niNumber<br/>dpv-pd:hasPersonalDataCategory<br/>dpv-pd:OfficialID"]:::annot
+    end
+
+    subgraph SG["opda:shapes (shapes graph — NO DPV)"]
+        SH["sh:NodeShape / sh:PropertyShape"]:::graph
+    end
+
+    P -->|"subject of"| T1
+    A -->|"subject of"| T2
+    DE -->|"subject of"| T3
+    P -->|"property-level also"| T4
+    SH -. "MUST NOT contain DPV triples" .-> SG
+```
+
 ## Decision
 
 Adopt the **DPV class-level co-annotation pattern** as the canonical mechanism for attaching `dpv-pd:` and `dpv:` annotations to OPDA Substance Kinds carrying PII: each PII-bearing Substance Kind class carries a **class-level `dpv-pd:hasPersonalDataCategory`** triple declaring the aggregate PII regime; **variant-conditional refinements** track distinguishing sub-kinds or variants (e.g. Address-variant; Evidence-subtype; Title-vs-Estate registration state) that drive **lawful-basis-trigger differences**; instance-level `dpv:hasLawfulBasis` lands at generation time, dispatched from the variant tag. Co-annotations live in `opda-annotations.ttl` per ODR-0004 §3a (advisory annotations, NOT shape constraints — they do not belong in the shapes graph).
+
+### Three-tier co-annotation pattern structure
+
+This flowchart maps the three tiers of the pattern: a class-level baseline, variant-conditional refinements, and instance-level lawful-basis dispatch at generation time.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Three-tier co-annotation structure
+    accDescr: Tier 1 is the class-level dpv-pd baseline declared in opda-annotations.ttl; Tier 2 is variant-conditional refinements per ODR mapping table; Tier 3 is per-instance lawful-basis emitted by the generator at generation time.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef store fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    T1["Tier 1 — Class-level baseline<br/>(opda-annotations.ttl)<br/>dpv-pd:hasPersonalDataCategory"]:::process
+    T2["Tier 2 — Variant-conditional refinements<br/>(consuming ODR mapping table)<br/>variant tag → lawful-basis category"]:::process
+    T3["Tier 3 — Instance-level dispatch<br/>(generator at generation time)<br/>dpv:hasLawfulBasis per instance"]:::output
+
+    MT["opda:DPVMappingTable<br/>in opda-annotations.ttl<br/>(ODR-0012 authors)"]:::store
+    VT{"Variant tag<br/>present on instance?"}:::decision
+
+    T1 --> T2
+    T2 --> MT
+    MT --> VT
+    VT -->|"yes — dispatch"| T3
+    VT -->|"no — class baseline<br/>sufficient"| T3
+```
 
 ## Rules
 
@@ -102,12 +168,86 @@ Inherits ODR-0004 §3a discipline. The CI test additions:
 2. `ASK { GRAPH opda:annotations { ?s ?p ?o . FILTER(STRSTARTS(STR(?p), "https://w3id.org/dpv")) } }` MUST return true (DPV triples present in annotation graph).
 3. `ASK { GRAPH opda:classes { ?s ?p ?o . FILTER(STRSTARTS(STR(?p), "https://w3id.org/dpv")) } }` MUST return false (DPV triples NOT in the class graph either — they are advisory, not class-graph-axioms).
 
+### Alternatives considered and the chosen outcome
+
+This flowchart traces the four rejected options and the single accepted path, matching the `## Alternatives` section below.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Alternatives evaluated for DPV co-annotation placement
+    accDescr: Four candidate placements were evaluated; all rejected for specific reasons; class-level annotation in opda-annotations.ttl was accepted.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef rejected fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+
+    Q{"Where should DPV<br/>co-annotations live?"}:::decision
+
+    OWL["OWL property restrictions<br/>on the class"]:::rejected
+    SHACL["SHACL sh:property<br/>constraints"]:::rejected
+    RDFS["rdfs:comment<br/>natural language"]:::rejected
+    INST["Per-instance only<br/>(no class-level baseline)"]:::rejected
+    ACC["Class-level baseline<br/>in opda-annotations.ttl<br/>+ variant mapping table<br/>+ instance-level dispatch"]:::output
+
+    Q --> OWL
+    Q --> SHACL
+    Q --> RDFS
+    Q --> INST
+    Q --> ACC
+
+    OWL -->|"Rejected: breaks ODR-0004<br/>three-graph separation"| R1["DPV in class graph"]:::rejected
+    SHACL -->|"Rejected: DPV is advisory,<br/>not a shape constraint"| R2["DPV in shapes graph"]:::rejected
+    RDFS -->|"Rejected: LLM fallback<br/>failure mode (Hellmann 2017)"| R3["Natural language only"]:::rejected
+    INST -->|"Rejected: misses class-level<br/>PII regime discriminator"| R4["No class baseline"]:::rejected
+    ACC --> DONE["ACCEPTED"]:::output
+```
+
 ## Alternatives
 
 - **DPV co-annotations as OWL property restrictions on the class.** Rejected: would put DPV triples in the class graph, breaking ODR-0004 §3a three-graph separation; DPV is advisory annotation, not class-graph reasoning material.
 - **DPV co-annotations as SHACL `sh:property` constraints.** Rejected: would put DPV triples in the shapes graph; DPV co-annotations are NOT shape constraints (they don't validate; they advise). `sh:Info` SHACL-AF rules (ODR-0017) are ADJACENT but distinct — ODR-0017 produces validation-report assertions; this pattern produces annotation-graph metadata.
 - **DPV co-annotations as `rdfs:comment` natural-language.** Rejected per Hellmann et al. (DBpedia 2017) LLM-fallback failure mode. Same lesson as ODR-0005 §6a + ODR-0011 §5a: structured machine-readable annotations > natural-language commentary.
 - **Per-instance-only DPV annotations (no class-level baseline).** Rejected: misses the class-level discriminator (S005 §3c PII regime distinction; S006 Q1 Person identifier aggregate). Instance-only requires LLM consumers to aggregate per-instance triples to derive class-level PII regime; class-level baseline gives the regime as data.
+
+### ODR dependency graph
+
+This diagram reflects the `depends-on`, `implements`, and `supersedes` frontmatter relationships declared for this record.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0018 dependency graph
+    accDescr: ODR-0018 depends on ODR-0001, ODR-0004, and ODR-0015; implements ODR-0003; supersedes nothing; is implemented-by four citing sites and will be implemented-by ODR-0012.
+    classDef this fill:#E1F5FE,stroke:#0277BD,stroke-width:3px,color:#01579B
+    classDef dep fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef citing fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef future fill:#ECEFF1,stroke:#90A4AE,stroke-width:2px,color:#546E7A
+
+    ODR18["ODR-0018<br/>DPV Class-Level<br/>Co-Annotation Pattern"]:::this
+
+    ODR01["ODR-0001<br/>Methodology"]:::dep
+    ODR04["ODR-0004<br/>PDTF Ontology Foundation"]:::dep
+    ODR15["ODR-0015<br/>Address and Geography"]:::dep
+    ODR03["ODR-0003<br/>Programme"]:::impl
+
+    ODR05["ODR-0005<br/>Property Land Identity"]:::citing
+    ODR06["ODR-0006<br/>Agents and Roles"]:::citing
+    ODR09["ODR-0009<br/>Claims Evidence Provenance"]:::citing
+    ODR17["ODR-0017<br/>SHACL-AF Quality Rules"]:::citing
+    ODR12["ODR-0012<br/>Data-Governance Layer<br/>(pending)"]:::future
+
+    ODR01 -->|"depends-on"| ODR18
+    ODR04 -->|"depends-on"| ODR18
+    ODR15 -->|"depends-on"| ODR18
+    ODR18 -->|"implements"| ODR03
+    ODR18 -->|"implemented-by"| ODR05
+    ODR18 -->|"implemented-by"| ODR06
+    ODR18 -->|"implemented-by"| ODR09
+    ODR18 -->|"sibling pattern"| ODR17
+    ODR18 -->|"authoring authority<br/>(when ratified)"| ODR12
+```
 
 ## Consequences
 

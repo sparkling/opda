@@ -24,6 +24,71 @@ The question this ODR answers: what closed, tiered catalogue should bound OPDA's
 
 Adopt a three-tier survey-grounded catalogue — **Core / Conditional / Defer** — porting the H&M `src/` survey and rescoping for OPDA. It is the only option that bounds the vocabulary surface to a reviewable, authority-grounded set while documenting non-adoption as durably as adoption.
 
+### Decision rationale — options evaluated
+
+The three options considered and why only the tiered catalogue was adopted.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Options evaluated for vocabulary governance
+    accDescr: Shows the three options considered and why only the tiered catalogue was chosen.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    O1["Option 1<br/>Use whatever vocabulary<br/>fits modeller preference"]:::process
+    O2["Option 2<br/>Adopt every vocabulary in<br/>active linked-data use"]:::process
+    O3["Option 3<br/>Reinvent terms under<br/>opda: namespace"]:::process
+    O4["Option 4<br/>Three-tier catalogue<br/>Core / Conditional / Defer"]:::process
+
+    D1{"Bounds surface<br/>to reviewable set?"}:::decision
+    D2{"Manages scope<br/>without mapping explosion?"}:::decision
+    D3{"Reuses W3C<br/>linked-data work?"}:::decision
+    D4{"Documents non-adoption<br/>as durably as adoption?"}:::decision
+
+    O1 --> D1
+    D1 -->|"no — redundant terms,<br/>unreviewable surface"| R1["Rejected"]:::rejected
+    O2 --> D2
+    D2 -->|"no — multi-person-year<br/>mapping problem"| R2["Rejected"]:::rejected
+    O3 --> D3
+    D3 -->|"no — discards two decades<br/>of W3C work"| R3["Rejected"]:::rejected
+    O4 --> D4
+    D4 -->|"yes"| C["Adopted:<br/>tiered catalogue"]:::output
+```
+
+### Vocabulary tier structure
+
+The three tiers and the direction of promotion/demotion that the catalogue governs.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Three-tier vocabulary catalogue structure
+    accDescr: Shows Core, Conditional, and Defer tiers with promotion and demotion rules between them.
+    classDef core fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef cond fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef defer fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef rule fill:#F3E5F5,stroke:#6A1B9A,stroke-width:1px,color:#4A148C
+
+    CORE["Core<br/>RDF 1.2 · RDFS · OWL 2<br/>XSD · SHACL 1.2 · SKOS<br/>Dublin Core · VANN"]:::core
+    COND["Conditional<br/>DASH · PROV-O · DCAT 3<br/>OWL-Time · DPV family<br/>ODRL · SSSOM · SEMAPV"]:::cond
+    DEFER["Defer<br/>schema.org · FIBO · FOAF<br/>SOSA/SSN · QUDT · GeoSPARQL<br/>BBO · ArchiMate · cred: · did:"]:::defer
+
+    COND -->|"4-condition promotion<br/>named consumer + ≥3 layers<br/>SHACL gate + failure-mode test"| CORE
+    COND -->|"editorial demotion<br/>non-use over one Phase<br/>OR Core now covers semantics"| DEFER
+    DEFER -->|"triggered re-evaluation<br/>named use case arises"| COND
+
+    NOTE1["Core never demotes<br/>URI-graph break"]:::rule
+    NOTE2["Defer rows never delete<br/>audit-trail discipline"]:::rule
+    NOTE3["One step per Change Log row<br/>no Defer → Core skip"]:::rule
+
+    CORE -.-> NOTE1
+    DEFER -.-> NOTE2
+    COND -.-> NOTE3
+```
+
 ## Rules
 
 ### Core — adopt unconditionally
@@ -185,6 +250,27 @@ This catalogue is governed in place: amendments to tiering or rationale are reco
 - Pin versions explicitly in ODRs only where currently declared (RDF 1.2, SHACL 1.2). When DPV / DCAT 3 / DASH undergo a *breaking* version change, raise a follow-up ODR.
 - Keep the catalogue alive: when a vocabulary good for OPDA but absent from H&M is proposed, do not reject on "no precedent" alone — amend the catalogue.
 - Treat ArchiMate and BBO as candidates for demotion to Defer at the first Council review if no process- or capability-modelling use case has materialised.
+
+### ODR relationship graph
+
+This record's position in the ODR dependency chain, as declared in the frontmatter.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0002 dependency and supersession relationships
+    accDescr: Shows that ODR-0002 depends on ODR-0001 for methodology and supersedes ODR-0014 which formerly carried vocabulary catalogue amendments.
+    classDef current fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef depends fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef retired fill:#FFCDD2,stroke:#C62828,stroke-width:1px,color:#B71C1C
+
+    ODR0001["ODR-0001<br/>Linked-Data Council<br/>Methodology"]:::depends
+    ODR0002["ODR-0002<br/>Ontology Languages and<br/>Vocabularies Adopted<br/>(this record)"]:::current
+    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments<br/>(retired 2026-05-26)"]:::retired
+
+    ODR0001 -->|"depends-on<br/>council procedure + voting rules"| ODR0002
+    ODR0002 -->|"supersedes<br/>amendment log folded in here"| ODR0014
+```
 
 ## References
 

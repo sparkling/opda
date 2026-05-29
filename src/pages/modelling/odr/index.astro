@@ -39,9 +39,10 @@ const statusPillClass = {
     downstream consequences.
   </p>
   <p>
-    18 records in total. Pages marked <em>pending</em> have not yet been enriched;
-    their artefacts will be committed in subsequent waves per
-    <a href="/modelling">ADR-0023</a>.
+    18 records in total — every one is a live page rendered from its markdown.
+    Records marked <em>✓ diagrams</em> have been enriched with illustrative Mermaid
+    diagrams per <a href="/modelling">ADR-0024</a>; the rest render as text until
+    their enrichment wave lands.
   </p>
 
   <table>
@@ -58,19 +59,12 @@ const statusPillClass = {
       {ODR_REGISTRY.map((odr) => (
         <tr>
           <td><code>{odr.number}</code></td>
-          <td>
-            {odr.enriched
-              ? <a href={`/modelling/odr/${odr.id}`}>{odr.title}</a>
-              : odr.title
-            }
-          </td>
+          <td><a href={`/modelling/odr/${odr.id}`}>{odr.title}</a></td>
           <td><span class={`pill ${kindPillClass[odr.kind] ?? 'pill--brand'}`}>{odr.kind}</span></td>
           <td><span class={`pill ${statusPillClass[odr.status] ?? ''}`}>{odr.status}</span></td>
           <td>
-            {odr.enriched
-              ? <a href={`/modelling/odr/${odr.id}`}>view</a>
-              : <span class="muted">pending</span>
-            }
+            <a href={`/modelling/odr/${odr.id}`}>view</a>
+            {odr.enriched && <span class="muted tiny"> · ✓ diagrams</span>}
           </td>
         </tr>
       ))}
@@ -94,9 +88,10 @@ const statusPillClass = {
     </li>
   </ul>
   <p>
-    Each accepted ODR is frozen. A later decision <em>supersedes</em> it with a new ODR;
-    the old record is never edited. This immutability is the basis for the
-    produce-once / freeze / commit / serve-static model described in ADR-0023.
+    Each accepted ODR is frozen: a later decision <em>supersedes</em> it with a new
+    ODR. Illustrative diagrams may be added to the markdown as non-substantive
+    enrichment (they visualise the existing decision, never change it) per
+    <a href="/modelling">ADR-0024</a>; substantive change always requires a new ODR.
   </p>
 
   <h2>Methodology</h2>

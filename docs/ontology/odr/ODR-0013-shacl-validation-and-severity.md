@@ -22,6 +22,35 @@ Three further problems sit on top of the mapping. Not every violation is equal: 
 
 Adopt **severity-tiered SHACL in a separate shapes graph, with DASH rendering and a separate annotation graph**: the only option that actually validates the closed-world contract (OWL cannot), surfaces the rarest and most damaging error loudest (flat severity cannot), and keeps form-hints and advisory annotations in their proper graphs without letting any invented term masquerade as a constraint.
 
+### Validation flow
+
+Data flows from a JSON transaction document through profile-selected SHACL shapes to a structured validation report whose entries carry severity levels.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: SHACL validation flow
+    accDescr: A JSON transaction document is validated against profile-selected SHACL shapes to produce a severity-tiered report.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef store fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    DD["Data dictionary<br/>(935 annotated leaves)"]:::store
+    SG["SHACL shapes graph<br/>(generated, separate named graph)"]:::store
+    DD -->|"drives sh:datatype<br/>sh:minCount sh:in"| SG
+    JSON["JSON transaction document"]:::process
+    PROF["Overlay profile<br/>(ODR-0010)"]:::store
+    PROF -->|"selects active shapes"| SG
+    JSON -->|"focus nodes"| PROC{"pySHACL /<br/>TopBraid processor"}:::decision
+    SG -->|"shapes"| PROC
+    PROC -->|"conforms"| OK["Validation report:<br/>no results"]:::output
+    PROC -->|"violations"| RPT["Validation report:<br/>sh:result entries"]:::output
+    RPT --> V["sh:Violation<br/>(identity / provenance breach)"]:::output
+    RPT --> W["sh:Warning<br/>(profile / sensitivity gap)"]:::output
+    RPT --> I["sh:Info<br/>(absent optional attribute)"]:::output
+```
+
 ## Rules
 
 **Constraint mapping** — JSON-Schema constructs map to SHACL with datatypes and cardinalities grounded in the data dictionary:
@@ -46,9 +75,57 @@ Recorded leaf types ground `sh:datatype` directly — `dateOfBirth` → `xsd:dat
 
 The principle: the rarest, most damaging error (identity loss) must be the loudest; the routine omission must be the quietest. Enforcement: every `sh:Violation` shape must guard a Kind's identity contract or an unprovenanced claim; no optional-attribute gap may carry `sh:Violation`.
 
+### Severity tier model
+
+Each result entry in the validation report carries exactly one severity level; the assignment rule is determined by the nature of the breach, not by schema nesting depth.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: SHACL severity tier assignment
+    accDescr: A validation result is assigned sh:Violation, sh:Warning, or sh:Info depending on whether it breaches an identity contract, a profile or sensitivity constraint, or merely notes an absent optional attribute.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef violation fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef info fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    R["Constraint breach detected"]:::process
+    R --> D1{"Breaches a Kind's<br/>identity contract or<br/>unprovenanced Claim?"}:::decision
+    D1 -->|"yes"| VIO["sh:Violation<br/>— Property: no UPRN-or-equiv key<br/>— RegisteredTitle: no title number<br/>— Role: no founding Relator<br/>— opda:Claim: no prov:wasDerivedFrom"]:::violation
+    D1 -->|"no"| D2{"Missing profile /<br/>disclosure constraint or<br/>sensitivity-marker gap?"}:::decision
+    D2 -->|"yes"| WARN["sh:Warning<br/>— overlay profile gap<br/>— special-category /<br/>  personal-data marker absent"]:::warning
+    D2 -->|"no"| INF["sh:Info<br/>— absent optional attribute"]:::info
+```
+
 **Open-world/closed-world guard** (Gandon) — an `owl:minCardinality` in the class graph and a `sh:minCount` in the shapes graph are **not the same statement** and must not be authored on one property in the belief that they coincide. A drift check is required to catch the two falling out of step; it confirms no property carries both an `owl:` cardinality and a SHACL count authored as equivalent.
 
 **Class ⊥ shapes ⊥ annotation graph separation** — the shapes graph is a distinct named graph from the class graph ([ODR-0004](./ODR-0004-pdtf-ontology-foundation.md)). Advisory `opda:aiHint`-style annotations for LLM consumers do **not** go inline in the shapes graph (a strict processor would carry uninterpretable triples or misread them as constraints). They live in a **separate annotation graph keyed to shape IRIs**, consistent with the overlay annotation-graph convention in [ODR-0010](./ODR-0010-overlay-profile-mechanism.md). Enforcement: the absence of any `opda:aiHint` (or other undocumented advisory term) inside the shapes graph — advisory triples resolve only in the separate annotation graph.
+
+### Three-graph separation
+
+The class graph, shapes graph, and annotation graph are three distinct named graphs; advisory annotations never appear inside the shapes graph.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Class, shapes, and annotation graph separation
+    accDescr: OWL class axioms, SHACL shapes, and advisory opda:aiHint annotations are kept in three separate named graphs to prevent strict SHACL processors from misreading advisory triples as constraints.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef store fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef blocked fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    CG["Class graph<br/>(OWL axioms,<br/>owl:minCardinality etc.)"]:::store
+    SHG["Shapes graph<br/>(SHACL shapes,<br/>sh:minCount etc.)"]:::store
+    AG["Annotation graph<br/>(opda:aiHint and<br/>advisory triples,<br/>keyed to shape IRIs)"]:::store
+    PROC["SHACL processor"]:::process
+    CG -..->|"NOT equivalent —<br/>open-world vs closed-world<br/>(drift check required)"| SHG
+    SHG -->|"validates"| PROC
+    AG -->|"LLM consumers<br/>resolve here"| PROC
+    BANNED["opda:aiHint<br/>inline in shapes graph"]:::blocked
+    BANNED -->|"PROHIBITED —<br/>processor misreads<br/>as constraint"| SHG
+```
 
 **DASH rendering** — `dash:propertyRole`/`viewer`/`editor`, `sh:order`/`sh:group`, and `dash:EnumSelectEditor` (fed by [ODR-0011](./ODR-0011-enumeration-vocabularies.md) schemes) reproduce the form on the same shapes that validate, so a loaded profile both validates a transaction and generates the form that collects it, with full `dct:source` traceability (Q5; see [ODR-0010](./ODR-0010-overlay-profile-mechanism.md)). DASH is acceptable *because* it is a documented vocabulary; undocumented terms are not.
 
@@ -66,6 +143,47 @@ The principle: the rarest, most damaging error (identity loss) must be the loude
 - Author every `sh:Violation` shape against the identity-contract or unprovenanced-claim rubric; reviewers reject `sh:Violation` on optional-attribute gaps.
 - Keep advisory annotations out of the shapes graph; route `opda:aiHint`-style triples to the annotation graph keyed to shape IRIs. Cagle's inline-hint preference is recorded as dissent (≈7-2), not adopted.
 - Round-trip the BASPI5 vertical slice (Q7 MVP) end-to-end as the canonical proof: JSON → profile → rendered form + validated document with full provenance.
+
+### ODR dependency graph
+
+This record depends on a chain of foundation decisions and in turn is implemented by downstream records.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0013 dependency graph
+    accDescr: ODR-0013 depends on ODR-0003 through ODR-0012 and ODR-0015 plus ODR-0017 and ODR-0018, as recorded in its frontmatter.
+    classDef current fill:#1565C0,stroke:#0D47A1,stroke-width:3px,color:#FFFFFF
+    classDef dep fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    O3["ODR-0003<br/>Programme"]:::dep
+    O4["ODR-0004<br/>Foundation"]:::dep
+    O5["ODR-0005<br/>Identity key"]:::dep
+    O6["ODR-0006"]:::dep
+    O7["ODR-0007"]:::dep
+    O9["ODR-0009<br/>Claims &amp; provenance"]:::dep
+    O10["ODR-0010<br/>Overlay profiles"]:::dep
+    O11["ODR-0011<br/>Enumerations"]:::dep
+    O12["ODR-0012<br/>Data governance"]:::dep
+    O15["ODR-0015"]:::dep
+    O17["ODR-0017<br/>(implements + dep)"]:::dep
+    O18["ODR-0018"]:::dep
+    THIS["ODR-0013<br/>SHACL Validation<br/>&amp; Severity"]:::current
+
+    O3 --> THIS
+    O4 --> THIS
+    O5 --> THIS
+    O6 --> THIS
+    O7 --> THIS
+    O9 --> THIS
+    O10 --> THIS
+    O11 --> THIS
+    O12 --> THIS
+    O15 --> THIS
+    O17 --> THIS
+    O18 --> THIS
+```
 
 ## References
 

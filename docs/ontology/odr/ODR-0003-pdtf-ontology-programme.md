@@ -46,6 +46,46 @@ Partition the PDTF→ontology programme **by ontological concern** (FIBO-style m
 
 **Work breakdown.**
 
+The diagram below shows the four programme phases and the ODRs they contain, with hard gates between them.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: PDTF Ontology Programme Work Breakdown
+    accDescr: Four-phase work breakdown from Phase 0 spike through Phase 1 modules and cross-cutting work to the deferred Phase 7 ODR, with hard gates at ODR-0005 and ODR-0015.
+    classDef phase fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef gate fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef odr fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef deferred fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef retired fill:#ECEFF1,stroke:#607D8B,stroke-width:1px,color:#455A64
+
+    P0["Phase 0 — Spike"]:::phase
+    P0 --> ODR4["ODR-0004<br/>Foundation"]:::odr
+    P0 --> ODR5["ODR-0005<br/>Property identity crux"]:::gate
+
+    ODR5 --> G1{{"GATE: crux cleared?"}}:::gate
+    G1 -->|"yes"| P26["Phase 2.6 — Address gate"]:::phase
+    P26 --> ODR15["ODR-0015<br/>Address &amp; Geography"]:::gate
+
+    ODR15 --> G2{{"GATE: address cleared?"}}:::gate
+    G2 -->|"yes"| P1["Phase 1 — Modules"]:::phase
+    P1 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::odr
+    P1 --> ODR7["ODR-0007<br/>Transactions &amp; Lifecycle"]:::odr
+    P1 --> ODR8["ODR-0008<br/>Property descriptive attrs"]:::odr
+
+    ODR6 & ODR7 & ODR8 --> CC["Cross-cutting<br/>(after ≥1 module)"]:::phase
+    CC --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::odr
+    CC --> ODR10["ODR-0010<br/>Overlay profiles"]:::odr
+    CC --> ODR11["ODR-0011<br/>Enumerations"]:::odr
+    CC --> ODR12["ODR-0012<br/>Data governance"]:::odr
+    CC --> ODR13["ODR-0013<br/>SHACL &amp; severity"]:::odr
+
+    CC --> P7["Phase 7 — Deferred"]:::phase
+    P7 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(trigger-activated)"]:::deferred
+
+    CC --> RET["~~ODR-0014~~<br/>Retired — folded<br/>into ODR-0002"]:::retired
+```
+
 *Phase 0 — Spike (gates the programme):*
 
 - [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) — **Foundation.** URI/namespace strategy (single `opda:` hash namespace), ontology-header pattern, OWL-graph ⊥ SHACL-graph separation, generator-first policy, diagnostic-exemplar policy, and the term-sourcing / `dct:source` convention drawing on the business glossary and data dictionary.
@@ -117,6 +157,43 @@ The canonical phase sequence is the [Council follow-up sessions plan §5](../../
    ODR-0014 — RETIRED; folded into ODR-0002's ## Change log.
 ```
 
+The Mermaid diagram below renders the same dependency graph with cross-cite edges shown explicitly.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: ODR Dependency Graph
+    accDescr: Directed dependency graph for ODR-0003 through ODR-0016, showing gates, cross-cites between ODR-0010 and ODR-0013, and the ownership link between ODR-0009 and ODR-0012 for DPV co-annotation.
+    classDef substrate fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef gate fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef module fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef cross fill:#FBE9E7,stroke:#BF360C,stroke-width:2px,color:#BF360C
+    classDef deferred fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef retired fill:#ECEFF1,stroke:#607D8B,stroke-width:1px,color:#455A64
+
+    ODR4["ODR-0004<br/>Foundation"]:::substrate
+    ODR5["ODR-0005<br/>Property identity crux<br/>(GATE)"]:::gate
+    ODR15["ODR-0015<br/>Address &amp; Geography<br/>(GATE)"]:::gate
+
+    ODR4 --> ODR5
+    ODR5 -->|"exemplars (Q1)"| ODR15
+
+    ODR15 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::module
+    ODR15 --> ODR7["ODR-0007<br/>Transactions"]:::module
+    ODR15 --> ODR8["ODR-0008<br/>Property attrs"]:::module
+
+    ODR6 & ODR7 & ODR8 --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::cross
+    ODR6 & ODR7 & ODR8 --> ODR10["ODR-0010<br/>Overlay profiles"]:::cross
+    ODR6 & ODR7 & ODR8 --> ODR11["ODR-0011<br/>Enumerations"]:::cross
+
+    ODR9 -->|"DPV authoring owned by"| ODR12["ODR-0012<br/>Data governance"]:::cross
+    ODR10 <-->|"3-rule interface<br/>contract"| ODR13["ODR-0013<br/>SHACL &amp; severity"]:::cross
+
+    ODR9 & ODR10 & ODR11 & ODR12 & ODR13 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(deferred)"]:::deferred
+
+    ODR14["~~ODR-0014~~<br/>RETIRED → ODR-0002"]:::retired
+```
+
 **Shared-question routing** (added per [Session 003 Item 7](./council/session-003-pdtf-ontology-programme.md#item-7--shared-question-routing)).
 
 Several questions surface in more than one session. Each shared question is **owned** by one session; downstream sessions inherit. Routing is maintained in [plan §4.1](../../plan/council-followup-sessions.md#41-shared-questions-across-sessions) as the single source of truth (full table not duplicated here). If a downstream session genuinely needs to deviate from the owning session's verdict, it records the deviation as a `## Supersession scope:` amendment on the owning ODR's `## Rules`. Routing failures (two sessions both producing a verdict on the same shared question) are a defect — the later session's verdict is invalid pending an explicit amendment cycle. Notable cross-cite: ODR-0010 ↔ ODR-0013 carry the three-rule SHACL interface contract (`sh:in` semantics; `sh:Violation` floor; no-identity-override gate) per Scope-Check 1 Q6 (Cagle).
@@ -156,6 +233,31 @@ Pilot sessions (S005, S011 Q8) carry an additional artefact per plan §8: a one-
 Individual ODRs own their own analysis; this file owns the sequencing and the cross-links.
 
 ## Alternatives
+
+The diagram below summarises the three rejected partition strategies and why the chosen option was preferred.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Partition Strategy Decision
+    accDescr: Three alternative partitioning strategies considered and rejected, leading to the chosen ontological-concern partition with spike-then-scale sequencing.
+    classDef option fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef rejected fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+    classDef chosen fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef reason fill:#FFF9C4,stroke:#F9A825,stroke-width:1px,color:#E65100
+
+    A["Partition by<br/>aggregate page"]:::option --> RA["Encodes form ergonomics;<br/>duplicates reused entities<br/>across modules"]:::reason
+    RA --> REJ1["REJECTED"]:::rejected
+
+    B["Partition by<br/>UFO meta-category alone"]:::option --> RB["Too coarse for<br/>FIBO-style concern modules;<br/>subsumed into chosen option"]:::reason
+    RB --> REJ2["REJECTED"]:::rejected
+
+    C["Full 15-ODR programme<br/>up front (no spike)"]:::option --> RC["Identity criterion<br/>too contested to draft<br/>module ODRs against"]:::reason
+    RC --> REJ3["REJECTED"]:::rejected
+
+    CHOSEN["CHOSEN:<br/>Partition by ontological concern<br/>FIBO-module × UFO-layer,<br/>spike-then-scale"]:::chosen
+    REJ1 & REJ2 & REJ3 -.->|"by elimination"| CHOSEN
+```
 
 - **Partition by aggregate page** — mirror the JSON tree and the web-app's 11 schema pages, one module per aggregate. Rejected: encodes form ergonomics, not ontological cohesion; duplicates reused entities (Address, Name, Person, Organisation) across modules; treats Evidence and VerifiedClaims as siloed pages when they are cross-cutting relations.
 - **Partition by UFO meta-category alone** — Substance Kinds / Roles & Phases / Relators & Claims. Rejected as a sole cut: too coarse to map onto FIBO-style concern modules; subsumed into the chosen option as its layering axis.

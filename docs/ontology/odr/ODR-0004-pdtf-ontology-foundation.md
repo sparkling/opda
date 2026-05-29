@@ -13,6 +13,37 @@ implements: [ODR-0003]
 
 # PDTF Ontology Foundation
 
+### ODR relationship graph
+
+The diagram below shows how ODR-0004 relates to the ODRs it depends on, implements, and gates downstream.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0004 dependency and gating relationships
+    accDescr: ODR-0004 depends on ODR-0002 and implements ODR-0003; it gates ODR-0005 and feeds ODR-0008, ODR-0010, ODR-0011, and ODR-0013.
+    classDef dep fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef self fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef down fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    ODR0002["ODR-0002<br/>Language Adoption"]:::dep
+    ODR0003["ODR-0003<br/>Programme"]:::dep
+    ODR0004["ODR-0004<br/>Foundation"]:::self
+    ODR0005["ODR-0005<br/>Identity Crux"]:::down
+    ODR0008["ODR-0008<br/>Descriptive Attrs"]:::down
+    ODR0010["ODR-0010<br/>Overlay Profiles"]:::down
+    ODR0011["ODR-0011<br/>Enumerations"]:::down
+    ODR0013["ODR-0013<br/>SHACL Validation"]:::down
+
+    ODR0002 -->|"depends-on"| ODR0004
+    ODR0003 -->|"implements"| ODR0004
+    ODR0004 -->|"gates IC"| ODR0005
+    ODR0004 -->|"term-sourcing feeds"| ODR0008
+    ODR0004 -->|"graph-separation feeds"| ODR0010
+    ODR0004 -->|"term-sourcing feeds"| ODR0011
+    ODR0004 -->|"graph-separation feeds"| ODR0013
+```
+
 ## Context
 
 The PDTF v3 base schema (`pdtf-transaction.json`, 37,224 lines; 1,556 unique base leaves, 935 annotated) plus its overlay family (BASPI5, TA6/7/10, NTS/NTS2, CON29R/DW, LLC1, LPE1, FME1, RDS, PIQ, OC1) is a requirements artefact, not a translation target. JSON Schema has slot-names scoped to their enclosing object — no global identifiers, no identity criteria, no fixed model theory for the open-world class semantics an RDF consumer needs. Before any module ODR (Agents & Roles, Property & Land, Transactions, descriptive attributes, claims) can be drafted, the conversion needs the shared substrate every record depends on: where URIs live, how the ontology header is expressed, how the open-world class graph and closed-world shapes graph are kept separate, and where the human-readable meaning of each minted term comes from.
@@ -48,6 +79,80 @@ These rules constrain every module and cross-cutting ODR in the PDTF ontology pr
 
    Every minted term carries `dct:source` to its glossary row or canonical schema-leaf path. **Precedence: W3C spec > business glossary > schema text.** Where a term is governed by a W3C/external standard (e.g. `Verifiable Credential`, `Issuer`, `Verifier`; `LEI` from ISO 17442) the external definition is normative and referenced, not restated. Applied downstream by ODR-0008, ODR-0011, ODR-0013. *Enforcement*: every minted class/property carries a `dct:source` resolving to a glossary row or canonical leaf path; labels/definitions on glossary-named concepts match the glossary.
 8. **Diagnostic exemplars are permitted, non-deliverable, and IC-only.** The round admits three or four worked individuals used *solely* to pressure-test identity criteria and rigidity — the canonical set: a registered freehold house, an unregistered house pre-first-registration, and a flat whose UPRN was split. TBox/ABox remains the *deliverable* boundary, not the *thinking* boundary. This ODR fixes what an exemplar is and where the harness lives; ODR-0005 is the first record to discharge its IC gate against this set.
+
+### Three-graph separation and consumer profile composition
+
+The diagram below shows how the three canonical source graphs are composed by the build pipeline into three derived consumer profiles, as fixed by Rule 3 and §3a.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Three-graph separation and consumer profile composition
+    accDescr: Three canonical source artefacts — opda-classes.ttl, opda-shapes.ttl, and opda-annotations.ttl — are combined by the build pipeline into three derived consumer profiles consumed by validators, form generators, and OWL reasoners.
+    classDef source fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef pipeline fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef profile fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef consumer fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+
+    CL["opda-classes.ttl<br/>OWL/RDFS class graph"]:::source
+    SH["opda-shapes.ttl<br/>SHACL shapes"]:::source
+    AN["opda-annotations.ttl<br/>Advisory annotations"]:::source
+
+    BP["Build pipeline<br/>(generator, three-graph-aware)"]:::pipeline
+
+    PV["opda-validation.ttl<br/>classes ⊕ shapes"]:::profile
+    PU["opda-ui.ttl<br/>classes ⊕ shapes ⊕ annotations"]:::profile
+    PI["opda-inference.ttl<br/>classes only"]:::profile
+
+    CV["SHACL validators"]:::consumer
+    CU["Form generators<br/>LLM UIs"]:::consumer
+    CI["OWL reasoners"]:::consumer
+
+    CL --> BP
+    SH --> BP
+    AN --> BP
+    BP --> PV --> CV
+    BP --> PU --> CU
+    BP --> PI --> CI
+```
+
+### Foundational class naming layers
+
+The class diagram below illustrates the two naming layers from Rule 2 — Sortal/Kind classes that carry identity versus Role/Phase classes that borrow it — using the canonical examples from the Rules table.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+classDiagram
+    accTitle: Foundational class naming layers — Sortal/Kind vs Role/Phase
+    accDescr: Sortal and Kind classes such as Property, Person, and RegisteredTitle carry their own identity criteria. Role and Phase classes such as Seller, Buyer, and Proprietor borrow identity from a Kind class they are played by.
+    class `opda:Property` {
+        <<Sortal / Kind>>
+        carries identity
+    }
+    class `opda:Person` {
+        <<Sortal / Kind>>
+        carries identity
+    }
+    class `opda:RegisteredTitle` {
+        <<Sortal / Kind>>
+        carries identity
+    }
+    class `opda:Seller` {
+        <<Role / Phase>>
+        borrows identity
+    }
+    class `opda:Buyer` {
+        <<Role / Phase>>
+        borrows identity
+    }
+    class `opda:Proprietor` {
+        <<Role / Phase>>
+        borrows identity
+    }
+    `opda:Person` <|-- `opda:Seller` : played by
+    `opda:Person` <|-- `opda:Buyer` : played by
+    `opda:Person` <|-- `opda:Proprietor` : played by
+```
 
 ### Operational specifications (added by [Session 004](./council/session-004-pdtf-ontology-foundation.md))
 
@@ -122,6 +227,41 @@ Rule 8 is operationalised with two additions:
 **Filename convention:** descriptive kebab-case (`registered-freehold-house.ttl`, `unregistered-pre-first-registration-house.ttl`, `flat-with-split-uprn.ttl`). FIBO test-case-naming discipline — the filename is the documentation. Small files (under 50 lines) per Davis's BBC test-suite discipline.
 
 **Citation from consuming ODR.** ODR-0005's `## Rules` (and downstream `kind: pattern` ODRs per A9 §Per-kind discipline (b)) cite exemplars by path AND one-line description of the named hard case (Pandit's amendment).
+
+### Namespace and structure alternatives evaluated
+
+The flowchart below maps the three namespace/structure options considered to the drivers that caused rejection or deferral, and shows the chosen outcome.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Namespace and structure alternatives evaluated
+    accDescr: Three options — per-form namespaces, flat single namespace, and hash URI with layer segregation — are evaluated against the key drivers, leading to the adopted decision.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    A["Per-form namespaces<br/>(baspi:, ta6:, nts:, …)"]:::process
+    B["Flat single opda:<br/>no naming discipline"]:::process
+    C["Slash URIs with<br/>content negotiation"]:::process
+    D["Single hash namespace<br/>+ layer-segregated naming"]:::process
+
+    DA{"Overlays are views,<br/>not vocabularies"}:::decision
+    DB{"Conceals Kind/Role<br/>distinction"}:::decision
+    DC{"No consumer need<br/>this round"}:::decision
+    DD{"Fixes cross-cutting<br/>policies once?"}:::decision
+
+    RA["REJECTED<br/>scatters concept<br/>across namespaces"]:::rejected
+    RB["REJECTED<br/>invites role-as-Kind<br/>conflation"]:::rejected
+    RC["DEFERRED<br/>speculative; hash suits<br/>small TBox (Cagle)"]:::rejected
+    ADOPTED["ADOPTED<br/>w3id.org/opda/#<br/>WG-ratified 2026-05-27"]:::output
+
+    A --> DA --> RA
+    B --> DB --> RB
+    C --> DC --> RC
+    D --> DD -->|"yes"| ADOPTED
+```
 
 ## Alternatives
 

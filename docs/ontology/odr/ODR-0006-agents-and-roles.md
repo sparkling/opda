@@ -21,6 +21,37 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 
 # Agents & Roles
 
+### ODR dependency graph
+
+The diagram below shows how this ODR relates to its declared `depends-on` and `implements` links.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0006 dependency graph
+    accDescr: Shows which ODRs ODR-0006 depends on and which it implements
+    classDef dep fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef self fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    ODR0004["ODR-0004<br/>Foundation"]:::dep
+    ODR0005["ODR-0005<br/>Property &amp; Land<br/>Identity Crux"]:::dep
+    ODR0011["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::dep
+    ODR0015["ODR-0015<br/>Diagnostic<br/>Exemplars"]:::dep
+    ODR0006["ODR-0006<br/>Agents &amp; Roles"]:::self
+    ODR0003["ODR-0003<br/>Programme"]:::impl
+    ODR0017["ODR-0017"]:::impl
+    ODR0018["ODR-0018"]:::impl
+
+    ODR0004 -->|"depends-on"| ODR0006
+    ODR0005 -->|"depends-on (gating)"| ODR0006
+    ODR0011 -->|"depends-on"| ODR0006
+    ODR0015 -->|"depends-on"| ODR0006
+    ODR0006 -->|"implements"| ODR0003
+    ODR0006 -->|"implements"| ODR0017
+    ODR0006 -->|"implements"| ODR0018
+```
+
 ## Context
 
 PDTF v3 models everyone attached to a transaction as a flat `participants[]` array discriminated by a `role` enum, with `name`, `address`, `organisation`, `dateOfBirth` and `email` hanging off each entry, and distinguishes `privateIndividual` from `organization` only as enum values. This is the participant analogue of the implicit-Property defect (ODR-0005): identity-supplying things (a person, an organisation) are conflated with anti-rigid, externally founded things (being a *seller*, *buyer*, *conveyancer*). Capacity is a casualty — `sellersCapacity` and the gap between *asserted* capacity and *evidenced* authority (probate, power of attorney) collapse a founding legal grant into a free-text enum.
@@ -33,6 +64,64 @@ Adopt a **W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMix
 
 ## Rules
 
+### Class hierarchy: Kind, RoleMixin, Role
+
+The diagram shows the UFO-layered class structure for agents and roles as decided in this ODR.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+classDiagram
+    accTitle: Agent and role class hierarchy
+    accDescr: UFO Kind layer (Person, Organisation) and Role layer (Seller, Buyer, Proprietor and other roles) with RoleMixin and Role stereotypes
+
+    class `prov:Agent` {
+        &lt;&lt;provenance role only&gt;&gt;
+    }
+    class `opda:Person` {
+        &lt;&lt;Kind — rigid&gt;&gt;
+        name : opda:Name
+        address : opda:Address
+        dateOfBirth : xsd:date
+        email : xsd:string
+    }
+    class `opda:Organisation` {
+        &lt;&lt;Kind — rigid&gt;&gt;
+        name : opda:Name
+        address : opda:Address
+    }
+    class `opda:Seller` {
+        &lt;&lt;RoleMixin — anti-rigid&gt;&gt;
+        foundedBy : opda:Transaction
+        assertedCapacity : skos:Concept
+        evidencedAuthority : opda:Evidence
+    }
+    class `opda:Buyer` {
+        &lt;&lt;RoleMixin — anti-rigid&gt;&gt;
+        foundedBy : opda:Transaction
+    }
+    class `opda:Proprietor` {
+        &lt;&lt;Role — anti-rigid&gt;&gt;
+        foundedBy : opda:Proprietorship
+    }
+    class `opda:Conveyancer` {
+        &lt;&lt;Role — anti-rigid&gt;&gt;
+    }
+    class `opda:EstateAgent` {
+        &lt;&lt;Role — anti-rigid&gt;&gt;
+    }
+
+    `opda:Person` ..|> `prov:Agent` : provenance\nrole only
+    `opda:Organisation` ..|> `prov:Agent` : provenance\nrole only
+    `opda:Person` ..> `opda:Seller` : plays
+    `opda:Organisation` ..> `opda:Seller` : plays
+    `opda:Person` ..> `opda:Buyer` : plays
+    `opda:Organisation` ..> `opda:Buyer` : plays
+    `opda:Person` ..> `opda:Proprietor` : plays
+    `opda:Person` ..> `opda:Conveyancer` : plays
+    `opda:Organisation` ..> `opda:Conveyancer` : plays
+    `opda:Person` ..> `opda:EstateAgent` : plays
+```
+
 ### Kind layer (rigid, identity-supplying)
 
 - `opda:Person`, `opda:Organisation` — substance **Kinds**. Identity criteria coordinated with ODR-0005's category commitments.
@@ -43,6 +132,37 @@ Adopt a **W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMix
 
 - `opda:Seller`, `opda:Buyer` — **RoleMixins**, played by a Person *or* Organisation. Each is specialised by a sortal role (`PersonSeller`, `OrganisationSeller`) that carries identity, and founded by the `opda:Transaction` relator (ODR-0007).
 - `opda:Proprietor`, `opda:Conveyancer`, `opda:EstateAgent`, `opda:Surveyor`, `opda:Lender`, `opda:Insurer` — **Roles**, each founded by the relevant Relator (Proprietor by an `opda:Proprietorship`).
+
+### Role-founding relator pattern
+
+This diagram illustrates how each Role or RoleMixin is externally founded by its Relator, as required by UFO anti-rigidity rules stated in this ODR.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Role-founding relator pattern
+    accDescr: Shows how a Person or Organisation bearer plays a role that is founded by a relator such as Transaction or Proprietorship
+    classDef kind fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef role fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef relator fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    P["opda:Person<br/>&lt;&lt;Kind&gt;&gt;"]:::kind
+    O["opda:Organisation<br/>&lt;&lt;Kind&gt;&gt;"]:::kind
+    S["opda:Seller<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::role
+    B["opda:Buyer<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::role
+    PR["opda:Proprietor<br/>&lt;&lt;Role&gt;&gt;"]:::role
+    T["opda:Transaction<br/>&lt;&lt;Relator&gt;&gt;"]:::relator
+    PP["opda:Proprietorship<br/>&lt;&lt;Relator&gt;&gt;"]:::relator
+
+    P -->|"plays"| S
+    O -->|"plays"| S
+    P -->|"plays"| B
+    O -->|"plays"| B
+    P -->|"plays"| PR
+    T -->|"founds"| S
+    T -->|"founds"| B
+    PP -->|"founds"| PR
+```
 
 ### Capacity split
 
@@ -95,6 +215,33 @@ opda:SellerShape a sh:NodeShape ;
 - Validated against the participant facets of the diagnostic exemplars (ODR-0005): private-individual seller, organisation seller, seller acting under power of attorney.
 - Role and capacity SKOS concepts (ODR-0011) carry `skos:prefLabel`/`skos:definition` sourced from the business glossary and `dct:source` back to it.
 - **Freeze gate**: this module's TBox is not frozen until (a) ODR-0005 clears its identity-criterion gate and (b) the remaining Kind-layer choice (W3C Org vs bespoke `opda:`) is resolved in council.
+
+## Decision rationale
+
+The flowchart traces the three candidate agent-layer approaches through their disqualifying defects to the chosen outcome.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Agent layer design decision
+    accDescr: Decision path ruling out flat Participant, prov:Agent-only, and FOAF, arriving at W3C Org plus UFO layering
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef reject fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef chosen fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    A["Flat opda:Participant<br/>+ role datatype"]:::process --> D1{"Identity<br/>criterion?"}:::decision
+    D1 -->|"none — bearer<br/>conflated with role"| R1["REJECTED"]:::reject
+
+    B["prov:Agent only"]:::process --> D2{"Kind layer<br/>coverage?"}:::decision
+    D2 -->|"no Person /<br/>Organisation<br/>distinction"| R2["REJECTED"]:::reject
+
+    C["FOAF Kind layer"]:::process --> D3{"Overlap with<br/>W3C Org / dct:?"}:::decision
+    D3 -->|"yes — already<br/>deferred by ODR-0002"| R3["RULED OUT"]:::reject
+
+    E["W3C Org / bespoke opda:<br/>+ UFO Kind / RoleMixin / Role"]:::process --> D4{"Meets all<br/>drivers?"}:::decision
+    D4 -->|"yes"| CH["CHOSEN<br/>W3C Org + UFO layering<br/>(Kind-layer choice<br/>pending freeze gate)"]:::chosen
+```
 
 ## Alternatives
 

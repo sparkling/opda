@@ -22,6 +22,59 @@ A mechanical rewrite to either `owl:oneOf` bags of `owl:NamedIndividual`s or to 
 
 Each enum becomes a **SKOS concept scheme** whose members are `skos:Concept`s carrying `skos:prefLabel`, `skos:notation`, and `skos:definition` — because SKOS is purpose-built for controlled vocabularies and gives each value a dereferenceable URI, a governable label, and a definition without importing OWL membership-reasoning over a hand-curated list.
 
+### Modelling options and the chosen outcome
+
+The three candidate approaches were evaluated against the drivers; SKOS was chosen because it satisfies every driver without pulling in reasoning machinery.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Modelling options for JSON enumerations
+    accDescr: Flowchart showing three candidate approaches — bare string constraints, OWL enumerated classes, and SKOS concept schemes — evaluated against four drivers; SKOS is the chosen outcome.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef reject fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    A["Bare string constraints<br/>(xsd:string + sh:in literals)"]:::process --> D1{"Dereferenceable URIs<br/>+ governable labels?"}:::decision
+    A2["OWL enumerated classes<br/>(owl:oneOf / subclassing)"]:::process --> D2{"Needs reasoner to police<br/>hand-curated list?"}:::decision
+    A3["SKOS ConceptScheme<br/>(skos:Concept + prefLabel<br/>+ notation + definition)"]:::process --> D3{"Purpose-built for<br/>controlled vocabularies?"}:::decision
+
+    D1 -->|"no — values have no URIs,<br/>no definitions, no provenance"| R1["REJECTED"]:::reject
+    D2 -->|"yes — machinery without<br/>a purpose; misclassifies<br/>vocabulary terms as classes"| R2["REJECTED"]:::reject
+    D3 -->|"yes — dereferenceable URI,<br/>governable label, definition,<br/>no unwanted reasoning"| C["CHOSEN: SKOS"]:::output
+```
+
+### SKOS concept scheme structure
+
+Each JSON `enum` maps to a `skos:ConceptScheme`; every value becomes a `skos:Concept` linked into it with the required properties and provenance.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: SKOS concept scheme structure for a JSON enum
+    accDescr: Flowchart showing a JSON enum array becoming a skos:ConceptScheme whose members are skos:Concepts carrying prefLabel, notation, definition, and dct:source provenance.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    E["JSON enum array<br/>(e.g. councilTaxBand)"]:::process
+    S["skos:ConceptScheme<br/>opda:councilTaxBandScheme<br/>+ dct:creator steward<br/>+ opda:ufoCategory"]:::output
+    C1["skos:Concept<br/>opda:councilTaxBand/A"]:::process
+    C2["skos:Concept<br/>opda:councilTaxBand/B"]:::process
+    CN["skos:Concept<br/>opda:councilTaxBand/I"]:::process
+
+    PROPS["skos:prefLabel @en<br/>skos:notation xsd:string<br/>skos:definition @en<br/>dct:source (glossary or schema leaf)"]:::output
+
+    E -->|"becomes"| S
+    S -->|"skos:inScheme"| C1
+    S -->|"skos:inScheme"| C2
+    S -->|"skos:inScheme (A–I)"| CN
+    C1 -->|"carries"| PROPS
+    C2 -->|"carries"| PROPS
+    CN -->|"carries"| PROPS
+```
+
 ## Rules
 
 - **Each enum is a `skos:ConceptScheme`.** Members are linked via `skos:inScheme`; each `skos:Concept` carries `skos:prefLabel` with an `@en` language tag, `skos:notation` for the canonical machine code (e.g. HMLR `classOfTitleCode` `10/20/30/…`, `restrictionTypeCode` `0/10/20/30`), and `skos:definition`.
@@ -172,6 +225,43 @@ opda:tenureKindScheme a skos:ConceptScheme ; opda:ufoCategory "SubstanceKindLabe
 
 **`odr-review` lint extension contract** (flagged for next skill release per ODR-0004 §Consequences): the lint reads each `kind: pattern` ODR's `skos:ConceptScheme` declarations and verifies (i) `opda:ufoCategory` triple presence; (ii) value in the seven-category vocabulary above; (iii) dual `dct:source` (upstream UFO + `<ODR-0011>` Council-authored). Blocker on `status: accepted` per A9 enforcement discipline.
 
+### Closed vs open-ended scheme and concept lifecycle
+
+The closed/open-ended flag per scheme determines downstream SHACL treatment; deprecated concepts follow a three-case mechanism without deletion.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Closed vs open-ended scheme and concept deprecation lifecycle
+    accDescr: Flowchart showing how each scheme is flagged closed or open-ended during drafting, which downstream SHACL shape applies, and the three-case lifecycle for deprecated concepts.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    SCH["skos:ConceptScheme<br/>(drafted per enum)"]:::process
+    FLAG{"Closed or<br/>open-ended?"}:::decision
+    CL["Closed scheme<br/>(EPC band A–G;<br/>councilTaxBand A–I;<br/>ownerType)"]:::process
+    OE["Open-ended scheme<br/>(fuelType;<br/>transportType;<br/>mediaType)"]:::process
+    SHIN["ODR-0013 SHACL sh:in<br/>over active concepts only"]:::output
+    NONE["No sh:in constraint<br/>(world may extend)"]:::output
+
+    CL --> SHIN
+    OE --> NONE
+
+    DEP{"Concept<br/>deprecated?"}:::decision
+    D1["Deprecation-with-replacement:<br/>owl:deprecated + dct:isReplacedBy"]:::output
+    D2["Substantive-redefinition:<br/>prov:wasDerivedFrom;<br/>predecessor stays live"]:::output
+    D3["Retirement-without-successor:<br/>owl:deprecated + skos:historyNote"]:::output
+
+    SCH --> FLAG
+    FLAG -->|"closed"| CL
+    FLAG -->|"open-ended"| OE
+    SHIN --> DEP
+    DEP -->|"with replacement"| D1
+    DEP -->|"derivation"| D2
+    DEP -->|"no successor"| D3
+```
+
 ## Alternatives
 
 - **Bare string constraints** — leave each enum as `xsd:string` with `sh:in` literals. Fatal flaw: values have no URIs, no governable labels, no definitions, no provenance; identical literals across distinct enums (`Freehold` in `ownershipType`, `marketingTenure`, `tenure`) carry no statement of co-reference.
@@ -209,6 +299,43 @@ opda:tenureKindScheme a skos:ConceptScheme ; opda:ufoCategory "SubstanceKindLabe
 
 - SSSOM admission per S002 Q11 named trigger; Phase-3.5 audit owns the deliberation.
 - Eighth UFO category candidate: if a Phase-3.5 module session surfaces a scheme that fits none of the seven categories (Role label / Phase label / Quale-in-Region / Method/plan code / Quality Region / Substance Kind label / Quality Value), an Author-only amendment to ODR-0011 adds the category with explicit `dct:source` to UFO/DOLCE + ODR-0011.
+
+### ODR dependency and consumer graph
+
+ODR-0011 depends on ODR-0004 and is consumed by six downstream ODRs that author or inherit scheme content.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0011 dependency and consumer graph
+    accDescr: Flowchart showing ODR-0011 depending on ODR-0004, implementing ODR-0003 and ODR-0017, and being consumed by ODR-0006 through ODR-0013.
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef this fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    ODR4["ODR-0004<br/>Foundation<br/>(URI / provenance / graphs)"]:::process
+    ODR3["ODR-0003<br/>Programme anchor"]:::process
+    ODR17["ODR-0017<br/>(implements)"]:::process
+
+    ODR11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::this
+
+    ODR6["ODR-0006<br/>Agents &amp; Roles<br/>(role; participantStatus)"]:::output
+    ODR7["ODR-0007<br/>Transactions &amp; Lifecycle<br/>(sellersCapacity)"]:::output
+    ODR8["ODR-0008<br/>Property Descriptive<br/>(Quale-in-Region schemes)"]:::output
+    ODR9["ODR-0009<br/>Claims &amp; Evidence<br/>(assuranceLevel; verificationMethod)"]:::output
+    ODR12["ODR-0012<br/>Data Governance<br/>(PII retention; DPV co-annotations)"]:::output
+    ODR13["ODR-0013<br/>SHACL Validation<br/>(sh:in + deprecation rule)"]:::output
+
+    ODR4 -->|"depends-on"| ODR11
+    ODR3 -->|"implements"| ODR11
+    ODR17 -->|"implements"| ODR11
+    ODR11 -->|"consumed by"| ODR6
+    ODR11 -->|"consumed by"| ODR7
+    ODR11 -->|"consumed by"| ODR8
+    ODR11 -->|"consumed by"| ODR9
+    ODR11 -->|"consumed by"| ODR12
+    ODR11 -->|"consumed by"| ODR13
+```
 
 ## References
 

@@ -14,6 +14,37 @@ implements: [ODR-0003]
 
 > **SUPERSEDED 2026-05-26 by [ODR-0002](./ODR-0002-ontology-language-adoption.md) via Scope-Check 1 (Q4 vote 7-1-1 retire; Hendler dissent on permanence preserved).** This record is retained as a historical artefact and anchor for the Council Session 001 provenance below. **The amendments it records are folded into ODR-0002's `## Change log` subsection inside `## Rules`** — that is now the authoritative current state of the catalogue. Readers seeking current tiering MUST go to ODR-0002; the tables below are frozen at session-001's deliberation snapshot. Session 002 ratifies the fold.
 
+### ODR relationship map
+
+This diagram shows how ODR-0014 relates to the records it amends, implements, and is superseded by, as stated in the frontmatter and prose.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0014 relationship map
+    accDescr: Shows supersession by ODR-0002, implements ODR-0003, and downstream routing to ODR-0005 ODR-0006 ODR-0007 ODR-0012
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef retired fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+
+    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments"]:::retired
+    ODR0002["ODR-0002<br/>Ontology Language<br/>Adoption (catalogue)"]:::output
+    ODR0003["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::process
+    ODR0007["ODR-0007<br/>Transactions &<br/>Lifecycle"]:::process
+    ODR0012["ODR-0012<br/>Data Governance<br/>Layer"]:::process
+    ODR0005["ODR-0005<br/>Property / Land<br/>Identity Crux"]:::process
+    ODR0006["ODR-0006<br/>Agents and Roles"]:::process
+
+    ODR0002 -->|"supersedes (Scope-Check 1 Q4,<br/>vote 7-1-1)"| ODR0014
+    ODR0014 -->|"implements"| ODR0003
+    ODR0014 -->|"amendments absorbed into"| ODR0002
+    ODR0002 -->|"OWL-Time intervals"| ODR0007
+    ODR0002 -->|"DPV Phase-1 + ODRL deferral"| ODR0012
+    ODR0014 -->|"OBO RO routed to"| ODR0005
+    ODR0014 -->|"W3C Org vs opda: routed to"| ODR0006
+```
+
 ## Context
 
 [ODR-0002](./ODR-0002-ontology-language-adoption.md) established OPDA's vocabulary catalogue — a closed three-tier set (Core / Conditional / Defer) with canonical URI, role, and adoption pattern per entry — surveyed from the H&M programme before any PDTF-specific modelling had been attempted. Council Session 001 (Q2) then scoped the PDTF-to-ontology work against that catalogue and, in doing so, made decisions that **change ODR-0002's tiering or rationale** for specific entries. Two pivots in particular: **OWL-Time**, which ODR-0002 placed at Conditional and which the PDTF brief had initially *excluded*, was brought into active scope on coherence grounds (PROV-O instants without OWL-Time intervals is incoherent for proprietorship, lease, and claim-validity); and the mapping/policy cluster (SSSOM, ODRL) was held back where the data-model-only round presents no target. The session also opened **OBO RO** (no consensus) and **FOAF** (subsequently ruled out programme-wide).
@@ -29,6 +60,52 @@ The original question this ODR answered — *how should the partial supersession
 ### Supersession scope
 
 This record is wholly superseded by ODR-0002 — the amendments it carried (OWL-Time Conditional adoption; DCAT Conditional; SSSOM deferral; ODRL deferred-policy; DPV Phase-1; Dublin Core rationale; BBO/ArchiMate out) now live as `## Change log` rows in ODR-0002's `## Rules`, attributed to Session 001 Q2. The two open questions originally routed here (OBO RO → ODR-0005; FOAF / W3C Org → ODR-0006) remain routed — but their pointers live in ODR-0002, not here. Hendler's recorded dissent on the retirement (Scope-Check 1 Q4: "every governance act stays permanently") is preserved in the plan's risks table (`docs/plan/council-followup-sessions.md` §9) as a live methodological position, not silenced.
+
+### Vocabulary tier decisions at a glance
+
+The table below is the authoritative text; this diagram visualises the same seven entries — showing the tier-or-scope change made at Session 001 Q2 and the downstream consumer where relevant.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Vocabulary tier decisions — Session 001 Q2
+    accDescr: Seven vocabulary entries from the amended table showing the ODR-0002 baseline and the Session-001 outcome for each
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef deferred fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+
+    S001["Session 001 Q2<br/>Vocabulary deliberation"]:::decision
+
+    OT_B["OWL-Time<br/>ODR-0002: Conditional<br/>(PDTF brief excluded)"]:::process
+    OT_O["ADOPT Conditional<br/>— exclusion reversed<br/>≈6-3"]:::output
+
+    DCAT_B["DCAT 3<br/>ODR-0002: Conditional"]:::process
+    DCAT_O["Confirmed Conditional<br/>(Davis: Core; Baker: hold)"]:::output
+
+    SS_B["SSSOM / SEMAPV<br/>ODR-0002: Conditional"]:::process
+    SS_O["Deferred — use dct:source<br/>≈5-4 (Cagle dissent)"]:::deferred
+
+    ODRL_B["ODRL<br/>ODR-0002: Conditional"]:::process
+    ODRL_O["Vocabulary adopted;<br/>policy-authoring deferred<br/>to Phase 2"]:::output
+
+    DPV_B["DPV family<br/>ODR-0002: Conditional"]:::process
+    DPV_O["Phase-1 annotation adopted;<br/>broader TBox is live question"]:::output
+
+    DC_B["Dublin Core<br/>ODR-0002: Core"]:::process
+    DC_O["Rationale restated as<br/>commons substrate; tier unchanged"]:::output
+
+    BBO_B["BBO / ArchiMate<br/>ODR-0002: Conditional/Defer"]:::process
+    BBO_O["Out for this programme<br/>— unanimous"]:::deferred
+
+    S001 --> OT_B --> OT_O
+    S001 --> DCAT_B --> DCAT_O
+    S001 --> SS_B --> SS_O
+    S001 --> ODRL_B --> ODRL_O
+    S001 --> DPV_B --> DPV_O
+    S001 --> DC_B --> DC_O
+    S001 --> BBO_B --> BBO_O
+```
 
 ### Amended entries (superseded in part)
 
@@ -66,6 +143,38 @@ This record does **not** touch:
 - ODR-0002's affected rows carry a "Superseded in part by ODR-0014" note pointing here; the Core tier, adoption pattern, and untouched Defer reasoning are unchanged in ODR-0002.
 - OWL-Time adoption is confirmed downstream by [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (interval modelling), carrying the canonical-URI + local-SHACL + no-`owl:imports` adoption pattern.
 - This is a **partial** supersession: ODR-0002 remains the standing catalogue for everything outside the amended scope above. Whether ODR-0002's frontmatter `status` flips to `superseded` is left to the validator (`odr-review`) as a soundness item rather than asserted here.
+
+### Amendment-pattern supersession flow
+
+This diagram traces how the amendment-ODR convention itself was evaluated and superseded — the decision captured in the `## Decision` section above.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart TD
+    accTitle: Amendment-pattern supersession flow
+    accDescr: Flowchart showing how the amendment-ODR pattern was evaluated against alternatives and replaced by the Change-log-inside-Rules pattern via Scope-Check 1
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef retired fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
+
+    Q["How to record partial<br/>catalogue amendments?"]:::decision
+
+    A1["Option A: Edit ODR-0002<br/>in place"]:::process
+    A2["Option B: Fresh full-catalogue<br/>ODR superseding ODR-0002<br/>wholesale"]:::process
+    A3["Option C: Separate amendment<br/>ODR-0014 (partial supersession)"]:::process
+    A4["Option D: Change-log subsection<br/>inside ODR-0002 Rules<br/>(Scope-Check 1 ruling)"]:::output
+
+    R1["Erases provenance of<br/>why/which deliberation moved tier"]:::retired
+    R2["Falsely implies whole<br/>catalogue was re-deliberated"]:::retired
+    R3["Pattern itself superseded<br/>— FIBO/DCMI/W3C WD collapse;<br/>Scope-Check 1 Q4 vote 7-1-1"]:::retired
+
+    Q --> A1 --> R1
+    Q --> A2 --> R2
+    Q --> A3 --> R3
+    Q --> A4
+    R3 -->|"amendments folded into"| A4
+```
 
 ## Alternatives
 

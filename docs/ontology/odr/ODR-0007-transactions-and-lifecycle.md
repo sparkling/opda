@@ -57,6 +57,143 @@ Model the transaction envelope as **Transaction-as-Relator + Phases + OWL-Time C
 - **Freeze gate** — the TBox is not frozen until (a) ODR-0005 clears its identity-criterion gate (the Transaction relator relates Property/Title endurants) and (b) the single-scheme-vs-per-role question resolves in council.
 - **Exemplar validation** — the module is validated against the lifecycle facets of the ODR-0005 diagnostic exemplars: a property mid-marketing (open-ended interval), a completed sale (closed interval), and a leasehold whose lease term is an interval with a computed end.
 
+### Transaction Lifecycle Phases
+
+The participant-status and milestone phases form a directed state machine: a participant moves through `Proposed → Invited → Active → Removed` while the transaction itself progresses through marketing, under-offer, exchanged and completed milestone phases.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+stateDiagram-v2
+    accTitle: Transaction lifecycle phases
+    accDescr: Participant-status state machine and transaction milestone phase progression from marketing through to completed.
+
+    state "Participant Status" as PS {
+        [*] --> Proposed
+        Proposed --> Invited
+        Invited --> Active
+        Active --> Removed
+        Proposed --> Removed
+        Invited --> Removed
+    }
+
+    state "Transaction Milestone Phases" as TM {
+        [*] --> Marketing : listed date recorded
+        Marketing --> UnderOffer : started
+        UnderOffer --> Exchanged : legalForms complete
+        Exchanged --> Completed : completed date recorded
+    }
+
+    state "UnderOffer" as UnderOffer
+    state "Exchanged" as Exchanged
+    state "Completed" as Completed {
+        [*] --> [*]
+    }
+```
+
+### Transaction Relator and Entity Model
+
+`opda:Transaction` is a UFO Relator mediating Property/Title endurants and founding the Seller/Buyer RoleMixins; each milestone or participant status is a Phase, and chain linkage is a relation between Transaction instances.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+classDiagram
+    accTitle: Transaction relator and entity model
+    accDescr: Class diagram showing Transaction as a UFO Relator relating Property and Title endurants, founding Seller and Buyer RoleMixins, and associating with Phase and Chain.
+
+    class Transaction {
+        +dct_identifier transactionId
+        +externalIds []
+        +time_Interval marketingWindow
+        +time_Interval moveRestrictionDates
+    }
+    class Seller {
+        <<RoleMixin>>
+        founded by Transaction
+    }
+    class Buyer {
+        <<RoleMixin>>
+        founded by Transaction
+    }
+    class Phase {
+        <<anti-rigid>>
+        SKOS concept (ODR-0011)
+    }
+    class Chain {
+        propertyDependencyType
+    }
+    class Property {
+        <<endurant>>
+    }
+    class Title {
+        <<endurant>>
+    }
+
+    Transaction "1" --> "1..*" Seller : founds
+    Transaction "1" --> "1..*" Buyer : founds
+    Transaction "1" --> "1..*" Phase : hasPhase
+    Transaction "1" --> "0..*" Chain : chain
+    Chain "1" --> "1..*" Transaction : otherPropertyInChain
+    Transaction --> Property : relates
+    Transaction --> Title : relates
+```
+
+### Alternatives Considered and Chosen Outcome
+
+Three candidate designs were evaluated against the two key drivers — role-founding coherence and interval-vs-instant accuracy — with Transaction-as-Relator + Phases + OWL-Time the only option satisfying both.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: Alternatives considered and chosen outcome
+    accDescr: Three candidate designs mapped against role-founding and interval-modelling drivers, showing why only the chosen option passes both tests.
+
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    A1["Keep schema shape<br/>status as datatype,<br/>instants only"]:::process --> D1{"Roles founded?"}:::decision
+    D1 -->|"no"| R1["REJECTED<br/>RoleMixins unfounded"]:::rejected
+
+    A2["Relator + Phases<br/>+ instants only<br/>(no OWL-Time)"]:::process --> D2{"Roles founded?"}:::decision
+    D2 -->|"yes"| D2b{"Intervals<br/>modelled?"}:::decision
+    D2b -->|"no"| R2["REJECTED<br/>Q2 incoherence reproduced"]:::rejected
+
+    A3["Relator + Phases<br/>+ OWL-Time intervals"]:::process --> D3{"Roles founded?"}:::decision
+    D3 -->|"yes"| D3b{"Intervals<br/>modelled?"}:::decision
+    D3b -->|"yes"| C["CHOSEN<br/>Adopted Conditional<br/>on interval consumers"]:::output
+```
+
+### ODR Dependency Graph
+
+ODR-0007 depends on the foundation, identity-crux, and agents ODRs, implements the programme and partitioning ODRs, and has no predecessors to supersede.
+
+```mermaid
+%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0007 dependency graph
+    accDescr: Directed graph of depends-on and implements relationships declared in the ODR-0007 frontmatter.
+
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef focal fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
+
+    ODR0004["ODR-0004<br/>Foundation"]:::process
+    ODR0005["ODR-0005<br/>Identity Crux"]:::process
+    ODR0006["ODR-0006<br/>Agents &amp; Roles"]:::process
+    ODR0011["ODR-0011<br/>Enumerations"]:::process
+    ODR0003["ODR-0003<br/>Programme"]:::output
+    ODR0017["ODR-0017<br/>Partitioning"]:::output
+    ODR0007["ODR-0007<br/>Transactions &amp; Lifecycle"]:::focal
+
+    ODR0004 -->|"depends-on"| ODR0007
+    ODR0005 -->|"depends-on (gate)"| ODR0007
+    ODR0006 -->|"depends-on"| ODR0007
+    ODR0011 -->|"depends-on"| ODR0007
+    ODR0007 -->|"implements"| ODR0003
+    ODR0007 -->|"implements"| ODR0017
+```
+
 ## Alternatives
 
 - **Keep the schema shape** — one `opda:Transaction` class with `status`/`milestone` datatype properties and `prov:atTime` instants only. Fatal flaw: leaves the ODR-0006 RoleMixins unfounded and cannot express the interval-valued lifecycle facts the date-pair leaves clearly imply.

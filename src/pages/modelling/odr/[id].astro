@@ -16,10 +16,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Layout from '@/layouts/Layout.astro';
-import { ENRICHED_ODRS } from '@/lib/odr-pages.mjs';
+import { ODR_REGISTRY } from '@/lib/odr-pages.mjs';
 
 export function getStaticPaths() {
-  return ENRICHED_ODRS.map((odr) => ({
+  return ODR_REGISTRY.map((odr) => ({
     params: { id: odr.id },
     props: { odr },
   }));

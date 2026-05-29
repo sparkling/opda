@@ -29,9 +29,103 @@ Adopt the **Linked Data Council** — a simulated panel of named linked-data and
 
 These rules define the standing apparatus and per-session protocol of the Linked Data Council. They are project-agnostic; each adopting project supplies its own context via the §Adoption hooks below.
 
+### Session Protocol: From Question to Verdict
+
+The following diagram shows the full lifecycle of a Linked Data Council session, from pre-flight scope check through to synthesis and ODR amendment.
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart TD
+    accTitle: ODR-0001 Council Session Protocol
+    accDescr: Flowchart showing the full lifecycle of a Linked Data Council session from pre-flight scope check through to synthesis and ODR amendment
+
+    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef warning fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    PROP["Proposition raised<br/>(question + input docs)"]:::process
+    PF["Pre-flight scope check<br/>(Queen, 5 min)"]:::process
+    PF_OUT{Scope check<br/>outcome}:::decision
+    RETIRE["Mark rejected +<br/>pointer to correct record"]:::warning
+    RESCOPE["Re-scope or split<br/>proposition"]:::process
+    META["Escalate to<br/>meta-Council"]:::warning
+    CONVENE["Convene session<br/>(declare format tier +<br/>consensus-mode)"]:::process
+    SPAWN["Spawn panel in ONE message<br/>(Queen + DA + N teammates)"]:::actor
+    DELIBERATE["Per-question deliberation<br/>(named citations, cross-talk,<br/>N-M-K vote tally)"]:::process
+    DA_CHECK{DA withdraws<br/>or holds?}:::decision
+    DA_HOLD["Record held dissent<br/>verbatim + re-open trigger"]:::warning
+    SYNTH["Queen writes synthesis<br/>(narrative + tally appendix)"]:::output
+    ODR_AMEND["Amend or produce ODR<br/>(new record or inline amendment)"]:::output
+
+    PROP --> PF
+    PF --> PF_OUT
+    PF_OUT -->|"Retire"| RETIRE
+    PF_OUT -->|"Re-scope"| RESCOPE
+    PF_OUT -->|"Meta-Council"| META
+    PF_OUT -->|"Ratify as-is"| CONVENE
+    RESCOPE --> CONVENE
+    META --> CONVENE
+    CONVENE --> SPAWN
+    SPAWN --> DELIBERATE
+    DELIBERATE --> DA_CHECK
+    DA_CHECK -->|"Withdraws"| SYNTH
+    DA_CHECK -->|"Holds dissent"| DA_HOLD
+    DA_HOLD --> SYNTH
+    SYNTH --> ODR_AMEND
+```
+
 ### Standing Panel (9 experts)
 
 The methodology's canonical roster. Their published positions are stable and domain-agnostic; adopting projects MAY weight specific experts more heavily for their domain (declared via §Adoption) but the roster itself is fixed.
+
+The following diagram maps the standing panel's expertise clusters.
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#F3E5F5", "primaryTextColor": "#4A148C", "primaryBorderColor": "#7B1FA2", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Standing Panel Expertise Map
+    accDescr: Map of the 9 standing panel experts grouped by their primary expertise cluster
+
+    classDef actor fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    classDef cluster fill:#E3F2FD,stroke:#1565C0,stroke-width:1px,color:#0D47A1
+    classDef role fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+    QUEEN["Queen / Moderator<br/>(named per session)"]:::role
+    DA["Devil's Advocate<br/>(named per session)"]:::role
+
+    subgraph PragmaticRDF["Pragmatic RDF &amp; Enterprise"]
+        ALLE["Dean Allemang<br/>Working Ontologist"]:::actor
+        DAVIS["Ian Davis<br/>BBC / UK Gov"]:::actor
+    end
+
+    subgraph FormalOWL["Formal OWL &amp; Web Architecture"]
+        HENDLER["Jim Hendler<br/>W3C / RPI"]:::actor
+        GANDON["Fabien Gandon<br/>W3C / Inria"]:::actor
+    end
+
+    subgraph EnterpriseOntology["Enterprise Ontology"]
+        KENDALL["Elisa Kendall<br/>OMG / EDM Council"]:::actor
+        CAGLE["Kurt Cagle<br/>The Ontologist"]:::actor
+    end
+
+    subgraph FoundationalOntology["Foundational Ontology"]
+        GUIZZARDI["Giancarlo Guizzardi<br/>NEMO / UniLu"]:::actor
+        GUARINO["Nicola Guarino<br/>ISTC-CNR"]:::actor
+    end
+
+    subgraph Vocabulary["Vocabulary &amp; Namespace"]
+        BAKER["Tom Baker<br/>Dublin Core"]:::actor
+    end
+
+    QUEEN -.->|"votes + synthesises"| PragmaticRDF
+    QUEEN -.->|"votes + synthesises"| FormalOWL
+    QUEEN -.->|"votes + synthesises"| EnterpriseOntology
+    QUEEN -.->|"votes + synthesises"| FoundationalOntology
+    QUEEN -.->|"votes + synthesises"| Vocabulary
+    DA -.->|"attacks proposal"| PragmaticRDF
+```
 
 | Expert | Affiliation | Perspective |
 |--------|-------------|-------------|
@@ -183,7 +277,34 @@ Before convening a session, the Queen runs a 5-minute scope check on the proposi
 
 ### Format tiers
 
-Not every proposition needs the full nine-expert apparatus. Three tiers:
+Not every proposition needs the full nine-expert apparatus. Three tiers. The following decision tree shows how to select the correct tier.
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Format Tier Selection
+    accDescr: Decision tree for selecting the correct Council format tier based on the nature of the proposition
+
+    classDef full fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef reduced fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
+    classDef author fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef question fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+
+    Q1{"Substantive decision<br/>with credible split?"}:::question
+    Q2{"Amendment on<br/>narrow axis?"}:::question
+    Q3{"Precedent or<br/>methodology settled?"}:::question
+
+    FULL["Full Council<br/>Queen + DA + 6 panel<br/>~8 agent runs"]:::full
+    REDUCED["Reduced Council<br/>Queen + DA + 1-2 panel<br/>~3-4 agent runs"]:::reduced
+    AUTHOR["Author-only<br/>Queen drafts directly<br/>~1 agent run"]:::author
+
+    Q1 -->|"Yes"| FULL
+    Q1 -->|"No"| Q2
+    Q2 -->|"Yes"| REDUCED
+    Q2 -->|"No"| Q3
+    Q3 -->|"Yes — recording only"| AUTHOR
+    Q3 -->|"No — check scope"| Q1
+```
 
 | Tier | When | Apparatus | Cost (rough) |
 |---|---|---|---|
@@ -460,6 +581,41 @@ The adoption record is a small project-specific artefact (typically 50–150 lin
 - Session document follows the path and structure above; front matter present.
 - Working-file convention honoured.
 - Adopting project supplies all required §Adoption slots; missing slots are non-conforming.
+
+### Supersession Graph — ODR Dependencies
+
+The following graph shows ODR-0001 as the methodology foundation that all other ODRs depend on, and the self-amendment mechanism.
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
+flowchart LR
+    accTitle: ODR-0001 Supersession and Dependency Graph
+    accDescr: Shows ODR-0001 as the methodology foundation that all other ODRs depend on, and the self-amendment mechanism
+
+    classDef methodology fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
+    classDef pattern fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef architecture fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef programme fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef amendment fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+
+    ODR0001["ODR-0001<br/>Methodology<br/>(this record)"]:::methodology
+    ODR0003["ODR-0003<br/>Programme"]:::programme
+    ODR0004["ODR-0004<br/>Foundation"]:::architecture
+    ODR0005["ODR-0005<br/>Property Identity"]:::pattern
+    OTHERS["ODR-0006 … ODR-0018<br/>(all depend on methodology)"]:::architecture
+
+    A9["Amendment A9<br/>per-kind discipline<br/>2026-05-27"]:::amendment
+    SC1["Scope-Check-1<br/>meta-Council"]:::amendment
+    SC2["Scope-Check-2<br/>B2 pilot eval"]:::amendment
+
+    ODR0001 -->|"governs"| ODR0003
+    ODR0001 -->|"governs"| ODR0004
+    ODR0001 -->|"governs"| ODR0005
+    ODR0001 -->|"governs"| OTHERS
+    ODR0001 -->|"self-amends via"| A9
+    SC1 -->|"produced"| A9
+    SC2 -->|"B2 pilot verdict"| ODR0005
+```
 
 ## Alternatives
 

@@ -16,6 +16,10 @@ import { reportGenerator } from './src/integrations/generate-report-html.mjs';
 // at build/dev start so client.js can wire SVG node clicks to entity routes.
 import { diagramLinksGenerator } from './src/integrations/generate-diagram-links.mjs';
 
+// ADR-0024: generate ODR HTML fragments from the enriched ODR markdown at
+// build/dev start (gitignored, regenerated every build); served via set:html.
+import { odrHtmlGenerator } from './src/integrations/generate-odr-html.mjs';
+
 import tailwindcss from '@tailwindcss/vite';
 
 // Dev-only Vite plugin: expose project sub-trees (source/, _build/) that
@@ -156,7 +160,7 @@ export default defineConfig({
   outDir:  './dist',
   // ADR-0021 §"Separate task": the report generator emits static HTML for
   // embedded meta-reports before build/dev resolves the page imports.
-  integrations: [reportGenerator(), diagramLinksGenerator()],
+  integrations: [reportGenerator(), diagramLinksGenerator(), odrHtmlGenerator()],
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.
