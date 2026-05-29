@@ -2,8 +2,11 @@
  * Realises ADR-0021: build-time fetch helper for the GRLC SPARQL API.
  *
  * Base URL: process.env.OPDA_API or http://localhost:3000 (build-time).
- * The live Fuseki+GRLC stack is REQUIRED at build time. If the API is
- * unreachable, the build fails with a clear error message. No fixture fallback.
+ * The live Fuseki+GRLC stack is REQUIRED for a production build (`npm run
+ * build:data`): if the API is unreachable there, the build fails loudly.
+ * In dev (`astro dev`, import.meta.env.DEV) the API is usually not running, so
+ * the helpers degrade gracefully — entity pages fall back to markdown rendering
+ * instead of crashing getStaticPaths.
  */
 
 import type { Tier } from './manual.ts';
@@ -98,8 +101,13 @@ let _localNameMap: Map<string, string> | null = null;
 
 async function getLocalNameMap(): Promise<Map<string, string>> {
   if (_localNameMap) return _localNameMap;
-  const data = await apiFetch('/api/entities') as { items: EntityListItem[] };
-  _localNameMap = new Map(data.items.map((e) => [e.localName.toLowerCase(), e.localName]));
+  try {
+    const data = await apiFetch('/api/entities') as { items: EntityListItem[] };
+    _localNameMap = new Map(data.items.map((e) => [e.localName.toLowerCase(), e.localName]));
+  } catch (err) {
+    if (!import.meta.env.DEV) throw err;   // production build requires the API
+    _localNameMap = new Map();             // dev: empty → resolveLocalName returns the guess
+  }
   return _localNameMap;
 }
 
@@ -121,32 +129,38 @@ async function resolveLocalName(pascalGuess: string): Promise<string> {
  * Fails the build with a clear error if the API is not reachable.
  */
 export async function fetchEntityList(): Promise<EntityListItem[]> {
-  const data = await apiFetch('/api/entities') as { items: EntityListItem[] };
-  return data.items;
+  try {
+    const data = await apiFetch('/api/entities') as { items: EntityListItem[] };
+    return data.items;
+  } catch (err) {
+    if (!import.meta.env.DEV) throw err;   // production build requires the API
+    return [];                             // dev: degrade gracefully
+  }
 }
 
 /**
  * Fetch a single entity detail from GET /api/entities/{tier}/{module}/{localName}.
  * Resolves the localName against the entity list to handle acronym mismatches
  * (e.g. slug "dpv-mapping-record" → "DPVMappingRecord").
- * Returns null on 404 (entity not found in ontology); throws on connectivity failures.
+ * Returns null on 404 (entity not in the ontology for this tier) so the page
+ * falls back to markdown rendering. In dev, any API failure also returns null
+ * (degrade to markdown); in a production build a connectivity failure throws.
  */
 export async function fetchEntityDetail(
   tier: string,
   module: string,
   localName: string,
 ): Promise<EntityDetail | null> {
-  const canonical = await resolveLocalName(localName);
   try {
+    // resolveLocalName is inside the try so its API errors degrade too.
+    const canonical = await resolveLocalName(localName);
     return await apiFetch(
       `/api/entities/${tier}/${module}/${canonical}`,
     ) as EntityDetail;
   } catch (err) {
     const msg = (err as Error).message;
-    // 404 means this entity is not in the ontology for this tier — return null
-    // so the page falls back to markdown rendering.
-    if (msg.includes('entity-api 404')) return null;
-    // Connectivity failures propagate to fail the build.
-    throw err;
+    if (msg.includes('entity-api 404')) return null;   // not in ontology → markdown
+    if (import.meta.env.DEV) return null;               // dev without the API → markdown
+    throw err;                                          // production build: fail loudly
   }
 }
