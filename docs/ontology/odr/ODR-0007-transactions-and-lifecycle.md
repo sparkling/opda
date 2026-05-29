@@ -62,7 +62,6 @@ Model the transaction envelope as **Transaction-as-Relator + Phases + OWL-Time C
 The participant-status and milestone phases form a directed state machine: a participant moves through `Proposed → Invited → Active → Removed` while the transaction itself progresses through marketing, under-offer, exchanged and completed milestone phases.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 stateDiagram-v2
     accTitle: Transaction lifecycle phases
     accDescr: Participant-status state machine and transaction milestone phase progression from marketing through to completed.
@@ -95,7 +94,6 @@ stateDiagram-v2
 `opda:Transaction` is a UFO Relator mediating Property/Title endurants and founding the Seller/Buyer RoleMixins; each milestone or participant status is a Phase, and chain linkage is a relation between Transaction instances.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 classDiagram
     accTitle: Transaction relator and entity model
     accDescr: Class diagram showing Transaction as a UFO Relator relating Property and Title endurants, founding Seller and Buyer RoleMixins, and associating with Phase and Chain.
@@ -142,26 +140,21 @@ classDiagram
 Three candidate designs were evaluated against the two key drivers — role-founding coherence and interval-vs-instant accuracy — with Transaction-as-Relator + Phases + OWL-Time the only option satisfying both.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Alternatives considered and chosen outcome
     accDescr: Three candidate designs mapped against role-founding and interval-modelling drivers, showing why only the chosen option passes both tests.
 
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
-    A1["Keep schema shape<br/>status as datatype,<br/>instants only"]:::process --> D1{"Roles founded?"}:::decision
-    D1 -->|"no"| R1["REJECTED<br/>RoleMixins unfounded"]:::rejected
+    A1["Keep schema shape<br/>status as datatype,<br/>instants only"]:::process --> D1{"Roles founded?"}:::warning
+    D1 -->|"no"| R1["REJECTED<br/>RoleMixins unfounded"]:::error
 
-    A2["Relator + Phases<br/>+ instants only<br/>(no OWL-Time)"]:::process --> D2{"Roles founded?"}:::decision
-    D2 -->|"yes"| D2b{"Intervals<br/>modelled?"}:::decision
-    D2b -->|"no"| R2["REJECTED<br/>Q2 incoherence reproduced"]:::rejected
+    A2["Relator + Phases<br/>+ instants only<br/>(no OWL-Time)"]:::process --> D2{"Roles founded?"}:::warning
+    D2 -->|"yes"| D2b{"Intervals<br/>modelled?"}:::warning
+    D2b -->|"no"| R2["REJECTED<br/>Q2 incoherence reproduced"]:::error
 
-    A3["Relator + Phases<br/>+ OWL-Time intervals"]:::process --> D3{"Roles founded?"}:::decision
-    D3 -->|"yes"| D3b{"Intervals<br/>modelled?"}:::decision
-    D3b -->|"yes"| C["CHOSEN<br/>Adopted Conditional<br/>on interval consumers"]:::output
+    A3["Relator + Phases<br/>+ OWL-Time intervals"]:::process --> D3{"Roles founded?"}:::warning
+    D3 -->|"yes"| D3b{"Intervals<br/>modelled?"}:::warning
+    D3b -->|"yes"| C["CHOSEN<br/>Adopted Conditional<br/>on interval consumers"]:::success
 ```
 
 ### ODR Dependency Graph
@@ -169,22 +162,18 @@ flowchart LR
 ODR-0007 depends on the foundation, identity-crux, and agents ODRs, implements the programme and partitioning ODRs, and has no predecessors to supersede.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0007 dependency graph
     accDescr: Directed graph of depends-on and implements relationships declared in the ODR-0007 frontmatter.
 
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef focal fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
 
     ODR0004["ODR-0004<br/>Foundation"]:::process
     ODR0005["ODR-0005<br/>Identity Crux"]:::process
     ODR0006["ODR-0006<br/>Agents &amp; Roles"]:::process
     ODR0011["ODR-0011<br/>Enumerations"]:::process
-    ODR0003["ODR-0003<br/>Programme"]:::output
-    ODR0017["ODR-0017<br/>Partitioning"]:::output
-    ODR0007["ODR-0007<br/>Transactions &amp; Lifecycle"]:::focal
+    ODR0003["ODR-0003<br/>Programme"]:::success
+    ODR0017["ODR-0017<br/>Partitioning"]:::success
+    ODR0007["ODR-0007<br/>Transactions &amp; Lifecycle"]:::infra
 
     ODR0004 -->|"depends-on"| ODR0007
     ODR0005 -->|"depends-on (gate)"| ODR0007

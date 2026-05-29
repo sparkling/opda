@@ -6,6 +6,8 @@ import path from 'node:path';
 // ADR-0018: build-time remark + rehype plugins for the manual content collection
 import { remarkUnwrapMermaidDetails } from './src/lib/remark/unwrap-mermaid-details.ts';
 import { remarkRewriteManualLinks } from './src/lib/remark/rewrite-manual-links.ts';
+// ADR-0024: convert plain ```mermaid fences (ODR markdown) → <div class="mermaid">
+import { remarkMermaidFence } from './src/lib/remark/mermaid-fence.ts';
 import { rehypeFrontmatterUriExtraction } from './src/lib/remark/frontmatter-uri-extraction.ts';
 
 // ADR-0021 §"Separate task": generate static HTML for embedded meta-reports
@@ -15,10 +17,6 @@ import { reportGenerator } from './src/integrations/generate-report-html.mjs';
 // ADR-0022: generate diagram-links manifest (public/data/diagram-links.json)
 // at build/dev start so client.js can wire SVG node clicks to entity routes.
 import { diagramLinksGenerator } from './src/integrations/generate-diagram-links.mjs';
-
-// ADR-0024: generate ODR HTML fragments from the enriched ODR markdown at
-// build/dev start (gitignored, regenerated every build); served via set:html.
-import { odrHtmlGenerator } from './src/integrations/generate-odr-html.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -160,7 +158,7 @@ export default defineConfig({
   outDir:  './dist',
   // ADR-0021 §"Separate task": the report generator emits static HTML for
   // embedded meta-reports before build/dev resolves the page imports.
-  integrations: [reportGenerator(), diagramLinksGenerator(), odrHtmlGenerator()],
+  integrations: [reportGenerator(), diagramLinksGenerator()],
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.
@@ -169,7 +167,7 @@ export default defineConfig({
   // rewrite relative .md cross-links to /manual/ routes, and extract OPDA
   // entity URIs from markdown body into frontmatter.
   markdown: {
-    remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks],
+    remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks, remarkMermaidFence],
     rehypePlugins: [rehypeFrontmatterUriExtraction],
   },
   // Directory format + bare-slug URLs per docs/adr/ADR-0002 (folder hierarchy).

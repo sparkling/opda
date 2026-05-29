@@ -1,55 +1,61 @@
 ---
 /**
- * ODR detail page — ADR-0023 (build-time immutable enriched ODR pages).
- *
- * getStaticPaths: only enriched ODRs with committed artefacts.
- * Serves committed HTML via set:html — the same serving pattern as
- * src/pages/manual/validation-report.astro (ADR-0021 §"Separate task").
- *
- * The artefact HTML is read at build time from docs/ontology/odr/_html/.
- * Mermaid diagrams render client-side via the existing client.js loader.
- *
- * This page DOES NOT convert or generate ODR HTML — it only serves artefacts
- * that were already committed. A skip-on-exists guard in the production step
- * ensures enriched artefacts are never regenerated.
+ * ODR detail page — ADR-0024. Renders the ODR markdown through the SAME Astro
+ * content-collection pipeline as the manual (render(entry) → <Content/>), so
+ * ODR pages inherit identical .prose styling and theme-aware diagrams. Replaces
+ * the earlier marked + set:html path (generate-odr-html.mjs).
  */
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ODR_REGISTRY } from '@/lib/odr-pages.mjs';
 
-export function getStaticPaths() {
-  return ODR_REGISTRY.map((odr) => ({
-    params: { id: odr.id },
-    props: { odr },
-  }));
+const KIND_PILL = {
+  methodology: 'pill--brand', pattern: 'pill--info', mapping: 'pill--info',
+  architecture: 'pill--warn', programme: 'pill--warn',
+};
+const STATUS_PILL = { accepted: 'pill--ok', proposed: 'pill--warn', rejected: 'pill--error' };
+
+export async function getStaticPaths() {
+  const entries = await getCollection('odr');
+  return entries.map((entry) => {
+    const num = (String(entry.id).match(/(\d{4})/) || [])[1] || '';
+    const meta = ODR_REGISTRY.find((o) => o.number === num)
+      || { id: `odr-${num}`, number: num, title: '', kind: '', status: '' };
+    return { params: { id: meta.id }, props: { entry, odr: meta } };
+  });
 }
 
-const { odr } = Astro.props;
-
-// Read the committed artefact at build time.
-// The artefact path is relative to the project root.
-const artefactPath = resolve(process.cwd(), odr.artefact);
-const html = readFileSync(artefactPath, 'utf8');
+const { entry, odr } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data || {};
+const dateStr = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : (data.date || '');
+const kind = odr.kind || data.kind || '';
+const status = odr.status || data.status || '';
 ---
-<Layout title={`ODR-${odr.number} — ${odr.title}`} description={`Ontology Decision Record ${odr.number}: ${odr.title} (${odr.kind}, ${odr.status})`}>
+<Layout
+  title={`ODR-${odr.number} — ${odr.title}`}
+  description={`Ontology Decision Record ${odr.number}: ${odr.title} (${kind}, ${status})`}
+>
   <nav class="breadcrumb-override" aria-label="ODR breadcrumb">
     <a href="/modelling/odr">ODR Corpus</a>
     <span aria-hidden="true"> / </span>
     <span>ODR-{odr.number}</span>
   </nav>
-  <Fragment set:html={html} />
+  <div class="odr-meta">
+    {kind && <span class={`pill ${KIND_PILL[kind] ?? 'pill--brand'}`}>{kind}</span>}
+    {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}
+    {dateStr && <time datetime={dateStr}>{dateStr}</time>}
+  </div>
+  <Content />
   <footer class="odr-footer">
     <p>
       <a href="/modelling/odr">← Back to ODR Corpus</a>
       &ensp;|&ensp;
-      <a href={`https://github.com/sparkling/opda/blob/main/${odr.artefact}`} rel="noopener noreferrer">
-        View committed artefact
-      </a>
+      <a href="https://github.com/sparkling/opda/tree/main/docs/ontology/odr" rel="noopener noreferrer">View source</a>
     </p>
     <p class="muted">
       ODR-{odr.number} is immutable per <a href="/modelling/odr/odr-0001">ODR-0001</a>.
-      Amendments produce new records; this artefact is frozen.
+      Amendments produce new records.
     </p>
   </footer>
 </Layout>

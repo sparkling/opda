@@ -11,6 +11,11 @@
  *   • Nested page:    /{section}/.../{slug}   (deep hierarchy in schema)
  */
 
+// ODR corpus sidebar items are generated from the registry so every ODR page is
+// registered for navigation (drives the left sidebar via getActiveSection →
+// findPage). Adding an ODR to ODR_REGISTRY surfaces it in the nav automatically.
+import { ODR_REGISTRY } from './odr-pages.mjs';
+
 export type Item = {
   /** Canonical URL — matches Astro.url.pathname (no trailing slash). */
   url: string;
@@ -160,9 +165,11 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/modelling/jsonld-mappings',  title: 'JSON-LD mappings' },
       ]},
       { heading: 'ODR corpus', items: [
-        { url: '/modelling/odr',              title: 'All ODRs (index)' },
-        { url: '/modelling/odr/odr-0001',     title: 'ODR-0001 · Methodology' },
-        { url: '/modelling/odr/odr-0005',     title: 'ODR-0005 · Property identity' },
+        { url: '/modelling/odr', title: 'All ODRs (index)' },
+        ...ODR_REGISTRY.map((o) => ({
+          url: `/modelling/odr/${o.id}`,
+          title: `ODR-${o.number} · ${o.title}`,
+        })),
       ]},
     ],
   },

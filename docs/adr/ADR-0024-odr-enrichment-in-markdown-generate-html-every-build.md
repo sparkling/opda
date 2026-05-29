@@ -9,6 +9,16 @@ implements: []
 
 # ODR enrichment lives in the markdown; HTML is generated from it every build
 
+> **Mechanism updated 2026-05-29 (see [ADR-0025](./ADR-0025-tailwind-preflight-under-authoritative-design-system.md)).**
+> The *decision* below stands — ODR content (incl. its ` ```mermaid ` diagrams) lives
+> in the markdown and HTML is generated every build, nothing committed. Only the
+> *mechanism* changed: ODRs now render through the Astro **`odr` content collection**
+> (`render(entry)` → `<Content/>`, the same path as the manual) rather than the
+> bespoke `marked` generator. `generate-odr-html.mjs` and the `set:html` serving are
+> **retired**; ` ```mermaid ` fences become `<div class="mermaid">` via the
+> `remarkMermaidFence` plugin. The "Implementation sketch" below describes the
+> original (now-retired) `marked` approach and is kept for the record.
+
 ## Context and Problem Statement
 
 [ADR-0023](./ADR-0023-build-time-odr-html-immutable-enriched.md) chose to freeze

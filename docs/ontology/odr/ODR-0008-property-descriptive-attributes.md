@@ -112,7 +112,6 @@ Three-rule interface contract cross-cite to ODR-0010 + ODR-0013 is in §Referenc
 Descriptive properties attach to `opda:Property` and legal-estate classes — never to the `propertyPack` blank node — with authority-retrieved leaves promoted to first-class classes per the Q4a three-criterion test.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 classDiagram
     accTitle: Attachment model for descriptive properties
     accDescr: Shows how descriptive datatype properties attach to opda Property and legal-estate classes, and which authority-retrieved leaves are promoted to first-class classes.
@@ -159,22 +158,17 @@ classDiagram
 The two candidate strategies were evaluated against the core drivers — eliminating blank-node attachment and collapsing spanning leaves to one term per concept.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Decision — declare-once-reconcile vs mirror-JSON-tree
     accDescr: Shows the two candidate options and why mirror-the-JSON-tree was rejected while declare-once-reconcile was chosen.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
     A["Option A<br/>Mirror JSON tree<br/>(per-form duplicate properties)"]:::process
     B["Option B<br/>Declare-once-reconcile-overlays<br/>(flatten propertyPack; one term per concept)"]:::process
-    D1{"Attaches facts<br/>to real classes?"}:::decision
-    D2{"Collapses spanning<br/>leaves to one term?"}:::decision
-    D3{"Keeps per-form<br/>variation in profile layer?"}:::decision
-    R["Rejected — reproduces<br/>form-ergonomics nesting;<br/>per-form synonyms"]:::rejected
-    C["Chosen — attach to<br/>opda:Property/LegalEstate;<br/>SHACL profiles carry variation"]:::output
+    D1{"Attaches facts<br/>to real classes?"}:::warning
+    D2{"Collapses spanning<br/>leaves to one term?"}:::warning
+    D3{"Keeps per-form<br/>variation in profile layer?"}:::warning
+    R["Rejected — reproduces<br/>form-ergonomics nesting;<br/>per-form synonyms"]:::error
+    C["Chosen — attach to<br/>opda:Property/LegalEstate;<br/>SHACL profiles carry variation"]:::success
 
     A --> D1
     D1 -->|"no — blank-node defect persists"| R
@@ -188,28 +182,23 @@ flowchart TD
 ODR-0008 is gated by the identity crux (ODR-0005) and implements the foundation, enumeration, and overlay-profile ODRs; the full upstream dependency chain is shown below.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0008 dependency graph
     accDescr: Shows which ODRs ODR-0008 depends on and which it implements, based on frontmatter depends-on and implements fields.
-    classDef foundation fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef gate fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef self fill:#CE93D8,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
 
-    ODR0003["ODR-0003<br/>Programme"]:::foundation
-    ODR0004["ODR-0004<br/>Foundation"]:::foundation
-    ODR0005["ODR-0005<br/>Identity crux<br/>(gate)"]:::gate
-    ODR0006["ODR-0006<br/>Agents &amp; roles"]:::foundation
-    ODR0007["ODR-0007<br/>Transactions"]:::foundation
-    ODR0009["ODR-0009<br/>Provenance"]:::foundation
-    ODR0010["ODR-0010<br/>Overlay profiles"]:::foundation
-    ODR0011["ODR-0011<br/>Enumerations"]:::impl
-    ODR0013["ODR-0013<br/>SHACL validation"]:::impl
-    ODR0015["ODR-0015<br/>Address &amp; geo"]:::foundation
-    ODR0017["ODR-0017<br/>SHACL-AF rules"]:::impl
-    ODR0018["ODR-0018<br/>DPV co-annotation"]:::impl
-    ODR0008["ODR-0008<br/>Property descriptive<br/>attributes"]:::self
+    ODR0003["ODR-0003<br/>Programme"]:::process
+    ODR0004["ODR-0004<br/>Foundation"]:::process
+    ODR0005["ODR-0005<br/>Identity crux<br/>(gate)"]:::warning
+    ODR0006["ODR-0006<br/>Agents &amp; roles"]:::process
+    ODR0007["ODR-0007<br/>Transactions"]:::process
+    ODR0009["ODR-0009<br/>Provenance"]:::process
+    ODR0010["ODR-0010<br/>Overlay profiles"]:::process
+    ODR0011["ODR-0011<br/>Enumerations"]:::success
+    ODR0013["ODR-0013<br/>SHACL validation"]:::success
+    ODR0015["ODR-0015<br/>Address &amp; geo"]:::process
+    ODR0017["ODR-0017<br/>SHACL-AF rules"]:::success
+    ODR0018["ODR-0018<br/>DPV co-annotation"]:::success
+    ODR0008["ODR-0008<br/>Property descriptive<br/>attributes"]:::user
 
     ODR0003 --> ODR0008
     ODR0004 --> ODR0008

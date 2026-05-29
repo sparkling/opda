@@ -25,27 +25,22 @@ Adopt the **three-class Property pattern** ratified by [Council Session 005](./c
 The diagram below shows the three Substance Kinds, their identity criteria, and the relationships between them.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E1BEE7", "primaryTextColor": "#4A148C", "primaryBorderColor": "#6A1B9A", "lineColor": "#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0005 Three-Class Property Model
     accDescr: Shows the three UFO Substance Kinds committed by ODR-0005 — Property (physical), LegalEstate (legal-institutional), and RegisteredTitle (registry-record) — with their identity criteria and relationships
 
-    classDef substanceKind fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    classDef identifier fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
-    classDef event fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
-    classDef ic fill:#C8E6C9,stroke:#2E7D32,stroke-width:1px,color:#1B5E20
 
-    PROP["opda:Property<br/>UFO: Substance Kind<br/>DOLCE: PhysicalObject"]:::substanceKind
-    LE["opda:LegalEstate<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
-    RT["opda:RegisteredTitle<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::substanceKind
+    PROP["opda:Property<br/>UFO: Substance Kind<br/>DOLCE: PhysicalObject"]:::user
+    LE["opda:LegalEstate<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::user
+    RT["opda:RegisteredTitle<br/>UFO: Substance Kind<br/>DOLCE: NonPhysicalEndurant"]:::user
 
-    UPRN["opda:uprn<br/>UFO Quality<br/>(contingent identifier)"]:::identifier
-    ADDR["opda:hasAddress<br/>join predicate<br/>(IC deferred to ODR-0015)"]:::identifier
-    SUCCESSION["opda:UPRNSuccessionEvent<br/>reified prov:Activity"]:::event
+    UPRN["opda:uprn<br/>UFO Quality<br/>(contingent identifier)"]:::data
+    ADDR["opda:hasAddress<br/>join predicate<br/>(IC deferred to ODR-0015)"]:::data
+    SUCCESSION["opda:UPRNSuccessionEvent<br/>reified prov:Activity"]:::infra
 
-    IC_PROP["IC: spatial-material continuity<br/>with legal-record<br/>discontinuity override"]:::ic
-    IC_LE["IC: rights-bundle persistence<br/>(survives transfer, charges,<br/>easements)"]:::ic
-    IC_RT["IC: title-number lineage<br/>+ registry-event history"]:::ic
+    IC_PROP["IC: spatial-material continuity<br/>with legal-record<br/>discontinuity override"]:::success
+    IC_LE["IC: rights-bundle persistence<br/>(survives transfer, charges,<br/>easements)"]:::success
+    IC_RT["IC: title-number lineage<br/>+ registry-event history"]:::success
 
     PROP -->|"opda:identifiesSameProperty"| LE
     LE -->|"registered as"| RT
@@ -100,7 +95,6 @@ IC = **spatial-material continuity with legal-record discontinuity override** (K
 The diagram below shows how `opda:Property` identity behaves across the five named hard cases.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
 stateDiagram-v2
     accTitle: ODR-0005 Property Identity Hard Cases
     accDescr: State diagram showing how opda:Property identity behaves across the five named hard cases — demolition, subdivision, merger, rebuild, and boundary modification
@@ -264,28 +258,23 @@ The three canonical exemplars (authored 2026-05-27 per ODR-0004 §8a between-ses
 The diagram below shows which downstream ODRs are unblocked, deferred, or inherit specific inputs from the ODR-0005 three-class commitment.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E3F2FD", "primaryTextColor": "#0D47A1", "primaryBorderColor": "#1565C0", "lineColor": "#37474F"}}}%%
 flowchart TD
     accTitle: ODR-0005 Downstream Dependency Graph
     accDescr: Shows which downstream ODRs are unblocked, deferred, or inherit specific inputs from the ODR-0005 three-class commitment
 
-    classDef gate fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
-    classDef unblocked fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef deferred fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
-    classDef inherits fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
 
-    ODR0005["ODR-0005<br/>Property Identity Gate<br/>(this record)"]:::gate
-    ODR0004["ODR-0004<br/>Foundation<br/>(depends-on)"]:::inherits
+    ODR0005["ODR-0005<br/>Property Identity Gate<br/>(this record)"]:::data
+    ODR0004["ODR-0004<br/>Foundation<br/>(depends-on)"]:::infra
 
-    ODR0006["ODR-0006<br/>Agents & Roles<br/>UNBLOCKED"]:::unblocked
-    ODR0007["ODR-0007<br/>Transactions & Lifecycle<br/>UNBLOCKED"]:::unblocked
-    ODR0015["ODR-0015<br/>Address & Geography<br/>UNBLOCKED"]:::unblocked
-    ODR0008["ODR-0008<br/>Property Descriptive Attrs<br/>DEFERRED"]:::deferred
+    ODR0006["ODR-0006<br/>Agents & Roles<br/>UNBLOCKED"]:::success
+    ODR0007["ODR-0007<br/>Transactions & Lifecycle<br/>UNBLOCKED"]:::success
+    ODR0015["ODR-0015<br/>Address & Geography<br/>UNBLOCKED"]:::success
+    ODR0008["ODR-0008<br/>Property Descriptive Attrs<br/>DEFERRED"]:::error
 
-    ODR0009["ODR-0009<br/>Claims & Provenance<br/>inherits PROV-O pattern"]:::inherits
-    ODR0010["ODR-0010<br/>Overlay Profile<br/>inherits SHACL-AF rule"]:::inherits
-    ODR0012["ODR-0012<br/>Data Governance<br/>inherits PII regime distinction"]:::inherits
-    ODR0013["ODR-0013<br/>SHACL Severity<br/>inherits sh:Info tier"]:::inherits
+    ODR0009["ODR-0009<br/>Claims & Provenance<br/>inherits PROV-O pattern"]:::infra
+    ODR0010["ODR-0010<br/>Overlay Profile<br/>inherits SHACL-AF rule"]:::infra
+    ODR0012["ODR-0012<br/>Data Governance<br/>inherits PII regime distinction"]:::infra
+    ODR0013["ODR-0013<br/>SHACL Severity<br/>inherits sh:Info tier"]:::infra
 
     ODR0004 -->|"namespace gate"| ODR0005
     ODR0005 -->|"3-class commitment<br/>IC discipline"| ODR0006

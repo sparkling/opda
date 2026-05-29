@@ -28,7 +28,6 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 `opda:Address` inherits from both `dolce:NonPhysicalEndurant` and `vcard:Address`; its structural fields are SHACL property shapes, all `sh:minCount 0` (§2a and §3b).
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 classDiagram
     accTitle: opda:Address class hierarchy and SHACL shape
     accDescr: Shows opda:Address as a UFO Substance Kind subclassing DOLCE NonPhysicalEndurant and vcard:Address, with its SHACL property shapes listed.
@@ -63,18 +62,14 @@ classDiagram
 Each `opda:Address` instance carries an `opda:addressVariant` tag and links back to its bearer `opda:Property` via `opda:identifiesSameProperty`; multiple variants co-refer to the same Property but remain distinct individuals (Rule 6, §3a IC rule 3).
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Address variants co-referring to opda:Property
     accDescr: Three opda:Address instances with distinct addressVariant tags all link to the same opda:Property via opda:identifiesSameProperty; owl:sameAs between them is forbidden.
-    classDef addr fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef prop fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef rule fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    T["opda:Address<br/>addressVariant: title"]:::addr
-    M["opda:Address<br/>addressVariant: marketing"]:::addr
-    I["opda:Address<br/>addressVariant: inspire"]:::addr
-    P["opda:Property"]:::prop
-    X["NO owl:sameAs<br/>across variants"]:::rule
+    T["opda:Address<br/>addressVariant: title"]:::process
+    M["opda:Address<br/>addressVariant: marketing"]:::process
+    I["opda:Address<br/>addressVariant: inspire"]:::process
+    P["opda:Property"]:::success
+    X["NO owl:sameAs<br/>across variants"]:::warning
     T -->|"opda:identifiesSameProperty"| P
     M -->|"opda:identifiesSameProperty"| P
     I -->|"opda:identifiesSameProperty"| P
@@ -90,19 +85,15 @@ flowchart LR
 `opda:hasGeometry` is declared as an interface predicate; full GeoSPARQL encoding is deferred until one of four named triggers fires (§5a).
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: GeoSPARQL admission triggers for opda:hasGeometry
     accDescr: opda:hasGeometry is live as an interface; four triggers activate full GeoSPARQL encoded geometry support.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
     IF["opda:hasGeometry<br/>(interface — always live)"]:::process
-    T1{"Title-extents<br/>in scope?"}:::decision
-    T2{"LLC1 search-area<br/>polygons in scope?"}:::decision
-    T3{"INSPIRE polygon<br/>direct ingest?"}:::decision
-    T4{"Search-radius<br/>queries needed?"}:::decision
-    GEO["Full GeoSPARQL<br/>encoded geometry<br/>admitted"]:::output
+    T1{"Title-extents<br/>in scope?"}:::warning
+    T2{"LLC1 search-area<br/>polygons in scope?"}:::warning
+    T3{"INSPIRE polygon<br/>direct ingest?"}:::warning
+    T4{"Search-radius<br/>queries needed?"}:::warning
+    GEO["Full GeoSPARQL<br/>encoded geometry<br/>admitted"]:::success
     IF --> T1
     IF --> T2
     IF --> T3
@@ -118,24 +109,20 @@ flowchart TD
 ODR-0015 depends on ODR-0004 and ODR-0005, and implements ODR-0003, ODR-0017, and ODR-0018 (frontmatter); it also unblocks several downstream ODRs identified in §Consequences.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0015 dependency and implementation relationships
     accDescr: ODR-0015 depends on ODR-0004 and ODR-0005, implements ODR-0003 and ODR-0017 and ODR-0018, and unblocks downstream ODR-0006 ODR-0008 ODR-0009 ODR-0012 ODR-0013.
-    classDef upstream fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef current fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef downstream fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    ODR4["ODR-0004<br/>Foundation"]:::upstream
-    ODR5["ODR-0005<br/>Property &amp; Land Identity"]:::upstream
-    ODR3["ODR-0003<br/>Programme"]:::upstream
-    ODR17["ODR-0017"]:::upstream
-    ODR18["ODR-0018"]:::upstream
-    ODR15["ODR-0015<br/>Address &amp; Geography"]:::current
-    ODR6["ODR-0006<br/>Agents &amp; Roles"]:::downstream
-    ODR8["ODR-0008<br/>Property Descriptive Attrs"]:::downstream
-    ODR9["ODR-0009<br/>Claims &amp; Evidence"]:::downstream
-    ODR12["ODR-0012<br/>Data-Governance Layer"]:::downstream
-    ODR13["ODR-0013<br/>SHACL Validation"]:::downstream
+    ODR4["ODR-0004<br/>Foundation"]:::process
+    ODR5["ODR-0005<br/>Property &amp; Land Identity"]:::process
+    ODR3["ODR-0003<br/>Programme"]:::process
+    ODR17["ODR-0017"]:::process
+    ODR18["ODR-0018"]:::process
+    ODR15["ODR-0015<br/>Address &amp; Geography"]:::warning
+    ODR6["ODR-0006<br/>Agents &amp; Roles"]:::success
+    ODR8["ODR-0008<br/>Property Descriptive Attrs"]:::success
+    ODR9["ODR-0009<br/>Claims &amp; Evidence"]:::success
+    ODR12["ODR-0012<br/>Data-Governance Layer"]:::success
+    ODR13["ODR-0013<br/>SHACL Validation"]:::success
     ODR4 -->|"depends-on"| ODR15
     ODR5 -->|"depends-on"| ODR15
     ODR15 -->|"implements"| ODR3

@@ -31,4 +31,21 @@ const manual = defineCollection({
   }),
 });
 
-export const collections = { manual };
+// ADR-0024: ODR records render through the SAME content-collection + markdown
+// pipeline as the manual, so they inherit identical .prose styling and
+// theme-aware diagram handling (client.js). Lenient schema — ODR frontmatter
+// varies; .passthrough() keeps scope/council/supersedes/depends-on/implements.
+const odr = defineCollection({
+  loader: glob({
+    pattern: 'ODR-[0-9]*.md',
+    base: './docs/ontology/odr',
+  }),
+  schema: z.object({
+    status: z.string().optional(),
+    date: z.coerce.date().optional(),
+    kind: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  }).passthrough(),
+});
+
+export const collections = { manual, odr };

@@ -27,28 +27,23 @@ Adopt **severity-tiered SHACL in a separate shapes graph, with DASH rendering an
 Data flows from a JSON transaction document through profile-selected SHACL shapes to a structured validation report whose entries carry severity levels.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: SHACL validation flow
     accDescr: A JSON transaction document is validated against profile-selected SHACL shapes to produce a severity-tiered report.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef store fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
 
-    DD["Data dictionary<br/>(935 annotated leaves)"]:::store
-    SG["SHACL shapes graph<br/>(generated, separate named graph)"]:::store
+    DD["Data dictionary<br/>(935 annotated leaves)"]:::user
+    SG["SHACL shapes graph<br/>(generated, separate named graph)"]:::user
     DD -->|"drives sh:datatype<br/>sh:minCount sh:in"| SG
     JSON["JSON transaction document"]:::process
-    PROF["Overlay profile<br/>(ODR-0010)"]:::store
+    PROF["Overlay profile<br/>(ODR-0010)"]:::user
     PROF -->|"selects active shapes"| SG
-    JSON -->|"focus nodes"| PROC{"pySHACL /<br/>TopBraid processor"}:::decision
+    JSON -->|"focus nodes"| PROC{"pySHACL /<br/>TopBraid processor"}:::warning
     SG -->|"shapes"| PROC
-    PROC -->|"conforms"| OK["Validation report:<br/>no results"]:::output
-    PROC -->|"violations"| RPT["Validation report:<br/>sh:result entries"]:::output
-    RPT --> V["sh:Violation<br/>(identity / provenance breach)"]:::output
-    RPT --> W["sh:Warning<br/>(profile / sensitivity gap)"]:::output
-    RPT --> I["sh:Info<br/>(absent optional attribute)"]:::output
+    PROC -->|"conforms"| OK["Validation report:<br/>no results"]:::success
+    PROC -->|"violations"| RPT["Validation report:<br/>sh:result entries"]:::success
+    RPT --> V["sh:Violation<br/>(identity / provenance breach)"]:::success
+    RPT --> W["sh:Warning<br/>(profile / sensitivity gap)"]:::success
+    RPT --> I["sh:Info<br/>(absent optional attribute)"]:::success
 ```
 
 ## Rules
@@ -80,22 +75,16 @@ The principle: the rarest, most damaging error (identity loss) must be the loude
 Each result entry in the validation report carries exactly one severity level; the assignment rule is determined by the nature of the breach, not by schema nesting depth.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: SHACL severity tier assignment
     accDescr: A validation result is assigned sh:Violation, sh:Warning, or sh:Info depending on whether it breaches an identity contract, a profile or sensitivity constraint, or merely notes an absent optional attribute.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef violation fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
-    classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef info fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
     R["Constraint breach detected"]:::process
-    R --> D1{"Breaches a Kind's<br/>identity contract or<br/>unprovenanced Claim?"}:::decision
-    D1 -->|"yes"| VIO["sh:Violation<br/>— Property: no UPRN-or-equiv key<br/>— RegisteredTitle: no title number<br/>— Role: no founding Relator<br/>— opda:Claim: no prov:wasDerivedFrom"]:::violation
-    D1 -->|"no"| D2{"Missing profile /<br/>disclosure constraint or<br/>sensitivity-marker gap?"}:::decision
+    R --> D1{"Breaches a Kind's<br/>identity contract or<br/>unprovenanced Claim?"}:::warning
+    D1 -->|"yes"| VIO["sh:Violation<br/>— Property: no UPRN-or-equiv key<br/>— RegisteredTitle: no title number<br/>— Role: no founding Relator<br/>— opda:Claim: no prov:wasDerivedFrom"]:::error
+    D1 -->|"no"| D2{"Missing profile /<br/>disclosure constraint or<br/>sensitivity-marker gap?"}:::warning
     D2 -->|"yes"| WARN["sh:Warning<br/>— overlay profile gap<br/>— special-category /<br/>  personal-data marker absent"]:::warning
-    D2 -->|"no"| INF["sh:Info<br/>— absent optional attribute"]:::info
+    D2 -->|"no"| INF["sh:Info<br/>— absent optional attribute"]:::success
 ```
 
 **Open-world/closed-world guard** (Gandon) — an `owl:minCardinality` in the class graph and a `sh:minCount` in the shapes graph are **not the same statement** and must not be authored on one property in the belief that they coincide. A drift check is required to catch the two falling out of step; it confirms no property carries both an `owl:` cardinality and a SHACL count authored as equivalent.
@@ -107,23 +96,18 @@ flowchart TD
 The class graph, shapes graph, and annotation graph are three distinct named graphs; advisory annotations never appear inside the shapes graph.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Class, shapes, and annotation graph separation
     accDescr: OWL class axioms, SHACL shapes, and advisory opda:aiHint annotations are kept in three separate named graphs to prevent strict SHACL processors from misreading advisory triples as constraints.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef store fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef blocked fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
-    CG["Class graph<br/>(OWL axioms,<br/>owl:minCardinality etc.)"]:::store
-    SHG["Shapes graph<br/>(SHACL shapes,<br/>sh:minCount etc.)"]:::store
-    AG["Annotation graph<br/>(opda:aiHint and<br/>advisory triples,<br/>keyed to shape IRIs)"]:::store
+    CG["Class graph<br/>(OWL axioms,<br/>owl:minCardinality etc.)"]:::user
+    SHG["Shapes graph<br/>(SHACL shapes,<br/>sh:minCount etc.)"]:::user
+    AG["Annotation graph<br/>(opda:aiHint and<br/>advisory triples,<br/>keyed to shape IRIs)"]:::user
     PROC["SHACL processor"]:::process
     CG -..->|"NOT equivalent —<br/>open-world vs closed-world<br/>(drift check required)"| SHG
     SHG -->|"validates"| PROC
     AG -->|"LLM consumers<br/>resolve here"| PROC
-    BANNED["opda:aiHint<br/>inline in shapes graph"]:::blocked
+    BANNED["opda:aiHint<br/>inline in shapes graph"]:::error
     BANNED -->|"PROHIBITED —<br/>processor misreads<br/>as constraint"| SHG
 ```
 
@@ -149,27 +133,23 @@ flowchart LR
 This record depends on a chain of foundation decisions and in turn is implemented by downstream records.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: ODR-0013 dependency graph
     accDescr: ODR-0013 depends on ODR-0003 through ODR-0012 and ODR-0015 plus ODR-0017 and ODR-0018, as recorded in its frontmatter.
-    classDef current fill:#1565C0,stroke:#0D47A1,stroke-width:3px,color:#FFFFFF
-    classDef dep fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    O3["ODR-0003<br/>Programme"]:::dep
-    O4["ODR-0004<br/>Foundation"]:::dep
-    O5["ODR-0005<br/>Identity key"]:::dep
-    O6["ODR-0006"]:::dep
-    O7["ODR-0007"]:::dep
-    O9["ODR-0009<br/>Claims &amp; provenance"]:::dep
-    O10["ODR-0010<br/>Overlay profiles"]:::dep
-    O11["ODR-0011<br/>Enumerations"]:::dep
-    O12["ODR-0012<br/>Data governance"]:::dep
-    O15["ODR-0015"]:::dep
-    O17["ODR-0017<br/>(implements + dep)"]:::dep
-    O18["ODR-0018"]:::dep
-    THIS["ODR-0013<br/>SHACL Validation<br/>&amp; Severity"]:::current
+    O3["ODR-0003<br/>Programme"]:::process
+    O4["ODR-0004<br/>Foundation"]:::process
+    O5["ODR-0005<br/>Identity key"]:::process
+    O6["ODR-0006"]:::process
+    O7["ODR-0007"]:::process
+    O9["ODR-0009<br/>Claims &amp; provenance"]:::process
+    O10["ODR-0010<br/>Overlay profiles"]:::process
+    O11["ODR-0011<br/>Enumerations"]:::process
+    O12["ODR-0012<br/>Data governance"]:::process
+    O15["ODR-0015"]:::process
+    O17["ODR-0017<br/>(implements + dep)"]:::process
+    O18["ODR-0018"]:::process
+    THIS["ODR-0013<br/>SHACL Validation<br/>&amp; Severity"]:::info
 
     O3 --> THIS
     O4 --> THIS

@@ -19,17 +19,12 @@ implements: [ODR-0003]
 This diagram shows how ODR-0014 relates to the records it amends, implements, and is superseded by, as stated in the frontmatter and prose.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0014 relationship map
     accDescr: Shows supersession by ODR-0002, implements ODR-0003, and downstream routing to ODR-0005 ODR-0006 ODR-0007 ODR-0012
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef retired fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
 
-    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments"]:::retired
-    ODR0002["ODR-0002<br/>Ontology Language<br/>Adoption (catalogue)"]:::output
+    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments"]:::error
+    ODR0002["ODR-0002<br/>Ontology Language<br/>Adoption (catalogue)"]:::success
     ODR0003["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::process
     ODR0007["ODR-0007<br/>Transactions &<br/>Lifecycle"]:::process
     ODR0012["ODR-0012<br/>Data Governance<br/>Layer"]:::process
@@ -66,37 +61,32 @@ This record is wholly superseded by ODR-0002 — the amendments it carried (OWL-
 The table below is the authoritative text; this diagram visualises the same seven entries — showing the tier-or-scope change made at Session 001 Q2 and the downstream consumer where relevant.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Vocabulary tier decisions — Session 001 Q2
     accDescr: Seven vocabulary entries from the amended table showing the ODR-0002 baseline and the Session-001 outcome for each
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef deferred fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
 
-    S001["Session 001 Q2<br/>Vocabulary deliberation"]:::decision
+    S001["Session 001 Q2<br/>Vocabulary deliberation"]:::warning
 
     OT_B["OWL-Time<br/>ODR-0002: Conditional<br/>(PDTF brief excluded)"]:::process
-    OT_O["ADOPT Conditional<br/>— exclusion reversed<br/>≈6-3"]:::output
+    OT_O["ADOPT Conditional<br/>— exclusion reversed<br/>≈6-3"]:::success
 
     DCAT_B["DCAT 3<br/>ODR-0002: Conditional"]:::process
-    DCAT_O["Confirmed Conditional<br/>(Davis: Core; Baker: hold)"]:::output
+    DCAT_O["Confirmed Conditional<br/>(Davis: Core; Baker: hold)"]:::success
 
     SS_B["SSSOM / SEMAPV<br/>ODR-0002: Conditional"]:::process
-    SS_O["Deferred — use dct:source<br/>≈5-4 (Cagle dissent)"]:::deferred
+    SS_O["Deferred — use dct:source<br/>≈5-4 (Cagle dissent)"]:::user
 
     ODRL_B["ODRL<br/>ODR-0002: Conditional"]:::process
-    ODRL_O["Vocabulary adopted;<br/>policy-authoring deferred<br/>to Phase 2"]:::output
+    ODRL_O["Vocabulary adopted;<br/>policy-authoring deferred<br/>to Phase 2"]:::success
 
     DPV_B["DPV family<br/>ODR-0002: Conditional"]:::process
-    DPV_O["Phase-1 annotation adopted;<br/>broader TBox is live question"]:::output
+    DPV_O["Phase-1 annotation adopted;<br/>broader TBox is live question"]:::success
 
     DC_B["Dublin Core<br/>ODR-0002: Core"]:::process
-    DC_O["Rationale restated as<br/>commons substrate; tier unchanged"]:::output
+    DC_O["Rationale restated as<br/>commons substrate; tier unchanged"]:::success
 
     BBO_B["BBO / ArchiMate<br/>ODR-0002: Conditional/Defer"]:::process
-    BBO_O["Out for this programme<br/>— unanimous"]:::deferred
+    BBO_O["Out for this programme<br/>— unanimous"]:::user
 
     S001 --> OT_B --> OT_O
     S001 --> DCAT_B --> DCAT_O
@@ -149,25 +139,20 @@ This record does **not** touch:
 This diagram traces how the amendment-ODR convention itself was evaluated and superseded — the decision captured in the `## Decision` section above.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Amendment-pattern supersession flow
     accDescr: Flowchart showing how the amendment-ODR pattern was evaluated against alternatives and replaced by the Change-log-inside-Rules pattern via Scope-Check 1
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef retired fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
 
-    Q["How to record partial<br/>catalogue amendments?"]:::decision
+    Q["How to record partial<br/>catalogue amendments?"]:::warning
 
     A1["Option A: Edit ODR-0002<br/>in place"]:::process
     A2["Option B: Fresh full-catalogue<br/>ODR superseding ODR-0002<br/>wholesale"]:::process
     A3["Option C: Separate amendment<br/>ODR-0014 (partial supersession)"]:::process
-    A4["Option D: Change-log subsection<br/>inside ODR-0002 Rules<br/>(Scope-Check 1 ruling)"]:::output
+    A4["Option D: Change-log subsection<br/>inside ODR-0002 Rules<br/>(Scope-Check 1 ruling)"]:::success
 
-    R1["Erases provenance of<br/>why/which deliberation moved tier"]:::retired
-    R2["Falsely implies whole<br/>catalogue was re-deliberated"]:::retired
-    R3["Pattern itself superseded<br/>— FIBO/DCMI/W3C WD collapse;<br/>Scope-Check 1 Q4 vote 7-1-1"]:::retired
+    R1["Erases provenance of<br/>why/which deliberation moved tier"]:::error
+    R2["Falsely implies whole<br/>catalogue was re-deliberated"]:::error
+    R3["Pattern itself superseded<br/>— FIBO/DCMI/W3C WD collapse;<br/>Scope-Check 1 Q4 vote 7-1-1"]:::error
 
     Q --> A1 --> R1
     Q --> A2 --> R2

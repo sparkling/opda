@@ -78,7 +78,6 @@ Method, evidence-type and assurance-level SKOS concepts (ODR-0011) carry `skos:p
 The diagram below maps the seven PROV-O subclasses introduced by this record onto their PROV-DM supertypes and shows the load-bearing PROV relations that connect them.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 classDiagram
     accTitle: PROV-O class model for ODR-0009
     accDescr: Shows opda subclasses of prov Entity, Activity and Agent with their PROV relations for claims, evidence and verification.
@@ -144,26 +143,22 @@ classDiagram
 The five envelope elements that PROV-O cannot natively carry are each routed to the vocabulary that can express them; this diagram visualises that routing as described in the decision table.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Assurance layer — five eIDAS exceptions
     accDescr: Routes the five eIDAS/OIDC4IDA envelope elements that PROV-O cannot carry to their target vocabulary or local term.
 
-    classDef envelope  fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef vocab     fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef local     fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    TF["trust_framework<br/>(uk_pdtf)"]:::envelope
-    VM["validation_method /<br/>verification_method"]:::envelope
-    DG["cryptographic digest<br/>(alg + value)"]:::envelope
-    AL["assurance level<br/>(eIDAS LoA)"]:::envelope
-    TX["txn<br/>(verifier reference)"]:::envelope
+    TF["trust_framework<br/>(uk_pdtf)"]:::warning
+    VM["validation_method /<br/>verification_method"]:::warning
+    DG["cryptographic digest<br/>(alg + value)"]:::warning
+    AL["assurance level<br/>(eIDAS LoA)"]:::warning
+    TX["txn<br/>(verifier reference)"]:::warning
 
-    DCT1["dct:conformsTo<br/>on Verification activity"]:::vocab
-    SKOS["SKOS method scheme<br/>(→ ODR-0011)"]:::vocab
-    LOC1["opda:digestAlg /<br/>opda:digestValue"]:::local
-    LOC2["opda:assuranceLevel<br/>(SKOS-coded, → ODR-0011)"]:::local
-    DCT2["dct:identifier<br/>on Verification activity"]:::vocab
+    DCT1["dct:conformsTo<br/>on Verification activity"]:::process
+    SKOS["SKOS method scheme<br/>(→ ODR-0011)"]:::process
+    LOC1["opda:digestAlg /<br/>opda:digestValue"]:::success
+    LOC2["opda:assuranceLevel<br/>(SKOS-coded, → ODR-0011)"]:::success
+    DCT2["dct:identifier<br/>on Verification activity"]:::process
 
     TF --> DCT1
     VM --> SKOS
@@ -177,26 +172,22 @@ flowchart LR
 This record depends on and implements the ODRs listed in the frontmatter; the graph below makes those relationships explicit.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0009 dependency graph
     accDescr: Shows which ODRs ODR-0009 depends on and which it implements, as declared in the frontmatter.
 
-    classDef current   fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,color:#0D47A1
-    classDef dep       fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef impl      fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    O9["ODR-0009<br/>Claims, Evidence<br/>&amp; Provenance"]:::current
+    O9["ODR-0009<br/>Claims, Evidence<br/>&amp; Provenance"]:::infra
 
-    O3["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::impl
-    O17["ODR-0017"]:::impl
-    O18["ODR-0018"]:::impl
+    O3["ODR-0003<br/>PDTF Ontology<br/>Programme"]:::success
+    O17["ODR-0017"]:::success
+    O18["ODR-0018"]:::success
 
-    O4["ODR-0004<br/>PDTF Ontology<br/>Foundation"]:::dep
-    O5["ODR-0005<br/>Property/Land<br/>Identity Crux"]:::dep
-    O6["ODR-0006<br/>Agents &amp; Roles"]:::dep
-    O11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::dep
-    O15["ODR-0015"]:::dep
+    O4["ODR-0004<br/>PDTF Ontology<br/>Foundation"]:::process
+    O5["ODR-0005<br/>Property/Land<br/>Identity Crux"]:::process
+    O6["ODR-0006<br/>Agents &amp; Roles"]:::process
+    O11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::process
+    O15["ODR-0015"]:::process
 
     O9 -->|"depends-on"| O4
     O9 -->|"depends-on"| O5

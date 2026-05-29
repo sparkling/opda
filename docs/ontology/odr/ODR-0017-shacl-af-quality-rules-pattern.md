@@ -32,21 +32,16 @@ The pattern is `kind: pattern` per ODR-0001 A9 §What an ODR records (a)/(b)/(c)
 The diagram below illustrates how a SHACL-AF non-blocking rule routes a data-quality assertion to `sh:Info`/`sh:Warning` rather than `sh:Violation`, contrasting it with ordinary normative-blocking SHACL constraints.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Blocking vs non-blocking SHACL rule routing
     accDescr: Shows how a data quality assertion is routed to sh:Info or sh:Warning via SHACL-AF rather than sh:Violation used for normative-breaking constraints.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef reject fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
     A["Data-quality assertion<br/>(succession / deprecation / lineage)"]:::process
-    A --> B{"Normative-breaking?<br/>Would corrupt downstream?"}:::decision
-    B -->|"yes"| C["sh:Violation<br/>(SHACL Core constraint)"]:::reject
-    B -->|"no — informative only"| D{"Substantive succession<br/>recorded?<br/>(prov:wasDerivedFrom /<br/>dct:isReplacedBy present)"}:::decision
-    D -->|"yes"| E["sh:Info<br/>(SHACL-AF rule in<br/>opda-shapes.ttl)"]:::output
-    D -->|"no"| F["sh:Warning<br/>(SHACL-AF rule in<br/>opda-shapes.ttl)"]:::output
+    A --> B{"Normative-breaking?<br/>Would corrupt downstream?"}:::warning
+    B -->|"yes"| C["sh:Violation<br/>(SHACL Core constraint)"]:::error
+    B -->|"no — informative only"| D{"Substantive succession<br/>recorded?<br/>(prov:wasDerivedFrom /<br/>dct:isReplacedBy present)"}:::warning
+    D -->|"yes"| E["sh:Info<br/>(SHACL-AF rule in<br/>opda-shapes.ttl)"]:::success
+    D -->|"no"| F["sh:Warning<br/>(SHACL-AF rule in<br/>opda-shapes.ttl)"]:::success
     E --> G["ValidationReport entry<br/>— machine-parseable<br/>sh:resultMessage"]:::process
     F --> G
 ```
@@ -97,19 +92,15 @@ Per ODR-0004 §3a three-graph separation: the rule sits in `opda-shapes.ttl`; th
 The following flowchart traces the evaluation path of a single SHACL-AF rule instance from the shapes graph through the validator to its downstream consumers.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: SHACL-AF rule evaluation flow
     accDescr: Traces the path from rule declaration in opda-shapes.ttl through SPARQL evaluation and ValidationReport generation to the four downstream consumers.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
     S["opda-shapes.ttl<br/>sh:NodeShape + sh:sparql<br/>sh:severity sh:Info/sh:Warning"]:::process
     D["opda-instances.ttl<br/>(data graph)"]:::process
     S --> V["SHACL-AF validator<br/>executes SELECT query<br/>against data graph"]:::process
     D --> V
-    V --> R["sh:ValidationReport<br/>sh:resultMessage (structured template)<br/>sh:focusNode / sh:resultSeverity"]:::output
+    V --> R["sh:ValidationReport<br/>sh:resultMessage (structured template)<br/>sh:focusNode / sh:resultSeverity"]:::success
     R --> C1["SHACL validators<br/>(sh:ValidationReport triples)"]:::process
     R --> C2["odr-review lint<br/>(verifies severity, placement,<br/>message template)"]:::process
     R --> C3["LLM tooling<br/>(parses sh:resultMessage;<br/>substitutes rdfs:comment fallback)"]:::process
@@ -150,26 +141,21 @@ The artefact realisation is the Turtle SHACL-AF rule above (§1a), placed in `op
 The diagram below maps each considered alternative to the decision driver that disqualified it, with the chosen pattern shown as the accepted outcome.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Alternatives considered and chosen outcome
     accDescr: Maps the four rejected alternatives to their disqualifying decision drivers, leading to the chosen SHACL-AF non-blocking pattern.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef reject fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
-    A1["Alt: annotation graph<br/>(opda-annotations.ttl)"]:::reject
-    A2["Alt: OWL property chains<br/>(owl:propertyChainAxiom)"]:::reject
-    A3["Alt: rdfs:comment only"]:::reject
-    A4["Alt: bake into each<br/>consuming ODR (no extraction)"]:::reject
+    A1["Alt: annotation graph<br/>(opda-annotations.ttl)"]:::error
+    A2["Alt: OWL property chains<br/>(owl:propertyChainAxiom)"]:::error
+    A3["Alt: rdfs:comment only"]:::error
+    A4["Alt: bake into each<br/>consuming ODR (no extraction)"]:::error
 
-    A1 -->|"Rejected: ODR-0004 §3a<br/>CI test 1 — SHACL in<br/>annotation graph breaks<br/>three-graph separation"| X{"Driver check"}:::decision
+    A1 -->|"Rejected: ODR-0004 §3a<br/>CI test 1 — SHACL in<br/>annotation graph breaks<br/>three-graph separation"| X{"Driver check"}:::warning
     A2 -->|"Rejected: ODR-0005 Rule 5<br/>irreversible owl:sameAs<br/>propagation under reasoning"| X
     A3 -->|"Rejected: Hellmann et al. 2017<br/>LLM fallback failure on<br/>rename/paraphrase/translation"| X
     A4 -->|"Rejected: ODR-0001 A9<br/>fourth-citing-site threshold —<br/>four divergent rule authorings"| X
 
-    X --> C["Chosen: SHACL-AF sh:rule/sh:sparql<br/>in opda-shapes.ttl<br/>sh:Info / sh:Warning severity<br/>machine-parseable sh:message"]:::output
+    X --> C["Chosen: SHACL-AF sh:rule/sh:sparql<br/>in opda-shapes.ttl<br/>sh:Info / sh:Warning severity<br/>machine-parseable sh:message"]:::success
 ```
 
 - **Materialise data-quality assertions in the annotation graph (`opda-annotations.ttl`).** Rejected per ODR-0004 §3a CI test 1 (`ASK { GRAPH opda:annotations { ?s ?p ?o . FILTER(STRSTARTS(STR(?p), "shacl-prefix")) } }` must return false). SHACL rules in the annotation graph break the three-graph separation; LLM consumers querying the annotation graph would receive shape-graph content as if it were advisory annotations, corrupting both layers.
@@ -203,25 +189,21 @@ flowchart TD
 The graph below shows ODR-0017's dependency and implementing relationships as declared in the frontmatter.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: ODR-0017 depends-on and implements graph
     accDescr: Shows the depends-on relationships from ODR-0017 to ODR-0001, ODR-0004, ODR-0005 and the implements relationship to ODR-0003, plus the four citing sites that implement ODR-0017.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef anchor fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
 
-    ODR17["ODR-0017<br/>SHACL-AF Non-Blocking<br/>Quality Rules Pattern"]:::anchor
+    ODR17["ODR-0017<br/>SHACL-AF Non-Blocking<br/>Quality Rules Pattern"]:::user
 
     ODR01["ODR-0001<br/>Council Methodology"]:::process
     ODR04["ODR-0004<br/>PDTF Ontology Foundation"]:::process
     ODR05["ODR-0005<br/>Property-Land Identity"]:::process
     ODR03["ODR-0003<br/>PDTF Ontology Programme"]:::process
 
-    ODR05B["ODR-0005 §6a<br/>(UPRN succession rule)"]:::output
-    ODR09["ODR-0009<br/>(Claims/Evidence — anticipated)"]:::output
-    ODR11["ODR-0011 §5a<br/>(Concept deprecation rule)"]:::output
-    ODR15["ODR-0015 §4a<br/>(INSPIRE succession rule)"]:::output
+    ODR05B["ODR-0005 §6a<br/>(UPRN succession rule)"]:::success
+    ODR09["ODR-0009<br/>(Claims/Evidence — anticipated)"]:::success
+    ODR11["ODR-0011 §5a<br/>(Concept deprecation rule)"]:::success
+    ODR15["ODR-0015 §4a<br/>(INSPIRE succession rule)"]:::success
 
     ODR17 -->|"depends-on"| ODR01
     ODR17 -->|"depends-on"| ODR04

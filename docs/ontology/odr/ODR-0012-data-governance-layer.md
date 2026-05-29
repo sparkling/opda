@@ -52,24 +52,19 @@ Pandit argues the **lawful-basis / consent / purpose class vocabulary** — `dpv
 The flowchart below shows how personal-data-bearing fields resolve to their `dpv-pd:` category and, where applicable, the `dpv:hasSpecialCategoryPersonalData` flag.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: DPV personal-data category mapping
     accDescr: Maps personal-data-bearing fields to their dpv-pd category and marks special-category terms with the Article-10 flag.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef special fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
 
-    F1["name / firstName /<br/>lastName / maidenName"]:::process --> C1["dpv-pd:Name"]:::output
-    F2["dateOfBirth"]:::process --> C2["dpv-pd:DateOfBirth"]:::output
-    F3["address"]:::process --> C3["dpv-pd:Address"]:::output
-    F4["email / emailAddress"]:::process --> C4["dpv-pd:EmailAddress"]:::output
-    F5["telephone"]:::process --> C5["dpv-pd:TelephoneNumber"]:::output
-    F6["document_number /<br/>identity number"]:::process --> C6["dpv-pd:OfficialID"]:::output
-    F7["cautionOrConviction"]:::process --> SC{"Article-10<br/>adjacent?"}:::decision
+    F1["name / firstName /<br/>lastName / maidenName"]:::process --> C1["dpv-pd:Name"]:::success
+    F2["dateOfBirth"]:::process --> C2["dpv-pd:DateOfBirth"]:::success
+    F3["address"]:::process --> C3["dpv-pd:Address"]:::success
+    F4["email / emailAddress"]:::process --> C4["dpv-pd:EmailAddress"]:::success
+    F5["telephone"]:::process --> C5["dpv-pd:TelephoneNumber"]:::success
+    F6["document_number /<br/>identity number"]:::process --> C6["dpv-pd:OfficialID"]:::success
+    F7["cautionOrConviction"]:::process --> SC{"Article-10<br/>adjacent?"}:::warning
     F8["AML results"]:::process --> SC
-    SC -->|"yes"| SP["dpv:hasSpecialCategory-<br/>PersonalData"]:::special
+    SC -->|"yes"| SP["dpv:hasSpecialCategory-<br/>PersonalData"]:::error
 ```
 
 ### Governance Annotation Attachment
@@ -77,25 +72,20 @@ flowchart LR
 Governance annotations attach to ontology entities across two ODR-0012 co-annotation points — participant classes and evidence subclasses.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Governance annotation attachment points
     accDescr: Shows where DPV annotations attach to participant classes and to ODR-0009 evidence subclasses in the TBox.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef special fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
 
     TBox["OPDA TBox"]:::process
     TBox --> Agents["Agents & Roles<br/>(ODR-0006)"]:::process
     TBox --> Evidence["Claims & Evidence<br/>(ODR-0009)"]:::process
 
-    Agents --> PA["Participant PII leaves<br/>dpv:hasPersonalData +<br/>dpv:hasPersonalDataCategory"]:::output
-    Evidence --> Doc["document subclass<br/>document_number →<br/>dpv-pd:OfficialID"]:::output
-    Evidence --> Vouch["vouch subclass<br/>voucher is a<br/>data subject"]:::special
-    Evidence --> ELec["electronic_record<br/>subclass — co-annotated"]:::output
+    Agents --> PA["Participant PII leaves<br/>dpv:hasPersonalData +<br/>dpv:hasPersonalDataCategory"]:::success
+    Evidence --> Doc["document subclass<br/>document_number →<br/>dpv-pd:OfficialID"]:::success
+    Evidence --> Vouch["vouch subclass<br/>voucher is a<br/>data subject"]:::error
+    Evidence --> ELec["electronic_record<br/>subclass — co-annotated"]:::success
 
-    PA --> SHACL["SHACL sensitivity gate<br/>(ODR-0013)<br/>sh:Warning if missing"]:::decision
+    PA --> SHACL["SHACL sensitivity gate<br/>(ODR-0013)<br/>sh:Warning if missing"]:::warning
     Doc --> SHACL
     Vouch --> SHACL
     ELec --> SHACL
@@ -111,23 +101,18 @@ flowchart TD
 The three candidate approaches weighed by the Council and the rationale for the chosen decision.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Governance layer options and chosen outcome
     accDescr: Three candidate approaches considered by the Council and the rationale for selecting DPV Phase-1 annotation-only.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef rejected fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
-    Q{"Which governance<br/>approach?"}:::decision
-    Q -->|"Option A"| A["No governance<br/>this round"]:::rejected
-    Q -->|"Option B"| B["DPV Phase-1<br/>annotation-only +<br/>ODRL in catalogue"]:::output
-    Q -->|"Option C"| C["Full DPV + ODRL<br/>adoption now"]:::rejected
+    Q{"Which governance<br/>approach?"}:::warning
+    Q -->|"Option A"| A["No governance<br/>this round"]:::error
+    Q -->|"Option B"| B["DPV Phase-1<br/>annotation-only +<br/>ODRL in catalogue"]:::success
+    Q -->|"Option C"| C["Full DPV + ODRL<br/>adoption now"]:::error
 
-    A --> AR["Rejected: PII corpus<br/>entirely unannotated;<br/>contradicts primary-<br/>concern position"]:::rejected
-    C --> CR["Rejected: requires<br/>instances + policy decisions<br/>not yet made; ODRL<br/>policies inert TBox (Guarino)"]:::rejected
-    B --> BR["Chosen: types PII now;<br/>defers contested boundary;<br/>ODRL deferred to Phase 2"]:::output
+    A --> AR["Rejected: PII corpus<br/>entirely unannotated;<br/>contradicts primary-<br/>concern position"]:::error
+    C --> CR["Rejected: requires<br/>instances + policy decisions<br/>not yet made; ODRL<br/>policies inert TBox (Guarino)"]:::error
+    B --> BR["Chosen: types PII now;<br/>defers contested boundary;<br/>ODRL deferred to Phase 2"]:::success
 ```
 
 ## Consequences
@@ -144,15 +129,11 @@ flowchart TD
 This ODR's `depends-on` and `implements` relationships from the frontmatter, showing how ODR-0012 sits within the programme.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0012 dependency graph
     accDescr: Depends-on and implements relationships for ODR-0012 as declared in its frontmatter.
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef current fill:#CE93D8,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
 
-    ODR12["ODR-0012<br/>Data-Governance Layer"]:::current
+    ODR12["ODR-0012<br/>Data-Governance Layer"]:::user
 
     ODR4["ODR-0004<br/>PDTF Foundation"]:::process
     ODR5["ODR-0005<br/>Ontology Strategy"]:::process
@@ -162,8 +143,8 @@ flowchart LR
     ODR15["ODR-0015"]:::process
     ODR18["ODR-0018"]:::process
 
-    ODR3["ODR-0003<br/>Programme"]:::output
-    ODR17["ODR-0017"]:::output
+    ODR3["ODR-0003<br/>Programme"]:::success
+    ODR17["ODR-0017"]:::success
 
     ODR4 -->|"depends-on"| ODR12
     ODR5 -->|"depends-on"| ODR12

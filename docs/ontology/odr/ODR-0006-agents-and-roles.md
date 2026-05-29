@@ -26,22 +26,18 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 The diagram below shows how this ODR relates to its declared `depends-on` and `implements` links.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0006 dependency graph
     accDescr: Shows which ODRs ODR-0006 depends on and which it implements
-    classDef dep fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef impl fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef self fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
 
-    ODR0004["ODR-0004<br/>Foundation"]:::dep
-    ODR0005["ODR-0005<br/>Property &amp; Land<br/>Identity Crux"]:::dep
-    ODR0011["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::dep
-    ODR0015["ODR-0015<br/>Diagnostic<br/>Exemplars"]:::dep
-    ODR0006["ODR-0006<br/>Agents &amp; Roles"]:::self
-    ODR0003["ODR-0003<br/>Programme"]:::impl
-    ODR0017["ODR-0017"]:::impl
-    ODR0018["ODR-0018"]:::impl
+    ODR0004["ODR-0004<br/>Foundation"]:::process
+    ODR0005["ODR-0005<br/>Property &amp; Land<br/>Identity Crux"]:::process
+    ODR0011["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::process
+    ODR0015["ODR-0015<br/>Diagnostic<br/>Exemplars"]:::process
+    ODR0006["ODR-0006<br/>Agents &amp; Roles"]:::warning
+    ODR0003["ODR-0003<br/>Programme"]:::success
+    ODR0017["ODR-0017"]:::success
+    ODR0018["ODR-0018"]:::success
 
     ODR0004 -->|"depends-on"| ODR0006
     ODR0005 -->|"depends-on (gating)"| ODR0006
@@ -69,7 +65,6 @@ Adopt a **W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMix
 The diagram shows the UFO-layered class structure for agents and roles as decided in this ODR.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 classDiagram
     accTitle: Agent and role class hierarchy
     accDescr: UFO Kind layer (Person, Organisation) and Role layer (Seller, Buyer, Proprietor and other roles) with RoleMixin and Role stereotypes
@@ -138,21 +133,17 @@ classDiagram
 This diagram illustrates how each Role or RoleMixin is externally founded by its Relator, as required by UFO anti-rigidity rules stated in this ODR.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Role-founding relator pattern
     accDescr: Shows how a Person or Organisation bearer plays a role that is founded by a relator such as Transaction or Proprietorship
-    classDef kind fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef role fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef relator fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
 
-    P["opda:Person<br/>&lt;&lt;Kind&gt;&gt;"]:::kind
-    O["opda:Organisation<br/>&lt;&lt;Kind&gt;&gt;"]:::kind
-    S["opda:Seller<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::role
-    B["opda:Buyer<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::role
-    PR["opda:Proprietor<br/>&lt;&lt;Role&gt;&gt;"]:::role
-    T["opda:Transaction<br/>&lt;&lt;Relator&gt;&gt;"]:::relator
-    PP["opda:Proprietorship<br/>&lt;&lt;Relator&gt;&gt;"]:::relator
+    P["opda:Person<br/>&lt;&lt;Kind&gt;&gt;"]:::process
+    O["opda:Organisation<br/>&lt;&lt;Kind&gt;&gt;"]:::process
+    S["opda:Seller<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::success
+    B["opda:Buyer<br/>&lt;&lt;RoleMixin&gt;&gt;"]:::success
+    PR["opda:Proprietor<br/>&lt;&lt;Role&gt;&gt;"]:::success
+    T["opda:Transaction<br/>&lt;&lt;Relator&gt;&gt;"]:::warning
+    PP["opda:Proprietorship<br/>&lt;&lt;Relator&gt;&gt;"]:::warning
 
     P -->|"plays"| S
     O -->|"plays"| S
@@ -221,26 +212,21 @@ opda:SellerShape a sh:NodeShape ;
 The flowchart traces the three candidate agent-layer approaches through their disqualifying defects to the chosen outcome.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Agent layer design decision
     accDescr: Decision path ruling out flat Participant, prov:Agent-only, and FOAF, arriving at W3C Org plus UFO layering
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef reject fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
-    classDef chosen fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    A["Flat opda:Participant<br/>+ role datatype"]:::process --> D1{"Identity<br/>criterion?"}:::decision
-    D1 -->|"none — bearer<br/>conflated with role"| R1["REJECTED"]:::reject
+    A["Flat opda:Participant<br/>+ role datatype"]:::process --> D1{"Identity<br/>criterion?"}:::warning
+    D1 -->|"none — bearer<br/>conflated with role"| R1["REJECTED"]:::error
 
-    B["prov:Agent only"]:::process --> D2{"Kind layer<br/>coverage?"}:::decision
-    D2 -->|"no Person /<br/>Organisation<br/>distinction"| R2["REJECTED"]:::reject
+    B["prov:Agent only"]:::process --> D2{"Kind layer<br/>coverage?"}:::warning
+    D2 -->|"no Person /<br/>Organisation<br/>distinction"| R2["REJECTED"]:::error
 
-    C["FOAF Kind layer"]:::process --> D3{"Overlap with<br/>W3C Org / dct:?"}:::decision
-    D3 -->|"yes — already<br/>deferred by ODR-0002"| R3["RULED OUT"]:::reject
+    C["FOAF Kind layer"]:::process --> D3{"Overlap with<br/>W3C Org / dct:?"}:::warning
+    D3 -->|"yes — already<br/>deferred by ODR-0002"| R3["RULED OUT"]:::error
 
-    E["W3C Org / bespoke opda:<br/>+ UFO Kind / RoleMixin / Role"]:::process --> D4{"Meets all<br/>drivers?"}:::decision
-    D4 -->|"yes"| CH["CHOSEN<br/>W3C Org + UFO layering<br/>(Kind-layer choice<br/>pending freeze gate)"]:::chosen
+    E["W3C Org / bespoke opda:<br/>+ UFO Kind / RoleMixin / Role"]:::process --> D4{"Meets all<br/>drivers?"}:::warning
+    D4 -->|"yes"| CH["CHOSEN<br/>W3C Org + UFO layering<br/>(Kind-layer choice<br/>pending freeze gate)"]:::success
 ```
 
 ## Alternatives

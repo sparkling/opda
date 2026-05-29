@@ -49,41 +49,35 @@ Partition the PDTF→ontology programme **by ontological concern** (FIBO-style m
 The diagram below shows the four programme phases and the ODRs they contain, with hard gates between them.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: PDTF Ontology Programme Work Breakdown
     accDescr: Four-phase work breakdown from Phase 0 spike through Phase 1 modules and cross-cutting work to the deferred Phase 7 ODR, with hard gates at ODR-0005 and ODR-0015.
-    classDef phase fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef gate fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef odr fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef deferred fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    classDef retired fill:#ECEFF1,stroke:#607D8B,stroke-width:1px,color:#455A64
 
-    P0["Phase 0 — Spike"]:::phase
-    P0 --> ODR4["ODR-0004<br/>Foundation"]:::odr
-    P0 --> ODR5["ODR-0005<br/>Property identity crux"]:::gate
+    P0["Phase 0 — Spike"]:::process
+    P0 --> ODR4["ODR-0004<br/>Foundation"]:::success
+    P0 --> ODR5["ODR-0005<br/>Property identity crux"]:::warning
 
-    ODR5 --> G1{{"GATE: crux cleared?"}}:::gate
-    G1 -->|"yes"| P26["Phase 2.6 — Address gate"]:::phase
-    P26 --> ODR15["ODR-0015<br/>Address &amp; Geography"]:::gate
+    ODR5 --> G1{{"GATE: crux cleared?"}}:::warning
+    G1 -->|"yes"| P26["Phase 2.6 — Address gate"]:::process
+    P26 --> ODR15["ODR-0015<br/>Address &amp; Geography"]:::warning
 
-    ODR15 --> G2{{"GATE: address cleared?"}}:::gate
-    G2 -->|"yes"| P1["Phase 1 — Modules"]:::phase
-    P1 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::odr
-    P1 --> ODR7["ODR-0007<br/>Transactions &amp; Lifecycle"]:::odr
-    P1 --> ODR8["ODR-0008<br/>Property descriptive attrs"]:::odr
+    ODR15 --> G2{{"GATE: address cleared?"}}:::warning
+    G2 -->|"yes"| P1["Phase 1 — Modules"]:::process
+    P1 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::success
+    P1 --> ODR7["ODR-0007<br/>Transactions &amp; Lifecycle"]:::success
+    P1 --> ODR8["ODR-0008<br/>Property descriptive attrs"]:::success
 
-    ODR6 & ODR7 & ODR8 --> CC["Cross-cutting<br/>(after ≥1 module)"]:::phase
-    CC --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::odr
-    CC --> ODR10["ODR-0010<br/>Overlay profiles"]:::odr
-    CC --> ODR11["ODR-0011<br/>Enumerations"]:::odr
-    CC --> ODR12["ODR-0012<br/>Data governance"]:::odr
-    CC --> ODR13["ODR-0013<br/>SHACL &amp; severity"]:::odr
+    ODR6 & ODR7 & ODR8 --> CC["Cross-cutting<br/>(after ≥1 module)"]:::process
+    CC --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::success
+    CC --> ODR10["ODR-0010<br/>Overlay profiles"]:::success
+    CC --> ODR11["ODR-0011<br/>Enumerations"]:::success
+    CC --> ODR12["ODR-0012<br/>Data governance"]:::success
+    CC --> ODR13["ODR-0013<br/>SHACL &amp; severity"]:::success
 
-    CC --> P7["Phase 7 — Deferred"]:::phase
-    P7 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(trigger-activated)"]:::deferred
+    CC --> P7["Phase 7 — Deferred"]:::process
+    P7 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(trigger-activated)"]:::user
 
-    CC --> RET["~~ODR-0014~~<br/>Retired — folded<br/>into ODR-0002"]:::retired
+    CC --> RET["~~ODR-0014~~<br/>Retired — folded<br/>into ODR-0002"]:::external
 ```
 
 *Phase 0 — Spike (gates the programme):*
@@ -160,38 +154,31 @@ The canonical phase sequence is the [Council follow-up sessions plan §5](../../
 The Mermaid diagram below renders the same dependency graph with cross-cite edges shown explicitly.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: ODR Dependency Graph
     accDescr: Directed dependency graph for ODR-0003 through ODR-0016, showing gates, cross-cites between ODR-0010 and ODR-0013, and the ownership link between ODR-0009 and ODR-0012 for DPV co-annotation.
-    classDef substrate fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef gate fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef module fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef cross fill:#FBE9E7,stroke:#BF360C,stroke-width:2px,color:#BF360C
-    classDef deferred fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
-    classDef retired fill:#ECEFF1,stroke:#607D8B,stroke-width:1px,color:#455A64
 
-    ODR4["ODR-0004<br/>Foundation"]:::substrate
-    ODR5["ODR-0005<br/>Property identity crux<br/>(GATE)"]:::gate
-    ODR15["ODR-0015<br/>Address &amp; Geography<br/>(GATE)"]:::gate
+    ODR4["ODR-0004<br/>Foundation"]:::process
+    ODR5["ODR-0005<br/>Property identity crux<br/>(GATE)"]:::warning
+    ODR15["ODR-0015<br/>Address &amp; Geography<br/>(GATE)"]:::warning
 
     ODR4 --> ODR5
     ODR5 -->|"exemplars (Q1)"| ODR15
 
-    ODR15 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::module
-    ODR15 --> ODR7["ODR-0007<br/>Transactions"]:::module
-    ODR15 --> ODR8["ODR-0008<br/>Property attrs"]:::module
+    ODR15 --> ODR6["ODR-0006<br/>Agents &amp; Roles"]:::success
+    ODR15 --> ODR7["ODR-0007<br/>Transactions"]:::success
+    ODR15 --> ODR8["ODR-0008<br/>Property attrs"]:::success
 
-    ODR6 & ODR7 & ODR8 --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::cross
-    ODR6 & ODR7 & ODR8 --> ODR10["ODR-0010<br/>Overlay profiles"]:::cross
-    ODR6 & ODR7 & ODR8 --> ODR11["ODR-0011<br/>Enumerations"]:::cross
+    ODR6 & ODR7 & ODR8 --> ODR9["ODR-0009<br/>Claims &amp; Provenance"]:::error
+    ODR6 & ODR7 & ODR8 --> ODR10["ODR-0010<br/>Overlay profiles"]:::error
+    ODR6 & ODR7 & ODR8 --> ODR11["ODR-0011<br/>Enumerations"]:::error
 
-    ODR9 -->|"DPV authoring owned by"| ODR12["ODR-0012<br/>Data governance"]:::cross
-    ODR10 <-->|"3-rule interface<br/>contract"| ODR13["ODR-0013<br/>SHACL &amp; severity"]:::cross
+    ODR9 -->|"DPV authoring owned by"| ODR12["ODR-0012<br/>Data governance"]:::error
+    ODR10 <-->|"3-rule interface<br/>contract"| ODR13["ODR-0013<br/>SHACL &amp; severity"]:::error
 
-    ODR9 & ODR10 & ODR11 & ODR12 & ODR13 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(deferred)"]:::deferred
+    ODR9 & ODR10 & ODR11 & ODR12 & ODR13 --> ODR16["ODR-0016<br/>W3C VC / DID<br/>(deferred)"]:::user
 
-    ODR14["~~ODR-0014~~<br/>RETIRED → ODR-0002"]:::retired
+    ODR14["~~ODR-0014~~<br/>RETIRED → ODR-0002"]:::external
 ```
 
 **Shared-question routing** (added per [Session 003 Item 7](./council/session-003-pdtf-ontology-programme.md#item-7--shared-question-routing)).
@@ -237,25 +224,20 @@ Individual ODRs own their own analysis; this file owns the sequencing and the cr
 The diagram below summarises the three rejected partition strategies and why the chosen option was preferred.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Partition Strategy Decision
     accDescr: Three alternative partitioning strategies considered and rejected, leading to the chosen ontological-concern partition with spike-then-scale sequencing.
-    classDef option fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef rejected fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
-    classDef chosen fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef reason fill:#FFF9C4,stroke:#F9A825,stroke-width:1px,color:#E65100
 
-    A["Partition by<br/>aggregate page"]:::option --> RA["Encodes form ergonomics;<br/>duplicates reused entities<br/>across modules"]:::reason
-    RA --> REJ1["REJECTED"]:::rejected
+    A["Partition by<br/>aggregate page"]:::process --> RA["Encodes form ergonomics;<br/>duplicates reused entities<br/>across modules"]:::warning
+    RA --> REJ1["REJECTED"]:::error
 
-    B["Partition by<br/>UFO meta-category alone"]:::option --> RB["Too coarse for<br/>FIBO-style concern modules;<br/>subsumed into chosen option"]:::reason
-    RB --> REJ2["REJECTED"]:::rejected
+    B["Partition by<br/>UFO meta-category alone"]:::process --> RB["Too coarse for<br/>FIBO-style concern modules;<br/>subsumed into chosen option"]:::warning
+    RB --> REJ2["REJECTED"]:::error
 
-    C["Full 15-ODR programme<br/>up front (no spike)"]:::option --> RC["Identity criterion<br/>too contested to draft<br/>module ODRs against"]:::reason
-    RC --> REJ3["REJECTED"]:::rejected
+    C["Full 15-ODR programme<br/>up front (no spike)"]:::process --> RC["Identity criterion<br/>too contested to draft<br/>module ODRs against"]:::warning
+    RC --> REJ3["REJECTED"]:::error
 
-    CHOSEN["CHOSEN:<br/>Partition by ontological concern<br/>FIBO-module × UFO-layer,<br/>spike-then-scale"]:::chosen
+    CHOSEN["CHOSEN:<br/>Partition by ontological concern<br/>FIBO-module × UFO-layer,<br/>spike-then-scale"]:::success
     REJ1 & REJ2 & REJ3 -.->|"by elimination"| CHOSEN
 ```
 

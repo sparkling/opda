@@ -49,24 +49,19 @@ Overlays are named, dereferenceable **SHACL profile graphs over a fixed TBox**; 
 The flowchart below shows how a form overlay is loaded, composed with the base schema at build time, and then used to both validate a transaction and re-generate a form — the canonical round-trip described in the Decision section.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Overlay profile layering mechanism
     accDescr: How a SHACL overlay profile is loaded, composed with the base schema, and used for validation and form rendering
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef gate fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#B71C1C
 
     BASE["Base TBox<br/>(fixed, open-world)"]:::process
     OVL["Overlay profile graph<br/>(e.g. baspi5.ttl)"]:::process
-    GATE{"No-identity-override<br/>gate (ODR-0013)"}:::gate
-    REJECT["Rejected —<br/>overlay touches Kind identity"]:::gate
+    GATE{"No-identity-override<br/>gate (ODR-0013)"}:::warning
+    REJECT["Rejected —<br/>overlay touches Kind identity"]:::warning
     VC["opda:ValidationContext<br/>(reified named context)"]:::process
-    COMPOSE["Build-step graph-union<br/>(sh:minCount, sh:in, sh:xone,<br/>dct:source, DASH annotations)"]:::decision
-    SHAPES["Composed shapes graph<br/>(profile-scoped SHACL)"]:::output
-    VALIDATE["Validate transaction<br/>(conformant / violations)"]:::output
-    RENDER["Re-generate form<br/>(DASH viewer/editor + dct:source)"]:::output
+    COMPOSE["Build-step graph-union<br/>(sh:minCount, sh:in, sh:xone,<br/>dct:source, DASH annotations)"]:::warning
+    SHAPES["Composed shapes graph<br/>(profile-scoped SHACL)"]:::success
+    VALIDATE["Validate transaction<br/>(conformant / violations)"]:::success
+    RENDER["Re-generate form<br/>(DASH viewer/editor + dct:source)"]:::success
 
     BASE --> GATE
     OVL --> GATE
@@ -83,19 +78,15 @@ flowchart TD
 The three union/replacement rules from the Decision section determine how each overlay's constructs are merged into the base shapes at build time.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: Overlay composition build-step rules
     accDescr: How required-array union, enum union, and oneOf structures from an overlay are transformed into SHACL constructs during the build-step graph-union
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    REQ["required array entry"]:::process -->|"→ additive"| MINCOUNT["sh:minCount 1<br/>(property shape)"]:::output
-    ENUM["enum member list"]:::process -->|"set-union → replace"| SHIN["merged sh:in<br/>(single list, not stacked)"]:::output
-    ONEOF["oneOf discriminator"]:::process -->|"→ exactly-one"| XONE["sh:xone<br/>(nested for sellersCapacity)"]:::output
-    LEAFREF["baspi5Ref / ntsRef"]:::process -->|"→ traceability"| DCT["dct:source<br/>(dereferenceable form-question IRI)"]:::output
-    FIELDMETA["field order / section"]:::process -->|"→ rendering"| DASH["sh:order + sh:group<br/>+ dash:editor / dash:viewer"]:::output
+    REQ["required array entry"]:::process -->|"→ additive"| MINCOUNT["sh:minCount 1<br/>(property shape)"]:::success
+    ENUM["enum member list"]:::process -->|"set-union → replace"| SHIN["merged sh:in<br/>(single list, not stacked)"]:::success
+    ONEOF["oneOf discriminator"]:::process -->|"→ exactly-one"| XONE["sh:xone<br/>(nested for sellersCapacity)"]:::success
+    LEAFREF["baspi5Ref / ntsRef"]:::process -->|"→ traceability"| DCT["dct:source<br/>(dereferenceable form-question IRI)"]:::success
+    FIELDMETA["field order / section"]:::process -->|"→ rendering"| DASH["sh:order + sh:group<br/>+ dash:editor / dash:viewer"]:::success
 ```
 
 ### Options Considered and Decision Reached
@@ -103,27 +94,22 @@ flowchart LR
 The three alternatives evaluated by the council, with the reasons for acceptance or rejection as stated in the Alternatives section.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart TD
     accTitle: Options considered and decision reached for overlay profile mechanism
     accDescr: The three design options evaluated by the council, showing which was chosen and why the others were rejected
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef decision fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
-    classDef output fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
-    classDef rejected fill:#FFCCBC,stroke:#BF360C,stroke-width:2px,color:#BF360C
 
     OPT1["Option A: Class per overlay<br/>(baspi:PropertyPack, ta6:PropertyPack…)"]:::process
     OPT2["Option B: SHACL profile graphs<br/>over fixed TBox"]:::process
     OPT3["Option C: Inline advisory annotations<br/>in shapes graph"]:::process
 
-    D1{"Q3/Q5: Form ergonomics<br/>vs ontology?"}:::decision
-    D2{"Fixed model theory +<br/>graph separation?"}:::decision
-    D3{"SHACL processor<br/>purity?"}:::decision
+    D1{"Q3/Q5: Form ergonomics<br/>vs ontology?"}:::warning
+    D2{"Fixed model theory +<br/>graph separation?"}:::warning
+    D3{"SHACL processor<br/>purity?"}:::warning
 
-    REJ1["Rejected unanimously (Q3)<br/>— declares, not constrains;<br/>identity drift risk"]:::rejected
-    CHOSEN["CHOSEN: Named, dereferenceable<br/>SHACL profile graphs;<br/>opda:ValidationContext reification;<br/>DASH rendering; dct:source traceability"]:::output
-    REJ3["Rejected (≈7-2)<br/>— shapes graph polluted;<br/>naïve consumer may read<br/>aiHint as constraint"]:::rejected
-    ANN["Advisory annotations → separate<br/>annotation graph (→ ODR-0013)"]:::output
+    REJ1["Rejected unanimously (Q3)<br/>— declares, not constrains;<br/>identity drift risk"]:::error
+    CHOSEN["CHOSEN: Named, dereferenceable<br/>SHACL profile graphs;<br/>opda:ValidationContext reification;<br/>DASH rendering; dct:source traceability"]:::success
+    REJ3["Rejected (≈7-2)<br/>— shapes graph polluted;<br/>naïve consumer may read<br/>aiHint as constraint"]:::error
+    ANN["Advisory annotations → separate<br/>annotation graph (→ ODR-0013)"]:::success
 
     OPT1 --> D1
     D1 -->|"no — UI contract ≠ semantics"| REJ1
@@ -139,15 +125,11 @@ flowchart TD
 This ODR's `depends-on` and `implements` relationships from the frontmatter, showing how it sits within the broader ontology programme.
 
 ```mermaid
-%%{init:{"theme":"base","themeVariables":{"primaryColor":"#E3F2FD","primaryTextColor":"#0D47A1","primaryBorderColor":"#1565C0","lineColor":"#37474F"}}}%%
 flowchart LR
     accTitle: ODR-0010 dependency graph
     accDescr: The depends-on and implements relationships for ODR-0010 as declared in the frontmatter
-    classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
-    classDef current fill:#C8E6C9,stroke:#2E7D32,stroke-width:3px,color:#1B5E20
-    classDef impl fill:#EDE7F6,stroke:#4527A0,stroke-width:2px,color:#311B92
 
-    ODR0003["ODR-0003<br/>PDTF ontology programme"]:::impl
+    ODR0003["ODR-0003<br/>PDTF ontology programme"]:::user
     ODR0004["ODR-0004<br/>PDTF ontology foundation"]:::process
     ODR0005["ODR-0005<br/>Property/land identity"]:::process
     ODR0006["ODR-0006<br/>Agents and roles"]:::process
@@ -155,8 +137,8 @@ flowchart LR
     ODR0009["ODR-0009"]:::process
     ODR0011["ODR-0011<br/>Enumeration vocabularies"]:::process
     ODR0013["ODR-0013<br/>SHACL validation + severity"]:::process
-    ODR0017["ODR-0017"]:::impl
-    THIS["ODR-0010<br/>Overlay profile mechanism"]:::current
+    ODR0017["ODR-0017"]:::user
+    THIS["ODR-0010<br/>Overlay profile mechanism"]:::success
 
     ODR0004 -->|"depends-on"| THIS
     ODR0005 -->|"depends-on"| THIS
