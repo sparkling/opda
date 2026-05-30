@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, emission, foundation, three-graph, ci]
 supersedes: []
-depends-on: [ADR-0008]
-implements: [ODR-0004]
+depends-on: [ADR-0008, ODR-0004]
+implements: [ADR-0008]
 ---
 
 # Foundation TTL emission

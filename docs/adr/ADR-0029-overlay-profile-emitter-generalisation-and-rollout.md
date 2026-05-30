@@ -3,8 +3,8 @@ status: proposed
 date: 2026-05-30
 tags: [ontology, generator, shacl, overlay-profiles, profilespec, bounded-context, emission]
 supersedes: []
-depends-on: [ADR-0007, ADR-0013, ADR-0026, ADR-0028]
-implements: [ODR-0010, ODR-0020]
+depends-on: [ADR-0007, ADR-0013, ADR-0026, ADR-0028, ODR-0010, ODR-0020]
+implements: []
 ---
 
 # Overlay-Profile Emitter Generalisation and Full Rollout

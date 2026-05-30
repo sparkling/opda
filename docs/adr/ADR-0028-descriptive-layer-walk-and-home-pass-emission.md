@@ -3,8 +3,8 @@ status: proposed
 date: 2026-05-30
 tags: [ontology, generator, descriptive-layer, declare-once, bounded-context, home-pass, emission]
 supersedes: []
-depends-on: [ADR-0007, ADR-0026]
-implements: [ODR-0008, ODR-0019, ODR-0020]
+depends-on: [ADR-0007, ADR-0026, ODR-0008, ODR-0019, ODR-0020]
+implements: []
 ---
 
 # Descriptive-Layer Walk Emission and Generated Home-Pass

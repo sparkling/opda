@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, shacl, dpv, annotations, validation, emission]
 supersedes: []
-depends-on: [ADR-0011, ADR-0008]
-implements: [ODR-0010, ODR-0012, ODR-0013, ODR-0017, ODR-0018]
+depends-on: [ADR-0011, ODR-0010, ODR-0012, ODR-0013, ODR-0017, ODR-0018]
+implements: [ADR-0008]
 ---
 
 # SHACL shapes + DPV annotation emission

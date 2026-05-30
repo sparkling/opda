@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-30
 tags: [ontology, skos, bounded-context, generator, emission, shacl-af, profiles]
 supersedes: []
-depends-on: [ODR-0019, ADR-0007, ADR-0008, ADR-0010, ADR-0011, ADR-0013]
-implements: [ODR-0020]
+depends-on: [ODR-0020, ODR-0019, ADR-0007, ADR-0010, ADR-0011, ADR-0013]
+implements: [ADR-0008]
 ---
 
 # Bounded-Context Scheme Emission

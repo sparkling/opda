@@ -3,8 +3,8 @@ status: proposed
 date: 2026-05-30
 tags: [ontology, generator, descriptive-layer, categorisation, emission, gates, ci, byte-identity, skos]
 supersedes: []
-depends-on: [ADR-0007, ADR-0028, ADR-0029, ODR-0008, ODR-0011, ODR-0023]
-implements: [ODR-0022]
+depends-on: [ADR-0007, ADR-0028, ADR-0029, ODR-0008, ODR-0011, ODR-0023, ODR-0022]
+implements: []
 ---
 
 # Category-Based Descriptive Emission Pipeline & Import Gates (G1–G3)
