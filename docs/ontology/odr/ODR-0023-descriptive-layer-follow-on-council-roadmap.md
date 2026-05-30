@@ -1,0 +1,96 @@
+---
+status: proposed
+date: 2026-05-30
+kind: programme
+tags: [descriptive-layer, council-roadmap, pattern-spawn, authority-retrieved-artefacts, ufo-submodules, deferred-work]
+scope: [pdtf-v3:propertyPack]
+council: session-023
+supersedes: []
+depends-on: [ODR-0007, ODR-0008, ODR-0009, ODR-0011, ODR-0017, ODR-0018, ODR-0022]
+implements: [ODR-0003]
+---
+
+# Descriptive-Layer Follow-On Council Roadmap
+
+## Context
+
+[ODR-0022](./ODR-0022-descriptive-layer-import-strategy.md) (Session 023) decided to import the descriptive layer **by property-category** rather than as a 1:1 leaf walk. In doing so it confirmed that several categories carry **`pattern`-level ontological commitments** (new classes with identity criteria) that ODR-0022 — a `kind: architecture` strategy record — deliberately *routes* rather than *discharges*. Those commitments need Council treatment under [ODR-0001](./ODR-0001-linked-data-council-methodology.md) A9 (a `kind: pattern` record MUST state a UFO meta-category + an identity criterion over hard cases), and several were **already pre-named** as spawn triggers in [ODR-0008](./ODR-0008-property-descriptive-attributes.md) §Q2a/§Q4a before this session.
+
+These follow-on decisions are currently **scattered** across three places — ODR-0008 §Q2a(a) (UFO-axis sub-modules), §Q2a(b) (authority-retrieved artefacts), §Q4a (Building/Room conditional promotion), and ODR-0022 §4 (fixtures inclusion-as-Mode). Without a single citable record they will be re-discovered and re-litigated each time the descriptive layer is revisited (the failure mode [ODR-0021](./ODR-0021-deferred-form-profile-layer-enhancements.md) was created to stop for the form layer). This ODR is the **descriptive-layer analogue**: one trigger-indexed roadmap of the follow-on Council sessions, each linked to the source trigger and the records that realise it, so the WG can sequence them and reviewers can see what is *scheduled* versus *trigger-gated*. It schedules; it does not itself make the ontological commitments (each row's session does).
+
+## Decision
+
+Maintain a **descriptive-layer follow-on Council roadmap** of four trigger-gated `pattern`-modelling sessions — **R1** Authority-Retrieved Artefacts (ready now), **R2** UFO-axis sub-modules (gated on the Category-G walk), **R3** Building/Room class promotion (gated on a sub-Property consumer query), **R4** fixtures inclusion-as-Mode (a soft confirmation) — each routed to its realizing records, format tier, and steward, and **ratified-as-scheduled behind a named trigger** — chosen because the commitments are real `pattern`/IC decisions that A9 forbids burying inside an `architecture` strategy record, and a single trigger-indexed roadmap prevents both premature work (on gated items) and lost work (on the ready one).
+
+## Rules
+
+### The roadmap (four follow-on sessions)
+
+| # | Session to run | Source trigger | **Trigger status** | Realizing records | Format / steward |
+|---|---|---|---|---|---|
+| **R1** | **ODR-0008d — Authority-Retrieved Artefacts** — internal structure of the already-ratified `opda:Search` / `opda:Survey` / `opda:EPCCertificate` / `opda:Valuation` / `opda:Comparable` classes + the **new `opda:RiskAssessment` class** + a **peril/dataset SKOS scheme** | ODR-0008 §Q2a(b) ("Survey/EPC/Search/Title-Plan cannot be flat datatype bags without losing `prov:wasGeneratedBy`") — **fired by ODR-0022 Category E** | **RUN → [ODR-0008d](./ODR-0008d-authority-retrieved-artefacts.md)** (S024) | `implements: [ODR-0007, ODR-0017]`; provenance ODR-0009; peril scheme ODR-0011; PII ODR-0018 | Reduced→Full; Kendall four-way held-as-live |
+| **R2** | **ODR-0008a/b/c — UFO-axis sub-modules** — `property-qualities` / `property-modes` / `legal-estate-attributes` split of the Category-G descriptive properties | ODR-0008 §Q2a(a) ("UFO meta-category crystallisation — when Quality/Mode/Substance-Kind distinctions are operationally load-bearing") | **GATED** (S025: framework + stewards ratified; a/b/c spawn deferred to the curated G walk) | ODR-0008 (parent); ODR-0011 §8a (Quale schemes); ODR-0018 (Mode PII) | Full; stewards Allemang (qualities) / Guizzardi+Pandit (modes) / Kendall (legal-estate) |
+| **R3** | **`opda:Building` / `opda:Room` class promotion** | ODR-0008 §Q4a conditional promotion (Davis held-as-live) | **GATED** (S026: deferred not denied; IC affirmed genuine; trigger sharpened to *re-identification*) | ODR-0005 (Property identity); ODR-0008 §Q4a | Reduced |
+| **R4** | **Fixtures inclusion-as-transaction-Mode** — confirm `opda:inclusionStatus` is a Mode/Relator of the *sale* (ODR-0007), not a Quality of `opda:Property` | ODR-0022 §4 (asserted in S023, not deliberated as its own pattern question) | **CONFIRMED** (S027: inclusion = sale-transaction Mode, ODR-0007; Category-D unblocked) | ODR-0007 (transaction Relator); ODR-0011 (`FixtureItemScheme`) | Author-only / Reduced; may ride an ODR-0007 amendment |
+
+### Run status (2026-05-30 — R1–R4 run in parallel)
+
+All four convened in parallel (`agent-fan-out`, no hive-mind) per the configuration below. **R2/R3 ran under a directing-authority override of their gates** (provisional, framework/criteria-level; the override discharges convening, not the substantive trigger).
+
+- **R1 → RUN.** [session-024](./council/session-024-authority-retrieved-artefacts.md) → **[ODR-0008d](./ODR-0008d-authority-retrieved-artefacts.md)** (Q1–Q6 7–1 / 8–0 FOR `opda:RiskAssessment` as a UFO Information Object + 12-member `opda:PerilScheme`; the five classes retro-corrected to Information Object; Cagle DA held-as-live for reuse-`Search` with a named re-open trigger). Row struck.
+- **R2 → framework ratified, spawn deferred.** [session-025](./council/session-025-ufo-axis-submodules.md) — the 3-axis split framework + stewards + per-axis load-bearing trigger ratified; ODR-0008a/b/c **not** spawned (Davis held: §Q2a(a) trigger unfired; mint nothing). **Surfaced a binning-rule defect** — enum-bearing Quale-in-Region G-concepts (`currentEnergyRating`, `councilTaxBand`, `builtForm`, `tenureKind`) mis-routed to Category C; fix logged against ODR-0022 §1 / ADR-0030 §G1. Stays gated.
+- **R3 → deferred, not denied.** [session-026](./council/session-026-building-room-promotion.md) — HOLD; the eventual IC affirmed genuine (+O, ODR-0005 §3a "Replacement" witness); trigger sharpened to *re-identification* (not mere mention); interim facts stay datatype properties on `opda:Property`. Stays gated.
+- **R4 → CONFIRMED.** [session-027](./council/session-027-fixtures-inclusion-mode.md) — `opda:inclusionStatus` is a sale-transaction Mode/Relator (ODR-0007), not a Quality of `opda:Property`; Category-D emission unblocked. Row struck.
+
+### Convening configuration (per council)
+
+Per [ODR-0001](./ODR-0001-linked-data-council-methodology.md) §Format tiers + §Consensus-mode framework. **All four default to `agent-fan-out`** — the runtime is **Agent Teams** (`TeamCreate` + parallel `Agent` spawns + `SendMessage` cross-talk), the pattern S021/S022/S023 used. **Hive-mind is avoided by default: it is materially more expensive** (persistent hive state + programmatic consensus rounds), and none of these councils needs it — per-question votes are *independent tallies*, and the two-artefact structured vote table is composed by the Queen from the teammates' working-file votes, with **no consensus engine**. The `swarm init` flags are advisory bookkeeping (the CLI's `maxAgents` init is also currently bug-prone); the deliberation actually runs on Agent Teams.
+
+| Council | Format tier | `consensus-mode` | Runtime substrate (the cheap path) | Agents (Queen + DA + panel) | `swarm init` advisory (`-t`/`-m`/`-s`) |
+|---|---|---|---|---|---|
+| **R1** | Full Council | `agent-fan-out` | Agent Teams + `SendMessage` (team `council-024`) | ~8 — Queen + DA + 6 panel | `hierarchical-mesh / 8 / specialized` |
+| **R2** | Full Council | `agent-fan-out` | Agent Teams + `SendMessage` | ~8 — Queen + DA + 3 axis-stewards + 3 | `star / 8 / specialized` (steward-led) |
+| **R3** | Reduced Council | `agent-fan-out` | Agent Teams + `SendMessage` (small) | ~3–4 — Queen + DA + 1–2 | `star / 4 / specialized` |
+| **R4** | Author-only | `none` | main-thread — **no panel, no team** | ~1 — Queen drafts the confirmation | — (no substrate) |
+
+**R1 panel (the ready one):** Queen Kendall (owns the four-way) or Guizzardi (IC); DA the genuinely-opposed voice — Allemang ("keep them flat datatype bags; don't over-promote") or Cagle ("reference data, not classes"); panel Guizzardi+Guarino (IC), Moreau (PROV-O / ODR-0009 provenance), Knublauch (SHACL node-shape over a lean class), Cagle (taxonomy / peril scheme), Baker+Isaac (the 12-member peril/dataset SKOS scheme), Pandit (search-result PII regime). ~8 voices / ~6 teammates — the S023 shape.
+
+**Hive-mind escalation (avoid unless a trigger fires).** Escalate a council from `agent-fan-out` to a hive-mind `consensus-mode` ONLY if, at the pre-flight scope check, its verdict is genuinely **conditional** (one question's verdict contingent on another → `hive-mind/byzantine`) or must emit a **structured object a downstream tool consumes** (`hive-mind/typed-output`). For R1's four-way this is **not** expected — a four-way alternative is resolved by deliberation + per-question vote, exactly as S023's held dissents were under `agent-fan-out`. If a scope check does escalate, record the fired trigger in that session's convening block. CLI only if ever needed: `hive-mind init -c byzantine` (or `-c quorum --quorum-preset supermajority`); the default `agent-fan-out` path needs no hive-mind init at all.
+
+### Findings carried from Session 023 (the evidence each session inherits)
+
+- **R1 — the structure is regular and already half-built.** The six-field result block (`riskIndicator`, `actionAlertRating`, `result`, `summary`, `recommendations`, `datasetAttribution`) recurs across **exactly 24 parents = 12 environmental perils × 2** (the peril + its `riskSubcategories[]`): flooding, coalMining, nonCoalMining, radon, groundStability, contaminatedLand, coastalErosion, climate, energy, infrastructure, planning, transportation — plus `localSearches` (185 annotated leaves, CON29-style) and `valuationComparisonData` (23). The **five §Q4a classes are already emitted** as bare classes with identity-key SHACL shapes (`opda-descriptive.ttl` / `opda-descriptive-shapes.ttl`); what R1 adds is their **internal property structure**, the **new `opda:RiskAssessment` class** (the per-peril result — does not exist today), and the **12-member peril SKOS scheme**. So R1 is *not* a new class from nothing; it is the internals + one new class + one scheme. The session must resolve Kendall's held-as-live four-way alternative and the IC questions: `RiskAssessment` as a distinct class vs a structured datatype on `Search`; peril as a SKOS scheme vs subclasses; environmental-search vs local-authority-search as one class or two; the `riskSubcategories[]` recursion.
+- **R2 — gated, not deferred-forever.** The G walk (ODR-0022, ~181 curated descriptive properties) is the event that makes the Quality/Mode/Substance-Kind-label axes countable; only then can §Q2a(a) judge whether the sub-module split is "operationally load-bearing." Running R2 before the G walk would be guessing.
+- **R3 — narrow and consumer-driven.** A single named BASPI5 round-trip query that needs sub-Property (room/building) reasoning is the whole trigger; absent it, `Building`/`Room` stay as descriptive datatype properties on `opda:Property` (Davis dissent, §Q4a).
+- **R4 — small but real.** ODR-0022 §4 asserts inclusion is a transaction Mode/Relator (the same boiler is "included" in one sale, absent the next) — an ontological claim that touches ODR-0007. It needs one confirmation pass (or an ODR-0007 amendment) before the `FixtureItemScheme` + `opda:inclusionStatus` are emitted, so the inclusion property is not mis-attached to the brick-and-mortar.
+
+### Sequencing and discipline
+
+- **Run order:** R1 first (trigger fired; unblocks the Category-E emission and the search/survey/EPC/valuation families). R4 next (small; unblocks the Category-D emission). R2 and R3 stay **gated** — do not convene until their named trigger fires (R2: the G walk; R3: a sub-Property consumer query).
+- **Each session discharges its own A9 obligations** (UFO meta-category + IC over named hard cases) per ODR-0001; this roadmap records *that they are owed and when*, not the commitments themselves.
+- **Anti-duplication.** This record is the **ODR-side roadmap for descriptive-layer `pattern`/Council work only**. It does **not** replace [ADR-0005 §G](../../adr/ADR-0005-deferred-work-register.md) (the cross-corpus deferred-*engineering*-work register) or the adoption record's `Pending:` list (the running session log); it consolidates the *modelling-decision* spawn-triggers that ODR-0008 §Q2a/§Q4a and ODR-0022 §4 created, so they are citable in one place. When a row's session runs, its row is struck here and the new ODR (ODR-0008d, etc.) is the live record.
+- **Anti-pattern.** Do not convene a gated session (R2, R3) without recording which trigger fired (mirrors ODR-0021's discipline). Do not fold R1's `pattern` commitments back into ODR-0022 or ODR-0008 (§Q2a keeps ODR-0008 monolithic and *spawns* on this trigger).
+
+## Alternatives
+
+* **Leave the four items in ODR-0008 §Q2a/§Q4a + ODR-0022 §4 (no consolidating record)** — they stay scattered across three records and get re-discovered each revisit; the failure mode ODR-0021 was created to stop, here for the descriptive layer.
+* **Discharge the commitments inside ODR-0022** — forbidden by A9: ODR-0022 is `kind: architecture` (strategy/granularity); minting `opda:RiskAssessment` + its IC there would be a `pattern` commitment in an `architecture` record (the exact mismatch the pre-flight scope check rejects).
+* **Spawn all four ODRs now** — premature for R2/R3 (their triggers have not fired; running them is guessing) and wasteful (the G walk reshapes R2's input).
+* **Track in ADR-0005 §G** — wrong corpus (these are ontology-modelling `pattern` decisions, ODR-side) and §G is the engineering-work register, not a Council roadmap.
+
+## Consequences
+
+- **R1 (ODR-0008d) is the live next Council action for the descriptive layer.** Convene it (Reduced or Full per a pre-flight scope check) to model the authority-retrieved-artefact family internals + `opda:RiskAssessment` + the peril scheme, resolving Kendall's held-as-live four-way. It unblocks the Category-E emission in ODR-0022 and the internal structure of the five already-emitted artefact classes.
+- **R4 confirms before the Category-D fixtures emission ships**, so `opda:inclusionStatus` is attached to a transaction-scoped fixtures list (ODR-0007), not to `opda:Property`.
+- **R2 and R3 remain trigger-gated**; this roadmap is the place a reviewer checks before proposing them, and the place that records the trigger when it fires.
+- **When a session runs, strike its row here and cite the new record** (ODR-0008d / ODR-0008a-c / the Building-Room amendment). This ODR shrinks to empty as the roadmap is executed; an empty roadmap is the signal the descriptive-layer `pattern` work is complete.
+- **No emission or generator change results from this ODR** — it is a scheduling record. Its effect is to make the four follow-on commitments citable, sequenced, and trigger-disciplined.
+
+## References
+
+- **Strategy that surfaced these**: [ODR-0022 — Descriptive-Layer Import Strategy & Property Categorisation](./ODR-0022-descriptive-layer-import-strategy.md) (§1 category routing — B/E/D/G; §4 fixtures inclusion-Mode = R4) and its Council [session-023](./council/session-023-descriptive-layer-import-strategy.md).
+- **Source triggers**: [ODR-0008 — Property Descriptive Attributes](./ODR-0008-property-descriptive-attributes.md) §Q2a(a) (UFO-axis sub-modules = R2), §Q2a(b) (Authority-Retrieved Artefacts = R1), §Q4a (Building/Room conditional promotion = R3; the five definite class promotions already ratified).
+- **Realizing records the sessions cite**: [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (transaction Relator/Mode — R1, R4); [ODR-0009](./ODR-0009-claims-evidence-provenance.md) (PROV-O provenance — R1); [ODR-0011](./ODR-0011-enumeration-vocabularies.md) (peril scheme + `FixtureItemScheme` — R1, R4); [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (succession/lifecycle rules — R1); [ODR-0018](./ODR-0018-dpv-class-level-coannotation-pattern.md) (PII co-annotation — R1, R2); [ODR-0005](./ODR-0005-property-land-identity-crux.md) (Property identity — R3).
+- **Pattern precedent**: [ODR-0021 — Deferred Form/Profile-Layer Enhancements](./ODR-0021-deferred-form-profile-layer-enhancements.md) (the form-layer trigger-gated register this adapts for the descriptive layer); [ODR-0003 — Programme & Work Breakdown](./ODR-0003-pdtf-ontology-programme.md) (the programme anchor this implements).
+- **Methodology**: [ODR-0001](./ODR-0001-linked-data-council-methodology.md) §A9 (per-kind discipline — why each row needs a session), §Format tiers (Reduced/Full/Author-only selection), §Pre-flight scope check (run per row before convening).
+- **Data**: the 12-peril × 2 risk-result structure + the five emitted artefact classes verified against `source/00-deliverables/semantic-models/data-dictionary-canonical.json` and `source/03-standards/ontology/opda-descriptive*.ttl` during Session 023.

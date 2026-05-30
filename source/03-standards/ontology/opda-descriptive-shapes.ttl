@@ -14,6 +14,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -25,59 +26,348 @@
 opda:ComparableIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    sh:property _:b218dcfc815ed ;
+    sh:property _:b4b86d69aadcc ;
+    sh:targetClass opda:Comparable .
+
+opda:ComparableInternalStructureShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
+    sh:property _:b6809218bb159, _:b6db3fd4c8b68, _:b7b4c48a9db7d ;
     sh:targetClass opda:Comparable .
 
 opda:EPCCertificateIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    sh:property _:b218dcfc815ed ;
+    sh:property _:b4b86d69aadcc ;
     sh:targetClass opda:EPCCertificate .
+
+opda:EPCCertificateInternalStructureShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
+    sh:property _:b2dc833c5927b, _:b3417af7331fc, _:bd199167bc04c ;
+    sh:targetClass opda:EPCCertificate .
+
+opda:FixturesListShape
+    rdf:type sh:NodeShape ;
+    rdfs:comment "Transaction-scoped fixtures-and-fittings list (ODR-0022 §4 / session-027 R4). The fixtures items are the opda:FixtureItemScheme concepts (referenced via dct:references); each item's inclusion in THIS sale is opda:inclusionStatus — a Mode/Relator of the sale transaction, NOT a Quality of opda:Property. price + comment (opda:disclosureDetail) accompany the inclusion. NO FixtureItem class is minted."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
+    dct:references opda:FixtureItemScheme ;
+    sh:property _:b2a06b4c2cea5, _:b6663b027a7bd, _:b95b063eeb5e7 ;
+    sh:targetClass opda:Transaction .
+
+opda:RiskAssessmentShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
+    sh:property _:b0e91a48d92e5, _:b15168883deab, _:b772310526c4d, _:b7c42a930a343, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
+    sh:targetClass opda:RiskAssessment .
 
 opda:SearchIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    sh:property _:b218dcfc815ed ;
+    sh:property _:b4b86d69aadcc ;
+    sh:targetClass opda:Search .
+
+opda:SearchInternalStructureShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
+    sh:property _:b4e52ad947663, _:bc550fb66b314, _:bf029c6f58782 ;
     sh:targetClass opda:Search .
 
 opda:SurveyIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    sh:property _:b218dcfc815ed ;
+    sh:property _:b4b86d69aadcc ;
+    sh:targetClass opda:Survey .
+
+opda:SurveyInternalStructureShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
+    sh:property _:b3c97a557c0c5, _:b6b5b0e29ea3a, _:ba7908ca342b4 ;
     sh:targetClass opda:Survey .
 
 opda:ValuationIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    sh:property _:b218dcfc815ed ;
+    sh:property _:b4b86d69aadcc ;
     sh:targetClass opda:Valuation .
 
-_:b218dcfc815ed
-    sh:message "Class-promoted descriptive Kind MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
+opda:ValuationInternalStructureShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
+    sh:property _:b2265bf8dda7a, _:b2b707597656f, _:bbf9d5f342465 ;
+    sh:targetClass opda:Valuation .
+
+_:b0e91a48d92e5
+    sh:datatype xsd:string ;
+    sh:message "RiskAssessment result / summary / recommendations are opda:disclosureDetail-grade strings (ODR-0008d Rule 1c); the specific field is carried by the instance-level dct:source, never a per-field property (ODR-0022 §Rules.6)."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b15168883deab
+    sh:in _:b966db75f50e4 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "RiskAssessment opda:actionAlertRating MUST be one of the opda:ActionAlertRatingScheme levels (integer 1–5, 1 Green … 5 Red; ODR-0008d Rule 1c / Rule 4)."@en ;
+    sh:path opda:actionAlertRating ;
+    sh:severity sh:Violation .
+
+_:b1a70b2e6bddc
+    rdf:first <https://w3id.org/opda/#peril/CoalMining> ;
+    rdf:rest _:b96703575cb3b .
+
+_:b2265bf8dda7a
+    sh:datatype xsd:string ;
+    sh:message "The valuation's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b274214672283
+    rdf:first <https://w3id.org/opda/#peril/Infrastructure> ;
+    rdf:rest _:bb61650fe8517 .
+
+_:b2a06b4c2cea5
+    sh:in _:b5d5e040db38f ;
+    sh:message "Fixtures-item opda:inclusionStatus MUST be one of the opda:InclusionStatusScheme values (Excluded / Included / None) — a sale-transaction Mode, never a Quality of opda:Property (ODR-0022 §4 / session-027 R4)."@en ;
+    sh:path opda:inclusionStatus ;
+    sh:severity sh:Violation .
+
+_:b2b707597656f
+    sh:message "The valuation's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:b2dc833c5927b
+    sh:message "The EPC certificate's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:b3417af7331fc
+    sh:datatype xsd:string ;
+    sh:message "The EPC certificate's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b34e33fc7dd32
+    rdf:first "3"^^xsd:integer ;
+    rdf:rest _:b377fdc219b6d .
+
+_:b377fdc219b6d
+    rdf:first "4"^^xsd:integer ;
+    rdf:rest _:bd95c2bd8d4f1 .
+
+_:b37e924fb98e8
+    rdf:first <https://w3id.org/opda/#peril/Transportation> ;
+    rdf:rest rdf:nil .
+
+_:b3c97a557c0c5
+    sh:datatype xsd:dateTime ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "The survey's issue date SHOULD be named via prov:generatedAtTime (IC component 3 of 3 — issue date; ODR-0008d Rule 3)."@en ;
+    sh:path prov:generatedAtTime ;
+    sh:severity sh:Info .
+
+_:b46300ac50a03
+    rdf:first <https://w3id.org/opda/#peril/Radon> ;
+    rdf:rest _:b6837c1c078b7 .
+
+_:b4aadc32eada9
+    rdf:first <https://w3id.org/opda/#peril/CoastalErosion> ;
+    rdf:rest _:bce9147191e84 .
+
+_:b4b86d69aadcc
+    sh:message "Class-promoted descriptive Information Object MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasGeneratedBy ;
     sh:severity sh:Violation .
 
-_:b218dcfc815ed
-    sh:message "Class-promoted descriptive Kind MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
+_:b4b86d69aadcc
+    sh:message "Class-promoted descriptive Information Object MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasGeneratedBy ;
     sh:severity sh:Violation .
 
-_:b218dcfc815ed
-    sh:message "Class-promoted descriptive Kind MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
+_:b4b86d69aadcc
+    sh:message "Class-promoted descriptive Information Object MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasGeneratedBy ;
     sh:severity sh:Violation .
 
-_:b218dcfc815ed
-    sh:message "Class-promoted descriptive Kind MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
+_:b4b86d69aadcc
+    sh:message "Class-promoted descriptive Information Object MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasGeneratedBy ;
     sh:severity sh:Violation .
 
-_:b218dcfc815ed
-    sh:message "Class-promoted descriptive Kind MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
+_:b4b86d69aadcc
+    sh:message "Class-promoted descriptive Information Object MUST carry prov:wasGeneratedBy to its issuing activity per ODR-0008 §Q4a three-criterion test (authority-retrieved provenance is the IC discriminator for class-promotion)."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasGeneratedBy ;
+    sh:severity sh:Violation .
+
+_:b4e52ad947663
+    sh:datatype xsd:dateTime ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "The search's issue date SHOULD be named via prov:generatedAtTime (IC component 3 of 3 — issue date; ODR-0008d Rule 3)."@en ;
+    sh:path prov:generatedAtTime ;
+    sh:severity sh:Info .
+
+_:b5d5e040db38f
+    rdf:first "Excluded" ;
+    rdf:rest _:bd3d1e4184856 .
+
+_:b6663b027a7bd
+    sh:datatype xsd:string ;
+    sh:message "Fixtures-item comment reuses opda:disclosureDetail (A-grade; ODR-0022 §4) — never a per-item comment property."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b6809218bb159
+    sh:datatype xsd:string ;
+    sh:message "The comparable record's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b6837c1c078b7
+    rdf:first <https://w3id.org/opda/#peril/GroundStability> ;
+    rdf:rest _:bf24de50bcd4e .
+
+_:b6b5b0e29ea3a
+    sh:datatype xsd:string ;
+    sh:message "The survey's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:b6db3fd4c8b68
+    sh:datatype xsd:dateTime ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "The comparable record's issue date SHOULD be named via prov:generatedAtTime (IC component 3 of 3 — issue date; ODR-0008d Rule 3)."@en ;
+    sh:path prov:generatedAtTime ;
+    sh:severity sh:Info .
+
+_:b6e9858217a8a
+    rdf:first "No" ;
+    rdf:rest _:b82d63f439682 .
+
+_:b772310526c4d
+    sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4)."@en ;
+    sh:node opda:RiskAssessmentShape ;
+    sh:path opda:hasSubAssessment ;
+    sh:severity sh:Violation .
+
+_:b7b4c48a9db7d
+    sh:message "The comparable record's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:b7c42a930a343
+    sh:in _:b6e9858217a8a ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "RiskAssessment opda:riskIndicator MUST be one of the opda:RiskIndicatorScheme values (No / Not known / Yes; ODR-0008d Rule 1c / Rule 4)."@en ;
+    sh:path opda:riskIndicator ;
+    sh:severity sh:Violation .
+
+_:b82d63f439682
+    rdf:first "Not known" ;
+    rdf:rest _:bb4e5cb23dbec .
+
+_:b95b063eeb5e7
+    sh:datatype xsd:decimal ;
+    sh:message "Fixtures-item opda:price is the shared monetary-amount property (one property reused across all items; ODR-0022 §4 — never one price property per item)."@en ;
+    sh:path opda:price ;
+    sh:severity sh:Info .
+
+_:b966db75f50e4
+    rdf:first "1"^^xsd:integer ;
+    rdf:rest _:be96fcf2d15e8 .
+
+_:b96703575cb3b
+    rdf:first <https://w3id.org/opda/#peril/NonCoalMining> ;
+    rdf:rest _:b46300ac50a03 .
+
+_:b9c9499786e2c
+    rdf:first <https://w3id.org/opda/#peril/Energy> ;
+    rdf:rest _:b274214672283 .
+
+_:ba7908ca342b4
+    sh:message "The survey's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:baff63cf55387
+    rdf:first "None" ;
+    rdf:rest rdf:nil .
+
+_:bb1b04773944a
+    rdf:first <https://w3id.org/opda/#peril/Flooding> ;
+    rdf:rest _:b1a70b2e6bddc .
+
+_:bb4e5cb23dbec
+    rdf:first "Yes" ;
+    rdf:rest rdf:nil .
+
+_:bb61650fe8517
+    rdf:first <https://w3id.org/opda/#peril/Planning> ;
+    rdf:rest _:b37e924fb98e8 .
+
+_:bbf9d5f342465
+    sh:datatype xsd:dateTime ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "The valuation's issue date SHOULD be named via prov:generatedAtTime (IC component 3 of 3 — issue date; ODR-0008d Rule 3)."@en ;
+    sh:path prov:generatedAtTime ;
+    sh:severity sh:Info .
+
+_:bc550fb66b314
+    sh:datatype xsd:string ;
+    sh:message "The search's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
+    sh:path opda:disclosureDetail ;
+    sh:severity sh:Info .
+
+_:bce9147191e84
+    rdf:first <https://w3id.org/opda/#peril/Climate> ;
+    rdf:rest _:b9c9499786e2c .
+
+_:bd199167bc04c
+    sh:datatype xsd:dateTime ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "The EPC certificate's issue date SHOULD be named via prov:generatedAtTime (IC component 3 of 3 — issue date; ODR-0008d Rule 3)."@en ;
+    sh:path prov:generatedAtTime ;
+    sh:severity sh:Info .
+
+_:bd3d1e4184856
+    rdf:first "Included" ;
+    rdf:rest _:baff63cf55387 .
+
+_:bd95c2bd8d4f1
+    rdf:first "5"^^xsd:integer ;
+    rdf:rest rdf:nil .
+
+_:bdefa496e9ecf
+    sh:message "RiskAssessment datasetAttribution REUSES prov:wasAttributedTo (ODR-0008d Rule 5 — the dataset's licensing/copyright Agent; opda:datasetAttribution is NEVER minted)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:be96fcf2d15e8
+    rdf:first "2"^^xsd:integer ;
+    rdf:rest _:b34e33fc7dd32 .
+
+_:bf029c6f58782
+    sh:message "The search's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path prov:wasAttributedTo ;
+    sh:severity sh:Info .
+
+_:bf24de50bcd4e
+    rdf:first <https://w3id.org/opda/#peril/ContaminatedLand> ;
+    rdf:rest _:b4aadc32eada9 .
+
+_:bf41d51b5c7cc
+    sh:in _:bb1b04773944a ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "RiskAssessment opda:peril MUST be one of the 12 opda:PerilScheme concepts (a dereferenceable peril, never an opaque string; ODR-0008d Rule 1c / Rule 2)."@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path opda:peril ;
     sh:severity sh:Violation .

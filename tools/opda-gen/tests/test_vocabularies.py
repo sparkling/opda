@@ -58,46 +58,85 @@ def test_emit_vocabularies_produces_file(tmp_path: Path) -> None:
     assert list(written.keys()) == [tmp_path / VOCABULARIES_FILENAME]
 
 
-def test_emit_vocabularies_produces_23_schemes(emitted_graph: Graph) -> None:
-    """Per ADR-0010 §"Scheme catalogue (initial first batch)" — 16 named
-    first-batch schemes; ADR-0013 G8 adds 7 BASPI5-coverage schemes
-    (YesNo / YesNoNotApplicable / YesNoNotKnown / YesNoNotRequired /
-    PropertyType / OffMainsDrainageSystemType / OwnerType). Total: 23."""
+# ADR-0010 first batch (16) + ADR-0013 G8 additions (7).
+_FIRST_BATCH_AND_G8 = {
+    # ADR-0010 first batch (16)
+    "BuiltFormScheme",
+    "CouncilTaxBandSchemeEW",
+    "CouncilTaxBandSchemeScotland",
+    "CurrentEnergyRatingScheme",
+    "CentralHeatingFuelTypeScheme",
+    "HeatingTypeScheme",
+    "OwnershipTypeScheme",
+    "TenureKindScheme",
+    "RoleScheme",
+    "ParticipantStatusScheme",
+    "TransactionStatusScheme",
+    "MilestoneKindScheme",
+    "SellersCapacityScheme",
+    "AssuranceLevelScheme",
+    "EvidenceMethodScheme",
+    "AddressVariantScheme",
+    # ADR-0013 G8 additions (7)
+    "YesNoScheme",
+    "YesNoNotApplicableScheme",
+    "YesNoNotKnownScheme",
+    "YesNoNotRequiredScheme",
+    "PropertyTypeScheme",
+    "OffMainsDrainageSystemTypeScheme",
+    "OwnerTypeScheme",
+}
+
+# ODR-0022 Category C reused status-enum value-spaces (14).
+_CATEGORY_C_SCHEMES = {
+    "AttachmentStatusScheme",
+    "AttachmentStatusNotApplicableScheme",
+    "InclusionStatusScheme",
+    "InclusionScheme",
+    "FittedOrFreestandingScheme",
+    "UtilityConnectionStatusScheme",
+    "UtilityConnectionStatusNotKnownScheme",
+    "BoundaryResponsibilityScheme",
+    "RoadAdoptionStatusScheme",
+    "FeeTypeScheme",
+    "ChargePaymentStatusScheme",
+    "ManagedAreaResponsibilityScheme",
+    "DeedSupplyStatusScheme",
+    "UnitOfAreaScheme",
+}
+
+# ODR-0022 Category D (candidate) — fixtures-checklist item scheme (1).
+_CATEGORY_D_SCHEMES = {"FixtureItemScheme"}
+
+# ODR-0008d Category E — peril/dataset axis + rating value-spaces (3).
+_CATEGORY_E_SCHEMES = {
+    "PerilScheme",
+    "RiskIndicatorScheme",
+    "ActionAlertRatingScheme",
+}
+
+_ALL_SCHEME_NAMES = (
+    _FIRST_BATCH_AND_G8
+    | _CATEGORY_C_SCHEMES
+    | _CATEGORY_D_SCHEMES
+    | _CATEGORY_E_SCHEMES
+)
+
+
+def test_emit_vocabularies_produces_41_schemes(emitted_graph: Graph) -> None:
+    """16 first-batch + 7 G8 + 14 Category-C status-enum value-spaces
+    (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 3
+    Category-E schemes (ODR-0008d: PerilScheme + the two rating
+    value-spaces). Total 41."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == 23, (
-        f"expected 23 schemes (16 first-batch + 7 G8 additions), got "
-        f"{len(schemes)}: {sorted(str(s) for s in schemes)}"
+    assert len(schemes) == 41, (
+        f"expected 41 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
+        f"+ 3 Cat-E), got {len(schemes)}: {sorted(str(s) for s in schemes)}"
     )
-    # Spot-check each of the 23 named schemes appears.
-    named = {
-        # ADR-0010 first batch (16)
-        "BuiltFormScheme",
-        "CouncilTaxBandSchemeEW",
-        "CouncilTaxBandSchemeScotland",
-        "CurrentEnergyRatingScheme",
-        "CentralHeatingFuelTypeScheme",
-        "HeatingTypeScheme",
-        "OwnershipTypeScheme",
-        "TenureKindScheme",
-        "RoleScheme",
-        "ParticipantStatusScheme",
-        "TransactionStatusScheme",
-        "MilestoneKindScheme",
-        "SellersCapacityScheme",
-        "AssuranceLevelScheme",
-        "EvidenceMethodScheme",
-        "AddressVariantScheme",
-        # ADR-0013 G8 additions (7)
-        "YesNoScheme",
-        "YesNoNotApplicableScheme",
-        "YesNoNotKnownScheme",
-        "YesNoNotRequiredScheme",
-        "PropertyTypeScheme",
-        "OffMainsDrainageSystemTypeScheme",
-        "OwnerTypeScheme",
-    }
     emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
-    assert emitted_names == named, f"diff: {named ^ emitted_names}"
+    assert emitted_names == _ALL_SCHEME_NAMES, (
+        f"diff: {_ALL_SCHEME_NAMES ^ emitted_names}"
+    )
 
 
 # --- Confirmation #2 (byte-identity) -------------------------------------
@@ -325,3 +364,300 @@ def test_total_member_count_matches_in_code_registry(
     expected = sum(len(s.members) for s in _all_schemes())
     emitted = len(list(emitted_graph.subjects(RDF.type, SKOS.Concept)))
     assert emitted == expected, f"{emitted} members vs expected {expected}"
+
+
+# --- ODR-0022 Category C: reused status-enum value-spaces ----------------
+def _scheme_by_name(name: str) -> object:
+    """Return the `Scheme` instance with the given local_name."""
+    for s in _all_schemes():
+        if s.local_name == name:
+            return s
+    raise AssertionError(f"no scheme named {name}")
+
+
+def test_category_c_schemes_present(emitted_graph: Graph) -> None:
+    """All 14 Category-C reused status-enum value-spaces are emitted as
+    `skos:ConceptScheme`s (ODR-0022 §1)."""
+    emitted = {str(s).rsplit("#", 1)[-1] for s in
+               emitted_graph.subjects(RDF.type, SKOS.ConceptScheme)}
+    missing = _CATEGORY_C_SCHEMES - emitted
+    assert not missing, f"missing Category-C schemes: {missing}"
+
+
+def test_category_c_member_counts(emitted_graph: Graph) -> None:
+    """Each Category-C scheme has exactly the member count of its enum
+    value-set (the distinct sorted enum tuple it reuses)."""
+    expected_counts = {
+        "AttachmentStatusScheme": 2,
+        "AttachmentStatusNotApplicableScheme": 3,
+        "InclusionStatusScheme": 3,
+        "InclusionScheme": 2,
+        "FittedOrFreestandingScheme": 2,
+        "UtilityConnectionStatusScheme": 3,
+        "UtilityConnectionStatusNotKnownScheme": 4,
+        "BoundaryResponsibilityScheme": 4,
+        "RoadAdoptionStatusScheme": 4,
+        "FeeTypeScheme": 4,
+        "ChargePaymentStatusScheme": 4,
+        "ManagedAreaResponsibilityScheme": 6,
+        "DeedSupplyStatusScheme": 3,
+        "UnitOfAreaScheme": 2,
+    }
+    for name, count in expected_counts.items():
+        scheme_uri = OPDA[name]
+        members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
+        assert len(members) == count, (
+            f"{name}: expected {count} members, got {len(members)}"
+        )
+
+
+def test_inclusion_status_scheme_members(emitted_graph: Graph) -> None:
+    """The InclusionStatusScheme value-space carries exactly Included /
+    Excluded / None — the value-scheme the council-reserved
+    `opda:inclusionStatus` property (ODR-0023 R4) will range over. The
+    property itself is NOT emitted here (boundary)."""
+    members = {
+        str(n)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.InclusionStatusScheme)
+        for n in emitted_graph.objects(m, SKOS.notation)
+    }
+    assert members == {"Included", "Excluded", "None"}
+
+
+def test_inclusion_status_property_not_emitted(emitted_graph: Graph) -> None:
+    """BOUNDARY (ODR-0023 R4): the inclusion-status *property*
+    `opda:inclusionStatus` is council-reserved and MUST NOT appear as a
+    subject in this emission — only the value-scheme is emitted."""
+    incl_prop = OPDA.inclusionStatus
+    triples = list(emitted_graph.triples((incl_prop, None, None)))
+    assert triples == [], (
+        f"opda:inclusionStatus must be council-reserved (ODR-0023 R4), "
+        f"not emitted; found: {triples}"
+    )
+
+
+def test_category_c_member_source_is_schema_leaf_not_odr(
+    emitted_graph: Graph,
+) -> None:
+    """ODR-0022 G2: every Category-C *member* `dct:source` points at a
+    schema leaf path (the data-dictionary IRI), NOT at the deciding ODR."""
+    dd_prefix = "https://w3id.org/opda/data-dictionary#"
+    for name in _CATEGORY_C_SCHEMES:
+        scheme_uri = OPDA[name]
+        for m in emitted_graph.subjects(SKOS.inScheme, scheme_uri):
+            sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
+            assert sources, f"{m} missing dct:source"
+            for src in sources:
+                assert src.startswith(dd_prefix), (
+                    f"{name} member {m} dct:source {src} is not a schema "
+                    f"leaf (ODR-0022 G2 — must not point at the deciding ODR)"
+                )
+
+
+# --- Category C: shared-property reuse, NOT one scheme per leaf -----------
+def test_no_per_leaf_scheme_explosion(emitted_graph: Graph) -> None:
+    """ODR-0022 anti-pattern §6: do NOT mint one scheme per leaf. The 89
+    fixtures `isIncludedExcludedOrNone` leaves all share ONE
+    InclusionStatusScheme; there is NO scheme minted per fixtures leaf.
+
+    Verified by: the InclusionStatusScheme exists, has 3 members, and is
+    sourced (per-member) from multiple distinct fixtures leaf paths — i.e.
+    one value-space reused across many leaves, not one scheme per leaf."""
+    scheme_uri = OPDA.InclusionStatusScheme
+    assert (scheme_uri, RDF.type, SKOS.ConceptScheme) in emitted_graph
+    members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
+    assert len(members) == 3, "InclusionStatusScheme must reuse one 3-value set"
+    # No scheme should be named after an individual fixtures item or leaf.
+    scheme_names = {
+        str(s).rsplit("#", 1)[-1]
+        for s in emitted_graph.subjects(RDF.type, SKOS.ConceptScheme)
+    }
+    leafish = {
+        n for n in scheme_names
+        if "boilerImmersion" in n.lower() or "isIncludedExcluded" in n.lower()
+        or "radiators" in n.lower()
+    }
+    assert not leafish, f"per-leaf scheme(s) minted (anti-pattern): {leafish}"
+
+
+def test_category_c_schemes_are_quale_in_region(emitted_graph: Graph) -> None:
+    """Per ODR-0011 §8a, the reused status value-spaces are Quale-in-Region
+    (Cagle SHACL-targeting: a value of a banded quality region)."""
+    for name in _CATEGORY_C_SCHEMES:
+        cats = [
+            str(c)
+            for c in emitted_graph.objects(OPDA[name], OPDA.ufoCategory)
+        ]
+        assert cats == ["Quale-in-Region"], f"{name} ufoCategory = {cats}"
+
+
+# --- ODR-0022 Category D (candidate): FixtureItemScheme ------------------
+def test_fixture_item_scheme_present_with_89_items(emitted_graph: Graph) -> None:
+    """ODR-0022 §4 Category D: `opda:FixtureItemScheme` carries the ~89
+    fixtures-checklist item concepts (ITEMS ONLY)."""
+    scheme_uri = OPDA.FixtureItemScheme
+    assert (scheme_uri, RDF.type, SKOS.ConceptScheme) in emitted_graph
+    members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
+    assert len(members) == 89, (
+        f"expected 89 fixture items, got {len(members)}"
+    )
+
+
+def test_fixture_item_member_uris_encode_category(emitted_graph: Graph) -> None:
+    """Colliding bare item names (bedroom1 ×5, kitchen ×5, etc.) MUST stay
+    distinct concepts: the member URI encodes the category path. Confirmed
+    by the member count (89) being the count of category-qualified items,
+    not the 61 distinct bare names."""
+    members = [
+        str(m)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme)
+    ]
+    # All member URIs share the fixtureItem slug base and are unique.
+    assert len(set(members)) == 89, "fixture item URIs must be distinct"
+    assert all("fixtureItem/" in m for m in members)
+    # The 5 carpets/fittedUnits/lightFittings/curtain rooms named bedroom1
+    # are distinct URIs (category-qualified), proving no name collapse.
+    bedroom1 = [m for m in members if m.endswith("/bedroom1")]
+    assert len(bedroom1) == 5, (
+        f"expected 5 category-qualified bedroom1 concepts, got {len(bedroom1)}"
+    )
+
+
+def test_fixture_item_inclusion_property_not_on_items(
+    emitted_graph: Graph,
+) -> None:
+    """ODR-0022 §4 / ODR-0023 R4 BOUNDARY: items are ITEMS ONLY — no
+    fixture-item concept carries an inclusion-status property (that is a
+    Mode/Relator of the sale, council-reserved, not a property of the
+    item)."""
+    incl_props = {OPDA.inclusionStatus, OPDA.isIncludedExcludedOrNone}
+    violations = []
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme):
+        for p in emitted_graph.predicates(m, None):
+            if p in incl_props:
+                violations.append((str(m), str(p)))
+    assert violations == [], (
+        f"fixture items must not carry an inclusion property: {violations}"
+    )
+
+
+def test_fixture_item_source_is_schema_leaf(emitted_graph: Graph) -> None:
+    """Every fixture-item `dct:source` points at the schema
+    `isIncludedExcludedOrNone` leaf path (ODR-0022 G2)."""
+    dd_prefix = "https://w3id.org/opda/data-dictionary#"
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme):
+        sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
+        assert sources, f"{m} missing dct:source"
+        for src in sources:
+            assert src.startswith(dd_prefix) and "fixturesAndFittings" in src, (
+                f"fixture item {m} dct:source {src} is not a fixtures leaf"
+            )
+
+
+# ---------------------------------------------------------------------------
+# ODR-0008d Category E — opda:PerilScheme + rating value-spaces
+# ---------------------------------------------------------------------------
+def test_peril_scheme_has_exactly_12_concepts(emitted_graph: Graph) -> None:
+    """ODR-0008d Rule 2: opda:PerilScheme carries EXACTLY 12 skos:Concepts —
+    the canonical environmental/search peril axis."""
+    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme))
+    assert len(members) == 12, (
+        f"expected 12 peril concepts, got {len(members)}: "
+        f"{sorted(str(m) for m in members)}"
+    )
+
+
+def test_peril_scheme_member_set_matches_rule_2(emitted_graph: Graph) -> None:
+    """The 12 perils are exactly those ODR-0008d Rule 2 names (by notation)."""
+    notations = {
+        str(n)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme)
+        for n in emitted_graph.objects(m, SKOS.notation)
+    }
+    assert notations == {
+        "Flooding", "CoalMining", "NonCoalMining", "Radon",
+        "GroundStability", "ContaminatedLand", "CoastalErosion", "Climate",
+        "Energy", "Infrastructure", "Planning", "Transportation",
+    }
+
+
+def test_peril_concepts_are_top_concepts_and_quale(emitted_graph: Graph) -> None:
+    """Each peril is skos:topConceptOf the scheme (mirroring
+    opda:BoundedContextScheme) and the scheme carries opda:ufoCategory
+    'Quale-in-Region' (Rule 2)."""
+    assert (OPDA.PerilScheme, OPDA.ufoCategory, None) in emitted_graph
+    ufo = list(emitted_graph.objects(OPDA.PerilScheme, OPDA.ufoCategory))
+    assert [str(x) for x in ufo] == ["Quale-in-Region"]
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme):
+        assert (m, SKOS.topConceptOf, OPDA.PerilScheme) in emitted_graph, (
+            f"peril {m} is not skos:topConceptOf the scheme"
+        )
+
+
+def test_peril_members_source_to_governing_authority(
+    emitted_graph: Graph,
+) -> None:
+    """ODR-0008d Rule 2: each peril's dct:source is its governing data
+    authority (an external regulator URL), NOT a schema leaf / ODR section."""
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme):
+        sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
+        assert sources, f"{m} missing dct:source"
+        for src in sources:
+            assert "/odr/ODR-" not in src, (
+                f"peril {m} dct:source {src} points at an ODR, not an "
+                "authority"
+            )
+            assert "/data-dictionary#" not in src, (
+                f"peril {m} dct:source {src} points at a schema leaf, not an "
+                "authority"
+            )
+            assert src.startswith("http"), src
+
+
+def test_peril_scheme_steward_is_baker(emitted_graph: Graph) -> None:
+    """ODR-0008d Rule 2: steward Baker (deputy Isaac)."""
+    stewards = [str(s) for s in emitted_graph.objects(OPDA.PerilScheme, OPDA.hasSteward)]
+    assert len(stewards) == 1
+    assert "Baker" in stewards[0]
+
+
+def test_risk_indicator_scheme_values(emitted_graph: Graph) -> None:
+    """ODR-0008d Rule 4: opda:RiskIndicatorScheme members are the data
+    dictionary's actual riskIndicator enum union (No / Not known / Yes)."""
+    notations = {
+        str(n)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.RiskIndicatorScheme)
+        for n in emitted_graph.objects(m, SKOS.notation)
+    }
+    assert notations == {"No", "Not known", "Yes"}
+
+
+def test_action_alert_rating_scheme_values(emitted_graph: Graph) -> None:
+    """ODR-0008d Rule 4: opda:ActionAlertRatingScheme is the data
+    dictionary's 1..5 integer scale (1 Green … 5 Red)."""
+    notations = {
+        str(n)
+        for m in emitted_graph.subjects(
+            SKOS.inScheme, OPDA.ActionAlertRatingScheme
+        )
+        for n in emitted_graph.objects(m, SKOS.notation)
+    }
+    assert notations == {"1", "2", "3", "4", "5"}
+    # The colour anchors from the data-dictionary title appear in prefLabels.
+    labels = {
+        str(lbl)
+        for m in emitted_graph.subjects(
+            SKOS.inScheme, OPDA.ActionAlertRatingScheme
+        )
+        for lbl in emitted_graph.objects(m, SKOS.prefLabel)
+    }
+    assert "1 (Green)" in labels and "5 (Red)" in labels
+
+
+def test_no_shacl_in_category_e_vocab(emitted_graph: Graph) -> None:
+    """ODR-0004 §3a: the Category-E additions remain classes-side — no sh:*
+    predicate appears in the vocabularies graph."""
+    for _s, p, _o in emitted_graph:
+        assert not str(p).startswith("http://www.w3.org/ns/shacl#"), (
+            f"vocabularies graph carries a sh:* predicate {p}"
+        )

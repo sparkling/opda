@@ -31,6 +31,7 @@ from pathlib import Path
 
 from opda_gen.emitters.annotations import emit_annotations
 from opda_gen.emitters.classes import emit_all_modules
+from opda_gen.emitters.contexts import emit_contexts
 from opda_gen.emitters.foundation import emit_foundation
 from opda_gen.emitters.shapes import emit_shapes
 from opda_gen.emitters.vocabularies import emit_vocabularies
@@ -52,6 +53,7 @@ def run(reference_dir: Path) -> list[str]:
         out_dir = Path(tmp)
         emit_foundation(out_dir)
         emit_vocabularies(out_dir)
+        emit_contexts(out_dir)
         emit_all_modules(out_dir)
         emit_shapes(out_dir)
         emit_annotations(out_dir)

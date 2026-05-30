@@ -58,9 +58,13 @@ def test_emit_baspi5_produces_file(tmp_path: Path) -> None:
 
 
 def test_emit_profile_rejects_unknown_overlay(tmp_path: Path) -> None:
-    """Unknown overlay names raise ValueError per ADR-0013 catalogue."""
+    """Unknown / out-of-scope overlay names raise ValueError.
+
+    `baspi4` is a legacy edition explicitly OUT OF SCOPE per ADR-0029
+    (OPDA validates current-edition data only) — it must not be emittable.
+    """
     with pytest.raises(ValueError, match="unknown overlay"):
-        emit_profile("ta6", tmp_path)
+        emit_profile("baspi4", tmp_path)
 
 
 # --- Confirmation #2 (byte-identity) -------------------------------------
@@ -95,9 +99,11 @@ def test_baspi5_ontology_header(emitted_baspi5: Graph) -> None:
 
 # --- ADR-0013 §Confirmation #5 + ODR-0010 §Q1 ----------------------------
 def test_baspi5_validation_context_reification(emitted_baspi5: Graph) -> None:
-    """An `opda:ValidationContext` instance exists per ODR-0010 §Q1 with
-    5 required properties: opda:profileURI, opda:requires,
-    opda:overlaysContext, opda:sourcedFrom, opda:formVersion."""
+    """An `opda:ValidationContext` instance exists per ODR-0010 §Q1.
+
+    S022 (ADR-0026/0029 amendments) dropped opda:requires +
+    opda:overlaysContext; the node keeps opda:profileURI +
+    opda:sourcedFrom + opda:formVersion."""
     contexts = list(
         emitted_baspi5.subjects(RDF.type, OPDA.ValidationContext)
     )
@@ -105,26 +111,29 @@ def test_baspi5_validation_context_reification(emitted_baspi5: Graph) -> None:
     ctx = contexts[0]
     assert list(emitted_baspi5.objects(ctx, OPDA.profileURI)), \
         "ValidationContext missing opda:profileURI"
-    assert list(emitted_baspi5.objects(ctx, OPDA.requires)), \
-        "ValidationContext missing opda:requires"
-    assert list(emitted_baspi5.objects(ctx, OPDA.overlaysContext)), \
-        "ValidationContext missing opda:overlaysContext"
     assert list(emitted_baspi5.objects(ctx, OPDA.sourcedFrom)), \
         "ValidationContext missing opda:sourcedFrom"
     assert list(emitted_baspi5.objects(ctx, OPDA.formVersion)), \
         "ValidationContext missing opda:formVersion"
 
 
-def test_baspi5_validation_context_requires_baseline_classes(
-    emitted_baspi5: Graph,
-) -> None:
-    """opda:requires lists the core BASPI5-bound OPDA classes."""
-    contexts = list(emitted_baspi5.subjects(RDF.type, OPDA.ValidationContext))
-    ctx = contexts[0]
-    required = set(emitted_baspi5.objects(ctx, OPDA.requires))
-    for cls in (OPDA.Property, OPDA.Address, OPDA.LegalEstate,
-                OPDA.Seller, OPDA.Buyer):
-        assert cls in required, f"opda:requires missing {cls}"
+def test_baspi5_retired_predicates_absent(emitted_baspi5: Graph) -> None:
+    """S022 retired opda:requires + opda:overlaysContext from the profile."""
+    assert not list(emitted_baspi5.subject_objects(OPDA.requires)), \
+        "opda:requires should be retired by S022"
+    assert not list(emitted_baspi5.subject_objects(OPDA.overlaysContext)), \
+        "opda:overlaysContext should be retired by S022"
+
+
+def test_baspi5_community_dct_subject(emitted_baspi5: Graph) -> None:
+    """S022: the form graph carries exactly one dct:subject → its industry
+    context concept (Estate Agency for BASPI5)."""
+    from rdflib.namespace import DCTERMS
+
+    profile_iri = URIRef("https://w3id.org/opda/profiles/baspi5")
+    subjects = list(emitted_baspi5.objects(profile_iri, DCTERMS.subject))
+    assert subjects == [OPDA.EstateAgencyContext], \
+        f"expected one dct:subject → EstateAgencyContext, got {subjects}"
 
 
 # --- ADR-0013 §Confirmation #6 — dct:source form-question IRIs -----------
@@ -283,3 +292,38 @@ def test_baspi5_emits_known_question_anchors(emitted_baspi5: Graph) -> None:
         assert stale not in emitted_anchors, (
             f"G19 stale anchor {stale} still present"
         )
+
+
+# --- ADR-0029 §Confirmation — profile rollout (31 in-scope) --------------
+def test_profile_catalogue_coverage() -> None:
+    """ADR-0029: 31 in-scope profiles (baspi5 + 14 active-main + 16 ext);
+    the 3 legacy editions (baspi4/nts/ntsl) are explicitly absent."""
+    from opda_gen.emitters.profiles import PROFILE_FILENAMES
+
+    assert len(PROFILE_FILENAMES) == 31, sorted(PROFILE_FILENAMES)
+    for legacy in ("baspi4", "nts", "ntsl"):
+        assert legacy not in PROFILE_FILENAMES, f"legacy {legacy} must be out of scope"
+    for active in ("baspi5", "ta6", "piq", "fme1", "nts2", "ntsl2", "as", "tf"):
+        assert active in PROFILE_FILENAMES, f"active {active} missing"
+
+
+def test_every_profile_has_single_community_tag(tmp_path: Path) -> None:
+    """ADR-0029 community-tag test: every emitted form graph carries exactly
+    one dct:subject -> a concept in opda:BoundedContextScheme."""
+    from opda_gen.emitters.profiles import PROFILE_FILENAMES, emit_profile
+
+    scheme_concepts = {
+        OPDA.EstateAgencyContext, OPDA.ConveyancingContext,
+        OPDA.MortgageLendingContext, OPDA.SurveyingContext,
+        OPDA.PropertyDataServicesContext, OPDA.PropertyTechnologyContext,
+    }
+    for overlay in PROFILE_FILENAMES:
+        written = emit_profile(overlay, tmp_path)
+        path = next(iter(written))
+        g = Graph()
+        g.parse(path, format="turtle")
+        prof = URIRef(f"https://w3id.org/opda/profiles/{overlay}")
+        subjects = list(g.objects(prof, DCTERMS.subject))
+        assert len(subjects) == 1, f"{overlay}: expected 1 dct:subject, got {subjects}"
+        assert subjects[0] in scheme_concepts, \
+            f"{overlay}: {subjects[0]} not a bounded-context concept"

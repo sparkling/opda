@@ -33,6 +33,7 @@ from pathlib import Path
 
 from opda_gen.emitters.annotations import emit_annotations
 from opda_gen.emitters.classes import emit_all_modules
+from opda_gen.emitters.contexts import emit_contexts
 from opda_gen.emitters.foundation import emit_foundation
 from opda_gen.emitters.shapes import emit_shapes
 from opda_gen.emitters.vocabularies import emit_vocabularies
@@ -99,6 +100,7 @@ def test_byte_identity_runner_reports_match() -> None:
         ref = Path(ref_dir)
         emit_foundation(ref)
         emit_vocabularies(ref)
+        emit_contexts(ref)
         emit_all_modules(ref)
         emit_shapes(ref)
         emit_annotations(ref)

@@ -168,6 +168,32 @@ _DESNZ_EPC_BANDS = URIRef(
     "let-of-dwellings"
 )
 
+# --- ODR-0008d Category-E governing-authority dct:source anchors ----------
+# Rule 2 names each peril's governing data authority verbatim; the per-peril
+# `dct:source` resolves to that authority's home (the authority that
+# generates the dataset behind the search), NOT a schema leaf path — a peril
+# is a regulator-governed reference concept (ODR-0022 §3 regulatory-salience
+# carve-out: a regulator-named value-space carries `dct:source` to the
+# governing authority).
+_ENVIRONMENT_AGENCY = URIRef("https://www.gov.uk/government/organisations/environment-agency")
+_COAL_AUTHORITY = URIRef("https://www.gov.uk/government/organisations/the-coal-authority")
+_UKHSA = URIRef("https://www.gov.uk/government/organisations/uk-health-security-agency")
+_BGS = URIRef("https://www.bgs.ac.uk/")
+_DESNZ = URIRef("https://www.gov.uk/government/organisations/department-for-energy-security-and-net-zero")
+_LOCAL_AUTHORITY = URIRef("https://www.gov.uk/find-local-council")
+_GROUNDSURE = URIRef("https://www.groundsure.com/")
+_LANDMARK = URIRef("https://www.landmark.co.uk/")
+
+# Category-E ratifying ODR-section anchor (the scheme-level `dct:source`,
+# matching the §8a-anchor convention every other scheme uses for its
+# scheme-level source; the per-member sources are the governing authorities).
+_ODR_0008D_RULE_2 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0008d#section-Rule-2"
+)
+_ODR_0008D_RULE_4 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0008d#section-Rule-4"
+)
+
 
 def _dd_source(leaf_path: str) -> URIRef:
     """Return a per-member `dct:source` IRI pointing at the data-dictionary
@@ -255,6 +281,17 @@ class Member:
     member_source: URIRef
     slug: str | None = None
     derived_from: URIRef | None = None
+    # `top_concept_of` (optional) emits `skos:topConceptOf <scheme>` (and the
+    # reciprocal is NOT materialised — the flat-scheme convention used by
+    # opda:BoundedContextScheme, which this is mirrored from for the
+    # ODR-0008d opda:PerilScheme). Default False preserves the byte output of
+    # every pre-existing scheme.
+    top_concept_of: bool = False
+    # `narrower` (optional) is a tuple of *member notations within the same
+    # scheme* this concept is `skos:narrower` to (its sub-perils). Used only
+    # by opda:PerilScheme (ODR-0008d Rule 2 — the peril → sub-peril taxonomy
+    # axis, distinct from the opda:hasSubAssessment result-recursion axis).
+    narrower: tuple[str, ...] = ()
 
     def uri_slug(self) -> str:
         if self.slug is not None:
@@ -1343,6 +1380,996 @@ def _owner_type_scheme() -> Scheme:
     )
 
 
+# --- ODR-0008d Category E: opda:PerilScheme (peril/dataset axis) ----------
+#
+# ODR-0008d Rule 2: a `skos:ConceptScheme` mirroring opda:BoundedContextScheme
+# (emitters/contexts.py) member-for-member — 12 `skos:Concept`s, each with
+# skos:prefLabel / skos:definition / skos:inScheme / skos:topConceptOf
+# (flat-scheme convention, as BoundedContextScheme) / opda:ufoCategory
+# "Quale-in-Region" / `dct:source` → its governing data authority. Steward
+# Baker (deputy Isaac). The peril MUST be a dereferenceable concept (a
+# lender's mortgage condition *names* "a satisfactory coal-mining search"),
+# never an opaque string, never an rdfs:subClassOf hierarchy.
+#
+# Sub-perils (Rule 2 "skos:narrower to its sub-perils ... where applicable";
+# Rule 4 "peril → sub-perils uses skos:narrower"): the data dictionary
+# attests sub-results only as instance-level free-text `subCategory` strings
+# under `riskSubcategories[]` (NO enumerated sub-peril value-set), so there
+# are NO concrete sub-peril concepts to mint — minting fictional sub-peril
+# IRIs would violate faithfulness + the ODR-0022 Category-G deferral. All 12
+# named perils are therefore top concepts with no skos:narrower; the
+# per-result sub-category recursion is carried by opda:hasSubAssessment
+# (Rule 4's distinct result-recursion axis), not by TBox SKOS concepts.
+def _peril_scheme() -> Scheme:
+    """Build `opda:PerilScheme` — the 12 ODR-0008d Rule-2 peril concepts.
+
+    Mirrors opda:BoundedContextScheme member-for-member: a flat scheme whose
+    members are each `skos:topConceptOf` it. Per-member `dct:source` is the
+    governing data authority Rule 2 names; `opda:ufoCategory` is
+    "Quale-in-Region" per Rule 2.
+    """
+    # (notation, pref_label, definition, governing-authority source)
+    members_data = [
+        (
+            "Flooding",
+            "Flooding",
+            "Risk of flooding of any type (river, surface-water, coastal, "
+            "groundwater) at the property, governed by Environment Agency "
+            "flood data.",
+            _ENVIRONMENT_AGENCY,
+        ),
+        (
+            "CoalMining",
+            "Coal Mining",
+            "Risk arising from past or present coal-mining activity, "
+            "governed by the Coal Authority (a satisfactory coal-mining "
+            "search is a standard lender mortgage condition).",
+            _COAL_AUTHORITY,
+        ),
+        (
+            "NonCoalMining",
+            "Non-Coal Mining",
+            "Risk arising from past or present non-coal mineral extraction "
+            "(tin, clay, limestone, etc.), governed by BGS / commercial "
+            "search-provider mining data.",
+            _BGS,
+        ),
+        (
+            "Radon",
+            "Radon",
+            "Risk from naturally-occurring radon gas, governed by the UK "
+            "Health Security Agency (UKHSA) radon-affected-area data.",
+            _UKHSA,
+        ),
+        (
+            "GroundStability",
+            "Ground Stability",
+            "Risk from ground instability (subsidence, landslip, shrink-swell "
+            "clay, dissolution), governed by British Geological Survey (BGS) "
+            "ground-stability data.",
+            _BGS,
+        ),
+        (
+            "ContaminatedLand",
+            "Contaminated Land",
+            "Risk from land contamination (former industrial / landfill use), "
+            "governed by the local authority Part 2A register and "
+            "commercial environmental datasets.",
+            _LOCAL_AUTHORITY,
+        ),
+        (
+            "CoastalErosion",
+            "Coastal Erosion",
+            "Risk from coastal erosion and shoreline change, governed by "
+            "Environment Agency / Shoreline Management Plan data.",
+            _ENVIRONMENT_AGENCY,
+        ),
+        (
+            "Climate",
+            "Climate",
+            "Climate-change-related physical risk (heat, drought, future "
+            "flood projection), governed by commercial climate-analytics "
+            "datasets (Groundsure).",
+            _GROUNDSURE,
+        ),
+        (
+            "Energy",
+            "Energy",
+            "Energy-infrastructure proximity risk (wind turbines, solar "
+            "farms, fracking / shale licences), governed by DESNZ "
+            "energy-infrastructure data.",
+            _DESNZ,
+        ),
+        (
+            "Infrastructure",
+            "Infrastructure",
+            "Major-infrastructure-project proximity risk (HS2, road / rail "
+            "schemes, energy projects), governed by commercial "
+            "infrastructure datasets (Landmark).",
+            _LANDMARK,
+        ),
+        (
+            "Planning",
+            "Planning",
+            "Planning-application and planning-constraint risk in the "
+            "vicinity of the property, governed by the local planning "
+            "authority.",
+            _LOCAL_AUTHORITY,
+        ),
+        (
+            "Transportation",
+            "Transportation",
+            "Transport-scheme proximity risk (railways, roads, airports), "
+            "governed by commercial transportation datasets (Landmark).",
+            _LANDMARK,
+        ),
+    ]
+    return Scheme(
+        local_name="PerilScheme",
+        slug_base="peril",
+        pref_label="Environmental Peril",
+        title="Environmental / search peril dataset axis",
+        definition=(
+            "The 12 environmental / local-authority search perils a "
+            "property's authority-retrieved risk assessments (opda:Risk"
+            "Assessment) are individuated by. Each peril is a dereferenceable "
+            "concept governed by a named data authority (ODR-0008d Rule 2); "
+            "the peril is NEVER an opaque string and NEVER an rdfs:subClassOf "
+            "hierarchy (a delimited value-space is a scheme, not a class "
+            "tree)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Mirrors opda:Bounded"
+            "ContextScheme member-for-member (a flat scheme; each concept is "
+            "skos:topConceptOf). The peril → sub-peril taxonomy axis uses "
+            "skos:narrower (ODR-0008d Rule 4); the data dictionary attests no "
+            "enumerated sub-peril value-set, so all 12 perils are top "
+            "concepts and the per-result recursion is carried by "
+            "opda:hasSubAssessment, not by TBox concepts."
+        ),
+        steward="Baker (deputy Isaac) (PerilScheme steward per ODR-0008d Rule 2)",
+        scheme_source=_ODR_0008D_RULE_2,
+        members=tuple(
+            Member(
+                notation=notation,
+                pref_label=pref_label,
+                definition=definition,
+                member_source=source,
+                top_concept_of=True,
+            )
+            for notation, pref_label, definition, source in members_data
+        ),
+    )
+
+
+# --- ODR-0008d Category E: rating value-space schemes ---------------------
+#
+# Rule 4 (rating schemes for opda:riskIndicator + opda:actionAlertRating).
+# Members are derived from the data dictionary's ACTUAL enum / type for those
+# leaves (search of data-dictionary-canonical.json):
+#   - riskIndicator: type "string"; union of all attested enum values across
+#     the ~42 leaves is {No, Not known, Yes} (the dominant value-set is
+#     Yes/No; degenerate single-value variants add "Not known").
+#   - actionAlertRating: type "integer", title "Action alert rating
+#     (1 is Green, 5 is Red)" — a 1..5 ordinal scale, NOT a string enum.
+def _risk_indicator_scheme() -> Scheme:
+    """Build `opda:RiskIndicatorScheme` — the riskIndicator value-space.
+
+    Members are the union of the data dictionary's actual `riskIndicator`
+    string-enum values: No / Not known / Yes (sorted; canonical order).
+    """
+    leaf = "propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator"
+    members_data = [
+        ("No", "No action is recommended / the property is not at risk for this peril."),
+        ("Not known", "Whether action is recommended is not known."),
+        ("Yes", "Action is recommended / the property is at risk for this peril."),
+    ]
+    return Scheme(
+        local_name="RiskIndicatorScheme",
+        slug_base="riskIndicator",
+        pref_label="Risk Indicator",
+        title="Search/environmental risk indicator value-space",
+        definition=(
+            "The value-space of opda:riskIndicator on an opda:RiskAssessment "
+            "(\"is action recommended? / is the property at risk?\"): No / "
+            "Not known / Yes. Derived from the data dictionary's actual "
+            "riskIndicator string-enum (ODR-0008d Rule 4)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Members are the union of the "
+            "attested riskIndicator enum values across the environmental "
+            "peril leaves; the per-member dct:source is the schema leaf path "
+            "(ODR-0022 G2)."
+        ),
+        steward="Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)",
+        scheme_source=_ODR_0008D_RULE_4,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _action_alert_rating_scheme() -> Scheme:
+    """Build `opda:ActionAlertRatingScheme` — the actionAlertRating 1..5 scale.
+
+    The data dictionary types actionAlertRating as `integer` with the title
+    "Action alert rating (1 is Green, 5 is Red)". The five ordinal levels are
+    therefore the value-space; the notation is the integer string, the
+    prefLabel anchors the colour band the title names (1 Green, 5 Red).
+    """
+    leaf = (
+        "propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating"
+    )
+    # (notation, pref_label, definition)
+    members_data = [
+        ("1", "1 (Green)", "Action alert rating 1 — Green (lowest risk band)."),
+        ("2", "2", "Action alert rating 2."),
+        ("3", "3", "Action alert rating 3 (mid band)."),
+        ("4", "4", "Action alert rating 4."),
+        ("5", "5 (Red)", "Action alert rating 5 — Red (highest risk band)."),
+    ]
+    return Scheme(
+        local_name="ActionAlertRatingScheme",
+        slug_base="actionAlertRating",
+        pref_label="Action Alert Rating",
+        title="Search/environmental action-alert rating value-space (1–5)",
+        definition=(
+            "The value-space of opda:actionAlertRating on an "
+            "opda:RiskAssessment: an ordinal 1–5 scale where 1 is Green "
+            "(lowest risk) and 5 is Red (highest risk). Derived from the data "
+            "dictionary's actual actionAlertRating integer leaf + its title "
+            "\"Action alert rating (1 is Green, 5 is Red)\" (ODR-0008d "
+            "Rule 4)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 — an ordinal quality "
+            "region). DOLCE: Quality-Region (Masolo D18 §4.3). The notation "
+            "is the integer level; the colour anchors (Green at 1, Red at 5) "
+            "are the data dictionary's own title text. Per-member dct:source "
+            "is the schema leaf path (ODR-0022 G2)."
+        ),
+        steward="Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)",
+        scheme_source=_ODR_0008D_RULE_4,
+        members=tuple(
+            Member(notation, pref_label, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, pref_label, definition in members_data
+        ),
+    )
+
+
+# --- ODR-0022 Category C: reused status-enum value-spaces ----------------
+#
+# ODR-0011 ratified the enum→SKOS pattern (one scheme per distinct enum
+# value-set, reused by ONE shared property — never one scheme per leaf).
+# ODR-0022 §1 Category C operationalises it for the descriptive-layer
+# import: of the 378 annotated base enum leaves only ~54 distinct
+# value-sets exist, of which 28 are *reused* (carried by ≥2 leaves). Four
+# of those 28 are already emitted by the G8 batch above (YesNoScheme,
+# YesNoNotApplicableScheme, YesNoNotKnownScheme, YesNoNotRequiredScheme);
+# the 14 builders below add the remaining reused *status / disclosure /
+# result* value-spaces. They are the cross-cutting envelopes ODR-0022 §1
+# Category C names — NOT genuine descriptive concepts (those are the
+# council-reserved Category G, ODR-0023 R4, NOT minted here).
+#
+# Member `dct:source` points at the schema leaf path (ODR-0022 G2 — the
+# form-question IRI, NEVER the deciding ODR), via `_dd_source`; the
+# scheme-level `dct:source` cites ODR-0011 §8a (the ratifying Council
+# anchor that fixes the UFO category + steward), matching the G8 schemes.
+#
+# Members are emitted in a fixed sorted order (the source JSON enum order
+# is not stable across the corpus) so byte-identity CI holds.
+#
+# Reused value-sets DELIBERATELY NOT minted here (flagged for WG — see the
+# task return + ODR-0008 §Q1a reconciliation register):
+#   - (No, Not Known, Yes) — a casing variant of the existing
+#     YesNoNotKnownScheme `(No, Not known, Yes)`; folding it in is a
+#     data-quality fix, not a new value-space. Flagged, not minted.
+#   - (Commonhold, Freehold, Leasehold, Share of Freehold, Shared
+#     Ownership) — `marketingTenure`; overlaps TenureKindScheme /
+#     OwnershipTypeScheme. Already-modelled (ODR-0022 anti-pattern: do
+#     not re-mint). Flagged for reconciliation, not minted.
+#   - (England, Northern Ireland, Scotland, Wales) — `homeNation`;
+#     Category F geography (ODR-0015 territory), not a status enum.
+#     Flagged, not minted.
+#   - The Landlord / Management Company / Managing Agent rentcharge-payee
+#     near-duplicate sub-sets — the canonical 6-value superset
+#     (ManagedAreaResponsibilityScheme) is emitted once; its subsets are
+#     `sh:in` restrictions in the profile (ODR-0011 §1a one-scheme-per-
+#     value-space), not separate schemes.
+_C_STEWARD = "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"
+
+
+def _c_status_scheme(
+    *,
+    local_name: str,
+    slug_base: str,
+    pref_label: str,
+    title: str,
+    definition: str,
+    scope_note: str,
+    example_leaf: str,
+    members: tuple[tuple[str, str], ...],
+) -> Scheme:
+    """Build one Category-C reused status-enum scheme.
+
+    `example_leaf` is one representative schema-leaf path the value-space
+    is shared across; per-member `dct:source` resolves to
+    `<example_leaf>.<notation>` (ODR-0022 G2 — schema-leaf-path, never the
+    deciding ODR). The scheme-level `dct:source` is ODR-0011 §8a, the
+    ratifying anchor — matching the G8 schemes above. `members` is a tuple
+    of `(notation, definition)` in canonical (sorted-on-notation) order.
+    """
+    return Scheme(
+        local_name=local_name,
+        slug_base=slug_base,
+        pref_label=pref_label,
+        title=title,
+        definition=definition,
+        ufo_category="Quale-in-Region",
+        scope_note=scope_note,
+        steward=_C_STEWARD,
+        scheme_source=_ODR_0011_SECTION_8A,
+        members=tuple(
+            Member(
+                notation,
+                notation,
+                mdef,
+                _dd_source(f"{example_leaf}.{notation}"),
+            )
+            for notation, mdef in members
+        ),
+    )
+
+
+def _category_c_schemes() -> tuple[Scheme, ...]:
+    """Return the 14 reused Category-C status-enum schemes (ODR-0022 §1)."""
+    quale = (
+        "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+        "Quality-Region (Masolo D18 §4.3)."
+    )
+    return (
+        _c_status_scheme(
+            local_name="AttachmentStatusScheme",
+            slug_base="attachmentStatus",
+            pref_label="Attachment Status",
+            title="Disclosure attachment status (Attached / To follow)",
+            definition=(
+                "Status of a supporting document attached to a disclosure "
+                "answer: provided now, or to follow."
+            ),
+            scope_note=(
+                f"{quale} The most-reused disclosure-envelope value-space "
+                "(~90 leaves); the attached document itself is an ODR-0009 "
+                "Evidence (Category B), not a Quality of the Property."
+            ),
+            example_leaf="participants[].sellersCapacity.attachments",
+            members=(
+                ("Attached", "The supporting document is attached now."),
+                ("To follow", "The supporting document is to follow later."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="AttachmentStatusNotApplicableScheme",
+            slug_base="attachmentStatusNotApplicable",
+            pref_label="Attachment Status (with Not applicable)",
+            title=(
+                "Disclosure attachment status with non-applicable "
+                "(Attached / Not applicable / To follow)"
+            ),
+            definition=(
+                "Status of a supporting document attached to a disclosure "
+                "answer, admitting non-applicable as a third option "
+                "(Attached / Not applicable / To follow)."
+            ),
+            scope_note=(
+                f"{quale} Three-value variant of AttachmentStatusScheme "
+                "for questions where the document may not apply."
+            ),
+            example_leaf=(
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "publishedAccounts.attachments"
+            ),
+            members=(
+                ("Attached", "The supporting document is attached now."),
+                (
+                    "Not applicable",
+                    "No supporting document applies in this context.",
+                ),
+                ("To follow", "The supporting document is to follow later."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="InclusionStatusScheme",
+            slug_base="inclusionStatus",
+            pref_label="Inclusion Status",
+            title="Fixture inclusion status (Included / Excluded / None)",
+            definition=(
+                "Whether a fixtures-and-fittings item is included in, "
+                "excluded from, or absent from (None) the sale. NOTE: this "
+                "is the *value-space* only; the inclusion-status property "
+                "that ranges over it is council-reserved (ODR-0023 R4) and "
+                "is NOT minted here."
+            ),
+            scope_note=(
+                f"{quale} The value-space for the ~89-item fixtures "
+                "checklist (ODR-0022 §4 Category D). Reserved property "
+                "`opda:inclusionStatus` is a transaction Mode/Relator "
+                "(ODR-0023 R4) owned by the Council — only the value-scheme "
+                "is emitted here."
+            ),
+            example_leaf=(
+                "propertyPack.fixturesAndFittings.basicFittings."
+                "boilerImmersionHeater.isIncludedExcludedOrNone"
+            ),
+            members=(
+                (
+                    "Excluded",
+                    "The item is excluded from the sale (the seller will "
+                    "remove it).",
+                ),
+                ("Included", "The item is included in the sale."),
+                ("None", "There is no such item at the property."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="InclusionScheme",
+            slug_base="inclusion",
+            pref_label="Inclusion (Included / Excluded)",
+            title="Fixture inclusion (Included / Excluded)",
+            definition=(
+                "Whether a free-text 'other item' is included in or "
+                "excluded from the sale (binary variant, no 'None' "
+                "option)."
+            ),
+            scope_note=(
+                f"{quale} Two-value variant of InclusionStatusScheme used "
+                "by the free-text `otherItems[]` fixtures slots."
+            ),
+            example_leaf=(
+                "propertyPack.fixturesAndFittings.basicFittings."
+                "otherItems[].isIncludedOrExcluded"
+            ),
+            members=(
+                ("Excluded", "The item is excluded from the sale."),
+                ("Included", "The item is included in the sale."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="FittedOrFreestandingScheme",
+            slug_base="fittedOrFreestanding",
+            pref_label="Fitted or Freestanding",
+            title="Kitchen-appliance fitment (Fitted / Freestanding)",
+            definition=(
+                "Whether a kitchen appliance is fitted (built in) or "
+                "freestanding (movable)."
+            ),
+            scope_note=(
+                f"{quale} Reused across the kitchen-appliance fixtures "
+                "checklist (hob, oven, extractor, etc.)."
+            ),
+            example_leaf=(
+                "propertyPack.fixturesAndFittings.kitchen.hob."
+                "fittedOrFreestanding.fittedOrFreestanding"
+            ),
+            members=(
+                ("Fitted", "The appliance is fitted (built in)."),
+                ("Freestanding", "The appliance is freestanding (movable)."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="UtilityConnectionStatusScheme",
+            slug_base="utilityConnectionStatus",
+            pref_label="Utility Connection Status",
+            title="Mains utility connection status (Yes / No / To be connected)",
+            definition=(
+                "Whether a mains utility (electricity, gas, water, "
+                "drainage) is connected, not connected, or to be "
+                "connected."
+            ),
+            scope_note=(
+                f"{quale} Reused across the mains-utility-presence "
+                "questions; 'To be connected' captures an in-progress "
+                "connection."
+            ),
+            example_leaf="propertyPack.electricity.mainsElectricity.yesNo",
+            members=(
+                ("No", "The utility is not connected."),
+                ("To be connected", "The utility is to be connected."),
+                ("Yes", "The utility is connected."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="UtilityConnectionStatusNotKnownScheme",
+            slug_base="utilityConnectionStatusNotKnown",
+            pref_label="Utility Connection Status (with Not known)",
+            title=(
+                "Mains utility connection status with unknown "
+                "(Yes / No / To be connected / Not known)"
+            ),
+            definition=(
+                "Mains-utility connection status admitting "
+                "unknown-to-Seller as a fourth option (Yes / No / To be "
+                "connected / Not known)."
+            ),
+            scope_note=(
+                f"{quale} Four-value variant of "
+                "UtilityConnectionStatusScheme for questions where the "
+                "Seller may legitimately not know."
+            ),
+            example_leaf=(
+                "propertyPack.waterAndDrainage.drainage."
+                "mainsSurfaceWaterDrainage.yesNo"
+            ),
+            members=(
+                ("No", "The utility is not connected."),
+                ("Not known", "The connection status is not known to the Seller."),
+                ("To be connected", "The utility is to be connected."),
+                ("Yes", "The utility is connected."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="BoundaryResponsibilityScheme",
+            slug_base="boundaryResponsibility",
+            pref_label="Boundary Responsibility",
+            title=(
+                "Boundary ownership / maintenance responsibility "
+                "(Seller / Shared / Neighbour / Not known)"
+            ),
+            definition=(
+                "Which party is responsible for a legal boundary of the "
+                "property (the Seller, shared, the neighbour, or not "
+                "known)."
+            ),
+            scope_note=(
+                f"{quale} Reused across the per-side boundary-ownership "
+                "questions (left / right / rear / front)."
+            ),
+            example_leaf=(
+                "propertyPack.legalBoundaries.ownership.uniformBoundaries.left"
+            ),
+            members=(
+                (
+                    "Neighbour",
+                    "The neighbour is responsible for the boundary.",
+                ),
+                ("Not known", "Boundary responsibility is not known."),
+                ("Seller", "The Seller is responsible for the boundary."),
+                (
+                    "Shared",
+                    "Responsibility for the boundary is shared with the "
+                    "neighbour.",
+                ),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="RoadAdoptionStatusScheme",
+            slug_base="roadAdoptionStatus",
+            pref_label="Road Adoption Status",
+            title=(
+                "Road / footway adoption status "
+                "(public / private / section 38 / unchecked)"
+            ),
+            definition=(
+                "Maintenance-responsibility status of an abutting road or "
+                "footway: publicly maintained, private, subject to a "
+                "section-38 agreement, or unchecked."
+            ),
+            scope_note=(
+                f"{quale} Reused across the roads-and-public-rights-of-way "
+                "search results. Regulator-adjacent (Highways Act 1980 "
+                "s.38); flagged for WG wording on the verbatim s.38 "
+                "definition."
+            ),
+            example_leaf=(
+                "propertyPack.localSearches.localAuthoritySearches."
+                "roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths."
+                "highwaysMaintainableAtPublicExpense[].status"
+            ),
+            members=(
+                (
+                    "private",
+                    "The road or footway is privately maintained.",
+                ),
+                (
+                    "public",
+                    "The road or footway is maintainable at public expense.",
+                ),
+                (
+                    "section 38",
+                    "The road or footway is subject to a Highways Act 1980 "
+                    "section-38 adoption agreement.",
+                ),
+                (
+                    "unchecked",
+                    "The adoption status has not been checked.",
+                ),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="FeeTypeScheme",
+            slug_base="feeType",
+            pref_label="Fee Type",
+            title=(
+                "Managed-area fee type "
+                "(Service charges / Ground rent / Administration fees / All)"
+            ),
+            definition=(
+                "Type of recurring fee a payee collects for a managed "
+                "freehold or commonhold (service charges, ground rent, "
+                "administration fees, or all)."
+            ),
+            scope_note=(
+                f"{quale} Reused across the managed-area contact-details "
+                "bank-account questions."
+            ),
+            example_leaf=(
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "rentchargeOwner.bankDetails.feeType"
+            ),
+            members=(
+                (
+                    "Administration fees",
+                    "Administration fees collected by the payee.",
+                ),
+                ("All", "All fee types collected by the payee."),
+                ("Ground rent", "Ground rent collected by the payee."),
+                (
+                    "Service charges",
+                    "Service charges collected by the payee.",
+                ),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="ChargePaymentStatusScheme",
+            slug_base="chargePaymentStatus",
+            pref_label="Charge Payment Status",
+            title=(
+                "Charge payment status "
+                "(Due / Completed but unpaid / Anticipated / Not applicable)"
+            ),
+            definition=(
+                "Payment status of a managed-area charge (due, completed "
+                "but unpaid, anticipated, or not applicable)."
+            ),
+            scope_note=(
+                f"{quale} Reused across the managed-area charge questions. "
+                "Definitions are conservative — flagged for WG wording on "
+                "the 'Completed but unpaid' vs 'Due' boundary."
+            ),
+            example_leaf=(
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "currentExpenditure.status"
+            ),
+            members=(
+                (
+                    "Anticipated",
+                    "The charge is anticipated but not yet due.",
+                ),
+                (
+                    "Completed but unpaid",
+                    "The charge period has completed but the charge is "
+                    "unpaid.",
+                ),
+                ("Due", "The charge is currently due."),
+                (
+                    "Not applicable",
+                    "No charge applies in this context.",
+                ),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="ManagedAreaResponsibilityScheme",
+            slug_base="managedAreaResponsibility",
+            pref_label="Managed-Area Responsibility",
+            title=(
+                "Managed-area maintenance responsibility "
+                "(Landlord / Management Company / Managing Agent / "
+                "Rentcharge Owner / the Lessees / Not applicable)"
+            ),
+            definition=(
+                "Which party deals with the day-to-day maintenance of a "
+                "managed area. The canonical six-value superset; per-form "
+                "subsets (e.g. without 'the Lessees', or without "
+                "'Rentcharge Owner') are `sh:in` restrictions in the "
+                "overlay profile, NOT separate schemes (ODR-0011 §1a)."
+            ),
+            scope_note=(
+                f"{quale} The canonical managed-area-payee superset; "
+                "the leasehold / managed-freehold variants are profile "
+                "`sh:in` restrictions over this scheme's members."
+            ),
+            example_leaf=(
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.managedAreaResponsibility"
+            ),
+            members=(
+                ("Landlord", "The landlord deals with maintenance."),
+                (
+                    "Management Company",
+                    "A management company deals with maintenance.",
+                ),
+                (
+                    "Managing Agent",
+                    "A managing agent deals with maintenance.",
+                ),
+                (
+                    "Not applicable",
+                    "No managed-area maintenance party applies.",
+                ),
+                (
+                    "Rentcharge Owner",
+                    "The rentcharge owner deals with maintenance.",
+                ),
+                (
+                    "the Lessees",
+                    "The lessees collectively deal with maintenance.",
+                ),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="DeedSupplyStatusScheme",
+            slug_base="deedSupplyStatus",
+            pref_label="Deed Supply Status",
+            title=(
+                "Deed/document supply status "
+                "(Attached / To follow / Lost)"
+            ),
+            definition=(
+                "Supply status of a requested deed or document: attached "
+                "now, to follow, or lost."
+            ),
+            scope_note=(
+                f"{quale} Reused across the leasehold required-documents "
+                "questions where a document may have been lost. Distinct "
+                "from AttachmentStatusScheme by the 'Lost' member."
+            ),
+            example_leaf=(
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.requiredDocuments.deed.status"
+            ),
+            members=(
+                ("Attached", "The deed or document is attached now."),
+                ("Lost", "The deed or document has been lost."),
+                ("To follow", "The deed or document is to follow later."),
+            ),
+        ),
+        _c_status_scheme(
+            local_name="UnitOfAreaScheme",
+            slug_base="unitOfArea",
+            pref_label="Unit of Area",
+            title="Internal-area unit (square metres / square feet)",
+            definition=(
+                "Unit in which an internal floor area is expressed "
+                "(square metres or square feet)."
+            ),
+            scope_note=(
+                f"{quale} Reused across the internal-area measurement "
+                "questions. A measurement unit rather than a descriptive "
+                "Quality value; flagged for WG on whether QUDT unit IRIs "
+                "should be referenced via skos:exactMatch."
+            ),
+            example_leaf="propertyPack.buildInformation.internalArea.units",
+            members=(
+                ("square feet", "Area expressed in square feet."),
+                ("square metres", "Area expressed in square metres."),
+            ),
+        ),
+    )
+
+
+# --- ODR-0022 Category D (candidate): fixtures-checklist item scheme ------
+#
+# ODR-0022 §4 (the D Object/Mode split): a fixtures-checklist item is an
+# Object/Kind — a `skos:Concept` in `opda:FixtureItemScheme` — NOT a
+# datatype Quality of the Property. ITEMS ONLY are emitted here. The
+# *inclusion* of an item ("Included / Excluded / None") is a Mode/Relator
+# of the sale transaction (`opda:inclusionStatus`) which is council-
+# reserved (ODR-0023 R4) and is NOT modelled here; only the
+# InclusionStatusScheme value-space (above) is emitted.
+#
+# The ~89 items are derived from the `propertyPack.fixturesAndFittings.*`
+# leaves carrying an `isIncludedExcludedOrNone` child. Item identity is
+# the *qualified* path (category + sub-category + item) because the bare
+# item names collide across categories (e.g. `bedroom1` appears under
+# carpets, fittedUnits, lightFittings, and two curtain sub-lists). The
+# member URI therefore encodes the category — `opda:fixtureItem/
+# basicFittings/boilerImmersionHeater` — and the notation carries the
+# slash-joined relative path. Definitions are conservative humanisations
+# of the path segment; the WG owns final wording (flagged).
+_FIXTURE_ITEMS: tuple[str, ...] = (
+    "basicFittings.boilerImmersionHeater",
+    "basicFittings.burglarAlarm",
+    "basicFittings.doorbellChime",
+    "basicFittings.electricFiresWithSurround",
+    "basicFittings.electricSockets",
+    "basicFittings.externalDoorFittings",
+    "basicFittings.freeStandingHeaters",
+    "basicFittings.gasFiresWithSurround",
+    "basicFittings.internalDoorFittings",
+    "basicFittings.lightSwitches",
+    "basicFittings.nightStorageHeaters",
+    "basicFittings.radiatorsWallHeaters",
+    "basicFittings.roofInsulation",
+    "basicFittings.windowFittings",
+    "basicFittings.windowShuttersGrilles",
+    "bathroom.bath",
+    "bathroom.bathroomCabinet",
+    "bathroom.bathroomMirror",
+    "bathroom.separateShowersAndFittings",
+    "bathroom.showerCurtain",
+    "bathroom.showerFittingForBath",
+    "bathroom.soapToothbrushHolders",
+    "bathroom.taps",
+    "bathroom.toiletRollHolders",
+    "bathroom.towelRail",
+    "carpets.bedroom1",
+    "carpets.bedroom2",
+    "carpets.bedroom3",
+    "carpets.diningRoom",
+    "carpets.hallStairsLanding",
+    "carpets.kitchen",
+    "carpets.livingRoom",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom1",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom2",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom3",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.diningRoom",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.hallStairsLanding",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.kitchen",
+    "curtainsAndCurtainRails.curtainRailsPolesPelmets.livingRoom",
+    "curtainsAndCurtainRails.curtainsBlinds.bedroom1",
+    "curtainsAndCurtainRails.curtainsBlinds.bedroom2",
+    "curtainsAndCurtainRails.curtainsBlinds.bedroom3",
+    "curtainsAndCurtainRails.curtainsBlinds.diningRoom",
+    "curtainsAndCurtainRails.curtainsBlinds.hallStairsLanding",
+    "curtainsAndCurtainRails.curtainsBlinds.kitchen",
+    "curtainsAndCurtainRails.curtainsBlinds.livingRoom",
+    "fittedUnits.bedroom1",
+    "fittedUnits.bedroom2",
+    "fittedUnits.bedroom3",
+    "fittedUnits.diningRoom",
+    "fittedUnits.hallStairsLanding",
+    "fittedUnits.kitchen",
+    "fittedUnits.livingRoom",
+    "kitchen.cooker",
+    "kitchen.dishwasher",
+    "kitchen.extractorHood",
+    "kitchen.freezer",
+    "kitchen.hob",
+    "kitchen.microwave",
+    "kitchen.ovenGrill",
+    "kitchen.refrigeratorFridgeFreezer",
+    "kitchen.tumbleDryer",
+    "kitchen.washingMachine",
+    "lightFittings.bedroom1",
+    "lightFittings.bedroom2",
+    "lightFittings.bedroom3",
+    "lightFittings.diningRoom",
+    "lightFittings.hallStairsLanding",
+    "lightFittings.kitchen",
+    "lightFittings.livingRoom",
+    "outdoorArea.barbecue",
+    "outdoorArea.clothesLine",
+    "outdoorArea.dustbins",
+    "outdoorArea.gardenFurniture",
+    "outdoorArea.gardenOrnaments",
+    "outdoorArea.gardenShed",
+    "outdoorArea.greenhouse",
+    "outdoorArea.outdoorHeater",
+    "outdoorArea.outdoorLights",
+    "outdoorArea.rotaryLine",
+    "outdoorArea.treesPlantsShrubs",
+    "outdoorArea.waterButt",
+    "stockOfFuel.lpg",
+    "stockOfFuel.oil",
+    "stockOfFuel.wood",
+    "televisionAndTelephone.radioAerial",
+    "televisionAndTelephone.satelliteDish",
+    "televisionAndTelephone.telephoneReceivers",
+    "televisionAndTelephone.televisionAerial",
+)
+
+_FIXTURES_BASE = "propertyPack.fixturesAndFittings"
+
+
+def _humanize_segment(segment: str) -> str:
+    """Render a camelCase path segment as a human-readable @en label.
+
+    Splits on camelCase boundaries and digit boundaries, then capitalises
+    the first word. Deterministic so the emission is byte-stable.
+    `boilerImmersionHeater` → "Boiler immersion heater";
+    `bedroom1` → "Bedroom 1".
+    """
+    out: list[str] = []
+    prev_lower = False
+    prev_alpha = False
+    for ch in segment:
+        is_upper = ch.isupper()
+        is_digit = ch.isdigit()
+        if (is_upper and prev_lower) or (is_digit and prev_alpha):
+            out.append(" ")
+        out.append(ch.lower() if is_upper else ch)
+        prev_lower = ch.islower()
+        prev_alpha = ch.isalpha()
+    text = "".join(out)
+    return text[:1].upper() + text[1:] if text else text
+
+
+def _fixture_item_scheme() -> Scheme:
+    """Build `opda:FixtureItemScheme` — the ~89 fixtures-checklist items.
+
+    ODR-0022 §4 Category D (candidate): items only. The member URI encodes
+    the category path so colliding bare names (e.g. `bedroom1` ×5) stay
+    distinct concepts; `dct:source` points at the schema leaf (G2). The
+    inclusion *property* is council-reserved (ODR-0023 R4) — NOT here.
+    """
+    members: list[Member] = []
+    for rel in _FIXTURE_ITEMS:
+        segments = rel.split(".")
+        category = segments[0]
+        item = segments[-1]
+        # Human label: "<Item> (<Category>)" — the category disambiguates
+        # the colliding room names without inventing prose the WG hasn't
+        # ratified.
+        item_label = _humanize_segment(item)
+        category_label = _humanize_segment(category)
+        pref_label = f"{item_label} ({category_label})"
+        definition = (
+            f"Fixtures-and-fittings checklist item '{item_label}' in the "
+            f"{category_label.lower()} category. Whether it is included in "
+            "a particular sale is recorded by the council-reserved "
+            "inclusion-status (ODR-0023 R4), not on this concept."
+        )
+        members.append(
+            Member(
+                notation=rel,
+                pref_label=pref_label,
+                definition=definition,
+                member_source=_dd_source(
+                    f"{_FIXTURES_BASE}.{rel}.isIncludedExcludedOrNone"
+                ),
+                slug=rel.replace(".", "/"),
+            )
+        )
+    return Scheme(
+        local_name="FixtureItemScheme",
+        slug_base="fixtureItem",
+        pref_label="Fixture Item",
+        title="Fixtures-and-fittings checklist items",
+        definition=(
+            "Controlled list of the fixtures-and-fittings checklist "
+            "*items* (boiler/immersion heater, radiators, curtains, "
+            "carpets, kitchen appliances, garden items, etc.) a seller "
+            "discloses for a sale. Items are Objects/Kinds; their "
+            "inclusion in a given sale is a Mode/Relator of the "
+            "transaction (council-reserved, ODR-0023 R4) and is NOT a "
+            "property of any item concept."
+        ),
+        ufo_category="Substance Kind label",
+        scope_note=(
+            "UFO: the items are Objects/Kinds (Guizzardi 2005 Ch. 4) — a "
+            "controlled list of chattels, not Qualities of the Property "
+            "(ODR-0022 §4 D Object/Mode split). CANDIDATE scheme: ratified "
+            "as a scheme (not a FixtureItem class — that would be "
+            "over-engineering absent a named §Q4a query). Item definitions "
+            "are conservative path humanisations; WG owns final wording. "
+            "Colliding bare names (bedroom1 ×5, kitchen ×5, etc.) are kept "
+            "distinct by the category-qualified URI."
+        ),
+        steward="Allemang (fixtures sub-module steward per ODR-0022 §4)",
+        scheme_source=_ODR_0011_SECTION_8A,
+        members=tuple(members),
+    )
+
+
 def _all_schemes() -> tuple[Scheme, ...]:
     """Return the schemes in deterministic emission order.
 
@@ -1382,6 +2409,14 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _property_type_scheme(),
         _off_mains_drainage_scheme(),
         _owner_type_scheme(),
+        # ODR-0008d Category E — peril/dataset axis + rating value-spaces --
+        _peril_scheme(),
+        _risk_indicator_scheme(),
+        _action_alert_rating_scheme(),
+        # ODR-0022 Category C reused status-enum value-spaces (14) ---------
+        *_category_c_schemes(),
+        # ODR-0022 Category D (candidate) — fixtures-checklist items -------
+        _fixture_item_scheme(),
     )
 
 
@@ -1431,6 +2466,9 @@ def build_vocabularies_graph() -> Graph:
         g.add((scheme_uri, SKOS.scopeNote, Literal(scope_note_text, lang="en")))
         g.add((scheme_uri, OPDA.hasSteward, Literal(scheme.steward, lang="en")))
 
+        # Index members by notation so `skos:narrower` (intra-scheme) can be
+        # resolved to member URIs (used by opda:PerilScheme sub-perils).
+        by_notation = {m.notation: m for m in scheme.members}
         for member in scheme.members:
             member_uri = scheme.member_uri(member)
             g.add((member_uri, RDF.type, SKOS.Concept))
@@ -1441,6 +2479,15 @@ def build_vocabularies_graph() -> Graph:
             g.add((member_uri, DCTERMS.source, member.member_source))
             if member.derived_from is not None:
                 g.add((member_uri, PROV.wasDerivedFrom, member.derived_from))
+            if member.top_concept_of:
+                g.add((member_uri, SKOS.topConceptOf, scheme_uri))
+            for narrower_notation in member.narrower:
+                narrower_member = by_notation[narrower_notation]
+                g.add((
+                    member_uri,
+                    SKOS.narrower,
+                    scheme.member_uri(narrower_member),
+                ))
 
     return g
 

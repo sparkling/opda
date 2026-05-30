@@ -207,7 +207,7 @@ opda:SellerShape a sh:NodeShape ;
 - Role and capacity SKOS concepts (ODR-0011) carry `skos:prefLabel`/`skos:definition` sourced from the business glossary and `dct:source` back to it.
 - **Freeze gate**: this module's TBox is not frozen until (a) ODR-0005 clears its identity-criterion gate and (b) the remaining Kind-layer choice (W3C Org vs bespoke `opda:`) is resolved in council.
 
-## Decision rationale
+### Decision rationale
 
 The flowchart traces the three candidate agent-layer approaches through their disqualifying defects to the chosen outcome.
 

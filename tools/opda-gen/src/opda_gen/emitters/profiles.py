@@ -51,6 +51,8 @@ Pipeline:
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from dataclasses import dataclass
 from pathlib import Path
 
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
@@ -71,8 +73,8 @@ PROV = Namespace("http://www.w3.org/ns/prov#")
 # --- Sentinel-pinned constants per ADR-0013 + G6 convention --------------
 # ADR-0014 G19 + foundation version bump (0.4.0 → 1.0.0) makes the BASPI5
 # profile regenerate with new owl:imports + 4 corrected dct:source anchors.
-_PROFILE_LAST_MODIFIED = "2026-05-28"
-_PROFILE_SOURCE_COMMIT = "pinned-by-ADR-0014"
+_PROFILE_LAST_MODIFIED = "2026-05-30"
+_PROFILE_SOURCE_COMMIT = "pinned-by-ADR-0029"
 
 
 # --- BASPI5 form-question authority -------------------------------------
@@ -92,12 +94,238 @@ _ODR_0010_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q5")
 _ADR_0013 = URIRef(
     "https://openpropdata.org.uk/adr/ADR-0013-overlay-profile-emission"
 )
+_ADR_0029 = URIRef(
+    "https://openpropdata.org.uk/adr/"
+    "ADR-0029-overlay-profile-emitter-generalisation-and-rollout"
+)
 
 
 # --- Profile catalogue ----------------------------------------------------
+# 31 in-scope overlays (ADR-0029): baspi5 (full shapes) + 14 active-main +
+# 16 NTS2 extension fragments. The 3 legacy editions (baspi4/nts/ntsl) are
+# OUT OF SCOPE — never listed here (OPDA validates current-edition data).
+_ACTIVE_MAIN_OVERLAYS = (
+    "ta6", "ta7", "ta10", "lpe1", "fme1", "piq", "rds",
+    "oc1", "llc1", "con29R", "con29DW", "sr24", "nts2", "ntsl2",
+)
 PROFILE_FILENAMES: dict[str, str] = {
     "baspi5": "baspi5.ttl",
+    **{f: f"{f}.ttl" for f in _ACTIVE_MAIN_OVERLAYS},
+    **{ext: f"{ext}.ttl" for ext in (
+        "as", "dr", "er", "fd", "hi", "hs", "jk", "la",
+        "ma", "mc", "oa", "oc", "sb", "sf", "sl", "tf",
+    )},
 }
+
+
+# --- Overlay → community map (ADR-0029 work-item 2; S022) -----------------
+# Per the governance directive (2026-05-30): the form↔community link is one
+# standard `dct:subject` triple on the form graph's owl:Ontology header,
+# pointing at the owning industry context concept in
+# `opda:BoundedContextScheme` (emitted by emitters/contexts.py). NOT
+# `opda:overlaysContext` / PROF (those are retired by S022). The 3 legacy
+# editions (baspi4/nts/ntsl) are out of scope; Property Tech owns no
+# overlay (base only). Extension fragments all sit in Estate Agency.
+_MAIN_COMMUNITY: dict[str, str] = {
+    "baspi5": "EstateAgencyContext",
+    "nts2": "EstateAgencyContext",
+    "ntsl2": "EstateAgencyContext",
+    "ta6": "ConveyancingContext",
+    "ta7": "ConveyancingContext",
+    "ta10": "ConveyancingContext",
+    "lpe1": "ConveyancingContext",
+    "fme1": "MortgageLendingContext",
+    "piq": "SurveyingContext",
+    "rds": "PropertyDataServicesContext",
+    "oc1": "PropertyDataServicesContext",
+    "llc1": "PropertyDataServicesContext",
+    "con29R": "PropertyDataServicesContext",
+    "con29DW": "PropertyDataServicesContext",
+    "sr24": "PropertyDataServicesContext",
+}
+_EXTENSION_OVERLAYS = (
+    "as", "dr", "er", "fd", "hi", "hs", "jk", "la",
+    "ma", "mc", "oa", "oc", "sb", "sf", "sl", "tf",
+)
+OVERLAY_COMMUNITY: dict[str, URIRef] = {
+    **{ov: OPDA[ctx] for ov, ctx in _MAIN_COMMUNITY.items()},
+    **{ext: OPDA.EstateAgencyContext for ext in _EXTENSION_OVERLAYS},
+}
+
+
+# --- ProfileSpec + generic builder (ADR-0029 work-item 1) ----------------
+@dataclass(frozen=True)
+class ProfileSpec:
+    """Declarative per-form overlay-profile spec (ADR-0029).
+
+    Per the S022 governance directive a form IS its SHACL overlay graph:
+    the generic builder emits the `owl:Ontology` header + the one
+    `dct:subject` community tag (the form↔community link) and — when a
+    form supplies one — a `shape_builder` callback that adds the form's
+    SHACL NodeShapes (form↔base via `sh:targetClass` + per-leaf
+    constraints).
+
+    The 30 non-BASPI5 forms ship with `shape_builder=None` (header +
+    community only): their leaves have no `opda:` property paths to
+    constrain until the descriptive-layer terms (ADR-0028) land — see the
+    ADR-0029 implementation note. BASPI5 retains its bespoke builder
+    (`_build_baspi5_profile`); data-fying its ~30 shapes into a
+    `shape_builder` is the remaining output-neutral refactor, coupled to
+    the same ADR-0028 work.
+    """
+
+    form_id: str
+    title: str
+    description: str
+    community: URIRef
+    dct_source: URIRef
+    shape_builder: Callable[[Graph, URIRef], None] | None = None
+
+    def profile_iri(self) -> URIRef:
+        return URIRef(f"https://w3id.org/opda/profiles/{self.form_id}")
+
+    def version_iri(self) -> URIRef:
+        return URIRef(f"https://w3id.org/opda/profiles/{self.form_id}/0.1.0/")
+
+
+def _build_profile(spec: ProfileSpec) -> Graph:
+    """Build an overlay-profile graph from a ``ProfileSpec`` (ADR-0029).
+
+    Emits the shared `owl:Ontology` header (title, imports, versionIRI,
+    `dct:source`) + the one `dct:subject` community triple, then delegates
+    the form's SHACL shapes to ``spec.shape_builder`` when present.
+    """
+    g = Graph()
+    g.bind("opda", OPDA)
+    g.bind("sh", SH)
+    g.bind("dash", DASH)
+    g.bind("dct", DCTERMS)
+    g.bind("rdf", RDF)
+    g.bind("rdfs", RDFS)
+    g.bind("owl", OWL)
+    g.bind("skos", SKOS)
+    g.bind("xsd", XSD)
+    g.bind("prov", PROV)
+
+    pi = spec.profile_iri()
+    g.add((pi, RDF.type, OWL.Ontology))
+    g.add((pi, DCTERMS.title, Literal(spec.title, lang="en")))
+    g.add((pi, DCTERMS.description, Literal(spec.description, lang="en")))
+    g.add((pi, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
+    g.add((pi, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
+    g.add((pi, OWL.versionIRI, spec.version_iri()))
+    g.add((pi, DCTERMS.source, spec.dct_source))
+    # S022: the one form↔community link (no opda:overlaysContext / PROF).
+    g.add((pi, DCTERMS.subject, spec.community))
+    if spec.shape_builder is not None:
+        spec.shape_builder(g, pi)
+    return g
+
+
+# --- The 30 non-BASPI5 forms (thin: header + community; ADR-0029) ---------
+# Active-main titles use the standard UK form names; the 16 NTS2 extension
+# fragment titles are read verbatim from each overlay JSON's `title`.
+_MAIN_FORM_TITLES: dict[str, str] = {
+    "ta6": "TA6 Property Information Form",
+    "ta7": "TA7 Leasehold Information Form",
+    "ta10": "TA10 Fittings and Contents Form",
+    "lpe1": "LPE1 Leasehold Property Enquiries",
+    "fme1": "FME1 Mortgage Valuation Enquiry",
+    "piq": "PIQ Property Information Questionnaire",
+    "rds": "RDS Residential Data Set",
+    "oc1": "OC1 Official Copy of Register and Title Plan",
+    "llc1": "LLC1 Local Land Charges Search",
+    "con29R": "CON29R Local Authority Search (Required Enquiries)",
+    "con29DW": "CON29DW Drainage and Water Enquiry",
+    "sr24": "SR24 Survey Report",
+    "nts2": "NTS2 Material Information",
+    "ntsl2": "NTS2 Lettings Material Information",
+}
+_EXTENSION_TITLES: dict[str, str] = {
+    "as": "Asbestos specialist issue",
+    "dr": "Dry rot treatment specialist issue",
+    "er": "Estate rentcharges for freehold properties",
+    "fd": "Flood defence information",
+    "hi": "Central heating installation date",
+    "hs": "Health and safety specialist issue",
+    "jk": "Japanese knotweed specialist issue",
+    "la": "Loft access and details",
+    "ma": "Managing agent contact details for leasehold",
+    "mc": "Main construction type if standard form",
+    "oa": "Outside areas extension for NTS",
+    "oc": "Other property in chain dependency",
+    "sb": "Subsidence or structural fault specialist issue",
+    "sf": "Spray foam insulation",
+    "sl": "Solar panels ownership details",
+    "tf": "Transfer fees for leasehold",
+}
+
+
+def _thin_description(title: str, community: URIRef) -> str:
+    ctx = str(community).rsplit("#", 1)[-1]
+    return (
+        f"SHACL overlay profile for {title}. Per S022 (ODR-0010 / "
+        f"ADR-0029) the SHACL overlay IS the form; this graph carries the "
+        f"form-community link (dct:subject -> opda:{ctx}). Per-leaf "
+        f"constraint shapes are added as the descriptive-layer terms "
+        f"(ADR-0028) land to give the form's leaves opda: property paths "
+        f"to constrain -- currently header + community only."
+    )
+
+
+def _thin_specs() -> dict[str, ProfileSpec]:
+    """Build the 30 thin (header + community) non-BASPI5 ProfileSpecs."""
+    specs: dict[str, ProfileSpec] = {}
+    for fid, title in _MAIN_FORM_TITLES.items():
+        community = OVERLAY_COMMUNITY[fid]
+        specs[fid] = ProfileSpec(
+            form_id=fid,
+            title=f"{title} overlay profile",
+            description=_thin_description(title, community),
+            community=community,
+            dct_source=_ADR_0029,
+        )
+    for code, topic in _EXTENSION_TITLES.items():
+        community = OVERLAY_COMMUNITY[code]
+        full = f"the NTS2 extension overlay ({topic})"
+        specs[code] = ProfileSpec(
+            form_id=code,
+            title=f"NTS2 extension: {topic} overlay profile",
+            description=_thin_description(full, community),
+            community=community,
+            dct_source=_ADR_0029,
+        )
+    return specs
+
+
+_PROFILE_SPECS: dict[str, ProfileSpec] = _thin_specs()
+
+
+def _thin_comment_header(
+    form_id: str, filename: str, emission_date: str, git_sha: str,
+) -> str:
+    """Generator-comment block for a thin (non-BASPI5) overlay profile."""
+    lines = [
+        f"# profiles/{filename} — {form_id} overlay profile",
+        f"# Generated by opda-gen {__version__} at {emission_date}; "
+        f"DO NOT HAND-EDIT.",
+        "# Specification: "
+        "https://openpropdata.org.uk/adr/ADR-0007-ontology-generator-specification",
+        "# Implementation: "
+        "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
+        "# This emission: "
+        "https://openpropdata.org.uk/adr/"
+        "ADR-0029-overlay-profile-emitter-generalisation-and-rollout",
+        f"# Generator version: opda-gen-{__version__}",
+        f"# Source commit: {git_sha}",
+        "# Ratifying ODR(s): ODR-0010 (overlay-profile mechanism); ODR-0020 "
+        "(form->community via dct:subject).",
+        "# S022/ADR-0029: a form IS its SHACL overlay graph. This profile "
+        "is THIN (header + community tag) pending the ADR-0028 descriptive-"
+        "layer terms that give its leaves opda: property paths to constrain.",
+        "",
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def _scheme_members(scheme_local_name: str) -> list[str]:
@@ -236,19 +464,22 @@ def _build_baspi5_profile() -> Graph:
     g.add((profile_iri, OWL.versionIRI,
            URIRef("https://w3id.org/opda/profiles/baspi5/0.1.0/")))
     g.add((profile_iri, DCTERMS.source, _ADR_0013))
+    # S022 governance directive (ADR-0029 work-item 2): the form↔community
+    # link is one standard dct:subject triple on the form graph header,
+    # pointing at the owning industry context concept — NOT
+    # opda:overlaysContext / PROF (retired by S022).
+    g.add((profile_iri, DCTERMS.subject, OVERLAY_COMMUNITY["baspi5"]))
 
     # --- opda:ValidationContext reification per ODR-0010 §Q1 -----------
+    # S022 (ADR-0026/0029 amendments): opda:requires + opda:overlaysContext
+    # are DROPPED — `requires` is redundant (the shapes' sh:path/sh:minCount
+    # already enumerate required terms) and `overlaysContext` is retired
+    # (the form↔community link is dct:subject on the header above; the
+    # form↔base link is the shapes' sh:targetClass). The ValidationContext
+    # node itself stays exactly as ODR-0010 §Q1 defines it.
     vctx = OPDA.Baspi5ValidationContext
     g.add((vctx, RDF.type, OPDA.ValidationContext))
     g.add((vctx, OPDA.profileURI, profile_iri))
-    # opda:requires — the OPDA classes BASPI5 binds.
-    for cls in [
-        OPDA.Property, OPDA.Address, OPDA.LegalEstate,
-        OPDA.Seller, OPDA.Buyer, OPDA.EPCCertificate, OPDA.Survey,
-    ]:
-        g.add((vctx, OPDA.requires, cls))
-    g.add((vctx, OPDA.overlaysContext,
-           URIRef("https://w3id.org/opda/profiles/foundation")))
     g.add((vctx, OPDA.sourcedFrom, URIRef(BASPI5_FORMS_AUTHORITY)))
     g.add((vctx, OPDA.formVersion, Literal("5.0.3")))
     g.add((vctx, DCTERMS.source, _ODR_0010))
@@ -663,13 +894,13 @@ def emit_profile(
     date_str = emission_date or _PROFILE_LAST_MODIFIED
     sha_str = git_sha or _PROFILE_SOURCE_COMMIT
 
+    filename = PROFILE_FILENAMES[overlay]
     if overlay == "baspi5":
         graph = _build_baspi5_profile()
-    else:  # pragma: no cover - guarded above
-        raise NotImplementedError(f"profile builder for {overlay!r} not implemented")
-
-    filename = PROFILE_FILENAMES[overlay]
-    header = _comment_header(filename, date_str, sha_str)
+        header = _comment_header(filename, date_str, sha_str)
+    else:
+        graph = _build_profile(_PROFILE_SPECS[overlay])
+        header = _thin_comment_header(overlay, filename, date_str, sha_str)
     body = to_canonical_turtle(graph).decode("utf-8")
     content = header + body
 

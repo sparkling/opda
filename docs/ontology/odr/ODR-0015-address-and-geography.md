@@ -21,7 +21,7 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 
 # Address & Geography
 
-## Diagrams
+### Diagrams
 
 ### RDF class hierarchy and SHACL property shapes
 

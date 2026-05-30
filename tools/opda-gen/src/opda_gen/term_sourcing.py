@@ -47,6 +47,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Mapping
 
+from opda_gen.inputs.data_dictionary import DictionaryLeaf
+
 
 class UnsourceableTerm(Exception):
     """Raised when no precedence slot can supply a source for a term.
@@ -359,3 +361,53 @@ def resolve_term(
     return ResolvedTerm(
         term_id=term_id, primary=primary, contextual=contextual
     )
+
+
+# --- Schema-leaf-path sourcing (ODR-0022 gate G2 / ODR-0008 §Q3a) --------
+# A descriptive datatype property's `dct:source` MUST point at its **schema
+# leaf path** (the form-question IRI), NOT at the deciding ODR section. For
+# a leaf that spans overlays, `dct:source` is a **per-overlay array** — one
+# form-question IRI per `(overlay, leaf-path)` pair — giving the lossless
+# audit in both directions that ODR-0008 §Q3a requires. The IRI follows the
+# `…/forms/<overlay>#<leaf.path>` shape ratified for per-leaf provenance
+# (ADR-0029 §"ODR-0010 canonical mapping" Rule 4; ADR-0028 §"the walk"),
+# minted under the stable `w3id.org/opda` redirect (ODR-0004 §1 base).
+_SCHEMA_LEAF_AUTHORITY = "https://w3id.org/opda/forms"
+
+
+def schema_leaf_source(overlay: str, leaf_path: str) -> str:
+    """Mint the schema-leaf-path (form-question) IRI for one overlay leaf.
+
+    `overlay` is the data-dictionary `source` (e.g. ``"baspi5"``,
+    ``"pdtf-transaction"``); `leaf_path` is its dotted JSON path (e.g.
+    ``"propertyPack.buildInformation.building.builtForm"``). Per ODR-0022
+    G2 this is what a descriptive property's `dct:source` points at — never
+    the deciding ODR section.
+    """
+    return f"{_SCHEMA_LEAF_AUTHORITY}/{overlay}#{leaf_path}"
+
+
+def schema_leaf_sources(
+    name: str, dictionary: Mapping[str, DictionaryLeaf]
+) -> list[str]:
+    """Resolve the per-overlay-leaf-path `dct:source` array for `name`.
+
+    Returns every `(overlay, leaf-path)` form-question IRI whose leaf-path's
+    last segment is `name` — the spanning-leaf array of ODR-0008 §Q3a ("one
+    per overlay leaf-path"). The leaf's recorded `source` overlay is read
+    from `DictionaryLeaf.source_iri` (where `load_canonical` deposits the
+    canonical `source` field). The result is sorted for deterministic
+    (byte-identical) emission. An empty list means the dictionary carries no
+    leaf for `name` (the caller decides whether that is a defect or an
+    out-of-dictionary term).
+    """
+    sources: set[str] = set()
+    for leaf in dictionary.values():
+        if leaf.leaf_path.split(".")[-1] != name:
+            continue
+        # `source_iri` holds the canonical `source` overlay id (e.g.
+        # "baspi5") for canonical leaves; fall back to the dict: stub form
+        # when a leaf predates the overlay annotation.
+        overlay = leaf.source_iri
+        sources.add(schema_leaf_source(overlay, leaf.leaf_path))
+    return sorted(sources)

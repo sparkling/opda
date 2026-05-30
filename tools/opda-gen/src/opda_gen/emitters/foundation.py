@@ -121,7 +121,7 @@ _ISSUED_DATE = "2026-05-27"
 # "when did the foundation TTLs last substantively change". Override via
 # the `emission_date` kwarg of `emit_foundation()` for ad-hoc tests; CI
 # MUST regenerate with this pinned default so the diff is zero.
-_FOUNDATION_LAST_MODIFIED = "2026-05-28"  # ADR-0014 G14 + version 1.0.0 bump
+_FOUNDATION_LAST_MODIFIED = "2026-05-30"  # ADR-0026 owl:versionInfo bump (bounded-context scheme)
 # The generator-comment header's "# Source commit:" line is pinned to a
 # sentinel string per ADR-0009 (not the live HEAD SHA). Rationale: the live
 # SHA changes on every unrelated commit and would break byte-identity CI.
@@ -132,7 +132,7 @@ _FOUNDATION_LAST_MODIFIED = "2026-05-28"  # ADR-0014 G14 + version 1.0.0 bump
 # ADR-0011 adds three UFO meta-classes (RoleMixin / Role / Relator) to
 # the foundation class graph plus bumps the foundation `owl:versionIRI`,
 # both substantive foundation mutations warranting the sentinel bump.
-_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0014"
+_FOUNDATION_SOURCE_COMMIT = "pinned-by-ADR-0026"
 # Generator-version label per ADR-0009 §"foundation.ttl — ontology header" line 73.
 _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 # Version-info string tracks the ADR responsible for the most recent
@@ -142,8 +142,9 @@ _GENERATOR_VERSION_LABEL = f"opda-gen-{__version__}"
 _VERSION_INFO = (
     f"{__version__} — foundation + SKOS vocabularies + UFO meta-classes "
     "+ module shapes + DPV annotations + overlay profiles + "
-    "ValidationContext + hasSpecialCategoryData "
-    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013 + ADR-0014)"
+    "ValidationContext + hasSpecialCategoryData + bounded-context scheme "
+    "(ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013 + ADR-0014 "
+    "+ ADR-0026)"
 )
 
 # dct:source URIs — every emitted class cites its ratified ODR section.
@@ -197,7 +198,7 @@ def _comment_header(
         "# Implementation: "
         "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
-        "https://openpropdata.org.uk/adr/ADR-0014-baspi5-round-trip-mvp-harness",
+        "https://openpropdata.org.uk/adr/ADR-0026-bounded-context-scheme-emission",
         f"# Generator version: {_GENERATOR_VERSION_LABEL}",
         f"# Source commit: {git_sha}",
     ]

@@ -67,6 +67,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
+from rdflib.collection import Collection
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 from opda_gen import __version__
@@ -138,6 +139,9 @@ _ODR_0007_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q5")
 _ODR_0007_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q6")
 _ODR_0008_Q4A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q4a")
 _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
+_ODR_0008D_RULE_1 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-1")
+_ODR_0008D_RULE_3 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-3")
+_ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
 _ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
 _ODR_0009_Q7 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q7")
 _ODR_0010_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q6")
@@ -1070,9 +1074,62 @@ def build_governance_shapes() -> Graph:
     return g
 
 
+def _peril_concept_uris() -> list[URIRef]:
+    """Return the 12 opda:PerilScheme concept URIs (ODR-0008d Rule 2).
+
+    Pulled from the in-code vocabularies scheme registry so the
+    RiskAssessment node shape's `sh:in` over opda:peril stays in lock-step
+    with the emitted scheme (no re-parse of the Turtle; pure-emitter
+    discipline, mirroring profiles._scheme_members).
+    """
+    from opda_gen.emitters.vocabularies import _all_schemes
+
+    for scheme in _all_schemes():
+        if scheme.local_name == "PerilScheme":
+            return [scheme.member_uri(m) for m in scheme.members]
+    raise ValueError("PerilScheme not found in vocabularies registry")
+
+
+def _scheme_notations(local_name: str) -> list[str]:
+    """Return a scheme's member notations (ODR-0008d rating value-spaces /
+    the Category-D InclusionStatusScheme), from the in-code registry."""
+    from opda_gen.emitters.vocabularies import _all_schemes
+
+    for scheme in _all_schemes():
+        if scheme.local_name == local_name:
+            return [m.notation for m in scheme.members]
+    raise ValueError(f"scheme not found in vocabularies registry: {local_name}")
+
+
+def _add_in_iri_list(g: Graph, prop: BNode, items: list[URIRef]) -> None:
+    """Attach a SHACL `sh:in` RDF list of IRIs to ``prop`` (used for
+    opda:peril, whose value-space is the PerilScheme concepts)."""
+    rdf_list = BNode()
+    g.add((prop, SH["in"], rdf_list))
+    Collection(g, rdf_list, list(items))
+
+
+def _add_in_literal_list(g: Graph, prop: BNode, items: list) -> None:
+    """Attach a SHACL `sh:in` RDF list of literals to ``prop`` (used for the
+    riskIndicator / actionAlertRating / inclusionStatus value-spaces)."""
+    rdf_list = BNode()
+    g.add((prop, SH["in"], rdf_list))
+    Collection(g, rdf_list, list(items))
+
+
 def build_descriptive_shapes() -> Graph:
-    """Descriptive attribute shapes — minimum identity-key coverage for
-    the five class-promoted descriptive Kinds.
+    """Descriptive attribute shapes.
+
+    Three families:
+    1. The §Q4a provenance identity-key shape for the five class-promoted
+       descriptive Information Objects (Survey / EPCCertificate / Search /
+       Valuation / Comparable) — unchanged.
+    2. ODR-0008d Rule 1c — the `opda:RiskAssessment` node shape (~6 property
+       shapes) + Rule 6b — per-class internal-structure node shapes for the
+       five existing classes (IC ⟨issuing authority, authority reference,
+       issue date⟩).
+    3. ODR-0022 §4 / session-027 R4 — the transaction-scoped fixtures-list
+       node shape tying opda:FixtureItemScheme + opda:inclusionStatus.
     """
     g = Graph()
     _bind_common(g)
@@ -1084,11 +1141,11 @@ def build_descriptive_shapes() -> Graph:
 
     # --- Cat 1: identity-key shapes for the five class-promoted Kinds ---
     # Per ODR-0008 Q4a — Survey, EPCCertificate, Search, Valuation,
-    # Comparable are Substance Kinds (informational). Each carries a
-    # PROV-O Entity-typed identity surface. Minimum shape: their
-    # rdfs:subClassOf prov:Entity is the surface; here we check
-    # presence of a basic identifier-bearing surface via the PROV-O
-    # entity chain.
+    # Comparable are Information Objects (ODR-0008d Rule 3 retro-correction).
+    # Each carries a PROV-O Entity-typed identity surface: their
+    # rdfs:subClassOf prov:Entity is the surface; here we check presence of
+    # the prov:wasGeneratedBy chain — the IC discriminator for class-
+    # promotion.
     for cls in (
         OPDA.Survey, OPDA.EPCCertificate, OPDA.Search,
         OPDA.Valuation, OPDA.Comparable,
@@ -1103,12 +1160,236 @@ def build_descriptive_shapes() -> Graph:
         g.add((pshape, SH.minCount, Literal(1)))
         g.add((pshape, SH.severity, SH.Violation))
         g.add((pshape, SH.message, Literal(
-            "Class-promoted descriptive Kind MUST carry "
+            "Class-promoted descriptive Information Object MUST carry "
             "prov:wasGeneratedBy to its issuing activity per ODR-0008 "
             "§Q4a three-criterion test (authority-retrieved provenance "
             "is the IC discriminator for class-promotion).",
             lang="en",
         )))
+
+    # --- Rule 6b: per-class internal-structure node shapes --------------
+    # ODR-0008d Rule 3 — each of the five Information Objects has IC
+    # ⟨issuing authority, authority reference/number, issue date⟩ (extrinsic,
+    # provenance-grounded). Realised as per-class node shapes: issuing
+    # authority → prov:wasAttributedTo (sh:IRI); authority reference/number →
+    # opda:disclosureDetail-grade xsd:string; issue date →
+    # prov:generatedAtTime (xsd:dateTime). Severity sh:Info (the IC is
+    # advisory internal structure, not a Violation-tier identity-key — that
+    # floor is the prov:wasGeneratedBy shape above).
+    for cls, ref_label in (
+        (OPDA.Survey, "survey"),
+        (OPDA.EPCCertificate, "EPC certificate"),
+        (OPDA.Search, "search"),
+        (OPDA.Valuation, "valuation"),
+        (OPDA.Comparable, "comparable record"),
+    ):
+        shape_iri = URIRef(f"{str(cls)}InternalStructureShape")
+        g.add((shape_iri, RDF.type, SH.NodeShape))
+        g.add((shape_iri, SH.targetClass, cls))
+        g.add((shape_iri, DCTERMS.source, _ODR_0008D_RULE_3))
+        # issuing authority — prov:wasAttributedTo (an Agent IRI)
+        p_auth = BNode()
+        g.add((shape_iri, SH.property, p_auth))
+        g.add((p_auth, SH.path, PROV.wasAttributedTo))
+        g.add((p_auth, SH.nodeKind, SH.IRI))
+        g.add((p_auth, SH.severity, SH.Info))
+        g.add((p_auth, SH.message, Literal(
+            f"The {ref_label}'s issuing authority SHOULD be named via "
+            "prov:wasAttributedTo (IC component 1 of 3 — issuing authority; "
+            "ODR-0008d Rule 3).",
+            lang="en",
+        )))
+        # authority reference / number — a disclosureDetail-grade string
+        p_ref = BNode()
+        g.add((shape_iri, SH.property, p_ref))
+        g.add((p_ref, SH.path, OPDA.disclosureDetail))
+        g.add((p_ref, SH.datatype, XSD.string))
+        g.add((p_ref, SH.severity, SH.Info))
+        g.add((p_ref, SH.message, Literal(
+            f"The {ref_label}'s authority reference / number SHOULD be "
+            "recorded (IC component 2 of 3 — authority reference; ODR-0008d "
+            "Rule 3), carried by opda:disclosureDetail with an instance-level "
+            "dct:source to the reference question.",
+            lang="en",
+        )))
+        # issue date — prov:generatedAtTime
+        p_date = BNode()
+        g.add((shape_iri, SH.property, p_date))
+        g.add((p_date, SH.path, PROV.generatedAtTime))
+        g.add((p_date, SH.datatype, XSD.dateTime))
+        g.add((p_date, SH.maxCount, Literal(1)))
+        g.add((p_date, SH.severity, SH.Info))
+        g.add((p_date, SH.message, Literal(
+            f"The {ref_label}'s issue date SHOULD be named via "
+            "prov:generatedAtTime (IC component 3 of 3 — issue date; "
+            "ODR-0008d Rule 3).",
+            lang="en",
+        )))
+
+    # --- Rule 1c: the opda:RiskAssessment node shape (~6 property shapes) -
+    g.add((OPDA.RiskAssessmentShape, RDF.type, SH.NodeShape))
+    g.add((OPDA.RiskAssessmentShape, SH.targetClass, OPDA.RiskAssessment))
+    g.add((OPDA.RiskAssessmentShape, DCTERMS.source, _ODR_0008D_RULE_1))
+
+    # (1) opda:peril — sh:in the 12 PerilScheme concepts.
+    p_peril = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_peril))
+    g.add((p_peril, SH.path, OPDA.peril))
+    g.add((p_peril, SH.maxCount, Literal(1)))
+    g.add((p_peril, SH.nodeKind, SH.IRI))
+    _add_in_iri_list(g, p_peril, _peril_concept_uris())
+    g.add((p_peril, SH.severity, SH.Violation))
+    g.add((p_peril, SH.message, Literal(
+        "RiskAssessment opda:peril MUST be one of the 12 opda:PerilScheme "
+        "concepts (a dereferenceable peril, never an opaque string; "
+        "ODR-0008d Rule 1c / Rule 2).",
+        lang="en",
+    )))
+
+    # (2) opda:riskIndicator — sh:in the RiskIndicatorScheme value-space.
+    p_ri = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_ri))
+    g.add((p_ri, SH.path, OPDA.riskIndicator))
+    g.add((p_ri, SH.maxCount, Literal(1)))
+    _add_in_literal_list(
+        g, p_ri,
+        [Literal(v) for v in _scheme_notations("RiskIndicatorScheme")],
+    )
+    g.add((p_ri, SH.severity, SH.Violation))
+    g.add((p_ri, SH.message, Literal(
+        "RiskAssessment opda:riskIndicator MUST be one of the "
+        "opda:RiskIndicatorScheme values (No / Not known / Yes; ODR-0008d "
+        "Rule 1c / Rule 4).",
+        lang="en",
+    )))
+
+    # (3) opda:actionAlertRating — sh:in the ActionAlertRatingScheme (1..5).
+    p_aar = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_aar))
+    g.add((p_aar, SH.path, OPDA.actionAlertRating))
+    g.add((p_aar, SH.maxCount, Literal(1)))
+    _add_in_literal_list(
+        g, p_aar,
+        [Literal(int(v), datatype=XSD.integer)
+         for v in _scheme_notations("ActionAlertRatingScheme")],
+    )
+    g.add((p_aar, SH.severity, SH.Violation))
+    g.add((p_aar, SH.message, Literal(
+        "RiskAssessment opda:actionAlertRating MUST be one of the "
+        "opda:ActionAlertRatingScheme levels (integer 1–5, 1 Green … 5 Red; "
+        "ODR-0008d Rule 1c / Rule 4).",
+        lang="en",
+    )))
+
+    # (4) result / summary / recommendations — opda:disclosureDetail-grade
+    # strings (Rule 1c). Collapsed to the ONE reusable disclosure property
+    # (ODR-0022 Category A); the specific field is carried by the instance-
+    # level dct:source, never a per-field property.
+    p_detail = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_detail))
+    g.add((p_detail, SH.path, OPDA.disclosureDetail))
+    g.add((p_detail, SH.datatype, XSD.string))
+    g.add((p_detail, SH.severity, SH.Info))
+    g.add((p_detail, SH.message, Literal(
+        "RiskAssessment result / summary / recommendations are "
+        "opda:disclosureDetail-grade strings (ODR-0008d Rule 1c); the "
+        "specific field is carried by the instance-level dct:source, never "
+        "a per-field property (ODR-0022 §Rules.6).",
+        lang="en",
+    )))
+
+    # (5) prov:wasAttributedTo — datasetAttribution (Rule 1c / Rule 5:
+    # datasetAttribution ≡ prov:wasAttributedTo; reuse, do NOT mint).
+    p_attr = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_attr))
+    g.add((p_attr, SH.path, PROV.wasAttributedTo))
+    g.add((p_attr, SH.nodeKind, SH.IRI))
+    g.add((p_attr, SH.severity, SH.Info))
+    g.add((p_attr, SH.message, Literal(
+        "RiskAssessment datasetAttribution REUSES prov:wasAttributedTo "
+        "(ODR-0008d Rule 5 — the dataset's licensing/copyright Agent; "
+        "opda:datasetAttribution is NEVER minted).",
+        lang="en",
+    )))
+
+    # (6) opda:hasSubAssessment — recursion via sh:node opda:RiskAssessment
+    # for riskSubcategories[] (Rule 1c / Rule 4). A sub-result is itself a
+    # leaf RiskAssessment validated by this same shape.
+    p_sub = BNode()
+    g.add((OPDA.RiskAssessmentShape, SH.property, p_sub))
+    g.add((p_sub, SH.path, OPDA.hasSubAssessment))
+    g.add((p_sub, SH.node, OPDA.RiskAssessmentShape))
+    g.add((p_sub, SH.severity, SH.Violation))
+    g.add((p_sub, SH.message, Literal(
+        "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST "
+        "itself satisfy the RiskAssessment shape — the self-referential "
+        "result recursion via sh:node (ODR-0008d Rule 1c / Rule 4).",
+        lang="en",
+    )))
+
+    # --- ODR-0022 §4 / S027 R4: transaction-scoped fixtures-list shape ---
+    # The inclusion of a fixtures item is a Mode/Relator of the SALE
+    # TRANSACTION (NOT a Quality of opda:Property), so the fixtures-list
+    # shape is transaction-scoped — sh:targetClass opda:Transaction. It ties
+    # opda:FixtureItemScheme (the item vocabulary) to opda:inclusionStatus
+    # (sh:in Included/Excluded/None) + opda:price + opda:disclosureDetail
+    # (the A-grade comment). NO FixtureItem class is minted (ODR-0022 §4 —
+    # promotion only on a named §Q4a query; none attested).
+    g.add((OPDA.FixturesListShape, RDF.type, SH.NodeShape))
+    g.add((OPDA.FixturesListShape, SH.targetClass, OPDA.Transaction))
+    g.add((OPDA.FixturesListShape, DCTERMS.source, _ODR_0022_S4))
+    # Tie the controlled item vocabulary (FixtureItemScheme) without minting
+    # an item-reference predicate or a FixtureItem class.
+    g.add((OPDA.FixturesListShape, DCTERMS.references, OPDA.FixtureItemScheme))
+    g.add((OPDA.FixturesListShape, RDFS.comment, Literal(
+        "Transaction-scoped fixtures-and-fittings list (ODR-0022 §4 / "
+        "session-027 R4). The fixtures items are the opda:FixtureItemScheme "
+        "concepts (referenced via dct:references); each item's inclusion in "
+        "THIS sale is opda:inclusionStatus — a Mode/Relator of the sale "
+        "transaction, NOT a Quality of opda:Property. price + comment "
+        "(opda:disclosureDetail) accompany the inclusion. NO FixtureItem "
+        "class is minted.",
+        lang="en",
+    )))
+    # opda:inclusionStatus — sh:in the InclusionStatusScheme value-space.
+    p_incl = BNode()
+    g.add((OPDA.FixturesListShape, SH.property, p_incl))
+    g.add((p_incl, SH.path, OPDA.inclusionStatus))
+    _add_in_literal_list(
+        g, p_incl,
+        [Literal(v) for v in _scheme_notations("InclusionStatusScheme")],
+    )
+    g.add((p_incl, SH.severity, SH.Violation))
+    g.add((p_incl, SH.message, Literal(
+        "Fixtures-item opda:inclusionStatus MUST be one of the "
+        "opda:InclusionStatusScheme values (Excluded / Included / None) — a "
+        "sale-transaction Mode, never a Quality of opda:Property (ODR-0022 "
+        "§4 / session-027 R4).",
+        lang="en",
+    )))
+    # opda:price — a shared monetary-amount (xsd:decimal).
+    p_price = BNode()
+    g.add((OPDA.FixturesListShape, SH.property, p_price))
+    g.add((p_price, SH.path, OPDA.price))
+    g.add((p_price, SH.datatype, XSD.decimal))
+    g.add((p_price, SH.severity, SH.Info))
+    g.add((p_price, SH.message, Literal(
+        "Fixtures-item opda:price is the shared monetary-amount property "
+        "(one property reused across all items; ODR-0022 §4 — never one "
+        "price property per item).",
+        lang="en",
+    )))
+    # opda:disclosureDetail — the A-grade fixtures comment.
+    p_comment = BNode()
+    g.add((OPDA.FixturesListShape, SH.property, p_comment))
+    g.add((p_comment, SH.path, OPDA.disclosureDetail))
+    g.add((p_comment, SH.datatype, XSD.string))
+    g.add((p_comment, SH.severity, SH.Info))
+    g.add((p_comment, SH.message, Literal(
+        "Fixtures-item comment reuses opda:disclosureDetail (A-grade; "
+        "ODR-0022 §4) — never a per-item comment property.",
+        lang="en",
+    )))
 
     return g
 

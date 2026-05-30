@@ -5,7 +5,6 @@ kind: architecture
 tags: [foundation, uri, namespace]
 scope: [pdtf-v3]
 council: session-004
-wg-decision: session-003b
 supersedes: []
 depends-on: [ODR-0002]
 implements: [ODR-0003]

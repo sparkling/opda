@@ -16,6 +16,16 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
+opda:ActionAlertRatingScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Action Alert Rating"@en ;
+    skos:definition "The value-space of opda:actionAlertRating on an opda:RiskAssessment: an ordinal 1–5 scale where 1 is Green (lowest risk) and 5 is Red (highest risk). Derived from the data dictionary's actual actionAlertRating integer leaf + its title \"Action alert rating (1 is Green, 5 is Red)\" (ODR-0008d Rule 4)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-4> ;
+    dct:title "Search/environmental action-alert rating value-space (1–5)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 — an ordinal quality region). DOLCE: Quality-Region (Masolo D18 §4.3). The notation is the integer level; the colour anchors (Green at 1, Red at 5) are the data dictionary's own title text. Per-member dct:source is the schema leaf path (ODR-0022 G2)."@en ;
+    opda:hasSteward "Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:AddressVariantScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Address Variant"@en ;
@@ -36,6 +46,36 @@ opda:AssuranceLevelScheme
     opda:hasSteward "Moreau (S009 Q3)"@en ;
     opda:ufoCategory "Quality Value" .
 
+opda:AttachmentStatusNotApplicableScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Attachment Status (with Not applicable)"@en ;
+    skos:definition "Status of a supporting document attached to a disclosure answer, admitting non-applicable as a third option (Attached / Not applicable / To follow)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Disclosure attachment status with non-applicable (Attached / Not applicable / To follow)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Three-value variant of AttachmentStatusScheme for questions where the document may not apply."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:AttachmentStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Attachment Status"@en ;
+    skos:definition "Status of a supporting document attached to a disclosure answer: provided now, or to follow."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Disclosure attachment status (Attached / To follow)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The most-reused disclosure-envelope value-space (~90 leaves); the attached document itself is an ODR-0009 Evidence (Category B), not a Quality of the Property."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:BoundaryResponsibilityScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Boundary Responsibility"@en ;
+    skos:definition "Which party is responsible for a legal boundary of the property (the Seller, shared, the neighbour, or not known)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Boundary ownership / maintenance responsibility (Seller / Shared / Neighbour / Not known)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the per-side boundary-ownership questions (left / right / rear / front)."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:BuiltFormScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Built Form"@en ;
@@ -54,6 +94,16 @@ opda:CentralHeatingFuelTypeScheme
     dct:title "Property central-heating fuel type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3)."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:ChargePaymentStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Charge Payment Status"@en ;
+    skos:definition "Payment status of a managed-area charge (due, completed but unpaid, anticipated, or not applicable)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Charge payment status (Due / Completed but unpaid / Anticipated / Not applicable)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the managed-area charge questions. Definitions are conservative — flagged for WG wording on the 'Completed but unpaid' vs 'Due' boundary."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
 opda:CouncilTaxBandSchemeEW
@@ -86,6 +136,16 @@ opda:CurrentEnergyRatingScheme
     opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
+opda:DeedSupplyStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Deed Supply Status"@en ;
+    skos:definition "Supply status of a requested deed or document: attached now, to follow, or lost."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Deed/document supply status (Attached / To follow / Lost)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the leasehold required-documents questions where a document may have been lost. Distinct from AttachmentStatusScheme by the 'Lost' member."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:EvidenceMethodScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Evidence Method"@en ;
@@ -96,6 +156,36 @@ opda:EvidenceMethodScheme
     opda:hasSteward "Moreau (S009 Q3)"@en ;
     opda:ufoCategory "Quality Value" .
 
+opda:FeeTypeScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Fee Type"@en ;
+    skos:definition "Type of recurring fee a payee collects for a managed freehold or commonhold (service charges, ground rent, administration fees, or all)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Managed-area fee type (Service charges / Ground rent / Administration fees / All)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the managed-area contact-details bank-account questions."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:FittedOrFreestandingScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Fitted or Freestanding"@en ;
+    skos:definition "Whether a kitchen appliance is fitted (built in) or freestanding (movable)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Kitchen-appliance fitment (Fitted / Freestanding)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the kitchen-appliance fixtures checklist (hob, oven, extractor, etc.)."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:FixtureItemScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Fixture Item"@en ;
+    skos:definition "Controlled list of the fixtures-and-fittings checklist *items* (boiler/immersion heater, radiators, curtains, carpets, kitchen appliances, garden items, etc.) a seller discloses for a sale. Items are Objects/Kinds; their inclusion in a given sale is a Mode/Relator of the transaction (council-reserved, ODR-0023 R4) and is NOT a property of any item concept."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Fixtures-and-fittings checklist items"@en ;
+    skos:scopeNote "UFO: the items are Objects/Kinds (Guizzardi 2005 Ch. 4) — a controlled list of chattels, not Qualities of the Property (ODR-0022 §4 D Object/Mode split). CANDIDATE scheme: ratified as a scheme (not a FixtureItem class — that would be over-engineering absent a named §Q4a query). Item definitions are conservative path humanisations; WG owns final wording. Colliding bare names (bedroom1 ×5, kitchen ×5, etc.) are kept distinct by the category-qualified URI."@en ;
+    opda:hasSteward "Allemang (fixtures sub-module steward per ODR-0022 §4)"@en ;
+    opda:ufoCategory "Substance Kind label" .
+
 opda:HeatingTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Heating Type"@en ;
@@ -104,6 +194,36 @@ opda:HeatingTypeScheme
     dct:title "Property heating-system type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3)."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:InclusionScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Inclusion (Included / Excluded)"@en ;
+    skos:definition "Whether a free-text 'other item' is included in or excluded from the sale (binary variant, no 'None' option)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Fixture inclusion (Included / Excluded)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Two-value variant of InclusionStatusScheme used by the free-text `otherItems[]` fixtures slots."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:InclusionStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Inclusion Status"@en ;
+    skos:definition "Whether a fixtures-and-fittings item is included in, excluded from, or absent from (None) the sale. NOTE: this is the *value-space* only; the inclusion-status property that ranges over it is council-reserved (ODR-0023 R4) and is NOT minted here."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Fixture inclusion status (Included / Excluded / None)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The value-space for the ~89-item fixtures checklist (ODR-0022 §4 Category D). Reserved property `opda:inclusionStatus` is a transaction Mode/Relator (ODR-0023 R4) owned by the Council — only the value-scheme is emitted here."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:ManagedAreaResponsibilityScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Managed-Area Responsibility"@en ;
+    skos:definition "Which party deals with the day-to-day maintenance of a managed area. The canonical six-value superset; per-form subsets (e.g. without 'the Lessees', or without 'Rentcharge Owner') are `sh:in` restrictions in the overlay profile, NOT separate schemes (ODR-0011 §1a)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Managed-area maintenance responsibility (Landlord / Management Company / Managing Agent / Rentcharge Owner / the Lessees / Not applicable)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The canonical managed-area-payee superset; the leasehold / managed-freehold variants are profile `sh:in` restrictions over this scheme's members."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
 opda:MilestoneKindScheme
@@ -156,6 +276,16 @@ opda:ParticipantStatusScheme
     opda:hasSteward "Guizzardi (S006 Q7)"@en ;
     opda:ufoCategory "Phase label" .
 
+opda:PerilScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Environmental Peril"@en ;
+    skos:definition "The 12 environmental / local-authority search perils a property's authority-retrieved risk assessments (opda:RiskAssessment) are individuated by. Each peril is a dereferenceable concept governed by a named data authority (ODR-0008d Rule 2); the peril is NEVER an opaque string and NEVER an rdfs:subClassOf hierarchy (a delimited value-space is a scheme, not a class tree)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-2> ;
+    dct:title "Environmental / search peril dataset axis"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Mirrors opda:BoundedContextScheme member-for-member (a flat scheme; each concept is skos:topConceptOf). The peril → sub-peril taxonomy axis uses skos:narrower (ODR-0008d Rule 4); the data dictionary attests no enumerated sub-peril value-set, so all 12 perils are top concepts and the per-result recursion is carried by opda:hasSubAssessment, not by TBox concepts."@en ;
+    opda:hasSteward "Baker (deputy Isaac) (PerilScheme steward per ODR-0008d Rule 2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:PropertyTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Property Type"@en ;
@@ -165,6 +295,26 @@ opda:PropertyTypeScheme
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members may bind to OWL sub-classes of opda:Property via skos:exactMatch when conditional Building/Room class promotions trigger (per ODR-0008 §Q4a held-as-live). Distinct from BuiltFormScheme (Quale-in-Region)."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
     opda:ufoCategory "Substance Kind label" .
+
+opda:RiskIndicatorScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Risk Indicator"@en ;
+    skos:definition "The value-space of opda:riskIndicator on an opda:RiskAssessment (\"is action recommended? / is the property at risk?\"): No / Not known / Yes. Derived from the data dictionary's actual riskIndicator string-enum (ODR-0008d Rule 4)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-4> ;
+    dct:title "Search/environmental risk indicator value-space"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Members are the union of the attested riskIndicator enum values across the environmental peril leaves; the per-member dct:source is the schema leaf path (ODR-0022 G2)."@en ;
+    opda:hasSteward "Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:RoadAdoptionStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Road Adoption Status"@en ;
+    skos:definition "Maintenance-responsibility status of an abutting road or footway: publicly maintained, private, subject to a section-38 agreement, or unchecked."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Road / footway adoption status (public / private / section 38 / unchecked)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the roads-and-public-rights-of-way search results. Regulator-adjacent (Highways Act 1980 s.38); flagged for WG wording on the verbatim s.38 definition."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
 
 opda:RoleScheme
     rdf:type skos:ConceptScheme ;
@@ -206,6 +356,36 @@ opda:TransactionStatusScheme
     opda:hasSteward "Guizzardi (S007 Q3)"@en ;
     opda:ufoCategory "Phase label" .
 
+opda:UnitOfAreaScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Unit of Area"@en ;
+    skos:definition "Unit in which an internal floor area is expressed (square metres or square feet)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Internal-area unit (square metres / square feet)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the internal-area measurement questions. A measurement unit rather than a descriptive Quality value; flagged for WG on whether QUDT unit IRIs should be referenced via skos:exactMatch."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:UtilityConnectionStatusNotKnownScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Utility Connection Status (with Not known)"@en ;
+    skos:definition "Mains-utility connection status admitting unknown-to-Seller as a fourth option (Yes / No / To be connected / Not known)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Mains utility connection status with unknown (Yes / No / To be connected / Not known)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Four-value variant of UtilityConnectionStatusScheme for questions where the Seller may legitimately not know."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:UtilityConnectionStatusScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Utility Connection Status"@en ;
+    skos:definition "Whether a mains utility (electricity, gas, water, drainage) is connected, not connected, or to be connected."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:title "Mains utility connection status (Yes / No / To be connected)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the mains-utility-presence questions; 'To be connected' captures an in-progress connection."@en ;
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:YesNoNotApplicableScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Yes/No/Not applicable"@en ;
@@ -245,6 +425,46 @@ opda:YesNoScheme
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Used by ~276 BASPI5 discriminator questions; emitted as a shared scheme per ODR-0011 §1a one-scheme-per-enum discipline."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
     opda:ufoCategory "Quale-in-Region" .
+
+<https://w3id.org/opda/#actionAlertRating/1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "1 (Green)"@en ;
+    skos:definition "Action alert rating 1 — Green (lowest risk band)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.1> ;
+    skos:inScheme opda:ActionAlertRatingScheme ;
+    skos:notation "1" .
+
+<https://w3id.org/opda/#actionAlertRating/2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "2"@en ;
+    skos:definition "Action alert rating 2."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.2> ;
+    skos:inScheme opda:ActionAlertRatingScheme ;
+    skos:notation "2" .
+
+<https://w3id.org/opda/#actionAlertRating/3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "3"@en ;
+    skos:definition "Action alert rating 3 (mid band)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.3> ;
+    skos:inScheme opda:ActionAlertRatingScheme ;
+    skos:notation "3" .
+
+<https://w3id.org/opda/#actionAlertRating/4>
+    rdf:type skos:Concept ;
+    skos:prefLabel "4"@en ;
+    skos:definition "Action alert rating 4."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.4> ;
+    skos:inScheme opda:ActionAlertRatingScheme ;
+    skos:notation "4" .
+
+<https://w3id.org/opda/#actionAlertRating/5>
+    rdf:type skos:Concept ;
+    skos:prefLabel "5 (Red)"@en ;
+    skos:definition "Action alert rating 5 — Red (highest risk band)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.5> ;
+    skos:inScheme opda:ActionAlertRatingScheme ;
+    skos:notation "5" .
 
 <https://w3id.org/opda/#addressVariant/inspire>
     rdf:type skos:Concept ;
@@ -309,6 +529,78 @@ opda:YesNoScheme
     dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
     skos:inScheme opda:AssuranceLevelScheme ;
     skos:notation "Substantial" .
+
+<https://w3id.org/opda/#attachmentStatus/Attached>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Attached"@en ;
+    skos:definition "The supporting document is attached now."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].sellersCapacity.attachments.Attached> ;
+    skos:inScheme opda:AttachmentStatusScheme ;
+    skos:notation "Attached" .
+
+<https://w3id.org/opda/#attachmentStatus/To-follow>
+    rdf:type skos:Concept ;
+    skos:prefLabel "To follow"@en ;
+    skos:definition "The supporting document is to follow later."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].sellersCapacity.attachments.To%20follow> ;
+    skos:inScheme opda:AttachmentStatusScheme ;
+    skos:notation "To follow" .
+
+<https://w3id.org/opda/#attachmentStatusNotApplicable/Attached>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Attached"@en ;
+    skos:definition "The supporting document is attached now."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.publishedAccounts.attachments.Attached> ;
+    skos:inScheme opda:AttachmentStatusNotApplicableScheme ;
+    skos:notation "Attached" .
+
+<https://w3id.org/opda/#attachmentStatusNotApplicable/Not-applicable>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not applicable"@en ;
+    skos:definition "No supporting document applies in this context."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.publishedAccounts.attachments.Not%20applicable> ;
+    skos:inScheme opda:AttachmentStatusNotApplicableScheme ;
+    skos:notation "Not applicable" .
+
+<https://w3id.org/opda/#attachmentStatusNotApplicable/To-follow>
+    rdf:type skos:Concept ;
+    skos:prefLabel "To follow"@en ;
+    skos:definition "The supporting document is to follow later."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.publishedAccounts.attachments.To%20follow> ;
+    skos:inScheme opda:AttachmentStatusNotApplicableScheme ;
+    skos:notation "To follow" .
+
+<https://w3id.org/opda/#boundaryResponsibility/Neighbour>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Neighbour"@en ;
+    skos:definition "The neighbour is responsible for the boundary."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalBoundaries.ownership.uniformBoundaries.left.Neighbour> ;
+    skos:inScheme opda:BoundaryResponsibilityScheme ;
+    skos:notation "Neighbour" .
+
+<https://w3id.org/opda/#boundaryResponsibility/Not-known>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not known"@en ;
+    skos:definition "Boundary responsibility is not known."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalBoundaries.ownership.uniformBoundaries.left.Not%20known> ;
+    skos:inScheme opda:BoundaryResponsibilityScheme ;
+    skos:notation "Not known" .
+
+<https://w3id.org/opda/#boundaryResponsibility/Seller>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Seller"@en ;
+    skos:definition "The Seller is responsible for the boundary."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalBoundaries.ownership.uniformBoundaries.left.Seller> ;
+    skos:inScheme opda:BoundaryResponsibilityScheme ;
+    skos:notation "Seller" .
+
+<https://w3id.org/opda/#boundaryResponsibility/Shared>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Shared"@en ;
+    skos:definition "Responsibility for the boundary is shared with the neighbour."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalBoundaries.ownership.uniformBoundaries.left.Shared> ;
+    skos:inScheme opda:BoundaryResponsibilityScheme ;
+    skos:notation "Shared" .
 
 <https://w3id.org/opda/#builtForm/Detached>
     rdf:type skos:Concept ;
@@ -397,6 +689,38 @@ opda:YesNoScheme
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType.Other> ;
     skos:inScheme opda:CentralHeatingFuelTypeScheme ;
     skos:notation "Other" .
+
+<https://w3id.org/opda/#chargePaymentStatus/Anticipated>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Anticipated"@en ;
+    skos:definition "The charge is anticipated but not yet due."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.currentExpenditure.status.Anticipated> ;
+    skos:inScheme opda:ChargePaymentStatusScheme ;
+    skos:notation "Anticipated" .
+
+<https://w3id.org/opda/#chargePaymentStatus/Completed-but-unpaid>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Completed but unpaid"@en ;
+    skos:definition "The charge period has completed but the charge is unpaid."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.currentExpenditure.status.Completed%20but%20unpaid> ;
+    skos:inScheme opda:ChargePaymentStatusScheme ;
+    skos:notation "Completed but unpaid" .
+
+<https://w3id.org/opda/#chargePaymentStatus/Due>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Due"@en ;
+    skos:definition "The charge is currently due."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.currentExpenditure.status.Due> ;
+    skos:inScheme opda:ChargePaymentStatusScheme ;
+    skos:notation "Due" .
+
+<https://w3id.org/opda/#chargePaymentStatus/Not-applicable>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not applicable"@en ;
+    skos:definition "No charge applies in this context."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.currentExpenditure.status.Not%20applicable> ;
+    skos:inScheme opda:ChargePaymentStatusScheme ;
+    skos:notation "Not applicable" .
 
 <https://w3id.org/opda/#councilTaxBandEW/A>
     rdf:type skos:Concept ;
@@ -590,6 +914,30 @@ opda:YesNoScheme
     skos:inScheme opda:CurrentEnergyRatingScheme ;
     skos:notation "G" .
 
+<https://w3id.org/opda/#deedSupplyStatus/Attached>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Attached"@en ;
+    skos:definition "The deed or document is attached now."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.deed.status.Attached> ;
+    skos:inScheme opda:DeedSupplyStatusScheme ;
+    skos:notation "Attached" .
+
+<https://w3id.org/opda/#deedSupplyStatus/Lost>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Lost"@en ;
+    skos:definition "The deed or document has been lost."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.deed.status.Lost> ;
+    skos:inScheme opda:DeedSupplyStatusScheme ;
+    skos:notation "Lost" .
+
+<https://w3id.org/opda/#deedSupplyStatus/To-follow>
+    rdf:type skos:Concept ;
+    skos:prefLabel "To follow"@en ;
+    skos:definition "The deed or document is to follow later."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.deed.status.To%20follow> ;
+    skos:inScheme opda:DeedSupplyStatusScheme ;
+    skos:notation "To follow" .
+
 <https://w3id.org/opda/#evidenceMethod/Document>
     rdf:type skos:Concept ;
     skos:prefLabel "Document"@en ;
@@ -613,6 +961,766 @@ opda:YesNoScheme
     dct:source <https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html> ;
     skos:inScheme opda:EvidenceMethodScheme ;
     skos:notation "Vouch" .
+
+<https://w3id.org/opda/#feeType/Administration-fees>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Administration fees"@en ;
+    skos:definition "Administration fees collected by the payee."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.feeType.Administration%20fees> ;
+    skos:inScheme opda:FeeTypeScheme ;
+    skos:notation "Administration fees" .
+
+<https://w3id.org/opda/#feeType/All>
+    rdf:type skos:Concept ;
+    skos:prefLabel "All"@en ;
+    skos:definition "All fee types collected by the payee."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.feeType.All> ;
+    skos:inScheme opda:FeeTypeScheme ;
+    skos:notation "All" .
+
+<https://w3id.org/opda/#feeType/Ground-rent>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Ground rent"@en ;
+    skos:definition "Ground rent collected by the payee."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.feeType.Ground%20rent> ;
+    skos:inScheme opda:FeeTypeScheme ;
+    skos:notation "Ground rent" .
+
+<https://w3id.org/opda/#feeType/Service-charges>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Service charges"@en ;
+    skos:definition "Service charges collected by the payee."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.feeType.Service%20charges> ;
+    skos:inScheme opda:FeeTypeScheme ;
+    skos:notation "Service charges" .
+
+<https://w3id.org/opda/#fittedOrFreestanding/Fitted>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Fitted"@en ;
+    skos:definition "The appliance is fitted (built in)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding.fittedOrFreestanding.Fitted> ;
+    skos:inScheme opda:FittedOrFreestandingScheme ;
+    skos:notation "Fitted" .
+
+<https://w3id.org/opda/#fittedOrFreestanding/Freestanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Freestanding"@en ;
+    skos:definition "The appliance is freestanding (movable)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.hob.fittedOrFreestanding.fittedOrFreestanding.Freestanding> ;
+    skos:inScheme opda:FittedOrFreestandingScheme ;
+    skos:notation "Freestanding" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/boilerImmersionHeater>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Boiler immersion heater (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Boiler immersion heater' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.boilerImmersionHeater" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/burglarAlarm>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Burglar alarm (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Burglar alarm' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.burglarAlarm.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.burglarAlarm" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/doorbellChime>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Doorbell chime (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Doorbell chime' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.doorbellChime.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.doorbellChime" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/electricFiresWithSurround>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Electric fires with surround (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Electric fires with surround' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.electricFiresWithSurround.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.electricFiresWithSurround" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/electricSockets>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Electric sockets (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Electric sockets' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.electricSockets.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.electricSockets" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/externalDoorFittings>
+    rdf:type skos:Concept ;
+    skos:prefLabel "External door fittings (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'External door fittings' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.externalDoorFittings.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.externalDoorFittings" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/freeStandingHeaters>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Free standing heaters (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Free standing heaters' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.freeStandingHeaters.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.freeStandingHeaters" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/gasFiresWithSurround>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Gas fires with surround (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Gas fires with surround' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.gasFiresWithSurround.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.gasFiresWithSurround" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/internalDoorFittings>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Internal door fittings (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Internal door fittings' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.internalDoorFittings.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.internalDoorFittings" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/lightSwitches>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Light switches (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Light switches' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.lightSwitches.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.lightSwitches" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/nightStorageHeaters>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Night storage heaters (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Night storage heaters' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.nightStorageHeaters.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.nightStorageHeaters" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/radiatorsWallHeaters>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Radiators wall heaters (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Radiators wall heaters' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.radiatorsWallHeaters.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.radiatorsWallHeaters" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/roofInsulation>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Roof insulation (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Roof insulation' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.roofInsulation.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.roofInsulation" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/windowFittings>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Window fittings (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Window fittings' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.windowFittings.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.windowFittings" .
+
+<https://w3id.org/opda/#fixtureItem/basicFittings/windowShuttersGrilles>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Window shutters grilles (Basic fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Window shutters grilles' in the basic fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.windowShuttersGrilles.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "basicFittings.windowShuttersGrilles" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/bath>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bath (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bath' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.bath.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.bath" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/bathroomCabinet>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bathroom cabinet (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bathroom cabinet' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.bathroomCabinet.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.bathroomCabinet" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/bathroomMirror>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bathroom mirror (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bathroom mirror' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.bathroomMirror.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.bathroomMirror" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/separateShowersAndFittings>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Separate showers and fittings (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Separate showers and fittings' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.separateShowersAndFittings.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.separateShowersAndFittings" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/showerCurtain>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Shower curtain (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Shower curtain' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.showerCurtain.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.showerCurtain" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/showerFittingForBath>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Shower fitting for bath (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Shower fitting for bath' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.showerFittingForBath.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.showerFittingForBath" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/soapToothbrushHolders>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Soap toothbrush holders (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Soap toothbrush holders' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.soapToothbrushHolders.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.soapToothbrushHolders" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/taps>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Taps (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Taps' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.taps.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.taps" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/toiletRollHolders>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Toilet roll holders (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Toilet roll holders' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.toiletRollHolders.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.toiletRollHolders" .
+
+<https://w3id.org/opda/#fixtureItem/bathroom/towelRail>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Towel rail (Bathroom)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Towel rail' in the bathroom category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.bathroom.towelRail.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "bathroom.towelRail" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/bedroom1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 1 (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 1' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.bedroom1.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.bedroom1" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/bedroom2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 2 (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 2' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.bedroom2.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.bedroom2" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/bedroom3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 3 (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 3' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.bedroom3.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.bedroom3" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/diningRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dining room (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dining room' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.diningRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.diningRoom" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/hallStairsLanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hall stairs landing (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hall stairs landing' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.hallStairsLanding.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.hallStairsLanding" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/kitchen>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Kitchen (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Kitchen' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.kitchen.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.kitchen" .
+
+<https://w3id.org/opda/#fixtureItem/carpets/livingRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Living room (Carpets)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Living room' in the carpets category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.carpets.livingRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "carpets.livingRoom" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/bedroom1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 1 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 1' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom1.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom1" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/bedroom2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 2 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 2' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom2.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom2" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/bedroom3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 3 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 3' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom3.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom3" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/diningRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dining room (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dining room' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.diningRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.diningRoom" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/hallStairsLanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hall stairs landing (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hall stairs landing' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.hallStairsLanding.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.hallStairsLanding" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/kitchen>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Kitchen (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Kitchen' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.kitchen.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.kitchen" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainRailsPolesPelmets/livingRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Living room (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Living room' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.livingRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainRailsPolesPelmets.livingRoom" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/bedroom1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 1 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 1' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom1.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.bedroom1" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/bedroom2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 2 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 2' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom2.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.bedroom2" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/bedroom3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 3 (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 3' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom3.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.bedroom3" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/diningRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dining room (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dining room' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.diningRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.diningRoom" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/hallStairsLanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hall stairs landing (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hall stairs landing' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.hallStairsLanding.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.hallStairsLanding" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/kitchen>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Kitchen (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Kitchen' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.kitchen.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.kitchen" .
+
+<https://w3id.org/opda/#fixtureItem/curtainsAndCurtainRails/curtainsBlinds/livingRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Living room (Curtains and curtain rails)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Living room' in the curtains and curtain rails category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.livingRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "curtainsAndCurtainRails.curtainsBlinds.livingRoom" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/bedroom1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 1 (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 1' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.bedroom1.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.bedroom1" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/bedroom2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 2 (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 2' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.bedroom2.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.bedroom2" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/bedroom3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 3 (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 3' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.bedroom3.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.bedroom3" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/diningRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dining room (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dining room' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.diningRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.diningRoom" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/hallStairsLanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hall stairs landing (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hall stairs landing' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.hallStairsLanding.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.hallStairsLanding" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/kitchen>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Kitchen (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Kitchen' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.kitchen.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.kitchen" .
+
+<https://w3id.org/opda/#fixtureItem/fittedUnits/livingRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Living room (Fitted units)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Living room' in the fitted units category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.fittedUnits.livingRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "fittedUnits.livingRoom" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/cooker>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Cooker (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Cooker' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.cooker.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.cooker" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/dishwasher>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dishwasher (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dishwasher' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.dishwasher.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.dishwasher" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/extractorHood>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Extractor hood (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Extractor hood' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.extractorHood.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.extractorHood" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/freezer>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Freezer (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Freezer' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.freezer.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.freezer" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/hob>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hob (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hob' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.hob.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.hob" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/microwave>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Microwave (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Microwave' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.microwave.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.microwave" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/ovenGrill>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Oven grill (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Oven grill' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.ovenGrill.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.ovenGrill" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/refrigeratorFridgeFreezer>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Refrigerator fridge freezer (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Refrigerator fridge freezer' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.refrigeratorFridgeFreezer.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.refrigeratorFridgeFreezer" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/tumbleDryer>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Tumble dryer (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Tumble dryer' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.tumbleDryer.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.tumbleDryer" .
+
+<https://w3id.org/opda/#fixtureItem/kitchen/washingMachine>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Washing machine (Kitchen)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Washing machine' in the kitchen category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.kitchen.washingMachine.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "kitchen.washingMachine" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/bedroom1>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 1 (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 1' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.bedroom1.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.bedroom1" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/bedroom2>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 2 (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 2' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.bedroom2.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.bedroom2" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/bedroom3>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bedroom 3 (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Bedroom 3' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.bedroom3.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.bedroom3" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/diningRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dining room (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dining room' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.diningRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.diningRoom" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/hallStairsLanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Hall stairs landing (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Hall stairs landing' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.hallStairsLanding.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.hallStairsLanding" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/kitchen>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Kitchen (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Kitchen' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.kitchen.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.kitchen" .
+
+<https://w3id.org/opda/#fixtureItem/lightFittings/livingRoom>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Living room (Light fittings)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Living room' in the light fittings category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.lightFittings.livingRoom.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "lightFittings.livingRoom" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/barbecue>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Barbecue (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Barbecue' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.barbecue.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.barbecue" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/clothesLine>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Clothes line (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Clothes line' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.clothesLine.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.clothesLine" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/dustbins>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Dustbins (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Dustbins' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.dustbins.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.dustbins" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/gardenFurniture>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Garden furniture (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Garden furniture' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.gardenFurniture.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.gardenFurniture" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/gardenOrnaments>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Garden ornaments (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Garden ornaments' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.gardenOrnaments.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.gardenOrnaments" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/gardenShed>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Garden shed (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Garden shed' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.gardenShed.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.gardenShed" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/greenhouse>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Greenhouse (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Greenhouse' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.greenhouse.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.greenhouse" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/outdoorHeater>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Outdoor heater (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Outdoor heater' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.outdoorHeater.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.outdoorHeater" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/outdoorLights>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Outdoor lights (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Outdoor lights' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.outdoorLights.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.outdoorLights" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/rotaryLine>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Rotary line (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Rotary line' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.rotaryLine.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.rotaryLine" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/treesPlantsShrubs>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Trees plants shrubs (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Trees plants shrubs' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.treesPlantsShrubs.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.treesPlantsShrubs" .
+
+<https://w3id.org/opda/#fixtureItem/outdoorArea/waterButt>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Water butt (Outdoor area)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Water butt' in the outdoor area category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.outdoorArea.waterButt.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "outdoorArea.waterButt" .
+
+<https://w3id.org/opda/#fixtureItem/stockOfFuel/lpg>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Lpg (Stock of fuel)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Lpg' in the stock of fuel category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.stockOfFuel.lpg.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "stockOfFuel.lpg" .
+
+<https://w3id.org/opda/#fixtureItem/stockOfFuel/oil>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Oil (Stock of fuel)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Oil' in the stock of fuel category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.stockOfFuel.oil.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "stockOfFuel.oil" .
+
+<https://w3id.org/opda/#fixtureItem/stockOfFuel/wood>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Wood (Stock of fuel)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Wood' in the stock of fuel category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.stockOfFuel.wood.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "stockOfFuel.wood" .
+
+<https://w3id.org/opda/#fixtureItem/televisionAndTelephone/radioAerial>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Radio aerial (Television and telephone)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Radio aerial' in the television and telephone category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.televisionAndTelephone.radioAerial.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "televisionAndTelephone.radioAerial" .
+
+<https://w3id.org/opda/#fixtureItem/televisionAndTelephone/satelliteDish>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Satellite dish (Television and telephone)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Satellite dish' in the television and telephone category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.televisionAndTelephone.satelliteDish.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "televisionAndTelephone.satelliteDish" .
+
+<https://w3id.org/opda/#fixtureItem/televisionAndTelephone/telephoneReceivers>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Telephone receivers (Television and telephone)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Telephone receivers' in the television and telephone category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.televisionAndTelephone.telephoneReceivers.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "televisionAndTelephone.telephoneReceivers" .
+
+<https://w3id.org/opda/#fixtureItem/televisionAndTelephone/televisionAerial>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Television aerial (Television and telephone)"@en ;
+    skos:definition "Fixtures-and-fittings checklist item 'Television aerial' in the television and telephone category. Whether it is included in a particular sale is recorded by the council-reserved inclusion-status (ODR-0023 R4), not on this concept."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.televisionAndTelephone.televisionAerial.isIncludedExcludedOrNone> ;
+    skos:inScheme opda:FixtureItemScheme ;
+    skos:notation "televisionAndTelephone.televisionAerial" .
 
 <https://w3id.org/opda/#heatingType/Central-heating>
     rdf:type skos:Concept ;
@@ -645,6 +1753,94 @@ opda:YesNoScheme
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.heatingType.Room%20heaters%20only> ;
     skos:inScheme opda:HeatingTypeScheme ;
     skos:notation "Room heaters only" .
+
+<https://w3id.org/opda/#inclusion/Excluded>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Excluded"@en ;
+    skos:definition "The item is excluded from the sale."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.otherItems[].isIncludedOrExcluded.Excluded> ;
+    skos:inScheme opda:InclusionScheme ;
+    skos:notation "Excluded" .
+
+<https://w3id.org/opda/#inclusion/Included>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Included"@en ;
+    skos:definition "The item is included in the sale."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.otherItems[].isIncludedOrExcluded.Included> ;
+    skos:inScheme opda:InclusionScheme ;
+    skos:notation "Included" .
+
+<https://w3id.org/opda/#inclusionStatus/Excluded>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Excluded"@en ;
+    skos:definition "The item is excluded from the sale (the seller will remove it)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone.Excluded> ;
+    skos:inScheme opda:InclusionStatusScheme ;
+    skos:notation "Excluded" .
+
+<https://w3id.org/opda/#inclusionStatus/Included>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Included"@en ;
+    skos:definition "The item is included in the sale."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone.Included> ;
+    skos:inScheme opda:InclusionStatusScheme ;
+    skos:notation "Included" .
+
+<https://w3id.org/opda/#inclusionStatus/None>
+    rdf:type skos:Concept ;
+    skos:prefLabel "None"@en ;
+    skos:definition "There is no such item at the property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone.None> ;
+    skos:inScheme opda:InclusionStatusScheme ;
+    skos:notation "None" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/Landlord>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Landlord"@en ;
+    skos:definition "The landlord deals with maintenance."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.Landlord> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "Landlord" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/Management-Company>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Management Company"@en ;
+    skos:definition "A management company deals with maintenance."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.Management%20Company> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "Management Company" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/Managing-Agent>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Managing Agent"@en ;
+    skos:definition "A managing agent deals with maintenance."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.Managing%20Agent> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "Managing Agent" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/Not-applicable>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not applicable"@en ;
+    skos:definition "No managed-area maintenance party applies."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.Not%20applicable> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "Not applicable" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/Rentcharge-Owner>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Rentcharge Owner"@en ;
+    skos:definition "The rentcharge owner deals with maintenance."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.Rentcharge%20Owner> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "Rentcharge Owner" .
+
+<https://w3id.org/opda/#managedAreaResponsibility/the-Lessees>
+    rdf:type skos:Concept ;
+    skos:prefLabel "the Lessees"@en ;
+    skos:definition "The lessees collectively deal with maintenance."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.managedAreaResponsibility.the%20Lessees> ;
+    skos:inScheme opda:ManagedAreaResponsibilityScheme ;
+    skos:notation "the Lessees" .
 
 <https://w3id.org/opda/#milestoneKind/completion>
     rdf:type skos:Concept ;
@@ -814,6 +2010,114 @@ opda:YesNoScheme
     skos:inScheme opda:ParticipantStatusScheme ;
     skos:notation "Removed" .
 
+<https://w3id.org/opda/#peril/Climate>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Climate"@en ;
+    skos:definition "Climate-change-related physical risk (heat, drought, future flood projection), governed by commercial climate-analytics datasets (Groundsure)."@en ;
+    dct:source <https://www.groundsure.com/> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Climate" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/CoalMining>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Coal Mining"@en ;
+    skos:definition "Risk arising from past or present coal-mining activity, governed by the Coal Authority (a satisfactory coal-mining search is a standard lender mortgage condition)."@en ;
+    dct:source <https://www.gov.uk/government/organisations/the-coal-authority> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "CoalMining" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/CoastalErosion>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Coastal Erosion"@en ;
+    skos:definition "Risk from coastal erosion and shoreline change, governed by Environment Agency / Shoreline Management Plan data."@en ;
+    dct:source <https://www.gov.uk/government/organisations/environment-agency> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "CoastalErosion" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/ContaminatedLand>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Contaminated Land"@en ;
+    skos:definition "Risk from land contamination (former industrial / landfill use), governed by the local authority Part 2A register and commercial environmental datasets."@en ;
+    dct:source <https://www.gov.uk/find-local-council> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "ContaminatedLand" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Energy>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Energy"@en ;
+    skos:definition "Energy-infrastructure proximity risk (wind turbines, solar farms, fracking / shale licences), governed by DESNZ energy-infrastructure data."@en ;
+    dct:source <https://www.gov.uk/government/organisations/department-for-energy-security-and-net-zero> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Energy" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Flooding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Flooding"@en ;
+    skos:definition "Risk of flooding of any type (river, surface-water, coastal, groundwater) at the property, governed by Environment Agency flood data."@en ;
+    dct:source <https://www.gov.uk/government/organisations/environment-agency> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Flooding" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/GroundStability>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Ground Stability"@en ;
+    skos:definition "Risk from ground instability (subsidence, landslip, shrink-swell clay, dissolution), governed by British Geological Survey (BGS) ground-stability data."@en ;
+    dct:source <https://www.bgs.ac.uk/> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "GroundStability" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Infrastructure>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Infrastructure"@en ;
+    skos:definition "Major-infrastructure-project proximity risk (HS2, road / rail schemes, energy projects), governed by commercial infrastructure datasets (Landmark)."@en ;
+    dct:source <https://www.landmark.co.uk/> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Infrastructure" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/NonCoalMining>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Non-Coal Mining"@en ;
+    skos:definition "Risk arising from past or present non-coal mineral extraction (tin, clay, limestone, etc.), governed by BGS / commercial search-provider mining data."@en ;
+    dct:source <https://www.bgs.ac.uk/> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "NonCoalMining" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Planning>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Planning"@en ;
+    skos:definition "Planning-application and planning-constraint risk in the vicinity of the property, governed by the local planning authority."@en ;
+    dct:source <https://www.gov.uk/find-local-council> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Planning" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Radon>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Radon"@en ;
+    skos:definition "Risk from naturally-occurring radon gas, governed by the UK Health Security Agency (UKHSA) radon-affected-area data."@en ;
+    dct:source <https://www.gov.uk/government/organisations/uk-health-security-agency> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Radon" ;
+    skos:topConceptOf opda:PerilScheme .
+
+<https://w3id.org/opda/#peril/Transportation>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Transportation"@en ;
+    skos:definition "Transport-scheme proximity risk (railways, roads, airports), governed by commercial transportation datasets (Landmark)."@en ;
+    dct:source <https://www.landmark.co.uk/> ;
+    skos:inScheme opda:PerilScheme ;
+    skos:notation "Transportation" ;
+    skos:topConceptOf opda:PerilScheme .
+
 <https://w3id.org/opda/#propertyType/Bungalow>
     rdf:type skos:Concept ;
     skos:prefLabel "Bungalow"@en ;
@@ -861,6 +2165,62 @@ opda:YesNoScheme
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Park%20home> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Park home" .
+
+<https://w3id.org/opda/#riskIndicator/No>
+    rdf:type skos:Concept ;
+    skos:prefLabel "No"@en ;
+    skos:definition "No action is recommended / the property is not at risk for this peril."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.No> ;
+    skos:inScheme opda:RiskIndicatorScheme ;
+    skos:notation "No" .
+
+<https://w3id.org/opda/#riskIndicator/Not-known>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not known"@en ;
+    skos:definition "Whether action is recommended is not known."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.Not%20known> ;
+    skos:inScheme opda:RiskIndicatorScheme ;
+    skos:notation "Not known" .
+
+<https://w3id.org/opda/#riskIndicator/Yes>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Yes"@en ;
+    skos:definition "Action is recommended / the property is at risk for this peril."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.Yes> ;
+    skos:inScheme opda:RiskIndicatorScheme ;
+    skos:notation "Yes" .
+
+<https://w3id.org/opda/#roadAdoptionStatus/private>
+    rdf:type skos:Concept ;
+    skos:prefLabel "private"@en ;
+    skos:definition "The road or footway is privately maintained."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.highwaysMaintainableAtPublicExpense[].status.private> ;
+    skos:inScheme opda:RoadAdoptionStatusScheme ;
+    skos:notation "private" .
+
+<https://w3id.org/opda/#roadAdoptionStatus/public>
+    rdf:type skos:Concept ;
+    skos:prefLabel "public"@en ;
+    skos:definition "The road or footway is maintainable at public expense."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.highwaysMaintainableAtPublicExpense[].status.public> ;
+    skos:inScheme opda:RoadAdoptionStatusScheme ;
+    skos:notation "public" .
+
+<https://w3id.org/opda/#roadAdoptionStatus/section-38>
+    rdf:type skos:Concept ;
+    skos:prefLabel "section 38"@en ;
+    skos:definition "The road or footway is subject to a Highways Act 1980 section-38 adoption agreement."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.highwaysMaintainableAtPublicExpense[].status.section%2038> ;
+    skos:inScheme opda:RoadAdoptionStatusScheme ;
+    skos:notation "section 38" .
+
+<https://w3id.org/opda/#roadAdoptionStatus/unchecked>
+    rdf:type skos:Concept ;
+    skos:prefLabel "unchecked"@en ;
+    skos:definition "The adoption status has not been checked."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.highwaysMaintainableAtPublicExpense[].status.unchecked> ;
+    skos:inScheme opda:RoadAdoptionStatusScheme ;
+    skos:notation "unchecked" .
 
 <https://w3id.org/opda/#role/Buyer>
     rdf:type skos:Concept ;
@@ -1074,6 +2434,78 @@ opda:YesNoScheme
     skos:inScheme opda:TransactionStatusScheme ;
     skos:notation "Offered" ;
     prov:wasDerivedFrom <https://w3id.org/opda/data-dictionary#status.Under%20offer> .
+
+<https://w3id.org/opda/#unitOfArea/square-feet>
+    rdf:type skos:Concept ;
+    skos:prefLabel "square feet"@en ;
+    skos:definition "Area expressed in square feet."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.internalArea.units.square%20feet> ;
+    skos:inScheme opda:UnitOfAreaScheme ;
+    skos:notation "square feet" .
+
+<https://w3id.org/opda/#unitOfArea/square-metres>
+    rdf:type skos:Concept ;
+    skos:prefLabel "square metres"@en ;
+    skos:definition "Area expressed in square metres."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.internalArea.units.square%20metres> ;
+    skos:inScheme opda:UnitOfAreaScheme ;
+    skos:notation "square metres" .
+
+<https://w3id.org/opda/#utilityConnectionStatus/No>
+    rdf:type skos:Concept ;
+    skos:prefLabel "No"@en ;
+    skos:definition "The utility is not connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.yesNo.No> ;
+    skos:inScheme opda:UtilityConnectionStatusScheme ;
+    skos:notation "No" .
+
+<https://w3id.org/opda/#utilityConnectionStatus/To-be-connected>
+    rdf:type skos:Concept ;
+    skos:prefLabel "To be connected"@en ;
+    skos:definition "The utility is to be connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.yesNo.To%20be%20connected> ;
+    skos:inScheme opda:UtilityConnectionStatusScheme ;
+    skos:notation "To be connected" .
+
+<https://w3id.org/opda/#utilityConnectionStatus/Yes>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Yes"@en ;
+    skos:definition "The utility is connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.yesNo.Yes> ;
+    skos:inScheme opda:UtilityConnectionStatusScheme ;
+    skos:notation "Yes" .
+
+<https://w3id.org/opda/#utilityConnectionStatusNotKnown/No>
+    rdf:type skos:Concept ;
+    skos:prefLabel "No"@en ;
+    skos:definition "The utility is not connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo.No> ;
+    skos:inScheme opda:UtilityConnectionStatusNotKnownScheme ;
+    skos:notation "No" .
+
+<https://w3id.org/opda/#utilityConnectionStatusNotKnown/Not-known>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Not known"@en ;
+    skos:definition "The connection status is not known to the Seller."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo.Not%20known> ;
+    skos:inScheme opda:UtilityConnectionStatusNotKnownScheme ;
+    skos:notation "Not known" .
+
+<https://w3id.org/opda/#utilityConnectionStatusNotKnown/To-be-connected>
+    rdf:type skos:Concept ;
+    skos:prefLabel "To be connected"@en ;
+    skos:definition "The utility is to be connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo.To%20be%20connected> ;
+    skos:inScheme opda:UtilityConnectionStatusNotKnownScheme ;
+    skos:notation "To be connected" .
+
+<https://w3id.org/opda/#utilityConnectionStatusNotKnown/Yes>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Yes"@en ;
+    skos:definition "The utility is connected."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo.Yes> ;
+    skos:inScheme opda:UtilityConnectionStatusNotKnownScheme ;
+    skos:notation "Yes" .
 
 <https://w3id.org/opda/#yesNo/No>
     rdf:type skos:Concept ;

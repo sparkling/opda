@@ -71,7 +71,7 @@ The mapping is validated against worked PROV-O Turtle examples rendered alongsid
 
 Method, evidence-type and assurance-level SKOS concepts (ODR-0011) carry `skos:prefLabel`/`skos:definition` and `dct:source` back to the verifiedClaims schema leaf or the business-glossary external VC/eIDAS terms. This record fixes the *structure*; the *vocabulary fill* is delegated to ODR-0011 (enumerations) and ODR-0012 (DPV).
 
-## Diagrams
+### Diagrams
 
 ### PROV-O class model
 

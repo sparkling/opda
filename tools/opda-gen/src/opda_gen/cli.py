@@ -154,6 +154,7 @@ def emit(output: Path | None) -> None:
         emit_annotations as _emit_annotations,
     )
     from opda_gen.emitters.classes import emit_all_modules as _emit_modules
+    from opda_gen.emitters.contexts import emit_contexts as _emit_contexts
     from opda_gen.emitters.foundation import emit_foundation as _emit_foundation
     from opda_gen.emitters.profiles import (
         PROFILE_FILENAMES,
@@ -167,6 +168,7 @@ def emit(output: Path | None) -> None:
     written: dict[Path, str] = {}
     written.update(_emit_foundation(target))
     written.update(_emit_vocabularies(target))
+    written.update(_emit_contexts(target))
     written.update(_emit_modules(target))
     written.update(_emit_shapes(target))
     written.update(_emit_annotations(target))
@@ -235,6 +237,34 @@ def emit_vocabularies(output: Path | None) -> None:
     """
     target = output if output is not None else _default_ontology_dir()
     from opda_gen.emitters.vocabularies import emit_vocabularies as _emit
+
+    written = _emit(target)
+    for path in sorted(written.keys()):
+        click.echo(f"emitted: {path}")
+
+
+@main.command(name="emit-contexts")
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Output directory for `opda-contexts.ttl`. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+def emit_contexts(output: Path | None) -> None:
+    """Emit the bounded-context scheme (ADR-0026; ODR-0019/0020).
+
+    Writes `opda-contexts.ttl` with `opda:BoundedContextScheme` + the six
+    industry context concepts + the `opda:consumesFrom` annotation
+    property. Output is produced by the canonical serialiser; second-run
+    regeneration is byte-identical.
+    """
+    target = output if output is not None else _default_ontology_dir()
+    from opda_gen.emitters.contexts import emit_contexts as _emit
 
     written = _emit(target)
     for path in sorted(written.keys()):
@@ -429,6 +459,49 @@ def emit_manual(output: Path | None, tier: str | None) -> None:
     )
 
 
+@main.command(name="categorise-leaves")
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(dir_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Output path for the binning report. Defaults to "
+        "source/00-deliverables/semantic-models/descriptive-category-binning.json "
+        "relative to the OPDA repo root."
+    ),
+)
+def categorise_leaves(output: Path | None) -> None:
+    """Bin annotated base descriptive leaves into categories A–G (ODR-0022 §G1).
+
+    Runs the path-aware classifier over `data-dictionary-canonical.json` and
+    writes `descriptive-category-binning.json`: per-category counts, the
+    candidate Category-G distinct-name set (the WG curation target), the
+    residue register, and the full per-leaf assignment. Mints no IRIs and
+    emits no TTL — this command produces data only (ODR-0022 §Rules boundary).
+    """
+    import json
+
+    from opda_gen.inputs import leaf_categoriser as _lc
+
+    data_path = _lc._default_data_dictionary()
+    out_path = output if output is not None else _lc._default_output()
+    report = _lc.categorise_all(_lc.load_records(data_path))
+    out_path.write_text(
+        json.dumps(_lc.report_to_dict(report), indent=2, sort_keys=False) + "\n",
+        encoding="utf-8",
+    )
+    counts = report.counts
+    line = "  ".join(f"{c}={counts[c]}" for c in "ABCDEFG")
+    click.echo(f"categorised {sum(counts.values())} annotated base leaves: {line}")
+    click.echo(
+        f"candidate Category-G distinct names: {len(report.candidate_g_names)}"
+    )
+    click.echo(f"residue register: {len(report.residue)} leaves")
+    click.echo(f"emitted: {out_path}")
+
+
 @main.command(name="compose")
 @click.option(
     "--output",
@@ -521,6 +594,59 @@ def ci_profile_contract(ontology_dir: Path | None) -> None:
             click.echo(f"PROFILE-CONTRACT VIOLATION: {v}", err=True)
         sys.exit(1)
     click.echo("profile contract CI: PASS (all 3 rules)")
+
+
+@main.command(name="ci-descriptive-roundtrip")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the overlay profiles/ + opda-vocabularies.ttl. "
+        "Defaults to source/03-standards/ontology/ relative to the OPDA repo "
+        "root."
+    ),
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help=(
+        "Fail (exit 1) on any coverage gap. Default is report-only: gaps are "
+        "printed but the command exits 0 while the descriptive walk + per-form "
+        "leaf enumeration are still deferred (ADR-0028/0029, profiles emitted "
+        "thin)."
+    ),
+)
+def ci_descriptive_roundtrip(ontology_dir: Path | None, strict: bool) -> None:
+    """Run ODR-0022 §2 gate G3 — the descriptive-layer round-trip coverage
+    check.
+
+    Asserts every form-question leaf is the `dct:source` of exactly one
+    profile property-shape `sh:path` (no leaf unaddressable, none
+    doubly-bound). While the descriptive walk is deferred the profiles are
+    emitted thin, so this reports a coverage REPORT and (without `--strict`)
+    exits 0. With `--strict` it gates on `report.violations`.
+    """
+    from opda_gen.ci.descriptive_roundtrip_test import run
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run(target)
+    click.echo(
+        f"descriptive round-trip (G3): {len(report.addressable)} addressable, "
+        f"{len(report.unaddressable)} unaddressable, "
+        f"{len(report.doubly_bound)} doubly-bound "
+        f"of {len(report.form_leaves)} form-question leaves."
+    )
+    for gap in report.gaps:
+        click.echo(f"  COVERAGE GAP: {gap}")
+    if strict and report.violations:
+        for v in report.violations:
+            click.echo(f"DESCRIPTIVE-ROUNDTRIP VIOLATION: {v}", err=True)
+        sys.exit(1)
+    if not report.gaps:
+        click.echo("descriptive round-trip CI: PASS (full coverage)")
 
 
 @main.command(name="emit-exemplar-reports")
