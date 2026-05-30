@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, modules, tbox, emission, property, agent, transaction, claim, address, descriptive]
 supersedes: []
-depends-on: [ADR-0009, ADR-0010, ODR-0005, ODR-0006, ODR-0007, ODR-0008, ODR-0009, ODR-0015]
-implements: [ADR-0008]
+depends-on: [ADR-0009, ADR-0010, ADR-0008]
+implements: [ODR-0005, ODR-0006, ODR-0007, ODR-0008, ODR-0009, ODR-0012, ODR-0015, ODR-0018]
 ---
 
 # Module TBox emission

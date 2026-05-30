@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, skos, vocabularies, ufo, emission]
 supersedes: []
-depends-on: [ADR-0009, ODR-0011]
-implements: [ADR-0008]
+depends-on: [ADR-0009, ADR-0008]
+implements: [ODR-0011]
 ---
 
 # SKOS vocabulary emission

@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, mvp, baspi5, round-trip, exemplar, ci, retirement]
 supersedes: []
-depends-on: [ADR-0013, ODR-0010, ODR-0004, ODR-0003]
-implements: [ADR-0008]
+depends-on: [ADR-0013, ADR-0008]
+implements: [ODR-0003, ODR-0004, ODR-0010]
 ---
 
 # BASPI5 round-trip MVP harness + diagnostic exemplar regression

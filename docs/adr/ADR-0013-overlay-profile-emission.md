@@ -3,8 +3,8 @@ status: accepted
 date: 2026-05-27
 tags: [ontology, shacl, profiles, overlays, baspi5, dash, emission]
 supersedes: []
-depends-on: [ADR-0012, ODR-0010]
-implements: [ADR-0008]
+depends-on: [ADR-0012, ADR-0008]
+implements: [ODR-0010]
 ---
 
 # Overlay profile emission
