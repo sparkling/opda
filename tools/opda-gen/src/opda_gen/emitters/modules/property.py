@@ -98,7 +98,6 @@ DATATYPE_PROPERTIES = (
     OPDA.offMainsDrainageSystemType,
     OPDA.ownershipType,
     OPDA.propertyType,
-    OPDA.riskIndicator,
     OPDA.sellerContributesToServiceCharge,
     OPDA.soldWithVacantPossession,
     OPDA.tenureKind,
@@ -566,14 +565,6 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is the Property sold with vacant "
             "possession (vs sold subject to existing tenancies)? BASPI5 "
             "completion question. Bound to opda:YesNoScheme.",
-        ),
-        (
-            OPDA.riskIndicator,
-            OPDA.Property,
-            "risk indicator",
-            "Yes/No-bearing risk indicator on a Property (e.g. flood "
-            "risk, radon risk, coal-mining risk). BASPI5 environmental "
-            "issues. Bound to opda:YesNoScheme variants.",
         ),
     ]
     for prop, domain, label, comment in _g11_properties:

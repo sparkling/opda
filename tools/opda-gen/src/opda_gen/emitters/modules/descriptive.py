@@ -331,7 +331,7 @@ def build_graph() -> Graph:
 
     # --- opda:riskIndicator — RiskAssessment Quale (Rule 1c) ------------
     # The \"is action recommended? / is the property at risk?\" indicator,
-    # ranging over opda:RiskIndicatorScheme (No / Not known / Yes). A
+    # ranging over opda:YesNoNotKnownScheme (No / Not known / Yes). A
     # Quale-in-Region datatype property; the node shape sh:in-restricts it to
     # the scheme value-space. (Already attested as a flat datatype property
     # in the data dictionary; here it is given its RiskAssessment home.)
@@ -341,9 +341,10 @@ def build_graph() -> Graph:
     g.add((OPDA.riskIndicator, RDFS.label, Literal("risk indicator", lang="en")))
     g.add((OPDA.riskIndicator, RDFS.comment, Literal(
         "Whether action is recommended / the property is at risk for the "
-        "RiskAssessment's peril (No / Not known / Yes). Value-space is "
-        "opda:RiskIndicatorScheme; the node shape sh:in-restricts it "
-        "(ODR-0008d Rule 1c / Rule 4).",
+        "RiskAssessment's peril (No / Not known / Yes). Value-space reuses "
+        "opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 "
+        "Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / "
+        "Rule 4).",
         lang="en",
     )))
     g.add((OPDA.riskIndicator, DCTERMS.source, _ODR_0008D_RULE_4))

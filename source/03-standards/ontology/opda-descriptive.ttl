@@ -102,7 +102,7 @@ opda:price
 opda:riskIndicator
     rdf:type owl:DatatypeProperty ;
     rdfs:label "risk indicator"@en ;
-    rdfs:comment "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space is opda:RiskIndicatorScheme; the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."@en ;
+    rdfs:comment "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-4> ;
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:string .

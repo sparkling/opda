@@ -296,16 +296,6 @@ opda:PropertyTypeScheme
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
     opda:ufoCategory "Substance Kind label" .
 
-opda:RiskIndicatorScheme
-    rdf:type skos:ConceptScheme ;
-    skos:prefLabel "Risk Indicator"@en ;
-    skos:definition "The value-space of opda:riskIndicator on an opda:RiskAssessment (\"is action recommended? / is the property at risk?\"): No / Not known / Yes. Derived from the data dictionary's actual riskIndicator string-enum (ODR-0008d Rule 4)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-4> ;
-    dct:title "Search/environmental risk indicator value-space"@en ;
-    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Members are the union of the attested riskIndicator enum values across the environmental peril leaves; the per-member dct:source is the schema leaf path (ODR-0022 G2)."@en ;
-    opda:hasSteward "Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
-
 opda:RoadAdoptionStatusScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Road Adoption Status"@en ;
@@ -2165,30 +2155,6 @@ opda:YesNoScheme
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Park%20home> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Park home" .
-
-<https://w3id.org/opda/#riskIndicator/No>
-    rdf:type skos:Concept ;
-    skos:prefLabel "No"@en ;
-    skos:definition "No action is recommended / the property is not at risk for this peril."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.No> ;
-    skos:inScheme opda:RiskIndicatorScheme ;
-    skos:notation "No" .
-
-<https://w3id.org/opda/#riskIndicator/Not-known>
-    rdf:type skos:Concept ;
-    skos:prefLabel "Not known"@en ;
-    skos:definition "Whether action is recommended is not known."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.Not%20known> ;
-    skos:inScheme opda:RiskIndicatorScheme ;
-    skos:notation "Not known" .
-
-<https://w3id.org/opda/#riskIndicator/Yes>
-    rdf:type skos:Concept ;
-    skos:prefLabel "Yes"@en ;
-    skos:definition "Action is recommended / the property is at risk for this peril."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator.Yes> ;
-    skos:inScheme opda:RiskIndicatorScheme ;
-    skos:notation "Yes" .
 
 <https://w3id.org/opda/#roadAdoptionStatus/private>
     rdf:type skos:Concept ;

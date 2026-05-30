@@ -58,7 +58,7 @@ opda:FixturesListShape
 opda:RiskAssessmentShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
-    sh:property _:b0e91a48d92e5, _:b15168883deab, _:b772310526c4d, _:b7c42a930a343, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
+    sh:property _:b0e91a48d92e5, _:b15168883deab, _:b18e76480e52d, _:b772310526c4d, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
     sh:targetClass opda:RiskAssessment .
 
 opda:SearchIdentityKeyShape
@@ -109,6 +109,17 @@ _:b15168883deab
     sh:message "RiskAssessment opda:actionAlertRating MUST be one of the opda:ActionAlertRatingScheme levels (integer 1–5, 1 Green … 5 Red; ODR-0008d Rule 1c / Rule 4)."@en ;
     sh:path opda:actionAlertRating ;
     sh:severity sh:Violation .
+
+_:b18e76480e52d
+    sh:in _:b86aa5f2674ae ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "RiskAssessment opda:riskIndicator MUST be one of the opda:YesNoNotKnownScheme values (No / Not known / Yes; ODR-0008d Rule 1c / Rule 4)."@en ;
+    sh:path opda:riskIndicator ;
+    sh:severity sh:Violation .
+
+_:b193f9cf429be
+    rdf:first "No" ;
+    rdf:rest _:b71b11e0e7b20 .
 
 _:b1a70b2e6bddc
     rdf:first <https://w3id.org/opda/#peril/CoalMining> ;
@@ -245,9 +256,9 @@ _:b6db3fd4c8b68
     sh:path prov:generatedAtTime ;
     sh:severity sh:Info .
 
-_:b6e9858217a8a
-    rdf:first "No" ;
-    rdf:rest _:b82d63f439682 .
+_:b71b11e0e7b20
+    rdf:first "Not known" ;
+    rdf:rest rdf:nil .
 
 _:b772310526c4d
     sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4)."@en ;
@@ -261,16 +272,9 @@ _:b7b4c48a9db7d
     sh:path prov:wasAttributedTo ;
     sh:severity sh:Info .
 
-_:b7c42a930a343
-    sh:in _:b6e9858217a8a ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "RiskAssessment opda:riskIndicator MUST be one of the opda:RiskIndicatorScheme values (No / Not known / Yes; ODR-0008d Rule 1c / Rule 4)."@en ;
-    sh:path opda:riskIndicator ;
-    sh:severity sh:Violation .
-
-_:b82d63f439682
-    rdf:first "Not known" ;
-    rdf:rest _:bb4e5cb23dbec .
+_:b86aa5f2674ae
+    rdf:first "Yes" ;
+    rdf:rest _:b193f9cf429be .
 
 _:b95b063eeb5e7
     sh:datatype xsd:decimal ;
@@ -303,10 +307,6 @@ _:baff63cf55387
 _:bb1b04773944a
     rdf:first <https://w3id.org/opda/#peril/Flooding> ;
     rdf:rest _:b1a70b2e6bddc .
-
-_:bb4e5cb23dbec
-    rdf:first "Yes" ;
-    rdf:rest rdf:nil .
 
 _:bb61650fe8517
     rdf:first <https://w3id.org/opda/#peril/Planning> ;

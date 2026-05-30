@@ -229,14 +229,6 @@ opda:propertyType
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
-opda:riskIndicator
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "risk indicator"@en ;
-    rdfs:comment "Yes/No-bearing risk indicator on a Property (e.g. flood risk, radon risk, coal-mining risk). BASPI5 environmental issues. Bound to opda:YesNoScheme variants."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
-    rdfs:domain opda:Property ;
-    rdfs:range xsd:string .
-
 opda:sellerContributesToServiceCharge
     rdf:type owl:DatatypeProperty ;
     rdfs:label "seller contributes to service charge"@en ;

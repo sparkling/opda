@@ -111,7 +111,6 @@ _CATEGORY_D_SCHEMES = {"FixtureItemScheme"}
 # ODR-0008d Category E — peril/dataset axis + rating value-spaces (3).
 _CATEGORY_E_SCHEMES = {
     "PerilScheme",
-    "RiskIndicatorScheme",
     "ActionAlertRatingScheme",
 }
 
@@ -123,15 +122,15 @@ _ALL_SCHEME_NAMES = (
 )
 
 
-def test_emit_vocabularies_produces_41_schemes(emitted_graph: Graph) -> None:
+def test_emit_vocabularies_produces_40_schemes(emitted_graph: Graph) -> None:
     """16 first-batch + 7 G8 + 14 Category-C status-enum value-spaces
-    (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 3
-    Category-E schemes (ODR-0008d: PerilScheme + the two rating
-    value-spaces). Total 41."""
+    (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 2
+    Category-E schemes (ODR-0008d: PerilScheme + ActionAlertRatingScheme;
+    riskIndicator reuses YesNoNotKnownScheme). Total 40."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == 41, (
-        f"expected 41 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
-        f"+ 3 Cat-E), got {len(schemes)}: {sorted(str(s) for s in schemes)}"
+    assert len(schemes) == 40, (
+        f"expected 40 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
+        f"+ 2 Cat-E), got {len(schemes)}: {sorted(str(s) for s in schemes)}"
     )
     emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
     assert emitted_names == _ALL_SCHEME_NAMES, (
@@ -619,17 +618,6 @@ def test_peril_scheme_steward_is_baker(emitted_graph: Graph) -> None:
     stewards = [str(s) for s in emitted_graph.objects(OPDA.PerilScheme, OPDA.hasSteward)]
     assert len(stewards) == 1
     assert "Baker" in stewards[0]
-
-
-def test_risk_indicator_scheme_values(emitted_graph: Graph) -> None:
-    """ODR-0008d Rule 4: opda:RiskIndicatorScheme members are the data
-    dictionary's actual riskIndicator enum union (No / Not known / Yes)."""
-    notations = {
-        str(n)
-        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.RiskIndicatorScheme)
-        for n in emitted_graph.objects(m, SKOS.notation)
-    }
-    assert notations == {"No", "Not known", "Yes"}
 
 
 def test_action_alert_rating_scheme_values(emitted_graph: Graph) -> None:

@@ -1246,19 +1246,21 @@ def build_descriptive_shapes() -> Graph:
         lang="en",
     )))
 
-    # (2) opda:riskIndicator — sh:in the RiskIndicatorScheme value-space.
+    # (2) opda:riskIndicator — sh:in the YesNoNotKnownScheme value-space.
+    # riskIndicator's value-space {No, Not known, Yes} IS YesNoNotKnownScheme;
+    # it reuses that scheme rather than minting a duplicate (ODR-0022 Cat C).
     p_ri = BNode()
     g.add((OPDA.RiskAssessmentShape, SH.property, p_ri))
     g.add((p_ri, SH.path, OPDA.riskIndicator))
     g.add((p_ri, SH.maxCount, Literal(1)))
     _add_in_literal_list(
         g, p_ri,
-        [Literal(v) for v in _scheme_notations("RiskIndicatorScheme")],
+        [Literal(v) for v in _scheme_notations("YesNoNotKnownScheme")],
     )
     g.add((p_ri, SH.severity, SH.Violation))
     g.add((p_ri, SH.message, Literal(
         "RiskAssessment opda:riskIndicator MUST be one of the "
-        "opda:RiskIndicatorScheme values (No / Not known / Yes; ODR-0008d "
+        "opda:YesNoNotKnownScheme values (No / Not known / Yes; ODR-0008d "
         "Rule 1c / Rule 4).",
         lang="en",
     )))

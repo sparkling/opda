@@ -1554,46 +1554,6 @@ def _peril_scheme() -> Scheme:
 #     Yes/No; degenerate single-value variants add "Not known").
 #   - actionAlertRating: type "integer", title "Action alert rating
 #     (1 is Green, 5 is Red)" — a 1..5 ordinal scale, NOT a string enum.
-def _risk_indicator_scheme() -> Scheme:
-    """Build `opda:RiskIndicatorScheme` — the riskIndicator value-space.
-
-    Members are the union of the data dictionary's actual `riskIndicator`
-    string-enum values: No / Not known / Yes (sorted; canonical order).
-    """
-    leaf = "propertyPack.environmentalIssues.flooding.floodRisk.riskIndicator"
-    members_data = [
-        ("No", "No action is recommended / the property is not at risk for this peril."),
-        ("Not known", "Whether action is recommended is not known."),
-        ("Yes", "Action is recommended / the property is at risk for this peril."),
-    ]
-    return Scheme(
-        local_name="RiskIndicatorScheme",
-        slug_base="riskIndicator",
-        pref_label="Risk Indicator",
-        title="Search/environmental risk indicator value-space",
-        definition=(
-            "The value-space of opda:riskIndicator on an opda:RiskAssessment "
-            "(\"is action recommended? / is the property at risk?\"): No / "
-            "Not known / Yes. Derived from the data dictionary's actual "
-            "riskIndicator string-enum (ODR-0008d Rule 4)."
-        ),
-        ufo_category="Quale-in-Region",
-        scope_note=(
-            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
-            "Quality-Region (Masolo D18 §4.3). Members are the union of the "
-            "attested riskIndicator enum values across the environmental "
-            "peril leaves; the per-member dct:source is the schema leaf path "
-            "(ODR-0022 G2)."
-        ),
-        steward="Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)",
-        scheme_source=_ODR_0008D_RULE_4,
-        members=tuple(
-            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
-            for notation, definition in members_data
-        ),
-    )
-
-
 def _action_alert_rating_scheme() -> Scheme:
     """Build `opda:ActionAlertRatingScheme` — the actionAlertRating 1..5 scale.
 
@@ -2409,9 +2369,9 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _property_type_scheme(),
         _off_mains_drainage_scheme(),
         _owner_type_scheme(),
-        # ODR-0008d Category E — peril/dataset axis + rating value-spaces --
+        # ODR-0008d Category E — peril/dataset axis + rating value-space ---
+        # (riskIndicator reuses YesNoNotKnownScheme above — no dedicated scheme)
         _peril_scheme(),
-        _risk_indicator_scheme(),
         _action_alert_rating_scheme(),
         # ODR-0022 Category C reused status-enum value-spaces (14) ---------
         *_category_c_schemes(),
