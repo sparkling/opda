@@ -50,6 +50,8 @@
   --accent-tier-physical-database-text:  var(--color-accent-700);
   --accent-tier-physical-ontology-bg:    var(--color-info-100);
   --accent-tier-physical-ontology-text:  var(--color-info-700);
+  --accent-tier-physical-relational-bg:    var(--plum-100);
+  --accent-tier-physical-relational-text:  var(--plum-700);
 
   /* UFO meta-category accents — light mode
      Hues follow the palette: substance kinds = teal, role = terracotta,
@@ -98,6 +100,8 @@
   --accent-tier-physical-database-text:  var(--color-accent-700);
   --accent-tier-physical-ontology-bg:    var(--color-info-100);
   --accent-tier-physical-ontology-text:  var(--color-info-700);
+  --accent-tier-physical-relational-bg:    var(--plum-100);
+  --accent-tier-physical-relational-text:  var(--plum-700);
 
   /* UFO meta-category accents — dark mode */
   --accent-ufo-substance-kind-bg:        var(--color-success-100);

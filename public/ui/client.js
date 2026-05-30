@@ -271,15 +271,36 @@
       var runPromise = window.mermaid.run({ querySelector: '.mermaid' });
       if (runPromise && typeof runPromise.then === 'function') {
         runPromise.then(function () {
+          fixErRowContrast(isDark);
           loadDiagramLinks().then(function () { scheduleEnhanceDiagrams(); });
           installMermaidResizeObserver();
         });
       } else {
+        fixErRowContrast(isDark);
         loadDiagramLinks().then(function () { scheduleEnhanceDiagrams(); });
         installMermaidResizeObserver();
       }
     } catch (err) {
       console.warn('[OPDA] mermaid run failed:', err);
+    }
+  }
+
+  // Mermaid 11's ER renderer paints alternating attribute-row backgrounds as
+  // classless <path> fills and ignores attributeBackgroundColorOdd — so in dark
+  // mode the "odd" rows stay light and the themed (light) HTML label text is
+  // unreadable (white-on-white). No class or theme var can reach those paths, so
+  // normalise each ER row background to the surface colour for the active theme
+  // (by luminance) after render; the light label text then contrasts. Re-runs
+  // with every render (initial + ResizeObserver) so it survives re-layout.
+  function fixErRowContrast(isDark) {
+    var rows = document.querySelectorAll('.mermaid g.node path');
+    for (var i = 0; i < rows.length; i++) {
+      var f = getComputedStyle(rows[i]).fill;
+      var m = f && f.match(/\d+(?:\.\d+)?/g);
+      if (!m || m.length < 3) continue;            // skip fill:none borders/edges
+      var lum = 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
+      if (isDark && lum > 140) rows[i].style.setProperty('fill', '#2B2823', 'important');
+      else if (!isDark && lum < 100) rows[i].style.setProperty('fill', '#FAF9F5', 'important');
     }
   }
 
@@ -840,6 +861,7 @@
       actorBkg: '#EFE9DE', actorBorder: '#CC785C', actorTextColor: '#141413',
       actorLineColor: '#6C6A64', signalColor: '#3D3D3A', signalTextColor: '#141413',
       background: '#FAF9F5', mainBkg: '#EFE9DE',
+      attributeBackgroundColorOdd: '#FAF9F5', attributeBackgroundColorEven: '#EFE9DE',
     };
   }
 
@@ -854,6 +876,7 @@
       actorBkg: '#2B2823', actorBorder: '#CC785C', actorTextColor: '#EFE9DE',
       actorLineColor: '#A8A39B', signalColor: '#C4BEB1', signalTextColor: '#EFE9DE',
       background: '#1F1D1A', mainBkg: '#2B2823',
+      attributeBackgroundColorOdd: '#2B2823', attributeBackgroundColorEven: '#1F1D1A',
     };
   }
 

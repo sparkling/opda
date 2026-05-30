@@ -17,7 +17,8 @@ export type Tier =
   | 'concept'
   | 'logical'
   | 'physical-database'
-  | 'physical-ontology';
+  | 'physical-ontology'
+  | 'physical-relational';
 
 /** Content kinds used for rendering decisions by downstream components (Phase 2). */
 export type Kind =
@@ -37,6 +38,7 @@ const TIERS: Tier[] = [
   'logical',
   'physical-database',
   'physical-ontology',
+  'physical-relational',
 ];
 
 /** Extract the tier from entry id. */
@@ -51,7 +53,7 @@ export function deriveTier(id: string): Tier | null {
 
 /** Extract the module name from entry id, or null if not applicable. */
 export function deriveModule(id: string): string | null {
-  const parts = id.replace(/^(concept|logical|physical-database|physical-ontology)\//, '').split('/');
+  const parts = id.replace(/^(concept|logical|physical-database|physical-ontology|physical-relational)\//, '').split('/');
   const modules = ['foundation', 'property', 'agent', 'transaction', 'claim', 'governance', 'descriptive'];
   if (modules.includes(parts[0])) return parts[0];
   return null;
@@ -59,10 +61,10 @@ export function deriveModule(id: string): string | null {
 
 /** Determine the content kind from entry id (lowercase, no .md extension). */
 export function deriveKind(id: string): Kind {
-  const withoutTier = id.replace(/^(concept|logical|physical-database|physical-ontology)\//, '');
+  const withoutTier = id.replace(/^(concept|logical|physical-database|physical-ontology|physical-relational)\//, '');
 
   // Tier readme (e.g. "concept/readme")
-  if (id.match(/^(concept|logical|physical-database|physical-ontology)\/readme$/)) {
+  if (id.match(/^(concept|logical|physical-database|physical-ontology|physical-relational)\/readme$/)) {
     return 'tier-readme';
   }
   // Module readme (e.g. "concept/agent/readme")

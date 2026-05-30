@@ -36,6 +36,11 @@ const tierMeta: Record<string, { label: string; audience: string; summary: strin
     audience: 'Ontology engineers, SPARQL consumers',
     summary: 'Turtle source, SHACL shapes, SKOS vocabularies, and diagnostic exemplars.',
   },
+  'physical-relational': {
+    label: 'Physical — relational',
+    audience: 'Database engineers, backend & data-platform teams',
+    summary: 'Normalised PostgreSQL realisation of the logical model — tables, primary & foreign keys, junction tables, and SKOS lookup tables.',
+  },
 };
 
 const meta = tierMeta[tier] ?? { label: tier, audience: '', summary: '' };

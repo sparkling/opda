@@ -20,6 +20,7 @@ const tierLabel: Record<string, string> = {
   logical: 'Logical tier',
   'physical-database': 'Physical — deployment',
   'physical-ontology': 'Physical — ontology',
+  'physical-relational': 'Physical — relational',
 };
 ---
 
@@ -79,6 +80,11 @@ const tierLabel: Record<string, string> = {
   .tier-badge--physical-ontology {
     background: var(--accent-tier-physical-ontology-bg);
     color: var(--accent-tier-physical-ontology-text);
+  }
+
+  .tier-badge--physical-relational {
+    background: var(--accent-tier-physical-relational-bg);
+    color: var(--accent-tier-physical-relational-text);
   }
 
   .module-landing__module-label {

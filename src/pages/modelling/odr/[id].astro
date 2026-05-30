@@ -35,6 +35,7 @@ const status = odr.status || data.status || '';
 <Layout
   title={`ODR-${odr.number} — ${odr.title}`}
   description={`Ontology Decision Record ${odr.number}: ${odr.title} (${kind}, ${status})`}
+  proseClass="prose wide odr-detail"
 >
   <nav class="breadcrumb-override" aria-label="ODR breadcrumb">
     <a href="/modelling/odr">ODR Corpus</a>

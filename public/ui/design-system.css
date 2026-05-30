@@ -847,6 +847,62 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .prose table.ext-table { width: auto; table-layout: fixed; }
 
 /* ─────────────────────────────────────────────────────────────
+   ODR DETAIL — GitHub-flavoured-markdown reading layout
+   Scoped to ODR decision-record pages via proseClass "prose wide
+   odr-detail" (src/pages/modelling/odr/[id].astro). Per request these
+   read as clean technical documents rather than the editorial serif
+   treatment the rest of .prose uses: one sans family throughout,
+   under-ruled H1/H2, plain H3, and an even 1.5em-above / 0.5em-below
+   heading rhythm. Colours stay on theme tokens so dark mode is unaffected.
+   ───────────────────────────────────────────────────────────── */
+.prose.odr-detail h1,
+.prose.odr-detail h2,
+.prose.odr-detail h3,
+.prose.odr-detail h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: var(--tracking-tight);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  padding-top: 0;
+  border-top: 0;
+}
+.prose.odr-detail h1 {
+  font-size: 2em;
+  margin-top: 0;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border);
+}
+.prose.odr-detail h2 {
+  font-size: 1.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border);
+}
+.prose.odr-detail h3 { font-size: 1.25em; }
+.prose.odr-detail h4 { font-size: 1em; color: var(--color-text-strong); }
+
+/* Even block rhythm: ~1em between blocks, tighter under a heading. */
+.prose.odr-detail > * + * { margin-top: 1em; }
+.prose.odr-detail > h1 + *,
+.prose.odr-detail > h2 + *,
+.prose.odr-detail > h3 + *,
+.prose.odr-detail > h4 + * { margin-top: 0.5em; }
+.prose.odr-detail li + li { margin-top: 0.25em; }
+
+/* Plain technical blockquote — not the editorial italic-serif pull-quote. */
+.prose.odr-detail blockquote {
+  font: 400 1em / 1.6 var(--font-sans);
+  font-style: normal;
+  color: var(--color-text-muted);
+  border-left: 0.25em solid var(--color-border);
+  padding: 0 1em;
+  margin: 1em 0;
+  background: transparent;
+}
+.prose.odr-detail blockquote strong { color: var(--color-text); }
+
+/* ─────────────────────────────────────────────────────────────
    CALLOUTS — editorial: thin border, no fill on default, soft tint on emphasis
    ───────────────────────────────────────────────────────────── */
 .callout {

@@ -176,7 +176,7 @@ export const SECTIONS: Record<string, Section> = {
 
   manual: {
     key: 'manual',
-    title: 'Ontology manual',
+    title: 'Model',
     summary:
       'Four-tier presentation of the OPDA ontology model — concept narrative for SMEs, logical entity-relationship view for engineers, physical deployment topology for triplestore operators, and physical-ontology Turtle for ontology engineers.',
     groups: [
@@ -236,6 +236,19 @@ export const SECTIONS: Record<string, Section> = {
           { url: '/manual/physical-ontology/vocabularies',                 title: 'SKOS schemes' },
           { url: '/manual/physical-ontology/profiles/baspi5',              title: 'BASPI5 profile' },
           { url: '/manual/physical-ontology/exemplars',                    title: 'Diagnostic exemplars' },
+        ],
+      },
+      {
+        heading: 'Physical — relational',
+        items: [
+          { url: '/manual/physical-relational',             title: 'Tier overview' },
+          { url: '/manual/physical-relational/foundation',  title: 'Foundation' },
+          { url: '/manual/physical-relational/property',    title: 'Property' },
+          { url: '/manual/physical-relational/agent',       title: 'Agent' },
+          { url: '/manual/physical-relational/transaction', title: 'Transaction' },
+          { url: '/manual/physical-relational/claim',       title: 'Claim' },
+          { url: '/manual/physical-relational/governance',  title: 'Governance' },
+          { url: '/manual/physical-relational/descriptive', title: 'Descriptive' },
         ],
       },
     ],

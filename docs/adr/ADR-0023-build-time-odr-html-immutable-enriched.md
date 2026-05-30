@@ -1,5 +1,5 @@
 ---
-status: superseded by ADR-0024
+status: superseded
 date: 2026-05-29
 tags: [website, odr, documentation, immutable, mermaid, diagramming, build-pipeline]
 supersedes: []
