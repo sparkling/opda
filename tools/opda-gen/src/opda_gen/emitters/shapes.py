@@ -148,6 +148,7 @@ _ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
 # the self-referential opda:hasSubAssessment.
 _ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
 _ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
+_ODR_0024_R10 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R10")
 _ODR_0024_R11 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R11")
 _ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
 _ODR_0009_Q7 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q7")
@@ -1566,6 +1567,34 @@ def build_descriptive_shapes() -> Graph:
          "TenureKindScheme"),
     ):
         _add_enum_value_shape(g, shape_iri, prop, scheme_local, _ODR_0024_R6)
+
+    # --- ODR-0024 R10 / session-030: the opda:RoomDimension value structure --
+    # An anonymous by-value structure (the opda:MonetaryAmount precedent): a
+    # KEYLESS node shape (length/width xsd:decimal, roomName xsd:string), NO
+    # identity key (it has no IC — individuated by value; roomName is non-rigid
+    # and never a key), NO base sh:minCount (per-form cardinality lives in the
+    # overlay profile, ODR-0010 §Q7a).
+    g.add((OPDA.RoomDimensionShape, RDF.type, SH.NodeShape))
+    g.add((OPDA.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension))
+    g.add((OPDA.RoomDimensionShape, DCTERMS.source, _ODR_0024_R10))
+    for _rd_path, _rd_dt, _rd_ref in (
+        (OPDA.length, XSD.decimal, "length (metres)"),
+        (OPDA.width, XSD.decimal, "width (metres)"),
+        (OPDA.roomName, XSD.string, "roomName (non-rigid label)"),
+    ):
+        p_rd = BNode()
+        g.add((OPDA.RoomDimensionShape, SH.property, p_rd))
+        g.add((p_rd, SH.path, _rd_path))
+        g.add((p_rd, SH.datatype, _rd_dt))
+        g.add((p_rd, SH.maxCount, Literal(1)))
+        g.add((p_rd, SH.severity, SH.Violation))
+        g.add((p_rd, SH.message, Literal(
+            f"opda:RoomDimension {_rd_ref} is a single-valued by-value field "
+            "(ODR-0024 R10 / session-030); the structure carries NO identity "
+            "key (it is individuated by value, the opda:MonetaryAmount pattern) "
+            "and opda:roomName is non-rigid — never a key.",
+            lang="en",
+        )))
 
     return g
 

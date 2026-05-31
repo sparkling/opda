@@ -176,18 +176,56 @@ def test_risk_assessment_class_emitted() -> None:
 
 def test_risk_assessment_in_class_catalogue() -> None:
     """The module catalogue advertises RiskAssessment + the nearby-facilities
-    genus bearer + the monetary value structure (eight now: the original six
-    Q4a / Category-E promotions + opda:NearbyFacility (ODR-0024 R4) +
-    opda:MonetaryAmount (ODR-0024 R3, the monetary walk)). Per ODR-0024 R4 the
-    opda:School / opda:HealthCareFacility subkinds COLLAPSE into the genus
-    (held-as-live subkind split), so they are NO LONGER in the catalogue."""
+    genus bearer + the monetary and room-dimension value structures (nine now:
+    the original six Q4a / Category-E promotions + opda:NearbyFacility (ODR-0024
+    R4) + opda:MonetaryAmount (ODR-0024 R3) + opda:RoomDimension (ODR-0024 R10 /
+    session-030)). Per ODR-0024 R4 the opda:School / opda:HealthCareFacility
+    subkinds COLLAPSE into the genus (held-as-live subkind split), so they are
+    NO LONGER in the catalogue; per session-030 opda:Room / opda:Building are
+    NOT classes (modelled as the opda:RoomDimension by-value structure)."""
     assert OPDA.RiskAssessment in descriptive.CLASSES
     assert OPDA.NearbyFacility in descriptive.CLASSES
     assert OPDA.MonetaryAmount in descriptive.CLASSES
+    assert OPDA.RoomDimension in descriptive.CLASSES
     # ODR-0024 R4: the subkinds are collapsed into the genus — not emitted.
     assert OPDA.School not in descriptive.CLASSES
     assert OPDA.HealthCareFacility not in descriptive.CLASSES
-    assert len(descriptive.CLASSES) == 8
+    # session-030: Room / Building are NOT classes.
+    assert OPDA.Room not in descriptive.CLASSES
+    assert OPDA.Building not in descriptive.CLASSES
+    assert len(descriptive.CLASSES) == 9
+
+
+def test_room_dimension_emitted() -> None:
+    """ODR-0024 R10 / session-030 — the room-dimension model. opda:Room and
+    opda:Building are NOT classes; the roomDimensions.rooms[] repeating group is
+    an anonymous by-value opda:RoomDimension structure (no IC, no key — the
+    MonetaryAmount pattern) on opda:Property, bearing length/width (xsd:decimal)
+    + a non-rigid roomName, attached via opda:hasRoomDimension. No mereology,
+    no transitivity, no UnitOfLengthScheme, no identity key."""
+    from rdflib.namespace import SH
+
+    from opda_gen.emitters import shapes
+
+    g = descriptive.build_graph()
+    assert (OPDA.RoomDimension, RDF.type, OWL.Class) in g
+    # the three by-value fields on RoomDimension
+    for prop, dt in ((OPDA.length, XSD.decimal), (OPDA.width, XSD.decimal),
+                     (OPDA.roomName, XSD.string)):
+        assert (prop, RDF.type, OWL.DatatypeProperty) in g, prop
+        assert (prop, RDFS.domain, OPDA.RoomDimension) in g, prop
+        assert (prop, RDFS.range, dt) in g, prop
+    # attachment: Property -> RoomDimension (characterisation, not parthood)
+    assert (OPDA.hasRoomDimension, RDF.type, OWL.ObjectProperty) in g
+    assert (OPDA.hasRoomDimension, RDFS.domain, OPDA.Property) in g
+    assert (OPDA.hasRoomDimension, RDFS.range, OPDA.RoomDimension) in g
+    # NOT classes; no UnitOfLengthScheme minted
+    assert (OPDA.Room, RDF.type, OWL.Class) not in g
+    assert (OPDA.Building, RDF.type, OWL.Class) not in g
+    # keyless shape (no owl:hasKey on the value structure)
+    sg = shapes.build_descriptive_shapes()
+    assert (OPDA.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension) in sg
+    assert (OPDA.RoomDimension, OWL.hasKey, None) not in g
 
 
 def test_monetary_walk_emitted() -> None:

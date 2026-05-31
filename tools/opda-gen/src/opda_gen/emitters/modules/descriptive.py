@@ -80,6 +80,7 @@ _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 # with its own IC, not a Property Quality) and the schoolType→SKOS rule.
 _ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
 _ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
+_ODR_0024_R10 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R10")
 
 # ODR-0008d (Authority-Retrieved Artefacts) section anchors — the Category-E
 # RiskAssessment class + its peril/rating-bearing properties cite the Rule
@@ -123,6 +124,13 @@ CLASSES = (
     # search/environmental result (an Information Object on the PROV-O
     # backbone).
     OPDA.RiskAssessment,
+    # ODR-0023 R3 / session-030 — the room-dimension value structure. An
+    # ANONYMOUS by-value bundle (no IC, no key — the opda:MonetaryAmount
+    # pattern), NOT a Substance Kind: the council ruled opda:Room / opda:Building
+    # do NOT earn classes (Room has no data-realisable IC; Building's +O IC is
+    # genuine but latent), so length/width/roomName attach to opda:Property via
+    # this value node.
+    OPDA.RoomDimension,
     OPDA.Search,
     OPDA.Survey,
     OPDA.Valuation,
@@ -147,6 +155,7 @@ OBJECT_PROPERTIES = (
     OPDA.estimatedAmount,
     OPDA.estimatedPrice,
     OPDA.feeIncludingVAT,
+    OPDA.hasRoomDimension,
     OPDA.hasSubAssessment,
     OPDA.holdingDeposit,
     OPDA.listPrice,
@@ -263,6 +272,10 @@ DATATYPE_PROPERTIES = (
     OPDA.freeholdOwner,
     OPDA.forTheManagedAreas,
     OPDA.fromTheOwners,
+    # ODR-0023 R3 / session-030 — opda:RoomDimension value-structure fields.
+    OPDA.length,
+    OPDA.width,
+    OPDA.roomName,
 )
 
 
@@ -1810,27 +1823,100 @@ def build_graph() -> Graph:
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
-    # --- Held-as-live conditional stubs (Davis S008 Q4 dissent) ---------
-    # Per ADR-0011 §"Per-module detail" — Building and Room class
-    # promotions are HELD-AS-LIVE pending first named BASPI5 round-trip
-    # query exercising sub-Property reasoning. The generator-comment
-    # block in the emitted TTL header notes the held-as-live status;
-    # the classes themselves are not emitted as triples until the
-    # named trigger fires.
+    # ==== Category-G curated walk — the ROOM-DIMENSION model (session-030) ==
+    # ODR-0023 R3 / Council session-030 (ODR-0024 R10): opda:Room and
+    # opda:Building are NOT promoted to classes — Room has no data-realisable
+    # identity (roomName is a non-rigid label, no positional token), and
+    # opda:Building's +O IC (the ODR-0005 §3a-4 Replacement witness) is genuine
+    # but latent/unexercised. The roomDimensions.rooms[] repeating group is
+    # modelled as an ANONYMOUS by-value structure (the opda:MonetaryAmount
+    # pattern, ODR-0024 R3) on opda:Property — reuse the value structure, mint
+    # no Kind.
+    g.add((OPDA.RoomDimension, RDF.type, OWL.Class))
+    g.add((OPDA.RoomDimension, RDFS.label, Literal("Room Dimension", lang="en")))
+    g.add((OPDA.RoomDimension, RDFS.comment, Literal(
+        "A room's dimensions as a value structure — a length + width "
+        "(xsd:decimal, metres) and a non-rigid roomName, one per room in a "
+        "Property's roomDimensions.rooms[] repeating group. An ANONYMOUS "
+        "by-value structure (no identity criterion, no key — individuated by "
+        "its values), NOT a Substance Kind: Council session-030 ruled neither "
+        "opda:Room nor opda:Building earns a class (Room has no data-realisable "
+        "identity — roomName non-rigid, no positional token; opda:Building's +O "
+        "IC via the ODR-0005 §3a-4 Replacement witness is genuine but latent). "
+        "Reuses the opda:MonetaryAmount by-value pattern (ODR-0024 R3); attached "
+        "to opda:Property via opda:hasRoomDimension (characterisation, NOT "
+        "parthood — no mereology, no transitivity). Re-homes losslessly onto a "
+        "future opda:Room/opda:Building if an identity fact ever earns the Kind.",
+        lang="en",
+    )))
+    g.add((OPDA.RoomDimension, SKOS.scopeNote, Literal(
+        "UFO: a quality-value structure (a bundle of Quale-in-Region values), "
+        "not an endurant (Guizzardi 2005); the dimensions are Qualities of a "
+        "room-feature of the Property (DOLCE feature). Value identity is "
+        "structural (by-value); no instance identity is claimed (session-030).",
+        lang="en",
+    )))
+    g.add((OPDA.RoomDimension, DCTERMS.source, _ODR_0024_R10))
+
+    # opda:hasRoomDimension — opda:Property -> opda:RoomDimension (0..*)
+    g.add((OPDA.hasRoomDimension, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasRoomDimension, RDFS.domain, OPDA.Property))
+    g.add((OPDA.hasRoomDimension, RDFS.range, OPDA.RoomDimension))
+    g.add((OPDA.hasRoomDimension, RDFS.label,
+           Literal("has room dimension", lang="en")))
+    g.add((OPDA.hasRoomDimension, RDFS.comment, Literal(
+        "Relates an opda:Property to a room-dimension value structure (one per "
+        "room in roomDimensions.rooms[]). Characterisation of a value, NOT "
+        "mereological parthood (no opda:Room individual is asserted) and NOT "
+        "transitive (Council session-030 / ODR-0024 R10).",
+        lang="en",
+    )))
+    g.add((OPDA.hasRoomDimension, DCTERMS.source, _ODR_0024_R10))
+
+    # the three by-value room-dimension fields (no key; roomName non-rigid)
+    _walk_room: list[tuple[URIRef, URIRef, str, str, str]] = [
+        (
+            OPDA.length, XSD.decimal, "length",
+            "Length of a room in metres (xsd:decimal) — a Quale-in-Region field "
+            "of the opda:RoomDimension value structure. Metres by convention "
+            "(NO opda:UnitOfLengthScheme — session-030 / ODR-0024 R10, reusing "
+            "the opda:area no-unit-scheme precedent). Flat per ODR-0008 §Q6a.",
+            "propertyPack.buildInformation.roomDimensions.rooms[].length",
+        ),
+        (
+            OPDA.width, XSD.decimal, "width",
+            "Width of a room in metres (xsd:decimal) — a Quale-in-Region field "
+            "of the opda:RoomDimension value structure. Metres by convention "
+            "(no opda:UnitOfLengthScheme). Flat per ODR-0008 §Q6a.",
+            "propertyPack.buildInformation.roomDimensions.rooms[].width",
+        ),
+        (
+            OPDA.roomName, XSD.string, "room name",
+            "Name of a room (xsd:string) — a NON-RIGID label on the "
+            "opda:RoomDimension value structure, NOT an identity principle and "
+            "never a key (ODR-0024 R10 / session-030). Flat per ODR-0008 §Q6a.",
+            "propertyPack.buildInformation.roomDimensions.rooms[].roomName",
+        ),
+    ]
+    for prop, rng, label, comment, path in _walk_room:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, OPDA.RoomDimension))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, DCTERMS.source, _dd_source(path)))
+
+    # --- opda:Room / opda:Building classes: NOT minted (session-030) -----
+    # Council session-030 (ODR-0023 R3 / ODR-0024 R10) ruled NEITHER opda:Room
+    # nor opda:Building earns a class: Room has no data-realisable identity
+    # (roomName non-rigid, no positional token); opda:Building's +O IC
+    # (ODR-0005 §3a-4 Replacement) is genuine but LATENT. The room data is
+    # modelled above as the anonymous by-value opda:RoomDimension structure;
+    # the classes are NOT emitted as triples.
     #
-    # Commented-out stubs (do NOT activate without ODR amendment):
-    #
-    # opda:Building
-    #     rdf:type owl:Class ;
-    #     rdfs:subClassOf opda:Property ;
-    #     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> .
-    #
-    # opda:Room
-    #     rdf:type owl:Class ;
-    #     rdfs:subClassOf opda:Building ;
-    #     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> .
-    #
-    # Re-open trigger: first named BASPI5 round-trip query that requires
-    # sub-Property reasoning (per ADR-0011 §"Held-as-live tracking").
+    # Re-open trigger (an IDENTITY FACT, not a calendar gate): opda:Building on
+    # a built structure shared across Properties / re-identified across dated
+    # surveys; opda:Room on a stable room positional-or-structural token in
+    # source + a query that re-identifies a room as an individual.
 
     return g

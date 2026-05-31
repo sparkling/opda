@@ -103,6 +103,12 @@ opda:RiskAssessmentShape
     sh:property _:b0e91a48d92e5, _:b15168883deab, _:b18e76480e52d, _:bb6873c934b79, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
     sh:targetClass opda:RiskAssessment .
 
+opda:RoomDimensionShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R10> ;
+    sh:property _:b33905faae22f, _:b9be1c3448ce2, _:bb05526bce45b ;
+    sh:targetClass opda:RoomDimension .
+
 opda:SearchIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
@@ -257,6 +263,13 @@ _:b2dc833c5927b
 _:b324a0a32a6a2
     rdf:first <https://w3id.org/opda/#currency/GBP> ;
     rdf:rest _:b8d633e02fec1 .
+
+_:b33905faae22f
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:RoomDimension roomName (non-rigid label) is a single-valued by-value field (ODR-0024 R10 / session-030); the structure carries NO identity key (it is individuated by value, the opda:MonetaryAmount pattern) and opda:roomName is non-rigid — never a key."@en ;
+    sh:path opda:roomName ;
+    sh:severity sh:Violation .
 
 _:b3417af7331fc
     sh:datatype xsd:string ;
@@ -482,6 +495,13 @@ _:b9a2684e07749
     rdf:first "Sale by tender" ;
     rdf:rest _:b3c15f4400ccf .
 
+_:b9be1c3448ce2
+    sh:datatype xsd:decimal ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:RoomDimension width (metres) is a single-valued by-value field (ODR-0024 R10 / session-030); the structure carries NO identity key (it is individuated by value, the opda:MonetaryAmount pattern) and opda:roomName is non-rigid — never a key."@en ;
+    sh:path opda:width ;
+    sh:severity sh:Violation .
+
 _:b9c9499786e2c
     rdf:first <https://w3id.org/opda/#peril/Energy> ;
     rdf:rest _:b274214672283 .
@@ -531,6 +551,13 @@ _:baf3884cfd033
 _:baff63cf55387
     rdf:first "None" ;
     rdf:rest rdf:nil .
+
+_:bb05526bce45b
+    sh:datatype xsd:decimal ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:RoomDimension length (metres) is a single-valued by-value field (ODR-0024 R10 / session-030); the structure carries NO identity key (it is individuated by value, the opda:MonetaryAmount pattern) and opda:roomName is non-rigid — never a key."@en ;
+    sh:path opda:length ;
+    sh:severity sh:Violation .
 
 _:bb1b04773944a
     rdf:first <https://w3id.org/opda/#peril/Flooding> ;

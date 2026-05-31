@@ -60,6 +60,13 @@ opda:RiskAssessment
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom)."@en .
 
+opda:RoomDimension
+    rdf:type owl:Class ;
+    rdfs:label "Room Dimension"@en ;
+    rdfs:comment "A room's dimensions as a value structure — a length + width (xsd:decimal, metres) and a non-rigid roomName, one per room in a Property's roomDimensions.rooms[] repeating group. An ANONYMOUS by-value structure (no identity criterion, no key — individuated by its values), NOT a Substance Kind: Council session-030 ruled neither opda:Room nor opda:Building earns a class (Room has no data-realisable identity — roomName non-rigid, no positional token; opda:Building's +O IC via the ODR-0005 §3a-4 Replacement witness is genuine but latent). Reuses the opda:MonetaryAmount by-value pattern (ODR-0024 R3); attached to opda:Property via opda:hasRoomDimension (characterisation, NOT parthood — no mereology, no transitivity). Re-homes losslessly onto a future opda:Room/opda:Building if an identity fact ever earns the Kind."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R10> ;
+    skos:scopeNote "UFO: a quality-value structure (a bundle of Quale-in-Region values), not an endurant (Guizzardi 2005); the dimensions are Qualities of a room-feature of the Property (DOLCE feature). Value identity is structural (by-value); no instance identity is claimed (session-030)."@en .
+
 opda:Search
     rdf:type owl:Class ;
     rdfs:label "Search"@en ;
@@ -449,6 +456,14 @@ opda:landlordNotifiedOfSale
     rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
+opda:length
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "length"@en ;
+    rdfs:comment "Length of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (NO opda:UnitOfLengthScheme — session-030 / ODR-0024 R10, reusing the opda:area no-unit-scheme precedent). Flat per ODR-0008 §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.roomDimensions.rooms[].length> ;
+    rdfs:domain opda:RoomDimension ;
+    rdfs:range xsd:decimal .
+
 opda:listedDate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "listed date"@en ;
@@ -663,6 +678,14 @@ opda:riskIndicator
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:string .
 
+opda:roomName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "room name"@en ;
+    rdfs:comment "Name of a room (xsd:string) — a NON-RIGID label on the opda:RoomDimension value structure, NOT an identity principle and never a key (ODR-0024 R10 / session-030). Flat per ODR-0008 §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.roomDimensions.rooms[].roomName> ;
+    rdfs:domain opda:RoomDimension ;
+    rdfs:range xsd:string .
+
 opda:saleAtUndervalue
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sale at undervalue"@en ;
@@ -790,6 +813,14 @@ opda:url
     dct:source <https://w3id.org/opda/data-dictionary#contracts[].contract.template.url>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url> ;
     rdfs:range xsd:anyURI .
 
+opda:width
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "width"@en ;
+    rdfs:comment "Width of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (no opda:UnitOfLengthScheme). Flat per ODR-0008 §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.roomDimensions.rooms[].width> ;
+    rdfs:domain opda:RoomDimension ;
+    rdfs:range xsd:decimal .
+
 opda:willingToInsure
     rdf:type owl:DatatypeProperty ;
     rdfs:label "willing to insure"@en ;
@@ -885,6 +916,14 @@ opda:feeIncludingVAT
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT> ;
     rdfs:domain opda:Transaction ;
     rdfs:range opda:MonetaryAmount .
+
+opda:hasRoomDimension
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "has room dimension"@en ;
+    rdfs:comment "Relates an opda:Property to a room-dimension value structure (one per room in roomDimensions.rooms[]). Characterisation of a value, NOT mereological parthood (no opda:Room individual is asserted) and NOT transitive (Council session-030 / ODR-0024 R10)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R10> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:RoomDimension .
 
 opda:hasSubAssessment
     rdf:type owl:ObjectProperty ;

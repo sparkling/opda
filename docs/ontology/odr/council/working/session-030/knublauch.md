@@ -1,0 +1,97 @@
+# Session 030 (R3) — Holger Knublauch (TopQuadrant): SHACL / realisation verdict
+
+> **Holger Knublauch** — SHACL (W3C Rec co-editor), TopBraid/TopQuadrant realisation voice. 8-voice Full Council. ODR-0023 **R3** under directing-authority override of the held trigger: **"no gates" = decide NOW on the merits**, not defer. FULLY OPEN — first-class `opda:Room`/`opda:Building` Kinds vs anonymous **by-value structure** (MonetaryAmount precedent) vs **flat datatype properties** on a bearer (area precedent). Output = ODR + ADR; **no generator/TTL code this session** — I specify what WOULD be emitted, leanest correct realisation.
+
+**Inputs read (scope-limited):** [session-026 guarino-r3](../session-026/guarino-r3.md) + [davis-da-r3](../session-026/davis-da-r3.md) (the two held R3 voices) · [ODR-0024 R3/R10](../../ODR-0024-curated-category-g-walk-dispositions.md) (MonetaryAmount EXECUTED; Room held) · [ODR-0005 §3a/§6a](../../ODR-0005-property-land-identity-crux.md) (Replacement IC; SHACL surrogate-key realisation; no `owl:hasKey`) · [ODR-0008 §Q4a/§Q5a/§Q6a](../../ODR-0008-property-descriptive-attributes.md) (class-promotion test; datatype/SKOS binding; flat-default) · [ODR-0010 §Q7a /§Graph-separation](../../ODR-0010-overlay-profile-mechanism.md) (base 0..*; profile `sh:minCount`; annotations exiled) · plus the emitted artefacts I am about to cite (`opda-descriptive.ttl`, `opda-descriptive-shapes.ttl`, `opda-property.ttl`, `opda-vocabularies.ttl`).
+
+---
+
+## The blunt SHACL question (what the realisation actually decides)
+
+I ask one thing of every promotion: **does a validator or a query need a NODE with its own identity?** A SHACL node shape with `sh:targetClass` does work only when something either (a) **counts/joins/re-identifies** instances *as individuals* (needs an addressable node + a key), or (b) needs **per-instance co-varying constraints** that cannot be expressed as repeated single-valued literals on a parent. Everything else is answered by property shapes on a bearer already in the graph.
+
+I ran the corpus against that test and the answer is unambiguous on the realisation merits:
+
+- **MonetaryAmount** (ODR-0024 R3, EXECUTED) is the precedent that matters here, and it is a **by-value structure, NOT a class-with-key**. `opda-descriptive.ttl:41` types it explicitly *"a quality value / abstract value structure — NOT an endurant with independent existence and NOT a Quality of any bearer. IC (by-value): two opda:MonetaryAmount nodes denote the same amount iff equal magnitude AND equal currency."* Its shape (`opda-descriptive-shapes.ttl:82` `opda:MonetaryAmountShape sh:targetClass opda:MonetaryAmount`) carries exactly two property shapes — `opda:amount sh:datatype xsd:decimal sh:minCount 1` and `opda:currency sh:nodeKind sh:IRI sh:minCount 1 sh:in CurrencyScheme`. **No surrogate key. No `dash:uniqueValueForClass`. No identity node shape.** It is reused as `rdfs:range` across 16 per-economic-kind object properties, each on its *own* bearer.
+- **area / numberOfFloors / builtForm** are the flat-properties precedent: `opda:area` is a bare `xsd:decimal` on `opda:Property` (`opda-property.ttl:120`), comment: *"the unit of measure is carried alongside in the source structure."* No node, no shape beyond a per-form property shape.
+
+`opda:Room`/`opda:Building` are nearer to MonetaryAmount than to a keyed Information Object. Room is a **three-field measured value structure** (`length`, `width`, `roomName`) appearing as a repeating group at `propertyPack.buildInformation.roomDimensions.rooms[]`. The five descriptive Information-Object classes (`Survey`/`EPCCertificate`/`Search`/`Valuation`/`Comparable`, with `RiskAssessment` the §Q4a precedent) carry **identity-key node shapes** because they have authority-retrieved provenance and lifecycle (§Q4a (a)/(b)). **Room has neither.** It has no `prov:wasGeneratedBy` regulator chain, no issued/superseded lifecycle, no PII regime — it fails all three §Q4a limbs. And decisively for *my* lens: **BASPI5 carries no room positional token** (STATE), so even if we wanted a key, *there is no identifying datum to surrogate-key on*. A `Room` class today would be an `sh:targetClass` node shape that re-identifies nothing — the exact decorative-shape failure ODR-0005 §6a's surrogate-key discipline and ODR-0008 §Q6a's reasoner-independence test were written to prevent.
+
+So I do **not** recommend a class for Room. But I also do **not** recommend Davis's bare-flat treatment, because the data is a **repeating group**, and flat single-valued properties on `opda:Property` cannot losslessly carry N rooms (you cannot tell which `length` pairs with which `width`). The leanest *correct* realisation is the **middle option the room shape forces: an anonymous by-value structure — the MonetaryAmount pattern — reused as a `RoomDimensions` value node attached by a repeatable object property.** That validates and answers everything BASPI5 needs (per-room length+width+name, jointly, N times) **without minting an addressable identity nothing dereferences.**
+
+---
+
+## Q1 — `opda:Room`: class, by-value, or flat? (key if a class)
+
+**REVISE → by-value structure (NOT a class, NOT flat).** Reject both poles. A `Room` class fails the realisation test: no validator or query in or near the corpus binds a Room as a subject and filters a per-Room attribute that a value node cannot carry — Davis's named firing query (`?room opda:roomFloor ?floor … FILTER`) **has not been tabled**, and BASPI5 has **no room positional/floor token** to even express it, so an `sh:targetClass opda:Room` node shape would target nodes that nothing re-identifies (decorative shape under ODR-0008 §Q6a; would also need a surrogate key per ODR-0005 §6a that there is no datum to build). But bare-flat fails too: `rooms[]` is a **repeating group**, and three single-valued properties on `opda:Property` lose the row-grouping (cannot bind a given `length` to its `width`). The realisation that fits the data and the precedent is the **MonetaryAmount by-value structure** (ODR-0024 R3, EXECUTED): an anonymous `opda:RoomDimensions` value node with `opda:length` + `opda:width` (+ optional `opda:roomName`), attached to `opda:Property` by a repeatable object property `opda:hasRoomDimensions` (`0..*`). **No key** — by-value IC, exactly as `opda:MonetaryAmount` (`opda-descriptive.ttl:41`): two nodes are equal iff their field values are equal; `roomName` is a non-rigid label (ODR-0024 R10), never an identity principle, so it is `sh:maxCount 1` advisory, not keyed. This is reversible and additive: if Davis's per-Room query ever fires, the value node is re-homed to a keyed `opda:Room` class with zero published-IRI breakage (no Room IRIs are minted in the interim — the same migration discipline ODR-0005 §6a uses for UPRN succession).
+
+## Q2 — `opda:Building`: class now? (key node shape if yes)
+
+**REJECT (no class now); flat on `opda:Property` for the BASPI5 facts.** This is the Building-not-Room asymmetry Guarino flagged, but it cuts the *opposite* way from a naive reading: Guarino's §3a-hard-case-4 ("Replacement") gives `Building` a **segregated +O identity criterion** (it persists/perishes differently from `Property`) — Building is the side that *would* eventually earn a class. Yet **no BASPI5 building fact needs that node today**: `numberOfFloors` and `builtForm` are already flat `xsd:integer`/`xsd:string` on `opda:Property` (`opda-property.ttl:464`, `:152`) and validate and round-trip with zero Building class — the existence proof. The asymmetry for *realisation* is therefore: **Building has the stronger identity claim but the weaker data pull** (only aggregate single-valued facts, which flat properties carry losslessly), whereas **Room has no identity claim but a repeating-group data pull** (which forces the by-value node). So Building stays flat (no node, no key node shape), and the cross-Property building-identity query Guarino names (same physical building across subdivided flats) is the **named firing trigger** that would later promote `opda:Building` to a keyed class — at which point its key node shape would surrogate on a building identifier (none exists in BASPI5 today; likely a TOID/UPRN-parent), realised by `dash:uniqueValueForClass` exactly as ODR-0005 §6a does for `opda:Property`. Not now.
+
+## Q3 — Mereology / attachment (transitivity NO)
+
+**AFFIRM no transitivity; attach by a plain `0..*` object property, no part-whole axioms.** Guarino's §Q3 hygiene is correct and the realisation must honour it: do **NOT** introduce `opda:partOf`/`opda:hasRoom` pointing at reified individuals, and do **NOT** make any attachment property transitive. The value node attaches to `opda:Property` by a flat `opda:hasRoomDimensions` (`owl:ObjectProperty`, `rdfs:domain opda:Property`, `rdfs:range opda:RoomDimensions`, base cardinality `0..*` per ODR-0008 §Q7a clause 1) — this is **value attachment, not mereology**. There is no Building node for a Room to be `partOf`, and no transitive `Property ⊒ Building ⊒ Room` chain to close (which is right: transitivity here would be a reasoning liability with no consumer, and SHACL is closed-world property-shape validation, not OWL part-of entailment — ODR-0010 §Graph-separation: `sh:minCount 1` is not `owl:minCardinality`). When/if Building and Room both become classes, mereology is the correct model *then* (held, per Guarino §Q3 / ODR-0002 OBO-RO) — still without transitivity unless a cross-level part query forces it.
+
+## Q4 — `length`/`width` units (no length scheme exists)
+
+**REVISE → fixed-metres-by-comment + `sh:datatype xsd:decimal`, NOT a minted length scheme, NOT a unit property.** This is the one place I diverge toward leaner-than-MonetaryAmount, because the parallel is **area**, not money. `opda:MonetaryAmount` makes `opda:currency` a required first-class dimension because money is **genuinely multi-currency and the currency is in the source** (`CurrencyScheme` exists, GBP-default via overlay). Length is not analogous: **no length scheme exists**, BASPI5 `roomDimensions` does not carry a per-room length unit token, and `opda:area` — the nearest emitted precedent — is a **bare `xsd:decimal` whose unit lives as a *sibling* (`UnitOfAreaScheme`), NOT enforced on the magnitude** (`opda-property.ttl:120`; `opda-vocabularies.ttl:419`, itself only WG-flagged for QUDT, not adopted). Minting an `opda:LengthScheme` + a `unitOfLength` dimension on the value node would (a) over-engineer past the area precedent, (b) assert a value-space the data does not populate (YAGNI — ODR-0008 §Q5a "burden of SKOS promotion on the proposer"), and (c) create a required dimension with no source datum, the inverse of MonetaryAmount's *well-grounded* required currency. **Emit: `opda:length` / `opda:width` as `sh:datatype xsd:decimal sh:minCount 1` inside the value node, with `rdfs:comment` fixing the unit to metres** (the data dictionary's `roomDimensions` convention), mirroring `opda:area`'s "unit carried alongside" note. If a multi-unit room source or a consumer conversion query ever appears, add a `unitOfLength` dimension then (mint `opda:LengthScheme` or reference QUDT) — the same deferred trigger area itself carries. Leaner correct beats symmetrical-with-money.
+
+## Q5 — EXACTLY what the ADR records for emission (leanest correct realisation)
+
+**The ADR records the MonetaryAmount-shaped by-value realisation — one value class, two/three datatype dimensions, one attachment object property, one node shape, and explicitly NO key / NO class for Room or Building.** Concretely, what WOULD be emitted (no code this session):
+
+**TBox — `opda-descriptive.ttl`** (Room family rides the descriptive module alongside MonetaryAmount, its precedent):
+```turtle
+# By-value structure — NOT an endurant, NOT a Quality of a bearer; IC by-value (cf. opda:MonetaryAmount)
+opda:RoomDimensions  a owl:Class ;
+    rdfs:comment "The measured dimensions of one room as a value structure (opda:length × opda:width, with an optional opda:roomName label). UFO: a quality-value / abstract value structure — NOT an endurant with independent identity and NOT a Quality of opda:Property. IC (by-value): two opda:RoomDimensions nodes denote the same dimensions iff equal length AND equal width (roomName is a non-rigid label, ODR-0024 R10, never an identity principle). NOT opda:Room: no authority provenance, no lifecycle, no PII regime (fails ODR-0008 §Q4a); no class promoted until a named BASPI5 per-room query fires (Davis ODR-0024 R10 trigger). Models the propertyPack.buildInformation.roomDimensions.rooms[] repeating group. Same realisation as opda:MonetaryAmount (ODR-0024 R3)."@en .
+
+opda:length   a owl:DatatypeProperty ; rdfs:domain opda:RoomDimensions ; rdfs:range xsd:decimal ;
+    rdfs:comment "Measured length of a room (metres — unit fixed by the roomDimensions convention, carried by comment as with opda:area; no length scheme minted, ODR-0023 R3 Q4). Flat per §Q6a."@en .
+opda:width    a owl:DatatypeProperty ; rdfs:domain opda:RoomDimensions ; rdfs:range xsd:decimal ;
+    rdfs:comment "Measured width of a room (metres — see opda:length). Flat per §Q6a."@en .
+opda:roomName a owl:DatatypeProperty ; rdfs:domain opda:RoomDimensions ; rdfs:range xsd:string ;
+    rdfs:comment "Non-rigid display label of a room (e.g. 'Kitchen') — NOT an identity principle (ODR-0024 R10)."@en .
+
+opda:hasRoomDimensions a owl:ObjectProperty ; rdfs:domain opda:Property ; rdfs:range opda:RoomDimensions ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.roomDimensions.rooms> ;
+    rdfs:comment "Attaches a per-room dimensions value node to the Property (value attachment, NOT mereology; not transitive — ODR-0023 R3 Q3). Repeatable (base 0..* per ODR-0008 §Q7a)."@en .
+```
+
+**SHACL — `opda-descriptive-shapes.ttl`** (one node shape, modelled exactly on `opda:MonetaryAmountShape` at `:82`):
+```turtle
+opda:RoomDimensionsShape a sh:NodeShape ; sh:targetClass opda:RoomDimensions ;
+    sh:property [ sh:path opda:length ; sh:datatype xsd:decimal ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "opda:RoomDimensions MUST carry exactly one opda:length (xsd:decimal, metres)." ] ;
+    sh:property [ sh:path opda:width  ; sh:datatype xsd:decimal ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "opda:RoomDimensions MUST carry exactly one opda:width (xsd:decimal, metres)." ] ;
+    sh:property [ sh:path opda:roomName ; sh:datatype xsd:string ; sh:maxCount 1 ] .
+# NO sh:targetClass key shape, NO dash:uniqueValueForClass — by-value IC, no surrogate key (contrast ODR-0005 §6a Property keying).
+```
+
+**Explicitly NOT emitted (the ADR must record these as deliberate omissions, not oversights):** no `opda:Room` class; no `opda:Building` class; no surrogate-key / identity node shape; no `owl:hasKey` (consistent with ODR-0005 §4 — never primary); no `opda:LengthScheme` and no `unitOfLength` dimension; no transitive or part-whole property; no base-graph `sh:minCount` on `opda:hasRoomDimensions` (per-form `0..1`/`1..*` lives in the **BASPI5 overlay profile**, ODR-0010 §Q7a clause 1; ODR-0008 §Q7a CI-test-1 `ASK …sh:minCount > 0 → FALSE` must still pass in base `opda-shapes.ttl`); no `opda:aiHint`/advisory triples in the shapes graph (ODR-0010 — annotations exiled to `opda-annotations.ttl`). `opda:numberOfFloors` and `opda:builtForm` **STAND flat on `opda:Property`** unchanged (Building stays flat, Q2).
+
+**Coverage effect:** closes the last 3 of 239 (236 → **239/239**) — `length`/`width`/`roomName` covered by the value node + its three datatype properties; this is the `opda:Room` §G24 leftover that ODR-0024 R12 reported as uncovered.
+
+**Re-home path if a class is later forced (record in the ADR so re-home is mechanical, not archaeological):** Davis's named per-Room query (Q2 trigger) fires → `opda:RoomDimensions` value node becomes a keyed `opda:Room` class; `opda:hasRoomDimensions` → `opda:hasRoom`; a surrogate-key node shape is added on whatever room-identifying token the new source carries (none today) via `dash:uniqueValueForClass` (ODR-0005 §6a idiom). Zero published-IRI breakage because the interim mints no Room IRIs. Same standing-open trigger applies to `opda:Building` (cross-Property building-identity query, Q2).
+
+---
+
+## Engagements (per the brief)
+
+- **To Cagle (DA / directing authority):** the override removes the *deferral gate*, and I have decided on the merits — but "decide now" does not license minting a class the realisation does not need. The merits verdict **is** the by-value node: it ships coverage to 239/239 *today*, validates the repeating group losslessly, and costs no permanent identity URI. I am not holding; I am choosing the leanest of the three open options.
+- **To Guarino:** I accept your asymmetry in full — Building carries the segregated +O IC (§3a-hc-4), Room's "identity" is largely fiat. My realisation honours it precisely: **Building gets no node because its data is aggregate-flat (no pull), Room gets a *keyless* value node because its data is a repeating group (pull, but no IC and no key datum).** A key a SHACL shape would enforce **does not exist** — BASPI5 has no room positional token — so even granting Room an eventual IC, there is nothing to surrogate-key today; that is the engineering fact that makes the by-value node (not a class) correct *now*.
+- **To Davis (deployment):** your flat-datatype instinct is right about *not minting a class*, and I adopt your firing-query as the standing re-home trigger verbatim. I diverge only on lossiness: three single-valued flat properties cannot carry `rooms[]` as a repeating group (row-grouping is lost). The by-value node is the minimal fix that preserves your zero-IRI-minted reversibility — no Room/Building IRI is dereferenced in the interim, so your `skos:exactMatch`/re-home path stays free and total.
+
+## Scorecard
+
+| Q | Verdict | One line |
+|---|---|---|
+| Q1 Room: class/value/flat | **REVISE → by-value structure (keyless)** | MonetaryAmount precedent; repeating group needs a node, no IC/key needs no class; flat loses row-grouping |
+| Q2 Building: class now? | **REJECT (flat on `opda:Property`)** | Stronger IC but only aggregate-flat data; `numberOfFloors`/`builtForm` already validate flat; cross-Property query is the later trigger |
+| Q3 Mereology / attachment | **AFFIRM no transitivity** | Plain `0..*` `opda:hasRoomDimensions` value attachment; no part-of axioms, no reified individuals |
+| Q4 length/width units | **REVISE → fixed-metres-by-comment + `xsd:decimal`** | Parallel is area (unit as sibling, bare decimal), not money; no length scheme, no unit dimension — YAGNI |
+| Q5 ADR emission spec | **One value class + 3 datatype props + 1 object property + 1 node shape; NO key, NO Room/Building class** | 236 → 239/239; reversible to a keyed class on Davis's trigger |
+
+**Cited published source (per ODR-0001 §Citation grounding):** Knublauch, H. & Kontokostas, D. (eds.) 2017, *Shapes Constraint Language (SHACL)*, W3C Recommendation — §node shapes / `sh:targetClass` (a shape with no target validates nothing; ODR-0010 §Graph-separation echoes this) and the closed-world property-constraint model (distinct from OWL entailment, hence no part-of/transitivity machinery for validation). Corpus-internal precedent: `opda:MonetaryAmountShape` (`opda-descriptive-shapes.ttl:82`) and `opda:area` (`opda-property.ttl:120`) as the two realisation poles this verdict interpolates between.
