@@ -45,6 +45,62 @@ opda:TransactionChain
     dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q4> ;
     skos:scopeNote "UFO: Aggregate (Guizzardi 2005 Ch. 4 §4.6 — collective of Relator instances). Dual modelling per S007 Q4 (recursive predicate + Aggregate) chosen because both shapes appear in real-world chain queries."@en .
 
+opda:authorisationToShare
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "authorisation to share"@en ;
+    rdfs:comment "Sale-ready declaration: authorisation to share the property pack. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.saleReadyDeclarations.authorisationToShare> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:authorisedToActOnBehalfOfAllSellers
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "authorised to act on behalf of all sellers"@en ;
+    rdfs:comment "Sale-ready declaration: is the declarant authorised to act on behalf of all sellers? xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:confirmInformationIsAccurate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "confirm information is accurate"@en ;
+    rdfs:comment "Declaration confirming the supplied information is accurate (owners' confirmation-of-accuracy + fixtures confirmation). xsd:boolean. ONE shared property; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate>, <https://w3id.org/opda/data-dictionary#propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:confirmWillProvideAdditionalDocumentation
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "confirm will provide additional documentation"@en ;
+    rdfs:comment "Declaration confirming the owner will provide additional documentation. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:confirmation
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "confirmation"@en ;
+    rdfs:comment "Confirmation flag on a leasehold / managed-freehold confirmation-of-accuracy declaration. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy.confirmation>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:consumerProtectionRegulationsResponse
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "consumer protection regulations response"@en ;
+    rdfs:comment "Declaration response to the Consumer Protection Regulations question. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:leaveKeys
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "leave keys"@en ;
+    rdfs:comment "Completion undertaking: will the seller leave the keys? xsd:boolean. Flat per §Q6a. A sale-Transaction completion attribute (ODR-0007)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
 opda:occurredAtTime
     rdf:type owl:DatatypeProperty ;
     rdfs:label "occurred at time"@en ;
@@ -59,6 +115,62 @@ opda:plannedAtTime
     dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q6> ;
     rdfs:domain prov:Plan ;
     rdfs:range xsd:dateTime .
+
+opda:removeRubbish
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "remove rubbish"@en ;
+    rdfs:comment "Completion undertaking: will the seller remove rubbish? xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:replaceLightFittings
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "replace light fittings"@en ;
+    rdfs:comment "Completion undertaking: will the seller replace removed light fittings? xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:response
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "response"@en ;
+    rdfs:comment "Response flag on a managed-freehold / commonhold confirmation. xsd:boolean (a confirmation response; the data dictionary leaves the type unset — it is a yes/no confirmation by structure). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:sellingAgent
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "selling agent"@en ;
+    rdfs:comment "Name of the selling agent on an onward-purchase link in the transaction chain. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#chain.onwardPurchase[].sellingAgent> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:string .
+
+opda:signedOn
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "signed on"@en ;
+    rdfs:comment "Date a contract / sale-ready declaration was signed. xsd:date. ONE shared property reused across contract and seller signatures; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#contracts[].signatures[].signedOn>, <https://w3id.org/opda/data-dictionary#propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:date .
+
+opda:takeReasonableCare
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "take reasonable care"@en ;
+    rdfs:comment "Completion undertaking: will the seller take reasonable care of the Property until completion? xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:boolean .
+
+opda:transactionId
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "transaction ID"@en ;
+    rdfs:comment "External transaction identifier (the PDTF transaction id; also carried on onward-purchase chain links). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Complements the opda:Transaction IC's transaction-id-lineage (ODR-0007 §Q1) — the notation surface for the identifier."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#chain.onwardPurchase[].transactionId>, <https://w3id.org/opda/data-dictionary#transactionId> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range xsd:string .
 
 opda:hasChainPosition
     rdf:type owl:ObjectProperty ;

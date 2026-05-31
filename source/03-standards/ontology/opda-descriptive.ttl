@@ -38,6 +38,21 @@ opda:EPCCertificate
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a)."@en .
 
+opda:HealthCareFacility
+    rdf:type owl:Class ;
+    rdfs:label "Health Care Facility"@en ;
+    rdfs:comment "A nearby health-care facility — the healthCare[] band of opda:NearbyFacility. Bears opda:typeOfHealthCare and opda:specialties. UFO Substance Kind, a subkind of opda:NearbyFacility; class-promoted per ODR-0008 §Q4a."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    rdfs:subClassOf opda:NearbyFacility ;
+    skos:scopeNote "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.healthCare[]."@en .
+
+opda:NearbyFacility
+    rdf:type owl:Class ;
+    rdfs:label "Nearby Facility"@en ;
+    rdfs:comment "A point-of-interest near the Property — a school, health-care facility, or transport node listed in propertyPack.nearbyFacilities for amenity context. UFO Substance Kind: a real-world social-physical facility with its own identity, distinct from the Property being transacted (NOT a Quality of opda:Property — the same facility neighbours many properties). Class-promoted from the object-typed nearbyFacilities.{schools,healthCare,transport}[] leaves per ODR-0008 §Q4a; bears opda:distanceInMiles (proximity to the Property)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    skos:scopeNote "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a social-physical facility). Promoted from an object-typed leaf per ODR-0008 §Q4a (the 'which object-typed leaves become intermediate classes' test)."@en .
+
 opda:RiskAssessment
     rdf:type owl:Class ;
     rdfs:label "Risk Assessment"@en ;
@@ -45,6 +60,14 @@ opda:RiskAssessment
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom)."@en .
+
+opda:School
+    rdf:type owl:Class ;
+    rdfs:label "School"@en ;
+    rdfs:comment "A nearby school — the schools[] band of opda:NearbyFacility. Bears the school-specific descriptive attributes (opda:pupils, opda:ageRange, opda:religiousCharacter, opda:otherRating) and the schoolType bands (opda:college / opda:nursery / opda:primary / opda:secondary / opda:private). UFO Substance Kind, a subkind of opda:NearbyFacility; class-promoted per ODR-0008 §Q4a."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    rdfs:subClassOf opda:NearbyFacility ;
+    skos:scopeNote "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.schools[]."@en .
 
 opda:Search
     rdf:type owl:Class ;
@@ -78,11 +101,154 @@ opda:actionAlertRating
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:integer .
 
+opda:ageRange
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "age range"@en ;
+    rdfs:comment "Age range of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ageRange> ;
+    rdfs:domain opda:School ;
+    rdfs:range xsd:string .
+
+opda:applicationDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "application date"@en ;
+    rdfs:comment "Date a planning / building-control application was made (across the local-authority-search decision blocks). xsd:date. ONE shared property; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationDate>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:applicationType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "application type"@en ;
+    rdfs:comment "Type of a planning / building-control application recorded in a local-authority Search result (across the planning-permission, building-regulations, listed-building, conservation, and certificate-of-lawfulness decision blocks). ONE shared property reused across those blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationType>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationType> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:buildingControlStartDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "building control start date"@en ;
+    rdfs:comment "Start date of a building-control matter in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:councilSearchTurnaroundTimeInWorkingDays
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "council search turnaround time in working days"@en ;
+    rdfs:comment "Quoted turnaround time (working days) for a council search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:integer .
+
+opda:countyCouncil
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "county council"@en ;
+    rdfs:comment "Name of the county council for the Property's locality (local-authority Search context). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.countyCouncil> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:credibilitySources
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "credibility sources"@en ;
+    rdfs:comment "Sources lending credibility to a Valuation's price estimate (a multi-valued list — each value an xsd:string). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range xsd:string .
+
+opda:dateRemedialActionRequired
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date remedial action required"@en ;
+    rdfs:comment "Date by which remedial action is required following a buildings-insurance RiskAssessment. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired> ;
+    rdfs:domain opda:RiskAssessment ;
+    rdfs:range xsd:date .
+
+opda:decision
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "decision"@en ;
+    rdfs:comment "Decision recorded on a planning / building-control application in a local-authority Search result. ONE shared property reused across the decision blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decision>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decision> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:decisionDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "decision date"@en ;
+    rdfs:comment "Date a decision was made on a planning / building-control application. xsd:date. ONE shared property; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decisionDate>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decisionDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:designationType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "designation type"@en ;
+    rdfs:comment "Type of a planning designation recorded in a local-authority Search result (e.g. conservation area, tree preservation order). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].designationType> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
 opda:disclosureDetail
     rdf:type owl:DatatypeProperty ;
     rdfs:label "disclosure detail"@en ;
     rdfs:comment "Reusable free-text elaboration slot for a disclosure question (the generic `details` / `comments` / `summary` tail). rdfs:comment-grade — NOT a domain entity and carries no identity criterion (ODR-0022 §Rules.1 Category A). The question being elaborated is carried by the subject node and the instance-level dct:source pointing at that question's schema leaf path; a per-question detail property is NEVER minted (ODR-0022 §Rules.6)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-1> ;
+    rdfs:range xsd:string .
+
+opda:displayName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "display name"@en ;
+    rdfs:comment "Human-readable display name of a document or Search artefact. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.documents[].displayName>, <https://w3id.org/opda/data-dictionary#propertyPack.searches[].displayName> ;
+    rdfs:range xsd:string .
+
+opda:distanceInMiles
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "distance in miles"@en ;
+    rdfs:comment "Distance in miles from the Property to a nearby facility (school / health-care / transport). xsd:decimal. Domain opda:NearbyFacility (the proximity relation on the genus), reused across the amenity bands; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].distanceInMiles>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].distanceInMiles>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].distanceInMiles> ;
+    rdfs:domain opda:NearbyFacility ;
+    rdfs:range xsd:decimal .
+
+opda:districtCouncil
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "district council"@en ;
+    rdfs:comment "Name of the district council for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.districtCouncil> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:documentDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "document date"@en ;
+    rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:Document (the ODR-0009 document-evidence artefact); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].documentDate>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentDate> ;
+    rdfs:domain opda:Document ;
+    rdfs:range xsd:date .
+
+opda:documentTypeCode
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "document type code"@en ;
+    rdfs:comment "Type code of a title / additional document. Domain opda:Document (the ODR-0009 document-evidence artefact); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].documentTypeCode> ;
+    rdfs:domain opda:Document ;
+    rdfs:range xsd:string .
+
+opda:expectedDeliveryDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "expected delivery date"@en ;
+    rdfs:comment "Expected delivery date for an ordered Search. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].expectedDeliveryDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:filedUnder
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "filed under"@en ;
+    rdfs:comment "Filing reference under which a title / additional document is held. Domain opda:Document (ODR-0009 document-evidence); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.filedUnder> ;
+    rdfs:domain opda:Document ;
     rdfs:range xsd:string .
 
 opda:inclusionStatus
@@ -92,12 +258,147 @@ opda:inclusionStatus
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
     rdfs:range xsd:string .
 
+opda:listedDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "listed date"@en ;
+    rdfs:comment "Date a comparable property was listed for sale. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range xsd:date .
+
+opda:localAuthorityName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "local authority name"@en ;
+    rdfs:comment "Name of the local authority that issued / governs a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.localAuthorityName> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:localAuthorityReference
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "local authority reference"@en ;
+    rdfs:comment "Reference identifying a Search within the local authority's system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.localAuthorityReference> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:mediaUrl
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "media URL"@en ;
+    rdfs:comment "URL of a media item (property image / floorplan / etc.). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.media[].mediaUrl>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].media[].mediaUrl> ;
+    rdfs:range xsd:anyURI .
+
+opda:orderDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "order date"@en ;
+    rdfs:comment "Date a Search was ordered. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].orderDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:otherRating
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other rating"@en ;
+    rdfs:comment "Other (non-Ofsted) rating of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].otherRating> ;
+    rdfs:domain opda:School ;
+    rdfs:range xsd:string .
+
+opda:planningStartDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "planning start date"@en ;
+    rdfs:comment "Start date of a planning matter in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
 opda:price
     rdf:type owl:DatatypeProperty ;
     rdfs:label "price"@en ;
     rdfs:comment "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). ONE shared monetary-amount property reused across all fixtures items — ODR-0022 §4 mandates reusing a MonetaryAmount pattern, NEVER minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
     rdfs:range xsd:decimal .
+
+opda:pricingMethodology
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "pricing methodology"@en ;
+    rdfs:comment "Methodology used to derive a Valuation's price estimate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range xsd:string .
+
+opda:productCode
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "product code"@en ;
+    rdfs:comment "Provider product code identifying a Search product. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].productCode> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:providerName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "provider name"@en ;
+    rdfs:comment "Name of the Search provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].providerName> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:providerReference
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "provider reference"@en ;
+    rdfs:comment "Provider's reference for a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].providerReference> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:pupils
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "pupils"@en ;
+    rdfs:comment "Number of pupils at a nearby school. Domain opda:School. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].pupils> ;
+    rdfs:domain opda:School ;
+    rdfs:range xsd:integer .
+
+opda:refNumber
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "reference number"@en ;
+    rdfs:comment "Application/case reference number on a planning / building-control result. ONE shared property; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].refNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].refNumber> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:regulatedSearchTurnaroundTimeInWorkingDays
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "regulated search turnaround time in working days"@en ;
+    rdfs:comment "Quoted turnaround time (working days) for a regulated search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:integer .
+
+opda:religiousCharacter
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "religious character"@en ;
+    rdfs:comment "Religious character of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].religiousCharacter> ;
+    rdfs:domain opda:School ;
+    rdfs:range xsd:string .
+
+opda:reportDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "report date"@en ;
+    rdfs:comment "Date a Search / survey report was produced. xsd:date. ONE shared property reused across search and survey reports; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.searches[].reportDate>, <https://w3id.org/opda/data-dictionary#propertyPack.surveys[].misc.reportDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:retrievedOn
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "retrieved on"@en ;
+    rdfs:comment "Date a title / additional document was retrieved from the registry. xsd:date. Domain opda:Document (ODR-0009 document-evidence); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn> ;
+    rdfs:domain opda:Document ;
+    rdfs:range xsd:date .
 
 opda:riskIndicator
     rdf:type owl:DatatypeProperty ;
@@ -107,6 +408,84 @@ opda:riskIndicator
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:string .
 
+opda:soldDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sold date"@en ;
+    rdfs:comment "Date a comparable property was sold (valuation comparable listing info). xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range xsd:date .
+
+opda:specialties
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "specialties"@en ;
+    rdfs:comment "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:HealthCareFacility. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].specialties> ;
+    rdfs:domain opda:HealthCareFacility ;
+    rdfs:range xsd:string .
+
+opda:status
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "status"@en ;
+    rdfs:comment "Status of a search-derived result item — planning permission, designation plan, road-adoption status, or search-order status. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous across those contexts; placed on opda:Search; the data dictionary's three context-specific status enums are sh:in-restricted per-context in the overlay profile, not unified into one value-space.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].status>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.subjectToAdoption[].status>, <https://w3id.org/opda/data-dictionary#propertyPack.searches[].status> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:statusDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "status date"@en ;
+    rdfs:comment "Date a designation plan's status was set in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].statusDate> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:date .
+
+opda:subCategory
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sub-category"@en ;
+    rdfs:comment "Sub-category of an environmental-peril RiskAssessment (riskSubcategories[] across the climate / coal-mining / flooding / ground-stability / radon / etc. peril blocks). ONE shared property on opda:RiskAssessment. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory>, <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].subCategory> ;
+    rdfs:domain opda:RiskAssessment ;
+    rdfs:range xsd:string .
+
+opda:typeOfHealthCare
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "type of health care"@en ;
+    rdfs:comment "Type of a nearby health-care facility. Domain opda:HealthCareFacility. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare> ;
+    rdfs:domain opda:HealthCareFacility ;
+    rdfs:range xsd:string .
+
+opda:unitaryAuthority
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "unitary authority"@en ;
+    rdfs:comment "Name of the unitary authority for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localAuthority.unitaryAuthority> ;
+    rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:url
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "URL"@en ;
+    rdfs:comment "URL of an external artefact (contract template, planning-permission page). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#contracts[].contract.template.url>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url> ;
+    rdfs:range xsd:anyURI .
+
+opda:yield
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "yield"@en ;
+    rdfs:comment "Rental yield in a Valuation's pricing analysis. xsd:decimal. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyPricing.yield> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range xsd:decimal .
+
+opda:college
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "college"@en ;
+    rdfs:comment "Nearby college(s) — a band of the schoolType structure of opda:School (object-typed). Domain opda:School, range-less object property (the value is a structured school-band node)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.college> ;
+    rdfs:domain opda:School .
+
 opda:hasSubAssessment
     rdf:type owl:ObjectProperty ;
     rdfs:label "has sub-assessment"@en ;
@@ -115,6 +494,13 @@ opda:hasSubAssessment
     rdfs:domain opda:RiskAssessment ;
     rdfs:range opda:RiskAssessment .
 
+opda:nursery
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "nursery"@en ;
+    rdfs:comment "Nearby nursery(ies) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.nursery> ;
+    rdfs:domain opda:School .
+
 opda:peril
     rdf:type owl:ObjectProperty ;
     rdfs:label "peril"@en ;
@@ -122,3 +508,24 @@ opda:peril
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
     rdfs:domain opda:RiskAssessment ;
     rdfs:range skos:Concept .
+
+opda:primary
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "primary"@en ;
+    rdfs:comment "Nearby primary school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.primary> ;
+    rdfs:domain opda:School .
+
+opda:private
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "private"@en ;
+    rdfs:comment "Nearby private school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.private> ;
+    rdfs:domain opda:School .
+
+opda:secondary
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "secondary"@en ;
+    rdfs:comment "Nearby secondary school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.secondary> ;
+    rdfs:domain opda:School .

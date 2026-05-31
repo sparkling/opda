@@ -77,6 +77,30 @@ opda:UPRNSuccessionEvent
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance)."@en .
 
+opda:abilityToResideAtProperty
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "ability to reside at property"@en ;
+    rdfs:comment "Building-safety statement on whether occupiers can reside at the Property given any identified safety issues (typed as a string in the data dictionary). A physical-safety attribute of the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:accessibilityAndAdaptations
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "accessibility and adaptations"@en ;
+    rdfs:comment "Accessibility features and adaptations of the Property (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.accessibilityAndAdaptations> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:adHocExpenses
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "ad hoc expenses"@en ;
+    rdfs:comment "Statement of ad-hoc service-charge expenses on the leasehold LegalEstate (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:addressVariant
     rdf:type owl:DatatypeProperty ;
     rdfs:label "address variant"@en ;
@@ -93,11 +117,43 @@ opda:areBoundariesUniform
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
+opda:area
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "area"@en ;
+    rdfs:comment "Internal floor area of the Property — a measured UFO Quality (the unit of measure is carried alongside in the source structure). Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.internalArea.area>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:decimal .
+
+opda:bathrooms
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "bathrooms"@en ;
+    rdfs:comment "Number of bathrooms in the Property — a countable UFO Quality. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.bathrooms>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].basicDetails.bathrooms> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:bedrooms
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "bedrooms"@en ;
+    rdfs:comment "Number of bedrooms in the Property — a countable UFO Quality of the physical Property. Plain integer datatype (no enumerated value-space) per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.bedrooms>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].basicDetails.bedrooms> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:buildingsReinstatementCostAssessment
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "buildings reinstatement cost assessment"@en ;
+    rdfs:comment "Buildings reinstatement-cost-assessment statement for the leasehold LegalEstate's buildings insurance (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:builtForm
     rdf:type owl:DatatypeProperty ;
     rdfs:label "built form"@en ;
     rdfs:comment "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.builtForm> ;
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
@@ -105,7 +161,39 @@ opda:centralHeatingFuelType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "central heating fuel type"@en ;
     rdfs:comment "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:centralHeatingInstalled
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "central heating installed"@en ;
+    rdfs:comment "Central-heating installation indicator for the Property (typed as a string in the data dictionary — a Yes/No-style response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A physical-system attribute of the Property."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:consequentialChargingBasis
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "consequential charging basis"@en ;
+    rdfs:comment "Charging basis that would apply consequentially (e.g. on a change of circumstances) for the Property's water/sewerage. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.consequentialChargingBasis> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:councilTaxBand
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "council tax band"@en ;
+    rdfs:comment "Council-tax valuation band of the Property per opda:CouncilTaxBandSchemeEW (A–H / Not banded) or opda:CouncilTaxBandSchemeScotland. UFO Quale-in-Region; regulator-sourced enum (VOA / Scottish Assessors). Constrained by SHACL sh:in to the scheme members in the overlay profile, mirroring opda:currentEnergyRating. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.councilTax.councilTaxBand> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:currentChargingBasis
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "current charging basis"@en ;
+    rdfs:comment "Current basis on which the Property's water/sewerage is charged. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.currentChargingBasis> ;
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
@@ -113,9 +201,97 @@ opda:currentEnergyRating
     rdf:type owl:DatatypeProperty ;
     rdfs:label "current energy rating"@en ;
     rdfs:comment "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.energyEfficiency.certificate.currentEnergyRating> ;
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
+
+opda:dateInstalled
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date installed"@en ;
+    rdfs:comment "Date a Property system was installed (heat pump / off-mains drainage system). xsd:date (a date-valued string in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.heatPump.dateInstalled>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateInstalled> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:dateLastEmptied
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date last emptied"@en ;
+    rdfs:comment "Date the Property's off-mains drainage system was last emptied. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:dateLastServiced
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date last serviced"@en ;
+    rdfs:comment "Date the Property's off-mains drainage system was last serviced. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:dateReplaced
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date replaced"@en ;
+    rdfs:comment "Date the Property's off-mains drainage system was last replaced. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateReplaced> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:dateToBeConnected
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date to be connected"@en ;
+    rdfs:comment "Expected connection date for a not-yet-connected Property utility / service. ONE shared date property reused across the utility blocks. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.cableSatelliteTV.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.telephone.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.heatPump.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.otherSources.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.solarPanels.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.dateToBeConnected>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.water.mainsWater.dateToBeConnected> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:diningAreas
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "dining areas"@en ;
+    rdfs:comment "Number of dining areas in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.diningAreas> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:distanceToNearestSewerageTreatment
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "distance to nearest sewerage treatment"@en ;
+    rdfs:comment "Distance from the Property to the nearest sewerage-treatment works (typed as a string in the data dictionary — a free-form distance band). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:entranceFloor
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "entrance floor"@en ;
+    rdfs:comment "Floor (storey) on which the Property's entrance is located (0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.entranceFloor> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:from
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "from"@en ;
+    rdfs:comment "Start date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (ground-rent, service-charge, or buildings-insurance last-demand period; service-charge last-decorated period). xsd:date. ONE shared period-start property reused across those periods; flat per §Q6a. (FLAG: `from` is a generic period-boundary name; reused across the estate's recurring date-range blocks rather than minted per block.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.from>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.from> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:date .
+
+opda:groundRentFrequency
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "ground rent frequency"@en ;
+    rdfs:comment "Frequency at which ground rent is payable on the leasehold LegalEstate (typed as a string in the data dictionary — a free-form frequency label). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.groundRentFrequency> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:handoverOnCompletion
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "handover on completion"@en ;
+    rdfs:comment "Whether the Property's smart-home systems will be handed over on completion. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.smartHomeSystems.handoverOnCompletion> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:boolean .
 
 opda:hasBeenFlooded
     rdf:type owl:DatatypeProperty ;
@@ -123,6 +299,14 @@ opda:hasBeenFlooded
     rdfs:comment "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:hasFixedRentcharge
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has fixed rentcharge"@en ;
+    rdfs:comment "Whether the managed-freehold / commonhold LegalEstate carries a fixed rentcharge (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge> ;
+    rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
 opda:hasSmartHomeSystems
@@ -157,11 +341,27 @@ opda:hasValidGuaranteesOrWarranties
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
+opda:heading
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "heading"@en ;
+    rdfs:comment "Google Street View point-of-view compass heading (degrees) for the Property's map locator. xsd:decimal — a numeric camera parameter, NOT a free-text tail (FLAG: deviates from the generic free-text-collapse expectation; the data dictionary types it as a number). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.location.googleStreetViewPOV.heading> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:decimal .
+
+opda:heatingLastServicedDate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "heating last serviced date"@en ;
+    rdfs:comment "Date the Property's central-heating system was last serviced. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
 opda:heatingType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "heating type"@en ;
     rdfs:comment "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.heatingType> ;
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
@@ -205,6 +405,78 @@ opda:isSupplyMetered
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
+opda:kitchens
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "kitchens"@en ;
+    rdfs:comment "Number of kitchens in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.kitchens> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:lastMaintained
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "last maintained"@en ;
+    rdfs:comment "Date the Property's solar-panel system was last maintained. xsd:date. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.solarPanels.lastMaintained> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:date .
+
+opda:lengthOfLeaseInYears
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "length of lease in years"@en ;
+    rdfs:comment "Length of the leasehold term in years (the granted term). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements opda:LeaseTerm (the OWL-Time interval) with the headline term-length figure."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.lengthOfLeaseInYears> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:integer .
+
+opda:location
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "location"@en ;
+    rdfs:comment "Physical-location description of a Property fixture or measurement point — electricity / gas / water meter, stopcock, or survey/charge locus (typed as a free-form string in the data dictionary). ONE shared location-description property reused across those points. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: `propertyPack.location` is itself a structured geo block, not this leaf-level string; the structured locator is opda:Address territory — ODR-0015 — and is out of this leaf's scope.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.electricityMeter.location>, <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.water.mainsWater.stopcock.location>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.water.mainsWater.waterMeter.location> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:logbookProvider
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "logbook provider"@en ;
+    rdfs:comment "Name of the digital-property-logbook provider for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:mpan
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "MPAN"@en ;
+    rdfs:comment "Meter Point Administration Number — the electricity supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier whose leading zeros are significant — the same convention opda:hasUPRN follows, NOT xsd:integer despite the data-dictionary typing). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.electricityMeter.mpan> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:mprn
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "MPRN"@en ;
+    rdfs:comment "Meter Point Reference Number — the gas supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier, per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:numberOfFloors
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "number of floors"@en ;
+    rdfs:comment "Number of floors (storeys) the Property comprises. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.numberOfFloors> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:numberOfPropertiesSharing
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "number of properties sharing"@en ;
+    rdfs:comment "Number of other properties sharing the Property's off-mains drainage system. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
 opda:offMainsDrainageSystemType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "off-mains drainage system type"@en ;
@@ -213,20 +485,148 @@ opda:offMainsDrainageSystemType
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
+opda:otherCentralHeatingFuelType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other central heating fuel type"@en ;
+    rdfs:comment "Free-text fuel classifier captured when the central-heating fuel is 'Other' (the open-ended companion to opda:centralHeatingFuelType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:otherHeatingFeatures
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other heating features"@en ;
+    rdfs:comment "Additional heating features of the Property (a multi-valued list in the data dictionary — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.heating.otherHeatingFeatures> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:otherOwnershipDetails
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other ownership details"@en ;
+    rdfs:comment "Free-text ownership details captured when the ownership type is 'Other' for the LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:otherPropertiesInManagedArea
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other properties in managed area"@en ;
+    rdfs:comment "Count of other properties in the managed area sharing the leasehold LegalEstate's service arrangements. xsd:decimal (typed as a number in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general.otherPropertiesInManagedArea> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:decimal .
+
+opda:otherType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "other type"@en ;
+    rdfs:comment "Free-text classifier captured when the Property's built-form / property-type is 'Other' (the open-ended companion to opda:propertyType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.otherType> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:outsideAreas
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "outside areas"@en ;
+    rdfs:comment "Outside areas of the Property — garden / yard / balcony / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.outsideAreas> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
 opda:ownershipType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "ownership type"@en ;
     rdfs:comment "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].ownershipType> ;
     rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
+
+opda:parkingArrangements
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "parking arrangements"@en ;
+    rdfs:comment "Parking arrangements for the Property — allocated / on-street / garage / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.parking.parkingArrangements> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:personWhoDealsWithTheDeedOfCovenant
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "person who deals with the deed of covenant"@en ;
+    rdfs:comment "Name/role of the person who deals with the deed of covenant for the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:pitch
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "pitch"@en ;
+    rdfs:comment "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.location.googleStreetViewPOV.pitch> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:decimal .
+
+opda:procedureForObtainingCertificate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "procedure for obtaining certificate"@en ;
+    rdfs:comment "Procedure for obtaining a transfer/registration certificate on the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.procedureForObtainingCertificate> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:propertiesContributingToMaintenanceOfManagedArea
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "properties contributing to maintenance of managed area"@en ;
+    rdfs:comment "Count of properties contributing to maintenance of the managed area for the leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:decimal .
 
 opda:propertyType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "property type"@en ;
     rdfs:comment "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].propertyType> ;
     rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:publicSewerMapAttached
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "public sewer map attached"@en ;
+    rdfs:comment "Whether the public-sewer map is attached for the Property (a Yes/No-style string response in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.maps.publicSewerMapAttached> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:receptions
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "receptions"@en ;
+    rdfs:comment "Number of reception rooms in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.residentialPropertyFeatures.receptions> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:integer .
+
+opda:rentIncreaseCalculated
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "rent increase calculated"@en ;
+    rdfs:comment "How a ground-rent increase is calculated on the leasehold LegalEstate (e.g. RPI-linked, doubling). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:rentReviewFrequency
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "rent review frequency"@en ;
+    rdfs:comment "Frequency at which ground rent is reviewed on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:requirements
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "requirements"@en ;
+    rdfs:comment "Requirements stated for a licence-to-assign on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements> ;
+    rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
 opda:sellerContributesToServiceCharge
@@ -237,11 +637,59 @@ opda:sellerContributesToServiceCharge
     rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
+opda:sewerageBills
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sewerage bills"@en ;
+    rdfs:comment "Free-text sewerage-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.sewerageBills> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:sewerageProvider
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sewerage provider"@en ;
+    rdfs:comment "Name of the Property's sewerage provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.sewerageProvider> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:sharedOwnershipPercentage
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "shared ownership percentage"@en ;
+    rdfs:comment "Percentage of the Property owned under a shared-ownership leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipPercentage> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:decimal .
+
 opda:soldWithVacantPossession
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sold with vacant possession"@en ;
     rdfs:comment "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:startYearOfLease
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "start year of lease"@en ;
+    rdfs:comment "Calendar year the leasehold term commenced. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.startYearOfLease> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:gYear .
+
+opda:supplier
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "supplier"@en ;
+    rdfs:comment "Name of the supplier for a Property utility / service (electricity, gas-fuel, heat-pump, solar, water, drainage, telephone, cable/satellite TV). ONE shared supplier-name property reused across the utility blocks (the data dictionary repeats the same `supplier` leaf under each). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.cableSatelliteTV.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.telephone.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.heatPump.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.mainsElectricity.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.otherSources.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.electricity.solarPanels.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.supplier>, <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.water.mainsWater.supplier> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:supplyClassification
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "supply classification"@en ;
+    rdfs:comment "Classification of the Property's water supply (e.g. metered / unmetered / rateable). A UFO Quale-in-Region of the physical Property. Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.water.supplyClassification> ;
     rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
@@ -252,6 +700,134 @@ opda:tenureKind
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
+
+opda:titleExtents
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "title extents"@en ;
+    rdfs:comment "Statement of the extents covered by a title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].titleExtents> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:titleNumber
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "title number"@en ;
+    rdfs:comment "HMLR title number of the LegalEstate / title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A title identifier on the estate side (distinct from opda:RegisteredTitle the record-entity — this is the estate's cited title number)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].titleNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].titleNumber> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:titlePropertyDescription
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "title property description"@en ;
+    rdfs:comment "The property description as recorded on the title for the LegalEstate to be transferred. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:to
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "to"@en ;
+    rdfs:comment "End date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (mirror of opda:from). xsd:date. ONE shared period-end property reused across those periods; flat per §Q6a. (FLAG: `to` is a generic period-boundary name; reused across the estate's recurring date-range blocks.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.to>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.to> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:date .
+
+opda:typeOfFlooding
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "type of flooding"@en ;
+    rdfs:comment "Type(s) of historical flooding the Property has experienced (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT is opda:RiskAssessment territory; this is the factual historical-flooding-type attribute.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:waterBills
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "water bills"@en ;
+    rdfs:comment "Free-text water-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.waterBills> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:waterProvider
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "water provider"@en ;
+    rdfs:comment "Name of the Property's water-supply provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.charging.waterProvider> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:waterworksMapAttached
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "waterworks map attached"@en ;
+    rdfs:comment "Whether the waterworks map is attached for the Property (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.maps.waterworksMapAttached> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:willHandoverLogbook
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "will handover logbook"@en ;
+    rdfs:comment "Whether the seller will hand over the digital property logbook on completion. xsd:boolean. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:boolean .
+
+opda:year
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year"@en ;
+    rdfs:comment "Calendar year of a service-charge last-decorated period (externally / internally) on the leasehold LegalEstate. xsd:gYear. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.year> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:gYear .
+
+opda:yearCompleted
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year completed"@en ;
+    rdfs:comment "Calendar year a Property alteration / change was completed (change of use, conservatory addition, window replacement since 2002). xsd:gYear. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.alterationsAndChanges.changeOfUse.yearCompleted>, <https://w3id.org/opda/data-dictionary#propertyPack.alterationsAndChanges.hasAddedConservatory.yearCompleted>, <https://w3id.org/opda/data-dictionary#propertyPack.alterationsAndChanges.windowReplacementsSince2002.yearCompleted> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:gYear .
+
+opda:yearInstalled
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year installed"@en ;
+    rdfs:comment "Calendar year the Property's solar-panel system was installed. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.solarPanels.yearInstalled> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:gYear .
+
+opda:yearOfBuild
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year of build"@en ;
+    rdfs:comment "Calendar year the Property was built. xsd:gYear — the data dictionary types it as a year value; plain datatype per ODR-0008 §Q5a, flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.yearOfBuild>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].basicDetails.buildInformation.yearOfBuild> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:gYear .
+
+opda:yearTested
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year tested"@en ;
+    rdfs:comment "Calendar year the Property's electrical installation was last tested by a qualified electrician. xsd:gYear. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricalWorks.testedByQualifiedElectrician.yearTested> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:gYear .
+
+opda:yearWorkCarriedOut
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "year work carried out"@en ;
+    rdfs:comment "Calendar year electrical work was carried out on the Property (since 2005). xsd:gYear. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricalWorks.electricalWorkSince2005.yearWorkCarriedOut> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:gYear .
+
+opda:zoom
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "zoom"@en ;
+    rdfs:comment "Google Street View point-of-view zoom level for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.location.googleStreetViewPOV.zoom> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:decimal .
 
 opda:hasAddress
     rdf:type owl:ObjectProperty ;

@@ -43,6 +43,14 @@ _ODR_0006_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q4")
 _ODR_0006_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q6")
 
 
+# Data-dictionary schema-leaf-path dct:source (ODR-0022 G2); same form as the
+# property-module helper (module-local to avoid a cross-emitter import).
+def _dd_source(leaf_path: str) -> URIRef:
+    """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
+    safe = leaf_path.replace(" ", "%20").replace("'", "%27")
+    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+
+
 CLASSES = (
     OPDA.Buyer,
     OPDA.NameChangeEvent,
@@ -58,10 +66,24 @@ OBJECT_PROPERTIES = (
 )
 
 DATATYPE_PROPERTIES = (
+    OPDA.accountName,
+    OPDA.accountNumber,
+    OPDA.aged17OrOverNames,
+    OPDA.dateOfBirth,
     OPDA.hasAssertedCapacity,
     OPDA.hasOthersAged17OrOver,
+    OPDA.middleNames,
+    OPDA.name,
+    OPDA.numberOfNonUkResidentSellers,
+    OPDA.numberOfSellers,
+    OPDA.organisation,
+    OPDA.organisationName,
+    OPDA.organisationReference,
     OPDA.ownerType,
+    OPDA.reference,
     OPDA.role,
+    OPDA.sellersCapacityDetails,
+    OPDA.sortCode,
 )
 
 
@@ -343,5 +365,262 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.role, DCTERMS.source, _ODR_0006_Q2))
+
+    # ==== Category-G curated walk — Family C: Agent attributes ===============
+    # (ADR-0031 work-item 2). Person / Organisation / Seller / Proprietorship
+    # attributes. Each a flat datatype property per ODR-0008 §Q5a, flat per
+    # §Q6a, on the nearest existing Agent-module Kind/Role/Relator. Range from
+    # the data-dictionary `type`; `dateOfBirth` (a date string) → xsd:date;
+    # `accountNumber` → xsd:string (a bank-account identifier — leading-zero
+    # significant, per the opda:hasUPRN identifier convention, NOT xsd:integer).
+    # `domain=None` emits NO rdfs:domain (a shared property reused across node
+    # types, the convention opda:price / opda:inclusionStatus follow).
+    #
+    # FLAGGED ambiguous domains (most-defensible call made, surfaced for review):
+    #   - bank-details (accountName / accountNumber / sortCode / reference):
+    #     placed on opda:Organisation (the managing-agent / landlord / RTA /
+    #     rentcharge-owner / management-company *contact* whose account it is).
+    #     No opda:BankAccount Substance Kind is minted — these are flat
+    #     attributes of the contact organisation; a dedicated account object
+    #     would be speculative for a 4-leaf cluster.
+    #   - numberOfSellers / numberOfNonUkResidentSellers: placed on
+    #     opda:Proprietorship (the Relator mediating the owner-set whose
+    #     cardinality they report); they sit under propertyPack.ownership.
+    #   - name: domain-less — 46 polysemous occurrences (participant / school /
+    #     road / contract-template / health-care / plan name); a single shared
+    #     naming property, no rigid bearer Kind.
+    _walk_c_agent: list[
+        tuple[URIRef, URIRef | None, URIRef, str, str, tuple[str, ...]]
+    ] = [
+        (
+            OPDA.dateOfBirth, OPDA.Person, XSD.date, "date of birth",
+            "Date of birth of a Person participant. xsd:date. Flat per §Q6a. "
+            "Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under "
+            "ODR-0018 (DPV co-annotation in opda-annotations.ttl).",
+            ("participants[].dateOfBirth",),
+        ),
+        (
+            OPDA.middleNames, OPDA.Person, XSD.string, "middle names",
+            "Middle name(s) of a Person legal owner. Plain string datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.legalOwners.namesOfLegalOwners[].middleNames",),
+        ),
+        (
+            OPDA.organisationName, OPDA.Organisation, XSD.string,
+            "organisation name",
+            "Registered/trading name of an Organisation legal owner. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.legalOwners.namesOfLegalOwners[].organisationName",),
+        ),
+        (
+            OPDA.organisation, OPDA.Organisation, XSD.string, "organisation",
+            "Name of the Organisation a participant is acting for / belongs "
+            "to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("participants[].organisation",),
+        ),
+        (
+            OPDA.organisationReference, OPDA.Organisation, XSD.string,
+            "organisation reference",
+            "Reference identifying an Organisation participant within an "
+            "external system. Plain string datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
+            ("participants[].organisationReference",),
+        ),
+        (
+            OPDA.aged17OrOverNames, OPDA.Seller, XSD.string,
+            "aged 17 or over names",
+            "Names of occupiers aged 17 or over (other than the Seller) in "
+            "the Property. Plain string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No "
+            "discriminator).",
+            ("propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames",),
+        ),
+        (
+            OPDA.sellersCapacityDetails, OPDA.Seller, XSD.string,
+            "sellers capacity details",
+            "Free-text detail elaborating a Seller's asserted capacity "
+            "(companion to opda:hasAssertedCapacity, ODR-0006 §Q4). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("participants[].sellersCapacity.sellersCapacityDetails",),
+        ),
+        (
+            OPDA.numberOfSellers, OPDA.Proprietorship, XSD.integer,
+            "number of sellers",
+            "Count of the selling parties in the ownership (the cardinality "
+            "of the owner-set the Proprietorship Relator mediates). Plain "
+            "integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
+            "ownership-aggregate count; placed on opda:Proprietorship.)",
+            ("propertyPack.ownership.numberOfSellers",),
+        ),
+        (
+            OPDA.numberOfNonUkResidentSellers, OPDA.Proprietorship, XSD.integer,
+            "number of non-UK-resident sellers",
+            "Count of selling parties who are non-UK-resident (relevant to "
+            "SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; "
+            "flat per §Q6a. (FLAG: ownership-aggregate count; placed on "
+            "opda:Proprietorship.)",
+            ("propertyPack.ownership.numberOfNonUkResidentSellers",),
+        ),
+        (
+            OPDA.accountName, OPDA.Organisation, XSD.string, "account name",
+            "Name on the bank account of a leasehold / managed-freehold "
+            "contact organisation (landlord / managing agent / management "
+            "company / rentcharge owner / resident-tenants' association). "
+            "ONE shared property reused across those contact blocks. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
+            "bank-details domain — placed on opda:Organisation, no "
+            "opda:BankAccount Kind minted.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.landlord."
+                "bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managementCompany."
+                "bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managingAgent."
+                "bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.rentchargeOwner."
+                "bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts."
+                "residentTenantsAssociation.bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managementCompany.bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managingAgent.bankDetails.accountName",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "rentchargeOwner.bankDetails.accountName",
+            ),
+        ),
+        (
+            OPDA.accountNumber, OPDA.Organisation, XSD.string, "account number",
+            "Bank-account number of a contact organisation. xsd:string (a "
+            "fixed-width numeric identifier — leading zeros significant, per "
+            "the opda:hasUPRN convention, NOT xsd:integer). ONE shared "
+            "property; flat per §Q6a. (FLAG: bank-details domain.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.landlord."
+                "bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managementCompany."
+                "bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managingAgent."
+                "bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.rentchargeOwner."
+                "bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts."
+                "residentTenantsAssociation.bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managementCompany.bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managingAgent.bankDetails.accountNumber",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "rentchargeOwner.bankDetails.accountNumber",
+            ),
+        ),
+        (
+            OPDA.sortCode, OPDA.Organisation, XSD.string, "sort code",
+            "Bank sort code of a contact organisation. xsd:string. ONE shared "
+            "property; flat per §Q6a. (FLAG: bank-details domain.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.landlord."
+                "bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managementCompany."
+                "bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managingAgent."
+                "bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.rentchargeOwner."
+                "bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts."
+                "residentTenantsAssociation.bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managementCompany.bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managingAgent.bankDetails.sortCode",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "rentchargeOwner.bankDetails.sortCode",
+            ),
+        ),
+        (
+            OPDA.reference, OPDA.Organisation, XSD.string, "reference",
+            "Payment reference for a contact organisation's bank account. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
+            "bank-details domain.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.landlord."
+                "bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managementCompany."
+                "bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.managingAgent."
+                "bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts.rentchargeOwner."
+                "bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.contactDetails.contacts."
+                "residentTenantsAssociation.bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managementCompany.bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "managingAgent.bankDetails.reference",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "rentchargeOwner.bankDetails.reference",
+            ),
+        ),
+        (
+            OPDA.name, None, XSD.string, "name",
+            "Generic name/label of a named entity — a participant, school, "
+            "road, contract template, health-care facility, transport node, "
+            "or planning designation. ONE shared naming property with NO "
+            "rdfs:domain: it recurs across 46 polysemous occurrences with no "
+            "single rigid bearer Kind (the domain-less shared-property "
+            "convention opda:price / opda:inclusionStatus follow). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
+            "polysemous; left domain-less by design rather than forcing one "
+            "bearer.)",
+            (
+                "contracts[].contract.template.name",
+                "participants[].name",
+                "propertyPack.nearbyFacilities.healthCare[].name",
+                "propertyPack.nearbyFacilities.schools[].name",
+                "propertyPack.nearbyFacilities.transport[].name",
+            ),
+        ),
+    ]
+    for prop, domain, rng, label, comment, paths in _walk_c_agent:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        if domain is not None:
+            g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
 
     return g

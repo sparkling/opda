@@ -35,6 +35,15 @@ _ODR_0007_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q1")
 _ODR_0007_Q2 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q2")
 _ODR_0007_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q4")
 _ODR_0007_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q6")
+_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
+
+
+# Data-dictionary schema-leaf-path dct:source (ODR-0022 G2); same form as the
+# property-module helper (module-local to avoid a cross-emitter import).
+def _dd_source(leaf_path: str) -> URIRef:
+    """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
+    safe = leaf_path.replace(" ", "%20").replace("'", "%27")
+    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
 
 
 CLASSES = (
@@ -48,8 +57,22 @@ OBJECT_PROPERTIES = (
 )
 
 DATATYPE_PROPERTIES = (
+    OPDA.authorisationToShare,
+    OPDA.authorisedToActOnBehalfOfAllSellers,
+    OPDA.confirmInformationIsAccurate,
+    OPDA.confirmWillProvideAdditionalDocumentation,
+    OPDA.confirmation,
+    OPDA.consumerProtectionRegulationsResponse,
+    OPDA.leaveKeys,
     OPDA.occurredAtTime,
     OPDA.plannedAtTime,
+    OPDA.removeRubbish,
+    OPDA.replaceLightFittings,
+    OPDA.response,
+    OPDA.sellingAgent,
+    OPDA.signedOn,
+    OPDA.takeReasonableCare,
+    OPDA.transactionId,
 )
 
 
@@ -192,5 +215,158 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasChainPosition, DCTERMS.source, _ODR_0007_Q4))
+
+    # ==== Category-G curated walk — Family E: sale / completion / moving / ==
+    # chain / sale-ready-declaration attributes (ADR-0031 work-item 2). Each
+    # attaches to opda:Transaction — the Relator whose sale these completion
+    # undertakings, declarations, and chain links concern (ODR-0007). Each a
+    # flat datatype property per ODR-0008 §Q5a, flat per §Q6a; range from the
+    # data-dictionary `type` (booleans → xsd:boolean, `signedOn` date string →
+    # xsd:date). `response` (no data-dictionary type) is a confirmation
+    # response → xsd:boolean by structure. (Valuation pricing leaves — soldDate
+    # / listedDate / yield / pricingMethodology / credibilitySources — live in
+    # opda-descriptive.ttl on opda:Valuation, where that Kind is declared.)
+    _walk_e_txn: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+        (
+            OPDA.leaveKeys, XSD.boolean, "leave keys",
+            "Completion undertaking: will the seller leave the keys? "
+            "xsd:boolean. Flat per §Q6a. A sale-Transaction completion "
+            "attribute (ODR-0007).",
+            ("propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys",),
+        ),
+        (
+            OPDA.removeRubbish, XSD.boolean, "remove rubbish",
+            "Completion undertaking: will the seller remove rubbish? "
+            "xsd:boolean. Flat per §Q6a.",
+            ("propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",),
+        ),
+        (
+            OPDA.replaceLightFittings, XSD.boolean, "replace light fittings",
+            "Completion undertaking: will the seller replace removed light "
+            "fittings? xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.completionAndMoving.sellerWillEnsure."
+                "replaceLightFittings",
+            ),
+        ),
+        (
+            OPDA.takeReasonableCare, XSD.boolean, "take reasonable care",
+            "Completion undertaking: will the seller take reasonable care of "
+            "the Property until completion? xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.completionAndMoving.sellerWillEnsure."
+                "takeReasonableCare",
+            ),
+        ),
+        (
+            OPDA.authorisationToShare, XSD.boolean, "authorisation to share",
+            "Sale-ready declaration: authorisation to share the property "
+            "pack. xsd:boolean. Flat per §Q6a.",
+            ("propertyPack.saleReadyDeclarations.authorisationToShare",),
+        ),
+        (
+            OPDA.authorisedToActOnBehalfOfAllSellers, XSD.boolean,
+            "authorised to act on behalf of all sellers",
+            "Sale-ready declaration: is the declarant authorised to act on "
+            "behalf of all sellers? xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.saleReadyDeclarations."
+                "authorisedToActOnBehalfOfAllSellers",
+            ),
+        ),
+        (
+            OPDA.confirmInformationIsAccurate, XSD.boolean,
+            "confirm information is accurate",
+            "Declaration confirming the supplied information is accurate "
+            "(owners' confirmation-of-accuracy + fixtures confirmation). "
+            "xsd:boolean. ONE shared property; flat per §Q6a.",
+            (
+                "propertyPack.confirmationOfAccuracyByOwners."
+                "confirmInformationIsAccurate",
+                "propertyPack.fixturesAndFittings.confirmationOfAccuracy."
+                "confirmInformationIsAccurate",
+            ),
+        ),
+        (
+            OPDA.confirmWillProvideAdditionalDocumentation, XSD.boolean,
+            "confirm will provide additional documentation",
+            "Declaration confirming the owner will provide additional "
+            "documentation. xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.confirmationOfAccuracyByOwners."
+                "confirmWillProvideAdditionalDocumentation",
+            ),
+        ),
+        (
+            OPDA.confirmation, XSD.boolean, "confirmation",
+            "Confirmation flag on a leasehold / managed-freehold "
+            "confirmation-of-accuracy declaration. xsd:boolean. Flat per "
+            "§Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.confirmationOfAccuracy.confirmation",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.confirmation",
+            ),
+        ),
+        (
+            OPDA.response, XSD.boolean, "response",
+            "Response flag on a managed-freehold / commonhold confirmation. "
+            "xsd:boolean (a confirmation response; the data dictionary leaves "
+            "the type unset — it is a yes/no confirmation by structure). Flat "
+            "per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.confirmation.response",
+            ),
+        ),
+        (
+            OPDA.consumerProtectionRegulationsResponse, XSD.boolean,
+            "consumer protection regulations response",
+            "Declaration response to the Consumer Protection Regulations "
+            "question. xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.consumerProtectionRegulationsDeclaration."
+                "consumerProtectionRegulationsResponse",
+            ),
+        ),
+        (
+            OPDA.signedOn, XSD.date, "signed on",
+            "Date a contract / sale-ready declaration was signed. xsd:date. "
+            "ONE shared property reused across contract and seller "
+            "signatures; flat per §Q6a.",
+            (
+                "contracts[].signatures[].signedOn",
+                "propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn",
+            ),
+        ),
+        (
+            OPDA.sellingAgent, XSD.string, "selling agent",
+            "Name of the selling agent on an onward-purchase link in the "
+            "transaction chain. Plain string datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
+            ("chain.onwardPurchase[].sellingAgent",),
+        ),
+        (
+            OPDA.transactionId, XSD.string, "transaction ID",
+            "External transaction identifier (the PDTF transaction id; also "
+            "carried on onward-purchase chain links). Plain string datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a. Complements the opda:Transaction "
+            "IC's transaction-id-lineage (ODR-0007 §Q1) — the notation surface "
+            "for the identifier.",
+            (
+                "chain.onwardPurchase[].transactionId",
+                "transactionId",
+            ),
+        ),
+    ]
+    for prop, rng, label, comment, paths in _walk_e_txn:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, OPDA.Transaction))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
 
     return g

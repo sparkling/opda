@@ -62,6 +62,14 @@ OPDA = Namespace("https://w3id.org/opda/#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
+# Data-dictionary schema-leaf-path dct:source (ODR-0022 G2); same form as the
+# property-module helper (module-local to avoid a cross-emitter import).
+def _dd_source(leaf_path: str) -> URIRef:
+    """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
+    safe = leaf_path.replace(" ", "%20").replace("'", "%27")
+    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+
+
 _ODR_0008_Q4A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q4a")
 _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 
@@ -92,10 +100,15 @@ _ODR_0022_S1 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-1")
 CLASSES = (
     OPDA.Comparable,
     OPDA.EPCCertificate,
+    # ADR-0031 walk — the nearby-facilities bearer hierarchy (object-typed
+    # leaf promotions per ODR-0008 §Q4a).
+    OPDA.HealthCareFacility,
+    OPDA.NearbyFacility,
     # ODR-0008d Rule 1 — the sixth class: the per-peril authority-retrieved
     # search/environmental result (an Information Object on the PROV-O
     # backbone).
     OPDA.RiskAssessment,
+    OPDA.School,
     OPDA.Search,
     OPDA.Survey,
     OPDA.Valuation,
@@ -107,8 +120,15 @@ CLASSES = (
 # to its opda:PerilScheme concept. Both are object properties (their ranges
 # are the RiskAssessment class / a SKOS Concept).
 OBJECT_PROPERTIES = (
+    # ADR-0031 Family-E nearby-school schoolType buckets (object-typed
+    # sub-structures; domain opda:School, range-less — see _school_type_buckets).
+    OPDA.college,
     OPDA.hasSubAssessment,
+    OPDA.nursery,
     OPDA.peril,
+    OPDA.primary,
+    OPDA.private,
+    OPDA.secondary,
 )
 
 # Category A reusable disclosure-detail annotation property (ODR-0022 §1) +
@@ -123,11 +143,55 @@ OBJECT_PROPERTIES = (
 # Rule 1(c)'s "opda:datasetAttribution ≡ prov:wasAttributedTo" means the
 # RiskAssessment shape binds prov:wasAttributedTo directly (see shapes.py).
 DATATYPE_PROPERTIES = (
+    OPDA["yield"],
     OPDA.actionAlertRating,
+    OPDA.ageRange,
+    OPDA.applicationDate,
+    OPDA.applicationType,
+    OPDA.buildingControlStartDate,
+    OPDA.councilSearchTurnaroundTimeInWorkingDays,
+    OPDA.countyCouncil,
+    OPDA.credibilitySources,
+    OPDA.dateRemedialActionRequired,
+    OPDA.decision,
+    OPDA.decisionDate,
+    OPDA.designationType,
     OPDA.disclosureDetail,
+    OPDA.displayName,
+    OPDA.distanceInMiles,
+    OPDA.districtCouncil,
+    OPDA.documentDate,
+    OPDA.documentTypeCode,
+    OPDA.expectedDeliveryDate,
+    OPDA.filedUnder,
     OPDA.inclusionStatus,
+    OPDA.listedDate,
+    OPDA.localAuthorityName,
+    OPDA.localAuthorityReference,
+    OPDA.mediaUrl,
+    OPDA.orderDate,
+    OPDA.otherRating,
+    OPDA.planningStartDate,
     OPDA.price,
+    OPDA.pricingMethodology,
+    OPDA.productCode,
+    OPDA.providerName,
+    OPDA.providerReference,
+    OPDA.pupils,
+    OPDA.refNumber,
+    OPDA.regulatedSearchTurnaroundTimeInWorkingDays,
+    OPDA.religiousCharacter,
+    OPDA.reportDate,
+    OPDA.retrievedOn,
     OPDA.riskIndicator,
+    OPDA.soldDate,
+    OPDA.specialties,
+    OPDA.status,
+    OPDA.statusDate,
+    OPDA.subCategory,
+    OPDA.typeOfHealthCare,
+    OPDA.unitaryAuthority,
+    OPDA.url,
 )
 
 
@@ -266,6 +330,74 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Comparable, DCTERMS.source, _ODR_0008_Q4A))
+
+    # --- opda:NearbyFacility — Category-G class promotion (ODR-0008 §Q4a) -
+    # Class-promoted from the object-typed nearbyFacilities.{schools,
+    # healthCare,transport}[] leaves (ADR-0031 walk): a real-world
+    # point-of-interest near the Property, referenced for amenity context — a
+    # distinct entity, NOT a Quality of the Property (the same school
+    # neighbours many properties). Bears the proximity relation
+    # opda:distanceInMiles; opda:School and opda:HealthCareFacility are bands.
+    g.add((OPDA.NearbyFacility, RDF.type, OWL.Class))
+    g.add((OPDA.NearbyFacility, RDFS.label,
+           Literal("Nearby Facility", lang="en")))
+    g.add((OPDA.NearbyFacility, RDFS.comment, Literal(
+        "A point-of-interest near the Property — a school, health-care "
+        "facility, or transport node listed in propertyPack.nearbyFacilities "
+        "for amenity context. UFO Substance Kind: a real-world social-physical "
+        "facility with its own identity, distinct from the Property being "
+        "transacted (NOT a Quality of opda:Property — the same facility "
+        "neighbours many properties). Class-promoted from the object-typed "
+        "nearbyFacilities.{schools,healthCare,transport}[] leaves per ODR-0008 "
+        "§Q4a; bears opda:distanceInMiles (proximity to the Property).",
+        lang="en",
+    )))
+    g.add((OPDA.NearbyFacility, SKOS.scopeNote, Literal(
+        "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a social-physical "
+        "facility). Promoted from an object-typed leaf per ODR-0008 §Q4a "
+        "(the 'which object-typed leaves become intermediate classes' test).",
+        lang="en",
+    )))
+    g.add((OPDA.NearbyFacility, DCTERMS.source, _ODR_0008_Q4A))
+
+    # --- opda:School — band of opda:NearbyFacility (ODR-0008 §Q4a) -------
+    g.add((OPDA.School, RDF.type, OWL.Class))
+    g.add((OPDA.School, RDFS.subClassOf, OPDA.NearbyFacility))
+    g.add((OPDA.School, RDFS.label, Literal("School", lang="en")))
+    g.add((OPDA.School, RDFS.comment, Literal(
+        "A nearby school — the schools[] band of opda:NearbyFacility. Bears "
+        "the school-specific descriptive attributes (opda:pupils, "
+        "opda:ageRange, opda:religiousCharacter, opda:otherRating) and the "
+        "schoolType bands (opda:college / opda:nursery / opda:primary / "
+        "opda:secondary / opda:private). UFO Substance Kind, a subkind of "
+        "opda:NearbyFacility; class-promoted per ODR-0008 §Q4a.",
+        lang="en",
+    )))
+    g.add((OPDA.School, SKOS.scopeNote, Literal(
+        "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 "
+        "Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.schools[].",
+        lang="en",
+    )))
+    g.add((OPDA.School, DCTERMS.source, _ODR_0008_Q4A))
+
+    # --- opda:HealthCareFacility — band of opda:NearbyFacility (§Q4a) ----
+    g.add((OPDA.HealthCareFacility, RDF.type, OWL.Class))
+    g.add((OPDA.HealthCareFacility, RDFS.subClassOf, OPDA.NearbyFacility))
+    g.add((OPDA.HealthCareFacility, RDFS.label,
+           Literal("Health Care Facility", lang="en")))
+    g.add((OPDA.HealthCareFacility, RDFS.comment, Literal(
+        "A nearby health-care facility — the healthCare[] band of "
+        "opda:NearbyFacility. Bears opda:typeOfHealthCare and "
+        "opda:specialties. UFO Substance Kind, a subkind of "
+        "opda:NearbyFacility; class-promoted per ODR-0008 §Q4a.",
+        lang="en",
+    )))
+    g.add((OPDA.HealthCareFacility, SKOS.scopeNote, Literal(
+        "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 "
+        "Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.healthCare[].",
+        lang="en",
+    )))
+    g.add((OPDA.HealthCareFacility, DCTERMS.source, _ODR_0008_Q4A))
 
     # --- opda:RiskAssessment — Category E sixth class (ODR-0008d Rule 1) -
     # The per-peril authority-retrieved search/environmental result. UFO
@@ -470,6 +602,531 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.disclosureDetail, DCTERMS.source, _ODR_0022_S1))
+
+    # ==== Category-G curated walk — Family D: search / planning / building- =
+    # control / local-authority / risk-assessment / artefact-reference results
+    # (ADR-0031 work-item 2). Most attach to opda:Search (the Q4a search-result
+    # Information Object) or opda:RiskAssessment (the per-peril result, for the
+    # riskSubcategories / remedial-action leaves). Document- and media-reference
+    # leaves are domain-less artefact references (no opda:Document Kind is
+    # minted — flat references, a dedicated Kind would be speculative). Each a
+    # flat datatype property per ODR-0008 §Q5a, flat per §Q6a; range from the
+    # data-dictionary `type` (date-named strings → xsd:date). `domain=None`
+    # emits NO rdfs:domain (shared reference property, opda:price convention).
+    #
+    # FLAGGED domain calls (surfaced for review):
+    #   - status: polysemous across planning-permission / plan / road-adoption /
+    #     search status (8 occurrences, all in search/local-authority result
+    #     contexts) — placed on opda:Search; overlay shapes sh:in-restrict
+    #     per-context. Plain string (the data dictionary's three status enums
+    #     are context-specific; no single value-space).
+    #   - document / media / url references (documentDate / documentTypeCode /
+    #     filedUnder / retrievedOn / displayName / mediaUrl / url): domain-less
+    #     artefact-reference attributes (titlesToBeSold documents, media, search
+    #     templates) — no opda:Document Kind minted.
+    _walk_d_search: list[
+        tuple[URIRef, URIRef | None, URIRef, str, str, tuple[str, ...]]
+    ] = [
+        (
+            OPDA.applicationType, OPDA.Search, XSD.string, "application type",
+            "Type of a planning / building-control application recorded in a "
+            "local-authority Search result (across the planning-permission, "
+            "building-regulations, listed-building, conservation, and "
+            "certificate-of-lawfulness decision blocks). ONE shared property "
+            "reused across those blocks. Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingRegulationsApproval[].applicationType",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].applicationType",
+            ),
+        ),
+        (
+            OPDA.applicationDate, OPDA.Search, XSD.date, "application date",
+            "Date a planning / building-control application was made (across "
+            "the local-authority-search decision blocks). xsd:date. ONE shared "
+            "property; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingRegulationsApproval[].applicationDate",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].applicationDate",
+            ),
+        ),
+        (
+            OPDA.decision, OPDA.Search, XSD.string, "decision",
+            "Decision recorded on a planning / building-control application "
+            "in a local-authority Search result. ONE shared property reused "
+            "across the decision blocks. Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingRegulationsApproval[].decision",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].decision",
+            ),
+        ),
+        (
+            OPDA.decisionDate, OPDA.Search, XSD.date, "decision date",
+            "Date a decision was made on a planning / building-control "
+            "application. xsd:date. ONE shared property; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingRegulationsApproval[].decisionDate",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].decisionDate",
+            ),
+        ),
+        (
+            OPDA.refNumber, OPDA.Search, XSD.string, "reference number",
+            "Application/case reference number on a planning / "
+            "building-control result. ONE shared property; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingRegulationsApproval[].refNumber",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].refNumber",
+            ),
+        ),
+        (
+            OPDA.status, OPDA.Search, XSD.string, "status",
+            "Status of a search-derived result item — planning permission, "
+            "designation plan, road-adoption status, or search-order status. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
+            "polysemous across those contexts; placed on opda:Search; the "
+            "data dictionary's three context-specific status enums are "
+            "sh:in-restricted per-context in the overlay profile, not unified "
+            "into one value-space.)",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].status",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths."
+                "subjectToAdoption[].status",
+                "propertyPack.searches[].status",
+            ),
+        ),
+        (
+            OPDA.statusDate, OPDA.Search, XSD.date, "status date",
+            "Date a designation plan's status was set in a local-authority "
+            "Search result. xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.designationsAndProposals."
+                "plans[].statusDate",
+            ),
+        ),
+        (
+            OPDA.designationType, OPDA.Search, XSD.string, "designation type",
+            "Type of a planning designation recorded in a local-authority "
+            "Search result (e.g. conservation area, tree preservation order). "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.designationsAndProposals."
+                "plans[].designations[].designationType",
+            ),
+        ),
+        (
+            OPDA.planningStartDate, OPDA.Search, XSD.date, "planning start date",
+            "Start date of a planning matter in a local-authority Search "
+            "result. xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningStartDate",
+            ),
+        ),
+        (
+            OPDA.buildingControlStartDate, OPDA.Search, XSD.date,
+            "building control start date",
+            "Start date of a building-control matter in a local-authority "
+            "Search result. xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "buildingControlStartDate",
+            ),
+        ),
+        (
+            OPDA.localAuthorityName, OPDA.Search, XSD.string,
+            "local authority name",
+            "Name of the local authority that issued / governs a Search. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.localAuthorityName",),
+        ),
+        (
+            OPDA.localAuthorityReference, OPDA.Search, XSD.string,
+            "local authority reference",
+            "Reference identifying a Search within the local authority's "
+            "system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.localAuthorityReference",),
+        ),
+        (
+            OPDA.countyCouncil, OPDA.Search, XSD.string, "county council",
+            "Name of the county council for the Property's locality "
+            "(local-authority Search context). Plain string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.countyCouncil",),
+        ),
+        (
+            OPDA.districtCouncil, OPDA.Search, XSD.string, "district council",
+            "Name of the district council for the Property's locality. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.districtCouncil",),
+        ),
+        (
+            OPDA.unitaryAuthority, OPDA.Search, XSD.string, "unitary authority",
+            "Name of the unitary authority for the Property's locality. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.unitaryAuthority",),
+        ),
+        (
+            OPDA.councilSearchTurnaroundTimeInWorkingDays, OPDA.Search,
+            XSD.integer, "council search turnaround time in working days",
+            "Quoted turnaround time (working days) for a council search. "
+            "Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays",),
+        ),
+        (
+            OPDA.regulatedSearchTurnaroundTimeInWorkingDays, OPDA.Search,
+            XSD.integer, "regulated search turnaround time in working days",
+            "Quoted turnaround time (working days) for a regulated search. "
+            "Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.localAuthority."
+                "regulatedSearchTurnaroundTimeInWorkingDays",
+            ),
+        ),
+        (
+            OPDA.orderDate, OPDA.Search, XSD.date, "order date",
+            "Date a Search was ordered. xsd:date. Flat per §Q6a.",
+            ("propertyPack.searches[].orderDate",),
+        ),
+        (
+            OPDA.expectedDeliveryDate, OPDA.Search, XSD.date,
+            "expected delivery date",
+            "Expected delivery date for an ordered Search. xsd:date. Flat "
+            "per §Q6a.",
+            ("propertyPack.searches[].expectedDeliveryDate",),
+        ),
+        (
+            OPDA.reportDate, OPDA.Search, XSD.date, "report date",
+            "Date a Search / survey report was produced. xsd:date. ONE shared "
+            "property reused across search and survey reports; flat per §Q6a.",
+            (
+                "propertyPack.searches[].reportDate",
+                "propertyPack.surveys[].misc.reportDate",
+            ),
+        ),
+        (
+            OPDA.productCode, OPDA.Search, XSD.string, "product code",
+            "Provider product code identifying a Search product. Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.searches[].productCode",),
+        ),
+        (
+            OPDA.providerName, OPDA.Search, XSD.string, "provider name",
+            "Name of the Search provider. Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            ("propertyPack.searches[].providerName",),
+        ),
+        (
+            OPDA.providerReference, OPDA.Search, XSD.string,
+            "provider reference",
+            "Provider's reference for a Search. Plain string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.searches[].providerReference",),
+        ),
+        (
+            OPDA.subCategory, OPDA.RiskAssessment, XSD.string, "sub-category",
+            "Sub-category of an environmental-peril RiskAssessment "
+            "(riskSubcategories[] across the climate / coal-mining / flooding "
+            "/ ground-stability / radon / etc. peril blocks). ONE shared "
+            "property on opda:RiskAssessment. Plain string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.environmentalIssues.climate.climateRisk."
+                "riskSubcategories[].subCategory",
+                "propertyPack.environmentalIssues.flooding.floodRisk."
+                "riskSubcategories[].subCategory",
+            ),
+        ),
+        (
+            OPDA.dateRemedialActionRequired, OPDA.RiskAssessment, XSD.date,
+            "date remedial action required",
+            "Date by which remedial action is required following a "
+            "buildings-insurance RiskAssessment. xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.buildingsInsurance."
+                "managedAreasCoveredByPolicy.riskAssessments."
+                "dateRemedialActionRequired",
+            ),
+        ),
+        (
+            OPDA.documentDate, OPDA.Document, XSD.date, "document date",
+            "Date of a title / additional document. xsd:date. Domain "
+            "opda:Document (the ODR-0009 document-evidence artefact); flat "
+            "per §Q6a.",
+            (
+                "propertyPack.titlesToBeSold[].additionalDocuments[]."
+                "documentDate",
+                "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
+                "documentDetails.document.documentDate",
+            ),
+        ),
+        (
+            OPDA.documentTypeCode, OPDA.Document, XSD.string,
+            "document type code",
+            "Type code of a title / additional document. Domain opda:Document "
+            "(the ODR-0009 document-evidence artefact); flat per §Q6a.",
+            (
+                "propertyPack.titlesToBeSold[].additionalDocuments[]."
+                "documentTypeCode",
+            ),
+        ),
+        (
+            OPDA.filedUnder, OPDA.Document, XSD.string, "filed under",
+            "Filing reference under which a title / additional document is "
+            "held. Domain opda:Document (ODR-0009 document-evidence); flat "
+            "per §Q6a.",
+            (
+                "propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder",
+                "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
+                "documentDetails.document.filedUnder",
+            ),
+        ),
+        (
+            OPDA.retrievedOn, OPDA.Document, XSD.date, "retrieved on",
+            "Date a title / additional document was retrieved from the "
+            "registry. xsd:date. Domain opda:Document (ODR-0009 "
+            "document-evidence); flat per §Q6a.",
+            (
+                "propertyPack.titlesToBeSold[].additionalDocuments[]."
+                "retrievedOn",
+            ),
+        ),
+        (
+            OPDA.displayName, None, XSD.string, "display name",
+            "Human-readable display name of a document or Search artefact. "
+            "Domain-less artefact-reference attribute; flat per §Q6a.",
+            (
+                "propertyPack.documents[].displayName",
+                "propertyPack.searches[].displayName",
+            ),
+        ),
+        (
+            OPDA.mediaUrl, None, XSD.anyURI, "media URL",
+            "URL of a media item (property image / floorplan / etc.). "
+            "xsd:anyURI. Domain-less artefact-reference attribute; flat per "
+            "§Q6a.",
+            (
+                "propertyPack.media[].mediaUrl",
+                "valuationComparisonData.propertyDetails[].media[].mediaUrl",
+            ),
+        ),
+        (
+            OPDA.url, None, XSD.anyURI, "URL",
+            "URL of an external artefact (contract template, planning-"
+            "permission page). xsd:anyURI. Domain-less artefact-reference "
+            "attribute; flat per §Q6a.",
+            (
+                "contracts[].contract.template.url",
+                "propertyPack.localSearches.localAuthoritySearches."
+                "planningAndBuildingRegulations.decisionsAndPendingApplications."
+                "planningPermission[].url",
+            ),
+        ),
+    ]
+    for prop, domain, rng, label, comment, paths in _walk_d_search:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        if domain is not None:
+            g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # ==== Category-G curated walk — Family E (descriptive side): Valuation ==
+    # pricing + nearby-facilities datatype leaves (ADR-0031 work-item 2). The
+    # valuation-pricing leaves attach to opda:Valuation (the Q4a Information
+    # Object that bears them). The nearby-facilities leaves attach to the
+    # opda:NearbyFacility hierarchy minted above: the shared proximity relation
+    # opda:distanceInMiles on the genus, school attributes on opda:School, and
+    # health-care attributes on opda:HealthCareFacility.
+    _walk_e_descriptive: list[
+        tuple[URIRef, URIRef | None, URIRef, str, str, tuple[str, ...]]
+    ] = [
+        # --- Valuation pricing (opda:Valuation domain) ---------------------
+        (
+            OPDA.soldDate, OPDA.Valuation, XSD.date, "sold date",
+            "Date a comparable property was sold (valuation comparable "
+            "listing info). xsd:date. Flat per §Q6a.",
+            (
+                "valuationComparisonData.propertyDetails[].propertyListingInfo."
+                "soldDate",
+            ),
+        ),
+        (
+            OPDA.listedDate, OPDA.Valuation, XSD.date, "listed date",
+            "Date a comparable property was listed for sale. xsd:date. Flat "
+            "per §Q6a.",
+            (
+                "valuationComparisonData.propertyDetails[].propertyListingInfo."
+                "listedDate",
+            ),
+        ),
+        (
+            OPDA["yield"], OPDA.Valuation, XSD.decimal, "yield",
+            "Rental yield in a Valuation's pricing analysis. xsd:decimal. "
+            "Flat per §Q6a.",
+            ("valuationComparisonData.propertyPricing.yield",),
+        ),
+        (
+            OPDA.pricingMethodology, OPDA.Valuation, XSD.string,
+            "pricing methodology",
+            "Methodology used to derive a Valuation's price estimate. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "valuationComparisonData.propertyPricing.priceEstimationDetails."
+                "pricingMethodology",
+            ),
+        ),
+        (
+            OPDA.credibilitySources, OPDA.Valuation, XSD.string,
+            "credibility sources",
+            "Sources lending credibility to a Valuation's price estimate (a "
+            "multi-valued list — each value an xsd:string). Plain multi-valued "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "valuationComparisonData.propertyPricing.priceEstimationDetails."
+                "credibilitySources",
+            ),
+        ),
+        # --- Nearby facilities (opda:NearbyFacility / School / HealthCare) -
+        (
+            OPDA.distanceInMiles, OPDA.NearbyFacility, XSD.decimal,
+            "distance in miles",
+            "Distance in miles from the Property to a nearby facility (school "
+            "/ health-care / transport). xsd:decimal. Domain "
+            "opda:NearbyFacility (the proximity relation on the genus), reused "
+            "across the amenity bands; flat per §Q6a.",
+            (
+                "propertyPack.nearbyFacilities.healthCare[].distanceInMiles",
+                "propertyPack.nearbyFacilities.schools[].distanceInMiles",
+                "propertyPack.nearbyFacilities.transport[].distanceInMiles",
+            ),
+        ),
+        (
+            OPDA.ageRange, OPDA.School, XSD.string, "age range",
+            "Age range of a nearby school. Domain opda:School. Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.schools[].ageRange",),
+        ),
+        (
+            OPDA.pupils, OPDA.School, XSD.integer, "pupils",
+            "Number of pupils at a nearby school. Domain opda:School. Plain "
+            "integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.schools[].pupils",),
+        ),
+        (
+            OPDA.religiousCharacter, OPDA.School, XSD.string,
+            "religious character",
+            "Religious character of a nearby school. Domain opda:School. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.schools[].religiousCharacter",),
+        ),
+        (
+            OPDA.otherRating, OPDA.School, XSD.string, "other rating",
+            "Other (non-Ofsted) rating of a nearby school. Domain opda:School. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.schools[].otherRating",),
+        ),
+        (
+            OPDA.typeOfHealthCare, OPDA.HealthCareFacility, XSD.string,
+            "type of health care",
+            "Type of a nearby health-care facility. Domain "
+            "opda:HealthCareFacility. Plain string datatype per ODR-0008 §Q5a; "
+            "flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare",),
+        ),
+        (
+            OPDA.specialties, OPDA.HealthCareFacility, XSD.string, "specialties",
+            "Specialties of a nearby health-care facility (a multi-valued "
+            "list — each value an xsd:string). Domain opda:HealthCareFacility. "
+            "Plain multi-valued string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.nearbyFacilities.healthCare[].specialties",),
+        ),
+    ]
+    for prop, domain, rng, label, comment, paths in _walk_e_descriptive:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        if domain is not None:
+            g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # --- Nearby-school schoolType buckets (DOMAIN-LESS ObjectProperties) ----
+    # The five schoolType.* leaves (college / nursery / primary / secondary /
+    # private) are OBJECT-typed sub-structures in the data dictionary, not
+    # value leaves — each groups the nearby schools of that band. They are
+    # minted as DOMAIN-LESS, RANGE-LESS opda: ObjectProperties (a relation to a
+    # school-band sub-structure) rather than datatype properties, since their
+    # value is a structured node, not a literal. FLAGGED for the same future
+    # opda:NearbyFacility / opda:School cluster as the datatype leaves above.
+    _school_type_buckets: list[tuple[URIRef, str, str]] = [
+        (
+            OPDA.college, "college",
+            "Nearby college(s) — a band of the schoolType structure of "
+            "opda:School (object-typed). Domain opda:School, range-less object "
+            "property (the value is a structured school-band node).",
+        ),
+        (
+            OPDA.nursery, "nursery",
+            "Nearby nursery(ies) — a band of the schoolType structure of "
+            "opda:School. Domain opda:School, range-less object property.",
+        ),
+        (
+            OPDA.primary, "primary",
+            "Nearby primary school(s) — a band of the schoolType structure of "
+            "opda:School. Domain opda:School, range-less object property.",
+        ),
+        (
+            OPDA.secondary, "secondary",
+            "Nearby secondary school(s) — a band of the schoolType structure "
+            "of opda:School. Domain opda:School, range-less object property.",
+        ),
+        (
+            OPDA.private, "private",
+            "Nearby private school(s) — a band of the schoolType structure of "
+            "opda:School. Domain opda:School, range-less object property.",
+        ),
+    ]
+    for prop, slug, comment in _school_type_buckets:
+        g.add((prop, RDF.type, OWL.ObjectProperty))
+        g.add((prop, RDFS.domain, OPDA.School))
+        g.add((prop, RDFS.label, Literal(slug, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, DCTERMS.source, _dd_source(
+            f"propertyPack.nearbyFacilities.schools[].schoolType.{slug}"
+        )))
 
     # --- Held-as-live conditional stubs (Davis S008 Q4 dissent) ---------
     # Per ADR-0011 §"Per-module detail" — Building and Room class

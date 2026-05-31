@@ -48,6 +48,45 @@ PROV = Namespace("http://www.w3.org/ns/prov#")
 TIME = Namespace("http://www.w3.org/2006/time#")
 
 
+# Data-dictionary schema-leaf-path dct:source (ODR-0022 G2). Mirrors the
+# `_dd_source` helper in emitters/vocabularies.py (kept local so this module
+# carries no cross-emitter import for a one-liner): the per-property G2 IRI is
+# `<https://w3id.org/opda/data-dictionary#<leaf_path>>`, the same form the SKOS
+# member sources use, with array `[]` markers preserved one-to-one and
+# whitespace percent-encoded.
+def _dd_source(leaf_path: str) -> URIRef:
+    """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
+    safe = leaf_path.replace(" ", "%20").replace("'", "%27")
+    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+
+
+# ADR-0031 work-item 1 — the six G11∩candidate-G overlap leaves carry their
+# G2 schema-leaf-path `dct:source` (the canonical data-dictionary leaf), per
+# the ODR-0008 §Q1a reconciliation register (dispositions applied 2026-05-31).
+# `propertyType` is a C+G spanning leaf → an array of two paths (§Q3a). These
+# tighten the prior generic `<ODR-0008#section-Q5a>` anchor to the leaf-path.
+_G2_BUILT_FORM = _dd_source("propertyPack.buildInformation.building.builtForm")
+_G2_CURRENT_ENERGY_RATING = _dd_source(
+    "propertyPack.energyEfficiency.certificate.currentEnergyRating"
+)
+_G2_CENTRAL_HEATING_FUEL_TYPE = _dd_source(
+    "propertyPack.heating.heatingSystem.centralHeatingDetails."
+    "centralHeatingFuel.centralHeatingFuelType"
+)
+_G2_HEATING_TYPE = _dd_source("propertyPack.heating.heatingSystem.heatingType")
+_G2_OWNERSHIP_TYPE = _dd_source(
+    "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"
+)
+# propertyType spans Category C (buildInformation) + Category G
+# (valuationComparisonData) — both paths attach to the one property (§Q3a).
+_G2_PROPERTY_TYPE_C = _dd_source(
+    "propertyPack.buildInformation.building.propertyType"
+)
+_G2_PROPERTY_TYPE_G = _dd_source(
+    "valuationComparisonData.propertyDetails[].propertyType"
+)
+
+
 # Per-class dct:source URIs — every class cites the ratifying ODR section.
 _ODR_0005_S2A = URIRef("https://w3id.org/opda/odr/ODR-0005#section-2a")
 _ODR_0005_S3B = URIRef("https://w3id.org/opda/odr/ODR-0005#section-3b")
@@ -79,28 +118,100 @@ OBJECT_PROPERTIES = (
 )
 
 DATATYPE_PROPERTIES = (
+    OPDA["from"],
+    OPDA.abilityToResideAtProperty,
+    OPDA.accessibilityAndAdaptations,
+    OPDA.adHocExpenses,
     OPDA.addressVariant,
+    OPDA.area,
     OPDA.areBoundariesUniform,
+    OPDA.bathrooms,
+    OPDA.bedrooms,
+    OPDA.buildingsReinstatementCostAssessment,
     OPDA.builtForm,
     OPDA.centralHeatingFuelType,
+    OPDA.centralHeatingInstalled,
+    OPDA.consequentialChargingBasis,
+    OPDA.councilTaxBand,
+    OPDA.currentChargingBasis,
     OPDA.currentEnergyRating,
+    OPDA.dateInstalled,
+    OPDA.dateLastEmptied,
+    OPDA.dateLastServiced,
+    OPDA.dateReplaced,
+    OPDA.dateToBeConnected,
+    OPDA.diningAreas,
+    OPDA.distanceToNearestSewerageTreatment,
+    OPDA.entranceFloor,
+    OPDA.groundRentFrequency,
+    OPDA.handoverOnCompletion,
     OPDA.hasBeenFlooded,
+    OPDA.hasFixedRentcharge,
     OPDA.hasSmartHomeSystems,
     OPDA.hasSprayFoamInstalled,
     OPDA.hasUPRN,
     OPDA.hasValidGuaranteesOrWarranties,
+    OPDA.heading,
+    OPDA.heatingLastServicedDate,
     OPDA.heatingType,
     OPDA.isGroundRentPayable,
     OPDA.isInsured,
     OPDA.isLocatedOverCommercialPremises,
     OPDA.isSharedOwnership,
     OPDA.isSupplyMetered,
+    OPDA.kitchens,
+    OPDA.lastMaintained,
+    OPDA.lengthOfLeaseInYears,
+    OPDA.location,
+    OPDA.logbookProvider,
+    OPDA.mpan,
+    OPDA.mprn,
+    OPDA.numberOfFloors,
+    OPDA.numberOfPropertiesSharing,
     OPDA.offMainsDrainageSystemType,
+    OPDA.otherCentralHeatingFuelType,
+    OPDA.otherHeatingFeatures,
+    OPDA.otherOwnershipDetails,
+    OPDA.otherPropertiesInManagedArea,
+    OPDA.otherType,
+    OPDA.outsideAreas,
     OPDA.ownershipType,
+    OPDA.parkingArrangements,
+    OPDA.personWhoDealsWithTheDeedOfCovenant,
+    OPDA.pitch,
+    OPDA.procedureForObtainingCertificate,
+    OPDA.propertiesContributingToMaintenanceOfManagedArea,
     OPDA.propertyType,
+    OPDA.publicSewerMapAttached,
+    OPDA.receptions,
+    OPDA.rentIncreaseCalculated,
+    OPDA.rentReviewFrequency,
+    OPDA.requirements,
     OPDA.sellerContributesToServiceCharge,
+    OPDA.sewerageBills,
+    OPDA.sewerageProvider,
+    OPDA.sharedOwnershipPercentage,
     OPDA.soldWithVacantPossession,
+    OPDA.startYearOfLease,
+    OPDA.supplier,
+    OPDA.supplyClassification,
     OPDA.tenureKind,
+    OPDA.titleExtents,
+    OPDA.titleNumber,
+    OPDA.titlePropertyDescription,
+    OPDA.to,
+    OPDA.typeOfFlooding,
+    OPDA.waterBills,
+    OPDA.waterProvider,
+    OPDA.waterworksMapAttached,
+    OPDA.willHandoverLogbook,
+    OPDA.year,
+    OPDA.yearCompleted,
+    OPDA.yearInstalled,
+    OPDA.yearOfBuild,
+    OPDA.yearTested,
+    OPDA.yearWorkCarriedOut,
+    OPDA.zoom,
 )
 
 
@@ -309,8 +420,9 @@ def build_graph() -> Graph:
            URIRef("https://w3id.org/opda/odr/ODR-0015#section-Rule-6")))
 
     # --- DatatypeProperty: opda:builtForm (ODR-0008 §Q5a) ---------------
-    # Minimum descriptive datatype property to support exemplar coverage;
-    # full Q5a binding table deferred to G11.
+    # ADR-0031 register: STANDS on opda:Property; Quale-in-Region; flat
+    # (§Q6a — no named consumer query); range opda:BuiltFormScheme; dct:source
+    # tightened to the G2 schema-leaf-path.
     g.add((OPDA.builtForm, RDF.type, OWL.DatatypeProperty))
     g.add((OPDA.builtForm, RDFS.domain, OPDA.Property))
     g.add((OPDA.builtForm, RDFS.range, XSD.string))
@@ -322,9 +434,12 @@ def build_graph() -> Graph:
         "(ADR-0012 emits the constraint).",
         lang="en",
     )))
-    g.add((OPDA.builtForm, DCTERMS.source, _ODR_0008_S5A))
+    g.add((OPDA.builtForm, DCTERMS.source, _G2_BUILT_FORM))
 
     # --- DatatypeProperty: opda:currentEnergyRating (ODR-0008 §Q5a) -----
+    # ADR-0031 register: STANDS on opda:Property; Quale-in-Region (EPC band
+    # A–G, DESNZ-governed); range opda:CurrentEnergyRatingScheme; dct:source
+    # tightened to the G2 schema-leaf-path.
     g.add((OPDA.currentEnergyRating, RDF.type, OWL.DatatypeProperty))
     g.add((OPDA.currentEnergyRating, RDFS.domain, OPDA.Property))
     g.add((OPDA.currentEnergyRating, RDFS.range, XSD.string))
@@ -337,7 +452,7 @@ def build_graph() -> Graph:
         "the scheme members (ADR-0012 emits the constraint).",
         lang="en",
     )))
-    g.add((OPDA.currentEnergyRating, DCTERMS.source, _ODR_0008_S5A))
+    g.add((OPDA.currentEnergyRating, DCTERMS.source, _G2_CURRENT_ENERGY_RATING))
 
     # --- DatatypeProperty: opda:hasUPRN (ODR-0005 §6a) -------------------
     g.add((OPDA.hasUPRN, RDF.type, OWL.DatatypeProperty))
@@ -567,12 +682,854 @@ def build_graph() -> Graph:
             "completion question. Bound to opda:YesNoScheme.",
         ),
     ]
+    # ADR-0031 register dispositions (applied 2026-05-31): the four G11∩
+    # candidate-G §Q5a Quale/Substance-Kind-label leaves in this loop carry
+    # their G2 schema-leaf-path dct:source; `propertyType` is C+G spanning, so
+    # it gets BOTH paths (§Q3a array). Every other G11 leaf (the Yes/No
+    # discriminators + offMainsDrainageSystemType) keeps the §Q5a ODR anchor
+    # until its own curation batch lands.
+    _g2_sources: dict[URIRef, tuple[URIRef, ...]] = {
+        OPDA.propertyType: (_G2_PROPERTY_TYPE_C, _G2_PROPERTY_TYPE_G),
+        OPDA.ownershipType: (_G2_OWNERSHIP_TYPE,),
+        OPDA.heatingType: (_G2_HEATING_TYPE,),
+        OPDA.centralHeatingFuelType: (_G2_CENTRAL_HEATING_FUEL_TYPE,),
+    }
     for prop, domain, label, comment in _g11_properties:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         g.add((prop, RDFS.domain, domain))
         g.add((prop, RDFS.range, XSD.string))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
-        g.add((prop, DCTERMS.source, _ODR_0008_S5A))
+        for src in _g2_sources.get(prop, (_ODR_0008_S5A,)):
+            g.add((prop, DCTERMS.source, src))
+
+    # ==== Category-G curated walk — batch 1: residential dimensions & ====
+    # counts (ADR-0031 work-item 2). Each is a countable/measurable feature of
+    # the physical Property with NO enumerated value-space, so a plain datatype
+    # range per ODR-0008 §Q5a, flat per §Q6a (no rdfs:subPropertyOf). Each
+    # carries its G2 schema-leaf-path dct:source array (§Q3a — one per overlay
+    # occurrence). Coverage is tracked by ci-category-g-coverage; emission is
+    # regenerated by `opda-gen emit`, never hand-edited (ci-byte-identity).
+    # (length / width / roomName deferred — they bear on the held-as-live
+    # opda:Room promotion, ODR-0008 §Q4a / ADR-0011.)
+    _walk_b1: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+        (
+            OPDA.bedrooms, XSD.integer, "bedrooms",
+            "Number of bedrooms in the Property — a countable UFO Quality of "
+            "the physical Property. Plain integer datatype (no enumerated "
+            "value-space) per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.residentialPropertyFeatures.bedrooms",
+                "valuationComparisonData.propertyDetails[].basicDetails.bedrooms",
+            ),
+        ),
+        (
+            OPDA.bathrooms, XSD.integer, "bathrooms",
+            "Number of bathrooms in the Property — a countable UFO Quality. "
+            "Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.residentialPropertyFeatures.bathrooms",
+                "valuationComparisonData.propertyDetails[].basicDetails.bathrooms",
+            ),
+        ),
+        (
+            OPDA.receptions, XSD.integer, "receptions",
+            "Number of reception rooms in the Property. Plain integer datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.residentialPropertyFeatures.receptions",),
+        ),
+        (
+            OPDA.kitchens, XSD.integer, "kitchens",
+            "Number of kitchens in the Property. Plain integer datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.residentialPropertyFeatures.kitchens",),
+        ),
+        (
+            OPDA.diningAreas, XSD.integer, "dining areas",
+            "Number of dining areas in the Property. Plain integer datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.residentialPropertyFeatures.diningAreas",),
+        ),
+        (
+            OPDA.numberOfFloors, XSD.integer, "number of floors",
+            "Number of floors (storeys) the Property comprises. Plain integer "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.buildInformation.building.numberOfFloors",),
+        ),
+        (
+            OPDA.entranceFloor, XSD.integer, "entrance floor",
+            "Floor (storey) on which the Property's entrance is located "
+            "(0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
+            ("propertyPack.buildInformation.building.entranceFloor",),
+        ),
+        (
+            OPDA.yearOfBuild, XSD.gYear, "year of build",
+            "Calendar year the Property was built. xsd:gYear — the data "
+            "dictionary types it as a year value; plain datatype per "
+            "ODR-0008 §Q5a, flat per §Q6a.",
+            (
+                "propertyPack.buildInformation.yearOfBuild",
+                "valuationComparisonData.propertyDetails[].basicDetails."
+                "buildInformation.yearOfBuild",
+            ),
+        ),
+        (
+            OPDA.area, XSD.decimal, "area",
+            "Internal floor area of the Property — a measured UFO Quality (the "
+            "unit of measure is carried alongside in the source structure). "
+            "Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.buildInformation.internalArea.area",
+                "valuationComparisonData.propertyDetails[].basicDetails."
+                "buildInformation.internalArea.area",
+            ),
+        ),
+    ]
+    for prop, rng, label, comment, paths in _walk_b1:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, OPDA.Property))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # ==== Category-G curated walk — Family A: Property physical / services ===
+    # attributes (ADR-0031 work-item 2). Heating / electricity / water-&-
+    # drainage / connectivity / parking / council-tax / location features of
+    # the physical Property. Each is a flat datatype property on opda:Property
+    # (the nearest existing Substance Kind) per ODR-0008 §Q5a, flat per §Q6a.
+    # Range follows the data-dictionary `type`: string→xsd:string,
+    # integer→xsd:integer, number→xsd:decimal, boolean→xsd:boolean; date-named
+    # string leaves → xsd:date; year-named integer leaves → xsd:gYear; array
+    # leaves are multi-valued xsd:string (each element a value). The two
+    # meter-point identifiers (mpan / mprn) take xsd:string despite their
+    # data-dictionary integer typing — they are fixed-width numeric identifiers
+    # whose leading-zero significance the existing opda:hasUPRN string treatment
+    # establishes as the corpus convention. `councilTaxBand` is an enum leaf:
+    # its value-space is the already-emitted opda:CouncilTaxBandSchemeEW /
+    # opda:CouncilTaxBandSchemeScotland (sh:in-restricted in the overlay
+    # profile, mirroring opda:currentEnergyRating). Each carries its G2
+    # schema-leaf-path dct:source array (§Q3a — one per overlay occurrence).
+    _walk_a_property: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+        (
+            OPDA.councilTaxBand, XSD.string, "council tax band",
+            "Council-tax valuation band of the Property per "
+            "opda:CouncilTaxBandSchemeEW (A–H / Not banded) or "
+            "opda:CouncilTaxBandSchemeScotland. UFO Quale-in-Region; "
+            "regulator-sourced enum (VOA / Scottish Assessors). Constrained "
+            "by SHACL sh:in to the scheme members in the overlay profile, "
+            "mirroring opda:currentEnergyRating. Flat per §Q6a.",
+            ("propertyPack.councilTax.councilTaxBand",),
+        ),
+        (
+            OPDA.supplyClassification, XSD.string, "supply classification",
+            "Classification of the Property's water supply (e.g. metered / "
+            "unmetered / rateable). A UFO Quale-in-Region of the physical "
+            "Property. Plain string datatype per ODR-0008 §Q5a (no "
+            "ontology-governed enum in the data dictionary); flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.water.supplyClassification",),
+        ),
+        (
+            OPDA.centralHeatingInstalled, XSD.string, "central heating installed",
+            "Central-heating installation indicator for the Property "
+            "(typed as a string in the data dictionary — a Yes/No-style "
+            "response). Plain string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a. A physical-system attribute of the Property.",
+            (
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "centralHeatingInstalled",
+            ),
+        ),
+        (
+            OPDA.otherType, XSD.string, "other type",
+            "Free-text classifier captured when the Property's built-form / "
+            "property-type is 'Other' (the open-ended companion to "
+            "opda:propertyType). Plain string datatype per ODR-0008 §Q5a; "
+            "flat per §Q6a.",
+            ("propertyPack.buildInformation.building.otherType",),
+        ),
+        (
+            OPDA.otherCentralHeatingFuelType, XSD.string,
+            "other central heating fuel type",
+            "Free-text fuel classifier captured when the central-heating "
+            "fuel is 'Other' (the open-ended companion to "
+            "opda:centralHeatingFuelType). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "centralHeatingFuel.otherCentralHeatingFuelType",
+            ),
+        ),
+        (
+            OPDA.otherHeatingFeatures, XSD.string, "other heating features",
+            "Additional heating features of the Property (a multi-valued "
+            "list in the data dictionary — each value an xsd:string). UFO "
+            "Quality of the physical Property. Plain multi-valued string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.heating.otherHeatingFeatures",),
+        ),
+        (
+            OPDA.accessibilityAndAdaptations, XSD.string,
+            "accessibility and adaptations",
+            "Accessibility features and adaptations of the Property (a "
+            "multi-valued list — each value an xsd:string). UFO Quality of "
+            "the physical Property. Plain multi-valued string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.typeOfConstruction.accessibilityAndAdaptations",),
+        ),
+        (
+            OPDA.outsideAreas, XSD.string, "outside areas",
+            "Outside areas of the Property — garden / yard / balcony / etc. "
+            "(a multi-valued list — each value an xsd:string). UFO Quality "
+            "of the physical Property. Plain multi-valued string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.residentialPropertyFeatures.outsideAreas",),
+        ),
+        (
+            OPDA.parkingArrangements, XSD.string, "parking arrangements",
+            "Parking arrangements for the Property — allocated / on-street / "
+            "garage / etc. (a multi-valued list — each value an xsd:string). "
+            "UFO Quality of the physical Property. Plain multi-valued string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.parking.parkingArrangements",),
+        ),
+        (
+            OPDA.mpan, XSD.string, "MPAN",
+            "Meter Point Administration Number — the electricity supply-point "
+            "identifier for the Property. xsd:string (a fixed-width numeric "
+            "identifier whose leading zeros are significant — the same "
+            "convention opda:hasUPRN follows, NOT xsd:integer despite the "
+            "data-dictionary typing). Flat per §Q6a.",
+            ("propertyPack.electricity.mainsElectricity.electricityMeter.mpan",),
+        ),
+        (
+            OPDA.mprn, XSD.string, "MPRN",
+            "Meter Point Reference Number — the gas supply-point identifier "
+            "for the Property. xsd:string (a fixed-width numeric identifier, "
+            "per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). "
+            "Flat per §Q6a.",
+            (
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "centralHeatingFuel.gasMeter.mprn",
+            ),
+        ),
+        (
+            OPDA.numberOfPropertiesSharing, XSD.integer,
+            "number of properties sharing",
+            "Number of other properties sharing the Property's off-mains "
+            "drainage system. Plain integer datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
+            (
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "offMainsDrainageSystem.otherConnectedProperties."
+                "numberOfPropertiesSharing",
+            ),
+        ),
+        (
+            OPDA.distanceToNearestSewerageTreatment, XSD.string,
+            "distance to nearest sewerage treatment",
+            "Distance from the Property to the nearest sewerage-treatment "
+            "works (typed as a string in the data dictionary — a free-form "
+            "distance band). Plain string datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
+            (
+                "propertyPack.waterAndDrainage.drainage."
+                "distanceToNearestSewerageTreatment",
+            ),
+        ),
+        (
+            OPDA.publicSewerMapAttached, XSD.string, "public sewer map attached",
+            "Whether the public-sewer map is attached for the Property "
+            "(a Yes/No-style string response in the data dictionary). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.maps.publicSewerMapAttached",),
+        ),
+        (
+            OPDA.waterworksMapAttached, XSD.string, "waterworks map attached",
+            "Whether the waterworks map is attached for the Property "
+            "(a Yes/No-style string response). Plain string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.maps.waterworksMapAttached",),
+        ),
+        (
+            OPDA.waterProvider, XSD.string, "water provider",
+            "Name of the Property's water-supply provider. Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.waterProvider",),
+        ),
+        (
+            OPDA.sewerageProvider, XSD.string, "sewerage provider",
+            "Name of the Property's sewerage provider. Plain string datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.sewerageProvider",),
+        ),
+        (
+            OPDA.waterBills, XSD.string, "water bills",
+            "Free-text water-billing description for the Property. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.waterBills",),
+        ),
+        (
+            OPDA.sewerageBills, XSD.string, "sewerage bills",
+            "Free-text sewerage-billing description for the Property. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.sewerageBills",),
+        ),
+        (
+            OPDA.currentChargingBasis, XSD.string, "current charging basis",
+            "Current basis on which the Property's water/sewerage is charged. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.currentChargingBasis",),
+        ),
+        (
+            OPDA.consequentialChargingBasis, XSD.string,
+            "consequential charging basis",
+            "Charging basis that would apply consequentially (e.g. on a "
+            "change of circumstances) for the Property's water/sewerage. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.waterAndDrainage.charging.consequentialChargingBasis",),
+        ),
+        (
+            OPDA.supplier, XSD.string, "supplier",
+            "Name of the supplier for a Property utility / service "
+            "(electricity, gas-fuel, heat-pump, solar, water, drainage, "
+            "telephone, cable/satellite TV). ONE shared supplier-name "
+            "property reused across the utility blocks (the data dictionary "
+            "repeats the same `supplier` leaf under each). Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.connectivity.cableSatelliteTV.supplier",
+                "propertyPack.connectivity.telephone.supplier",
+                "propertyPack.electricity.heatPump.supplier",
+                "propertyPack.electricity.mainsElectricity.supplier",
+                "propertyPack.electricity.otherSources.supplier",
+                "propertyPack.electricity.solarPanels.supplier",
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "centralHeatingFuel.supplier",
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.supplier",
+                "propertyPack.waterAndDrainage.water.mainsWater.supplier",
+            ),
+        ),
+        (
+            OPDA.logbookProvider, XSD.string, "logbook provider",
+            "Name of the digital-property-logbook provider for the Property. "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.completionAndMoving.digitalPropertyLogbook."
+                "logbookProvider",
+            ),
+        ),
+        (
+            OPDA.location, XSD.string, "location",
+            "Physical-location description of a Property fixture or "
+            "measurement point — electricity / gas / water meter, stopcock, "
+            "or survey/charge locus (typed as a free-form string in the data "
+            "dictionary). ONE shared location-description property reused "
+            "across those points. Plain string datatype per ODR-0008 §Q5a; "
+            "flat per §Q6a. (FLAG: `propertyPack.location` is itself a "
+            "structured geo block, not this leaf-level string; the structured "
+            "locator is opda:Address territory — ODR-0015 — and is out of "
+            "this leaf's scope.)",
+            (
+                "propertyPack.electricity.mainsElectricity.electricityMeter."
+                "location",
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "centralHeatingFuel.gasMeter.location",
+                "propertyPack.waterAndDrainage.water.mainsWater.stopcock.location",
+                "propertyPack.waterAndDrainage.water.mainsWater.waterMeter."
+                "location",
+            ),
+        ),
+        (
+            OPDA.heading, XSD.decimal, "heading",
+            "Google Street View point-of-view compass heading (degrees) for "
+            "the Property's map locator. xsd:decimal — a numeric camera "
+            "parameter, NOT a free-text tail (FLAG: deviates from the generic "
+            "free-text-collapse expectation; the data dictionary types it as "
+            "a number). Flat per §Q6a.",
+            ("propertyPack.location.googleStreetViewPOV.heading",),
+        ),
+        (
+            OPDA.pitch, XSD.decimal, "pitch",
+            "Google Street View point-of-view pitch (degrees) for the "
+            "Property's map locator. xsd:decimal numeric camera parameter. "
+            "Flat per §Q6a.",
+            ("propertyPack.location.googleStreetViewPOV.pitch",),
+        ),
+        (
+            OPDA.zoom, XSD.decimal, "zoom",
+            "Google Street View point-of-view zoom level for the Property's "
+            "map locator. xsd:decimal numeric camera parameter. Flat per "
+            "§Q6a.",
+            ("propertyPack.location.googleStreetViewPOV.zoom",),
+        ),
+        (
+            OPDA.dateInstalled, XSD.date, "date installed",
+            "Date a Property system was installed (heat pump / off-mains "
+            "drainage system). xsd:date (a date-valued string in the data "
+            "dictionary). Flat per §Q6a.",
+            (
+                "propertyPack.electricity.heatPump.dateInstalled",
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "offMainsDrainageSystem.dateInstalled",
+            ),
+        ),
+        (
+            OPDA.dateToBeConnected, XSD.date, "date to be connected",
+            "Expected connection date for a not-yet-connected Property "
+            "utility / service. ONE shared date property reused across the "
+            "utility blocks. xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected",
+                "propertyPack.connectivity.telephone.dateToBeConnected",
+                "propertyPack.electricity.heatPump.dateToBeConnected",
+                "propertyPack.electricity.mainsElectricity.dateToBeConnected",
+                "propertyPack.electricity.otherSources.dateToBeConnected",
+                "propertyPack.electricity.solarPanels.dateToBeConnected",
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "dateToBeConnected",
+                "propertyPack.waterAndDrainage.drainage."
+                "mainsSurfaceWaterDrainage.dateToBeConnected",
+                "propertyPack.waterAndDrainage.water.mainsWater.dateToBeConnected",
+            ),
+        ),
+        (
+            OPDA.dateLastEmptied, XSD.date, "date last emptied",
+            "Date the Property's off-mains drainage system was last emptied. "
+            "xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "offMainsDrainageSystem.dateLastEmptied",
+            ),
+        ),
+        (
+            OPDA.dateLastServiced, XSD.date, "date last serviced",
+            "Date the Property's off-mains drainage system was last serviced. "
+            "xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "offMainsDrainageSystem.dateLastServiced",
+            ),
+        ),
+        (
+            OPDA.dateReplaced, XSD.date, "date replaced",
+            "Date the Property's off-mains drainage system was last replaced. "
+            "xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+                "offMainsDrainageSystem.dateReplaced",
+            ),
+        ),
+        (
+            OPDA.heatingLastServicedDate, XSD.date, "heating last serviced date",
+            "Date the Property's central-heating system was last serviced. "
+            "xsd:date. Flat per §Q6a.",
+            (
+                "propertyPack.heating.heatingSystem.centralHeatingDetails."
+                "heatingLastServicedDate",
+            ),
+        ),
+        (
+            OPDA.lastMaintained, XSD.date, "last maintained",
+            "Date the Property's solar-panel system was last maintained. "
+            "xsd:date. Flat per §Q6a.",
+            ("propertyPack.electricity.solarPanels.lastMaintained",),
+        ),
+        (
+            OPDA.yearInstalled, XSD.gYear, "year installed",
+            "Calendar year the Property's solar-panel system was installed. "
+            "xsd:gYear (a year value in the data dictionary). Flat per §Q6a.",
+            ("propertyPack.electricity.solarPanels.yearInstalled",),
+        ),
+        (
+            OPDA.yearTested, XSD.gYear, "year tested",
+            "Calendar year the Property's electrical installation was last "
+            "tested by a qualified electrician. xsd:gYear. Flat per §Q6a.",
+            (
+                "propertyPack.electricalWorks.testedByQualifiedElectrician."
+                "yearTested",
+            ),
+        ),
+        (
+            OPDA.yearWorkCarriedOut, XSD.gYear, "year work carried out",
+            "Calendar year electrical work was carried out on the Property "
+            "(since 2005). xsd:gYear. Flat per §Q6a.",
+            (
+                "propertyPack.electricalWorks.electricalWorkSince2005."
+                "yearWorkCarriedOut",
+            ),
+        ),
+        (
+            OPDA.yearCompleted, XSD.gYear, "year completed",
+            "Calendar year a Property alteration / change was completed "
+            "(change of use, conservatory addition, window replacement since "
+            "2002). xsd:gYear. Flat per §Q6a.",
+            (
+                "propertyPack.alterationsAndChanges.changeOfUse.yearCompleted",
+                "propertyPack.alterationsAndChanges.hasAddedConservatory."
+                "yearCompleted",
+                "propertyPack.alterationsAndChanges.windowReplacementsSince2002."
+                "yearCompleted",
+            ),
+        ),
+        (
+            OPDA.handoverOnCompletion, XSD.boolean, "handover on completion",
+            "Whether the Property's smart-home systems will be handed over on "
+            "completion. xsd:boolean. Flat per §Q6a.",
+            ("propertyPack.smartHomeSystems.handoverOnCompletion",),
+        ),
+        (
+            OPDA.willHandoverLogbook, XSD.boolean, "will handover logbook",
+            "Whether the seller will hand over the digital property logbook "
+            "on completion. xsd:boolean. Flat per §Q6a.",
+            (
+                "propertyPack.completionAndMoving.digitalPropertyLogbook."
+                "willHandoverLogbook",
+            ),
+        ),
+        (
+            OPDA.abilityToResideAtProperty, XSD.string,
+            "ability to reside at property",
+            "Building-safety statement on whether occupiers can reside at the "
+            "Property given any identified safety issues (typed as a string "
+            "in the data dictionary). A physical-safety attribute of the "
+            "Property. Plain string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a.",
+            (
+                "propertyPack.typeOfConstruction.buildingSafety."
+                "abilityToResideAtProperty",
+            ),
+        ),
+        (
+            OPDA.typeOfFlooding, XSD.string, "type of flooding",
+            "Type(s) of historical flooding the Property has experienced "
+            "(a multi-valued list — each value an xsd:string). UFO Quality of "
+            "the physical Property. Plain multi-valued string datatype per "
+            "ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT "
+            "is opda:RiskAssessment territory; this is the factual "
+            "historical-flooding-type attribute.)",
+            ("propertyPack.environmentalIssues.flooding.historicalFlooding."
+             "typeOfFlooding",),
+        ),
+    ]
+    for prop, rng, label, comment, paths in _walk_a_property:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, OPDA.Property))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # ==== Category-G curated walk — Family B: LegalEstate tenure / lease ====
+    # / ground-rent / service-charge / title attributes (ADR-0031 work-item 2).
+    # Each is a flat datatype property on opda:LegalEstate (the rights-bundle
+    # Substance Kind these leasehold / managed-freehold / commonhold / title
+    # attributes characterise) per ODR-0008 §Q5a, flat per §Q6a. Range follows
+    # the data-dictionary `type` (string→xsd:string, integer→xsd:integer,
+    # number→xsd:decimal); period-boundary date strings → xsd:date; the
+    # decorated-period `year` → xsd:gYear. Monetary leaves (ground rent, service
+    # charges, deed costs, fees, reserve-fund contributions) are NOT here — they
+    # COLLAPSE to opda:price (ODR-0022 §4; inputs/category_g_curation). Each
+    # carries its G2 schema-leaf-path dct:source array (§Q3a).
+    _walk_b_estate: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+        (
+            OPDA.groundRentFrequency, XSD.string, "ground rent frequency",
+            "Frequency at which ground rent is payable on the leasehold "
+            "LegalEstate (typed as a string in the data dictionary — a "
+            "free-form frequency label). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.groundRent.groundRentFrequency",
+            ),
+        ),
+        (
+            OPDA.rentReviewFrequency, XSD.string, "rent review frequency",
+            "Frequency at which ground rent is reviewed on the leasehold "
+            "LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.groundRent.rentSubjectToIncrease."
+                "rentReviewFrequency",
+            ),
+        ),
+        (
+            OPDA.rentIncreaseCalculated, XSD.string, "rent increase calculated",
+            "How a ground-rent increase is calculated on the leasehold "
+            "LegalEstate (e.g. RPI-linked, doubling). Plain string datatype "
+            "per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.groundRent.rentSubjectToIncrease."
+                "rentIncreaseCalculated",
+            ),
+        ),
+        (
+            OPDA.hasFixedRentcharge, XSD.string, "has fixed rentcharge",
+            "Whether the managed-freehold / commonhold LegalEstate carries a "
+            "fixed rentcharge (a Yes/No-style string response). Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "hasFixedRentcharge",
+            ),
+        ),
+        (
+            OPDA.lengthOfLeaseInYears, XSD.integer, "length of lease in years",
+            "Length of the leasehold term in years (the granted term). Plain "
+            "integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements "
+            "opda:LeaseTerm (the OWL-Time interval) with the headline "
+            "term-length figure.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
+            ),
+        ),
+        (
+            OPDA.startYearOfLease, XSD.gYear, "start year of lease",
+            "Calendar year the leasehold term commenced. xsd:gYear (a year "
+            "value in the data dictionary). Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.leaseTerm.startYearOfLease",
+            ),
+        ),
+        (
+            OPDA.sharedOwnershipPercentage, XSD.decimal,
+            "shared ownership percentage",
+            "Percentage of the Property owned under a shared-ownership "
+            "leasehold LegalEstate. xsd:decimal (a number in the data "
+            "dictionary). Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
+            ),
+        ),
+        (
+            OPDA.otherPropertiesInManagedArea, XSD.decimal,
+            "other properties in managed area",
+            "Count of other properties in the managed area sharing the "
+            "leasehold LegalEstate's service arrangements. xsd:decimal (typed "
+            "as a number in the data dictionary). Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.general.otherPropertiesInManagedArea",
+            ),
+        ),
+        (
+            OPDA.propertiesContributingToMaintenanceOfManagedArea, XSD.decimal,
+            "properties contributing to maintenance of managed area",
+            "Count of properties contributing to maintenance of the managed "
+            "area for the leasehold LegalEstate. xsd:decimal (a number in the "
+            "data dictionary). Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge."
+                "propertiesContributingToMaintenanceOfManagedArea",
+            ),
+        ),
+        (
+            OPDA.buildingsReinstatementCostAssessment, XSD.string,
+            "buildings reinstatement cost assessment",
+            "Buildings reinstatement-cost-assessment statement for the "
+            "leasehold LegalEstate's buildings insurance (typed as a string "
+            "in the data dictionary). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.buildingsInsurance."
+                "buildingsReinstatementCostAssessment",
+            ),
+        ),
+        (
+            OPDA.titleNumber, XSD.string, "title number",
+            "HMLR title number of the LegalEstate / title to be sold. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a. A title "
+            "identifier on the estate side (distinct from opda:RegisteredTitle "
+            "the record-entity — this is the estate's cited title number).",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
+                "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
+                "title.titleNumber",
+                "propertyPack.titlesToBeSold[].titleNumber",
+            ),
+        ),
+        (
+            OPDA.titleExtents, XSD.string, "title extents",
+            "Statement of the extents covered by a title to be sold. Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            ("propertyPack.titlesToBeSold[].titleExtents",),
+        ),
+        (
+            OPDA.titlePropertyDescription, XSD.string,
+            "title property description",
+            "The property description as recorded on the title for the "
+            "LegalEstate to be transferred. Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "titlePropertyDescription",
+            ),
+        ),
+        (
+            OPDA.otherOwnershipDetails, XSD.string, "other ownership details",
+            "Free-text ownership details captured when the ownership type is "
+            "'Other' for the LegalEstate. Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "otherOwnershipDetails",
+            ),
+        ),
+        (
+            OPDA.requirements, XSD.string, "requirements",
+            "Requirements stated for a licence-to-assign on the leasehold "
+            "LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per "
+            "§Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.transferAndRegistration."
+                "licenceToAssignRequired.requirements",
+            ),
+        ),
+        (
+            OPDA.procedureForObtainingCertificate, XSD.string,
+            "procedure for obtaining certificate",
+            "Procedure for obtaining a transfer/registration certificate on "
+            "the leasehold / managed-freehold LegalEstate. Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.transferAndRegistration."
+                "procedureForObtainingCertificate",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.transferAndRegistration."
+                "procedureForObtainingCertificate",
+            ),
+        ),
+        (
+            OPDA.personWhoDealsWithTheDeedOfCovenant, XSD.string,
+            "person who deals with the deed of covenant",
+            "Name/role of the person who deals with the deed of covenant for "
+            "the leasehold / managed-freehold LegalEstate. Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.transferAndRegistration."
+                "deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.transferAndRegistration."
+                "deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+            ),
+        ),
+        (
+            OPDA["from"], XSD.date, "from",
+            "Start date of a demand / decoration period on the leasehold / "
+            "managed-freehold LegalEstate (ground-rent, service-charge, or "
+            "buildings-insurance last-demand period; service-charge "
+            "last-decorated period). xsd:date. ONE shared period-start "
+            "property reused across those periods; flat per §Q6a. (FLAG: "
+            "`from` is a generic period-boundary name; reused across the "
+            "estate's recurring date-range blocks rather than minted per "
+            "block.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.buildingsInsurance.lastDemandPeriod.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.groundRent.lastDemandPeriod.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "externally.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "internally.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDemandPeriod.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.insurance."
+                "managedAreaInsured.lastDemandPeriod.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDecoratedPeriod.externally.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDecoratedPeriod.internally.from",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDemandPeriod.from",
+            ),
+        ),
+        (
+            OPDA.to, XSD.date, "to",
+            "End date of a demand / decoration period on the leasehold / "
+            "managed-freehold LegalEstate (mirror of opda:from). xsd:date. "
+            "ONE shared period-end property reused across those periods; flat "
+            "per §Q6a. (FLAG: `to` is a generic period-boundary name; reused "
+            "across the estate's recurring date-range blocks.)",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.buildingsInsurance.lastDemandPeriod.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.groundRent.lastDemandPeriod.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "externally.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "internally.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDemandPeriod.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.insurance."
+                "managedAreaInsured.lastDemandPeriod.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDecoratedPeriod.externally.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDecoratedPeriod.internally.to",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "lastDemandPeriod.to",
+            ),
+        ),
+        (
+            OPDA.year, XSD.gYear, "year",
+            "Calendar year of a service-charge last-decorated period "
+            "(externally / internally) on the leasehold LegalEstate. "
+            "xsd:gYear. Flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "externally.year",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
+                "internally.year",
+            ),
+        ),
+        (
+            OPDA.adHocExpenses, XSD.string, "ad hoc expenses",
+            "Statement of ad-hoc service-charge expenses on the leasehold "
+            "LegalEstate (typed as a string in the data dictionary). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.adHocExpenses",
+            ),
+        ),
+    ]
+    for prop, rng, label, comment, paths in _walk_b_estate:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, OPDA.LegalEstate))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
 
     return g

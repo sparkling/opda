@@ -78,6 +78,38 @@ opda:Seller
     rdfs:subClassOf opda:RoleMixin ;
     skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). Sub-Roles PersonSeller / OrganisationSeller may sortalise the RoleMixin where downstream use requires (per ODR-0006 §Role layer)."@en .
 
+opda:accountName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "account name"@en ;
+    rdfs:comment "Name on the bank account of a leasehold / managed-freehold contact organisation (landlord / managing agent / management company / rentcharge owner / resident-tenants' association). ONE shared property reused across those contact blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain — placed on opda:Organisation, no opda:BankAccount Kind minted.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountName>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountName> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
+
+opda:accountNumber
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "account number"@en ;
+    rdfs:comment "Bank-account number of a contact organisation. xsd:string (a fixed-width numeric identifier — leading zeros significant, per the opda:hasUPRN convention, NOT xsd:integer). ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountNumber> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
+
+opda:aged17OrOverNames
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "aged 17 or over names"@en ;
+    rdfs:comment "Names of occupiers aged 17 or over (other than the Seller) in the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No discriminator)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames> ;
+    rdfs:domain opda:Seller ;
+    rdfs:range xsd:string .
+
+opda:dateOfBirth
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "date of birth"@en ;
+    rdfs:comment "Date of birth of a Person participant. xsd:date. Flat per §Q6a. Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under ODR-0018 (DPV co-annotation in opda-annotations.ttl)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].dateOfBirth> ;
+    rdfs:domain opda:Person ;
+    rdfs:range xsd:date .
+
 opda:hasAssertedCapacity
     rdf:type owl:DatatypeProperty ;
     rdfs:label "has asserted capacity"@en ;
@@ -94,12 +126,75 @@ opda:hasOthersAged17OrOver
     rdfs:domain opda:Seller ;
     rdfs:range xsd:string .
 
+opda:middleNames
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "middle names"@en ;
+    rdfs:comment "Middle name(s) of a Person legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalOwners.namesOfLegalOwners[].middleNames> ;
+    rdfs:domain opda:Person ;
+    rdfs:range xsd:string .
+
+opda:name
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:comment "Generic name/label of a named entity — a participant, school, road, contract template, health-care facility, transport node, or planning designation. ONE shared naming property with NO rdfs:domain: it recurs across 46 polysemous occurrences with no single rigid bearer Kind (the domain-less shared-property convention opda:price / opda:inclusionStatus follow). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous; left domain-less by design rather than forcing one bearer.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#contracts[].contract.template.name>, <https://w3id.org/opda/data-dictionary#participants[].name>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].name>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].name>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].name> ;
+    rdfs:range xsd:string .
+
+opda:numberOfNonUkResidentSellers
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "number of non-UK-resident sellers"@en ;
+    rdfs:comment "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.numberOfNonUkResidentSellers> ;
+    rdfs:domain opda:Proprietorship ;
+    rdfs:range xsd:integer .
+
+opda:numberOfSellers
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "number of sellers"@en ;
+    rdfs:comment "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.numberOfSellers> ;
+    rdfs:domain opda:Proprietorship ;
+    rdfs:range xsd:integer .
+
+opda:organisation
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "organisation"@en ;
+    rdfs:comment "Name of the Organisation a participant is acting for / belongs to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].organisation> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
+
+opda:organisationName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "organisation name"@en ;
+    rdfs:comment "Registered/trading name of an Organisation legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.legalOwners.namesOfLegalOwners[].organisationName> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
+
+opda:organisationReference
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "organisation reference"@en ;
+    rdfs:comment "Reference identifying an Organisation participant within an external system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].organisationReference> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
+
 opda:ownerType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "owner type"@en ;
     rdfs:comment "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:role (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
     rdfs:domain opda:Proprietor ;
+    rdfs:range xsd:string .
+
+opda:reference
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "reference"@en ;
+    rdfs:comment "Payment reference for a contact organisation's bank account. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.reference>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.reference> ;
+    rdfs:domain opda:Organisation ;
     rdfs:range xsd:string .
 
 opda:role
@@ -110,6 +205,22 @@ opda:role
     rdfs:domain opda:RoleMixin ;
     rdfs:range xsd:string ;
     skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:role \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .
+
+opda:sellersCapacityDetails
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sellers capacity details"@en ;
+    rdfs:comment "Free-text detail elaborating a Seller's asserted capacity (companion to opda:hasAssertedCapacity, ODR-0006 §Q4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#participants[].sellersCapacity.sellersCapacityDetails> ;
+    rdfs:domain opda:Seller ;
+    rdfs:range xsd:string .
+
+opda:sortCode
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sort code"@en ;
+    rdfs:comment "Bank sort code of a contact organisation. xsd:string. ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.sortCode>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.sortCode> ;
+    rdfs:domain opda:Organisation ;
+    rdfs:range xsd:string .
 
 opda:hasEvidencedAuthority
     rdf:type owl:ObjectProperty ;

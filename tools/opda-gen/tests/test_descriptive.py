@@ -41,23 +41,28 @@ def test_disclosure_detail_emitted_once() -> None:
 def test_disclosure_detail_is_flat_no_subproperty() -> None:
     """ODR-0022 §Rules.6: the disclosure tail collapses to ONE flat
     property — never a per-question detail property, never a subproperty
-    hierarchy."""
+    hierarchy. The flatness invariant (§Q6a) holds for EVERY descriptive
+    datatype property: none carries rdfs:subPropertyOf."""
     g = descriptive.build_graph()
     assert (OPDA.disclosureDetail, RDFS.subPropertyOf, None) not in g
-    # The descriptive datatype properties minted today are disclosureDetail
+    # The original descriptive datatype properties — disclosureDetail
     # (Category A) + the ODR-0008d Category-E rating-bearing pair
     # (riskIndicator, actionAlertRating) + the ODR-0022 Category-D
-    # sale-transaction fixtures pair (inclusionStatus, price). The ~181
-    # genuine Category-G descriptive datatype properties remain DEFERRED
-    # (ODR-0022 §Rules.6).
+    # sale-transaction fixtures pair (inclusionStatus, price) — plus the
+    # ADR-0031 Category-G curated-walk search / planning / building-control /
+    # risk-assessment / artefact-reference datatype properties (Family D), all
+    # flat per §Q6a.
     dtps = set(g.subjects(RDF.type, OWL.DatatypeProperty))
-    assert dtps == {
+    assert {
         OPDA.disclosureDetail,
         OPDA.riskIndicator,
         OPDA.actionAlertRating,
         OPDA.inclusionStatus,
         OPDA.price,
-    }
+    } <= dtps
+    # §Q6a flatness: NO descriptive datatype property is a subproperty.
+    for dtp in dtps:
+        assert (dtp, RDFS.subPropertyOf, None) not in g
 
 
 def test_disclosure_detail_sources_to_odr_0022_not_a_leaf() -> None:
@@ -170,9 +175,16 @@ def test_risk_assessment_class_emitted() -> None:
 
 
 def test_risk_assessment_in_class_catalogue() -> None:
-    """The module catalogue advertises RiskAssessment (six classes now)."""
+    """The module catalogue advertises RiskAssessment + the ADR-0031 walk's
+    nearby-facilities bearer classes (nine now: the original six Q4a /
+    Category-E promotions + opda:NearbyFacility / School / HealthCareFacility)."""
     assert OPDA.RiskAssessment in descriptive.CLASSES
-    assert len(descriptive.CLASSES) == 6
+    assert {
+        OPDA.NearbyFacility,
+        OPDA.School,
+        OPDA.HealthCareFacility,
+    } <= set(descriptive.CLASSES)
+    assert len(descriptive.CLASSES) == 9
 
 
 def test_category_e_properties_emitted() -> None:
