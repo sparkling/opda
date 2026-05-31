@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: proposed
 date: 2026-05-26
 kind: mapping
 tags: [w3c, vc, did, interop, trust-framework, deferred]
