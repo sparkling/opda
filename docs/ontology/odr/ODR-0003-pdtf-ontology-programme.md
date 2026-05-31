@@ -254,6 +254,7 @@ flowchart LR
 - Treat the identity crux ([ODR-0005](./ODR-0005-property-land-identity-crux.md)) as a hard single-point gate early in the programme: module ODRs (0006–0008) are not drafted in anger until it clears.
 - Re-cut any work already premised on the superseded by-aggregate-page placeholder stubs to the concern partition.
 - Update this anchor as ODRs progress; do not duplicate per-ODR analysis here.
+- **Schema-accommodation scope** (set by [session-031](./council/session-031-schema-accommodation-scope-and-trigger-resolution.md), 2026-05-31). The ontology's job is to accommodate the PDTF JSON schemas **as they exist today**, not to pre-build foundational structure (extra Kinds, namespace splits, identity keys) the current schema does not exercise. Today's schema is fully accommodated at the model level (Category-G **239/239**; A–F per ODR-0022; agents/transactions/claims/governance/address/bounded-contexts ratified + emitted; VC/DID **absent** from the schema). Every deferred foundational promotion (`opda:Room`/`opda:Building` classes, ODR-0008a/b/c, `opda:School`/`opda:HealthCareFacility` Subkinds, `opda:UnitOfLengthScheme`, ODR-0016) is therefore **schema-evolution-gated**: it re-opens when a future PDTF schema version adds the structure that needs it — a monitorable version bump, not a hanging "consumer query" or "identity fact". This is a greenfield build with **no WG**; the directing authority + Linked Data Council are the ratifying bodies.
 
 ## References
 

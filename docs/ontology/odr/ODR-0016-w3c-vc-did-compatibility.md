@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-26
 kind: mapping
 tags: [w3c, vc, did, interop, trust-framework, deferred]
@@ -17,7 +17,7 @@ implements: [ODR-0003]
 
 ## Context
 
-> **Status: deferred-named.** This ODR is created as a placeholder stub per Scope-Check 1 (2026-05-26) Q7c verdict (8-1 NAME the work; 2 strong spawn-now from Davis and Pandit; others "name-but-defer"). Activation triggers are named below in `## Rules`. The session ratifying this ODR (Session 016) does **not** run in Phase 1.
+> **Status: deferred-named — the naming/deferral decision is `accepted`** (greenfield ratification 2026-05-31; no WG). This ODR is created as a placeholder stub per Scope-Check 1 (2026-05-26) Q7c verdict (8-1 NAME the work; 2 strong spawn-now from Davis and Pandit; others "name-but-defer"). What is `accepted` is the *decision to name-and-defer*; the substantive VC/DID `## Rules` binding stays placeholder until an activation trigger fires — now framed as a concrete **schema-evolution** condition (trigger 4 below; [session-031](./council/session-031-schema-accommodation-scope-and-trigger-resolution.md)), since VC/DID structure is **absent from today's PDTF schema** (0 of 8,458 data-dictionary rows). The session ratifying the substantive binding (Session 016) does **not** run in Phase 1.
 
 PDTF carries the word *Trust* in its name and ships a `verifiedClaims` envelope shaped after OIDC4IDA / eIDAS. The PDTF business glossary names Claim, Issuer, Holder, Verifier, Trust Framework — the W3C Verifiable Credentials Data Model 2.0 and DID Core 1.0 lexicon. ODR-0009 (Claims, Evidence & Provenance) cites the W3C VC family by reference and asks (Q8) whether `opda:Claim` is `cred:VerifiableCredential`-compatible, but does not ratify a binding.
 
@@ -40,6 +40,7 @@ Name **ODR-0016 (W3C VC / DID Compatibility Layer)** as a deferred-but-named rec
 1. **Session 009 Q8 surfaces real VC-side decisions** — ODR-0009's deliberation reveals that the `cred:VerifiableCredential` binding cannot be deferred without leaking into the PROV-O backbone.
 2. **Pandit's Phase-2 ambition lands** — ODR-0012's deliberation extends DPV adoption to consent / lawful-basis / purpose class vocabulary, which is W3C VC consent-receipt-shaped.
 3. **A real wallet or DID-method consumer enters scope** — `gov.uk` OneLogin integration, EU eIDAS 2.0 wallet, OPDA-issued credentials for buyer wallet, or any consumer that requires `did:web`/`did:key`/`did:jwk` resolution.
+4. **A PDTF schema version introduces verifiable-credential / DID structure** — any `verifiableCredential` / `credentialSubject` / `did:` / `proof` (signature) field appears in the PDTF data dictionary (today: **0 of 8,458 rows** carry it — [session-031](./council/session-031-schema-accommodation-scope-and-trigger-resolution.md)). This is the concrete schema-evolution re-open condition that replaces the open-ended "reviewed at programme retirement" gate: the binding work begins when the schema gives it something to bind.
 
 **Scope when activated.**
 
@@ -170,7 +171,7 @@ flowchart TD
     T3 --> D
 
     D -->|"yes"| S016["Convene Session 016<br/>(Full Council)"]:::success
-    D -->|"no"| DEFER["ODR-0016 stays proposed;<br/>reviewed at programme retirement"]:::user
+    D -->|"no"| DEFER["ODR-0016 accepted as<br/>deferred-named stub;<br/>binding re-opens on schema evolution"]:::user
 
     S016 --> RULES["Ratify substantive ## Rules:<br/>Claim binding · DID method ·<br/>Signature suites · Status lists ·<br/>JSON-LD context · Truth-makers ·<br/>Consent receipts · eIDAS mapping"]:::success
 ```
@@ -188,7 +189,7 @@ flowchart TD
 - ODR-0012 (Governance) Phase-2 ambition (consent / lawful-basis class vocabulary) has a target ODR for receipt shapes when it activates.
 - Trust Framework citation honoured — the `verifiedClaims` envelope's claim that PDTF *is* a trust framework now has a record committing the framework to interop.
 - Plan §5 adds a Phase 7 (deferred) for Session 016. Cost: zero until activated; one Full Council session when activated.
-- If no activation trigger fires through MVP, this ODR stays `proposed` and is reviewed at programme retirement (ODR-0003 retirement gate).
+- The naming/deferral decision is `accepted` (greenfield, no WG); the substantive VC/DID binding re-opens when a PDTF schema version introduces VC/DID structure (trigger 4) or any named trigger fires — a concrete schema-evolution condition, not a calendar/retirement gate ([session-031](./council/session-031-schema-accommodation-scope-and-trigger-resolution.md)).
 
 ## References
 

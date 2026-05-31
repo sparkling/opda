@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-30
 kind: architecture
 tags: [descriptive-layer, property-categorisation, import-strategy, vocabulary-granularity, skos, shacl-profile, reference-data, yagni]

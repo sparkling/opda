@@ -234,7 +234,7 @@ flowchart LR
 - **A9 pressure-test passes.** This is the second `kind: pattern` ODR that is itself a pattern-extraction record (after ODR-0017 SHACL-AF). The (a)/(b)/(c) discipline applies; this ODR discharges all three (UFO Quality category; five named hard cases for co-annotation identity; Turtle template in annotation graph).
 - **ODR-0012 (Data-Governance Layer) inherits this pattern as authoring contract.** When S012 ratifies, ODR-0012 §Rules will reference ODR-0018 as the canonical mechanism + author the actual DPV triples + variant mapping tables.
 - **`odr-review` lint extension.** Beyond existing planned extensions: any ODR declaring PII-bearing Kinds + variants MUST `implements: [..., ODR-0018]` if it follows the class-level co-annotation pattern; any DPV annotation MUST be in `opda-annotations.ttl` (CI test enforces).
-- **Namespace block carries.** ODR-0018 stays `status: proposed` per inherited ODR-0004 namespace block.
+- **Namespace ratified; record `accepted`.** The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0018 is `accepted`. Generator output may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
 
 ## References
 

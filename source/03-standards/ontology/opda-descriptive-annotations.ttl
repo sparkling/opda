@@ -13,6 +13,7 @@
 
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix dpv-pd: <https://w3id.org/dpv/pd#> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix opda: <https://w3id.org/opda/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -20,9 +21,30 @@
 
 <https://w3id.org/opda/descriptive-annotations/>
     rdf:type owl:Ontology ;
+    rdfs:comment "gUFO typing pass (ADR-0034 / session-029 Q5): the uncontested Quale-in-Region Property descriptive leaves are classified gufo:Quality as an advisory UFO meta-category typing — preserved here in the annotation graph, never the shapes graph (ODR-0010 §Q7a), and never as an owl:Class declaration. This is a classification marker on the attribute, not a claim that the datatype property is a quality particular; the identity criterion remains ODR-0008 §Q5a's. The straddlers (priceQualifier, marketingTenure) and the re-sorter (ownershipType) are omitted pending a rigid one-cell adjudication; tenureKind is a Substance-Kind label, not a Quality."@en ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Descriptive Annotations"@en ;
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+
+opda:builtForm
+    rdf:type gufo:Quality ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> .
+
+opda:centralHeatingFuelType
+    rdf:type gufo:Quality ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> .
+
+opda:councilTaxBand
+    rdf:type gufo:Quality ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> .
+
+opda:currentEnergyRating
+    rdf:type gufo:Quality ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> .
+
+opda:heatingType
+    rdf:type gufo:Quality ;
+    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> .
 
 opda:Comparable
     rdfs:comment "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline."@en ;

@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-30
 tags: [descriptive-layer, category-g, curated-walk, execution-plan, g11-reconciliation]
 supersedes: []

@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-30
 kind: pattern
 tags: [descriptive-layer, authority-retrieved, searches, risk-assessment, prov-o, skos, information-object, sub-module]
@@ -69,7 +69,7 @@ The family hangs off the ODR-0009 PROV-O backbone (`prov:wasGeneratedBy`/`wasAtt
 - **The generator emits a sixth class `opda:RiskAssessment`** (`opda-descriptive.ttl`) + its node shape (`opda-descriptive-shapes.ttl`) extending the existing `prov:wasGeneratedBy` identity-key pattern, **`opda:PerilScheme`** (12 concepts, `opda-vocabularies.ttl`, steward Baker), and the internal property structure of the five existing classes.
 - **A9 meta-category retro-correction:** the five emitted classes' scopeNotes change from "Substance Kind (informational)" to **"Information Object"** — a normative correction (a report is not a Substance Kind). CI verifies all six carry `rdfs:subClassOf prov:Entity` + the `wasGeneratedBy` Violation shape.
 - **This unblocks ODR-0022 Category E emission** (held pending this council) — the search/environmental ~200 leaves bind to `RiskAssessment` + `PerilScheme`, not flat properties; ODR-0023 R1 is struck.
-- **Cagle's held dissent** rides as a re-open trigger; the WG ratifies `proposed → accepted`. The peril scheme + PROV-O wiring proceed unconditionally.
+- **Cagle's held dissent** rides as a re-open trigger; the directing authority / Linked Data Council ratifies `proposed → accepted` (greenfield; no WG) — now **`accepted`**. The peril scheme + PROV-O wiring proceed unconditionally.
 - **status `proposed`**; adoption via OPDA WG → Modelling Sub-Committee.
 
 ## References

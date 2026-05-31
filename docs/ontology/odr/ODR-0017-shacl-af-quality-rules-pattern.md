@@ -169,7 +169,7 @@ flowchart TD
 - **A9 pressure-test continues to operate.** This is the first `kind: pattern` ODR that is itself a pattern-extraction record (not a domain-modelling pattern). The (a)/(b)/(c) discipline applies; this ODR discharges all three (Method/plan code UFO category; five named hard cases for rule identity; Turtle template artefact).
 - **`odr-review` lint extension.** Beyond the existing planned extensions (per ODR-0004 §Consequences), the lint should verify: any SHACL-AF rule declaring `sh:Info` or `sh:Warning` severity is `implements: ODR-0017`; conversely, any ODR `implements: ODR-0017` MUST place its SHACL-AF rule in `opda-shapes.ttl` (not annotation graph) AND MUST use the §1a template structure.
 - **Future succession patterns.** ODR-0006 (Agents & Roles, Phase 3a) may produce a fifth citing site (e.g. NI-number renumbering; passport-renewal succession for Person identity). When it does, ODR-0017 is the canonical pattern to `implements:`; the new rule re-instantiates the template rather than re-deciding the discipline.
-- **Namespace block carries.** ODR-0017 stays `status: proposed` per inherited ODR-0004 namespace block. Generator output for the rule's `opda:` declarations carries `dct:status "draft"` until WG ratifies the namespace string.
+- **Namespace ratified; record `accepted`.** The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0017 is `accepted`. Generator output for the rule's `opda:` declarations may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
 
 ## References
 

@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, namespace, infrastructure, w3c, picg, deployment]
 supersedes: []

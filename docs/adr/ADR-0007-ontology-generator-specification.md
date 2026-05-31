@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-27
 tags: [ontology, generator, code, deterministic, ci, infrastructure]
 supersedes: []

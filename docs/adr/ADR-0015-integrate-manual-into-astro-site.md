@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-28
 tags: [website, documentation, integration, content-collections, dark-mode, mermaid]
 supersedes: []

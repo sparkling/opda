@@ -65,7 +65,7 @@ Chosen option: **Option A**, because it mirrors the ratified `vocabularies.py` s
 - **Dormancy test**: the SHACL-AF CONSTRUCT parses and is present in `opda-shapes.ttl` but is excluded from the active validation profile (fires no result on the 15 exemplars).
 - **`odr-review` / CI guard**: no upstream authority is typed `skos:Concept`; no hand-authored `opda:servesContext` triple exists in source TTL.
 
-## Amendment — Council Session 021 (2026-05-30; pending OPDA WG ratification)
+## Amendment — Council Session 021 (2026-05-30; SUPERSEDED by the Session 022 amendment below)
 
 [Session 021](../ontology/odr/council/session-021-bounded-context-implementation-plan.md) (9-voice Full Council; 9–0 hybrid verdict) revises this ADR's authority model and scope. The governance directive (one-go delivery, full coverage, no gates) places these changes in the **same delivery** as the original five work-items — ADR-0028 and ADR-0029 are executed alongside, not sequenced behind.
 
@@ -75,7 +75,7 @@ Chosen option: **Option A**, because it mirrors the ratified `vocabularies.py` s
 4. **House-style deltas pinned.** The context scheme's emission test pins: (i) every concept carries `skos:topConceptOf` (flat scheme — already work-item 1); (ii) the scheme is kept **out** of the ODR-0011 §8a `ufoCategory` value-vocabulary lint (it is a perspectival facet, none of the seven value categories — governed by ODR-0019/0020); fire the §8a eighth-category re-open trigger only if tooling later demands an explicit triple.
 5. **Scope under the one-go directive.** The "incomplete until the unwritten form-profile emitters land" limitation (Consequences, 4th bullet) **no longer applies as a staged limitation**: ADR-0029 emits **all** profiles and ADR-0028 the **full** 935-leaf descriptive walk + the generated home-pass in the same delivery. The CI baseline is re-pinned once for the complete delivery. No ADR-0005 §G "deferred remainder" row is created — nothing is deferred. (`opda:servesContext` CONSTRUCT activation vs the active validation set remains governed by ODR-0019 Rule 8; delivering it active is a one-line ODR-0019 amendment folded into the same delivery if the WG lifts dormancy.)
 
-## Amendment — Council Session 022 (2026-05-30; SUPERSEDES the Session 021 amendment above; pending OPDA WG ratification)
+## Amendment — Council Session 022 (2026-05-30; SUPERSEDES the Session 021 amendment above; council-ratified — greenfield, no WG)
 
 [Session 022](../ontology/odr/council/session-022-form-shacl-profile-convention.md) (Queen Baker; DA Davis; 6–0) reviewed this ADR against published convention and **reversed the bespoke parts** of the S021 amendment. The emission **shrinks**:
 

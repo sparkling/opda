@@ -63,6 +63,9 @@ from opda_gen.serialiser.canonical import to_canonical_turtle
 OPDA = Namespace("https://w3id.org/opda/#")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD_NS = Namespace("https://w3id.org/dpv/pd#")
+# gUFO (Almeida, Guizzardi et al. 2019) — referenced (reference-not-import)
+# by the ADR-0034 gated typing pass; bound ONLY in the descriptive graph.
+GUFO = Namespace("http://purl.org/nemo/gufo#")
 
 
 # --- Sentinel-pinned constants per the G6 convention ---------------------
@@ -116,6 +119,7 @@ _ODR_0015_S7A = URIRef("https://w3id.org/opda/odr/ODR-0015#section-7a")
 _ODR_0018_RULE1 = URIRef("https://w3id.org/opda/odr/ODR-0018#section-Rule1")
 _ODR_0018_RULE3 = URIRef("https://w3id.org/opda/odr/ODR-0018#section-Rule3")
 _ODR_0018_3A = URIRef("https://w3id.org/opda/odr/ODR-0018#section-3a")
+_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 
 # DPV term URIs (reference-not-import: we cite via URIRef, never imports).
 DPV_PD_NAME = URIRef("https://w3id.org/dpv/pd#Name")
@@ -503,6 +507,44 @@ def build_descriptive_annotations() -> Graph:
             lang="en",
         )))
         g.add((cls, DCTERMS.source, _ODR_0018_RULE1))
+
+    # --- ADR-0034 — gated gUFO rdf:type typing pass (session-029 Q5, 6–0–0)
+    # The uncontested Quale-in-Region Property descriptive leaves carry a
+    # gufo:Quality classification *as a typing* — preserved in this
+    # annotation graph, NEVER the shapes graph (ODR-0010 §Q7a), and never as
+    # an owl:Class declaration. It preserves the UFO Quality insight without
+    # minting the rejected ODR-0008a/b/c namespaces, and is conjunct (i) of
+    # the ODR-0023 R2 re-open trigger. The triple is an advisory meta-category
+    # marker on the attribute (NOT a claim that the datatype property is a
+    # quality particular; the IC stays ODR-0008 §Q5a's). OMITTED pending a
+    # rigid one-cell adjudication: the straddlers priceQualifier /
+    # marketingTenure (Mode/Quality) and the re-sorter ownershipType
+    # (quality-by-type vs legal-estate-by-bearer); and tenureKind (a
+    # Substance-Kind label, not a Quality/Mode).
+    g.bind("gufo", GUFO)
+    g.add((module_iri, RDFS.comment, Literal(
+        "gUFO typing pass (ADR-0034 / session-029 Q5): the uncontested "
+        "Quale-in-Region Property descriptive leaves are classified "
+        "gufo:Quality as an advisory UFO meta-category typing — preserved "
+        "here in the annotation graph, never the shapes graph (ODR-0010 "
+        "§Q7a), and never as an owl:Class declaration. This is a "
+        "classification marker on the attribute, not a claim that the "
+        "datatype property is a quality particular; the identity criterion "
+        "remains ODR-0008 §Q5a's. The straddlers (priceQualifier, "
+        "marketingTenure) and the re-sorter (ownershipType) are omitted "
+        "pending a rigid one-cell adjudication; tenureKind is a "
+        "Substance-Kind label, not a Quality.",
+        lang="en",
+    )))
+    for leaf in (
+        OPDA.currentEnergyRating,
+        OPDA.councilTaxBand,
+        OPDA.builtForm,
+        OPDA.centralHeatingFuelType,
+        OPDA.heatingType,
+    ):
+        g.add((leaf, RDF.type, GUFO.Quality))
+        g.add((leaf, DCTERMS.source, _ODR_0008_Q5A))
 
     return g
 

@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-05-31
 tags: [descriptive-layer, category-g, ci-gates, opda-gen]
 supersedes: []

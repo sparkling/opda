@@ -29,6 +29,8 @@ OPDA = Namespace("https://w3id.org/opda/#")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
+GUFO = Namespace("http://purl.org/nemo/gufo#")
+_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 
 
 MODULE_NAMES = (
@@ -289,6 +291,41 @@ def test_descriptive_epc_baseline(
                 URIRef("https://w3id.org/dpv/pd#PostalAddress"))
     assert expected in g, (
         f"missing EPCCertificate baseline DPV co-annotation: {expected}"
+    )
+
+
+def test_descriptive_gufo_quality_typing(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """ADR-0034 / session-029 Q5 (6–0–0): the uncontested Quale-in-Region
+    Property descriptive leaves carry rdf:type gufo:Quality + dct:source
+    ODR-0008 §Q5a in the descriptive annotation graph; the adjudicated-
+    pending straddlers/re-sorter and the Substance-Kind label do NOT, and no
+    gufo:Mode is asserted (the Mode leaves are the omitted straddlers)."""
+    g = Graph()
+    g.parse(str(emitted_annotations["descriptive"]), format="turtle")
+
+    for leaf in ("currentEnergyRating", "councilTaxBand", "builtForm",
+                 "centralHeatingFuelType", "heatingType"):
+        subj = OPDA[leaf]
+        assert (subj, RDF.type, GUFO.Quality) in g, (
+            f"missing gufo:Quality typing on opda:{leaf}"
+        )
+        assert (subj, DCTERMS.source, _ODR_0008_Q5A) in g, (
+            f"missing dct:source ODR-0008 §Q5a on opda:{leaf}"
+        )
+
+    # Omitted by design (session-029): straddlers + re-sorter + Kind-label.
+    for leaf in ("ownershipType", "priceQualifier", "marketingTenure",
+                 "tenureKind"):
+        assert (OPDA[leaf], RDF.type, GUFO.Quality) not in g, (
+            f"opda:{leaf} must NOT be gufo-typed (adjudicated-pending / "
+            f"out-of-category)"
+        )
+
+    # No uncontested Mode leaf exists, so no gufo:Mode is asserted.
+    assert not list(g.subjects(RDF.type, GUFO.Mode)), (
+        "no gufo:Mode typing expected (the Mode leaves are omitted straddlers)"
     )
 
 
