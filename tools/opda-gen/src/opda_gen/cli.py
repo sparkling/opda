@@ -5,7 +5,7 @@ Realises:
 - ADR-0008 §"CLI design" — Click-based subcommand surface (`emit`,
   `emit-foundation`, `emit-vocabularies`, `emit-module`, `emit-shapes`,
   `emit-profile`, `compose`, `ci-byte-identity`, `ci-three-graph`,
-  `validate-exemplar`).
+  `ci-dup-declaration`, `validate-exemplar`).
 - ADR-0008 §"Confirmation" #2 — `opda-gen --version` returns package version
   plus git SHA.
 - ADR-0009 §"Confirmation" #1 — `emit-foundation` writes the four
@@ -567,6 +567,38 @@ def ci_three_graph(ontology_dir: Path | None) -> None:
     click.echo("three-graph CI: PASS (all 5 checks)")
 
 
+@main.command(name="ci-dup-declaration")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the module TTLs (foundation + vocabularies + "
+        "contexts + per-module class/shape/annotation files). Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+def ci_dup_declaration(ontology_dir: Path | None) -> None:
+    """Fail if any `opda:` term is declared in more than one module TTL.
+
+    Each `opda:` term that is the subject of a defining `rdf:type` (owl:Class,
+    owl:Datatype/Object/AnnotationProperty, rdf:Property, owl:NamedIndividual,
+    skos:Concept, skos:ConceptScheme) MUST be so typed in exactly one module.
+    Guards against the `opda:riskIndicator` regression (declared in both
+    opda-property.ttl and opda-descriptive.ttl with conflicting rdfs:domain).
+    """
+    from opda_gen.ci.dup_declaration_test import run_all
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    violations = run_all(target)
+    if violations:
+        for v in violations:
+            click.echo(f"DUP-DECLARATION VIOLATION: {v}", err=True)
+        sys.exit(1)
+    click.echo("dup-declaration CI: PASS (every opda: term in one module)")
+
+
 @main.command(name="ci-profile-contract")
 @click.option(
     "--ontology-dir",
@@ -647,6 +679,70 @@ def ci_descriptive_roundtrip(ontology_dir: Path | None, strict: bool) -> None:
         sys.exit(1)
     if not report.gaps:
         click.echo("descriptive round-trip CI: PASS (full coverage)")
+
+
+@main.command(name="ci-category-g-coverage")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the emitted module TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help=(
+        "Fail (exit 1) on any uncovered candidate-G leaf or broken collapse "
+        "disposition. Default is report-only: prints coverage and exits 0 "
+        "while the curated Category-G walk is in progress (ADR-0031)."
+    ),
+)
+def ci_category_g_coverage(ontology_dir: Path | None, strict: bool) -> None:
+    """Run the ADR-0031 candidate-G walk coverage gate.
+
+    Reports how much of the curated Category-G walk has landed: every
+    candidate-G leaf (ODR-0022 gate G1) is either minted as an `opda:` term or
+    collapsed into a shared property; uncovered leaves are the remaining work.
+    Local-only: needs the (gitignored) canonical data dictionary, so on a CI
+    checkout without it the command reports UNAVAILABLE and exits 0. Orthogonal
+    to ci-descriptive-roundtrip (which gates SHACL profile round-trip, not TBox
+    emission coverage).
+    """
+    from opda_gen.ci.category_g_coverage_test import run
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run(target)
+    if not report.available:
+        click.echo(
+            "category-G coverage: UNAVAILABLE (canonical data dictionary "
+            "absent — gitignored; run locally)"
+        )
+        return
+    click.echo(
+        f"category-G walk coverage: {report.covered}/{report.candidate_total} "
+        "candidate-G leaves emitted-or-collapsed "
+        f"({len(report.minted)} minted, {len(report.collapsed)} collapsed, "
+        f"{len(report.uncovered)} uncovered)."
+    )
+    shown = report.violations[:15]
+    for v in shown:
+        click.echo(f"  GAP: {v}")
+    if len(report.violations) > len(shown):
+        click.echo(f"  ... and {len(report.violations) - len(shown)} more")
+    if strict and report.violations:
+        for v in report.violations:
+            click.echo(f"CATEGORY-G-COVERAGE VIOLATION: {v}", err=True)
+        sys.exit(1)
+    if report.is_complete:
+        click.echo(
+            "category-G walk coverage: PASS (every candidate-G leaf "
+            "emitted-or-collapsed)"
+        )
 
 
 @main.command(name="emit-exemplar-reports")
