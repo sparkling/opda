@@ -146,6 +146,16 @@ opda:CouncilTaxBandSchemeScotland
     opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; SAA-governed)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
+opda:CurrencyScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Currency"@en ;
+    skos:definition "The currency of an opda:MonetaryAmount — an ISO-4217 alpha-3 currency code. Seeded with the currencies occurring in UK property-pack data (GBP / EUR / USD); extensible to the full ISO-4217 code space as data requires."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R3> ;
+    dct:title "ISO-4217 currency code value-space"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4) — the currency dimension of the monetary-amount quality value-space (the magnitude is the other dimension). DOLCE: Quality-Region (Masolo et al. 2003 D18 §4.3). Value-space governed by ISO 4217."@en ;
+    opda:hasSteward "Baker (deputy Isaac) (enumeration-vocabulary steward per ODR-0011 §8a)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:CurrentEnergyRatingScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Current Energy Rating"@en ;
@@ -987,6 +997,33 @@ opda:YesNoScheme
     dct:source <https://www.saa.gov.uk/council-tax/council-tax-bands/> ;
     skos:inScheme opda:CouncilTaxBandSchemeScotland ;
     skos:notation "I" .
+
+<https://w3id.org/opda/#currency/EUR>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Euro"@en ;
+    skos:definition "Euro (EUR) — for cross-border or non-sterling monetary amounts."@en ;
+    dct:source <https://www.iso.org/iso-4217-currency-codes.html> ;
+    skos:inScheme opda:CurrencyScheme ;
+    skos:notation "EUR" ;
+    skos:topConceptOf opda:CurrencyScheme .
+
+<https://w3id.org/opda/#currency/GBP>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Pound Sterling"@en ;
+    skos:definition "Pound sterling (GBP) — the default currency for UK property transactions; supplied as the default value by the overlay profile (ODR-0024 R3)."@en ;
+    dct:source <https://www.iso.org/iso-4217-currency-codes.html> ;
+    skos:inScheme opda:CurrencyScheme ;
+    skos:notation "GBP" ;
+    skos:topConceptOf opda:CurrencyScheme .
+
+<https://w3id.org/opda/#currency/USD>
+    rdf:type skos:Concept ;
+    skos:prefLabel "US Dollar"@en ;
+    skos:definition "United States dollar (USD) — for non-sterling monetary amounts."@en ;
+    dct:source <https://www.iso.org/iso-4217-currency-codes.html> ;
+    skos:inScheme opda:CurrencyScheme ;
+    skos:notation "USD" ;
+    skos:topConceptOf opda:CurrencyScheme .
 
 <https://w3id.org/opda/#currentEnergyRating/A>
     rdf:type skos:Concept ;

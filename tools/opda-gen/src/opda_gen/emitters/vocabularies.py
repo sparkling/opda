@@ -183,6 +183,8 @@ _DESNZ = URIRef("https://www.gov.uk/government/organisations/department-for-ener
 _LOCAL_AUTHORITY = URIRef("https://www.gov.uk/find-local-council")
 _GROUNDSURE = URIRef("https://www.groundsure.com/")
 _LANDMARK = URIRef("https://www.landmark.co.uk/")
+# ISO 4217 — the currency-code value-space authority (ODR-0024 R3 monetary walk).
+_ISO_4217 = URIRef("https://www.iso.org/iso-4217-currency-codes.html")
 
 # Category-E ratifying ODR-section anchor (the scheme-level `dct:source`,
 # matching the §8a-anchor convention every other scheme uses for its
@@ -199,6 +201,7 @@ _ODR_0008D_RULE_4 = URIRef(
 # data-attested-enum SKOS schemes (construction / price-qualifier / transport /
 # broadband / Ofsted). These are scheme-level `dct:source` anchors (the
 # ratifying Council record), matching the §8a-anchor convention.
+_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
 _ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
 _ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
 # Ofsted authority `dct:source` (ODR-0024 R6 — the OfstedRatingScheme is a
@@ -2654,6 +2657,8 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _transport_type_scheme(),
         _broadband_connection_type_scheme(),
         _ofsted_rating_scheme(),
+        # ODR-0024 R3 — monetary value-structure currency axis -------------
+        _currency_scheme(),
         # ODR-0008d Category E — peril/dataset axis + rating value-space ---
         # (riskIndicator reuses YesNoNotKnownScheme above — no dedicated scheme)
         _peril_scheme(),
@@ -2662,6 +2667,78 @@ def _all_schemes() -> tuple[Scheme, ...]:
         *_category_c_schemes(),
         # ODR-0022 Category D (candidate) — fixtures-checklist items -------
         _fixture_item_scheme(),
+    )
+
+
+def _currency_scheme() -> Scheme:
+    """Build `opda:CurrencyScheme` — the ISO-4217 currency value-space for
+    opda:MonetaryAmount (ODR-0024 R3 / Council session-028 Q3).
+
+    The value-space IS the ISO-4217 alpha-3 code space. The scheme is SEEDED
+    with the currencies that realistically occur in UK property-pack data
+    (GBP the default/top concept, EUR, USD) and is EXTENSIBLE — a further
+    ISO-4217 code is added as a member as data requires it; the
+    MonetaryAmount node shape `sh:in`-restricts opda:currency to the scheme
+    members (exactly as opda:peril is restricted to opda:PerilScheme).
+    Per-member `dct:source` is ISO 4217; the scheme-level source is the
+    ratifying
+    Council rule (ODR-0024 R3). GBP defaults via the overlay profile; the
+    value type is never currency-less (the MonetaryAmount shape makes
+    opda:currency sh:minCount 1).
+    """
+    return Scheme(
+        local_name="CurrencyScheme",
+        slug_base="currency",
+        pref_label="Currency",
+        title="ISO-4217 currency code value-space",
+        definition=(
+            "The currency of an opda:MonetaryAmount — an ISO-4217 alpha-3 "
+            "currency code. Seeded with the currencies occurring in UK "
+            "property-pack data (GBP / EUR / USD); extensible to the full "
+            "ISO-4217 code space as data requires."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4) — the currency "
+            "dimension of the monetary-amount quality value-space (the "
+            "magnitude is the other dimension). DOLCE: Quality-Region "
+            "(Masolo et al. 2003 D18 §4.3). Value-space governed by ISO 4217."
+        ),
+        steward=(
+            "Baker (deputy Isaac) (enumeration-vocabulary steward per "
+            "ODR-0011 §8a)"
+        ),
+        scheme_source=_ODR_0024_R3,
+        members=tuple(
+            Member(
+                notation=code,
+                pref_label=label,
+                definition=defn,
+                member_source=_ISO_4217,
+                top_concept_of=True,
+            )
+            for code, label, defn in (
+                (
+                    "GBP",
+                    "Pound Sterling",
+                    "Pound sterling (GBP) — the default currency for UK "
+                    "property transactions; supplied as the default value by "
+                    "the overlay profile (ODR-0024 R3).",
+                ),
+                (
+                    "EUR",
+                    "Euro",
+                    "Euro (EUR) — for cross-border or non-sterling monetary "
+                    "amounts.",
+                ),
+                (
+                    "USD",
+                    "US Dollar",
+                    "United States dollar (USD) — for non-sterling monetary "
+                    "amounts.",
+                ),
+            )
+        ),
     )
 
 

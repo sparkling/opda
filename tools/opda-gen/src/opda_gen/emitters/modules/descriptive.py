@@ -78,6 +78,7 @@ _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 # license a real-world facility bearer; ODR-0024 R4 supplies the correct
 # warrant (a referenced facility is a mind-independent social-physical endurant
 # with its own IC, not a Property Quality) and the schoolType→SKOS rule.
+_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
 _ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
 
 # ODR-0008d (Authority-Retrieved Artefacts) section anchors — the Category-E
@@ -107,6 +108,11 @@ _ODR_0022_S1 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-1")
 CLASSES = (
     OPDA.Comparable,
     OPDA.EPCCertificate,
+    # ADR-0031 walk + ODR-0024 R3 — the monetary value structure. A by-value
+    # quality-value (magnitude + ISO-4217 currency) reused as the RANGE across
+    # the distinct per-economic-kind monetary properties, each on its own
+    # bearer (NEVER a shared bearer; session-028 Q3 / ODR-0024 R3).
+    OPDA.MonetaryAmount,
     # ADR-0031 walk + ODR-0024 R4 — the nearby-facilities bearer. The genus
     # opda:NearbyFacility is a UFO Substance Kind (a mind-independent endurant
     # with its own IC, NOT a Property Quality); the precise-bearer subkinds
@@ -128,8 +134,28 @@ CLASSES = (
 # to its opda:PerilScheme concept. Both are object properties (their ranges
 # are the RiskAssessment class / a SKOS Concept).
 OBJECT_PROPERTIES = (
+    # ODR-0024 R3 monetary walk — the per-economic-kind monetary properties
+    # (each rdfs:range opda:MonetaryAmount, on its own bearer) + opda:currency
+    # (the value type's currency dimension → opda:CurrencyScheme concept).
+    OPDA.annualCostOfPermit,
+    OPDA.annualGroundRent,
+    OPDA.annualServiceCharge,
+    OPDA.certificateOfComplianceFee,
+    OPDA.costsApplicableToTheDeed,
+    OPDA.councilTaxAnnualCharge,
+    OPDA.currency,
+    OPDA.estimatedAmount,
+    OPDA.estimatedPrice,
+    OPDA.feeIncludingVAT,
     OPDA.hasSubAssessment,
+    OPDA.holdingDeposit,
+    OPDA.listPrice,
     OPDA.peril,
+    OPDA.potentialCost,
+    OPDA.rent,
+    OPDA.securityDeposit,
+    OPDA.sharedOwnershipRent,
+    OPDA.soldPrice,
 )
 
 # Category A reusable disclosure-detail annotation property (ODR-0022 §1) +
@@ -147,6 +173,7 @@ DATATYPE_PROPERTIES = (
     OPDA["yield"],
     OPDA.actionAlertRating,
     OPDA.ageRange,
+    OPDA.amount,
     OPDA.applicationDate,
     OPDA.applicationType,
     OPDA.buildingControlStartDate,
@@ -194,6 +221,48 @@ DATATYPE_PROPERTIES = (
     OPDA.typeOfHealthCare,
     OPDA.unitaryAuthority,
     OPDA.url,
+    # ODR-0024 R5/R6 follow-on walk (ADR-0005 §G23) — the enum + Yes/No
+    # Property/estate attributes the structural C-vs-G rule surfaced.
+    OPDA.constructionType,
+    OPDA.priceQualifier,
+    OPDA.typeOfConnection,
+    OPDA.marketingTenure,
+    OPDA.transportType,
+    OPDA.ofstedRating,
+    OPDA.hasLift,
+    OPDA.isHMO,
+    OPDA.isStudentAccommodation,
+    OPDA.hasFloorplan,
+    OPDA.loftInsulated,
+    OPDA.loftBoarded,
+    OPDA.hasFloodDefences,
+    OPDA.isConnectedToNationalGrid,
+    OPDA.isFirstRegistration,
+    OPDA.isLimitedCompanySale,
+    OPDA.hasHelpToBuyEquityLoan,
+    OPDA.saleAtUndervalue,
+    OPDA.landlordInsuresIfFlat,
+    OPDA.willingToInsure,
+    OPDA.managementPlanInPlace,
+    OPDA.consentsObtained,
+    OPDA.dischargeCompliesWithGBR,
+    OPDA.isLeaseQualifying,
+    OPDA.landlordNotifiedOfSale,
+    OPDA.sellerCompletedDeedOfCertificate,
+    OPDA.dangerousCladdingOrDefects,
+    OPDA.contributionIncludedInServiceCharge,
+    OPDA.isManagingAgentEmployed,
+    OPDA.hasTenantCompanyDissolved,
+    OPDA.headLeaseholderControlled,
+    OPDA.organisesBuildingInsurance,
+    OPDA.sellerOwnedProperty,
+    OPDA.outstandingEnforcementAction,
+    OPDA.urgentWorksCarriedOut,
+    OPDA.urgentWorksRecommended,
+    OPDA.dealsWithDayToDayMaintenanceOfManagedArea,
+    OPDA.freeholdOwner,
+    OPDA.forTheManagedAreas,
+    OPDA.fromTheOwners,
 )
 
 
@@ -543,11 +612,12 @@ def build_graph() -> Graph:
     # ODR-0022 §4: price is the Category-D FIXTURES amount only — ONE shared
     # datatype property (the data dictionary types the fixtures price leaf as a
     # number), bound on the transaction-scoped fixtures-list node alongside
-    # inclusionStatus. A single property, never one per item. Per ODR-0024 R3
-    # the comment NO LONGER claims a "MonetaryAmount pattern": no opda:Monetary-
-    # Amount value type exists in the corpus yet (it is deferred to the
-    # Category-G monetary walk, ODR-0008d item-3). The Category-G headline /
-    # recurring monetary leaves do NOT reuse this property (ODR-0022 §1 / G1).
+    # inclusionStatus. A single property, never one per item. opda:MonetaryAmount
+    # now EXISTS (the Category-G monetary walk, ODR-0024 R3); opda:price
+    # deliberately stays a single-currency interim decimal for the Category-D
+    # fixtures amount and is NOT migrated to it. The Category-G headline /
+    # recurring monetary leaves do NOT reuse this property (they bind
+    # opda:MonetaryAmount on their own bearers; ODR-0022 §1 / G1).
     g.add((OPDA.price, RDF.type, OWL.DatatypeProperty))
     g.add((OPDA.price, RDFS.range, XSD.decimal))
     g.add((OPDA.price, RDFS.label, Literal("price", lang="en")))
@@ -560,9 +630,10 @@ def build_graph() -> Graph:
         "The Category-D fixtures amount ONLY — the Category-G headline / "
         "recurring / refundable monetary leaves (asking price, ground rent, "
         "deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). "
-        "A value-structured MonetaryAmount value type is DEFERRED (ODR-0008d "
-        "item-3 / ODR-0024 R3); until it exists this stays a single-currency "
-        "interim decimal.",
+        "The value-structured opda:MonetaryAmount value type now EXISTS (the "
+        "Category-G monetary walk, ODR-0024 R3); opda:price deliberately "
+        "remains a single-currency interim decimal for the fixtures amount and "
+        "is NOT migrated to it.",
         lang="en",
     )))
     g.add((OPDA.price, DCTERMS.source, _ODR_0022_S4))
@@ -1117,6 +1188,627 @@ def build_graph() -> Graph:
         g.add((OPDA.schoolType, DCTERMS.source, _dd_source(
             f"propertyPack.nearbyFacilities.schools[].schoolType.{_slug}"
         )))
+
+    # ==== Category-G curated walk — the MONETARY walk (ADR-0005 §G22) =======
+    # ODR-0024 R3 / Council session-028 Q3 / ODR-0008d item-3. The headline /
+    # recurring / refundable monetary leaves are NOT collapsed onto the
+    # Category-D fixtures opda:price (that conflates incompatible value
+    # semantics — ODR-0022 §1/§4/G1). Instead a value-structured
+    # opda:MonetaryAmount (magnitude + ISO-4217 currency) is reused as the
+    # RANGE across distinct per-economic-kind properties, each on its OWN
+    # bearer — "reuse the value type, NEVER the bearer" (Guizzardi-required).
+    #
+    # --- opda:MonetaryAmount — the value structure (ODR-0024 R3) ---------
+    g.add((OPDA.MonetaryAmount, RDF.type, OWL.Class))
+    g.add((OPDA.MonetaryAmount, RDFS.label, Literal("Monetary Amount", lang="en")))
+    g.add((OPDA.MonetaryAmount, RDFS.comment, Literal(
+        "A monetary amount as a value structure: a magnitude (opda:amount, "
+        "xsd:decimal) in a currency (opda:currency, an opda:CurrencyScheme "
+        "ISO-4217 concept). UFO: a quality value / abstract value structure — "
+        "NOT an endurant with independent existence and NOT a Quality of any "
+        "bearer. IC (by-value): two opda:MonetaryAmount nodes denote the same "
+        "amount iff equal magnitude AND equal currency. Reused as the rdfs:range "
+        "across the distinct per-economic-kind monetary properties "
+        "(annualGroundRent / annualServiceCharge / rent / holdingDeposit / "
+        "securityDeposit / fees / estimatedPrice / soldPrice / listPrice / …), "
+        "each bound to its OWN bearer — reuse the value type, NEVER the bearer "
+        "(session-028 Q3 / ODR-0024 R3, Guizzardi-required). Distinct from the "
+        "Category-D fixtures opda:price (a single-currency interim decimal "
+        "scoped to fixtures-and-fittings only, ODR-0022 §4/§1/G1). Follows the "
+        "FIBO / schema.org MonetaryAmount pattern (amount + currency).",
+        lang="en",
+    )))
+    g.add((OPDA.MonetaryAmount, SKOS.scopeNote, Literal(
+        "UFO: quality value / abstract individual (Guizzardi 2005 — a value in "
+        "a quality structure, not an endurant). DOLCE: Abstract / "
+        "Quality-Region (Masolo et al. 2003 D18). Value identity is structural "
+        "(magnitude + currency); the currency value-space is governed by "
+        "ISO 4217 (opda:CurrencyScheme).",
+        lang="en",
+    )))
+    g.add((OPDA.MonetaryAmount, DCTERMS.source, _ODR_0024_R3))
+
+    # --- opda:amount — the magnitude dimension (covers the `amount` leaf) -
+    g.add((OPDA.amount, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.amount, RDFS.domain, OPDA.MonetaryAmount))
+    g.add((OPDA.amount, RDFS.range, XSD.decimal))
+    g.add((OPDA.amount, RDFS.label, Literal("amount", lang="en")))
+    g.add((OPDA.amount, RDFS.comment, Literal(
+        "The magnitude of an opda:MonetaryAmount (xsd:decimal) — the numeric "
+        "dimension of the value structure (the currency dimension is "
+        "opda:currency). Covers the data-dictionary `amount` leaf (estate "
+        "rentcharge / service-charge reserve-fund / local-land-charge "
+        "amounts). Flat per ODR-0008 §Q6a.",
+        lang="en",
+    )))
+    for _p in (
+        "propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges.amount",
+        "propertyPack.ownership.ownershipsToBeTransferred[]."
+        "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount",
+        "propertyPack.localSearches.localLandCharges[].amount",
+    ):
+        g.add((OPDA.amount, DCTERMS.source, _dd_source(_p)))
+
+    # --- opda:currency — the currency dimension (→ opda:CurrencyScheme) --
+    g.add((OPDA.currency, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.currency, RDFS.domain, OPDA.MonetaryAmount))
+    g.add((OPDA.currency, RDFS.range, SKOS.Concept))
+    g.add((OPDA.currency, RDFS.label, Literal("currency", lang="en")))
+    g.add((OPDA.currency, RDFS.comment, Literal(
+        "The currency of an opda:MonetaryAmount — a dereferenceable "
+        "opda:CurrencyScheme concept (ISO-4217 alpha-3), NEVER an opaque "
+        "string. The MonetaryAmount node shape makes it sh:minCount 1 (never "
+        "absent on the value type) and sh:in-restricts it to the scheme; the "
+        "overlay profile supplies GBP as the default (ODR-0024 R3).",
+        lang="en",
+    )))
+    g.add((OPDA.currency, DCTERMS.source, _ODR_0024_R3))
+
+    # --- The 16 per-economic-kind monetary properties (range MonetaryAmount)
+    # Bearer per the data-dictionary path: LegalEstate (lease/estate tenure
+    # charges), Property (council-tax / parking / letting / building-safety),
+    # Valuation (comparable + estimate pricing), Transaction (transfer/notice
+    # fees + deed costs). Each flat per §Q6a; rdfs:range opda:MonetaryAmount.
+    _fee_base = "propertyPack.ownership.ownershipsToBeTransferred[]"
+    _fee_paths = tuple(
+        f"{_fee_base}.{branch}.{party}.feeIncludingVAT"
+        for branch, parties in (
+            (
+                "managedFreeholdOrCommonholdInformation.contactDetails."
+                "noticeOfTransferAndCharge",
+                ("rentchargeOwner", "managementCompany", "managingAgent",
+                 "legalRepresentative", "other"),
+            ),
+            (
+                "leaseholdInformation.contactDetails.serviceContactAssignments."
+                "noticeOfAssignmentAndCharge",
+                ("landlord", "managementCompany", "managingAgent", "other"),
+            ),
+            (
+                "leaseholdInformation.contactDetails.serviceContactAssignments."
+                "noticeOfTransferAndCharge",
+                ("rentchargeOwner", "managementCompany", "managingAgent",
+                 "legalRepresentative", "other"),
+            ),
+        )
+        for party in parties
+    )
+    _walk_monetary: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+        # --- LegalEstate-borne (lease / estate tenure charges) ------------
+        (
+            OPDA.annualGroundRent, OPDA.LegalEstate, "annual ground rent",
+            "Annual ground rent payable under a leasehold estate. Bearer "
+            "opda:LegalEstate (a tenure charge of the leasehold, not a "
+            "Quality of the brick-and-mortar Property). → opda:MonetaryAmount "
+            "(ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.groundRent.annualGroundRent",),
+        ),
+        (
+            OPDA.annualServiceCharge, OPDA.LegalEstate, "annual service charge",
+            "Annual service charge payable under a leasehold or managed "
+            "freehold/commonhold estate. Bearer opda:LegalEstate. → "
+            "opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.serviceCharge."
+                "annualServiceCharge",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.serviceCharge.annualServiceCharge",
+            ),
+        ),
+        (
+            OPDA.certificateOfComplianceFee, OPDA.LegalEstate,
+            "certificate of compliance fee",
+            "Fee for a certificate of compliance required on a leasehold "
+            "transfer (required-documents block). Bearer opda:LegalEstate. → "
+            "opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.requiredDocuments.certificateOfComplianceFee",),
+        ),
+        (
+            OPDA.sharedOwnershipRent, OPDA.LegalEstate, "shared ownership rent",
+            "Rent payable on the retained share under a shared-ownership "
+            "lease. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 "
+            "R3); flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.sharedOwnership.sharedOwnershipRent",),
+        ),
+        # --- Property-borne (council tax / parking / letting / safety) ----
+        (
+            OPDA.councilTaxAnnualCharge, OPDA.Property,
+            "council tax annual charge",
+            "Annual council-tax charge for the Property. Bearer opda:Property "
+            "(a recurring liability of the dwelling). → opda:MonetaryAmount "
+            "(ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.councilTax.councilTaxAnnualCharge",),
+        ),
+        (
+            OPDA.annualCostOfPermit, OPDA.Property, "annual cost of permit",
+            "Annual cost of a controlled-parking permit for the Property. "
+            "Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat "
+            "per §Q6a.",
+            ("propertyPack.parking.controlledParking.annualCostOfPermit",),
+        ),
+        (
+            OPDA.rent, OPDA.Property, "rent",
+            "Rent in the Property's letting information. Bearer opda:Property "
+            "(letting terms of the dwelling; no Tenancy Kind is minted — "
+            "promote on a named query). → opda:MonetaryAmount (ODR-0024 R3); "
+            "flat per §Q6a.",
+            ("propertyPack.lettingInformation.rent",),
+        ),
+        (
+            OPDA.holdingDeposit, OPDA.Property, "holding deposit",
+            "Holding deposit in the Property's letting information (refundable "
+            "— distinct value semantics from a sale price). Bearer "
+            "opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.lettingInformation.holdingDeposit",),
+        ),
+        (
+            OPDA.securityDeposit, OPDA.Property, "security deposit",
+            "Security/tenancy deposit in the Property's letting information "
+            "(refundable). Bearer opda:Property. → opda:MonetaryAmount "
+            "(ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.lettingInformation.securityDeposit",),
+        ),
+        (
+            OPDA.potentialCost, OPDA.Property, "potential cost",
+            "Potential remediation cost in the Property's building-safety "
+            "disclosure (council session-028 Q3 re-filed this monetary leaf "
+            "from free-text to the monetary walk; the data-dictionary source "
+            "is free text, so the magnitude is best-effort). Bearer "
+            "opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+            ("propertyPack.typeOfConstruction.buildingSafety.potentialCost",),
+        ),
+        # --- Valuation-borne (comparable + estimate pricing) --------------
+        (
+            OPDA.estimatedPrice, OPDA.Valuation, "estimated price",
+            "Estimated sale price in a Valuation's pricing analysis. Bearer "
+            "opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per "
+            "§Q6a.",
+            ("valuationComparisonData.propertyPricing.estimatedPrice",),
+        ),
+        (
+            OPDA.estimatedAmount, OPDA.Valuation, "estimated amount",
+            "Estimated rental amount in a Valuation's rental-estimate "
+            "analysis. Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 "
+            "R3); flat per §Q6a.",
+            ("valuationComparisonData.propertyPricing.rentalEstimate."
+             "estimatedAmount",),
+        ),
+        (
+            OPDA.listPrice, OPDA.Valuation, "list price",
+            "List price of a comparable property (valuation comparable "
+            "listing info). Bearer opda:Valuation. → opda:MonetaryAmount "
+            "(ODR-0024 R3); flat per §Q6a.",
+            ("valuationComparisonData.propertyDetails[].propertyListingInfo."
+             "listPrice",),
+        ),
+        (
+            OPDA.soldPrice, OPDA.Valuation, "sold price",
+            "Sold price of a comparable property (valuation comparable "
+            "listing info). Bearer opda:Valuation. → opda:MonetaryAmount "
+            "(ODR-0024 R3); flat per §Q6a.",
+            ("valuationComparisonData.propertyDetails[].propertyListingInfo."
+             "soldPrice",),
+        ),
+        # --- Transaction-borne (transfer / notice fees + deed costs) ------
+        (
+            OPDA.costsApplicableToTheDeed, OPDA.Transaction,
+            "costs applicable to the deed",
+            "Costs applicable to a deed of covenant required on transfer. "
+            "Bearer opda:Transaction (a completion/transfer cost, not a "
+            "standing estate charge). → opda:MonetaryAmount (ODR-0024 R3); "
+            "flat per §Q6a.",
+            (
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "managedFreeholdOrCommonholdInformation.transferAndRegistration."
+                "deedOfCovenantRequired.costsApplicableToTheDeed",
+                "propertyPack.ownership.ownershipsToBeTransferred[]."
+                "leaseholdInformation.transferAndRegistration."
+                "deedOfCovenantRequired.costsApplicableToTheDeed",
+            ),
+        ),
+        (
+            OPDA.feeIncludingVAT, OPDA.Transaction, "fee including VAT",
+            "Fee (including VAT) charged by a party for serving a notice of "
+            "transfer / assignment / charge during conveyancing. Bearer "
+            "opda:Transaction (a transfer-process fee). → opda:MonetaryAmount "
+            "(ODR-0024 R3); ONE shared property across the notice-fee blocks; "
+            "flat per §Q6a.",
+            _fee_paths,
+        ),
+    ]
+    for prop, domain, label, comment, paths in _walk_monetary:
+        g.add((prop, RDF.type, OWL.ObjectProperty))
+        g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, OPDA.MonetaryAmount))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # ==== Category-G curated walk — the R5-surfaced follow-on (§G23) ========
+    # ODR-0024 R5/R6: the structural C-vs-G rule grew candidate-G 188→239 by
+    # surfacing enum-bearing attributes + substantive yes/no Property/estate
+    # facts the old 7-name allow-list mis-binned to Category C. Each is a flat
+    # datatype property per ODR-0008 §Q5a, flat per §Q6a; range from the
+    # data-dictionary `type` (xsd:string for the Yes/No/Not-known disclosure
+    # answers + the enum labels; xsd:decimal for the two reserve-fund splits).
+    # SIX enum leaves are value-spaced over their ODR-0024 R6 SKOS schemes
+    # (construction / price-qualifier / transport / broadband / Ofsted) +
+    # marketingTenure over the existing TenureKindScheme (reuse-before-mint) —
+    # sh:in-restricted via the descriptive enum shapes (shapes.py, the
+    # sh:targetSubjectsOf idiom; no overlay required).
+    _walk_r5: list[
+        tuple[URIRef, URIRef, URIRef, str, str, tuple[str, ...]]
+    ] = [
+        # --- Property-borne enum leaves (→ ODR-0024 R6 SKOS schemes) -------
+        (
+            OPDA.constructionType, OPDA.Property, XSD.string,
+            "construction type",
+            "Structural construction type of the Property (brick-and-block / "
+            "timber frame / SIP / …) — value-space opda:ConstructionTypeScheme "
+            "(ODR-0024 R6), sh:in-restricted via the descriptive enum shape. "
+            "A Quale of opda:Property; flat per §Q6a.",
+            ("propertyPack.surveys[].misc.constructionType",),
+        ),
+        (
+            OPDA.priceQualifier, OPDA.Property, XSD.string, "price qualifier",
+            "Qualifier on the marketed price (Guide price / Offers over / …) — "
+            "value-space opda:PriceQualifierScheme (ODR-0024 R6), "
+            "sh:in-restricted via the descriptive enum shape. Borne on "
+            "opda:Property (the marketing price information); the Mode-vs-"
+            "Quality nuance is held by session-029. Flat per §Q6a.",
+            ("propertyPack.priceInformation.priceQualifier",),
+        ),
+        (
+            OPDA.typeOfConnection, OPDA.Property, XSD.string,
+            "type of connection",
+            "Broadband connection type of the Property (FTTP / FTTC / cable / "
+            "…) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), "
+            "sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+            ("propertyPack.connectivity.broadband.typeOfConnection",),
+        ),
+        (
+            OPDA.marketingTenure, OPDA.Property, XSD.string, "marketing tenure",
+            "Marketed tenure of the Property (Freehold / Leasehold / "
+            "Commonhold) — value-space the existing opda:TenureKindScheme "
+            "(ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), "
+            "sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+            ("propertyPack.marketingTenure",),
+        ),
+        # --- NearbyFacility-borne enum leaves (genus bearer, as schoolType) -
+        (
+            OPDA.transportType, OPDA.NearbyFacility, XSD.string,
+            "transport type",
+            "Type of a nearby transport facility (rail station / bus stop / "
+            "…) — value-space opda:TransportTypeScheme (ODR-0024 R6), "
+            "sh:in-restricted via the descriptive enum shape. Domain "
+            "opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat "
+            "per §Q6a.",
+            ("propertyPack.nearbyFacilities.transport[].transportType",),
+        ),
+        (
+            OPDA.ofstedRating, OPDA.NearbyFacility, XSD.string, "Ofsted rating",
+            "Ofsted rating of a nearby school (Outstanding / Good / …) — "
+            "value-space opda:OfstedRatingScheme (ODR-0024 R6), "
+            "sh:in-restricted via the descriptive enum shape. Domain "
+            "opda:NearbyFacility (the genus bearer). Flat per §Q6a.",
+            ("propertyPack.nearbyFacilities.schools[].ofstedRating",),
+        ),
+        # --- Property-borne Yes/No / disclosure flags (xsd:string) --------
+        (
+            OPDA.hasLift, OPDA.Property, XSD.string, "has lift",
+            "Whether the Property (building) has a lift. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.buildInformation.building.hasLift",),
+        ),
+        (
+            OPDA.isHMO, OPDA.Property, XSD.string, "is HMO",
+            "Whether the Property is a House in Multiple Occupation. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.buildInformation.isHMO",),
+        ),
+        (
+            OPDA.isStudentAccommodation, OPDA.Property, XSD.string,
+            "is student accommodation",
+            "Whether the Property is student accommodation. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.buildInformation.isStudentAccommodation",),
+        ),
+        (
+            OPDA.hasFloorplan, OPDA.Property, XSD.string, "has floorplan",
+            "Whether a floorplan is available for the Property. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.buildInformation.roomDimensions.hasFloorplan",),
+        ),
+        (
+            OPDA.loftInsulated, OPDA.Property, XSD.string, "loft insulated",
+            "Whether the Property's loft is insulated. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.typeOfConstruction.loft.loftInsulated",),
+        ),
+        (
+            OPDA.loftBoarded, OPDA.Property, XSD.string, "loft boarded",
+            "Whether the Property's loft is boarded. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.typeOfConstruction.loft.loftBoarded",),
+        ),
+        (
+            OPDA.hasFloodDefences, OPDA.Property, XSD.string,
+            "has flood defences",
+            "Whether the Property has flood defences. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.environmentalIssues.flooding.floodDefences."
+             "hasFloodDefences",),
+        ),
+        (
+            OPDA.isConnectedToNationalGrid, OPDA.Property, XSD.string,
+            "is connected to national grid",
+            "Whether the Property's solar panels are connected to the national "
+            "grid. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.electricity.solarPanels.isConnectedToNationalGrid",),
+        ),
+        (
+            OPDA.isFirstRegistration, OPDA.Property, XSD.string,
+            "is first registration",
+            "Whether the sale is a first registration of the title. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.isFirstRegistration",),
+        ),
+        (
+            OPDA.isLimitedCompanySale, OPDA.Property, XSD.string,
+            "is limited company sale",
+            "Whether the seller is a limited company. Yes/No disclosure; "
+            "xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.isLimitedCompanySale",),
+        ),
+        (
+            OPDA.hasHelpToBuyEquityLoan, OPDA.Property, XSD.string,
+            "has Help to Buy equity loan",
+            "Whether the Property has a Help to Buy equity loan. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.hasHelpToBuyEquityLoan",),
+        ),
+        (
+            OPDA.saleAtUndervalue, OPDA.Property, XSD.string,
+            "sale at undervalue",
+            "Whether the sale is at undervalue. Yes/No disclosure (price "
+            "information); xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.priceInformation.saleAtUndervalue",),
+        ),
+        (
+            OPDA.landlordInsuresIfFlat, OPDA.Property, XSD.string,
+            "landlord insures if flat",
+            "Whether the landlord arranges buildings insurance (flat). Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.insurance.landlordInsuresIfFlat",),
+        ),
+        (
+            OPDA.willingToInsure, OPDA.Property, XSD.string, "willing to insure",
+            "Whether an insurer is willing to insure against an unresolved "
+            "planning issue. Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.alterationsAndChanges.unresolvedPlanningIssues."
+             "willingToInsure",),
+        ),
+        (
+            OPDA.managementPlanInPlace, OPDA.Property, XSD.string,
+            "management plan in place",
+            "Whether a Japanese-knotweed management plan is in place. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.specialistIssues.japaneseKnotweed."
+             "managementPlanInPlace",),
+        ),
+        (
+            OPDA.consentsObtained, OPDA.Property, XSD.string,
+            "consents obtained",
+            "Whether consents were obtained for work under a tree-preservation "
+            "order. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.listingAndConservation.hasTreePreservationOrder."
+             "workCarriedOut.consentsObtained",),
+        ),
+        (
+            OPDA.dischargeCompliesWithGBR, OPDA.Property, XSD.string,
+            "discharge complies with GBR",
+            "Whether off-mains drainage discharge complies with the General "
+            "Binding Rules. Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
+             "offMainsDrainageSystem.plantDrainsIntoWaterway."
+             "dischargeCompliesWithGBR",),
+        ),
+        # --- LegalEstate-borne flags + references (lease / estate) ---------
+        (
+            OPDA.isLeaseQualifying, OPDA.LegalEstate, XSD.string,
+            "is lease qualifying",
+            "Whether the lease is a qualifying lease under the Building Safety "
+            "Act. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingSafetyAct.isLeaseQualifying",),
+        ),
+        (
+            OPDA.landlordNotifiedOfSale, OPDA.LegalEstate, XSD.string,
+            "landlord notified of sale",
+            "Whether the landlord has been notified of the sale (Building "
+            "Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale",),
+        ),
+        (
+            OPDA.sellerCompletedDeedOfCertificate, OPDA.LegalEstate, XSD.string,
+            "seller completed deed of certificate",
+            "Whether the seller completed a deed of certificate (Building "
+            "Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingSafetyAct.deedOfCertificateServed."
+             "sellerCompletedDeedOfCertificate",),
+        ),
+        (
+            OPDA.dangerousCladdingOrDefects, OPDA.LegalEstate, XSD.string,
+            "dangerous cladding or defects",
+            "Whether there is dangerous cladding or building-safety defects. "
+            "Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.serviceCharge.dangerousCladdingOrDefects",),
+        ),
+        (
+            OPDA.contributionIncludedInServiceCharge, OPDA.LegalEstate,
+            XSD.string, "contribution included in service charge",
+            "Whether a reserve-fund contribution is included in the service "
+            "charge. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.serviceCharge.reserveFund."
+             "contributionIncludedInServiceCharge",),
+        ),
+        (
+            OPDA.isManagingAgentEmployed, OPDA.LegalEstate, XSD.string,
+            "is managing agent employed",
+            "Whether a managing agent is employed for the estate. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.ownershipAndManagement."
+             "isManagingAgentEmployed",),
+        ),
+        (
+            OPDA.hasTenantCompanyDissolved, OPDA.LegalEstate, XSD.string,
+            "has tenant company dissolved",
+            "Whether the tenant management company has been dissolved. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.ownershipAndManagement."
+             "hasTenantCompanyDissolved",),
+        ),
+        (
+            OPDA.headLeaseholderControlled, OPDA.LegalEstate, XSD.string,
+            "head leaseholder controlled",
+            "Whether the head lease is leaseholder-controlled. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.ownershipAndManagement.hasHeadlease."
+             "headLeaseholderControlled",),
+        ),
+        (
+            OPDA.organisesBuildingInsurance, OPDA.LegalEstate, XSD.string,
+            "organises building insurance",
+            "Whether the service contact organises buildings insurance. Yes/No "
+            "disclosure; xsd:string per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.contactDetails.serviceContactAssignments."
+             "organisesBuildingInsurance",),
+        ),
+        (
+            OPDA.sellerOwnedProperty, OPDA.LegalEstate, XSD.string,
+            "seller owned property",
+            "Whether the seller owned the property for enfranchisement "
+            "qualification. Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.enfranchisement.sellerOwnedProperty",),
+        ),
+        (
+            OPDA.outstandingEnforcementAction, OPDA.LegalEstate, XSD.string,
+            "outstanding enforcement action",
+            "Whether there is outstanding enforcement action (managed-area "
+            "risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat "
+            "per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingsInsurance."
+             "managedAreasCoveredByPolicy.riskAssessments."
+             "outstandingEnforcementAction",),
+        ),
+        (
+            OPDA.urgentWorksCarriedOut, OPDA.LegalEstate, XSD.string,
+            "urgent works carried out",
+            "Whether urgent works were carried out (managed-area risk "
+            "assessment). Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingsInsurance."
+             "managedAreasCoveredByPolicy.riskAssessments."
+             "urgentWorksCarriedOut",),
+        ),
+        (
+            OPDA.urgentWorksRecommended, OPDA.LegalEstate, XSD.string,
+            "urgent works recommended",
+            "Whether urgent works were recommended (managed-area risk "
+            "assessment). Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.buildingsInsurance."
+             "managedAreasCoveredByPolicy.riskAssessments."
+             "urgentWorksRecommended",),
+        ),
+        (
+            OPDA.dealsWithDayToDayMaintenanceOfManagedArea, OPDA.LegalEstate,
+            XSD.string, "deals with day-to-day maintenance of managed area",
+            "Whether the contact deals with day-to-day maintenance of the "
+            "managed area. Yes/No disclosure; xsd:string per §Q5a; flat per "
+            "§Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "managedFreeholdOrCommonholdInformation.contactDetails."
+             "dealsWithDayToDayMaintenanceOfManagedArea",),
+        ),
+        (
+            OPDA.freeholdOwner, OPDA.LegalEstate, XSD.string, "freehold owner",
+            "Freehold owner named in the leasehold ownership-and-management "
+            "block (a reference/name string, not a Yes/No flag). xsd:string "
+            "per §Q5a; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "leaseholdInformation.ownershipAndManagement.freeholdOwner",),
+        ),
+        (
+            OPDA.forTheManagedAreas, OPDA.LegalEstate, XSD.decimal,
+            "for the managed areas",
+            "Portion of the service-charge reserve-fund amount attributable to "
+            "the managed areas (a numeric split of the reserve fund). "
+            "xsd:decimal; flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund."
+             "amount.forTheManagedAreas",),
+        ),
+        (
+            OPDA.fromTheOwners, OPDA.LegalEstate, XSD.decimal, "from the owners",
+            "Portion of the service-charge reserve-fund amount contributed by "
+            "the owners (a numeric split of the reserve fund). xsd:decimal; "
+            "flat per §Q6a.",
+            ("propertyPack.ownership.ownershipsToBeTransferred[]."
+             "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund."
+             "amount.fromTheOwners",),
+        ),
+    ]
+    for prop, domain, rng, label, comment, paths in _walk_r5:
+        g.add((prop, RDF.type, OWL.DatatypeProperty))
+        g.add((prop, RDFS.domain, domain))
+        g.add((prop, RDFS.range, rng))
+        g.add((prop, RDFS.label, Literal(label, lang="en")))
+        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        for p in paths:
+            g.add((prop, DCTERMS.source, _dd_source(p)))
 
     # --- Held-as-live conditional stubs (Davis S008 Q4 dissent) ---------
     # Per ADR-0011 §"Per-module detail" — Building and Room class

@@ -38,6 +38,13 @@ opda:EPCCertificate
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a)."@en .
 
+opda:MonetaryAmount
+    rdf:type owl:Class ;
+    rdfs:label "Monetary Amount"@en ;
+    rdfs:comment "A monetary amount as a value structure: a magnitude (opda:amount, xsd:decimal) in a currency (opda:currency, an opda:CurrencyScheme ISO-4217 concept). UFO: a quality value / abstract value structure — NOT an endurant with independent existence and NOT a Quality of any bearer. IC (by-value): two opda:MonetaryAmount nodes denote the same amount iff equal magnitude AND equal currency. Reused as the rdfs:range across the distinct per-economic-kind monetary properties (annualGroundRent / annualServiceCharge / rent / holdingDeposit / securityDeposit / fees / estimatedPrice / soldPrice / listPrice / …), each bound to its OWN bearer — reuse the value type, NEVER the bearer (session-028 Q3 / ODR-0024 R3, Guizzardi-required). Distinct from the Category-D fixtures opda:price (a single-currency interim decimal scoped to fixtures-and-fittings only, ODR-0022 §4/§1/G1). Follows the FIBO / schema.org MonetaryAmount pattern (amount + currency)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R3> ;
+    skos:scopeNote "UFO: quality value / abstract individual (Guizzardi 2005 — a value in a quality structure, not an endurant). DOLCE: Abstract / Quality-Region (Masolo et al. 2003 D18). Value identity is structural (magnitude + currency); the currency value-space is governed by ISO 4217 (opda:CurrencyScheme)."@en .
+
 opda:NearbyFacility
     rdf:type owl:Class ;
     rdfs:label "Nearby Facility"@en ;
@@ -93,6 +100,14 @@ opda:ageRange
     rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
+opda:amount
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "amount"@en ;
+    rdfs:comment "The magnitude of an opda:MonetaryAmount (xsd:decimal) — the numeric dimension of the value structure (the currency dimension is opda:currency). Covers the data-dictionary `amount` leaf (estate rentcharge / service-charge reserve-fund / local-land-charge amounts). Flat per ODR-0008 §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localLandCharges[].amount>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges.amount>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount> ;
+    rdfs:domain opda:MonetaryAmount ;
+    rdfs:range xsd:decimal .
+
 opda:applicationDate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "application date"@en ;
@@ -116,6 +131,30 @@ opda:buildingControlStartDate
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate> ;
     rdfs:domain opda:Search ;
     rdfs:range xsd:date .
+
+opda:consentsObtained
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "consents obtained"@en ;
+    rdfs:comment "Whether consents were obtained for work under a tree-preservation order. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:constructionType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "construction type"@en ;
+    rdfs:comment "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.surveys[].misc.constructionType> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:contributionIncludedInServiceCharge
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "contribution included in service charge"@en ;
+    rdfs:comment "Whether a reserve-fund contribution is included in the service charge. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
 
 opda:councilSearchTurnaroundTimeInWorkingDays
     rdf:type owl:DatatypeProperty ;
@@ -141,6 +180,14 @@ opda:credibilitySources
     rdfs:domain opda:Valuation ;
     rdfs:range xsd:string .
 
+opda:dangerousCladdingOrDefects
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "dangerous cladding or defects"@en ;
+    rdfs:comment "Whether there is dangerous cladding or building-safety defects. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.dangerousCladdingOrDefects> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:dateRemedialActionRequired
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date remedial action required"@en ;
@@ -148,6 +195,14 @@ opda:dateRemedialActionRequired
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired> ;
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:date .
+
+opda:dealsWithDayToDayMaintenanceOfManagedArea
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "deals with day-to-day maintenance of managed area"@en ;
+    rdfs:comment "Whether the contact deals with day-to-day maintenance of the managed area. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
 
 opda:decision
     rdf:type owl:DatatypeProperty ;
@@ -171,6 +226,14 @@ opda:designationType
     rdfs:comment "Type of a planning designation recorded in a local-authority Search result (e.g. conservation area, tree preservation order). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].designationType> ;
     rdfs:domain opda:Search ;
+    rdfs:range xsd:string .
+
+opda:dischargeCompliesWithGBR
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "discharge complies with GBR"@en ;
+    rdfs:comment "Whether off-mains drainage discharge complies with the General Binding Rules. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.plantDrainsIntoWaterway.dischargeCompliesWithGBR> ;
+    rdfs:domain opda:Property ;
     rdfs:range xsd:string .
 
 opda:disclosureDetail
@@ -235,11 +298,155 @@ opda:filedUnder
     rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:string .
 
+opda:forTheManagedAreas
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "for the managed areas"@en ;
+    rdfs:comment "Portion of the service-charge reserve-fund amount attributable to the managed areas (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:decimal .
+
+opda:freeholdOwner
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "freehold owner"@en ;
+    rdfs:comment "Freehold owner named in the leasehold ownership-and-management block (a reference/name string, not a Yes/No flag). xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.freeholdOwner> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:fromTheOwners
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "from the owners"@en ;
+    rdfs:comment "Portion of the service-charge reserve-fund amount contributed by the owners (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:decimal .
+
+opda:hasFloodDefences
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has flood defences"@en ;
+    rdfs:comment "Whether the Property has flood defences. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.environmentalIssues.flooding.floodDefences.hasFloodDefences> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:hasFloorplan
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has floorplan"@en ;
+    rdfs:comment "Whether a floorplan is available for the Property. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.roomDimensions.hasFloorplan> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:hasHelpToBuyEquityLoan
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has Help to Buy equity loan"@en ;
+    rdfs:comment "Whether the Property has a Help to Buy equity loan. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.hasHelpToBuyEquityLoan> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:hasLift
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has lift"@en ;
+    rdfs:comment "Whether the Property (building) has a lift. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.hasLift> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:hasTenantCompanyDissolved
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "has tenant company dissolved"@en ;
+    rdfs:comment "Whether the tenant management company has been dissolved. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:headLeaseholderControlled
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "head leaseholder controlled"@en ;
+    rdfs:comment "Whether the head lease is leaseholder-controlled. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:inclusionStatus
     rdf:type owl:DatatypeProperty ;
     rdfs:label "inclusion status"@en ;
     rdfs:comment "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
+    rdfs:range xsd:string .
+
+opda:isConnectedToNationalGrid
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is connected to national grid"@en ;
+    rdfs:comment "Whether the Property's solar panels are connected to the national grid. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.electricity.solarPanels.isConnectedToNationalGrid> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:isFirstRegistration
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is first registration"@en ;
+    rdfs:comment "Whether the sale is a first registration of the title. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.isFirstRegistration> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:isHMO
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is HMO"@en ;
+    rdfs:comment "Whether the Property is a House in Multiple Occupation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.isHMO> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:isLeaseQualifying
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is lease qualifying"@en ;
+    rdfs:comment "Whether the lease is a qualifying lease under the Building Safety Act. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.isLeaseQualifying> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:isLimitedCompanySale
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is limited company sale"@en ;
+    rdfs:comment "Whether the seller is a limited company. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.isLimitedCompanySale> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:isManagingAgentEmployed
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is managing agent employed"@en ;
+    rdfs:comment "Whether a managing agent is employed for the estate. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.isManagingAgentEmployed> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:isStudentAccommodation
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is student accommodation"@en ;
+    rdfs:comment "Whether the Property is student accommodation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.isStudentAccommodation> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:landlordInsuresIfFlat
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "landlord insures if flat"@en ;
+    rdfs:comment "Whether the landlord arranges buildings insurance (flat). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.insurance.landlordInsuresIfFlat> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:landlordNotifiedOfSale
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "landlord notified of sale"@en ;
+    rdfs:comment "Whether the landlord has been notified of the sale (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale> ;
+    rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
 opda:listedDate
@@ -266,12 +473,52 @@ opda:localAuthorityReference
     rdfs:domain opda:Search ;
     rdfs:range xsd:string .
 
+opda:loftBoarded
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "loft boarded"@en ;
+    rdfs:comment "Whether the Property's loft is boarded. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.loft.loftBoarded> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:loftInsulated
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "loft insulated"@en ;
+    rdfs:comment "Whether the Property's loft is insulated. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.loft.loftInsulated> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:managementPlanInPlace
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "management plan in place"@en ;
+    rdfs:comment "Whether a Japanese-knotweed management plan is in place. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.specialistIssues.japaneseKnotweed.managementPlanInPlace> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
+opda:marketingTenure
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "marketing tenure"@en ;
+    rdfs:comment "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.marketingTenure> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
 opda:mediaUrl
     rdf:type owl:DatatypeProperty ;
     rdfs:label "media URL"@en ;
     rdfs:comment "URL of a media item (property image / floorplan / etc.). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.media[].mediaUrl>, <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].media[].mediaUrl> ;
     rdfs:range xsd:anyURI .
+
+opda:ofstedRating
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "Ofsted rating"@en ;
+    rdfs:comment "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating> ;
+    rdfs:domain opda:NearbyFacility ;
+    rdfs:range xsd:string .
 
 opda:orderDate
     rdf:type owl:DatatypeProperty ;
@@ -281,12 +528,28 @@ opda:orderDate
     rdfs:domain opda:Search ;
     rdfs:range xsd:date .
 
+opda:organisesBuildingInsurance
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "organises building insurance"@en ;
+    rdfs:comment "Whether the service contact organises buildings insurance. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:otherRating
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other rating"@en ;
     rdfs:comment "Other (non-Ofsted) rating of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].otherRating> ;
     rdfs:domain opda:NearbyFacility ;
+    rdfs:range xsd:string .
+
+opda:outstandingEnforcementAction
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "outstanding enforcement action"@en ;
+    rdfs:comment "Whether there is outstanding enforcement action (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction> ;
+    rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
 opda:planningStartDate
@@ -300,9 +563,17 @@ opda:planningStartDate
 opda:price
     rdf:type owl:DatatypeProperty ;
     rdfs:label "price"@en ;
-    rdfs:comment "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). A single shared fixtures monetary amount reused across all fixtures items — ODR-0022 §4 forbids minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus. The Category-D fixtures amount ONLY — the Category-G headline / recurring / refundable monetary leaves (asking price, ground rent, deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). A value-structured MonetaryAmount value type is DEFERRED (ODR-0008d item-3 / ODR-0024 R3); until it exists this stays a single-currency interim decimal."@en ;
+    rdfs:comment "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). A single shared fixtures monetary amount reused across all fixtures items — ODR-0022 §4 forbids minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus. The Category-D fixtures amount ONLY — the Category-G headline / recurring / refundable monetary leaves (asking price, ground rent, deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). The value-structured opda:MonetaryAmount value type now EXISTS (the Category-G monetary walk, ODR-0024 R3); opda:price deliberately remains a single-currency interim decimal for the fixtures amount and is NOT migrated to it."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
     rdfs:range xsd:decimal .
+
+opda:priceQualifier
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "price qualifier"@en ;
+    rdfs:comment "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
 
 opda:pricingMethodology
     rdf:type owl:DatatypeProperty ;
@@ -392,12 +663,36 @@ opda:riskIndicator
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:string .
 
+opda:saleAtUndervalue
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "sale at undervalue"@en ;
+    rdfs:comment "Whether the sale is at undervalue. Yes/No disclosure (price information); xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.saleAtUndervalue> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
 opda:schoolType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "school type"@en ;
     rdfs:comment "Band of a nearby school per opda:SchoolTypeScheme (College / Nursery / Primary / Secondary / Private). Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). ONE shared datatype property over the SchoolTypeScheme value-space — replaces the five range-less generic object properties (opda:college / nursery / primary / secondary / private) the council rejected as permanent-namespace landmines (session-028 Q1). Constrained by SHACL sh:in to the scheme members in the overlay profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.college>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.nursery>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.primary>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.private>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.secondary> ;
     rdfs:domain opda:NearbyFacility ;
+    rdfs:range xsd:string .
+
+opda:sellerCompletedDeedOfCertificate
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "seller completed deed of certificate"@en ;
+    rdfs:comment "Whether the seller completed a deed of certificate (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:sellerOwnedProperty
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "seller owned property"@en ;
+    rdfs:comment "Whether the seller owned the property for enfranchisement qualification. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.sellerOwnedProperty> ;
+    rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .
 
 opda:soldDate
@@ -440,6 +735,22 @@ opda:subCategory
     rdfs:domain opda:RiskAssessment ;
     rdfs:range xsd:string .
 
+opda:transportType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "transport type"@en ;
+    rdfs:comment "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType> ;
+    rdfs:domain opda:NearbyFacility ;
+    rdfs:range xsd:string .
+
+opda:typeOfConnection
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "type of connection"@en ;
+    rdfs:comment "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
+
 opda:typeOfHealthCare
     rdf:type owl:DatatypeProperty ;
     rdfs:label "type of health care"@en ;
@@ -456,12 +767,36 @@ opda:unitaryAuthority
     rdfs:domain opda:Search ;
     rdfs:range xsd:string .
 
+opda:urgentWorksCarriedOut
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "urgent works carried out"@en ;
+    rdfs:comment "Whether urgent works were carried out (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
+opda:urgentWorksRecommended
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "urgent works recommended"@en ;
+    rdfs:comment "Whether urgent works were recommended (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range xsd:string .
+
 opda:url
     rdf:type owl:DatatypeProperty ;
     rdfs:label "URL"@en ;
     rdfs:comment "URL of an external artefact (contract template, planning-permission page). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#contracts[].contract.template.url>, <https://w3id.org/opda/data-dictionary#propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url> ;
     rdfs:range xsd:anyURI .
+
+opda:willingToInsure
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "willing to insure"@en ;
+    rdfs:comment "Whether an insurer is willing to insure against an unresolved planning issue. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.alterationsAndChanges.unresolvedPlanningIssues.willingToInsure> ;
+    rdfs:domain opda:Property ;
+    rdfs:range xsd:string .
 
 opda:yield
     rdf:type owl:DatatypeProperty ;
@@ -471,6 +806,86 @@ opda:yield
     rdfs:domain opda:Valuation ;
     rdfs:range xsd:decimal .
 
+opda:annualCostOfPermit
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "annual cost of permit"@en ;
+    rdfs:comment "Annual cost of a controlled-parking permit for the Property. Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.parking.controlledParking.annualCostOfPermit> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:annualGroundRent
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "annual ground rent"@en ;
+    rdfs:comment "Annual ground rent payable under a leasehold estate. Bearer opda:LegalEstate (a tenure charge of the leasehold, not a Quality of the brick-and-mortar Property). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.annualGroundRent> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:annualServiceCharge
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "annual service charge"@en ;
+    rdfs:comment "Annual service charge payable under a leasehold or managed freehold/commonhold estate. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.annualServiceCharge> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:certificateOfComplianceFee
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "certificate of compliance fee"@en ;
+    rdfs:comment "Fee for a certificate of compliance required on a leasehold transfer (required-documents block). Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:costsApplicableToTheDeed
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "costs applicable to the deed"@en ;
+    rdfs:comment "Costs applicable to a deed of covenant required on transfer. Bearer opda:Transaction (a completion/transfer cost, not a standing estate charge). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:councilTaxAnnualCharge
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "council tax annual charge"@en ;
+    rdfs:comment "Annual council-tax charge for the Property. Bearer opda:Property (a recurring liability of the dwelling). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.councilTax.councilTaxAnnualCharge> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:currency
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "currency"@en ;
+    rdfs:comment "The currency of an opda:MonetaryAmount — a dereferenceable opda:CurrencyScheme concept (ISO-4217 alpha-3), NEVER an opaque string. The MonetaryAmount node shape makes it sh:minCount 1 (never absent on the value type) and sh:in-restricts it to the scheme; the overlay profile supplies GBP as the default (ODR-0024 R3)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R3> ;
+    rdfs:domain opda:MonetaryAmount ;
+    rdfs:range skos:Concept .
+
+opda:estimatedAmount
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "estimated amount"@en ;
+    rdfs:comment "Estimated rental amount in a Valuation's rental-estimate analysis. Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:estimatedPrice
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "estimated price"@en ;
+    rdfs:comment "Estimated sale price in a Valuation's pricing analysis. Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyPricing.estimatedPrice> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:feeIncludingVAT
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "fee including VAT"@en ;
+    rdfs:comment "Fee (including VAT) charged by a party for serving a notice of transfer / assignment / charge during conveyancing. Bearer opda:Transaction (a transfer-process fee). → opda:MonetaryAmount (ODR-0024 R3); ONE shared property across the notice-fee blocks; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.feeIncludingVAT>, <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:range opda:MonetaryAmount .
+
 opda:hasSubAssessment
     rdf:type owl:ObjectProperty ;
     rdfs:label "has sub-assessment"@en ;
@@ -479,6 +894,22 @@ opda:hasSubAssessment
     rdfs:domain opda:RiskAssessment ;
     rdfs:range opda:RiskAssessment .
 
+opda:holdingDeposit
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "holding deposit"@en ;
+    rdfs:comment "Holding deposit in the Property's letting information (refundable — distinct value semantics from a sale price). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.lettingInformation.holdingDeposit> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:listPrice
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "list price"@en ;
+    rdfs:comment "List price of a comparable property (valuation comparable listing info). Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range opda:MonetaryAmount .
+
 opda:peril
     rdf:type owl:ObjectProperty ;
     rdfs:label "peril"@en ;
@@ -486,3 +917,43 @@ opda:peril
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
     rdfs:domain opda:RiskAssessment ;
     rdfs:range skos:Concept .
+
+opda:potentialCost
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "potential cost"@en ;
+    rdfs:comment "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.buildingSafety.potentialCost> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:rent
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "rent"@en ;
+    rdfs:comment "Rent in the Property's letting information. Bearer opda:Property (letting terms of the dwelling; no Tenancy Kind is minted — promote on a named query). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.lettingInformation.rent> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:securityDeposit
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "security deposit"@en ;
+    rdfs:comment "Security/tenancy deposit in the Property's letting information (refundable). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.lettingInformation.securityDeposit> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:sharedOwnershipRent
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "shared ownership rent"@en ;
+    rdfs:comment "Rent payable on the retained share under a shared-ownership lease. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipRent> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:range opda:MonetaryAmount .
+
+opda:soldPrice
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "sold price"@en ;
+    rdfs:comment "Sold price of a comparable property (valuation comparable listing info). Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice> ;
+    rdfs:domain opda:Valuation ;
+    rdfs:range opda:MonetaryAmount .

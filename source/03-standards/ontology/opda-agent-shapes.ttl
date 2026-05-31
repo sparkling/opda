@@ -44,6 +44,12 @@ opda:OrganisationIdentityKeyShape
     sh:property _:b2ea199d949d8 ;
     sh:targetClass opda:Organisation .
 
+opda:OwnerTypeValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:b9d64d3ce2e93 ;
+    sh:targetSubjectsOf opda:ownerType .
+
 opda:PersonIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q1> ;
@@ -75,6 +81,22 @@ _:b2ea199d949d8
     sh:message "Organisation identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."@en ;
     sh:path opda:hasAssertedCapacity ;
     sh:severity sh:Violation .
+
+_:b94c04243bfed
+    rdf:first "Organisation" ;
+    rdf:rest rdf:nil .
+
+_:b9d64d3ce2e93
+    sh:datatype xsd:string ;
+    sh:in _:bd36b09d206d0 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:ownerType MUST be one of the opda:OwnerTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:ownerType ;
+    sh:severity sh:Violation .
+
+_:bd36b09d206d0
+    rdf:first "Private individual" ;
+    rdf:rest _:b94c04243bfed .
 
 _:bf660b84eaa1e
     sh:datatype xsd:string ;

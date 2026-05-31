@@ -117,6 +117,9 @@ _CATEGORY_E_SCHEMES = {
 # ODR-0024 (Curated Category-G Walk) — R4 schoolType→SKOS (1) + R6
 # data-attested-enum SKOS schemes (5).
 _ODR_0024_SCHEMES = {
+    # R3 — the ISO-4217 currency value-space for opda:MonetaryAmount (the
+    # Category-G monetary walk, ADR-0005 §G22).
+    "CurrencyScheme",
     # R4 — nearby-school band value-space (replaces 5 rejected object props).
     "SchoolTypeScheme",
     # R6 — schemes minted from enums the data dictionary actually carries
@@ -127,7 +130,7 @@ _ODR_0024_SCHEMES = {
     "BroadbandConnectionTypeScheme",
     "OfstedRatingScheme",
 }
-assert len(_ODR_0024_SCHEMES) == 6
+assert len(_ODR_0024_SCHEMES) == 7
 
 _ALL_SCHEME_NAMES = (
     _FIRST_BATCH_AND_G8
@@ -138,23 +141,36 @@ _ALL_SCHEME_NAMES = (
 )
 
 
-def test_emit_vocabularies_produces_46_schemes(emitted_graph: Graph) -> None:
+def test_emit_vocabularies_produces_47_schemes(emitted_graph: Graph) -> None:
     """16 first-batch + 7 G8 + 14 Category-C status-enum value-spaces
     (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 2
     Category-E schemes (ODR-0008d: PerilScheme + ActionAlertRatingScheme;
-    riskIndicator reuses YesNoNotKnownScheme) + 6 ODR-0024 schemes (R4
-    SchoolTypeScheme + R6 construction / price-qualifier / transport /
-    broadband / Ofsted). Total 46."""
+    riskIndicator reuses YesNoNotKnownScheme) + 7 ODR-0024 schemes (R3
+    CurrencyScheme + R4 SchoolTypeScheme + R6 construction / price-qualifier /
+    transport / broadband / Ofsted). Total 47."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == len(_ALL_SCHEME_NAMES) == 46, (
-        f"expected 46 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
-        f"+ 2 Cat-E + 6 ODR-0024), got {len(schemes)}: "
+    assert len(schemes) == len(_ALL_SCHEME_NAMES) == 47, (
+        f"expected 47 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
+        f"+ 2 Cat-E + 7 ODR-0024), got {len(schemes)}: "
         f"{sorted(str(s) for s in schemes)}"
     )
     emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
     assert emitted_names == _ALL_SCHEME_NAMES, (
         f"diff: {_ALL_SCHEME_NAMES ^ emitted_names}"
     )
+
+
+def test_currency_scheme(emitted_graph: Graph) -> None:
+    """ODR-0024 R3 — opda:CurrencyScheme is the ISO-4217 currency value-space
+    for opda:MonetaryAmount, seeded GBP / EUR / USD (extensible), each a flat
+    top concept."""
+    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA.CurrencyScheme))
+    notations = {
+        str(n) for m in members for n in emitted_graph.objects(m, SKOS.notation)
+    }
+    assert notations == {"GBP", "EUR", "USD"}
+    for m in members:
+        assert (m, SKOS.topConceptOf, OPDA.CurrencyScheme) in emitted_graph
 
 
 # --- Confirmation #2 (byte-identity) -------------------------------------

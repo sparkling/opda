@@ -176,16 +176,107 @@ def test_risk_assessment_class_emitted() -> None:
 
 def test_risk_assessment_in_class_catalogue() -> None:
     """The module catalogue advertises RiskAssessment + the nearby-facilities
-    genus bearer (seven now: the original six Q4a / Category-E promotions +
-    opda:NearbyFacility). Per ODR-0024 R4 the opda:School / opda:HealthCare-
-    Facility subkinds COLLAPSE into the genus (held-as-live subkind split), so
-    they are NO LONGER in the catalogue."""
+    genus bearer + the monetary value structure (eight now: the original six
+    Q4a / Category-E promotions + opda:NearbyFacility (ODR-0024 R4) +
+    opda:MonetaryAmount (ODR-0024 R3, the monetary walk)). Per ODR-0024 R4 the
+    opda:School / opda:HealthCareFacility subkinds COLLAPSE into the genus
+    (held-as-live subkind split), so they are NO LONGER in the catalogue."""
     assert OPDA.RiskAssessment in descriptive.CLASSES
     assert OPDA.NearbyFacility in descriptive.CLASSES
+    assert OPDA.MonetaryAmount in descriptive.CLASSES
     # ODR-0024 R4: the subkinds are collapsed into the genus — not emitted.
     assert OPDA.School not in descriptive.CLASSES
     assert OPDA.HealthCareFacility not in descriptive.CLASSES
-    assert len(descriptive.CLASSES) == 7
+    assert len(descriptive.CLASSES) == 8
+
+
+def test_monetary_walk_emitted() -> None:
+    """ODR-0024 R3 / ADR-0005 §G22 — the monetary walk. opda:MonetaryAmount is
+    a by-value structure (opda:amount magnitude + opda:currency → CurrencyScheme
+    concept) reused as the rdfs:range across 16 per-economic-kind monetary
+    properties, each on its OWN bearer (reuse the value type, never the bearer;
+    never collapsed onto the Category-D fixtures opda:price)."""
+    g = descriptive.build_graph()
+    assert (OPDA.MonetaryAmount, RDF.type, OWL.Class) in g
+    assert (OPDA.amount, RDF.type, OWL.DatatypeProperty) in g
+    assert (OPDA.amount, RDFS.domain, OPDA.MonetaryAmount) in g
+    assert (OPDA.amount, RDFS.range, XSD.decimal) in g
+    assert (OPDA.currency, RDF.type, OWL.ObjectProperty) in g
+    assert (OPDA.currency, RDFS.domain, OPDA.MonetaryAmount) in g
+    comment = " ".join(str(c) for c in g.objects(OPDA.MonetaryAmount, RDFS.comment))
+    assert "magnitude" in comment and "currency" in comment
+
+    expected_bearers = {
+        OPDA.annualGroundRent: OPDA.LegalEstate,
+        OPDA.annualServiceCharge: OPDA.LegalEstate,
+        OPDA.certificateOfComplianceFee: OPDA.LegalEstate,
+        OPDA.sharedOwnershipRent: OPDA.LegalEstate,
+        OPDA.councilTaxAnnualCharge: OPDA.Property,
+        OPDA.annualCostOfPermit: OPDA.Property,
+        OPDA.rent: OPDA.Property,
+        OPDA.holdingDeposit: OPDA.Property,
+        OPDA.securityDeposit: OPDA.Property,
+        OPDA.potentialCost: OPDA.Property,
+        OPDA.estimatedPrice: OPDA.Valuation,
+        OPDA.estimatedAmount: OPDA.Valuation,
+        OPDA.listPrice: OPDA.Valuation,
+        OPDA.soldPrice: OPDA.Valuation,
+        OPDA.costsApplicableToTheDeed: OPDA.Transaction,
+        OPDA.feeIncludingVAT: OPDA.Transaction,
+    }
+    monetary = set(g.subjects(RDFS.range, OPDA.MonetaryAmount))
+    assert monetary == set(expected_bearers), monetary ^ set(expected_bearers)
+    for prop, bearer in expected_bearers.items():
+        assert (prop, RDF.type, OWL.ObjectProperty) in g, prop
+        assert (prop, RDFS.domain, bearer) in g, prop
+        assert (prop, RDFS.range, OPDA.MonetaryAmount) in g, prop
+    # the monetary leaves are NOT collapsed onto the fixtures opda:price
+    assert (OPDA.price, RDFS.range, OPDA.MonetaryAmount) not in g
+
+
+def test_r5_followon_walk_emitted() -> None:
+    """ODR-0024 R5/R6 / ADR-0005 §G23 — the R5-surfaced follow-on. 40 enum +
+    Yes/No Property/estate attributes minted as flat datatype properties on
+    their bearers; the six enum leaves (+ ownerType) wired to their SKOS schemes
+    via base value shapes (sh:targetSubjectsOf + sh:in) — no overlay needed."""
+    from rdflib.namespace import SH
+
+    from opda_gen.emitters import shapes
+
+    g = descriptive.build_graph()
+    cases = {
+        OPDA.constructionType: (OPDA.Property, XSD.string),
+        OPDA.transportType: (OPDA.NearbyFacility, XSD.string),
+        OPDA.ofstedRating: (OPDA.NearbyFacility, XSD.string),
+        OPDA.marketingTenure: (OPDA.Property, XSD.string),
+        OPDA.hasLift: (OPDA.Property, XSD.string),
+        OPDA.isLeaseQualifying: (OPDA.LegalEstate, XSD.string),
+        OPDA.freeholdOwner: (OPDA.LegalEstate, XSD.string),
+        OPDA.forTheManagedAreas: (OPDA.LegalEstate, XSD.decimal),
+        OPDA.fromTheOwners: (OPDA.LegalEstate, XSD.decimal),
+    }
+    for prop, (dom, rng) in cases.items():
+        assert (prop, RDF.type, OWL.DatatypeProperty) in g, prop
+        assert (prop, RDFS.domain, dom) in g, prop
+        assert (prop, RDFS.range, rng) in g, prop
+        assert prop in descriptive.DATATYPE_PROPERTIES, prop
+
+    # the six R6 enum properties are wired to their schemes (base value shapes)
+    sg = shapes.build_descriptive_shapes()
+    for shape, prop in (
+        (OPDA.ConstructionTypeValueShape, OPDA.constructionType),
+        (OPDA.PriceQualifierValueShape, OPDA.priceQualifier),
+        (OPDA.TransportTypeValueShape, OPDA.transportType),
+        (OPDA.BroadbandConnectionValueShape, OPDA.typeOfConnection),
+        (OPDA.OfstedRatingValueShape, OPDA.ofstedRating),
+        (OPDA.MarketingTenureValueShape, OPDA.marketingTenure),
+    ):
+        assert (shape, SH.targetSubjectsOf, prop) in sg, shape
+        assert list(sg.objects(shape, SH.property)), shape
+
+    # ownerType wired in agent-shapes — closes the §G23 Proprietor-overlay gap
+    ag = shapes.build_agent_shapes()
+    assert (OPDA.OwnerTypeValueShape, SH.targetSubjectsOf, OPDA.ownerType) in ag
 
 
 def test_category_e_properties_emitted() -> None:

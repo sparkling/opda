@@ -23,6 +23,12 @@
     dct:title "OPDA Descriptive Shapes"@en ;
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 
+opda:BroadbandConnectionValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:ba3d369a2fd6b ;
+    sh:targetSubjectsOf opda:typeOfConnection .
+
 opda:ComparableIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
@@ -34,6 +40,12 @@ opda:ComparableInternalStructureShape
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-3> ;
     sh:property _:b6809218bb159, _:b6db3fd4c8b68, _:b7b4c48a9db7d ;
     sh:targetClass opda:Comparable .
+
+opda:ConstructionTypeValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:bae05ef8f8b7c ;
+    sh:targetSubjectsOf opda:constructionType .
 
 opda:EPCCertificateIdentityKeyShape
     rdf:type sh:NodeShape ;
@@ -55,11 +67,35 @@ opda:FixturesListShape
     sh:property _:b2a06b4c2cea5, _:b6663b027a7bd, _:b95b063eeb5e7 ;
     sh:targetClass opda:Transaction .
 
+opda:MarketingTenureValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:b16be9a34d6a5 ;
+    sh:targetSubjectsOf opda:marketingTenure .
+
 opda:MediaUrlShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R11> ;
     sh:property _:b18b8f7dfe9c4 ;
     sh:targetSubjectsOf opda:mediaUrl .
+
+opda:MonetaryAmountShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R3> ;
+    sh:property _:b5aeb68eed21e, _:b5cfd3d1219ce ;
+    sh:targetClass opda:MonetaryAmount .
+
+opda:OfstedRatingValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:b24bce31cb65d ;
+    sh:targetSubjectsOf opda:ofstedRating .
+
+opda:PriceQualifierValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:ba7c94a1b4c28 ;
+    sh:targetSubjectsOf opda:priceQualifier .
 
 opda:RiskAssessmentShape
     rdf:type sh:NodeShape ;
@@ -91,6 +127,12 @@ opda:SurveyInternalStructureShape
     sh:property _:b3c97a557c0c5, _:b6b5b0e29ea3a, _:ba7908ca342b4 ;
     sh:targetClass opda:Survey .
 
+opda:TransportTypeValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    sh:property _:b3a344c537c4e ;
+    sh:targetSubjectsOf opda:transportType .
+
 opda:UrlShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R11> ;
@@ -109,11 +151,19 @@ opda:ValuationInternalStructureShape
     sh:property _:b2265bf8dda7a, _:b2b707597656f, _:bbf9d5f342465 ;
     sh:targetClass opda:Valuation .
 
+_:b01142724a45a
+    rdf:first "Fixed price" ;
+    rdf:rest _:baf3884cfd033 .
+
 _:b0e91a48d92e5
     sh:datatype xsd:string ;
     sh:message "RiskAssessment result / summary / recommendations are opda:disclosureDetail-grade strings (ODR-0008d Rule 1c); the specific field is carried by the instance-level dct:source, never a per-field property (ODR-0022 §Rules.6)."@en ;
     sh:path opda:disclosureDetail ;
     sh:severity sh:Info .
+
+_:b118d86466af3
+    rdf:first "Commonhold" ;
+    rdf:rest rdf:nil .
 
 _:b15168883deab
     sh:in _:b966db75f50e4 ;
@@ -121,6 +171,22 @@ _:b15168883deab
     sh:message "RiskAssessment opda:actionAlertRating MUST be one of the opda:ActionAlertRatingScheme levels (integer 1–5, 1 Green … 5 Red; ODR-0008d Rule 1c / Rule 4)."@en ;
     sh:path opda:actionAlertRating ;
     sh:severity sh:Violation .
+
+_:b169eea3e23ba
+    rdf:first "Good" ;
+    rdf:rest _:b76b3d1545d45 .
+
+_:b16be9a34d6a5
+    sh:datatype xsd:string ;
+    sh:in _:b1892d0ae935c ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:marketingTenure MUST be one of the opda:TenureKindScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:marketingTenure ;
+    sh:severity sh:Violation .
+
+_:b1892d0ae935c
+    rdf:first "Freehold" ;
+    rdf:rest _:b69d7c6d6bbe3 .
 
 _:b18b8f7dfe9c4
     sh:datatype xsd:anyURI ;
@@ -150,6 +216,22 @@ _:b2265bf8dda7a
     sh:path opda:disclosureDetail ;
     sh:severity sh:Info .
 
+_:b22ca76da186e
+    rdf:first "Outstanding" ;
+    rdf:rest _:b169eea3e23ba .
+
+_:b24bce31cb65d
+    sh:datatype xsd:string ;
+    sh:in _:b22ca76da186e ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:ofstedRating MUST be one of the opda:OfstedRatingScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:ofstedRating ;
+    sh:severity sh:Violation .
+
+_:b26a6936d4bcc
+    rdf:first "Inadequate" ;
+    rdf:rest _:bb66f0fd7be91 .
+
 _:b274214672283
     rdf:first <https://w3id.org/opda/#peril/Infrastructure> ;
     rdf:rest _:bb61650fe8517 .
@@ -172,6 +254,10 @@ _:b2dc833c5927b
     sh:path prov:wasAttributedTo ;
     sh:severity sh:Info .
 
+_:b324a0a32a6a2
+    rdf:first <https://w3id.org/opda/#currency/GBP> ;
+    rdf:rest _:b8d633e02fec1 .
+
 _:b3417af7331fc
     sh:datatype xsd:string ;
     sh:message "The EPC certificate's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
@@ -182,12 +268,28 @@ _:b34e33fc7dd32
     rdf:first "3"^^xsd:integer ;
     rdf:rest _:b377fdc219b6d .
 
+_:b37075a520f1c
+    rdf:first "Steel frame" ;
+    rdf:rest _:b768146a0bbe7 .
+
 _:b377fdc219b6d
     rdf:first "4"^^xsd:integer ;
     rdf:rest _:bd95c2bd8d4f1 .
 
 _:b37e924fb98e8
     rdf:first <https://w3id.org/opda/#peril/Transportation> ;
+    rdf:rest rdf:nil .
+
+_:b3a344c537c4e
+    sh:datatype xsd:string ;
+    sh:in _:bd831a04f7e3c ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:transportType MUST be one of the opda:TransportTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:transportType ;
+    sh:severity sh:Violation .
+
+_:b3c15f4400ccf
+    rdf:first "From" ;
     rdf:rest rdf:nil .
 
 _:b3c97a557c0c5
@@ -200,6 +302,14 @@ _:b3c97a557c0c5
 _:b46300ac50a03
     rdf:first <https://w3id.org/opda/#peril/Radon> ;
     rdf:rest _:b6837c1c078b7 .
+
+_:b47cc13ff83a4
+    rdf:first "Ferry terminal" ;
+    rdf:rest _:bcb9110f3c4e7 .
+
+_:b47fab9c30356
+    rdf:first "National rail station" ;
+    rdf:rest _:bcde33857a35f .
 
 _:b4aadc32eada9
     rdf:first <https://w3id.org/opda/#peril/CoastalErosion> ;
@@ -242,9 +352,42 @@ _:b4e52ad947663
     sh:path prov:generatedAtTime ;
     sh:severity sh:Info .
 
+_:b4ef4bbe7ef74
+    rdf:first "ADSL copper wire" ;
+    rdf:rest _:bbfa905dcb552 .
+
+_:b522506b72d95
+    rdf:first "Tramway" ;
+    rdf:rest _:b5bae21193dd1 .
+
+_:b5aeb68eed21e
+    sh:datatype xsd:decimal ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:MonetaryAmount MUST carry exactly one opda:amount magnitude (xsd:decimal) — the numeric dimension of the value structure (ODR-0024 R3)."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:amount ;
+    sh:severity sh:Violation .
+
+_:b5bae21193dd1
+    rdf:first "Underground/Subway" ;
+    rdf:rest _:bb66f0fd7be91 .
+
+_:b5cfd3d1219ce
+    sh:in _:b324a0a32a6a2 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:MonetaryAmount MUST carry exactly one opda:currency, one of the opda:CurrencyScheme concepts (a dereferenceable ISO-4217 code, never an opaque string; never absent on the value type — ODR-0024 R3). The overlay profile supplies GBP as the default."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:nodeKind sh:IRI ;
+    sh:path opda:currency ;
+    sh:severity sh:Violation .
+
 _:b5d5e040db38f
     rdf:first "Excluded" ;
     rdf:rest _:bd3d1e4184856 .
+
+_:b5fea08d80371
+    rdf:first "Offers over" ;
+    rdf:rest _:b6bd9cf46334b .
 
 _:b6663b027a7bd
     sh:datatype xsd:string ;
@@ -262,11 +405,19 @@ _:b6837c1c078b7
     rdf:first <https://w3id.org/opda/#peril/GroundStability> ;
     rdf:rest _:bf24de50bcd4e .
 
+_:b69d7c6d6bbe3
+    rdf:first "Leasehold" ;
+    rdf:rest _:b118d86466af3 .
+
 _:b6b5b0e29ea3a
     sh:datatype xsd:string ;
     sh:message "The survey's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
     sh:path opda:disclosureDetail ;
     sh:severity sh:Info .
+
+_:b6bd9cf46334b
+    rdf:first "Offers invited" ;
+    rdf:rest _:b9a2684e07749 .
 
 _:b6db3fd4c8b68
     sh:datatype xsd:dateTime ;
@@ -275,9 +426,21 @@ _:b6db3fd4c8b68
     sh:path prov:generatedAtTime ;
     sh:severity sh:Info .
 
+_:b712e766e8be3
+    rdf:first "Helipad" ;
+    rdf:rest _:b522506b72d95 .
+
 _:b71b11e0e7b20
     rdf:first "Not known" ;
     rdf:rest rdf:nil .
+
+_:b768146a0bbe7
+    rdf:first "Timber frame" ;
+    rdf:rest _:b80807150fd91 .
+
+_:b76b3d1545d45
+    rdf:first "Requires Improvement" ;
+    rdf:rest _:b26a6936d4bcc .
 
 _:b7b4c48a9db7d
     sh:message "The comparable record's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
@@ -285,9 +448,21 @@ _:b7b4c48a9db7d
     sh:path prov:wasAttributedTo ;
     sh:severity sh:Info .
 
+_:b7f500c7ded6d
+    rdf:first "FTTC (Fibre to the Cabinet)" ;
+    rdf:rest _:bd7dd166f9df4 .
+
+_:b80807150fd91
+    rdf:first "Insulated concrete framework" ;
+    rdf:rest _:bfb7c187903ba .
+
 _:b86aa5f2674ae
     rdf:first "Yes" ;
     rdf:rest _:b193f9cf429be .
+
+_:b8d633e02fec1
+    rdf:first <https://w3id.org/opda/#currency/EUR> ;
+    rdf:rest _:bbc0cf9a4620b .
 
 _:b95b063eeb5e7
     sh:datatype xsd:decimal ;
@@ -303,15 +478,55 @@ _:b96703575cb3b
     rdf:first <https://w3id.org/opda/#peril/NonCoalMining> ;
     rdf:rest _:b46300ac50a03 .
 
+_:b9a2684e07749
+    rdf:first "Sale by tender" ;
+    rdf:rest _:b3c15f4400ccf .
+
 _:b9c9499786e2c
     rdf:first <https://w3id.org/opda/#peril/Energy> ;
     rdf:rest _:b274214672283 .
+
+_:b9e5f5ed95375
+    rdf:first "Price" ;
+    rdf:rest _:b01142724a45a .
+
+_:ba3d369a2fd6b
+    sh:datatype xsd:string ;
+    sh:in _:bed8ca260e102 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:typeOfConnection MUST be one of the opda:BroadbandConnectionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:typeOfConnection ;
+    sh:severity sh:Violation .
 
 _:ba7908ca342b4
     sh:message "The survey's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
     sh:nodeKind sh:IRI ;
     sh:path prov:wasAttributedTo ;
     sh:severity sh:Info .
+
+_:ba7c94a1b4c28
+    sh:datatype xsd:string ;
+    sh:in _:b9e5f5ed95375 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:priceQualifier MUST be one of the opda:PriceQualifierScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:priceQualifier ;
+    sh:severity sh:Violation .
+
+_:baa13a4089443
+    rdf:first "Offers in region of" ;
+    rdf:rest _:b5fea08d80371 .
+
+_:bae05ef8f8b7c
+    sh:datatype xsd:string ;
+    sh:in _:bf78437793240 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:constructionType MUST be one of the opda:ConstructionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:constructionType ;
+    sh:severity sh:Violation .
+
+_:baf3884cfd033
+    rdf:first "Guide price" ;
+    rdf:rest _:bfba83f45b47a .
 
 _:baff63cf55387
     rdf:first "None" ;
@@ -332,11 +547,23 @@ _:bb61650fe8517
     rdf:first <https://w3id.org/opda/#peril/Planning> ;
     rdf:rest _:b37e924fb98e8 .
 
+_:bb66f0fd7be91
+    rdf:first "Other" ;
+    rdf:rest rdf:nil .
+
+_:bb66f0fd7be91
+    rdf:first "Other" ;
+    rdf:rest rdf:nil .
+
 _:bb6873c934b79
     sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic — a RiskAssessment MUST NOT be its own transitive sub-assessment (core SHACL cannot test transitive closure; a SHACL-AF closure rule is the enforcement vehicle, deferred)."@en ;
     sh:node opda:RiskAssessmentShape ;
     sh:path opda:hasSubAssessment ;
     sh:severity sh:Violation .
+
+_:bbc0cf9a4620b
+    rdf:first <https://w3id.org/opda/#currency/USD> ;
+    rdf:rest rdf:nil .
 
 _:bbf9d5f342465
     sh:datatype xsd:dateTime ;
@@ -345,11 +572,23 @@ _:bbf9d5f342465
     sh:path prov:generatedAtTime ;
     sh:severity sh:Info .
 
+_:bbfa905dcb552
+    rdf:first "Cable" ;
+    rdf:rest _:b7f500c7ded6d .
+
 _:bc550fb66b314
     sh:datatype xsd:string ;
     sh:message "The search's authority reference / number SHOULD be recorded (IC component 2 of 3 — authority reference; ODR-0008d Rule 3), carried by opda:disclosureDetail with an instance-level dct:source to the reference question."@en ;
     sh:path opda:disclosureDetail ;
     sh:severity sh:Info .
+
+_:bcb9110f3c4e7
+    rdf:first "Bus stop/station" ;
+    rdf:rest _:b47fab9c30356 .
+
+_:bcde33857a35f
+    rdf:first "Trunk road/motorway" ;
+    rdf:rest _:bdad4abe0f055 .
 
 _:bce9147191e84
     rdf:first <https://w3id.org/opda/#peril/Climate> ;
@@ -366,9 +605,21 @@ _:bd3d1e4184856
     rdf:first "Included" ;
     rdf:rest _:baff63cf55387 .
 
+_:bd7dd166f9df4
+    rdf:first "FTTP (Fibre to the Premises)" ;
+    rdf:rest rdf:nil .
+
+_:bd831a04f7e3c
+    rdf:first "Local connection" ;
+    rdf:rest _:b47cc13ff83a4 .
+
 _:bd95c2bd8d4f1
     rdf:first "5"^^xsd:integer ;
     rdf:rest rdf:nil .
+
+_:bdad4abe0f055
+    rdf:first "Airport" ;
+    rdf:rest _:b712e766e8be3 .
 
 _:bdefa496e9ecf
     sh:message "RiskAssessment datasetAttribution REUSES prov:wasAttributedTo (ODR-0008d Rule 5 — the dataset's licensing/copyright Agent; opda:datasetAttribution is NEVER minted)."@en ;
@@ -379,6 +630,10 @@ _:bdefa496e9ecf
 _:be96fcf2d15e8
     rdf:first "2"^^xsd:integer ;
     rdf:rest _:b34e33fc7dd32 .
+
+_:bed8ca260e102
+    rdf:first "None" ;
+    rdf:rest _:b4ef4bbe7ef74 .
 
 _:bf029c6f58782
     sh:message "The search's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
@@ -397,3 +652,15 @@ _:bf41d51b5c7cc
     sh:nodeKind sh:IRI ;
     sh:path opda:peril ;
     sh:severity sh:Violation .
+
+_:bf78437793240
+    rdf:first "Brick and block" ;
+    rdf:rest _:b37075a520f1c .
+
+_:bfb7c187903ba
+    rdf:first "Structural insulated panel (SIP)" ;
+    rdf:rest rdf:nil .
+
+_:bfba83f45b47a
+    rdf:first "Offers in excess of" ;
+    rdf:rest _:baa13a4089443 .

@@ -146,6 +146,8 @@ _ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
 # URI properties (opda:mediaUrl / opda:url) need (sh:datatype xsd:anyURI + a URI
 # sh:pattern) so they are constrained somewhere, plus the acyclicity guard on
 # the self-referential opda:hasSubAssessment.
+_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
+_ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
 _ODR_0024_R11 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R11")
 _ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
 _ODR_0009_Q7 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q7")
@@ -809,6 +811,16 @@ def build_agent_shapes() -> Graph:
         ),
     )
 
+    # --- ODR-0024 R6: ownerType value-space wiring (closes the §G23 gap) --
+    # opda:ownerType (rdfs:domain opda:Proprietor) was emitted as a bare
+    # xsd:string with no sh:in — the Proprietor bearer has no overlay profile
+    # to carry it (the pre-existing §G23 gap). Wire it to opda:OwnerTypeScheme
+    # via sh:targetSubjectsOf so the value-space holds standalone.
+    _add_enum_value_shape(
+        g, OPDA.OwnerTypeValueShape, OPDA.ownerType, "OwnerTypeScheme",
+        _ODR_0024_R6,
+    )
+
     return g
 
 
@@ -1095,6 +1107,20 @@ def _peril_concept_uris() -> list[URIRef]:
     raise ValueError("PerilScheme not found in vocabularies registry")
 
 
+def _currency_concept_uris() -> list[URIRef]:
+    """Return the opda:CurrencyScheme concept URIs (ODR-0024 R3).
+
+    Pulled from the in-code vocabularies registry so the MonetaryAmount node
+    shape's `sh:in` over opda:currency stays in lock-step with the emitted
+    scheme (mirrors _peril_concept_uris)."""
+    from opda_gen.emitters.vocabularies import _all_schemes
+
+    for scheme in _all_schemes():
+        if scheme.local_name == "CurrencyScheme":
+            return [scheme.member_uri(m) for m in scheme.members]
+    raise ValueError("CurrencyScheme not found in vocabularies registry")
+
+
 def _scheme_notations(local_name: str) -> list[str]:
     """Return a scheme's member notations (ODR-0008d rating value-spaces /
     the Category-D InclusionStatusScheme), from the in-code registry."""
@@ -1120,6 +1146,38 @@ def _add_in_literal_list(g: Graph, prop: BNode, items: list) -> None:
     rdf_list = BNode()
     g.add((prop, SH["in"], rdf_list))
     Collection(g, rdf_list, list(items))
+
+
+def _add_enum_value_shape(
+    g: Graph, shape_iri: URIRef, prop: URIRef, scheme_local: str,
+    source: URIRef,
+) -> None:
+    """Wire a datatype enum property to its SKOS scheme value-space (ODR-0024
+    R5/R6 scheme wiring, ADR-0005 §G23). A base node shape that
+    `sh:in`-restricts the property's values to the scheme's member notations
+    via `sh:targetSubjectsOf` — the domain-less idiom (mirrors the mediaUrl /
+    url value shapes), so the value-space holds standalone without the bearer's
+    base shape OR an overlay profile (this is what closes the ownerType gap:
+    opda:Proprietor has no overlay)."""
+    local = str(prop).rsplit("#", 1)[-1]
+    g.add((shape_iri, RDF.type, SH.NodeShape))
+    g.add((shape_iri, SH.targetSubjectsOf, prop))
+    g.add((shape_iri, DCTERMS.source, source))
+    p = BNode()
+    g.add((shape_iri, SH.property, p))
+    g.add((p, SH.path, prop))
+    g.add((p, SH.datatype, XSD.string))
+    g.add((p, SH.maxCount, Literal(1)))
+    _add_in_literal_list(
+        g, p, [Literal(v) for v in _scheme_notations(scheme_local)]
+    )
+    g.add((p, SH.severity, SH.Violation))
+    g.add((p, SH.message, Literal(
+        f"opda:{local} MUST be one of the opda:{scheme_local} member values "
+        "(ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via "
+        "sh:targetSubjectsOf, holding without an overlay profile).",
+        lang="en",
+    )))
 
 
 def build_descriptive_shapes() -> Graph:
@@ -1444,6 +1502,70 @@ def build_descriptive_shapes() -> Graph:
             "bearer class.",
             lang="en",
         )))
+
+    # --- ODR-0024 R3: the opda:MonetaryAmount value-structure node shape -
+    # The monetary walk (ADR-0005 §G22). A MonetaryAmount is a by-value
+    # structure: a magnitude (opda:amount, xsd:decimal) in a currency
+    # (opda:currency, an opda:CurrencyScheme ISO-4217 concept). Both are
+    # required (sh:minCount 1) and single-valued — currency is "never absent
+    # on the value type" (session-028 Q3); the overlay profile supplies GBP as
+    # the default. currency is sh:in-restricted to the CurrencyScheme concepts
+    # (a dereferenceable code, never an opaque string — as opda:peril is to
+    # PerilScheme).
+    g.add((OPDA.MonetaryAmountShape, RDF.type, SH.NodeShape))
+    g.add((OPDA.MonetaryAmountShape, SH.targetClass, OPDA.MonetaryAmount))
+    g.add((OPDA.MonetaryAmountShape, DCTERMS.source, _ODR_0024_R3))
+
+    p_amount = BNode()
+    g.add((OPDA.MonetaryAmountShape, SH.property, p_amount))
+    g.add((p_amount, SH.path, OPDA.amount))
+    g.add((p_amount, SH.datatype, XSD.decimal))
+    g.add((p_amount, SH.minCount, Literal(1)))
+    g.add((p_amount, SH.maxCount, Literal(1)))
+    g.add((p_amount, SH.severity, SH.Violation))
+    g.add((p_amount, SH.message, Literal(
+        "opda:MonetaryAmount MUST carry exactly one opda:amount magnitude "
+        "(xsd:decimal) — the numeric dimension of the value structure "
+        "(ODR-0024 R3).",
+        lang="en",
+    )))
+
+    p_currency = BNode()
+    g.add((OPDA.MonetaryAmountShape, SH.property, p_currency))
+    g.add((p_currency, SH.path, OPDA.currency))
+    g.add((p_currency, SH.nodeKind, SH.IRI))
+    g.add((p_currency, SH.minCount, Literal(1)))
+    g.add((p_currency, SH.maxCount, Literal(1)))
+    _add_in_iri_list(g, p_currency, _currency_concept_uris())
+    g.add((p_currency, SH.severity, SH.Violation))
+    g.add((p_currency, SH.message, Literal(
+        "opda:MonetaryAmount MUST carry exactly one opda:currency, one of the "
+        "opda:CurrencyScheme concepts (a dereferenceable ISO-4217 code, never "
+        "an opaque string; never absent on the value type — ODR-0024 R3). The "
+        "overlay profile supplies GBP as the default.",
+        lang="en",
+    )))
+
+    # --- ODR-0024 R5/R6: enum value-space wiring (the §G23 scheme wiring) -
+    # The six R6-surfaced enum properties (+ marketingTenure over the existing
+    # opda:TenureKindScheme, reuse-before-mint) are sh:in-restricted to their
+    # SKOS scheme member notations via sh:targetSubjectsOf — realising the
+    # "wire the minted schemes to their consuming properties" step at base-shape
+    # level, so the value-space holds without an overlay (ADR-0005 §G23).
+    for shape_iri, prop, scheme_local in (
+        (OPDA.ConstructionTypeValueShape, OPDA.constructionType,
+         "ConstructionTypeScheme"),
+        (OPDA.PriceQualifierValueShape, OPDA.priceQualifier,
+         "PriceQualifierScheme"),
+        (OPDA.TransportTypeValueShape, OPDA.transportType,
+         "TransportTypeScheme"),
+        (OPDA.BroadbandConnectionValueShape, OPDA.typeOfConnection,
+         "BroadbandConnectionTypeScheme"),
+        (OPDA.OfstedRatingValueShape, OPDA.ofstedRating, "OfstedRatingScheme"),
+        (OPDA.MarketingTenureValueShape, OPDA.marketingTenure,
+         "TenureKindScheme"),
+    ):
+        _add_enum_value_shape(g, shape_iri, prop, scheme_local, _ODR_0024_R6)
 
     return g
 
