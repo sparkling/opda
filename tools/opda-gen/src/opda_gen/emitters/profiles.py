@@ -541,7 +541,13 @@ def _build_baspi5_profile() -> Graph:
     # baspi5Ref value covering the property's identity surface).
     g.add((prop_shape, DCTERMS.source, _baspi5_question("A1.1")))
 
-    # UPRN required (BASPI5 propertyPack.uprn — A1.1.5)
+    # UPRN required (BASPI5 propertyPack.uprn). The schema reuses baspi5Ref
+    # `A1.1.5` for BOTH propertyPack.uprn AND address.postcode (two distinct
+    # schema leaves sharing one coarse form-question reference). Per G2 the
+    # dct:source IS the schema-leaf-path, so the UPRN leaf disambiguates to
+    # `A1.1.5.uprn` (baspi5Ref prefix + the distinguishing JSON leaf) while
+    # the address postcode keeps the bare `A1.1.5` (Baspi5_AddressShape) —
+    # so each form leaf is sourced by exactly one sh:path (ODR-0022 §2 G3).
     _add_property_shape(
         g, prop_shape,
         path=OPDA.hasUPRN,
@@ -549,7 +555,7 @@ def _build_baspi5_profile() -> Graph:
         dash_viewer=DASH.LiteralViewer,
         dash_editor=DASH.TextFieldEditor,
         sh_order=1, sh_group=grp_built,
-        form_question_anchor="A1.1.5",
+        form_question_anchor="A1.1.5.uprn",
         message="BASPI5: UPRN is required (identity key).",
     )
     # Address (object-property; multiplicity 1 in BASPI5 — propertyPack.address)
@@ -672,7 +678,12 @@ def _build_baspi5_profile() -> Graph:
     g.add((estate_shape, SH.targetClass, OPDA.LegalEstate))
     g.add((estate_shape, DCTERMS.source, _baspi5_question("A1.3")))
 
-    # ownershipType (Freehold/Leasehold/Commonhold/Managed Freehold/Other)
+    # ownershipType (Freehold/Leasehold/Commonhold/Managed Freehold/Other).
+    # Anchored at the precise leaf `A1.3.0.2`
+    # (propertyPack.ownership.ownershipsToBeTransferred.items.ownershipType) —
+    # NOT the coarse container `A1.3` (propertyPack.ownership), which the
+    # tenureKind shape retains. This separates the two LegalEstate paths so
+    # each form leaf binds exactly one sh:path (ODR-0022 §2 G3).
     _add_property_shape(
         g, estate_shape,
         path=OPDA.ownershipType,
@@ -681,10 +692,13 @@ def _build_baspi5_profile() -> Graph:
         dash_viewer=DASH.LabelViewer,
         dash_editor=DASH.EnumSelectEditor,
         sh_order=1, sh_group=grp_ownership,
-        form_question_anchor="A1.3",
-        message="BASPI5 question A1.3: ownership type is required.",
+        form_question_anchor="A1.3.0.2",
+        message="BASPI5 question A1.3.0.2: ownership type is required.",
     )
-    # tenureKind (Freehold/Leasehold/Commonhold)
+    # tenureKind (Freehold/Leasehold/Commonhold). Retains the container-level
+    # `A1.3` (propertyPack.ownership) — BASPI5 carries no distinct tenure
+    # baspi5Ref; tenure is the ownership question's Substance-Kind reading
+    # (ODR-0008 §Q5a row 2), so it sources the ownership block as a whole.
     _add_property_shape(
         g, estate_shape,
         path=OPDA.tenureKind,
@@ -716,14 +730,19 @@ def _build_baspi5_profile() -> Graph:
     g.add((seller_shape, RDF.type, SH.NodeShape))
     g.add((seller_shape, SH.targetClass, OPDA.Seller))
     g.add((seller_shape, DCTERMS.source, _baspi5_question("B1")))
-    # role (Seller-only branch — discriminator)
+    # role (Seller-only branch — discriminator). Anchored at `B1`
+    # (properties.participants — the participants block whose oneOf is
+    # discriminated on `role`; BASPI5 carries no separate role baspi5Ref).
+    # This is the one property shape that sources the participants container
+    # `B1` by sh:path, so `B1` is addressable rather than node-shape-only
+    # (ODR-0022 §2 G3); the seller name retains the distinct `B1.1`.
     _add_property_shape(
         g, seller_shape,
         path=OPDA.role,
         min_count=1, max_count=1,
         in_scheme_members=["Seller"],
         sh_order=1, sh_group=grp_participants,
-        form_question_anchor="B1.1",
+        form_question_anchor="B1",
     )
     # name + email required per BASPI5 participants[].required
     _add_property_shape(
@@ -736,7 +755,8 @@ def _build_baspi5_profile() -> Graph:
         # G19: anchor realigned from `B1.2` (no baspi5Ref) to
         # `B1.1` (the namesOfLegalOwners level — the closest stable
         # baspi5Ref covering the seller's name field; BASPI5 has no
-        # participants[].name baspi5Ref directly).
+        # participants[].name baspi5Ref directly). It is now the SOLE path
+        # sourcing `B1.1` (the role discriminator moved up to `B1`).
         form_question_anchor="B1.1",
     )
     _add_property_shape(
@@ -764,6 +784,12 @@ def _build_baspi5_profile() -> Graph:
     xone_list = BNode()
     g.add((capacity_shape, SH.xone, xone_list))
 
+    # Each xone branch property shape carries a form-question dct:source so
+    # the path it binds is traceable to a schema leaf (ODR-0022 §2 G2 — a
+    # path-bearing shape with no form-question dct:source is untraceable).
+    # The hasAssertedCapacity branches source the capacity discriminator leaf
+    # `B1.3.1` (participants.items.sellersCapacity.capacity); both branches
+    # carry the same predicate, so B1.3.1 binds exactly one distinct path.
     # Branch (a) — Legal Owner / Mortgagee in Possession
     branch_a = BNode()
     branch_a_prop = BNode()
@@ -771,6 +797,7 @@ def _build_baspi5_profile() -> Graph:
     g.add((branch_a_prop, SH.path, OPDA.hasAssertedCapacity))
     _add_in_list(g, branch_a_prop, ["Legal Owner", "Mortgagee in Possession"])
     g.add((branch_a_prop, SH.minCount, Literal(1)))
+    g.add((branch_a_prop, DCTERMS.source, _baspi5_question("B1.3.1")))
 
     # Branch (b) — Personal Rep / PoA / Assistant / Other
     branch_b = BNode()
@@ -784,12 +811,16 @@ def _build_baspi5_profile() -> Graph:
         "Other",
     ])
     g.add((branch_b_prop, SH.minCount, Literal(1)))
+    g.add((branch_b_prop, DCTERMS.source, _baspi5_question("B1.3.1")))
     # Branch (b) ALSO requires evidenced authority (sellersCapacityDetails +
-    # attachments per BASPI5 B1.3.2 + B1.3.3).
+    # attachments per BASPI5 B1.3.2 + B1.3.3). The hasEvidencedAuthority shape
+    # sources the sellersCapacityDetails leaf `B1.3.2` (the primary evidence
+    # leaf; attachments B1.3.3 is the same evidenced-authority requirement).
     branch_b_evidence = BNode()
     g.add((branch_b, SH.property, branch_b_evidence))
     g.add((branch_b_evidence, SH.path, OPDA.hasEvidencedAuthority))
     g.add((branch_b_evidence, SH.minCount, Literal(1)))
+    g.add((branch_b_evidence, DCTERMS.source, _baspi5_question("B1.3.2")))
     g.add((branch_b_evidence, SH.message, Literal(
         "BASPI5 question B1.3.2-3: Personal Representative / Power of "
         "Attorney / Assistant / Other capacity requires sellersCapacity"
@@ -805,7 +836,10 @@ def _build_baspi5_profile() -> Graph:
     g.add((buyer_shape, RDF.type, SH.NodeShape))
     g.add((buyer_shape, SH.targetClass, OPDA.Buyer))
     g.add((buyer_shape, DCTERMS.source, _baspi5_question("B1")))
-    # role-branch admission (non-seller branch of participants oneOf)
+    # role-branch admission (non-seller branch of participants oneOf).
+    # Anchored at `B1` (the participants block) like the seller-branch role —
+    # same opda:role predicate, so `B1` still binds exactly one distinct
+    # sh:path. (Was `B1.1`, which collided with the seller-name path.)
     _add_property_shape(
         g, buyer_shape,
         path=OPDA.role,
@@ -816,7 +850,7 @@ def _build_baspi5_profile() -> Graph:
             "Surveyor", "Mortgage Broker", "Lender", "Landlord", "Tenant",
         ],
         sh_order=1, sh_group=grp_participants,
-        form_question_anchor="B1.1",
+        form_question_anchor="B1",
     )
 
     # --- Baspi5_EPCCertificateShape (BASPI5 A1.8.3.1) -----------------
@@ -824,6 +858,13 @@ def _build_baspi5_profile() -> Graph:
     g.add((epc_shape, RDF.type, SH.NodeShape))
     g.add((epc_shape, SH.targetClass, OPDA.EPCCertificate))
     g.add((epc_shape, DCTERMS.source, _baspi5_question("A1.8.3.1")))
+    # Within the EPCCertificate shape the single constrained field sources
+    # the certificate question `A1.8.3.1`
+    # (propertyPack.energyEfficiency.certificate) — so the EPC container
+    # anchor is addressable by an sh:path, not node-shape-only (ODR-0022 §2
+    # G3). The finer leaf `A1.8.3.1.1` (currentEnergyRating) is retained by
+    # the same predicate on Baspi5_PropertyShape, so both anchors stay
+    # present, each bound by exactly one path.
     _add_property_shape(
         g, epc_shape,
         path=OPDA.currentEnergyRating,
@@ -832,7 +873,7 @@ def _build_baspi5_profile() -> Graph:
         dash_viewer=DASH.LabelViewer,
         dash_editor=DASH.EnumSelectEditor,
         sh_order=1, sh_group=grp_energy,
-        form_question_anchor="A1.8.3.1.1",
+        form_question_anchor="A1.8.3.1",
         message="BASPI5: EPC current energy rating (A-G) required.",
     )
 

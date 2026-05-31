@@ -9,11 +9,14 @@ Realises:
   term**.
 - Council session-023 (Knublauch/Davis co-signed gate): round-trip is a
   property of the SHACL profile, not of TBox cardinality — so it is tested.
-- ADR-0029 §Consequence: the overlay profiles are currently emitted *thin*
-  (the descriptive walk + per-form leaf enumeration are deferred to ADR-0028).
-  These tests therefore assert the **harness mechanics** unconditionally, and
-  the **full-coverage gate** is `xfail`-ed with a reason until emission lands,
-  so they pass the existing suite cleanly today.
+- ADR-0031: the BASPI5 overlay round-trip is closed — BASPI5 (the one
+  non-thin profile) binds every form-question leaf it references by exactly
+  one property-shape `sh:path`. These tests assert the **harness mechanics**
+  unconditionally AND the **BASPI5 profile round-trip** as a hard passing
+  assertion (the xfail marker was flipped to lock in that profile's round-trip
+  totality). NOTE: this is a property of the emitted SHACL profile, NOT a claim
+  that the full candidate-G walk has landed — TBox candidate-G emission
+  coverage is tracked separately by the `ci-category-g-coverage` gate.
 
 The structure mirrors the sibling CI tests (`test_profiles.py`,
 `test_byte_identity.py`): emit a real corpus into a tmp dir, parse it, and
@@ -154,21 +157,23 @@ def test_retrieve_by_term_for_category_g_term(baspi5_graph: Graph) -> None:
     )
 
 
-# --- G3 (a): the full-coverage gate (xfail until the walk lands) ---------
-@pytest.mark.xfail(
-    reason=(
-        "Profiles emitted thin (ADR-0029): the descriptive walk + per-form "
-        "leaf enumeration (ADR-0028 Category-G + salience allow-list) are "
-        "deferred to the curated WG pass, so most form leaves are not yet "
-        "bound by a property-shape sh:path. G3 full coverage flips to a hard "
-        "gate once emission lands."
-    ),
-    strict=False,
-)
+# --- G3 (a): the BASPI5 profile round-trip gate (HARD) -------------------
+# Per ADR-0031 the xfail marker was flipped to a normal passing assertion once
+# the BASPI5 overlay (the one non-thin profile) closed its round-trip: every
+# BASPI5 form-question leaf is now sourced by exactly one profile
+# property-shape sh:path, with no over-binding and no G2 traceability gap.
+# This is a round-trip totality lock-in for the EMITTED PROFILES — it fails the
+# suite if a future change re-introduces an unaddressable / doubly-bound leaf
+# or an untraceable shape. It is NOT a measure of candidate-G TBox emission
+# coverage (that is the `ci-category-g-coverage` gate) — most candidate-G
+# leaves can still be unemitted while this passes.
 def test_full_round_trip_coverage_gate(emitted_corpus: Path) -> None:
     """ODR-0022 §2 G3 (a): every form-question leaf is the `dct:source` of
-    exactly one profile property-shape `sh:path`. Expected to xfail today
-    (thin emission); becomes a passing hard gate when the walk lands."""
+    exactly one profile property-shape `sh:path` (no leaf unaddressable, none
+    doubly-bound, every path-bearing shape traceable to a schema leaf). A
+    passing hard gate since the BASPI5 profile round-trip was closed (the one
+    non-thin overlay); full candidate-G walk coverage is tracked by
+    ci-category-g-coverage."""
     report = run(emitted_corpus)
     assert report.violations == [], (
         "descriptive round-trip coverage gaps:\n"
@@ -176,16 +181,19 @@ def test_full_round_trip_coverage_gate(emitted_corpus: Path) -> None:
     )
 
 
-def test_coverage_report_surfaces_gaps_without_raising(
+def test_baspi5_round_trip_coverage_is_complete(
     emitted_corpus: Path,
 ) -> None:
-    """Until the walk lands the harness must REPORT gaps (not hard-fail the
-    suite): `run()` returns cleanly, `is_complete` is False, and `gaps`
-    explains why. This is the skip-with-reason contract the team-lead asked
-    for — the suite stays green while coverage is incomplete."""
+    """The BASPI5 profile round-trip lock-in: now the BASPI5 overlay (the one
+    non-thin profile) has closed its round-trip, `run()` returns cleanly,
+    `is_complete` is True, and there are no residual gaps. (Was the inverse
+    "surface gaps without raising" tracker while the profiles were emitted
+    thin.) This asserts the emitted SHACL profile round-trips — NOT that the
+    full candidate-G walk has landed (see ci-category-g-coverage)."""
     report = run(emitted_corpus)
-    assert not report.is_complete, (
-        "harness reports complete coverage — if real, promote "
-        "test_full_round_trip_coverage_gate to a non-xfail hard gate"
+    assert report.is_complete, (
+        "harness no longer reports complete coverage — the round-trip "
+        "totality regressed; inspect report.violations / report.gaps"
     )
-    assert report.gaps, "expected the harness to surface coverage gaps"
+    assert not report.gaps, f"unexpected residual coverage gaps: {report.gaps}"
+    assert report.addressable, "expected addressable form-question leaves"

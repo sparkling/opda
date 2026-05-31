@@ -35,31 +35,31 @@ opda:Baspi5_AddressShape
 opda:Baspi5_BuyerShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:b78bd3625e376 ;
+    sh:property _:b0eaf02e11a50 ;
     sh:targetClass opda:Buyer .
 
 opda:Baspi5_EPCCertificateShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
-    sh:property _:b1eb770128af6 ;
+    sh:property _:b694ae7948591 ;
     sh:targetClass opda:EPCCertificate .
 
 opda:Baspi5_LegalEstateShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.3> ;
-    sh:property _:b2d557e6c90c7, _:b76a31b3e9782, _:b7b8ba7829bd6, _:bda5177528e12, _:bfc1b2fab09d1 ;
+    sh:property _:b2d557e6c90c7, _:b7b8ba7829bd6, _:b7befd4e58460, _:bda5177528e12, _:bfc1b2fab09d1 ;
     sh:targetClass opda:LegalEstate .
 
 opda:Baspi5_PropertyShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.1> ;
-    sh:property _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b3d84f4079cd7, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
+    sh:property _:b01fc950a3aa0, _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
     sh:targetClass opda:Property .
 
 opda:Baspi5_SellerShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:b3ef8485aa649, _:ba81ef3c751b7, _:bd693afd83922 ;
+    sh:property _:b32f208a1c58a, _:b3ef8485aa649, _:ba81ef3c751b7 ;
     sh:targetClass opda:Seller .
 
 opda:Baspi5_SellersCapacityShape
@@ -67,7 +67,7 @@ opda:Baspi5_SellersCapacityShape
     dct:source <https://www.basp.uk/forms/baspi5#B1.3> ;
     sh:severity sh:Violation ;
     sh:targetClass opda:Seller ;
-    sh:xone _:b9a107f47f5d7 .
+    sh:xone _:bf931cfbf0080 .
 
 opda:Baspi5ValidationContext
     rdf:type opda:ValidationContext ;
@@ -121,23 +121,25 @@ opda:Baspi5_Participants_Group
     rdfs:label "Participants"@en ;
     sh:order "1"^^xsd:integer .
 
-_:b00431d528ea9
-    sh:message "BASPI5 question B1.3.2-3: Personal Representative / Power of Attorney / Assistant / Other capacity requires sellersCapacityDetails + attachments."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:path opda:hasEvidencedAuthority .
-
 _:b01d33d61be57
     rdf:first "Seller's Conveyancer" ;
     rdf:rest _:b45efdad76d68 .
 
+_:b01fc950a3aa0
+    dct:source <https://www.basp.uk/forms/baspi5#A1.1.5.uprn> ;
+    dash:editor dash:TextFieldEditor ;
+    dash:viewer dash:LiteralViewer ;
+    sh:group opda:Baspi5_BuiltForm_Group ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "BASPI5: UPRN is required (identity key)."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:hasUPRN ;
+    sh:severity sh:Violation .
+
 _:b03eb8bb1852a
     rdf:first "Oil" ;
     rdf:rest _:b87d4790e02b7 .
-
-_:b057c4f2d449f
-    sh:in _:bff4b87fe531c ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:path opda:hasAssertedCapacity .
 
 _:b0654af6bc0f5
     rdf:first "Buyer" ;
@@ -158,6 +160,16 @@ _:b09d940f4830d
     sh:path opda:hasSprayFoamInstalled ;
     sh:severity sh:Violation .
 
+_:b0eaf02e11a50
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:b0654af6bc0f5 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:role ;
+    sh:severity sh:Violation .
+
 _:b104fa169436a
     rdf:first "G" ;
     rdf:rest rdf:nil .
@@ -169,6 +181,12 @@ _:b104fa169436a
 _:b118d86466af3
     rdf:first "Commonhold" ;
     rdf:rest rdf:nil .
+
+_:b12c3d2fd5c1c
+    dct:source <https://www.basp.uk/forms/baspi5#B1.3.1> ;
+    sh:in _:b090b46ee7328 ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:hasAssertedCapacity .
 
 _:b145accbf4a97
     rdf:first "Seller" ;
@@ -193,18 +211,11 @@ _:b1ca4257457df
     sh:path opda:soldWithVacantPossession ;
     sh:severity sh:Violation .
 
-_:b1eb770128af6
-    dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1.1> ;
-    dash:editor dash:EnumSelectEditor ;
-    dash:viewer dash:LabelViewer ;
-    sh:group opda:Baspi5_Energy_Group ;
-    sh:in _:bb88f9127cd25 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5: EPC current energy rating (A-G) required."@en ;
+_:b1edaba2133e2
+    dct:source <https://www.basp.uk/forms/baspi5#B1.3.1> ;
+    sh:in _:bff4b87fe531c ;
     sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:currentEnergyRating ;
-    sh:severity sh:Violation .
+    sh:path opda:hasAssertedCapacity .
 
 _:b24d30917c309
     rdf:first "Electricity" ;
@@ -232,6 +243,16 @@ _:b2da5aa92cc09
     rdf:first "Commonhold" ;
     rdf:rest _:bb66f0fd7be91 .
 
+_:b32f208a1c58a
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:b145accbf4a97 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:role ;
+    sh:severity sh:Violation .
+
 _:b3881ecfc1545
     rdf:first "C" ;
     rdf:rest _:bb10de4780a99 .
@@ -251,18 +272,6 @@ _:b3b6f8aad6108
     sh:path opda:hasSmartHomeSystems ;
     sh:severity sh:Violation .
 
-_:b3d84f4079cd7
-    dct:source <https://www.basp.uk/forms/baspi5#A1.1.5> ;
-    dash:editor dash:TextFieldEditor ;
-    dash:viewer dash:LiteralViewer ;
-    sh:group opda:Baspi5_BuiltForm_Group ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5: UPRN is required (identity key)."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:hasUPRN ;
-    sh:severity sh:Violation .
-
 _:b3ef8485aa649
     dct:source <https://www.basp.uk/forms/baspi5#B1.1> ;
     dash:editor dash:TextFieldEditor ;
@@ -280,6 +289,9 @@ _:b45811fea6480
 _:b45efdad76d68
     rdf:first "Prospective Buyer" ;
     rdf:rest _:b45811fea6480 .
+
+_:b50cb9e8334d2
+    sh:property _:b1edaba2133e2 .
 
 _:b50cc78b55dd8
     dct:source <https://www.basp.uk/forms/baspi5#A1.1.1> ;
@@ -328,18 +340,26 @@ _:b6372b3df4d23
     rdf:first "Maisonette" ;
     rdf:rest _:bb66f0fd7be91 .
 
-_:b637af6fda0a5
-    sh:in _:b090b46ee7328 ;
+_:b69057774ad9a
+    rdf:first "B" ;
+    rdf:rest _:b3881ecfc1545 .
+
+_:b69057774ad9a
+    rdf:first "B" ;
+    rdf:rest _:b3881ecfc1545 .
+
+_:b694ae7948591
+    dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
+    dash:editor dash:EnumSelectEditor ;
+    dash:viewer dash:LabelViewer ;
+    sh:group opda:Baspi5_Energy_Group ;
+    sh:in _:bb88f9127cd25 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "BASPI5: EPC current energy rating (A-G) required."@en ;
     sh:minCount "1"^^xsd:integer ;
-    sh:path opda:hasAssertedCapacity .
-
-_:b69057774ad9a
-    rdf:first "B" ;
-    rdf:rest _:b3881ecfc1545 .
-
-_:b69057774ad9a
-    rdf:first "B" ;
-    rdf:rest _:b3881ecfc1545 .
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:currentEnergyRating ;
+    sh:severity sh:Violation .
 
 _:b69d7c6d6bbe3
     rdf:first "Leasehold" ;
@@ -371,19 +391,6 @@ _:b73cf8ca21c31
     sh:path <http://www.w3.org/2006/vcard/ns#postal-code> ;
     sh:severity sh:Violation .
 
-_:b76a31b3e9782
-    dct:source <https://www.basp.uk/forms/baspi5#A1.3> ;
-    dash:editor dash:EnumSelectEditor ;
-    dash:viewer dash:LabelViewer ;
-    sh:group opda:Baspi5_Ownership_Group ;
-    sh:in _:b91d4ba5c47be ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5 question A1.3: ownership type is required."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:ownershipType ;
-    sh:severity sh:Violation .
-
 _:b789e8fa013f5
     dct:source <https://www.basp.uk/forms/baspi5#A4.1.1> ;
     dash:editor dash:EnumSelectEditor ;
@@ -395,16 +402,6 @@ _:b789e8fa013f5
     sh:path opda:hasBeenFlooded ;
     sh:severity sh:Violation .
 
-_:b78bd3625e376
-    dct:source <https://www.basp.uk/forms/baspi5#B1.1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b0654af6bc0f5 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:role ;
-    sh:severity sh:Violation .
-
 _:b7b8ba7829bd6
     dct:source <https://www.basp.uk/forms/baspi5#A1.4.2> ;
     dash:editor dash:EnumSelectEditor ;
@@ -413,6 +410,19 @@ _:b7b8ba7829bd6
     sh:in _:bbfbbd5886345 ;
     sh:message "BASPI5 question A1.4.2: ground rent payable (Yes/No)."@en ;
     sh:path opda:isGroundRentPayable ;
+    sh:severity sh:Violation .
+
+_:b7befd4e58460
+    dct:source <https://www.basp.uk/forms/baspi5#A1.3.0.2> ;
+    dash:editor dash:EnumSelectEditor ;
+    dash:viewer dash:LabelViewer ;
+    sh:group opda:Baspi5_Ownership_Group ;
+    sh:in _:b91d4ba5c47be ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "BASPI5 question A1.3.0.2: ownership type is required."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:ownershipType ;
     sh:severity sh:Violation .
 
 _:b83fdcd3cac97
@@ -450,10 +460,6 @@ _:b917571c1ec12
 _:b91d4ba5c47be
     rdf:first "Freehold" ;
     rdf:rest _:b543e2b810222 .
-
-_:b9a107f47f5d7
-    rdf:first _:bcf3ea8ecc1a8 ;
-    rdf:rest _:bf33f3fbcaf4f .
 
 _:b9c6881466435
     rdf:first "Landlord" ;
@@ -603,6 +609,10 @@ _:bb66f0fd7be91
     rdf:first "Other" ;
     rdf:rest rdf:nil .
 
+_:bb6e3443d7e4b
+    rdf:first _:bc011f8eb93b9 ;
+    rdf:rest rdf:nil .
+
 _:bb88f9127cd25
     rdf:first "A" ;
     rdf:rest _:b69057774ad9a .
@@ -674,6 +684,9 @@ _:bbfbbd5886345
     rdf:first "Yes" ;
     rdf:rest _:ba6f36d052dd3 .
 
+_:bc011f8eb93b9
+    sh:property _:b12c3d2fd5c1c, _:bdd6345faa412 .
+
 _:bca402a5be001
     rdf:first "Central heating" ;
     rdf:rest _:b83fdcd3cac97 .
@@ -681,12 +694,6 @@ _:bca402a5be001
 _:bca44e8ce3601
     rdf:first "Tenant" ;
     rdf:rest rdf:nil .
-
-_:bcb97a1f8bf88
-    sh:property _:b00431d528ea9, _:b637af6fda0a5 .
-
-_:bcf3ea8ecc1a8
-    sh:property _:b057c4f2d449f .
 
 _:bd0edc3f293ca
     dct:source <https://www.basp.uk/forms/baspi5#A1.1> ;
@@ -696,16 +703,6 @@ _:bd0edc3f293ca
     sh:minCount "1"^^xsd:integer ;
     sh:order "2"^^xsd:integer ;
     sh:path opda:hasAddress ;
-    sh:severity sh:Violation .
-
-_:bd693afd83922
-    dct:source <https://www.basp.uk/forms/baspi5#B1.1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b145accbf4a97 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:role ;
     sh:severity sh:Violation .
 
 _:bd793d8bc592e
@@ -756,6 +753,12 @@ _:bdcddbc2d0d03
     rdf:first "Estate Agent" ;
     rdf:rest _:bfde08a6255c4 .
 
+_:bdd6345faa412
+    dct:source <https://www.basp.uk/forms/baspi5#B1.3.2> ;
+    sh:message "BASPI5 question B1.3.2-3: Personal Representative / Power of Attorney / Assistant / Other capacity requires sellersCapacityDetails + attachments."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:hasEvidencedAuthority .
+
 _:bdd8f0ca42248
     dct:source <https://www.basp.uk/forms/baspi5#B4.6.2> ;
     dash:editor dash:EnumSelectEditor ;
@@ -790,9 +793,9 @@ _:bf09989baa9c3
     rdf:first "Mains gas" ;
     rdf:rest _:b24d30917c309 .
 
-_:bf33f3fbcaf4f
-    rdf:first _:bcb97a1f8bf88 ;
-    rdf:rest rdf:nil .
+_:bf931cfbf0080
+    rdf:first _:b50cb9e8334d2 ;
+    rdf:rest _:bb6e3443d7e4b .
 
 _:bfbe3637dfbe6
     dct:source <https://www.basp.uk/forms/baspi5#A7.1> ;
