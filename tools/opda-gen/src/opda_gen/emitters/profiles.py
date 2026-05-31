@@ -168,10 +168,14 @@ class ProfileSpec:
     The 30 non-BASPI5 forms ship with `shape_builder=None` (header +
     community only): their leaves have no `opda:` property paths to
     constrain until the descriptive-layer terms (ADR-0028) land — see the
-    ADR-0029 implementation note. BASPI5 retains its bespoke builder
-    (`_build_baspi5_profile`); data-fying its ~30 shapes into a
-    `shape_builder` is the remaining output-neutral refactor, coupled to
-    the same ADR-0028 work.
+    ADR-0029 implementation note. BASPI5 supplies its full shape logic via
+    `shape_builder=_build_baspi5_shapes` and so routes through the same
+    `_build_profile` path as every other form (ADR-0029 gap 2).
+
+    `comment_header` selects the generator-comment block prepended to the
+    serialised graph: the 30 thin forms use `_thin_comment_header`; BASPI5
+    keeps its own `_comment_header` (the only field that still differs
+    between BASPI5 and the thin forms).
     """
 
     form_id: str
@@ -180,6 +184,7 @@ class ProfileSpec:
     community: URIRef
     dct_source: URIRef
     shape_builder: Callable[[Graph, URIRef], None] | None = None
+    comment_header: Callable[[str, str, str, str], str] | None = None
 
     def profile_iri(self) -> URIRef:
         return URIRef(f"https://w3id.org/opda/profiles/{self.form_id}")
@@ -284,6 +289,7 @@ def _thin_specs() -> dict[str, ProfileSpec]:
             description=_thin_description(title, community),
             community=community,
             dct_source=_ADR_0029,
+            comment_header=_thin_comment_header,
         )
     for code, topic in _EXTENSION_TITLES.items():
         community = OVERLAY_COMMUNITY[code]
@@ -294,11 +300,9 @@ def _thin_specs() -> dict[str, ProfileSpec]:
             description=_thin_description(full, community),
             community=community,
             dct_source=_ADR_0029,
+            comment_header=_thin_comment_header,
         )
     return specs
-
-
-_PROFILE_SPECS: dict[str, ProfileSpec] = _thin_specs()
 
 
 def _thin_comment_header(
@@ -412,14 +416,19 @@ def _add_property_group(
     g.add((group_uri, SH.order, Literal(order)))
 
 
-# --- BASPI5 profile builder ----------------------------------------------
-def _build_baspi5_profile() -> Graph:
-    """Build the BASPI5 overlay profile graph.
+# --- BASPI5 shape builder (ADR-0029 gap 2) -------------------------------
+def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
+    """Add the BASPI5 SHACL shapes to ``g`` (a ``shape_builder`` callback).
+
+    The shared `owl:Ontology` header (title / imports / versionIRI /
+    `dct:source` / the one `dct:subject` community tag) is emitted by
+    `_build_profile` from the BASPI5 ``ProfileSpec``; this callback adds
+    only the BASPI5-specific shapes onto the same graph (ADR-0029 gap 2 —
+    BASPI5 now routes through the generic builder like every other form).
 
     Realises ADR-0013 §"Profile emission template" + ODR-0010 §Q1-Q7.
 
     Coverage:
-    - Ontology header with owl:imports foundation + vocabularies; owl:versionIRI.
     - opda:ValidationContext reification per ODR-0010 §Q1 with 5 properties.
     - Per-class Baspi5_* NodeShapes:
         * Baspi5_PropertyShape    — built form / energy / heating /
@@ -434,42 +443,6 @@ def _build_baspi5_profile() -> Graph:
     - sh:PropertyGroup instances for the major DASH groups.
     - sh:xone shape for the BASPI5 sellersCapacity oneOf discriminator.
     """
-    g = Graph()
-    g.bind("opda", OPDA)
-    g.bind("sh", SH)
-    g.bind("dash", DASH)
-    g.bind("dct", DCTERMS)
-    g.bind("rdf", RDF)
-    g.bind("rdfs", RDFS)
-    g.bind("owl", OWL)
-    g.bind("skos", SKOS)
-    g.bind("xsd", XSD)
-    g.bind("prov", PROV)
-
-    # --- Ontology header per ADR-0013 §"Profile emission template" -----
-    profile_iri = URIRef("https://w3id.org/opda/profiles/baspi5")
-    g.add((profile_iri, RDF.type, OWL.Ontology))
-    g.add((profile_iri, DCTERMS.title,
-           Literal("BASPI5 overlay profile", lang="en")))
-    g.add((profile_iri, DCTERMS.description, Literal(
-        "SHACL profile graph for the BASPI5 (British Association of "
-        "Surveyors Property Information) version 5 form. Per-form "
-        "cardinality, enum subsets, DASH UI rendering. Composes over "
-        "the foundation + module TBox + base shapes per ODR-0010.",
-        lang="en",
-    )))
-    g.add((profile_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
-    g.add((profile_iri, OWL.imports,
-           URIRef("https://w3id.org/opda/vocabularies/")))
-    g.add((profile_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/profiles/baspi5/0.1.0/")))
-    g.add((profile_iri, DCTERMS.source, _ADR_0013))
-    # S022 governance directive (ADR-0029 work-item 2): the form↔community
-    # link is one standard dct:subject triple on the form graph header,
-    # pointing at the owning industry context concept — NOT
-    # opda:overlaysContext / PROF (retired by S022).
-    g.add((profile_iri, DCTERMS.subject, OVERLAY_COMMUNITY["baspi5"]))
-
     # --- opda:ValidationContext reification per ODR-0010 §Q1 -----------
     # S022 (ADR-0026/0029 amendments): opda:requires + opda:overlaysContext
     # are DROPPED — `requires` is redundant (the shapes' sh:path/sh:minCount
@@ -881,14 +854,19 @@ def _build_baspi5_profile() -> Graph:
         message="BASPI5: EPC current energy rating (A-G) required.",
     )
 
-    return g
-
 
 # --- Generator-comment header --------------------------------------------
 def _comment_header(
-    filename: str, emission_date: str, git_sha: str,
+    _form_id: str, filename: str, emission_date: str, git_sha: str,
 ) -> str:
-    """Build the generator-comment block prepended to the profile file."""
+    """Build the generator-comment block prepended to the BASPI5 file.
+
+    Takes the uniform ``(form_id, filename, emission_date, git_sha)``
+    signature shared with `_thin_comment_header` so both can sit on a
+    ``ProfileSpec.comment_header`` and dispatch through one call site
+    (ADR-0029 gap 2); ``_form_id`` is unused here — the BASPI5 label is
+    fixed.
+    """
     lines = [
         f"# profiles/{filename} — BASPI5 overlay profile",
         f"# Generated by opda-gen {__version__} at {emission_date}; "
@@ -909,6 +887,31 @@ def _comment_header(
         "",
     ]
     return "\n".join(lines) + "\n"
+
+
+# --- BASPI5 spec + full registry (ADR-0029 gap 2) ------------------------
+# BASPI5 is a regular ProfileSpec carrying its shape logic as a
+# `shape_builder` and its own `comment_header`. It routes through
+# `_build_profile` exactly like the 30 thin forms — no special case in
+# `emit_profile`. The header triples it needs (dct:source -> ADR-0013;
+# dct:subject -> Estate Agency) are reproduced byte-for-byte by
+# `_build_profile` from these fields, so `baspi5.ttl` is unchanged.
+_BASPI5_SPEC = ProfileSpec(
+    form_id="baspi5",
+    title="BASPI5 overlay profile",
+    description=(
+        "SHACL profile graph for the BASPI5 (British Association of "
+        "Surveyors Property Information) version 5 form. Per-form "
+        "cardinality, enum subsets, DASH UI rendering. Composes over "
+        "the foundation + module TBox + base shapes per ODR-0010."
+    ),
+    community=OVERLAY_COMMUNITY["baspi5"],
+    dct_source=_ADR_0013,
+    shape_builder=_build_baspi5_shapes,
+    comment_header=_comment_header,
+)
+
+_PROFILE_SPECS: dict[str, ProfileSpec] = {"baspi5": _BASPI5_SPEC, **_thin_specs()}
 
 
 # --- Public API ----------------------------------------------------------
@@ -940,12 +943,10 @@ def emit_profile(
     sha_str = git_sha or _PROFILE_SOURCE_COMMIT
 
     filename = PROFILE_FILENAMES[overlay]
-    if overlay == "baspi5":
-        graph = _build_baspi5_profile()
-        header = _comment_header(filename, date_str, sha_str)
-    else:
-        graph = _build_profile(_PROFILE_SPECS[overlay])
-        header = _thin_comment_header(overlay, filename, date_str, sha_str)
+    spec = _PROFILE_SPECS[overlay]
+    graph = _build_profile(spec)
+    build_header = spec.comment_header or _thin_comment_header
+    header = build_header(overlay, filename, date_str, sha_str)
     body = to_canonical_turtle(graph).decode("utf-8")
     content = header + body
 
