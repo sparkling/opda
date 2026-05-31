@@ -32,6 +32,19 @@ _DATA = (
     / "data-dictionary-canonical.json"
 )
 
+# The canonical data dictionary is a gitignored deliverable (ODR-0024 R12) —
+# absent in CI's clean checkout. Tests that load the REAL corpus are
+# local-only gates; they skip (not fail) when the file is missing. The
+# literal-input categoriser tests below carry no such dependency and run
+# everywhere.
+_requires_corpus = pytest.mark.skipif(
+    not _DATA.exists(),
+    reason=(
+        "data-dictionary-canonical.json is gitignored (local-only gate); "
+        "absent in CI"
+    ),
+)
+
 
 # --------------------------------------------------------------------------
 # Gate G1 — the path-aware acceptance case (the reason the rule exists).
@@ -62,6 +75,7 @@ def test_g1_two_prices_split_by_path_not_name():
     assert (headline, chattel) == ("G", "D")
 
 
+@_requires_corpus
 def test_g1_on_real_corpus_all_fixtures_prices_are_d():
     """Over the live corpus: every `fixturesAndFittings.*.price` is D."""
     report = categorise_all(load_records(_DATA))
@@ -216,6 +230,7 @@ def test_enum_bearing_quale_attr_is_g_not_c(path):
 # --------------------------------------------------------------------------
 
 
+@_requires_corpus
 def test_every_annotated_leaf_binned_to_exactly_one_category():
     report = categorise_all(load_records(_DATA))
     total = sum(report.counts.values())
@@ -224,12 +239,14 @@ def test_every_annotated_leaf_binned_to_exactly_one_category():
     assert all(lf.category in "ABCDEFG" for lf in report.leaves)
 
 
+@_requires_corpus
 def test_annotated_base_leaf_total_matches_evidence_pack():
     """1,493 annotated true base leaves (S023-EVIDENCE §A)."""
     report = categorise_all(load_records(_DATA))
     assert sum(report.counts.values()) == 1493
 
 
+@_requires_corpus
 def test_candidate_g_distinct_names_after_r5_structural_rule():
     """ODR-0024 R5: the structural C-vs-G rule (replacing the S025 7-name
     allow-list) surfaces the enum-bearing substantive Property/estate attributes
@@ -241,6 +258,7 @@ def test_candidate_g_distinct_names_after_r5_structural_rule():
     assert 230 <= len(report.candidate_g_names) <= 250, len(report.candidate_g_names)
 
 
+@_requires_corpus
 def test_r5_no_enum_leaf_under_property_path_lands_in_c_unexamined():
     """ODR-0024 R5 regression: no enum-bearing leaf under a Property/estate
     descriptive path may land in Category C UNLESS its value-space is a
@@ -298,6 +316,7 @@ def test_r5_no_enum_leaf_under_property_path_lands_in_c_unexamined():
     )
 
 
+@_requires_corpus
 def test_residue_leaves_are_all_category_g_and_recorded():
     """Residue (§5) is a flagged subset of G — recorded, never dropped."""
     report = categorise_all(load_records(_DATA))
@@ -308,6 +327,7 @@ def test_residue_leaves_are_all_category_g_and_recorded():
     assert all(lf.leaf_path in leaf_paths for lf in report.residue)
 
 
+@_requires_corpus
 def test_flagship_quale_attrs_are_g_in_corpus():
     """S025 defect fix over the live corpus: the enum-bearing flagship Quale
     attributes land in G, never C."""
@@ -320,6 +340,7 @@ def test_flagship_quale_attrs_are_g_in_corpus():
         assert cats and "G" in cats and "C" not in cats, (nm, cats)
 
 
+@_requires_corpus
 def test_report_dict_is_deterministic_and_sorted():
     records = load_records(_DATA)
     first = report_to_dict(categorise_all(records))

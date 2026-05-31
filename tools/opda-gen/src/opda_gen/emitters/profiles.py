@@ -543,11 +543,15 @@ def _build_baspi5_profile() -> Graph:
 
     # UPRN required (BASPI5 propertyPack.uprn). The schema reuses baspi5Ref
     # `A1.1.5` for BOTH propertyPack.uprn AND address.postcode (two distinct
-    # schema leaves sharing one coarse form-question reference). Per G2 the
-    # dct:source IS the schema-leaf-path, so the UPRN leaf disambiguates to
-    # `A1.1.5.uprn` (baspi5Ref prefix + the distinguishing JSON leaf) while
-    # the address postcode keeps the bare `A1.1.5` (Baspi5_AddressShape) —
-    # so each form leaf is sourced by exactly one sh:path (ODR-0022 §2 G3).
+    # schema leaves sharing one coarse form-question reference). The
+    # dct:source cites the REAL BASPI5 form question — `A1.1.5`, the
+    # baspi5Ref baspi5.json assigns to both leaves — per the G19 acceptance
+    # gate (every anchor MUST be an exact baspi5Ref value;
+    # tests/baspi5_round_trip/test_traceability.py). The two shapes are
+    # distinguished by their sh:path (opda:hasUPRN here vs vcard:postal-code
+    # on Baspi5_AddressShape), NOT by a fabricated `A1.1.5.uprn` ref; G3
+    # round-trip coverage still holds because each schema leaf is reached by
+    # its own sh:path under the shared form-question anchor.
     _add_property_shape(
         g, prop_shape,
         path=OPDA.hasUPRN,
@@ -555,7 +559,7 @@ def _build_baspi5_profile() -> Graph:
         dash_viewer=DASH.LiteralViewer,
         dash_editor=DASH.TextFieldEditor,
         sh_order=1, sh_group=grp_built,
-        form_question_anchor="A1.1.5.uprn",
+        form_question_anchor="A1.1.5",
         message="BASPI5: UPRN is required (identity key).",
     )
     # Address (object-property; multiplicity 1 in BASPI5 — propertyPack.address)

@@ -120,6 +120,36 @@ def test_report_partitions_every_form_leaf(baspi5_graph: Graph) -> None:
     assert not (report.unaddressable & set(report.doubly_bound))
 
 
+def test_schema_sanctioned_shared_ref_is_addressable_not_doubly_bound(
+    baspi5_graph: Graph,
+) -> None:
+    """baspi5.json assigns ref `A1.1.5` to BOTH propertyPack.uprn and
+    propertyPack.address.postcode. The honest dct:source is the real ref
+    `A1.1.5` (the G19 acceptance gate forbids a fabricated `A1.1.5.uprn`),
+    so it binds two sh:paths on two node shapes. G3 must treat this as
+    addressable multi-entity coverage — NOT an over-binding violation — and
+    both paths must stay recoverable by `retrieve_by_path`. Locks the
+    resolution of the G19-vs-G3 conflict (ADR-0014 G19 / ODR-0022 §2 G3)."""
+    report = build_coverage_report(baspi5_graph)
+    ref = f"{BASPI5_FORMS_AUTHORITY}#A1.1.5"
+    assert ref in report.addressable, (
+        f"{ref} should be addressable (schema-sanctioned shared ref)"
+    )
+    assert ref not in report.doubly_bound, (
+        f"{ref} must not be flagged doubly-bound — it mirrors baspi5.json's "
+        "own one-ref-two-leaves structure"
+    )
+    paths = {str(p) for p in retrieve_by_path(baspi5_graph, ref)}
+    assert {
+        "https://w3id.org/opda/#hasUPRN",
+        "http://www.w3.org/2006/vcard/ns#postal-code",
+    } <= paths, f"both uprn + postcode paths must be recoverable; got {paths}"
+    # The fabricated disambiguator must not reappear (G19).
+    assert f"{BASPI5_FORMS_AUTHORITY}#A1.1.5.uprn" not in collect_form_leaves(
+        baspi5_graph
+    )
+
+
 # --- G3 (b): worked per-leaf query mechanism (scaffolding) ---------------
 def test_retrieve_by_path_for_an_addressable_leaf(baspi5_graph: Graph) -> None:
     """G3 (b) mechanism (a): a leaf bound by a property shape is retrievable

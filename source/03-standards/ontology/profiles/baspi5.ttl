@@ -53,7 +53,7 @@ opda:Baspi5_LegalEstateShape
 opda:Baspi5_PropertyShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.1> ;
-    sh:property _:b01fc950a3aa0, _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
+    sh:property _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b3d84f4079cd7, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
     sh:targetClass opda:Property .
 
 opda:Baspi5_SellerShape
@@ -124,18 +124,6 @@ opda:Baspi5_Participants_Group
 _:b01d33d61be57
     rdf:first "Seller's Conveyancer" ;
     rdf:rest _:b45efdad76d68 .
-
-_:b01fc950a3aa0
-    dct:source <https://www.basp.uk/forms/baspi5#A1.1.5.uprn> ;
-    dash:editor dash:TextFieldEditor ;
-    dash:viewer dash:LiteralViewer ;
-    sh:group opda:Baspi5_BuiltForm_Group ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5: UPRN is required (identity key)."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:hasUPRN ;
-    sh:severity sh:Violation .
 
 _:b03eb8bb1852a
     rdf:first "Oil" ;
@@ -270,6 +258,18 @@ _:b3b6f8aad6108
     sh:message "BASPI5 question A8.1.1: has smart home systems (Yes/No)."@en ;
     sh:order "8"^^xsd:integer ;
     sh:path opda:hasSmartHomeSystems ;
+    sh:severity sh:Violation .
+
+_:b3d84f4079cd7
+    dct:source <https://www.basp.uk/forms/baspi5#A1.1.5> ;
+    dash:editor dash:TextFieldEditor ;
+    dash:viewer dash:LiteralViewer ;
+    sh:group opda:Baspi5_BuiltForm_Group ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "BASPI5: UPRN is required (identity key)."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:hasUPRN ;
     sh:severity sh:Violation .
 
 _:b3ef8485aa649

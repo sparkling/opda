@@ -61,6 +61,22 @@ BASPI5_FORMS_AUTHORITY = "https://www.basp.uk/forms/baspi5"
 # section anchor, an ADR prov citation) is NOT a form leaf.
 FORMS_AUTHORITY_PREFIX = "https://www.basp.uk/forms/"
 
+# Schema-sanctioned shared form-question refs. baspi5.json assigns ONE
+# `baspi5Ref` to MORE THAN ONE schema leaf — a single coarse form question
+# capturing values on distinct entities. The G19 acceptance gate
+# (tests/baspi5_round_trip/test_traceability.py) requires the `dct:source`
+# anchor to be the REAL baspi5Ref (no fabricated `…#A1.1.5.uprn` disambiguator),
+# so such a ref legitimately binds >1 sh:path. The round-trip stays lossless —
+# each schema leaf keeps its own sh:path on its own node shape — so this is
+# multi-entity coverage, NOT the thin-emission over-binding defect the
+# doubly-bound check is designed to surface. Listed explicitly so G3 tolerates
+# exactly these refs while still catching accidental over-binding elsewhere.
+#   A1.1.5 → propertyPack.uprn (opda:hasUPRN on Baspi5_PropertyShape)
+#          + propertyPack.address.postcode (vcard:postal-code on Baspi5_AddressShape)
+_SCHEMA_SANCTIONED_SHARED_REFS: frozenset[str] = frozenset({
+    f"{BASPI5_FORMS_AUTHORITY}#A1.1.5",
+})
+
 
 def _is_form_leaf(o: object) -> bool:
     """True iff ``o`` is a form-question IRI (a schema leaf path under the
@@ -254,6 +270,13 @@ def build_coverage_report(g: Graph) -> CoverageReport:
             report.unaddressable.add(leaf)
         elif len(paths) == 1:
             report.addressable[leaf] = next(iter(paths))
+        elif leaf in _SCHEMA_SANCTIONED_SHARED_REFS:
+            # baspi5.json assigns this ref to >1 schema leaf (distinct
+            # entities); each keeps its own sh:path, so it is addressable
+            # multi-entity coverage, not over-binding. Record a deterministic
+            # representative path; consumers recover all paths via
+            # retrieve_by_path (which queries the graph, not this dict).
+            report.addressable[leaf] = sorted(paths, key=str)[0]
         else:
             report.doubly_bound[leaf] = sorted(paths, key=str)
     return report
