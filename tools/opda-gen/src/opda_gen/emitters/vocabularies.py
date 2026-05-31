@@ -194,6 +194,17 @@ _ODR_0008D_RULE_4 = URIRef(
     "https://w3id.org/opda/odr/ODR-0008d#section-Rule-4"
 )
 
+# --- ODR-0024 (Curated Category-G Walk) section anchors ------------------
+# R4: the schoolType→SKOS rule + the NearbyFacility re-warrant. R6: the
+# data-attested-enum SKOS schemes (construction / price-qualifier / transport /
+# broadband / Ofsted). These are scheme-level `dct:source` anchors (the
+# ratifying Council record), matching the §8a-anchor convention.
+_ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
+_ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
+# Ofsted authority `dct:source` (ODR-0024 R6 — the OfstedRatingScheme is a
+# regulator-governed value-space, so its scheme-level source is the authority).
+_OFSTED = URIRef("https://www.gov.uk/government/organisations/ofsted")
+
 
 def _dd_source(leaf_path: str) -> URIRef:
     """Return a per-member `dct:source` IRI pointing at the data-dictionary
@@ -1380,6 +1391,272 @@ def _owner_type_scheme() -> Scheme:
     )
 
 
+def _school_type_scheme() -> Scheme:
+    # ODR-0024 R4 (council session-028 Q1) — the value-space for
+    # opda:schoolType on opda:NearbyFacility, replacing the five rejected
+    # range-less generic object properties (opda:primary / private / …). The
+    # schoolType bands are NOT a data-dictionary enum — they are structural
+    # sub-keys under nearbyFacilities.schools[].schoolType — so the scheme is
+    # minted from the band set; per-member dct:source resolves to the band's
+    # schema-leaf-path (ODR-0022 G2), the scheme-level source to ODR-0024 R4.
+    leaf = "propertyPack.nearbyFacilities.schools[].schoolType"
+    members_data = [
+        ("College", "A nearby further-education college."),
+        ("Nursery", "A nearby nursery / early-years setting."),
+        ("Primary", "A nearby primary school."),
+        ("Secondary", "A nearby secondary school."),
+        ("Private", "A nearby private (independent / fee-paying) school."),
+    ]
+    return Scheme(
+        local_name="SchoolTypeScheme",
+        slug_base="schoolType",
+        pref_label="School Type",
+        title="Nearby-school band value-space (College / Nursery / Primary / Secondary / Private)",
+        definition=(
+            "The value-space of opda:schoolType on opda:NearbyFacility — the "
+            "band of a nearby school (College / Nursery / Primary / Secondary "
+            "/ Private). Replaces the five range-less generic object "
+            "properties the council rejected (session-028 Q1); minted from the "
+            "schoolType structural band set, not a data-dictionary enum."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Carried by ONE shared "
+            "opda:schoolType datatype property (sh:in this scheme in the "
+            "overlay profile), NEVER five generic object properties "
+            "(ODR-0024 R4)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0024_R4,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+# --- ODR-0024 R6: SKOS schemes minted from enums the data carries ---------
+# Council session-028 Q-SKOS: the §Q5a "plain datatype unless the data carries
+# an enum" default is sound, but several enum-bearing Property/estate leaves
+# were diverted to Category C without a SKOS range (the inverse of the Q9
+# binning miss). R6 mints a scheme for each enum the data dictionary ACTUALLY
+# carries (verified against data-dictionary-canonical.json). Per-member
+# dct:source resolves to the schema-leaf-path (ODR-0022 G2); the scheme-level
+# source is ODR-0024 R6 (the ratifying record) — except OfstedRatingScheme,
+# whose scheme-level source is the Ofsted authority (a regulator-governed
+# value-space, per the R6 directive).
+#
+# NOT minted (genuinely free strings in the data — Q-SKOS): documentTypeCode,
+# pricingMethodology, typeOfHealthCare, religiousCharacter, supplyClassification
+# (verified: no enum in the data dictionary) — they stay bare xsd:string.
+# marketingTenure is NOT given a third tenure scheme (reuse-before-mint;
+# overlaps TenureKindScheme / OwnershipTypeScheme — already flagged for
+# reconciliation in _category_c_schemes). ownerType already binds
+# OwnerTypeScheme (emitted; agent.py).
+#
+# These schemes are the SKOS range for their leaves; the leaves themselves are
+# currently Category-C / not-yet-walked candidate-G (the R5 re-run surfaces
+# them) — the scheme stands ready as the value-space for when the leaf is
+# minted in the follow-on walk (a scheme is a value-space, not a leaf emission;
+# ci-category-g-coverage excludes schemes from "minted").
+def _construction_type_scheme() -> Scheme:
+    leaf = "propertyPack.typeOfConstruction.isStandardForm.constructionType"
+    members_data = [
+        ("Brick and block", "Standard brick-and-block cavity-wall construction."),
+        ("Steel frame", "Steel-framed structural construction."),
+        ("Timber frame", "Timber-framed structural construction."),
+        (
+            "Insulated concrete framework",
+            "Insulated concrete formwork (ICF) construction.",
+        ),
+        (
+            "Structural insulated panel (SIP)",
+            "Structural insulated panel (SIP) construction.",
+        ),
+    ]
+    return Scheme(
+        local_name="ConstructionTypeScheme",
+        slug_base="constructionType",
+        pref_label="Construction Type",
+        title="Standard-form construction type",
+        definition=(
+            "Classification of a Property's standard-form construction type "
+            "(Brick and block / Steel frame / Timber frame / Insulated "
+            "concrete framework / Structural insulated panel (SIP))."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Minted from the "
+            "isStandardForm.constructionType enum the data dictionary carries "
+            "(ODR-0024 R6)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0024_R6,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _price_qualifier_scheme() -> Scheme:
+    leaf = "propertyPack.priceInformation.priceQualifier"
+    members_data = [
+        ("Price", "A stated asking price."),
+        ("Fixed price", "A non-negotiable fixed asking price."),
+        ("Guide price", "An indicative guide price."),
+        ("Offers in excess of", "Offers sought in excess of the stated figure."),
+        ("Offers in region of", "Offers sought in the region of the stated figure."),
+        ("Offers over", "Offers sought over the stated figure."),
+        ("Offers invited", "Offers invited (no stated figure)."),
+        ("Sale by tender", "Sale conducted by tender."),
+        ("From", "Price from the stated figure (e.g. new-build ranges)."),
+    ]
+    return Scheme(
+        local_name="PriceQualifierScheme",
+        slug_base="priceQualifier",
+        pref_label="Price Qualifier",
+        title="Asking-price qualifier",
+        definition=(
+            "Qualifier on a Property's marketed asking price (Price / Fixed "
+            "price / Guide price / Offers in excess of / Offers in region of "
+            "/ Offers over / Offers invited / Sale by tender / From)."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Minted from the priceQualifier "
+            "enum the data dictionary carries (ODR-0024 R6); qualifies the "
+            "headline price, which is itself a deferred Category-G monetary "
+            "leaf (ODR-0024 R3)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0024_R6,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _transport_type_scheme() -> Scheme:
+    leaf = "propertyPack.nearbyFacilities.transport[].transportType"
+    members_data = [
+        ("Local connection", "A local transport connection."),
+        ("Ferry terminal", "A ferry terminal."),
+        ("Bus stop/station", "A bus stop or bus station."),
+        ("National rail station", "A National Rail station."),
+        ("Trunk road/motorway", "A trunk-road or motorway access point."),
+        ("Airport", "An airport."),
+        ("Helipad", "A helipad."),
+        ("Tramway", "A tramway stop or station."),
+        ("Underground/Subway", "An underground / subway station."),
+        ("Other", "A transport type outside the standard categories."),
+    ]
+    return Scheme(
+        local_name="TransportTypeScheme",
+        slug_base="transportType",
+        pref_label="Transport Type",
+        title="Nearby transport-node type",
+        definition=(
+            "Classification of a nearby transport node "
+            "(opda:NearbyFacility transport band): Local connection / Ferry "
+            "terminal / Bus stop/station / National rail station / Trunk "
+            "road/motorway / Airport / Helipad / Tramway / Underground/Subway "
+            "/ Other."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Minted from the transportType "
+            "enum the data dictionary carries on the transport band "
+            "(ODR-0024 R6)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0024_R6,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _broadband_connection_type_scheme() -> Scheme:
+    leaf = "propertyPack.connectivity.broadband.typeOfConnection"
+    members_data = [
+        ("None", "No broadband connection."),
+        ("ADSL copper wire", "ADSL over copper wire."),
+        ("Cable", "Cable broadband."),
+        ("FTTC (Fibre to the Cabinet)", "Fibre to the cabinet (FTTC)."),
+        ("FTTP (Fibre to the Premises)", "Fibre to the premises (FTTP)."),
+    ]
+    return Scheme(
+        local_name="BroadbandConnectionTypeScheme",
+        slug_base="broadbandConnectionType",
+        pref_label="Broadband Connection Type",
+        title="Broadband connection type",
+        definition=(
+            "Classification of a Property's broadband connection type (None "
+            "/ ADSL copper wire / Cable / FTTC (Fibre to the Cabinet) / FTTP "
+            "(Fibre to the Premises))."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Minted from the "
+            "broadband.typeOfConnection enum the data dictionary carries "
+            "(ODR-0024 R6)."
+        ),
+        steward="Allemang (property-qualities sub-module steward per S008 Q2)",
+        scheme_source=_ODR_0024_R6,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
+def _ofsted_rating_scheme() -> Scheme:
+    # R6: OfstedRatingScheme is a regulator-governed value-space — its
+    # scheme-level dct:source is the Ofsted authority (per the R6 directive),
+    # not the ODR. Per-member dct:source stays the schema-leaf-path (G2).
+    leaf = "propertyPack.nearbyFacilities.schools[].ofstedRating"
+    members_data = [
+        ("Outstanding", "Ofsted rating: Outstanding."),
+        ("Good", "Ofsted rating: Good."),
+        ("Requires Improvement", "Ofsted rating: Requires Improvement."),
+        ("Inadequate", "Ofsted rating: Inadequate."),
+        ("Other", "An Ofsted rating outside the standard four grades."),
+    ]
+    return Scheme(
+        local_name="OfstedRatingScheme",
+        slug_base="ofstedRating",
+        pref_label="Ofsted Rating",
+        title="Ofsted school-inspection rating",
+        definition=(
+            "Ofsted school-inspection rating of a nearby school "
+            "(opda:NearbyFacility school band): Outstanding / Good / Requires "
+            "Improvement / Inadequate / Other."
+        ),
+        ufo_category="Quale-in-Region",
+        scope_note=(
+            "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
+            "Quality-Region (Masolo D18 §4.3). Regulator-governed (Ofsted) per "
+            "ODR-0011 §4a; scheme-level dct:source is the Ofsted authority "
+            "(ODR-0024 R6). Minted from the ofstedRating enum the data "
+            "dictionary carries on the school band."
+        ),
+        steward="Baker (regulator-cited per ODR-0011 §4a; Ofsted-governed)",
+        scheme_source=_OFSTED,
+        members=tuple(
+            Member(notation, notation, definition, _dd_source(f"{leaf}.{notation}"))
+            for notation, definition in members_data
+        ),
+    )
+
+
 # --- ODR-0008d Category E: opda:PerilScheme (peril/dataset axis) ----------
 #
 # ODR-0008d Rule 2: a `skos:ConceptScheme` mirroring opda:BoundedContextScheme
@@ -2369,6 +2646,14 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _property_type_scheme(),
         _off_mains_drainage_scheme(),
         _owner_type_scheme(),
+        # ODR-0024 R4 — nearby-school band value-space (schoolType→SKOS) ---
+        _school_type_scheme(),
+        # ODR-0024 R6 — SKOS schemes minted from enums the data carries ----
+        _construction_type_scheme(),
+        _price_qualifier_scheme(),
+        _transport_type_scheme(),
+        _broadband_connection_type_scheme(),
+        _ofsted_rating_scheme(),
         # ODR-0008d Category E — peril/dataset axis + rating value-space ---
         # (riskIndicator reuses YesNoNotKnownScheme above — no dedicated scheme)
         _peril_scheme(),

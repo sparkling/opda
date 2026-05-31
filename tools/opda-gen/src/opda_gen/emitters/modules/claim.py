@@ -41,9 +41,18 @@ _ODR_0009_Q3 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q3")
 _ODR_0009_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q4")
 _ODR_0009_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q5")
 
+# ODR-0024 R7 (council session-028 Q7) — the neutral opda:AttachedDocument
+# bearer. A registry-attached document (titlesToBeSold[].additionalDocuments[])
+# is NOT evidence: binding its filing-metadata to opda:DocumentEvidence (≡
+# opda:Document) would entail eIDAS-Substantial assurance on EVERY attached doc.
+# R7 introduces a neutral document Kind; DocumentEvidence becomes its
+# evidence-playing subclass.
+_ODR_0024_R7 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R7")
+
 
 CLASSES = (
     OPDA.AssuranceLevel,
+    OPDA.AttachedDocument,
     OPDA.Claim,
     OPDA.Document,
     OPDA.DocumentEvidence,
@@ -127,15 +136,65 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.Evidence, DCTERMS.source, _ODR_0009_Q1))
 
+    # --- opda:AttachedDocument — neutral document Kind (ODR-0024 R7) -----
+    # The neutral bearer for registry-attached document filing-metadata
+    # (titlesToBeSold[].additionalDocuments[]: documentDate / documentTypeCode /
+    # filedUnder / retrievedOn). NOT evidence — binding those props to
+    # opda:DocumentEvidence (≡ opda:Document) would entail eIDAS-Substantial
+    # assurance on every attached doc (session-028 Q7 blocker). opda:Document-
+    # Evidence is its evidence-playing subclass (below): an attached document
+    # BECOMES evidence only when it actually stands as evidence under ODR-0009;
+    # plain filing metadata does not. Explicit IC: a document Kind individuated
+    # by its CONTENT + its issuing activity (the document a registry holds),
+    # NOT by documentTypeCode / documentDate (those are mutable descriptive
+    # facets, not an identity principle — Guizzardi's S028 caveat).
+    g.add((OPDA.AttachedDocument, RDF.type, OWL.Class))
+    g.add((OPDA.AttachedDocument, RDFS.subClassOf, PROV.Entity))
+    g.add((OPDA.AttachedDocument, RDFS.label,
+           Literal("Attached Document", lang="en")))
+    g.add((OPDA.AttachedDocument, RDFS.comment, Literal(
+        "A document attached to a transaction record (e.g. the registry "
+        "additionalDocuments[] filed against a title to be sold). UFO "
+        "Information Object; PROV-O Entity. A NEUTRAL document Kind — NOT "
+        "evidence: it bears filing metadata (opda:documentDate / "
+        "opda:documentTypeCode / opda:filedUnder / opda:retrievedOn) without "
+        "the eIDAS-assurance commitment opda:DocumentEvidence carries "
+        "(ODR-0024 R7 / session-028 Q7 — reusing the evidence class as the "
+        "bearer would entail every attached doc is Substantial-tier evidence). "
+        "IC: individuated by its content + issuing activity (the artefact the "
+        "registry holds), NOT by documentTypeCode / documentDate (mutable "
+        "descriptive facets, not an identity principle). opda:DocumentEvidence "
+        "is its evidence-playing subclass — an attached document stands as "
+        "evidence only under ODR-0009, never by mere attachment.",
+        lang="en",
+    )))
+    g.add((OPDA.AttachedDocument, SKOS.scopeNote, Literal(
+        "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information "
+        "artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral "
+        "document bearer per ODR-0024 R7; opda:DocumentEvidence ⊑ "
+        "opda:AttachedDocument (evidence is a role a document plays, not the "
+        "document's Kind).",
+        lang="en",
+    )))
+    g.add((OPDA.AttachedDocument, DCTERMS.source, _ODR_0024_R7))
+
     # --- opda:DocumentEvidence + opda:Document equivalence --------------
+    # ODR-0024 R7: DocumentEvidence ⊑ opda:AttachedDocument (the neutral
+    # bearer above) — the evidence-playing subclass. The owl:equivalentClass
+    # opda:Document alias is PRESERVED (exemplar short-name; ADR-0011); only the
+    # bearer of the four filing-metadata props moved to opda:AttachedDocument so
+    # plain attached docs are no longer entailed to be eIDAS evidence.
     g.add((OPDA.DocumentEvidence, RDF.type, OWL.Class))
     g.add((OPDA.DocumentEvidence, RDFS.subClassOf, OPDA.Evidence))
+    g.add((OPDA.DocumentEvidence, RDFS.subClassOf, OPDA.AttachedDocument))
     g.add((OPDA.DocumentEvidence, RDFS.label,
            Literal("Document Evidence", lang="en")))
     g.add((OPDA.DocumentEvidence, RDFS.comment, Literal(
         "Document-evidence subtype — paper or scanned artefacts issued by "
         "authoritative source (e.g. grant of probate by HMCTS). eIDAS "
-        "Substantial-tier assurance for court-issued instruments. "
+        "Substantial-tier assurance for court-issued instruments. A subclass "
+        "of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — "
+        "evidence is a role a document plays, not every document's Kind. "
         "Equivalent class: opda:Document (short-name used by exemplars).",
         lang="en",
     )))

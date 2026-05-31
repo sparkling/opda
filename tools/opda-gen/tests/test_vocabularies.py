@@ -114,23 +114,42 @@ _CATEGORY_E_SCHEMES = {
     "ActionAlertRatingScheme",
 }
 
+# ODR-0024 (Curated Category-G Walk) — R4 schoolType→SKOS (1) + R6
+# data-attested-enum SKOS schemes (5).
+_ODR_0024_SCHEMES = {
+    # R4 — nearby-school band value-space (replaces 5 rejected object props).
+    "SchoolTypeScheme",
+    # R6 — schemes minted from enums the data dictionary actually carries
+    # (construction / price-qualifier / transport / broadband / Ofsted).
+    "ConstructionTypeScheme",
+    "PriceQualifierScheme",
+    "TransportTypeScheme",
+    "BroadbandConnectionTypeScheme",
+    "OfstedRatingScheme",
+}
+assert len(_ODR_0024_SCHEMES) == 6
+
 _ALL_SCHEME_NAMES = (
     _FIRST_BATCH_AND_G8
     | _CATEGORY_C_SCHEMES
     | _CATEGORY_D_SCHEMES
     | _CATEGORY_E_SCHEMES
+    | _ODR_0024_SCHEMES
 )
 
 
-def test_emit_vocabularies_produces_40_schemes(emitted_graph: Graph) -> None:
+def test_emit_vocabularies_produces_46_schemes(emitted_graph: Graph) -> None:
     """16 first-batch + 7 G8 + 14 Category-C status-enum value-spaces
     (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 2
     Category-E schemes (ODR-0008d: PerilScheme + ActionAlertRatingScheme;
-    riskIndicator reuses YesNoNotKnownScheme). Total 40."""
+    riskIndicator reuses YesNoNotKnownScheme) + 6 ODR-0024 schemes (R4
+    SchoolTypeScheme + R6 construction / price-qualifier / transport /
+    broadband / Ofsted). Total 46."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == 40, (
-        f"expected 40 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
-        f"+ 2 Cat-E), got {len(schemes)}: {sorted(str(s) for s in schemes)}"
+    assert len(schemes) == len(_ALL_SCHEME_NAMES) == 46, (
+        f"expected 46 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
+        f"+ 2 Cat-E + 6 ODR-0024), got {len(schemes)}: "
+        f"{sorted(str(s) for s in schemes)}"
     )
     emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
     assert emitted_names == _ALL_SCHEME_NAMES, (

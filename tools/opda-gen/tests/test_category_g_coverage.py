@@ -92,7 +92,10 @@ def test_run_on_committed_corpus_accounts_for_every_candidate_g_leaf() -> None:
 
     report = run(_committed_ontology_dir())
     assert report.available
-    assert report.candidate_total == 188, "categoriser candidate-G set changed size"
+    # ODR-0024 R5: the structural C-vs-G rule raised the honest candidate-G set
+    # from 188 to 239 (the newly-surfaced enum-bearing substantive attributes
+    # are uncovered — a separate follow-on walk, reported not silently dropped).
+    assert report.candidate_total == 239, "categoriser candidate-G set changed size"
     names = set(candidate_g_names())
     partition = report.minted | set(report.collapsed) | report.uncovered
     assert partition == names, "every candidate-G leaf must be accounted for exactly once"

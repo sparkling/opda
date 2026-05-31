@@ -73,6 +73,13 @@ def _dd_source(leaf_path: str) -> URIRef:
 _ODR_0008_Q4A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q4a")
 _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 
+# ODR-0024 R4 (council session-028 Q1) — the UFO Substance-Kind re-warrant of
+# opda:NearbyFacility. §Q4a (a provenance / lifecycle / PII test) does NOT
+# license a real-world facility bearer; ODR-0024 R4 supplies the correct
+# warrant (a referenced facility is a mind-independent social-physical endurant
+# with its own IC, not a Property Quality) and the schoolType→SKOS rule.
+_ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
+
 # ODR-0008d (Authority-Retrieved Artefacts) section anchors — the Category-E
 # RiskAssessment class + its peril/rating-bearing properties cite the Rule
 # that mints them (mirrors the §Q4a/§Q5a anchor convention above).
@@ -100,15 +107,16 @@ _ODR_0022_S1 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-1")
 CLASSES = (
     OPDA.Comparable,
     OPDA.EPCCertificate,
-    # ADR-0031 walk — the nearby-facilities bearer hierarchy (object-typed
-    # leaf promotions per ODR-0008 §Q4a).
-    OPDA.HealthCareFacility,
+    # ADR-0031 walk + ODR-0024 R4 — the nearby-facilities bearer. The genus
+    # opda:NearbyFacility is a UFO Substance Kind (a mind-independent endurant
+    # with its own IC, NOT a Property Quality); the precise-bearer subkinds
+    # (School / HealthCareFacility / TransportNode) are COLLAPSED into the genus
+    # for the first cut (Guizzardi's subkind split held-as-live dissent).
     OPDA.NearbyFacility,
     # ODR-0008d Rule 1 — the sixth class: the per-peril authority-retrieved
     # search/environmental result (an Information Object on the PROV-O
     # backbone).
     OPDA.RiskAssessment,
-    OPDA.School,
     OPDA.Search,
     OPDA.Survey,
     OPDA.Valuation,
@@ -120,15 +128,8 @@ CLASSES = (
 # to its opda:PerilScheme concept. Both are object properties (their ranges
 # are the RiskAssessment class / a SKOS Concept).
 OBJECT_PROPERTIES = (
-    # ADR-0031 Family-E nearby-school schoolType buckets (object-typed
-    # sub-structures; domain opda:School, range-less — see _school_type_buckets).
-    OPDA.college,
     OPDA.hasSubAssessment,
-    OPDA.nursery,
     OPDA.peril,
-    OPDA.primary,
-    OPDA.private,
-    OPDA.secondary,
 )
 
 # Category A reusable disclosure-detail annotation property (ODR-0022 §1) +
@@ -184,6 +185,7 @@ DATATYPE_PROPERTIES = (
     OPDA.reportDate,
     OPDA.retrievedOn,
     OPDA.riskIndicator,
+    OPDA.schoolType,
     OPDA.soldDate,
     OPDA.specialties,
     OPDA.status,
@@ -331,73 +333,52 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.Comparable, DCTERMS.source, _ODR_0008_Q4A))
 
-    # --- opda:NearbyFacility — Category-G class promotion (ODR-0008 §Q4a) -
-    # Class-promoted from the object-typed nearbyFacilities.{schools,
-    # healthCare,transport}[] leaves (ADR-0031 walk): a real-world
-    # point-of-interest near the Property, referenced for amenity context — a
-    # distinct entity, NOT a Quality of the Property (the same school
-    # neighbours many properties). Bears the proximity relation
-    # opda:distanceInMiles; opda:School and opda:HealthCareFacility are bands.
+    # --- opda:NearbyFacility — UFO Substance Kind (ODR-0024 R4) ----------
+    # The nearby-facilities bearer for the object-typed
+    # nearbyFacilities.{schools,healthCare,transport}[] leaves (ADR-0031 walk):
+    # a real-world point-of-interest near the Property, referenced for amenity
+    # context. ODR-0024 R4 (session-028 Q1) re-warrants it: §Q4a does NOT
+    # license it (that test's named promotions are all Information Objects); a
+    # referenced facility is instead a UFO Substance Kind — a mind-independent
+    # social-physical endurant with its OWN identity criterion, NOT a Quality
+    # of opda:Property (the same facility neighbours many properties). For the
+    # first cut the genus bears ALL band attributes (school: opda:pupils /
+    # ageRange / religiousCharacter / otherRating / schoolType; health-care:
+    # opda:typeOfHealthCare / specialties; shared: opda:distanceInMiles),
+    # band-scoped via SHACL in the overlay profiles. The precise-bearer subkind
+    # split (opda:School / opda:HealthCareFacility / opda:TransportNode) is
+    # HELD-AS-LIVE (Guizzardi dissent; re-open trigger: a consumer query needing
+    # per-band typing, or the ODR-0023 R2 axis review).
     g.add((OPDA.NearbyFacility, RDF.type, OWL.Class))
     g.add((OPDA.NearbyFacility, RDFS.label,
            Literal("Nearby Facility", lang="en")))
     g.add((OPDA.NearbyFacility, RDFS.comment, Literal(
         "A point-of-interest near the Property — a school, health-care "
         "facility, or transport node listed in propertyPack.nearbyFacilities "
-        "for amenity context. UFO Substance Kind: a real-world social-physical "
-        "facility with its own identity, distinct from the Property being "
-        "transacted (NOT a Quality of opda:Property — the same facility "
-        "neighbours many properties). Class-promoted from the object-typed "
-        "nearbyFacilities.{schools,healthCare,transport}[] leaves per ODR-0008 "
-        "§Q4a; bears opda:distanceInMiles (proximity to the Property).",
+        "for amenity context. UFO Substance Kind: a mind-independent social-"
+        "physical endurant with its own identity criterion (a real-world "
+        "facility persists through renaming, re-rating, and change of "
+        "operator), distinct from the Property being transacted — NOT a "
+        "Quality of opda:Property, since the same facility neighbours many "
+        "properties (ODR-0024 R4 / session-028 Q1). Warranted on that UFO "
+        "Substance-Kind basis, NOT ODR-0008 §Q4a (a provenance / lifecycle / "
+        "PII test whose promotions are all Information Objects, which does not "
+        "license a real-world facility). The genus bears all band attributes "
+        "for the first cut (school / health-care / transport), band-scoped via "
+        "SHACL in the overlay profiles; the per-band subkind split is "
+        "held-as-live (Guizzardi dissent). Bears opda:distanceInMiles "
+        "(proximity to the Property).",
         lang="en",
     )))
     g.add((OPDA.NearbyFacility, SKOS.scopeNote, Literal(
-        "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a social-physical "
-        "facility). Promoted from an object-typed leaf per ODR-0008 §Q4a "
-        "(the 'which object-typed leaves become intermediate classes' test).",
+        "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid "
+        "social-physical endurant supplying its own IC). Warranted per "
+        "ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-"
+        "promotion test licenses Information Objects, not mind-independent "
+        "facilities).",
         lang="en",
     )))
-    g.add((OPDA.NearbyFacility, DCTERMS.source, _ODR_0008_Q4A))
-
-    # --- opda:School — band of opda:NearbyFacility (ODR-0008 §Q4a) -------
-    g.add((OPDA.School, RDF.type, OWL.Class))
-    g.add((OPDA.School, RDFS.subClassOf, OPDA.NearbyFacility))
-    g.add((OPDA.School, RDFS.label, Literal("School", lang="en")))
-    g.add((OPDA.School, RDFS.comment, Literal(
-        "A nearby school — the schools[] band of opda:NearbyFacility. Bears "
-        "the school-specific descriptive attributes (opda:pupils, "
-        "opda:ageRange, opda:religiousCharacter, opda:otherRating) and the "
-        "schoolType bands (opda:college / opda:nursery / opda:primary / "
-        "opda:secondary / opda:private). UFO Substance Kind, a subkind of "
-        "opda:NearbyFacility; class-promoted per ODR-0008 §Q4a.",
-        lang="en",
-    )))
-    g.add((OPDA.School, SKOS.scopeNote, Literal(
-        "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 "
-        "Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.schools[].",
-        lang="en",
-    )))
-    g.add((OPDA.School, DCTERMS.source, _ODR_0008_Q4A))
-
-    # --- opda:HealthCareFacility — band of opda:NearbyFacility (§Q4a) ----
-    g.add((OPDA.HealthCareFacility, RDF.type, OWL.Class))
-    g.add((OPDA.HealthCareFacility, RDFS.subClassOf, OPDA.NearbyFacility))
-    g.add((OPDA.HealthCareFacility, RDFS.label,
-           Literal("Health Care Facility", lang="en")))
-    g.add((OPDA.HealthCareFacility, RDFS.comment, Literal(
-        "A nearby health-care facility — the healthCare[] band of "
-        "opda:NearbyFacility. Bears opda:typeOfHealthCare and "
-        "opda:specialties. UFO Substance Kind, a subkind of "
-        "opda:NearbyFacility; class-promoted per ODR-0008 §Q4a.",
-        lang="en",
-    )))
-    g.add((OPDA.HealthCareFacility, SKOS.scopeNote, Literal(
-        "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 "
-        "Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.healthCare[].",
-        lang="en",
-    )))
-    g.add((OPDA.HealthCareFacility, DCTERMS.source, _ODR_0008_Q4A))
+    g.add((OPDA.NearbyFacility, DCTERMS.source, _ODR_0024_R4))
 
     # --- opda:RiskAssessment — Category E sixth class (ODR-0008d Rule 1) -
     # The per-peril authority-retrieved search/environmental result. UFO
@@ -558,22 +539,30 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.inclusionStatus, DCTERMS.source, _ODR_0022_S4))
 
-    # --- opda:price — Category D shared monetary-amount property --------
-    # ODR-0022 §1 row D / §4: price \"reuses a MonetaryAmount
-    # pattern, NOT 89 price props\" — ONE shared datatype property (the
-    # data dictionary types the fixtures price leaf as a number), bound on
-    # the transaction-scoped fixtures-list node alongside inclusionStatus. A
-    # single property, never one per item.
+    # --- opda:price — Category D shared fixtures monetary amount --------
+    # ODR-0022 §4: price is the Category-D FIXTURES amount only — ONE shared
+    # datatype property (the data dictionary types the fixtures price leaf as a
+    # number), bound on the transaction-scoped fixtures-list node alongside
+    # inclusionStatus. A single property, never one per item. Per ODR-0024 R3
+    # the comment NO LONGER claims a "MonetaryAmount pattern": no opda:Monetary-
+    # Amount value type exists in the corpus yet (it is deferred to the
+    # Category-G monetary walk, ODR-0008d item-3). The Category-G headline /
+    # recurring monetary leaves do NOT reuse this property (ODR-0022 §1 / G1).
     g.add((OPDA.price, RDF.type, OWL.DatatypeProperty))
     g.add((OPDA.price, RDFS.range, XSD.decimal))
     g.add((OPDA.price, RDFS.label, Literal("price", lang="en")))
     g.add((OPDA.price, RDFS.comment, Literal(
         "Monetary amount asked for a fixtures-and-fittings item included in "
-        "a sale (a number in the data dictionary). ONE shared "
-        "monetary-amount property reused across all fixtures items — "
-        "ODR-0022 §4 mandates reusing a MonetaryAmount pattern, NEVER "
-        "minting one price property per item. Bound on the "
-        "transaction-scoped fixtures-list node alongside opda:inclusionStatus.",
+        "a sale (a number in the data dictionary). A single shared fixtures "
+        "monetary amount reused across all fixtures items — ODR-0022 §4 "
+        "forbids minting one price property per item. Bound on the "
+        "transaction-scoped fixtures-list node alongside opda:inclusionStatus. "
+        "The Category-D fixtures amount ONLY — the Category-G headline / "
+        "recurring / refundable monetary leaves (asking price, ground rent, "
+        "deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). "
+        "A value-structured MonetaryAmount value type is DEFERRED (ODR-0008d "
+        "item-3 / ODR-0024 R3); until it exists this stays a single-currency "
+        "interim decimal.",
         lang="en",
     )))
     g.add((OPDA.price, DCTERMS.source, _ODR_0022_S4))
@@ -877,10 +866,11 @@ def build_graph() -> Graph:
             ),
         ),
         (
-            OPDA.documentDate, OPDA.Document, XSD.date, "document date",
+            OPDA.documentDate, OPDA.AttachedDocument, XSD.date, "document date",
             "Date of a title / additional document. xsd:date. Domain "
-            "opda:Document (the ODR-0009 document-evidence artefact); flat "
-            "per §Q6a.",
+            "opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — "
+            "NOT opda:Document/DocumentEvidence, so an attached doc is not "
+            "entailed eIDAS evidence); flat per §Q6a.",
             (
                 "propertyPack.titlesToBeSold[].additionalDocuments[]."
                 "documentDate",
@@ -889,20 +879,22 @@ def build_graph() -> Graph:
             ),
         ),
         (
-            OPDA.documentTypeCode, OPDA.Document, XSD.string,
+            OPDA.documentTypeCode, OPDA.AttachedDocument, XSD.string,
             "document type code",
-            "Type code of a title / additional document. Domain opda:Document "
-            "(the ODR-0009 document-evidence artefact); flat per §Q6a.",
+            "Type code of a title / additional document. Domain "
+            "opda:AttachedDocument (the neutral document bearer; ODR-0024 R7). "
+            "Plain string datatype per ODR-0008 §Q5a (no in-data enum; "
+            "session-028 Q-SKOS keeps it bare); flat per §Q6a.",
             (
                 "propertyPack.titlesToBeSold[].additionalDocuments[]."
                 "documentTypeCode",
             ),
         ),
         (
-            OPDA.filedUnder, OPDA.Document, XSD.string, "filed under",
+            OPDA.filedUnder, OPDA.AttachedDocument, XSD.string, "filed under",
             "Filing reference under which a title / additional document is "
-            "held. Domain opda:Document (ODR-0009 document-evidence); flat "
-            "per §Q6a.",
+            "held. Domain opda:AttachedDocument (the neutral document bearer; "
+            "ODR-0024 R7); flat per §Q6a.",
             (
                 "propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder",
                 "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
@@ -910,10 +902,10 @@ def build_graph() -> Graph:
             ),
         ),
         (
-            OPDA.retrievedOn, OPDA.Document, XSD.date, "retrieved on",
+            OPDA.retrievedOn, OPDA.AttachedDocument, XSD.date, "retrieved on",
             "Date a title / additional document was retrieved from the "
-            "registry. xsd:date. Domain opda:Document (ODR-0009 "
-            "document-evidence); flat per §Q6a.",
+            "registry. xsd:date. Domain opda:AttachedDocument (the neutral "
+            "document bearer; ODR-0024 R7); flat per §Q6a.",
             (
                 "propertyPack.titlesToBeSold[].additionalDocuments[]."
                 "retrievedOn",
@@ -1032,44 +1024,53 @@ def build_graph() -> Graph:
             ),
         ),
         (
-            OPDA.ageRange, OPDA.School, XSD.string, "age range",
-            "Age range of a nearby school. Domain opda:School. Plain string "
-            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            OPDA.ageRange, OPDA.NearbyFacility, XSD.string, "age range",
+            "Age range of a nearby school. Domain opda:NearbyFacility (the "
+            "genus bearer; the school band is SHACL-scoped per ODR-0024 R4). "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
             ("propertyPack.nearbyFacilities.schools[].ageRange",),
         ),
         (
-            OPDA.pupils, OPDA.School, XSD.integer, "pupils",
-            "Number of pupils at a nearby school. Domain opda:School. Plain "
-            "integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            OPDA.pupils, OPDA.NearbyFacility, XSD.integer, "pupils",
+            "Number of pupils at a nearby school. Domain opda:NearbyFacility "
+            "(the genus bearer; the school band is SHACL-scoped per ODR-0024 "
+            "R4). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
             ("propertyPack.nearbyFacilities.schools[].pupils",),
         ),
         (
-            OPDA.religiousCharacter, OPDA.School, XSD.string,
+            OPDA.religiousCharacter, OPDA.NearbyFacility, XSD.string,
             "religious character",
-            "Religious character of a nearby school. Domain opda:School. Plain "
-            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "Religious character of a nearby school. Domain "
+            "opda:NearbyFacility (the genus bearer; the school band is "
+            "SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
             ("propertyPack.nearbyFacilities.schools[].religiousCharacter",),
         ),
         (
-            OPDA.otherRating, OPDA.School, XSD.string, "other rating",
-            "Other (non-Ofsted) rating of a nearby school. Domain opda:School. "
-            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            OPDA.otherRating, OPDA.NearbyFacility, XSD.string, "other rating",
+            "Other (non-Ofsted) rating of a nearby school. Domain "
+            "opda:NearbyFacility (the genus bearer; the school band is "
+            "SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a.",
             ("propertyPack.nearbyFacilities.schools[].otherRating",),
         ),
         (
-            OPDA.typeOfHealthCare, OPDA.HealthCareFacility, XSD.string,
+            OPDA.typeOfHealthCare, OPDA.NearbyFacility, XSD.string,
             "type of health care",
             "Type of a nearby health-care facility. Domain "
-            "opda:HealthCareFacility. Plain string datatype per ODR-0008 §Q5a; "
-            "flat per §Q6a.",
+            "opda:NearbyFacility (the genus bearer; the health-care band is "
+            "SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 "
+            "§Q5a (no ontology-governed enum in the data dictionary); flat per "
+            "§Q6a.",
             ("propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare",),
         ),
         (
-            OPDA.specialties, OPDA.HealthCareFacility, XSD.string, "specialties",
+            OPDA.specialties, OPDA.NearbyFacility, XSD.string, "specialties",
             "Specialties of a nearby health-care facility (a multi-valued "
-            "list — each value an xsd:string). Domain opda:HealthCareFacility. "
-            "Plain multi-valued string datatype per ODR-0008 §Q5a; flat per "
-            "§Q6a.",
+            "list — each value an xsd:string). Domain opda:NearbyFacility (the "
+            "genus bearer; the health-care band is SHACL-scoped per ODR-0024 "
+            "R4). Plain multi-valued string datatype per ODR-0008 §Q5a; flat "
+            "per §Q6a.",
             ("propertyPack.nearbyFacilities.healthCare[].specialties",),
         ),
     ]
@@ -1083,49 +1084,38 @@ def build_graph() -> Graph:
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
-    # --- Nearby-school schoolType buckets (DOMAIN-LESS ObjectProperties) ----
+    # --- opda:schoolType — nearby-school band (ODR-0024 R4 schoolType→SKOS) --
     # The five schoolType.* leaves (college / nursery / primary / secondary /
-    # private) are OBJECT-typed sub-structures in the data dictionary, not
-    # value leaves — each groups the nearby schools of that band. They are
-    # minted as DOMAIN-LESS, RANGE-LESS opda: ObjectProperties (a relation to a
-    # school-band sub-structure) rather than datatype properties, since their
-    # value is a structured node, not a literal. FLAGGED for the same future
-    # opda:NearbyFacility / opda:School cluster as the datatype leaves above.
-    _school_type_buckets: list[tuple[URIRef, str, str]] = [
-        (
-            OPDA.college, "college",
-            "Nearby college(s) — a band of the schoolType structure of "
-            "opda:School (object-typed). Domain opda:School, range-less object "
-            "property (the value is a structured school-band node).",
-        ),
-        (
-            OPDA.nursery, "nursery",
-            "Nearby nursery(ies) — a band of the schoolType structure of "
-            "opda:School. Domain opda:School, range-less object property.",
-        ),
-        (
-            OPDA.primary, "primary",
-            "Nearby primary school(s) — a band of the schoolType structure of "
-            "opda:School. Domain opda:School, range-less object property.",
-        ),
-        (
-            OPDA.secondary, "secondary",
-            "Nearby secondary school(s) — a band of the schoolType structure "
-            "of opda:School. Domain opda:School, range-less object property.",
-        ),
-        (
-            OPDA.private, "private",
-            "Nearby private school(s) — a band of the schoolType structure of "
-            "opda:School. Domain opda:School, range-less object property.",
-        ),
-    ]
-    for prop, slug, comment in _school_type_buckets:
-        g.add((prop, RDF.type, OWL.ObjectProperty))
-        g.add((prop, RDFS.domain, OPDA.School))
-        g.add((prop, RDFS.label, Literal(slug, lang="en")))
-        g.add((prop, RDFS.comment, Literal(comment, lang="en")))
-        g.add((prop, DCTERMS.source, _dd_source(
-            f"propertyPack.nearbyFacilities.schools[].schoolType.{slug}"
+    # private) were previously minted as five range-less generic opda:
+    # ObjectProperties (opda:primary / opda:private / …) — namespace landmines
+    # pointing at no emitted node (session-028 Q1, all seats objected). ODR-0024
+    # R4 collapses them to ONE opda:schoolType DATATYPE property on the genus
+    # opda:NearbyFacility, value-space the opda:SchoolTypeScheme SKOS scheme
+    # (College / Nursery / Primary / Secondary / Private), sh:in-restricted in
+    # the overlay profile (the schoolType bands are NOT a data-dictionary enum —
+    # they are structural sub-keys, so the scheme is minted from the band set,
+    # not a live enum). The five collapsed leaf-paths are its §Q3a dct:source
+    # array, so each band name stays covered by ci-category-g-coverage. Plain
+    # string datatype per ODR-0008 §Q5a (scheme via SHACL); flat per §Q6a.
+    g.add((OPDA.schoolType, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.schoolType, RDFS.domain, OPDA.NearbyFacility))
+    g.add((OPDA.schoolType, RDFS.range, XSD.string))
+    g.add((OPDA.schoolType, RDFS.label, Literal("school type", lang="en")))
+    g.add((OPDA.schoolType, RDFS.comment, Literal(
+        "Band of a nearby school per opda:SchoolTypeScheme (College / Nursery "
+        "/ Primary / Secondary / Private). Domain opda:NearbyFacility (the "
+        "genus bearer; the school band is SHACL-scoped per ODR-0024 R4). ONE "
+        "shared datatype property over the SchoolTypeScheme value-space — "
+        "replaces the five range-less generic object properties "
+        "(opda:college / nursery / primary / secondary / private) the council "
+        "rejected as permanent-namespace landmines (session-028 Q1). "
+        "Constrained by SHACL sh:in to the scheme members in the overlay "
+        "profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+        lang="en",
+    )))
+    for _slug in ("college", "nursery", "primary", "secondary", "private"):
+        g.add((OPDA.schoolType, DCTERMS.source, _dd_source(
+            f"propertyPack.nearbyFacilities.schools[].schoolType.{_slug}"
         )))
 
     # --- Held-as-live conditional stubs (Davis S008 Q4 dissent) ---------

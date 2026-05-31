@@ -156,25 +156,80 @@ _REGULATOR_FRAGMENTS = (
     "con29",
 )
 
-# G — genuine Property/legal-estate attributes whose value-space is a SKOS
-# *range*, NOT Category-C membership. ODR-0008 §Q5a binds these as
-# "Quale-in-Region → Quality of `opda:Property`" (ownership → `opda:LegalEstate`;
-# `tenureKind` → Substance-Kind label); ODR-0022 §1 names them explicitly as G
-# "even if it carries an enum". The path-aware binner MUST NOT send them to C on
-# the strength of the enum alone (the corrected ADR-0030 §G1 defect — S025).
-# These names are globally unambiguous, so a tail match is sound (unlike
-# `price`, which needs the full path).
-_G_PROPERTY_QUALE_TAILS = frozenset(
+# C-vs-G structural rule (ODR-0024 R5 / council session-028 Q9, replacing the
+# S025 seven-name `_G_PROPERTY_QUALE_TAILS` allow-list). The boundary the
+# council settled: a value-space that is a CROSS-CUTTING STATUS FLAG reused
+# across unrelated contexts → C; a SUBSTANTIVE Property/estate Quality or
+# Substance-Kind-label whose value-space is enumerated → G, with the enum as its
+# SKOS range. The old allow-list silently dropped every future enum-bearing
+# Quale whose tail it did not list (it under-counted candidate-G by ~50). The
+# structural rule below keys on two signals — the generic-ENVELOPE-tail signal
+# (mirroring `_A_TAILS` / `_B_TAILS` / `_E_FIELDS`) and the cross-cutting
+# VALUE-SPACE-FAMILY signal — so the C set is the genuinely cross-cutting
+# envelopes and EVERYTHING ELSE enum-bearing is a substantive G attribute
+# (the enum becomes its SKOS range). ODR-0008 §Q5a / ODR-0022 §1 names the
+# flagship Quale attributes (EPC band, council-tax band, built form, …) as G
+# "even if it carries an enum"; they now fall out of the structural rule rather
+# than needing to be listed.
+
+# (a) Generic cross-cutting ENVELOPE / status tails — a reusable slot whose
+# value-space is a status flag carried across many unrelated questions (the
+# substantive question is elsewhere, like the Category-A `details` tail). These
+# are C regardless of path. NOT substantive Property facts: `hasBeenFlooded` /
+# `isInsured` / `isSharedOwnership` carry their question IN the name and are G.
+_C_STATUS_ENVELOPE_TAILS = frozenset(
     {
-        "currentEnergyRating",
-        "councilTaxBand",
-        "builtForm",
-        "ownershipType",
-        "centralHeatingFuelType",
-        "heatingType",
-        "tenureKind",
+        "status",            # polysemous search / plan / road-adoption status
+        "yesNo",             # the bare Yes/No envelope slot
+        "units",             # unit-of-measure envelope
+        "feeType",           # fee-type envelope (reused across fee blocks)
+        "mediaType",         # media envelope
+        "capacity",          # seller's-capacity envelope (Method/plan code)
+        "role",              # participant-role envelope (anti-rigid Role)
+        "appointedBy",       # appointed-by envelope
+        "isProposal",        # plan proposal/decision envelope
+        "paymentFrequency",  # generic payment-frequency envelope
+        "rentFrequency",
+        "sharedOwnershipRentFrequency",
+        "listingType",       # marketing listing-type envelope
+        "disposal",          # disposal-type envelope
+        "title",             # name/title envelope (Mr/Mrs/…)
+        "front", "rear", "left", "right",  # directional boundary-side flags
     }
 )
+
+# (b) Cross-cutting VALUE-SPACE families — value-sets that are themselves a
+# status/role envelope reused across leaves, recognised by the enum members
+# (not the tail). Two families cover the corpus: document/attachment-supply
+# status (any enum carrying "Attached" / "To follow") and the managed-area
+# responsibility-PAYEE set (Landlord / Management Company / Managing Agent /
+# Rentcharge Owner). A leaf whose enum is one of these families is C even if its
+# tail is substantive-looking (e.g. `deedOfCovenant` = Attached/To follow/… is a
+# document-supply envelope, NOT a Property Quality).
+_C_SUPPLY_VALUE_TOKENS = frozenset({"attached", "to follow"})
+_C_RESPONSIBILITY_PAYEES = frozenset(
+    {"management company", "managing agent", "rentcharge owner", "landlord"}
+)
+
+
+def _is_cross_cutting_value_space(enum: list | tuple | None) -> bool:
+    """True when an enum value-set is a cross-cutting status/role family (C).
+
+    The structural VALUE-SPACE signal of ODR-0024 R5: a value-set that is a
+    document/attachment-supply envelope (carries "Attached" / "To follow") or
+    the managed-area responsibility-payee set is a cross-cutting status flag,
+    not a substantive Property/estate Quality — so it bins to C even under a
+    Property/estate path.
+    """
+    if not enum:
+        return False
+    lowered = {str(v).strip().lower() for v in enum}
+    if lowered & _C_SUPPLY_VALUE_TOKENS:
+        return True
+    core = lowered - {"not applicable", "not known"}
+    if core and core <= _C_RESPONSIBILITY_PAYEES:
+        return True
+    return False
 
 
 @dataclass(frozen=True)
@@ -203,16 +258,25 @@ def _segments(leaf_path: str) -> list[str]:
     return leaf_path.replace("[]", "").split(".")
 
 
-def categorise(leaf_path: str, *, has_enum: bool) -> str:
+def categorise(
+    leaf_path: str, *, has_enum: bool, enum: list | tuple | None = None
+) -> str:
     """Bin a single leaf into a category A–G using the FULL path (gate G1).
 
-    `has_enum` is the only annotation the rule consults beyond the path: it
-    routes a leaf with no other positive signal into Category C (reused
-    status enum). A leaf whose tail is a named genuine Property/estate
-    attribute (`_G_PROPERTY_QUALE_TAILS`, per ODR-0008 §Q5a / ODR-0022 §1) is
-    lifted to G *before* that fallback, so an enum it carries becomes its SKOS
-    range rather than Category-C membership. Rules are tried most-specific
-    first; G is the default.
+    `has_enum` flags that the leaf carries an enumerated value-space; `enum`
+    (optional) is the value-set itself, consulted by the ODR-0024 R5 structural
+    C-vs-G rule to recognise cross-cutting VALUE-SPACE families (document-supply
+    / responsibility-payee). When `enum` is None the rule falls back to the
+    tail-only signal — sound for the acceptance cases (a bare envelope tail is C;
+    a substantive tail is G) but the value-space family signal needs the members.
+
+    The C-vs-G boundary (ODR-0024 R5, replacing the S025 allow-list): a leaf
+    carrying an enum is C only when its value-space is a cross-cutting STATUS
+    FLAG — a generic envelope tail (`_C_STATUS_ENVELOPE_TAILS`) OR a cross-cutting
+    value-space family (`_is_cross_cutting_value_space`). Otherwise it is a
+    SUBSTANTIVE Property/estate Quality or Substance-Kind-label and bins to G,
+    the enum becoming its SKOS range (ODR-0008 §Q5a / ODR-0022 §1 — G "even if it
+    carries an enum"). Rules are tried most-specific first; G is the default.
     """
     segments = _segments(leaf_path)
     tail = segments[-1]
@@ -245,15 +309,16 @@ def categorise(leaf_path: str, *, has_enum: bool) -> str:
     if tail in _A_TAILS:
         return "A"
 
-    # G — enum-bearing genuine Property/estate attribute (ODR-0008 §Q5a /
-    # ODR-0022 §1): the enum is its SKOS *range*, not Category-C membership.
-    # MUST precede the Category-C enum fallback so a flagship Quale attribute
-    # (EPC band, council-tax band, built form…) is not over-captured by C.
-    if tail in _G_PROPERTY_QUALE_TAILS:
-        return "G"
-
-    # C — reused status enum (only consulted once the structural rules miss).
-    if has_enum:
+    # C — cross-cutting status flag (ODR-0024 R5 structural rule, replacing the
+    # S025 allow-list). A leaf with an enum is C ONLY when its value-space is a
+    # cross-cutting status flag: a generic envelope tail, or a cross-cutting
+    # value-space family (document-supply / responsibility-payee). A substantive
+    # enum-bearing Property/estate attribute falls THROUGH to G (the default),
+    # the enum becoming its SKOS range — never Category-C membership.
+    if has_enum and (
+        tail in _C_STATUS_ENVELOPE_TAILS
+        or _is_cross_cutting_value_space(enum)
+    ):
         return "C"
 
     # G — genuine descriptive concept (the default; the curated per-leaf walk).
@@ -325,7 +390,9 @@ def categorise_all(records: list[dict]) -> BinningReport:
             path, rec.get("source"), rec.get("title"), parents
         ):
             continue
-        category = categorise(path, has_enum=bool(rec.get("enum")))
+        category = categorise(
+            path, has_enum=bool(rec.get("enum")), enum=rec.get("enum")
+        )
         binned.append(
             CategorisedLeaf(
                 leaf_path=path,

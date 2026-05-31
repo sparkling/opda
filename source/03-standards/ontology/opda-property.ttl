@@ -712,9 +712,9 @@ opda:titleExtents
 opda:titleNumber
     rdf:type owl:DatatypeProperty ;
     rdfs:label "title number"@en ;
-    rdfs:comment "HMLR title number of the LegalEstate / title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A title identifier on the estate side (distinct from opda:RegisteredTitle the record-entity — this is the estate's cited title number)."@en ;
+    rdfs:comment "HMLR title number — identifies the registered-title RECORD (opda:RegisteredTitle), not the legal estate (ODR-0024 R8 / session-028 Q6). The estate has no title number; the record does — reach the estate via opda:recordsEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].titleNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].titleNumber> ;
-    rdfs:domain opda:LegalEstate ;
+    rdfs:domain opda:RegisteredTitle ;
     rdfs:range xsd:string .
 
 opda:titlePropertyDescription

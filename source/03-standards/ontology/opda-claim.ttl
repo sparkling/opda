@@ -29,6 +29,14 @@ opda:AssuranceLevel
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q3> ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8."@en .
 
+opda:AttachedDocument
+    rdf:type owl:Class ;
+    rdfs:label "Attached Document"@en ;
+    rdfs:comment "A document attached to a transaction record (e.g. the registry additionalDocuments[] filed against a title to be sold). UFO Information Object; PROV-O Entity. A NEUTRAL document Kind — NOT evidence: it bears filing metadata (opda:documentDate / opda:documentTypeCode / opda:filedUnder / opda:retrievedOn) without the eIDAS-assurance commitment opda:DocumentEvidence carries (ODR-0024 R7 / session-028 Q7 — reusing the evidence class as the bearer would entail every attached doc is Substantial-tier evidence). IC: individuated by its content + issuing activity (the artefact the registry holds), NOT by documentTypeCode / documentDate (mutable descriptive facets, not an identity principle). opda:DocumentEvidence is its evidence-playing subclass — an attached document stands as evidence only under ODR-0009, never by mere attachment."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R7> ;
+    rdfs:subClassOf prov:Entity ;
+    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral document bearer per ODR-0024 R7; opda:DocumentEvidence ⊑ opda:AttachedDocument (evidence is a role a document plays, not the document's Kind)."@en .
+
 opda:Claim
     rdf:type owl:Class ;
     rdfs:label "Claim"@en ;
@@ -47,9 +55,9 @@ opda:Document
 opda:DocumentEvidence
     rdf:type owl:Class ;
     rdfs:label "Document Evidence"@en ;
-    rdfs:comment "Document-evidence subtype — paper or scanned artefacts issued by authoritative source (e.g. grant of probate by HMCTS). eIDAS Substantial-tier assurance for court-issued instruments. Equivalent class: opda:Document (short-name used by exemplars)."@en ;
+    rdfs:comment "Document-evidence subtype — paper or scanned artefacts issued by authoritative source (e.g. grant of probate by HMCTS). eIDAS Substantial-tier assurance for court-issued instruments. A subclass of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — evidence is a role a document plays, not every document's Kind. Equivalent class: opda:Document (short-name used by exemplars)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    rdfs:subClassOf opda:Evidence ;
+    rdfs:subClassOf opda:AttachedDocument, opda:Evidence ;
     owl:equivalentClass opda:Document ;
     skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS document-evidence category (S009 Rule 5)."@en .
 

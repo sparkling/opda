@@ -175,16 +175,17 @@ def test_risk_assessment_class_emitted() -> None:
 
 
 def test_risk_assessment_in_class_catalogue() -> None:
-    """The module catalogue advertises RiskAssessment + the ADR-0031 walk's
-    nearby-facilities bearer classes (nine now: the original six Q4a /
-    Category-E promotions + opda:NearbyFacility / School / HealthCareFacility)."""
+    """The module catalogue advertises RiskAssessment + the nearby-facilities
+    genus bearer (seven now: the original six Q4a / Category-E promotions +
+    opda:NearbyFacility). Per ODR-0024 R4 the opda:School / opda:HealthCare-
+    Facility subkinds COLLAPSE into the genus (held-as-live subkind split), so
+    they are NO LONGER in the catalogue."""
     assert OPDA.RiskAssessment in descriptive.CLASSES
-    assert {
-        OPDA.NearbyFacility,
-        OPDA.School,
-        OPDA.HealthCareFacility,
-    } <= set(descriptive.CLASSES)
-    assert len(descriptive.CLASSES) == 9
+    assert OPDA.NearbyFacility in descriptive.CLASSES
+    # ODR-0024 R4: the subkinds are collapsed into the genus — not emitted.
+    assert OPDA.School not in descriptive.CLASSES
+    assert OPDA.HealthCareFacility not in descriptive.CLASSES
+    assert len(descriptive.CLASSES) == 7
 
 
 def test_category_e_properties_emitted() -> None:

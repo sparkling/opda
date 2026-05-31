@@ -38,20 +38,12 @@ opda:EPCCertificate
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a)."@en .
 
-opda:HealthCareFacility
-    rdf:type owl:Class ;
-    rdfs:label "Health Care Facility"@en ;
-    rdfs:comment "A nearby health-care facility — the healthCare[] band of opda:NearbyFacility. Bears opda:typeOfHealthCare and opda:specialties. UFO Substance Kind, a subkind of opda:NearbyFacility; class-promoted per ODR-0008 §Q4a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    rdfs:subClassOf opda:NearbyFacility ;
-    skos:scopeNote "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.healthCare[]."@en .
-
 opda:NearbyFacility
     rdf:type owl:Class ;
     rdfs:label "Nearby Facility"@en ;
-    rdfs:comment "A point-of-interest near the Property — a school, health-care facility, or transport node listed in propertyPack.nearbyFacilities for amenity context. UFO Substance Kind: a real-world social-physical facility with its own identity, distinct from the Property being transacted (NOT a Quality of opda:Property — the same facility neighbours many properties). Class-promoted from the object-typed nearbyFacilities.{schools,healthCare,transport}[] leaves per ODR-0008 §Q4a; bears opda:distanceInMiles (proximity to the Property)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    skos:scopeNote "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a social-physical facility). Promoted from an object-typed leaf per ODR-0008 §Q4a (the 'which object-typed leaves become intermediate classes' test)."@en .
+    rdfs:comment "A point-of-interest near the Property — a school, health-care facility, or transport node listed in propertyPack.nearbyFacilities for amenity context. UFO Substance Kind: a mind-independent social-physical endurant with its own identity criterion (a real-world facility persists through renaming, re-rating, and change of operator), distinct from the Property being transacted — NOT a Quality of opda:Property, since the same facility neighbours many properties (ODR-0024 R4 / session-028 Q1). Warranted on that UFO Substance-Kind basis, NOT ODR-0008 §Q4a (a provenance / lifecycle / PII test whose promotions are all Information Objects, which does not license a real-world facility). The genus bears all band attributes for the first cut (school / health-care / transport), band-scoped via SHACL in the overlay profiles; the per-band subkind split is held-as-live (Guizzardi dissent). Bears opda:distanceInMiles (proximity to the Property)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R4> ;
+    skos:scopeNote "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid social-physical endurant supplying its own IC). Warranted per ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-promotion test licenses Information Objects, not mind-independent facilities)."@en .
 
 opda:RiskAssessment
     rdf:type owl:Class ;
@@ -60,14 +52,6 @@ opda:RiskAssessment
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom)."@en .
-
-opda:School
-    rdf:type owl:Class ;
-    rdfs:label "School"@en ;
-    rdfs:comment "A nearby school — the schools[] band of opda:NearbyFacility. Bears the school-specific descriptive attributes (opda:pupils, opda:ageRange, opda:religiousCharacter, opda:otherRating) and the schoolType bands (opda:college / opda:nursery / opda:primary / opda:secondary / opda:private). UFO Substance Kind, a subkind of opda:NearbyFacility; class-promoted per ODR-0008 §Q4a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
-    rdfs:subClassOf opda:NearbyFacility ;
-    skos:scopeNote "UFO: Substance Kind, subkind of opda:NearbyFacility (Guizzardi 2005 Ch. 4 §4.2). PDTF propertyPack.nearbyFacilities.schools[]."@en .
 
 opda:Search
     rdf:type owl:Class ;
@@ -104,9 +88,9 @@ opda:actionAlertRating
 opda:ageRange
     rdf:type owl:DatatypeProperty ;
     rdfs:label "age range"@en ;
-    rdfs:comment "Age range of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Age range of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ageRange> ;
-    rdfs:domain opda:School ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:applicationDate
@@ -222,17 +206,17 @@ opda:districtCouncil
 opda:documentDate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "document date"@en ;
-    rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:Document (the ODR-0009 document-evidence artefact); flat per §Q6a."@en ;
+    rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — NOT opda:Document/DocumentEvidence, so an attached doc is not entailed eIDAS evidence); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].documentDate>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentDate> ;
-    rdfs:domain opda:Document ;
+    rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:date .
 
 opda:documentTypeCode
     rdf:type owl:DatatypeProperty ;
     rdfs:label "document type code"@en ;
-    rdfs:comment "Type code of a title / additional document. Domain opda:Document (the ODR-0009 document-evidence artefact); flat per §Q6a."@en ;
+    rdfs:comment "Type code of a title / additional document. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7). Plain string datatype per ODR-0008 §Q5a (no in-data enum; session-028 Q-SKOS keeps it bare); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].documentTypeCode> ;
-    rdfs:domain opda:Document ;
+    rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:string .
 
 opda:expectedDeliveryDate
@@ -246,9 +230,9 @@ opda:expectedDeliveryDate
 opda:filedUnder
     rdf:type owl:DatatypeProperty ;
     rdfs:label "filed under"@en ;
-    rdfs:comment "Filing reference under which a title / additional document is held. Domain opda:Document (ODR-0009 document-evidence); flat per §Q6a."@en ;
+    rdfs:comment "Filing reference under which a title / additional document is held. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.filedUnder> ;
-    rdfs:domain opda:Document ;
+    rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:string .
 
 opda:inclusionStatus
@@ -300,9 +284,9 @@ opda:orderDate
 opda:otherRating
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other rating"@en ;
-    rdfs:comment "Other (non-Ofsted) rating of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Other (non-Ofsted) rating of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].otherRating> ;
-    rdfs:domain opda:School ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:planningStartDate
@@ -316,7 +300,7 @@ opda:planningStartDate
 opda:price
     rdf:type owl:DatatypeProperty ;
     rdfs:label "price"@en ;
-    rdfs:comment "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). ONE shared monetary-amount property reused across all fixtures items — ODR-0022 §4 mandates reusing a MonetaryAmount pattern, NEVER minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus."@en ;
+    rdfs:comment "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). A single shared fixtures monetary amount reused across all fixtures items — ODR-0022 §4 forbids minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus. The Category-D fixtures amount ONLY — the Category-G headline / recurring / refundable monetary leaves (asking price, ground rent, deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). A value-structured MonetaryAmount value type is DEFERRED (ODR-0008d item-3 / ODR-0024 R3); until it exists this stays a single-currency interim decimal."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0022#section-Rules-4> ;
     rdfs:range xsd:decimal .
 
@@ -355,9 +339,9 @@ opda:providerReference
 opda:pupils
     rdf:type owl:DatatypeProperty ;
     rdfs:label "pupils"@en ;
-    rdfs:comment "Number of pupils at a nearby school. Domain opda:School. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Number of pupils at a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].pupils> ;
-    rdfs:domain opda:School ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:integer .
 
 opda:refNumber
@@ -379,9 +363,9 @@ opda:regulatedSearchTurnaroundTimeInWorkingDays
 opda:religiousCharacter
     rdf:type owl:DatatypeProperty ;
     rdfs:label "religious character"@en ;
-    rdfs:comment "Religious character of a nearby school. Domain opda:School. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Religious character of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].religiousCharacter> ;
-    rdfs:domain opda:School ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:reportDate
@@ -395,9 +379,9 @@ opda:reportDate
 opda:retrievedOn
     rdf:type owl:DatatypeProperty ;
     rdfs:label "retrieved on"@en ;
-    rdfs:comment "Date a title / additional document was retrieved from the registry. xsd:date. Domain opda:Document (ODR-0009 document-evidence); flat per §Q6a."@en ;
+    rdfs:comment "Date a title / additional document was retrieved from the registry. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn> ;
-    rdfs:domain opda:Document ;
+    rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:date .
 
 opda:riskIndicator
@@ -406,6 +390,14 @@ opda:riskIndicator
     rdfs:comment "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-4> ;
     rdfs:domain opda:RiskAssessment ;
+    rdfs:range xsd:string .
+
+opda:schoolType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "school type"@en ;
+    rdfs:comment "Band of a nearby school per opda:SchoolTypeScheme (College / Nursery / Primary / Secondary / Private). Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). ONE shared datatype property over the SchoolTypeScheme value-space — replaces the five range-less generic object properties (opda:college / nursery / primary / secondary / private) the council rejected as permanent-namespace landmines (session-028 Q1). Constrained by SHACL sh:in to the scheme members in the overlay profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.college>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.nursery>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.primary>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.private>, <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.secondary> ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:soldDate
@@ -419,9 +411,9 @@ opda:soldDate
 opda:specialties
     rdf:type owl:DatatypeProperty ;
     rdfs:label "specialties"@en ;
-    rdfs:comment "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:HealthCareFacility. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].specialties> ;
-    rdfs:domain opda:HealthCareFacility ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:status
@@ -451,9 +443,9 @@ opda:subCategory
 opda:typeOfHealthCare
     rdf:type owl:DatatypeProperty ;
     rdfs:label "type of health care"@en ;
-    rdfs:comment "Type of a nearby health-care facility. Domain opda:HealthCareFacility. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    rdfs:comment "Type of a nearby health-care facility. Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare> ;
-    rdfs:domain opda:HealthCareFacility ;
+    rdfs:domain opda:NearbyFacility ;
     rdfs:range xsd:string .
 
 opda:unitaryAuthority
@@ -479,13 +471,6 @@ opda:yield
     rdfs:domain opda:Valuation ;
     rdfs:range xsd:decimal .
 
-opda:college
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "college"@en ;
-    rdfs:comment "Nearby college(s) — a band of the schoolType structure of opda:School (object-typed). Domain opda:School, range-less object property (the value is a structured school-band node)."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.college> ;
-    rdfs:domain opda:School .
-
 opda:hasSubAssessment
     rdf:type owl:ObjectProperty ;
     rdfs:label "has sub-assessment"@en ;
@@ -494,13 +479,6 @@ opda:hasSubAssessment
     rdfs:domain opda:RiskAssessment ;
     rdfs:range opda:RiskAssessment .
 
-opda:nursery
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "nursery"@en ;
-    rdfs:comment "Nearby nursery(ies) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.nursery> ;
-    rdfs:domain opda:School .
-
 opda:peril
     rdf:type owl:ObjectProperty ;
     rdfs:label "peril"@en ;
@@ -508,24 +486,3 @@ opda:peril
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
     rdfs:domain opda:RiskAssessment ;
     rdfs:range skos:Concept .
-
-opda:primary
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "primary"@en ;
-    rdfs:comment "Nearby primary school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.primary> ;
-    rdfs:domain opda:School .
-
-opda:private
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "private"@en ;
-    rdfs:comment "Nearby private school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.private> ;
-    rdfs:domain opda:School .
-
-opda:secondary
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "secondary"@en ;
-    rdfs:comment "Nearby secondary school(s) — a band of the schoolType structure of opda:School. Domain opda:School, range-less object property."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.secondary> ;
-    rdfs:domain opda:School .

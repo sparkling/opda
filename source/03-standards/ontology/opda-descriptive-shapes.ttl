@@ -55,10 +55,16 @@ opda:FixturesListShape
     sh:property _:b2a06b4c2cea5, _:b6663b027a7bd, _:b95b063eeb5e7 ;
     sh:targetClass opda:Transaction .
 
+opda:MediaUrlShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R11> ;
+    sh:property _:b18b8f7dfe9c4 ;
+    sh:targetSubjectsOf opda:mediaUrl .
+
 opda:RiskAssessmentShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008d#section-Rule-1> ;
-    sh:property _:b0e91a48d92e5, _:b15168883deab, _:b18e76480e52d, _:b772310526c4d, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
+    sh:property _:b0e91a48d92e5, _:b15168883deab, _:b18e76480e52d, _:bb6873c934b79, _:bdefa496e9ecf, _:bf41d51b5c7cc ;
     sh:targetClass opda:RiskAssessment .
 
 opda:SearchIdentityKeyShape
@@ -85,6 +91,12 @@ opda:SurveyInternalStructureShape
     sh:property _:b3c97a557c0c5, _:b6b5b0e29ea3a, _:ba7908ca342b4 ;
     sh:targetClass opda:Survey .
 
+opda:UrlShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R11> ;
+    sh:property _:bb1b31fa6c620 ;
+    sh:targetSubjectsOf opda:url .
+
 opda:ValuationIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
@@ -108,6 +120,13 @@ _:b15168883deab
     sh:maxCount "1"^^xsd:integer ;
     sh:message "RiskAssessment opda:actionAlertRating MUST be one of the opda:ActionAlertRatingScheme levels (integer 1–5, 1 Green … 5 Red; ODR-0008d Rule 1c / Rule 4)."@en ;
     sh:path opda:actionAlertRating ;
+    sh:severity sh:Violation .
+
+_:b18b8f7dfe9c4
+    sh:datatype xsd:anyURI ;
+    sh:message "opda:mediaUrl (media URL) MUST be a well-formed http(s) URI (sh:datatype xsd:anyURI + URI sh:pattern). The property is rdfs:domain-less (cross-artefact reference; ODR-0024 R11 / session-028 Q5) — this shape constrains its value-space via sh:targetSubjectsOf rather than a bearer class."@en ;
+    sh:path opda:mediaUrl ;
+    sh:pattern "^https?://" ;
     sh:severity sh:Violation .
 
 _:b18e76480e52d
@@ -260,12 +279,6 @@ _:b71b11e0e7b20
     rdf:first "Not known" ;
     rdf:rest rdf:nil .
 
-_:b772310526c4d
-    sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4)."@en ;
-    sh:node opda:RiskAssessmentShape ;
-    sh:path opda:hasSubAssessment ;
-    sh:severity sh:Violation .
-
 _:b7b4c48a9db7d
     sh:message "The comparable record's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."@en ;
     sh:nodeKind sh:IRI ;
@@ -308,9 +321,22 @@ _:bb1b04773944a
     rdf:first <https://w3id.org/opda/#peril/Flooding> ;
     rdf:rest _:b1a70b2e6bddc .
 
+_:bb1b31fa6c620
+    sh:datatype xsd:anyURI ;
+    sh:message "opda:url (URL) MUST be a well-formed http(s) URI (sh:datatype xsd:anyURI + URI sh:pattern). The property is rdfs:domain-less (cross-artefact reference; ODR-0024 R11 / session-028 Q5) — this shape constrains its value-space via sh:targetSubjectsOf rather than a bearer class."@en ;
+    sh:path opda:url ;
+    sh:pattern "^https?://" ;
+    sh:severity sh:Violation .
+
 _:bb61650fe8517
     rdf:first <https://w3id.org/opda/#peril/Planning> ;
     rdf:rest _:b37e924fb98e8 .
+
+_:bb6873c934b79
+    sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic — a RiskAssessment MUST NOT be its own transitive sub-assessment (core SHACL cannot test transitive closure; a SHACL-AF closure rule is the enforcement vehicle, deferred)."@en ;
+    sh:node opda:RiskAssessmentShape ;
+    sh:path opda:hasSubAssessment ;
+    sh:severity sh:Violation .
 
 _:bbf9d5f342465
     sh:datatype xsd:dateTime ;

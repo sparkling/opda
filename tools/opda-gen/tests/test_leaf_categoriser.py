@@ -142,8 +142,51 @@ def test_address_subfield_is_f():
     assert categorise("participants[].address.postcode", has_enum=False) == "F"
 
 
-def test_enum_with_no_structural_signal_is_c():
-    assert categorise("propertyPack.heating.someStatus", has_enum=True) == "C"
+def test_cross_cutting_status_envelope_tail_is_c():
+    """ODR-0024 R5: a generic cross-cutting envelope tail (the bare `status`
+    slot) with an enum is a status flag → C."""
+    assert categorise("propertyPack.searches[].status", has_enum=True) == "C"
+    assert categorise("propertyPack.heating.yesNo", has_enum=True) == "C"
+
+
+def test_cross_cutting_value_space_family_is_c():
+    """ODR-0024 R5: a document-supply value-space (Attached / To follow / …) is
+    a cross-cutting status flag → C even under a Property/estate path, even
+    when the tail looks substantive (e.g. deedOfCovenant)."""
+    supply = ["Attached", "To follow", "Buyer's lawyer to draft", "Not applicable"]
+    assert (
+        categorise(
+            "propertyPack.ownership.ownershipsToBeTransferred[]."
+            "leaseholdInformation.transferAndRegistration.deedOfCovenant",
+            has_enum=True,
+            enum=supply,
+        )
+        == "C"
+    )
+
+
+def test_substantive_enum_attribute_is_g_not_c():
+    """ODR-0024 R5 (inverts the S025 allow-list): a substantive Property/estate
+    attribute carrying an enum is G (the enum becomes its SKOS range) — NOT C on
+    the strength of the enum alone. A Yes/No fact whose question is in the name
+    (`hasLift`) is substantive, not a cross-cutting envelope."""
+    assert (
+        categorise(
+            "propertyPack.buildInformation.building.hasLift",
+            has_enum=True,
+            enum=["Yes", "No"],
+        )
+        == "G"
+    )
+    # The R6 enum-bearing flagships likewise fall through to G structurally.
+    assert (
+        categorise(
+            "propertyPack.typeOfConstruction.isStandardForm.constructionType",
+            has_enum=True,
+            enum=["Brick and block", "Steel frame"],
+        )
+        == "G"
+    )
 
 
 def test_genuine_descriptive_default_is_g():
@@ -187,10 +230,72 @@ def test_annotated_base_leaf_total_matches_evidence_pack():
     assert sum(report.counts.values()) == 1493
 
 
-def test_candidate_g_distinct_names_near_181():
-    """ODR-0022 §1 projection: ~181 genuine descriptive concepts."""
+def test_candidate_g_distinct_names_after_r5_structural_rule():
+    """ODR-0024 R5: the structural C-vs-G rule (replacing the S025 7-name
+    allow-list) surfaces the enum-bearing substantive Property/estate attributes
+    the old `if has_enum: return "C"` fallback wrongly diverted to C. The honest
+    candidate-G count climbs from 188 to ~239 (the council's "~200+"). The walk
+    of the newly-surfaced leaves is a separate follow-on chunk; this only fixes
+    the binning rule + reports the honest count."""
     report = categorise_all(load_records(_DATA))
-    assert 160 <= len(report.candidate_g_names) <= 200
+    assert 230 <= len(report.candidate_g_names) <= 250, len(report.candidate_g_names)
+
+
+def test_r5_no_enum_leaf_under_property_path_lands_in_c_unexamined():
+    """ODR-0024 R5 regression: no enum-bearing leaf under a Property/estate
+    descriptive path may land in Category C UNLESS its value-space is a
+    recognised cross-cutting status flag (a generic envelope tail or a
+    document-supply / responsibility-payee value-space family). This is the
+    guard against the S025 defect silently dropping a future enum-bearing Quale
+    back into C. Any enum-C leaf under such a path that is NOT a recognised
+    envelope is a violation — it should have surfaced as candidate-G."""
+    from opda_gen.inputs.leaf_categoriser import (
+        _C_STATUS_ENVELOPE_TAILS,
+        _is_cross_cutting_value_space,
+        _parent_paths,
+        _is_annotated_base_leaf,
+    )
+
+    records = load_records(_DATA)
+    parents = _parent_paths(records)
+    # Property/estate descriptive containers — the paths whose enum leaves are
+    # candidate-G Qualities/Substance-Kind-labels, not transaction/participant
+    # envelopes.
+    property_roots = {
+        "buildInformation", "typeOfConstruction", "nearbyFacilities",
+        "priceInformation", "connectivity", "heating", "energyEfficiency",
+        "councilTax", "environmentalIssues", "waterAndDrainage", "electricity",
+        "parking", "residentialPropertyFeatures",
+    }
+    offenders: list[tuple[str, tuple]] = []
+    for rec in records:
+        path = rec.get("path")
+        enum = rec.get("enum")
+        if not path or not enum:
+            continue
+        if not _is_annotated_base_leaf(
+            path, rec.get("source"), rec.get("title"), parents
+        ):
+            continue
+        segments = path.replace("[]", "").split(".")
+        if not (set(segments) & property_roots):
+            continue
+        cat = categorise(path, has_enum=True, enum=enum)
+        if cat != "C":
+            continue
+        # An enum-C leaf under a Property/estate path is only legitimate when
+        # its value-space is a recognised cross-cutting status flag.
+        tail = segments[-1]
+        recognised = (
+            tail in _C_STATUS_ENVELOPE_TAILS
+            or _is_cross_cutting_value_space(enum)
+        )
+        if not recognised:
+            offenders.append((path, tuple(enum)))
+    assert not offenders, (
+        "enum-bearing Property/estate leaves landed in C unexamined "
+        f"(S025 defect regression): {offenders}"
+    )
 
 
 def test_residue_leaves_are_all_category_g_and_recorded():

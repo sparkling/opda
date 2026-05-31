@@ -1223,6 +1223,38 @@ def build_graph() -> Graph:
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
+    # --- opda:titleNumber — RegisteredTitle identifier (ODR-0024 R8) -----
+    # ODR-0024 R8 (council session-028 Q6): a title number identifies the HMLR
+    # REGISTER RECORD, not the legal estate — so rdfs:domain is
+    # opda:RegisteredTitle (whose own IC is "title-number lineage + registry-
+    # event history"), NOT opda:LegalEstate (corrected from the ADR-0031 walk's
+    # estate-side placement). Reach the estate via the existing
+    # opda:recordsEstate join (RegisteredTitle -> LegalEstate). Allemang's
+    # estate-side-cited-identifier reading is recorded as dissent; if wanted, a
+    # separate co-reference predicate — never an overload of the identifier's
+    # domain. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. The three
+    # G2 schema-leaf-paths (§Q3a) include the unambiguous register-record path
+    # `…registerExtract.ocSummaryData.title.titleNumber`.
+    g.add((OPDA.titleNumber, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.titleNumber, RDFS.domain, OPDA.RegisteredTitle))
+    g.add((OPDA.titleNumber, RDFS.range, XSD.string))
+    g.add((OPDA.titleNumber, RDFS.label, Literal("title number", lang="en")))
+    g.add((OPDA.titleNumber, RDFS.comment, Literal(
+        "HMLR title number — identifies the registered-title RECORD "
+        "(opda:RegisteredTitle), not the legal estate (ODR-0024 R8 / "
+        "session-028 Q6). The estate has no title number; the record does — "
+        "reach the estate via opda:recordsEstate. Plain string datatype per "
+        "ODR-0008 §Q5a; flat per §Q6a.",
+        lang="en",
+    )))
+    for _p in (
+        "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
+        "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
+        "title.titleNumber",
+        "propertyPack.titlesToBeSold[].titleNumber",
+    ):
+        g.add((OPDA.titleNumber, DCTERMS.source, _dd_source(_p)))
+
     # ==== Category-G curated walk — Family B: LegalEstate tenure / lease ====
     # / ground-rent / service-charge / title attributes (ADR-0031 work-item 2).
     # Each is a flat datatype property on opda:LegalEstate (the rights-bundle
@@ -1344,19 +1376,6 @@ def build_graph() -> Graph:
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.buildingsInsurance."
                 "buildingsReinstatementCostAssessment",
-            ),
-        ),
-        (
-            OPDA.titleNumber, XSD.string, "title number",
-            "HMLR title number of the LegalEstate / title to be sold. Plain "
-            "string datatype per ODR-0008 §Q5a; flat per §Q6a. A title "
-            "identifier on the estate side (distinct from opda:RegisteredTitle "
-            "the record-entity — this is the estate's cited title number).",
-            (
-                "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
-                "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
-                "title.titleNumber",
-                "propertyPack.titlesToBeSold[].titleNumber",
             ),
         ),
         (

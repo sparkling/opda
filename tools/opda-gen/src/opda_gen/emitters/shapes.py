@@ -142,6 +142,11 @@ _ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
 _ODR_0008D_RULE_1 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-1")
 _ODR_0008D_RULE_3 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-3")
 _ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
+# ODR-0024 R11 (council session-028 Q5) — the SHACL constraints the domain-less
+# URI properties (opda:mediaUrl / opda:url) need (sh:datatype xsd:anyURI + a URI
+# sh:pattern) so they are constrained somewhere, plus the acyclicity guard on
+# the self-referential opda:hasSubAssessment.
+_ODR_0024_R11 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R11")
 _ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
 _ODR_0009_Q7 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q7")
 _ODR_0010_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q6")
@@ -1322,10 +1327,23 @@ def build_descriptive_shapes() -> Graph:
     g.add((p_sub, SH.path, OPDA.hasSubAssessment))
     g.add((p_sub, SH.node, OPDA.RiskAssessmentShape))
     g.add((p_sub, SH.severity, SH.Violation))
+    # ODR-0024 R11: acyclicity guard. Core SHACL cannot express "the
+    # opda:hasSubAssessment graph is a tree" (no transitive-closure test in a
+    # core property shape), so the guard is (a) sh:maxCount on each step is left
+    # OPEN (a result legitimately carries many sub-results) but (b) the
+    # self-reference is bounded by this documented acyclicity requirement: a
+    # RiskAssessment MUST NOT be its own (transitive) sub-assessment. A
+    # validator enforcing it needs a SHACL-AF closure rule (deferred — flagged
+    # here, not minted, to avoid a speculative AF rule); the note records the
+    # constraint so the recursion is not read as permitting cycles.
     g.add((p_sub, SH.message, Literal(
         "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST "
         "itself satisfy the RiskAssessment shape — the self-referential "
-        "result recursion via sh:node (ODR-0008d Rule 1c / Rule 4).",
+        "result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). "
+        "ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic "
+        "— a RiskAssessment MUST NOT be its own transitive sub-assessment "
+        "(core SHACL cannot test transitive closure; a SHACL-AF closure rule "
+        "is the enforcement vehicle, deferred).",
         lang="en",
     )))
 
@@ -1392,6 +1410,40 @@ def build_descriptive_shapes() -> Graph:
         "ODR-0022 §4) — never a per-item comment property.",
         lang="en",
     )))
+
+    # --- ODR-0024 R11: domain-less URI properties (mediaUrl / url) ------
+    # opda:mediaUrl and opda:url are intentionally rdfs:domain-less (genuinely
+    # cross-artefact references; forcing a bearer would assert false inherence —
+    # ODR-0024 R11 / session-028 Q5). They were therefore unconstrained
+    # anywhere. Each gets a node shape targeting the SUBJECTS of the property
+    # (sh:targetSubjectsOf — the domain-less idiom; no sh:targetClass) carrying
+    # sh:datatype xsd:anyURI + a URI sh:pattern, so the value is constrained to
+    # a well-formed http(s) URI even without a bearer class. (The data
+    # dictionary's mediaUrl / url leaves are web URLs — image / floorplan /
+    # contract-template / planning-permission-page links.)
+    _uri_pattern = "^https?://"
+    for shape_iri, prop, ref_label in (
+        (OPDA.MediaUrlShape, OPDA.mediaUrl, "media URL"),
+        (OPDA.UrlShape, OPDA.url, "URL"),
+    ):
+        g.add((shape_iri, RDF.type, SH.NodeShape))
+        g.add((shape_iri, SH.targetSubjectsOf, prop))
+        g.add((shape_iri, DCTERMS.source, _ODR_0024_R11))
+        p_uri = BNode()
+        g.add((shape_iri, SH.property, p_uri))
+        g.add((p_uri, SH.path, prop))
+        g.add((p_uri, SH.datatype, XSD.anyURI))
+        g.add((p_uri, SH.pattern, Literal(_uri_pattern)))
+        g.add((p_uri, SH.severity, SH.Violation))
+        g.add((p_uri, SH.message, Literal(
+            f"opda:{str(prop).rsplit('#', 1)[-1]} ({ref_label}) MUST be a "
+            "well-formed http(s) URI (sh:datatype xsd:anyURI + URI "
+            "sh:pattern). The property is rdfs:domain-less (cross-artefact "
+            "reference; ODR-0024 R11 / session-028 Q5) — this shape "
+            "constrains its value-space via sh:targetSubjectsOf rather than a "
+            "bearer class.",
+            lang="en",
+        )))
 
     return g
 

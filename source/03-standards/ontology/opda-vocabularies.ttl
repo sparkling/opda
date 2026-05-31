@@ -76,6 +76,16 @@ opda:BoundaryResponsibilityScheme
     opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
+opda:BroadbandConnectionTypeScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Broadband Connection Type"@en ;
+    skos:definition "Classification of a Property's broadband connection type (None / ADSL copper wire / Cable / FTTC (Fibre to the Cabinet) / FTTP (Fibre to the Premises))."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    dct:title "Broadband connection type"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the broadband.typeOfConnection enum the data dictionary carries (ODR-0024 R6)."@en ;
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:BuiltFormScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Built Form"@en ;
@@ -104,6 +114,16 @@ opda:ChargePaymentStatusScheme
     dct:title "Charge payment status (Due / Completed but unpaid / Anticipated / Not applicable)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the managed-area charge questions. Definitions are conservative — flagged for WG wording on the 'Completed but unpaid' vs 'Due' boundary."@en ;
     opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
+opda:ConstructionTypeScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Construction Type"@en ;
+    skos:definition "Classification of a Property's standard-form construction type (Brick and block / Steel frame / Timber frame / Insulated concrete framework / Structural insulated panel (SIP))."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    dct:title "Standard-form construction type"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the isStandardForm.constructionType enum the data dictionary carries (ODR-0024 R6)."@en ;
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
 opda:CouncilTaxBandSchemeEW
@@ -246,6 +266,16 @@ opda:OffMainsDrainageSystemTypeScheme
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
+opda:OfstedRatingScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Ofsted Rating"@en ;
+    skos:definition "Ofsted school-inspection rating of a nearby school (opda:NearbyFacility school band): Outstanding / Good / Requires Improvement / Inadequate / Other."@en ;
+    dct:source <https://www.gov.uk/government/organisations/ofsted> ;
+    dct:title "Ofsted school-inspection rating"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Regulator-governed (Ofsted) per ODR-0011 §4a; scheme-level dct:source is the Ofsted authority (ODR-0024 R6). Minted from the ofstedRating enum the data dictionary carries on the school band."@en ;
+    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; Ofsted-governed)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:OwnerTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Owner Type"@en ;
@@ -286,6 +316,16 @@ opda:PerilScheme
     opda:hasSteward "Baker (deputy Isaac) (PerilScheme steward per ODR-0008d Rule 2)"@en ;
     opda:ufoCategory "Quale-in-Region" .
 
+opda:PriceQualifierScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Price Qualifier"@en ;
+    skos:definition "Qualifier on a Property's marketed asking price (Price / Fixed price / Guide price / Offers in excess of / Offers in region of / Offers over / Offers invited / Sale by tender / From)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    dct:title "Asking-price qualifier"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the priceQualifier enum the data dictionary carries (ODR-0024 R6); qualifies the headline price, which is itself a deferred Category-G monetary leaf (ODR-0024 R3)."@en ;
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:PropertyTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Property Type"@en ;
@@ -316,6 +356,16 @@ opda:RoleScheme
     opda:hasSteward "Guizzardi (RoleMixin steward per S006 Q2)"@en ;
     opda:ufoCategory "Role label" .
 
+opda:SchoolTypeScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "School Type"@en ;
+    skos:definition "The value-space of opda:schoolType on opda:NearbyFacility — the band of a nearby school (College / Nursery / Primary / Secondary / Private). Replaces the five range-less generic object properties the council rejected (session-028 Q1); minted from the schoolType structural band set, not a data-dictionary enum."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R4> ;
+    dct:title "Nearby-school band value-space (College / Nursery / Primary / Secondary / Private)"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Carried by ONE shared opda:schoolType datatype property (sh:in this scheme in the overlay profile), NEVER five generic object properties (ODR-0024 R4)."@en ;
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
+
 opda:SellersCapacityScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Seller's Capacity"@en ;
@@ -345,6 +395,16 @@ opda:TransactionStatusScheme
     skos:scopeNote "UFO: Phase label (Guizzardi 2005 Ch. 4 — intra-Kind phase). Data dictionary leaf `status` carries a broader 9-value enum (including marketing-side and let-side phases); the ADR-named five-phase canonical set is emitted here as the UFO phase set for the sale lifecycle. Per-member dct:source cites ODR-0011 §8a (Council ratifying anchor); per-member prov:wasDerivedFrom links each canonical label to the underlying data-dictionary enum value it sources from (G10 closure per ADR-0013)."@en ;
     opda:hasSteward "Guizzardi (S007 Q3)"@en ;
     opda:ufoCategory "Phase label" .
+
+opda:TransportTypeScheme
+    rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Transport Type"@en ;
+    skos:definition "Classification of a nearby transport node (opda:NearbyFacility transport band): Local connection / Ferry terminal / Bus stop/station / National rail station / Trunk road/motorway / Airport / Helipad / Tramway / Underground/Subway / Other."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0024#section-Rules-R6> ;
+    dct:title "Nearby transport-node type"@en ;
+    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the transportType enum the data dictionary carries on the transport band (ODR-0024 R6)."@en ;
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
+    opda:ufoCategory "Quale-in-Region" .
 
 opda:UnitOfAreaScheme
     rdf:type skos:ConceptScheme ;
@@ -592,6 +652,46 @@ opda:YesNoScheme
     skos:inScheme opda:BoundaryResponsibilityScheme ;
     skos:notation "Shared" .
 
+<https://w3id.org/opda/#broadbandConnectionType/ADSL-copper-wire>
+    rdf:type skos:Concept ;
+    skos:prefLabel "ADSL copper wire"@en ;
+    skos:definition "ADSL over copper wire."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection.ADSL%20copper%20wire> ;
+    skos:inScheme opda:BroadbandConnectionTypeScheme ;
+    skos:notation "ADSL copper wire" .
+
+<https://w3id.org/opda/#broadbandConnectionType/Cable>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Cable"@en ;
+    skos:definition "Cable broadband."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection.Cable> ;
+    skos:inScheme opda:BroadbandConnectionTypeScheme ;
+    skos:notation "Cable" .
+
+<https://w3id.org/opda/#broadbandConnectionType/FTTC-Fibre-to-the-Cabinet>
+    rdf:type skos:Concept ;
+    skos:prefLabel "FTTC (Fibre to the Cabinet)"@en ;
+    skos:definition "Fibre to the cabinet (FTTC)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection.FTTC%20(Fibre%20to%20the%20Cabinet)> ;
+    skos:inScheme opda:BroadbandConnectionTypeScheme ;
+    skos:notation "FTTC (Fibre to the Cabinet)" .
+
+<https://w3id.org/opda/#broadbandConnectionType/FTTP-Fibre-to-the-Premises>
+    rdf:type skos:Concept ;
+    skos:prefLabel "FTTP (Fibre to the Premises)"@en ;
+    skos:definition "Fibre to the premises (FTTP)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection.FTTP%20(Fibre%20to%20the%20Premises)> ;
+    skos:inScheme opda:BroadbandConnectionTypeScheme ;
+    skos:notation "FTTP (Fibre to the Premises)" .
+
+<https://w3id.org/opda/#broadbandConnectionType/None>
+    rdf:type skos:Concept ;
+    skos:prefLabel "None"@en ;
+    skos:definition "No broadband connection."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.connectivity.broadband.typeOfConnection.None> ;
+    skos:inScheme opda:BroadbandConnectionTypeScheme ;
+    skos:notation "None" .
+
 <https://w3id.org/opda/#builtForm/Detached>
     rdf:type skos:Concept ;
     skos:prefLabel "Detached"@en ;
@@ -711,6 +811,46 @@ opda:YesNoScheme
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.currentExpenditure.status.Not%20applicable> ;
     skos:inScheme opda:ChargePaymentStatusScheme ;
     skos:notation "Not applicable" .
+
+<https://w3id.org/opda/#constructionType/Brick-and-block>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Brick and block"@en ;
+    skos:definition "Standard brick-and-block cavity-wall construction."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.isStandardForm.constructionType.Brick%20and%20block> ;
+    skos:inScheme opda:ConstructionTypeScheme ;
+    skos:notation "Brick and block" .
+
+<https://w3id.org/opda/#constructionType/Insulated-concrete-framework>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Insulated concrete framework"@en ;
+    skos:definition "Insulated concrete formwork (ICF) construction."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.isStandardForm.constructionType.Insulated%20concrete%20framework> ;
+    skos:inScheme opda:ConstructionTypeScheme ;
+    skos:notation "Insulated concrete framework" .
+
+<https://w3id.org/opda/#constructionType/Steel-frame>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Steel frame"@en ;
+    skos:definition "Steel-framed structural construction."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.isStandardForm.constructionType.Steel%20frame> ;
+    skos:inScheme opda:ConstructionTypeScheme ;
+    skos:notation "Steel frame" .
+
+<https://w3id.org/opda/#constructionType/Structural-insulated-panel-SIP>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Structural insulated panel (SIP)"@en ;
+    skos:definition "Structural insulated panel (SIP) construction."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.isStandardForm.constructionType.Structural%20insulated%20panel%20(SIP)> ;
+    skos:inScheme opda:ConstructionTypeScheme ;
+    skos:notation "Structural insulated panel (SIP)" .
+
+<https://w3id.org/opda/#constructionType/Timber-frame>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Timber frame"@en ;
+    skos:definition "Timber-framed structural construction."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.typeOfConstruction.isStandardForm.constructionType.Timber%20frame> ;
+    skos:inScheme opda:ConstructionTypeScheme ;
+    skos:notation "Timber frame" .
 
 <https://w3id.org/opda/#councilTaxBandEW/A>
     rdf:type skos:Concept ;
@@ -1920,6 +2060,46 @@ opda:YesNoScheme
     skos:inScheme opda:OffMainsDrainageSystemTypeScheme ;
     skos:notation "Sustainable Drainage System" .
 
+<https://w3id.org/opda/#ofstedRating/Good>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Good"@en ;
+    skos:definition "Ofsted rating: Good."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating.Good> ;
+    skos:inScheme opda:OfstedRatingScheme ;
+    skos:notation "Good" .
+
+<https://w3id.org/opda/#ofstedRating/Inadequate>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Inadequate"@en ;
+    skos:definition "Ofsted rating: Inadequate."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating.Inadequate> ;
+    skos:inScheme opda:OfstedRatingScheme ;
+    skos:notation "Inadequate" .
+
+<https://w3id.org/opda/#ofstedRating/Other>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "An Ofsted rating outside the standard four grades."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating.Other> ;
+    skos:inScheme opda:OfstedRatingScheme ;
+    skos:notation "Other" .
+
+<https://w3id.org/opda/#ofstedRating/Outstanding>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Outstanding"@en ;
+    skos:definition "Ofsted rating: Outstanding."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating.Outstanding> ;
+    skos:inScheme opda:OfstedRatingScheme ;
+    skos:notation "Outstanding" .
+
+<https://w3id.org/opda/#ofstedRating/Requires-Improvement>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Requires Improvement"@en ;
+    skos:definition "Ofsted rating: Requires Improvement."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].ofstedRating.Requires%20Improvement> ;
+    skos:inScheme opda:OfstedRatingScheme ;
+    skos:notation "Requires Improvement" .
+
 <https://w3id.org/opda/#ownerType/Organisation>
     rdf:type skos:Concept ;
     skos:prefLabel "Organisation"@en ;
@@ -2108,6 +2288,78 @@ opda:YesNoScheme
     skos:notation "Transportation" ;
     skos:topConceptOf opda:PerilScheme .
 
+<https://w3id.org/opda/#priceQualifier/Fixed-price>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Fixed price"@en ;
+    skos:definition "A non-negotiable fixed asking price."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Fixed%20price> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Fixed price" .
+
+<https://w3id.org/opda/#priceQualifier/From>
+    rdf:type skos:Concept ;
+    skos:prefLabel "From"@en ;
+    skos:definition "Price from the stated figure (e.g. new-build ranges)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.From> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "From" .
+
+<https://w3id.org/opda/#priceQualifier/Guide-price>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Guide price"@en ;
+    skos:definition "An indicative guide price."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Guide%20price> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Guide price" .
+
+<https://w3id.org/opda/#priceQualifier/Offers-in-excess-of>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Offers in excess of"@en ;
+    skos:definition "Offers sought in excess of the stated figure."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Offers%20in%20excess%20of> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Offers in excess of" .
+
+<https://w3id.org/opda/#priceQualifier/Offers-in-region-of>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Offers in region of"@en ;
+    skos:definition "Offers sought in the region of the stated figure."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Offers%20in%20region%20of> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Offers in region of" .
+
+<https://w3id.org/opda/#priceQualifier/Offers-invited>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Offers invited"@en ;
+    skos:definition "Offers invited (no stated figure)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Offers%20invited> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Offers invited" .
+
+<https://w3id.org/opda/#priceQualifier/Offers-over>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Offers over"@en ;
+    skos:definition "Offers sought over the stated figure."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Offers%20over> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Offers over" .
+
+<https://w3id.org/opda/#priceQualifier/Price>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Price"@en ;
+    skos:definition "A stated asking price."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Price> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Price" .
+
+<https://w3id.org/opda/#priceQualifier/Sale-by-tender>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Sale by tender"@en ;
+    skos:definition "Sale conducted by tender."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.priceInformation.priceQualifier.Sale%20by%20tender> ;
+    skos:inScheme opda:PriceQualifierScheme ;
+    skos:notation "Sale by tender" .
+
 <https://w3id.org/opda/#propertyType/Bungalow>
     rdf:type skos:Concept ;
     skos:prefLabel "Bungalow"@en ;
@@ -2284,6 +2536,46 @@ opda:YesNoScheme
     skos:inScheme opda:RoleScheme ;
     skos:notation "Tenant" .
 
+<https://w3id.org/opda/#schoolType/College>
+    rdf:type skos:Concept ;
+    skos:prefLabel "College"@en ;
+    skos:definition "A nearby further-education college."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.College> ;
+    skos:inScheme opda:SchoolTypeScheme ;
+    skos:notation "College" .
+
+<https://w3id.org/opda/#schoolType/Nursery>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Nursery"@en ;
+    skos:definition "A nearby nursery / early-years setting."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.Nursery> ;
+    skos:inScheme opda:SchoolTypeScheme ;
+    skos:notation "Nursery" .
+
+<https://w3id.org/opda/#schoolType/Primary>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Primary"@en ;
+    skos:definition "A nearby primary school."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.Primary> ;
+    skos:inScheme opda:SchoolTypeScheme ;
+    skos:notation "Primary" .
+
+<https://w3id.org/opda/#schoolType/Private>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Private"@en ;
+    skos:definition "A nearby private (independent / fee-paying) school."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.Private> ;
+    skos:inScheme opda:SchoolTypeScheme ;
+    skos:notation "Private" .
+
+<https://w3id.org/opda/#schoolType/Secondary>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Secondary"@en ;
+    skos:definition "A nearby secondary school."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.schools[].schoolType.Secondary> ;
+    skos:inScheme opda:SchoolTypeScheme ;
+    skos:notation "Secondary" .
+
 <https://w3id.org/opda/#sellersCapacity/Assistant>
     rdf:type skos:Concept ;
     skos:prefLabel "Assistant"@en ;
@@ -2400,6 +2692,86 @@ opda:YesNoScheme
     skos:inScheme opda:TransactionStatusScheme ;
     skos:notation "Offered" ;
     prov:wasDerivedFrom <https://w3id.org/opda/data-dictionary#status.Under%20offer> .
+
+<https://w3id.org/opda/#transportType/Airport>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Airport"@en ;
+    skos:definition "An airport."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Airport> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Airport" .
+
+<https://w3id.org/opda/#transportType/Bus-stop-station>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Bus stop/station"@en ;
+    skos:definition "A bus stop or bus station."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Bus%20stop/station> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Bus stop/station" .
+
+<https://w3id.org/opda/#transportType/Ferry-terminal>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Ferry terminal"@en ;
+    skos:definition "A ferry terminal."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Ferry%20terminal> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Ferry terminal" .
+
+<https://w3id.org/opda/#transportType/Helipad>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Helipad"@en ;
+    skos:definition "A helipad."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Helipad> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Helipad" .
+
+<https://w3id.org/opda/#transportType/Local-connection>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Local connection"@en ;
+    skos:definition "A local transport connection."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Local%20connection> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Local connection" .
+
+<https://w3id.org/opda/#transportType/National-rail-station>
+    rdf:type skos:Concept ;
+    skos:prefLabel "National rail station"@en ;
+    skos:definition "A National Rail station."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.National%20rail%20station> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "National rail station" .
+
+<https://w3id.org/opda/#transportType/Other>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "A transport type outside the standard categories."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Other> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Other" .
+
+<https://w3id.org/opda/#transportType/Tramway>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Tramway"@en ;
+    skos:definition "A tramway stop or station."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Tramway> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Tramway" .
+
+<https://w3id.org/opda/#transportType/Trunk-road-motorway>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Trunk road/motorway"@en ;
+    skos:definition "A trunk-road or motorway access point."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Trunk%20road/motorway> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Trunk road/motorway" .
+
+<https://w3id.org/opda/#transportType/Underground-Subway>
+    rdf:type skos:Concept ;
+    skos:prefLabel "Underground/Subway"@en ;
+    skos:definition "An underground / subway station."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.nearbyFacilities.transport[].transportType.Underground/Subway> ;
+    skos:inScheme opda:TransportTypeScheme ;
+    skos:notation "Underground/Subway" .
 
 <https://w3id.org/opda/#unitOfArea/square-feet>
     rdf:type skos:Concept ;
