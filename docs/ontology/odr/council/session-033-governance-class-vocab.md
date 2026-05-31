@@ -1,7 +1,7 @@
 # Council Session 033 — Lawful-basis / consent / purpose class vocabulary: adopt-now vs Phase-2 (ODR-0012 live dissent)
 
 - **Date:** 2026-05-31
-- **Records:** **Reconciles a stale-record defect in [ODR-0012](../ODR-0012-data-governance-layer.md)** (§"Live question" / §Consequences) against its own ratifying session-012; ratifies the **purpose SKOS scheme** model (emission-gated) in [ODR-0011](../ODR-0011-enumeration-vocabularies.md); logs **three verified emission defects** in the governance surface (→ [ADR-0005](../../adr/ADR-0005-deferred-work-register.md) §G). Plan item **A2**.
+- **Records:** **Reconciles a stale-record defect in [ODR-0012](../ODR-0012-data-governance-layer.md)** (§"Live question" / §Consequences) against its own ratifying session-012; ratifies the **purpose SKOS scheme** model (emission-gated) in [ODR-0011](../ODR-0011-enumeration-vocabularies.md); logs **three verified emission defects** in the governance surface (→ [ADR-0005](../../../adr/ADR-0005-deferred-work-register.md) §G). Plan item **A2**.
 - **Queen / synthesis:** convening orchestrator. **Devil's Advocate:** Allemang (argued defer; **HELD-as-live**). **Panel:** Pandit (DPV; dissent-holder), Guarino (DOLCE/OntoClean), Cagle (operational SHACL), Baker (SKOS/DCMI).
 - **`consensus-mode`:** `agent-fan-out` (Agent Teams `council-012b` + `SendMessage`). **Format:** Full Council (5 voices). No hive-mind (single decision; not conditional/typed-output).
 - **Outcome:** **REVISE** — P carries only in **reconciled/decomposed** form. Per-question **3–2**; **DA HELD** on all three (this is NOT a clean-withdrawal session).
