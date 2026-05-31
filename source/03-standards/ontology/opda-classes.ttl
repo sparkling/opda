@@ -8,10 +8,11 @@
 # Six foundation classes: two per ADR-0009 (DiagnosticExemplar,
 # GeneratorRun); three UFO meta-classes per ADR-0011 (RoleMixin,
 # Role, Relator — referenced cross-module); ValidationContext per
-# ADR-0013 (ODR-0010 §Q1 profile reification). Plus one
-# DatatypeProperty added by ADR-0014 G14:
-# opda:hasSpecialCategoryData (Cat 4 SHACL shape target;
-# S012 Q3 Council ratification preserves the rename route).
+# ADR-0013 (ODR-0010 §Q1 profile reification). Plus two
+# DatatypeProperties: opda:hasSpecialCategoryData (ADR-0014 G14;
+# Cat 4 SHACL shape target; S012 Q3 Council ratification preserves
+# the rename route) and opda:isPIIBearing (ADR-0005 §G D3; the
+# Phase-1 PII-floor target for PIIWithoutDPVCoAnnotationRule).
 # Per-module classes land in opda-<module>.ttl via ADR-0011.
 
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -71,3 +72,11 @@ opda:hasSpecialCategoryData
     dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q5> ;
     rdfs:range xsd:boolean ;
     skos:scopeNote "Placeholder predicate — Cat 4 SHACL shape (SpecialCategoryPIIWithoutLawfulBasisShape) targets this predicate per ADR-0012. Council Author-only session via S012 Q3 may rename or refine the canonical name; ADR-0012 shape updates in lockstep. Until then, this declaration gives the Cat 4 shape a real TBox-level target."@en .
+
+opda:isPIIBearing
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "is PII bearing"@en ;
+    rdfs:comment "Flag marking a class as a bearer of personally identifiable information under the ODR-0012 Phase-1 floor. A class asserted opda:isPIIBearing true is in scope for the Phase-1 PII-co-annotation discipline (ODR-0018 §Rule 1): it MUST carry a class-level dpv-pd:hasPersonalDataCategory baseline in opda-<module>-annotations.ttl. The cross-cutting SHACL-AF rule PIIWithoutDPVCoAnnotationRule flags any opda:isPIIBearing true class lacking that co-annotation as a sh:Warning breach. Range xsd:boolean; emitted true on exactly the baseline PII-bearing Kinds (Person, Property, Address, RegisteredTitle, Claim, EPCCertificate) — Organisation is intentionally unmarked (ODR-0006 §Q6: not a data subject)."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> ;
+    rdfs:range xsd:boolean ;
+    skos:scopeNote "Phase-1 PII-floor target predicate — the SHACL-AF rule PIIWithoutDPVCoAnnotationRule (opda-shapes.ttl) checks for opda:isPIIBearing true classes without a dpv-pd:hasPersonalDataCategory co-annotation. Asserted in the annotation graph (ODR-0018 §Rule 1) on the baseline PII Kinds so the rule's target set is non-empty and the floor is enforced."@en .

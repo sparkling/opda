@@ -747,7 +747,7 @@ def build_agent_shapes() -> Graph:
            SH.sparql, sparql_node))
     g.add((sparql_node, SH.select, Literal(
         "PREFIX opda: <https://w3id.org/opda/#>\n"
-        "PREFIX dpv: <https://w3id.org/dpv/pd#>\n"
+        "PREFIX dpv: <https://w3id.org/dpv#>\n"
         "SELECT $this ?path WHERE {\n"
         "  $this opda:hasSpecialCategoryData true .\n"
         "  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n"

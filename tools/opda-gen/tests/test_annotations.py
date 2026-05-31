@@ -397,3 +397,164 @@ def test_every_dpv_baseline_kind_has_dct_source(
                 f"Kind {kind} in {name} carries DPV baseline but no "
                 f"dct:source citation"
             )
+
+
+# ---------------------------------------------------------------------------
+# D2 (ADR-0005 §G) — opda:lawfulBasis objects are ALWAYS core dpv: lawful
+# bases, never dpv-pd: PII categories; the email/DOB predicate categories
+# attach via dpv-pd:hasPersonalDataCategory, not opda:lawfulBasis.
+# ---------------------------------------------------------------------------
+_HAS_PD = URIRef("https://w3id.org/dpv/pd#hasPersonalDataCategory")
+
+
+def test_no_lawful_basis_object_is_a_pd_category(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """ADR-0005 §G D2: every opda:lawfulBasis object across the corpus
+    MUST be a CORE DPV term (https://w3id.org/dpv#…) — a lawful basis —
+    and NONE may be in the dpv-pd: namespace (a PII category). The prior
+    agent-module bug mis-slotted dpv-pd:EmailAddress / dpv-pd:DateOfBirth
+    into opda:lawfulBasis."""
+    for name, path in emitted_annotations.items():
+        g = Graph()
+        g.parse(str(path), format="turtle")
+        for _, _, obj in g.triples((None, OPDA.lawfulBasis, None)):
+            assert str(obj).startswith("https://w3id.org/dpv#"), (
+                f"opda:lawfulBasis object {obj} in {name} is not a core "
+                "dpv: lawful basis (ADR-0005 §G D2)"
+            )
+            assert not str(obj).startswith("https://w3id.org/dpv/pd#"), (
+                f"opda:lawfulBasis object {obj} in {name} is a dpv-pd: PII "
+                "category, not a lawful basis (ADR-0005 §G D2)"
+            )
+
+
+def test_person_email_dob_categories_are_property_or_class_level(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """ADR-0005 §G D2: the EmailAddress + DateOfBirth PII categories are
+    carried via dpv-pd:hasPersonalDataCategory (the correct ODR-0018
+    §Rule 4 co-annotation), NOT via opda:lawfulBasis.
+
+    Reality check (see report): opda:dateOfBirth IS declared on
+    opda:Person, so DateOfBirth attaches at the property level
+    (opda:dateOfBirth). No email predicate is declared on opda:Person, so
+    per the ADR-0005 §G D2 fallback the EmailAddress category is carried
+    class-level on opda:Person."""
+    g = Graph()
+    g.parse(str(emitted_annotations["agent"]), format="turtle")
+    dob = URIRef("https://w3id.org/dpv/pd#DateOfBirth")
+    email = URIRef("https://w3id.org/dpv/pd#EmailAddress")
+    # DateOfBirth — property-level on opda:dateOfBirth.
+    assert (OPDA.dateOfBirth, _HAS_PD, dob) in g, (
+        "opda:dateOfBirth must carry dpv-pd:hasPersonalDataCategory "
+        "dpv-pd:DateOfBirth (ADR-0005 §G D2 property-level co-annotation)"
+    )
+    # EmailAddress — class-level on opda:Person (no email predicate exists).
+    assert (OPDA.Person, _HAS_PD, email) in g, (
+        "opda:Person must carry dpv-pd:hasPersonalDataCategory "
+        "dpv-pd:EmailAddress class-level (ADR-0005 §G D2 fallback — no "
+        "email predicate is declared on Person)"
+    )
+    # The buggy DPVMappingRefinement records must be gone.
+    assert (OPDA.PersonEmailRefinement, RDF.type, OPDA.DPVMappingRefinement) \
+        not in g, "PersonEmailRefinement (mis-slotted lawful basis) must be removed"
+    assert (
+        OPDA.PersonDateOfBirthRefinement, RDF.type, OPDA.DPVMappingRefinement
+    ) not in g, (
+        "PersonDateOfBirthRefinement (mis-slotted lawful basis) must be removed"
+    )
+
+
+# ---------------------------------------------------------------------------
+# D3 (ADR-0005 §G) — opda:isPIIBearing declared at foundation + asserted
+# true on exactly the class-level-baseline PII Kinds; the PIIWithout-
+# DPVCoAnnotationRule floor is therefore active (non-empty target set).
+# ---------------------------------------------------------------------------
+def test_is_pii_bearing_declared_at_foundation(tmp_path: Path) -> None:
+    """ADR-0005 §G D3(a): opda:isPIIBearing is declared as an
+    owl:DatatypeProperty (range xsd:boolean) in opda-classes.ttl."""
+    from opda_gen.emitters.foundation import emit_foundation
+
+    emit_foundation(tmp_path)
+    g = Graph()
+    g.parse(str(tmp_path / "opda-classes.ttl"), format="turtle")
+    assert (OPDA.isPIIBearing, RDF.type, OWL.DatatypeProperty) in g, (
+        "opda:isPIIBearing must be declared as owl:DatatypeProperty "
+        "(ADR-0005 §G D3a)"
+    )
+    assert (
+        OPDA.isPIIBearing,
+        RDFS.range,
+        URIRef("http://www.w3.org/2001/XMLSchema#boolean"),
+    ) in g, "opda:isPIIBearing must have rdfs:range xsd:boolean"
+
+
+def test_is_pii_bearing_asserted_true_on_baseline_kinds(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """ADR-0005 §G D3(b): opda:isPIIBearing true is asserted on exactly
+    the six class-level-baseline PII Kinds (Person, Property, Address,
+    RegisteredTitle, Claim, EPCCertificate); Organisation stays unmarked."""
+    g = Graph()
+    for path in emitted_annotations.values():
+        g.parse(str(path), format="turtle")
+    true_lit = Literal(True)
+    marked = {
+        str(s) for s in g.subjects(OPDA.isPIIBearing, true_lit)
+    }
+    expected = {
+        str(OPDA.Person),
+        str(OPDA.Property),
+        str(OPDA.Address),
+        str(OPDA.RegisteredTitle),
+        str(OPDA.Claim),
+        str(OPDA.EPCCertificate),
+    }
+    assert marked == expected, (
+        f"opda:isPIIBearing true must be on exactly {sorted(expected)}; "
+        f"got {sorted(marked)}"
+    )
+    # Organisation must NOT be marked (ODR-0006 §Q6 — not a data subject).
+    assert (OPDA.Organisation, OPDA.isPIIBearing, true_lit) not in g, (
+        "opda:Organisation must NOT carry opda:isPIIBearing true "
+        "(ODR-0006 §Q6: not a data subject)"
+    )
+    # Serialises as a real xsd:boolean literal.
+    assert true_lit.datatype == URIRef(
+        "http://www.w3.org/2001/XMLSchema#boolean"
+    )
+
+
+def test_pii_floor_active_count_matches_baseline_count(
+    emitted_annotations: dict[str, Path]
+) -> None:
+    """ADR-0005 §G D3 regression guard: the count of classes asserted
+    opda:isPIIBearing true equals the count of classes carrying a
+    class-level dpv-pd:hasPersonalDataCategory baseline. Because
+    PIIWithoutDPVCoAnnotationRule targets opda:isPIIBearing true classes
+    lacking that baseline, this equality (and non-zero count) is exactly
+    the condition that the Phase-1 PII floor is active — the rule's target
+    set is non-empty and every target is in lockstep with a co-annotation."""
+    g = Graph()
+    for path in emitted_annotations.values():
+        g.parse(str(path), format="turtle")
+    pii_classes = set(g.subjects(OPDA.isPIIBearing, Literal(True)))
+    # Class-level baseline subjects: opda: Kinds (TitleCase) carrying the
+    # class-level dpv-pd:hasPersonalDataCategory (exclude property-level
+    # co-annotations like opda:dateOfBirth, which are lowercase predicates).
+    baseline_classes = {
+        s
+        for s in g.subjects(_HAS_PD, None)
+        if str(s).startswith("https://w3id.org/opda/#")
+        and str(s).split("#", 1)[1][:1].isupper()
+    }
+    assert len(pii_classes) > 0, (
+        "the PII floor is a no-op — no class is marked opda:isPIIBearing "
+        "true (ADR-0005 §G D3)"
+    )
+    assert pii_classes == baseline_classes, (
+        "opda:isPIIBearing-true classes must equal the class-level DPV "
+        f"baseline Kinds; isPIIBearing={sorted(str(s) for s in pii_classes)} "
+        f"baseline={sorted(str(s) for s in baseline_classes)}"
+    )

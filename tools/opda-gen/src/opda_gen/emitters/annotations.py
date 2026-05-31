@@ -180,14 +180,51 @@ def _add_dpv_baseline(
 
     ```turtle
     opda:<Kind>
+        opda:isPIIBearing true ;
         dpv-pd:hasPersonalDataCategory <DPV-PD category URI> ;
         dct:source <ODR-XXXX#section-Y> .
     ```
+
+    The `opda:isPIIBearing true` flag (ADR-0005 §G D3) marks the Kind as a
+    target for the Phase-1 PII-floor rule `PIIWithoutDPVCoAnnotationRule`;
+    asserting it on exactly the class-level-baseline Kinds keeps the rule's
+    target set in lockstep with the set of co-annotated Kinds, so the floor
+    is enforced rather than firing on the empty set.
     """
+    g.add((kind, OPDA.isPIIBearing, Literal(True)))
     g.add((kind, URIRef(
         "https://w3id.org/dpv/pd#hasPersonalDataCategory"
     ), category))
     g.add((kind, DCTERMS.source, source_iri))
+
+
+def _add_dpv_property_category(
+    g: Graph,
+    *,
+    predicate: URIRef,
+    category: URIRef,
+    source_iri: URIRef,
+) -> None:
+    """Emit a property-level DPV PII-category co-annotation per ODR-0018
+    §Rule 4 (property-level co-annotation is admissible alongside the
+    class-level baseline).
+
+    Pattern:
+
+    ```turtle
+    opda:<predicate>
+        dpv-pd:hasPersonalDataCategory <DPV-PD category URI> ;
+        dct:source <ODR-XXXX#section-Y> .
+    ```
+
+    Distinct from `_add_dpv_variant_refinement` (which maps a Kind+variant
+    tuple to a DPV *lawful basis* via `opda:lawfulBasis`): this attaches a
+    DPV-PD *category* directly to a declared predicate.
+    """
+    g.add((predicate, URIRef(
+        "https://w3id.org/dpv/pd#hasPersonalDataCategory"
+    ), category))
+    g.add((predicate, DCTERMS.source, source_iri))
 
 
 def _add_dpv_variant_refinement(
@@ -304,35 +341,31 @@ def build_agent_annotations() -> Graph:
         g, kind=OPDA.Person, category=DPV_PD_NAME,
         source_iri=_ODR_0006_Q1,
     )
-    # Property-level co-annotations per ODR-0018 §Rule 4 (both
-    # class-level and property-level admissible). Variant refinements
-    # for email and date-of-birth predicates if/when they materialise
-    # on opda:Person are stubbed as DPVMappingRefinement records so the
-    # consuming generator (ADR-0013) can dispatch lawful basis.
-    _add_dpv_variant_refinement(
+    # Property-level PII-category co-annotations per ODR-0018 §Rule 4
+    # (both class-level and property-level admissible). These attach a
+    # DPV-PD *category* to the bearing predicate — NOT a lawful basis;
+    # they are emphatically not opda:lawfulBasis triples (which carry core
+    # dpv: lawful-basis terms). ADR-0005 §G D2.
+    #
+    # opda:dateOfBirth IS declared on opda:Person (opda-agent.ttl, the
+    # Category-G walk), so its DateOfBirth category attaches at the
+    # property level.
+    _add_dpv_property_category(
         g,
-        map_iri=OPDA.PersonEmailRefinement,
-        kind=OPDA.Person,
-        variant_predicate=OPDA.hasEmail,
-        variant_value="email",
-        lawful_basis=DPV_PD_EMAILADDRESS,
-        regulator_source=URIRef(
-            "https://ico.org.uk/for-organisations/guide-to-data-protection/"
-        ),
+        predicate=OPDA.dateOfBirth,
+        category=DPV_PD_DATEOFBIRTH,
         source_iri=_ODR_0018_3A,
     )
-    _add_dpv_variant_refinement(
-        g,
-        map_iri=OPDA.PersonDateOfBirthRefinement,
-        kind=OPDA.Person,
-        variant_predicate=OPDA.hasDateOfBirth,
-        variant_value="dob",
-        lawful_basis=DPV_PD_DATEOFBIRTH,
-        regulator_source=URIRef(
-            "https://ico.org.uk/for-organisations/guide-to-data-protection/"
-        ),
-        source_iri=_ODR_0018_3A,
-    )
+    # No email predicate is declared on opda:Person anywhere in the class
+    # graph (neither opda:email nor opda:hasEmail exists — the prior
+    # opda:hasEmail refinement referenced a non-existent predicate). Per
+    # the ADR-0005 §G D2 fallback ("if neither exists, add the category as
+    # an extra class-level dpv-pd:hasPersonalDataCategory value on
+    # opda:Person"), the EmailAddress category is carried class-level on
+    # opda:Person rather than invented onto a fictional predicate.
+    g.add((OPDA.Person, URIRef(
+        "https://w3id.org/dpv/pd#hasPersonalDataCategory"
+    ), DPV_PD_EMAILADDRESS))
 
     # --- opda:Organisation — no baseline PII category (documented) -----
     # Per ODR-0006 §Q6: Organisation qua-Org is not a personal data

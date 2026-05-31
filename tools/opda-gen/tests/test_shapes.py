@@ -415,3 +415,46 @@ def test_emit_shapes_invalid_module_raises() -> None:
         out = Path(tmp)
         with pytest.raises(ValueError, match="unknown shapes module"):
             emit_shapes(out, module="nonexistent")
+
+
+# ---------------------------------------------------------------------------
+# D1 (ADR-0005 §G) — SpecialCategoryPIIWithoutLawfulBasisShape binds CORE
+# dpv: (https://w3id.org/dpv#) for dpv:hasLegalBasis, NOT dpv-pd:.
+# ---------------------------------------------------------------------------
+def test_special_category_shape_binds_core_dpv_for_lawful_basis(
+    emitted_shapes: dict[str, Path]
+) -> None:
+    """ADR-0005 §G D1: the Cat 4 shape's sh:select SPARQL must PREFIX-bind
+    `dpv:` to the CORE DPV namespace (https://w3id.org/dpv#) so that
+    `dpv:hasLegalBasis` resolves to the real predicate
+    `https://w3id.org/dpv#hasLegalBasis` — NOT the non-existent
+    `https://w3id.org/dpv/pd#hasLegalBasis` the prior dpv/pd# binding
+    produced (which made the lone lawful-basis Violation gate a no-op)."""
+    g = Graph()
+    g.parse(str(emitted_shapes["agent"]), format="turtle")
+    selects = [
+        str(sel)
+        for sparql in g.objects(
+            OPDA.SpecialCategoryPIIWithoutLawfulBasisShape, SH.sparql
+        )
+        for sel in g.objects(sparql, SH.select)
+    ]
+    assert len(selects) == 1, (
+        "expected exactly one sh:select on the Cat 4 shape; got "
+        f"{len(selects)}"
+    )
+    select = selects[0]
+    assert "PREFIX dpv: <https://w3id.org/dpv#>" in select, (
+        "Cat 4 shape must bind CORE dpv: (https://w3id.org/dpv#) per "
+        f"ADR-0005 §G D1; got SPARQL:\n{select}"
+    )
+    assert "PREFIX dpv: <https://w3id.org/dpv/pd#>" not in select, (
+        "Cat 4 shape must NOT bind dpv: to the dpv/pd# namespace "
+        "(ADR-0005 §G D1 — lawful basis is CORE DPV, not personal-data "
+        f"categories); got SPARQL:\n{select}"
+    )
+    # Query still references dpv:hasLegalBasis (logic unchanged).
+    assert "dpv:hasLegalBasis" in select, (
+        "Cat 4 shape SPARQL must still query dpv:hasLegalBasis "
+        "(only the prefix binding changed)"
+    )

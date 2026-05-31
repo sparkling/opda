@@ -17,6 +17,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/opda/agent-annotations/>
     rdf:type owl:Ontology ;
@@ -24,28 +25,15 @@
     dct:title "OPDA Agent Annotations"@en ;
     opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
 
-opda:PersonDateOfBirthRefinement
-    rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-3a> ;
-    dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
-    opda:lawfulBasis dpv-pd:DateOfBirth ;
-    opda:targetsKind opda:Person ;
-    opda:variantPredicate opda:hasDateOfBirth ;
-    opda:variantValue "dob" .
-
-opda:PersonEmailRefinement
-    rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-3a> ;
-    dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
-    opda:lawfulBasis dpv-pd:EmailAddress ;
-    opda:targetsKind opda:Person ;
-    opda:variantPredicate opda:hasEmail ;
-    opda:variantValue "email" .
-
 opda:Organisation
     rdfs:comment "No DPV class-level PII baseline for opda:Organisation per ODR-0006 §Q6 + ODR-0018 §Rule 4. Organisations are not data subjects; the sole-trader / individual-director surface produces an opda:Person co-annotation (linked via the actor's ownership / control relationship), not an Organisation co-annotation."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q6> .
 
 opda:Person
     dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q1> ;
-    dpv-pd:hasPersonalDataCategory dpv-pd:Name .
+    dpv-pd:hasPersonalDataCategory dpv-pd:EmailAddress, dpv-pd:Name ;
+    opda:isPIIBearing "true"^^xsd:boolean .
+
+opda:dateOfBirth
+    dct:source <https://w3id.org/opda/odr/ODR-0018#section-3a> ;
+    dpv-pd:hasPersonalDataCategory dpv-pd:DateOfBirth .

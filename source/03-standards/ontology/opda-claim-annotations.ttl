@@ -17,6 +17,7 @@
 @prefix opda: <https://w3id.org/opda/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/opda/claim-annotations/>
     rdf:type owl:Ontology ;
@@ -53,4 +54,5 @@ opda:VouchEvidenceRefinement
 
 opda:Claim
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
-    dpv-pd:hasPersonalDataCategory dpv-pd:OfficialID .
+    dpv-pd:hasPersonalDataCategory dpv-pd:OfficialID ;
+    opda:isPIIBearing "true"^^xsd:boolean .

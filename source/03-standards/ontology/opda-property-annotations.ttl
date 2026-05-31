@@ -17,6 +17,7 @@
 @prefix opda: <https://w3id.org/opda/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/opda/property-annotations/>
     rdf:type owl:Ontology ;
@@ -53,12 +54,15 @@ opda:AddressVariantTitleRefinement
 
 opda:Address
     dct:source <https://w3id.org/opda/odr/ODR-0015#section-7a> ;
-    dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress .
+    dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress ;
+    opda:isPIIBearing "true"^^xsd:boolean .
 
 opda:Property
     dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> ;
-    dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress .
+    dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress ;
+    opda:isPIIBearing "true"^^xsd:boolean .
 
 opda:RegisteredTitle
     dct:source <https://w3id.org/opda/odr/ODR-0005#section-3c> ;
-    dpv-pd:hasPersonalDataCategory dpv-pd:PublicData .
+    dpv-pd:hasPersonalDataCategory dpv-pd:PublicData ;
+    opda:isPIIBearing "true"^^xsd:boolean .

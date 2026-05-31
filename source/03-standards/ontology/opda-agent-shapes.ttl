@@ -61,7 +61,7 @@ opda:SpecialCategoryPIIWithoutLawfulBasisShape
     dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q3> ;
     sh:message "Special-category PII (GDPR Article 10) MUST have an associated dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 Category 4: lawful-basis-elevated PII is a Violation-tier breach."@en ;
     sh:severity sh:Violation ;
-    sh:sparql _:b1ced501bb698 ;
+    sh:sparql _:b1d4d84efa2e1 ;
     sh:targetClass opda:Person .
 
 _:b04ddc2ae8a10
@@ -72,8 +72,8 @@ _:bcd856a2c693b
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
 
-_:b1ced501bb698
-    sh:select "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dpv: <https://w3id.org/dpv/pd#>\nSELECT $this ?path WHERE {\n  $this opda:hasSpecialCategoryData true .\n  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n  BIND (opda:hasSpecialCategoryData AS ?path)\n}" .
+_:b1d4d84efa2e1
+    sh:select "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dpv: <https://w3id.org/dpv#>\nSELECT $this ?path WHERE {\n  $this opda:hasSpecialCategoryData true .\n  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n  BIND (opda:hasSpecialCategoryData AS ?path)\n}" .
 
 _:b2ea199d949d8
     sh:datatype xsd:string ;

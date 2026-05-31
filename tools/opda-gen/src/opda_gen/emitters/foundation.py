@@ -166,6 +166,11 @@ _ODR_0006_SECTION_Q3 = URIRef(
 _ODR_0012_SECTION_Q5 = URIRef(
     "https://w3id.org/opda/odr/ODR-0012#section-Q5"
 )
+# ADR-0005 §G D3 — opda:isPIIBearing routes to the Phase-1 PII floor
+# (ODR-0012 §Q5 PII co-annotation rule + ODR-0018 §Rule 1 baseline).
+_ODR_0018_SECTION_RULE1 = URIRef(
+    "https://w3id.org/opda/odr/ODR-0018#section-Rule1"
+)
 
 # Output file names.
 FOUNDATION_FILENAME = "foundation.ttl"
@@ -269,8 +274,8 @@ def build_foundation_graph(emission_date: str) -> Graph:
 def build_classes_graph() -> Graph:
     """Build the OWL class graph per ADR-0009/0011/0013/0014.
 
-    Six classes after ADR-0013 (ValidationContext); one DatatypeProperty
-    after ADR-0014 (hasSpecialCategoryData):
+    Six classes after ADR-0013 (ValidationContext); two DatatypeProperties
+    after ADR-0014 (hasSpecialCategoryData) + ADR-0005 §G D3 (isPIIBearing):
 
     - `opda:DiagnosticExemplar`, `opda:GeneratorRun` — foundation (ADR-0009).
     - `opda:RoleMixin`, `opda:Role`, `opda:Relator` — UFO meta-classes
@@ -279,6 +284,8 @@ def build_classes_graph() -> Graph:
       (ADR-0013).
     - `opda:hasSpecialCategoryData` — Cat 4 SHACL shape target predicate
       (ADR-0014 G14; Council S012 Q3 routing preserved).
+    - `opda:isPIIBearing` — Phase-1 PII-floor target predicate
+      (ADR-0005 §G D3; PIIWithoutDPVCoAnnotationRule target).
 
     Each emitted with the ADR-0007 §"A9 per-kind discipline output"
     triple set: `rdf:type owl:{Class|DatatypeProperty}` + `rdfs:label`
@@ -462,6 +469,46 @@ def build_classes_graph() -> Graph:
     g.add((OPDA.hasSpecialCategoryData, DCTERMS.source,
            _ODR_0012_SECTION_Q5))
 
+    # --- ADR-0005 §G D3 — opda:isPIIBearing (Phase-1 PII-floor target) ----
+    # The cross-cutting SHACL-AF rule `PIIWithoutDPVCoAnnotationRule` (in
+    # opda-shapes.ttl) targets `owl:Class` and flags any class marked
+    # `opda:isPIIBearing true` that lacks a class-level
+    # `dpv-pd:hasPersonalDataCategory` co-annotation. Without this
+    # declaration the predicate has no TBox surface; without an emitter
+    # asserting it on the baseline PII Kinds the rule has no target and the
+    # Phase-1 PII floor is a no-op. This declaration + the
+    # `opda-*-annotations.ttl` emission (ODR-0018 §Rule 1 baseline Kinds)
+    # together activate the floor. Mirrors opda:hasSpecialCategoryData.
+    g.add((OPDA.isPIIBearing, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.isPIIBearing, RDFS.range, XSD.boolean))
+    g.add((OPDA.isPIIBearing, RDFS.label,
+           Literal("is PII bearing", lang="en")))
+    g.add((OPDA.isPIIBearing, RDFS.comment, Literal(
+        "Flag marking a class as a bearer of personally identifiable "
+        "information under the ODR-0012 Phase-1 floor. A class asserted "
+        "opda:isPIIBearing true is in scope for the Phase-1 "
+        "PII-co-annotation discipline (ODR-0018 §Rule 1): it MUST carry a "
+        "class-level dpv-pd:hasPersonalDataCategory baseline in "
+        "opda-<module>-annotations.ttl. The cross-cutting SHACL-AF rule "
+        "PIIWithoutDPVCoAnnotationRule flags any opda:isPIIBearing true "
+        "class lacking that co-annotation as a sh:Warning breach. Range "
+        "xsd:boolean; emitted true on exactly the baseline PII-bearing "
+        "Kinds (Person, Property, Address, RegisteredTitle, Claim, "
+        "EPCCertificate) — Organisation is intentionally unmarked "
+        "(ODR-0006 §Q6: not a data subject).",
+        lang="en",
+    )))
+    g.add((OPDA.isPIIBearing, SKOS.scopeNote, Literal(
+        "Phase-1 PII-floor target predicate — the SHACL-AF rule "
+        "PIIWithoutDPVCoAnnotationRule (opda-shapes.ttl) checks for "
+        "opda:isPIIBearing true classes without a "
+        "dpv-pd:hasPersonalDataCategory co-annotation. Asserted in the "
+        "annotation graph (ODR-0018 §Rule 1) on the baseline PII Kinds so "
+        "the rule's target set is non-empty and the floor is enforced.",
+        lang="en",
+    )))
+    g.add((OPDA.isPIIBearing, DCTERMS.source, _ODR_0018_SECTION_RULE1))
+
     return g
 
 
@@ -580,10 +627,11 @@ def emit_foundation(
                 "Six foundation classes: two per ADR-0009 (DiagnosticExemplar,",
                 "GeneratorRun); three UFO meta-classes per ADR-0011 (RoleMixin,",
                 "Role, Relator — referenced cross-module); ValidationContext per",
-                "ADR-0013 (ODR-0010 §Q1 profile reification). Plus one",
-                "DatatypeProperty added by ADR-0014 G14:",
-                "opda:hasSpecialCategoryData (Cat 4 SHACL shape target;",
-                "S012 Q3 Council ratification preserves the rename route).",
+                "ADR-0013 (ODR-0010 §Q1 profile reification). Plus two",
+                "DatatypeProperties: opda:hasSpecialCategoryData (ADR-0014 G14;",
+                "Cat 4 SHACL shape target; S012 Q3 Council ratification preserves",
+                "the rename route) and opda:isPIIBearing (ADR-0005 §G D3; the",
+                "Phase-1 PII-floor target for PIIWithoutDPVCoAnnotationRule).",
                 "Per-module classes land in opda-<module>.ttl via ADR-0011.",
             ],
             build_classes_graph(),
