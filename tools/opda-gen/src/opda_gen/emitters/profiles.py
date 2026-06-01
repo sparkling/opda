@@ -917,6 +917,20 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         sh_order=4, sh_group=grp_built,
         form_question_anchor="A1.8.1",
     )
+    # EPC certificate container (A1.8.3.1) — the Property → EPCCertificate
+    # join. Bound here, on the shape whose target (opda:Property) matches the
+    # predicate's rdfs:domain, NOT on Baspi5_EPCCertificateShape where it
+    # reused a Property-domain predicate on a non-Property subject (handover
+    # 2026-06-01 §8 / ODR-0025 §R7 / ADR-0035 §"EPCCertificate emitter fix").
+    _add_property_shape(
+        g, prop_shape,
+        path=OPDA.hasEPCCertificate,
+        dash_viewer=DASH.URIViewer,
+        dash_editor=DASH.DetailsEditor,
+        sh_order=9, sh_group=grp_energy,
+        form_question_anchor="A1.8.3.1",
+        message="BASPI5 question A1.8.3.1: EPC certificate.",
+    )
     # currentEnergyRating (A-G)
     _add_property_shape(
         g, prop_shape,
@@ -1184,24 +1198,17 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     g.add((epc_shape, RDF.type, SH.NodeShape))
     g.add((epc_shape, SH.targetClass, OPDA.EPCCertificate))
     g.add((epc_shape, DCTERMS.source, _baspi5_question("A1.8.3.1")))
-    # Within the EPCCertificate shape the single constrained field sources
-    # the certificate question `A1.8.3.1`
-    # (propertyPack.energyEfficiency.certificate) — so the EPC container
-    # anchor is addressable by an sh:path, not node-shape-only (ODR-0022 §2
-    # G3). The finer leaf `A1.8.3.1.1` (currentEnergyRating) is retained by
-    # the same predicate on Baspi5_PropertyShape, so both anchors stay
-    # present, each bound by exactly one path.
-    _add_property_shape(
-        g, epc_shape,
-        path=OPDA.currentEnergyRating,
-        min_count=1, max_count=1,
-        in_scheme_members=_scheme_members("CurrentEnergyRatingScheme"),
-        dash_viewer=DASH.LabelViewer,
-        dash_editor=DASH.EnumSelectEditor,
-        sh_order=1, sh_group=grp_energy,
-        form_question_anchor="A1.8.3.1",
-        message="BASPI5: EPC current energy rating (A-G) required.",
-    )
+    # Node-shape-only target marker — NO sh:property. The EPC predicates are
+    # Property attributes (opda:currentEnergyRating, rdfs:domain opda:Property)
+    # or the Property → EPCCertificate join (opda:hasEPCCertificate); both are
+    # bound on Baspi5_PropertyShape, the shape whose target matches their
+    # domain. Binding currentEnergyRating here (on an EPCCertificate target)
+    # reused a Property-domain predicate on a non-Property subject; under rdfs
+    # domain entailment a conformant EPC node would be mis-typed a Property and
+    # trip the Property minCounts (handover 2026-06-01 §8 / ODR-0025 §R7 /
+    # ADR-0035 §"EPCCertificate emitter fix"). The certificate-container leaf
+    # A1.8.3.1 and rating leaf A1.8.3.1.1 round-trip via Baspi5_PropertyShape
+    # (ODR-0022 §2 G3).
 
 
 # --- Generator-comment header --------------------------------------------

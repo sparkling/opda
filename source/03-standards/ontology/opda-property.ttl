@@ -837,6 +837,14 @@ opda:hasAddress
     rdfs:domain opda:Property ;
     rdfs:range opda:Address .
 
+opda:hasEPCCertificate
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "has EPC certificate"@en ;
+    rdfs:comment "Property → opda:EPCCertificate join predicate. The energy rating band stays on the Property as opda:currentEnergyRating (its rdfs:domain); this join reaches the certificate Entity as a distinct PROV-O artefact (10-year lifecycle, DESNZ register)."@en ;
+    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.energyEfficiency.certificate> ;
+    rdfs:domain opda:Property ;
+    rdfs:range opda:EPCCertificate .
+
 opda:identifiesSameProperty
     rdf:type owl:ObjectProperty ;
     rdfs:label "identifies same property"@en ;

@@ -69,6 +69,9 @@ _G2_BUILT_FORM = _dd_source("propertyPack.buildInformation.building.builtForm")
 _G2_CURRENT_ENERGY_RATING = _dd_source(
     "propertyPack.energyEfficiency.certificate.currentEnergyRating"
 )
+_G2_EPC_CERTIFICATE = _dd_source(
+    "propertyPack.energyEfficiency.certificate"
+)
 _G2_CENTRAL_HEATING_FUEL_TYPE = _dd_source(
     "propertyPack.heating.heatingSystem.centralHeatingDetails."
     "centralHeatingFuel.centralHeatingFuelType"
@@ -113,6 +116,7 @@ CLASSES = (
 
 OBJECT_PROPERTIES = (
     OPDA.hasAddress,
+    OPDA.hasEPCCertificate,
     OPDA.identifiesSameProperty,
     OPDA.recordsEstate,
 )
@@ -502,6 +506,28 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasAddress, DCTERMS.source, _ODR_0015_S3A))
+
+    # --- ObjectProperty: opda:hasEPCCertificate (ODR-0008 §Q4a) ---------
+    # Property → EPCCertificate join. The EPC rating leaf is a Property
+    # attribute (opda:currentEnergyRating, rdfs:domain opda:Property); the
+    # certificate itself is a distinct PROV-O Entity reached by this join,
+    # NOT a re-homed Property-domain predicate (handover 2026-06-01 §8 /
+    # ODR-0025 §R7 / ADR-0035 §"EPCCertificate emitter fix"). Carries the
+    # BASPI5 certificate-container leaf path so Baspi5_PropertyShape can
+    # round-trip question A1.8.3.1 by a domain-correct sh:path (ODR-0022 §2 G3).
+    g.add((OPDA.hasEPCCertificate, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasEPCCertificate, RDFS.domain, OPDA.Property))
+    g.add((OPDA.hasEPCCertificate, RDFS.range, OPDA.EPCCertificate))
+    g.add((OPDA.hasEPCCertificate, RDFS.label,
+           Literal("has EPC certificate", lang="en")))
+    g.add((OPDA.hasEPCCertificate, RDFS.comment, Literal(
+        "Property → opda:EPCCertificate join predicate. The energy rating "
+        "band stays on the Property as opda:currentEnergyRating (its "
+        "rdfs:domain); this join reaches the certificate Entity as a "
+        "distinct PROV-O artefact (10-year lifecycle, DESNZ register).",
+        lang="en",
+    )))
+    g.add((OPDA.hasEPCCertificate, DCTERMS.source, _G2_EPC_CERTIFICATE))
 
     # --- ObjectProperty: opda:identifiesSameProperty (ODR-0005 §Rule 5) -
     g.add((OPDA.identifiesSameProperty, RDF.type, OWL.ObjectProperty))

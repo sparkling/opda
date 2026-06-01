@@ -41,7 +41,6 @@ opda:Baspi5_BuyerShape
 opda:Baspi5_EPCCertificateShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
-    sh:property _:b694ae7948591 ;
     sh:targetClass opda:EPCCertificate .
 
 opda:Baspi5_LegalEstateShape
@@ -53,7 +52,7 @@ opda:Baspi5_LegalEstateShape
 opda:Baspi5_PropertyShape
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.1> ;
-    sh:property _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b3d84f4079cd7, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
+    sh:property _:b09d940f4830d, _:b1ca4257457df, _:b3b6f8aad6108, _:b3d84f4079cd7, _:b6cdfcb85b159, _:b789e8fa013f5, _:b9c7667cdd323, _:ba0edada6d73c, _:ba4d62e82b074, _:bb229464d8b10, _:bbdcc7a62bf9b, _:bd0edc3f293ca, _:bd793d8bc592e, _:bd798d7258a49, _:bdbff4bb1ff2b, _:bdd8f0ca42248, _:be6ec25e20193, _:bfbe3637dfbe6 ;
     sh:targetClass opda:Property .
 
 opda:Baspi5_SellerShape
@@ -162,10 +161,6 @@ _:b104fa169436a
     rdf:first "G" ;
     rdf:rest rdf:nil .
 
-_:b104fa169436a
-    rdf:first "G" ;
-    rdf:rest rdf:nil .
-
 _:b118d86466af3
     rdf:first "Commonhold" ;
     rdf:rest rdf:nil .
@@ -240,10 +235,6 @@ _:b32f208a1c58a
     sh:order "1"^^xsd:integer ;
     sh:path opda:role ;
     sh:severity sh:Violation .
-
-_:b3881ecfc1545
-    rdf:first "C" ;
-    rdf:rest _:bb10de4780a99 .
 
 _:b3881ecfc1545
     rdf:first "C" ;
@@ -328,10 +319,6 @@ _:b5d5b8b18b5f8
     rdf:first "E" ;
     rdf:rest _:b8a9d6aa1a88e .
 
-_:b5d5b8b18b5f8
-    rdf:first "E" ;
-    rdf:rest _:b8a9d6aa1a88e .
-
 _:b6169bd34f081
     rdf:first "Mortgagee in Possession" ;
     rdf:rest rdf:nil .
@@ -343,23 +330,6 @@ _:b6372b3df4d23
 _:b69057774ad9a
     rdf:first "B" ;
     rdf:rest _:b3881ecfc1545 .
-
-_:b69057774ad9a
-    rdf:first "B" ;
-    rdf:rest _:b3881ecfc1545 .
-
-_:b694ae7948591
-    dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
-    dash:editor dash:EnumSelectEditor ;
-    dash:viewer dash:LabelViewer ;
-    sh:group opda:Baspi5_Energy_Group ;
-    sh:in _:bb88f9127cd25 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5: EPC current energy rating (A-G) required."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:currentEnergyRating ;
-    sh:severity sh:Violation .
 
 _:b69d7c6d6bbe3
     rdf:first "Leasehold" ;
@@ -436,10 +406,6 @@ _:b871c52374b43
 _:b87d4790e02b7
     rdf:first "LPG" ;
     rdf:rest _:ba375643ca680 .
-
-_:b8a9d6aa1a88e
-    rdf:first "F" ;
-    rdf:rest _:b104fa169436a .
 
 _:b8a9d6aa1a88e
     rdf:first "F" ;
@@ -585,9 +551,15 @@ _:bb10de4780a99
     rdf:first "D" ;
     rdf:rest _:b5d5b8b18b5f8 .
 
-_:bb10de4780a99
-    rdf:first "D" ;
-    rdf:rest _:b5d5b8b18b5f8 .
+_:bb229464d8b10
+    dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
+    dash:editor dash:DetailsEditor ;
+    dash:viewer dash:URIViewer ;
+    sh:group opda:Baspi5_Energy_Group ;
+    sh:message "BASPI5 question A1.8.3.1: EPC certificate."@en ;
+    sh:order "9"^^xsd:integer ;
+    sh:path opda:hasEPCCertificate ;
+    sh:severity sh:Violation .
 
 _:bb66f0fd7be91
     rdf:first "Other" ;
@@ -612,10 +584,6 @@ _:bb66f0fd7be91
 _:bb6e3443d7e4b
     rdf:first _:bc011f8eb93b9 ;
     rdf:rest rdf:nil .
-
-_:bb88f9127cd25
-    rdf:first "A" ;
-    rdf:rest _:b69057774ad9a .
 
 _:bb88f9127cd25
     rdf:first "A" ;

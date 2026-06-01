@@ -97,12 +97,16 @@ def json_to_rdf(
         g.add((prop_uri, OPDA.builtForm, Literal(build["builtForm"])))
 
     # --- energyEfficiency.currentEnergyRating + EPCCertificate ------------
+    # opda:currentEnergyRating has rdfs:domain opda:Property, so it is asserted
+    # on the Property, never on the opda:EPCCertificate node — under rdfs domain
+    # entailment the latter would mis-type the certificate as a Property
+    # (handover 2026-06-01 §8 / ODR-0025 §R7 / ADR-0035 §"EPCCertificate emitter
+    # fix"). The EPCCertificate node stays a typed, linked artefact carrying no
+    # Property-domain predicate.
     energy = property_pack.get("energyEfficiency", {})
     if "currentEnergyRating" in energy:
         epc_uri = URIRef(ns["epc"])
         g.add((epc_uri, RDF.type, OPDA.EPCCertificate))
-        g.add((epc_uri, OPDA.currentEnergyRating,
-               Literal(energy["currentEnergyRating"])))
         g.add((prop_uri, OPDA.hasEPCCertificate, epc_uri))
         g.add((prop_uri, OPDA.currentEnergyRating,
                Literal(energy["currentEnergyRating"])))
