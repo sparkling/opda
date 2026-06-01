@@ -54,14 +54,11 @@ CLASSES = (
     OPDA.AssuranceLevel,
     OPDA.AttachedDocument,
     OPDA.Claim,
-    OPDA.Document,
     OPDA.DocumentEvidence,
-    OPDA.ElectronicRecord,
     OPDA.ElectronicRecordEvidence,
     OPDA.Evidence,
     OPDA.TrustFramework,
     OPDA.VerificationActivity,
-    OPDA.Vouch,
     OPDA.VouchEvidence,
 )
 
@@ -70,8 +67,16 @@ OBJECT_PROPERTIES = (
     OPDA.supportedBy,
 )
 
+# Council session-035: the OIDC4IDA evidence-kind facet is the existing
+# opda:EvidenceMethodScheme; each evidence subclass binds to its scheme concept
+# by skos:exactMatch (ODR-0011 §8a Substance-Kind-label — NEVER owl:sameAs).
+_EVIDENCE_KIND_DOCUMENT = OPDA["evidenceMethod/Document"]
+_EVIDENCE_KIND_RECORD = OPDA["evidenceMethod/Electronic-Record"]
+_EVIDENCE_KIND_VOUCH = OPDA["evidenceMethod/Vouch"]
+
 DATATYPE_PROPERTIES = (
     OPDA.digest,
+    OPDA.evidenceType,
 )
 
 
@@ -115,18 +120,35 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.Claim, DCTERMS.source, _ODR_0009_Q1))
 
-    # --- opda:Evidence — subclass of prov:Entity (ODR-0009 §Q1) --------
+    # --- opda:Evidence — RoleMixin over prov:Entity (ODR-0009 §Q1;
+    #     recast per Council session-035) --------------------------------
+    # session-035: evidence-hood is anti-rigid (a document is evidence only
+    # qua a VerificationActivity using it) → opda:Evidence is a cross-categorial
+    # RoleMixin founded by the verification (the ODR-0006 Seller/Buyer pattern),
+    # additively typed alongside owl:Class (punning, as Seller/Buyer). The three
+    # subtypes stay as rigid structure-bearers (they partition by provenance
+    # ORIGIN). The evidence-KIND discriminator is the SKOS facet opda:evidenceType
+    # → opda:EvidenceMethodScheme, with per-subtype validation emitted by
+    # ADR-0012 (opda:EvidenceFacetShape). Short names retired (were
+    # owl:equivalentClass aliases) → skos:altLabel on each canonical class.
     g.add((OPDA.Evidence, RDF.type, OWL.Class))
+    g.add((OPDA.Evidence, RDF.type, OPDA.RoleMixin))
     g.add((OPDA.Evidence, RDFS.subClassOf, PROV.Entity))
     g.add((OPDA.Evidence, RDFS.label, Literal("Evidence", lang="en")))
     g.add((OPDA.Evidence, RDFS.comment, Literal(
-        "Generic evidence supertype. PROV-O Entity. Three named subtypes "
-        "per S009 Rule 5 (do NOT collapse): DocumentEvidence (paper or "
-        "scanned artefacts); ElectronicRecordEvidence (API-retrieved "
-        "structured records); VouchEvidence (formal attestations by "
-        "regulated professionals). Each subtype carries type-specific "
-        "facets; SHACL sh:xone dispatches on subtype at validation time "
-        "(ADR-0012 emits the shape).",
+        "Evidence supporting a Claim. UFO RoleMixin (anti-rigid, "
+        "cross-categorial — a bearer is evidence only qua a "
+        "VerificationActivity using it; ODR-0006 Seller/Buyer pattern); "
+        "PROV-O Entity. Three named subtypes per S009 Rule 5 (do NOT "
+        "collapse): DocumentEvidence (paper/scanned artefacts); "
+        "ElectronicRecordEvidence (API-retrieved structured records); "
+        "VouchEvidence (an Agent-founded attestation, a Relator — not a "
+        "document). The acquisition method is a coded facet "
+        "(opda:evidenceType → opda:EvidenceMethodScheme, OIDC4IDA); per-kind "
+        "obligations are validated VALUE-KEYED by opda:EvidenceFacetShape "
+        "(sh:targetSubjectsOf opda:evidenceType + sh:or material implication; "
+        "ADR-0012; Council session-036), with type↔value coherence enforced by "
+        "the opda:*CoherenceShape family.",
         lang="en",
     )))
     g.add((OPDA.Evidence, SKOS.scopeNote, Literal(
@@ -195,34 +217,20 @@ def build_graph() -> Graph:
         "Substantial-tier assurance for court-issued instruments. A subclass "
         "of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — "
         "evidence is a role a document plays, not every document's Kind. "
-        "Equivalent class: opda:Document (short-name used by exemplars).",
+        "Evidence kind 'Document' is carried as the opda:evidenceType facet "
+        "(skos:exactMatch the OIDC4IDA scheme concept); the short name "
+        "'Document' is a skos:altLabel, not a class (Council session-035 "
+        "retired the owl:equivalentClass alias).",
         lang="en",
     )))
-    g.add((OPDA.DocumentEvidence, OWL.equivalentClass, OPDA.Document))
+    g.add((OPDA.DocumentEvidence, SKOS.altLabel, Literal("Document", lang="en")))
+    g.add((OPDA.DocumentEvidence, SKOS.exactMatch, _EVIDENCE_KIND_DOCUMENT))
     g.add((OPDA.DocumentEvidence, SKOS.scopeNote, Literal(
         "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS "
         "document-evidence category (S009 Rule 5).",
         lang="en",
     )))
     g.add((OPDA.DocumentEvidence, DCTERMS.source, _ODR_0009_Q1))
-
-    g.add((OPDA.Document, RDF.type, OWL.Class))
-    g.add((OPDA.Document, RDFS.label, Literal("Document", lang="en")))
-    g.add((OPDA.Document, RDFS.comment, Literal(
-        "Alias for opda:DocumentEvidence retained for exemplar "
-        "compatibility (the diagnostic exemplar set uses the short name). "
-        "owl:equivalentClass binding ensures one OWL identity; downstream "
-        "shapes + annotations target the long name (DocumentEvidence) "
-        "for clarity.",
-        lang="en",
-    )))
-    g.add((OPDA.Document, SKOS.scopeNote, Literal(
-        "Short-name alias for opda:DocumentEvidence per ADR-0011 "
-        "within-engineering option (b) — owl:equivalentClass binding "
-        "preserves OWL identity without renaming exemplars.",
-        lang="en",
-    )))
-    g.add((OPDA.Document, DCTERMS.source, _ODR_0009_Q1))
 
     # --- opda:ElectronicRecordEvidence + opda:ElectronicRecord ----------
     g.add((OPDA.ElectronicRecordEvidence, RDF.type, OWL.Class))
@@ -233,12 +241,15 @@ def build_graph() -> Graph:
         "Electronic-record evidence subtype — API-retrieved structured "
         "records from authoritative source (e.g. HMRC tax-record API). "
         "eIDAS Substantial-tier assurance via real-time API verification. "
-        "Equivalent class: opda:ElectronicRecord (short-name used by "
-        "exemplars).",
+        "Evidence kind 'Electronic-Record' is carried as the opda:evidenceType "
+        "facet (skos:exactMatch the OIDC4IDA scheme concept); the short name "
+        "'ElectronicRecord' is a skos:altLabel, not a class (Council "
+        "session-035 retired the owl:equivalentClass alias).",
         lang="en",
     )))
-    g.add((OPDA.ElectronicRecordEvidence, OWL.equivalentClass,
-           OPDA.ElectronicRecord))
+    g.add((OPDA.ElectronicRecordEvidence, SKOS.altLabel,
+           Literal("ElectronicRecord", lang="en")))
+    g.add((OPDA.ElectronicRecordEvidence, SKOS.exactMatch, _EVIDENCE_KIND_RECORD))
     g.add((OPDA.ElectronicRecordEvidence, SKOS.scopeNote, Literal(
         "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA "
         "electronic-record evidence category (S009 Rule 5).",
@@ -246,24 +257,14 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.ElectronicRecordEvidence, DCTERMS.source, _ODR_0009_Q1))
 
-    g.add((OPDA.ElectronicRecord, RDF.type, OWL.Class))
-    g.add((OPDA.ElectronicRecord, RDFS.label,
-           Literal("Electronic Record", lang="en")))
-    g.add((OPDA.ElectronicRecord, RDFS.comment, Literal(
-        "Alias for opda:ElectronicRecordEvidence retained for exemplar "
-        "compatibility. owl:equivalentClass binding ensures one OWL "
-        "identity; downstream shapes + annotations target the long name.",
-        lang="en",
-    )))
-    g.add((OPDA.ElectronicRecord, SKOS.scopeNote, Literal(
-        "Short-name alias for opda:ElectronicRecordEvidence per ADR-0011 "
-        "within-engineering option (b).",
-        lang="en",
-    )))
-    g.add((OPDA.ElectronicRecord, DCTERMS.source, _ODR_0009_Q1))
-
-    # --- opda:VouchEvidence + opda:Vouch --------------------------------
+    # --- opda:VouchEvidence — an Agent-founded attestation Relator ------
+    # Council session-035: categorially ≠ the document/record evidences — a
+    # vouch is prov:wasAttributedTo an Agent (an attestation binding Agent ↔
+    # Claim = a Relator, two-relata dependence), NOT an Information Object.
+    # Additively typed opda:Relator (punning, as Transaction/Proprietorship).
+    # This is WHY S009 R5 "do NOT collapse the three" is correct.
     g.add((OPDA.VouchEvidence, RDF.type, OWL.Class))
+    g.add((OPDA.VouchEvidence, RDF.type, OPDA.Relator))
     g.add((OPDA.VouchEvidence, RDFS.subClassOf, OPDA.Evidence))
     g.add((OPDA.VouchEvidence, RDFS.label,
            Literal("Vouch Evidence", lang="en")))
@@ -272,33 +273,24 @@ def build_graph() -> Graph:
         "professional (e.g. SRA-licensed solicitor). Qualitatively "
         "weaker than document or electronic-record evidence; eIDAS Low "
         "assurance regardless of voucher quality (Q3 SKOS scheme). The "
-        "vouch is prov:wasAttributedTo an Agent — an attestation, not a "
-        "document derivation. Equivalent class: opda:Vouch.",
+        "vouch is prov:wasAttributedTo an Agent — an attestation (a UFO "
+        "Relator binding Agent ↔ Claim), NOT a document derivation; this is "
+        "why the three evidence subtypes must not be collapsed (S009 R5). "
+        "Evidence kind 'Vouch' is carried as the opda:evidenceType facet "
+        "(skos:exactMatch the OIDC4IDA scheme concept); the short name "
+        "'Vouch' is a skos:altLabel, not a class (session-035 retired the "
+        "owl:equivalentClass alias).",
         lang="en",
     )))
-    g.add((OPDA.VouchEvidence, OWL.equivalentClass, OPDA.Vouch))
+    g.add((OPDA.VouchEvidence, SKOS.altLabel, Literal("Vouch", lang="en")))
+    g.add((OPDA.VouchEvidence, SKOS.exactMatch, _EVIDENCE_KIND_VOUCH))
     g.add((OPDA.VouchEvidence, SKOS.scopeNote, Literal(
-        "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS "
-        "vouch-evidence category (S009 Rule 5). Vouch is "
-        "prov:wasAttributedTo an Agent — an attestation, not a document.",
+        "PROV-O: Entity (W3C PROV-O REC §3.2). UFO: Relator (Guizzardi 2005 "
+        "Ch. 4 §4.5 — agent-founded attestation). OIDC4IDA / eIDAS "
+        "vouch-evidence category (S009 Rule 5).",
         lang="en",
     )))
     g.add((OPDA.VouchEvidence, DCTERMS.source, _ODR_0009_Q1))
-
-    g.add((OPDA.Vouch, RDF.type, OWL.Class))
-    g.add((OPDA.Vouch, RDFS.label, Literal("Vouch", lang="en")))
-    g.add((OPDA.Vouch, RDFS.comment, Literal(
-        "Alias for opda:VouchEvidence retained for exemplar "
-        "compatibility. owl:equivalentClass binding ensures one OWL "
-        "identity.",
-        lang="en",
-    )))
-    g.add((OPDA.Vouch, SKOS.scopeNote, Literal(
-        "Short-name alias for opda:VouchEvidence per ADR-0011 "
-        "within-engineering option (b).",
-        lang="en",
-    )))
-    g.add((OPDA.Vouch, DCTERMS.source, _ODR_0009_Q1))
 
     # --- opda:VerificationActivity — subclass of prov:Activity ----------
     g.add((OPDA.VerificationActivity, RDF.type, OWL.Class))
@@ -404,5 +396,31 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.attestedBy, DCTERMS.source, _ODR_0009_Q1))
+
+    # --- ObjectProperty: opda:evidenceType (Council session-035) --------
+    # The governed evidence-KIND facet: replaces the retired short-name
+    # owl:equivalentClass aliases. Range is a skos:Concept from
+    # opda:EvidenceMethodScheme (OIDC4IDA evidence.type). Validated by
+    # opda:EvidenceFacetShape (sh:in the scheme members + per-kind
+    # sh:qualifiedValueShape dispatch; ADR-0012). rdfs:range is documentary
+    # under ODR-0026 §R2 (model-but-don't-evaluate); the real constraint is SHACL.
+    g.add((OPDA.evidenceType, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.evidenceType, RDFS.domain, OPDA.Evidence))
+    g.add((OPDA.evidenceType, RDFS.range, XSD.string))
+    g.add((OPDA.evidenceType, RDFS.label, Literal("evidence type", lang="en")))
+    g.add((OPDA.evidenceType, RDFS.comment, Literal(
+        "The OIDC4IDA acquisition kind of a piece of evidence — the "
+        "opda:EvidenceMethodScheme member notation (Document / "
+        "Electronic-Record / Vouch). The governed, extensible discriminator "
+        "that replaced the retired short-name owl:equivalentClass aliases "
+        "(Council session-035), validated by opda:EvidenceTypeValueShape "
+        "(sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType "
+        "value-space idiom). Each evidence subclass skos:exactMatch-es its "
+        "scheme concept (ODR-0011 §8a), so rdf:type dispatch and coded-value "
+        "dispatch stay interoperable. rdfs:domain is documentary "
+        "(ODR-0026 §R2); the real constraint is SHACL.",
+        lang="en",
+    )))
+    g.add((OPDA.evidenceType, DCTERMS.source, _ODR_0009_Q1))
 
     return g

@@ -978,6 +978,79 @@ def build_claim_shapes() -> Graph:
         source_iri=_ODR_0009_Q1,
     )
 
+    # --- Council session-035: evidence-KIND facet value-space ----------
+    # opda:evidenceType (the OIDC4IDA kind discriminator that replaced the
+    # retired short-name owl:equivalentClass aliases) wired to
+    # opda:EvidenceMethodScheme via the sh:targetSubjectsOf idiom — the
+    # opda:ownerType precedent (ODR-0024 R6); entailment-free, holds standalone.
+    _add_enum_value_shape(
+        g, OPDA.EvidenceTypeValueShape, OPDA.evidenceType,
+        "EvidenceMethodScheme", _ODR_0009_Q1,
+    )
+
+    # --- Council session-036: per-kind obligations, VALUE-KEYED ----------
+    # opda:EvidenceFacetShape (the name ODR-0009/ADR-0012 promised) keys the
+    # per-kind obligation on the opda:evidenceType VALUE, NOT sh:targetClass —
+    # entailment-free, and it fires on a vouch recorded by value where a
+    # subclass-targeted shape would silently pass (Knublauch + DA Guizzardi;
+    # session-036 §Q3: "classification for per-kind obligations; class-
+    # consultation only for inter-layer coherence"). Vouch ⇒ opda:attestedBy a
+    # prov:Agent, as the material implication ¬(type=Vouch) ∨ attestedBy≥1
+    # (SHACL Core sh:or/sh:not, ODR-0013 §discriminated-oneOf).
+    _nv = BNode(); _nv_p = BNode()
+    g.add((_nv, SH.property, _nv_p))
+    g.add((_nv_p, SH.path, OPDA.evidenceType))
+    g.add((_nv_p, SH.hasValue, Literal("Vouch")))
+    _not_vouch = BNode()
+    g.add((_not_vouch, SH["not"], _nv))
+    _has_att = BNode(); _att_p = BNode()
+    g.add((_has_att, SH.property, _att_p))
+    g.add((_att_p, SH.path, OPDA.attestedBy))
+    g.add((_att_p, SH.minCount, Literal(1)))
+    g.add((_att_p, SH["class"], PROV.Agent))
+    _or_list = BNode()
+    Collection(g, _or_list, [_not_vouch, _has_att])
+    g.add((OPDA.EvidenceFacetShape, RDF.type, SH.NodeShape))
+    g.add((OPDA.EvidenceFacetShape, SH.targetSubjectsOf, OPDA.evidenceType))
+    g.add((OPDA.EvidenceFacetShape, SH["or"], _or_list))
+    g.add((OPDA.EvidenceFacetShape, SH.severity, SH.Violation))
+    g.add((OPDA.EvidenceFacetShape, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.EvidenceFacetShape, SH.message, Literal(
+        "Evidence with opda:evidenceType 'Vouch' MUST carry opda:attestedBy a "
+        "prov:Agent (a vouch is an Agent-founded attestation). Value-keyed, "
+        "entailment-free (Council session-036).",
+        lang="en",
+    )))
+
+    # --- Council session-036: the one principled class-keyed shape -------
+    # opda:EvidenceClassCoherenceShape — value-keyed enforcement is rdf:type-
+    # blind, so this is the ONE place class-targeting is correct: it enforces in
+    # SHACL the type↔value agreement that skos:exactMatch only documents
+    # (ODR-0026 §R2 leaves equivalentClass/exactMatch unevaluated). Each evidence
+    # subclass MUST carry its matching opda:evidenceType code (Guizzardi residue,
+    # accepted by Knublauch; session-036 §Q3 item 4).
+    for _cls, _code in (
+        (OPDA.DocumentEvidence, "Document"),
+        (OPDA.ElectronicRecordEvidence, "Electronic-Record"),
+        (OPDA.VouchEvidence, "Vouch"),
+    ):
+        _shape_iri = OPDA[f"{str(_cls).rsplit('#', 1)[-1]}CoherenceShape"]
+        _coh_p = BNode()
+        g.add((_shape_iri, RDF.type, SH.NodeShape))
+        g.add((_shape_iri, SH.targetClass, _cls))
+        g.add((_shape_iri, SH.property, _coh_p))
+        g.add((_shape_iri, DCTERMS.source, _ODR_0009_Q1))
+        g.add((_coh_p, SH.path, OPDA.evidenceType))
+        g.add((_coh_p, SH.hasValue, Literal(_code)))
+        g.add((_coh_p, SH.severity, SH.Violation))
+        g.add((_coh_p, SH.message, Literal(
+            f"An opda:{str(_cls).rsplit('#', 1)[-1]} MUST carry "
+            f"opda:evidenceType '{_code}' — the class and the coded value must "
+            "agree (Council session-036 class↔value coherence; the skos:exactMatch "
+            "bridge, enforced in SHACL).",
+            lang="en",
+        )))
+
     # --- Cat 2: Unprovenanced Claim shape (per ODR-0013 §Q1 + ODR-0009) -
     # ODR-0013 §Severity tiering: an unprovenanced Claim (no
     # prov:wasDerivedFrom and no explicit unverified marker) is a

@@ -199,6 +199,29 @@ flowchart LR
     O9 -->|"implements"| O18
 ```
 
+### Amendment — Council session-035 (evidence-role recast; 2026-06-01)
+
+Council [session-035](council/session-035-evidence-alias-retirement-and-faceted-typing.md) (8–0–0) recast the evidence model. The three subtypes are **kept** (they partition by provenance *origin* — rigid sub-kinds; "do NOT collapse" upheld), but:
+
+1. **`opda:Evidence` is recast as an anti-rigid UFO RoleMixin** (additively typed `a opda:RoleMixin` alongside `owl:Class`, the ODR-0006 Seller/Buyer punning pattern), founded by the verification — a bearer *is* evidence only qua a `VerificationActivity` using it. The fuller relational founding (the latent `opda:Verification` Relator via `prov:qualifiedAttribution`) is the target model; the additive RoleMixin typing is what is emitted now.
+2. **`opda:VouchEvidence` is re-sorted to an Agent-founded attestation Relator** (additively typed `a opda:Relator`): a vouch is `prov:wasAttributedTo` an Agent, binding Agent ↔ Claim (two-relata dependence) — categorially distinct from the document/record Information-Object evidences. This is *why* "do NOT collapse the three" (above) is ontologically correct, not merely cautious.
+3. **The evidence-kind discriminator is the governed `opda:evidenceType` facet** — a datatype property ranging over `opda:EvidenceMethodScheme` (repurposed from "method" to the OIDC4IDA `evidence.type` *kind* axis, `ufoCategory "Substance Kind label"`), with each `…Evidence` subclass `skos:exactMatch`-bound to its scheme concept (ODR-0011 §8a — NEVER `owl:sameAs`). This replaced the retired `owl:equivalentClass` short-name aliases (ADR-0011 amendment).
+4. **The §"SHACL over the PROV structure" `sh:xone` dispatch — never emitted — is now realised** (ADR-0012 amendment) as `opda:EvidenceTypeValueShape` (value-space gate, SHACL-Core `sh:in` via `sh:targetSubjectsOf`) + `opda:VouchEvidenceShape` (per-subtype obligation: `opda:attestedBy` a `prov:Agent`). The earlier prose promising an emitted `sh:xone` was an overclaim, now corrected.
+
+**Held-as-live dissent (DA Davis).** The `opda:evidenceType` facet is a governed kind-*label* (`skos:exactMatch`-bound to the retained subclasses), NOT a dispatch-replacing facet: SHACL subtype dispatch rides the retained subclasses / disjoint discriminating properties, never `sh:xone`-over-`evidenceType` (which would re-create the conditional soup §R5 forbids). **Re-open trigger:** a named consumer query needing all evidence through one uniform property set, OR any proposal to collapse enforcement into `sh:xone`-over-`evidenceType`.
+
+**Deferred (gated):** completing the bearer-Kind symmetry for ElectronicRecord (a neutral `opda:ElectronicRecord` Kind mirroring `opda:AttachedDocument`/ODR-0024 §R7) is gated on a consumer query.
+
+### Amendment — Council session-036 (classification-over-inheritance cascade; 2026-06-01)
+
+Council [session-036](council/session-036-classification-over-inheritance.md) (8–0–0) re-examined the evidence model under the directing-authority rule *"prefer classification over inheritance where you can"* and **AFFIRMED the session-035 model** (no collapse), placing each subtype precisely in the ODR-0011 §8a load-bearing cascade and **re-keying enforcement to the value**:
+
+- **Graduated §R5 audit:** `VouchEvidence` = cascade cell 3 (+R∧+I∧+D **Relator** — `attestedBy`; uncontested); `DocumentEvidence` = cell 4 (+R∧+I∧−D — the `⊑ opda:AttachedDocument` bearer-IC, ODR-0024 §R7); `ElectronicRecordEvidence` = cell 4 **realisation-incomplete** (+I *latent* — source-register + retrieval-activity; Δ absent today, retained documentary per the `opda:Building` ODR-0024 §R10 precedent — a latent IC is **not** inertness, so it is **not** collapsed). **Trigger = EMIT, never delete:** the unbuilt §R5 `record.source.name` obligation is a value-conditional required field (value-keyed `sh:qualifiedValueShape`/material-implication on `opda:evidenceType`, entailment-free) — it materialises ER's Δ and rides the facet; a *distinct-identity* record-source bearer (ODR-0008 §Q4a(a)) is the separate, narrower trigger for the bearer Kind. "A required field is a facet-branch; a distinct identity is a class."
+- **Enforcement re-keyed to the value (Knublauch + DA Guizzardi):** the §"SHACL over the PROV structure" obligation now ships as **`opda:EvidenceFacetShape`** (`sh:targetSubjectsOf opda:evidenceType` + a value-guarded `sh:or(¬P ∨ Q)` material implication: `evidenceType "Vouch"` ⇒ `opda:attestedBy` a `prov:Agent`; SHACL-Core, entailment-free) — replacing the session-035 `sh:targetClass opda:VouchEvidence` shape, which was entailment-relative and silently passed a value-recorded vouch. The **one** principled class-keyed shape is `opda:*CoherenceShape` (class ⇒ matching `opda:evidenceType` code) — enforcing in SHACL what `skos:exactMatch` only documents. "Classification for per-kind obligations; class-consultation only for inter-layer coherence."
+- **Scheme-IRI rename CLOSED as no-op (withhold permanently):** the deferred `EvidenceMethodScheme` → `EvidenceKindScheme` rename is **withdrawn, not deferred** — an IRI is opaque denotation, not a label (Cool-URIs; DCMI), and renaming a dereferenceable scheme-IRI for cosmetics is the ODR-0024 §R4 namespace-landmine churn; the `prefLabel`/`scopeNote` already read "Evidence Kind." A `skos:scopeNote` records that the historical "Method" token in the IRI is by design.
+
+No collapse; the subclasses stand as structure-bearers. Codified generally in ODR-0011 §8a (the cascade).
+
 ## Alternatives
 
 - **PROV-O only** — flattens evidential weight into a causal trace and requires inventing `prov:` extensions for signatures and assurance tiers that PROV-DM deliberately does not model.

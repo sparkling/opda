@@ -45,42 +45,30 @@ opda:Claim
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information particular (Guizzardi 2005 Ch. 4 §4.7). PROV-O: Entity (W3C PROV-O REC §3.2). The verified claim (claim plus verification bundle) is a derived entity per S009 Rule 1."@en .
 
-opda:Document
-    rdf:type owl:Class ;
-    rdfs:label "Document"@en ;
-    rdfs:comment "Alias for opda:DocumentEvidence retained for exemplar compatibility (the diagnostic exemplar set uses the short name). owl:equivalentClass binding ensures one OWL identity; downstream shapes + annotations target the long name (DocumentEvidence) for clarity."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    skos:scopeNote "Short-name alias for opda:DocumentEvidence per ADR-0011 within-engineering option (b) — owl:equivalentClass binding preserves OWL identity without renaming exemplars."@en .
-
 opda:DocumentEvidence
     rdf:type owl:Class ;
     rdfs:label "Document Evidence"@en ;
-    rdfs:comment "Document-evidence subtype — paper or scanned artefacts issued by authoritative source (e.g. grant of probate by HMCTS). eIDAS Substantial-tier assurance for court-issued instruments. A subclass of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — evidence is a role a document plays, not every document's Kind. Equivalent class: opda:Document (short-name used by exemplars)."@en ;
+    rdfs:comment "Document-evidence subtype — paper or scanned artefacts issued by authoritative source (e.g. grant of probate by HMCTS). eIDAS Substantial-tier assurance for court-issued instruments. A subclass of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — evidence is a role a document plays, not every document's Kind. Evidence kind 'Document' is carried as the opda:evidenceType facet (skos:exactMatch the OIDC4IDA scheme concept); the short name 'Document' is a skos:altLabel, not a class (Council session-035 retired the owl:equivalentClass alias)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
     rdfs:subClassOf opda:AttachedDocument, opda:Evidence ;
-    owl:equivalentClass opda:Document ;
+    skos:altLabel "Document"@en ;
+    skos:exactMatch <https://w3id.org/opda/#evidenceMethod/Document> ;
     skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS document-evidence category (S009 Rule 5)."@en .
-
-opda:ElectronicRecord
-    rdf:type owl:Class ;
-    rdfs:label "Electronic Record"@en ;
-    rdfs:comment "Alias for opda:ElectronicRecordEvidence retained for exemplar compatibility. owl:equivalentClass binding ensures one OWL identity; downstream shapes + annotations target the long name."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    skos:scopeNote "Short-name alias for opda:ElectronicRecordEvidence per ADR-0011 within-engineering option (b)."@en .
 
 opda:ElectronicRecordEvidence
     rdf:type owl:Class ;
     rdfs:label "Electronic Record Evidence"@en ;
-    rdfs:comment "Electronic-record evidence subtype — API-retrieved structured records from authoritative source (e.g. HMRC tax-record API). eIDAS Substantial-tier assurance via real-time API verification. Equivalent class: opda:ElectronicRecord (short-name used by exemplars)."@en ;
+    rdfs:comment "Electronic-record evidence subtype — API-retrieved structured records from authoritative source (e.g. HMRC tax-record API). eIDAS Substantial-tier assurance via real-time API verification. Evidence kind 'Electronic-Record' is carried as the opda:evidenceType facet (skos:exactMatch the OIDC4IDA scheme concept); the short name 'ElectronicRecord' is a skos:altLabel, not a class (Council session-035 retired the owl:equivalentClass alias)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
     rdfs:subClassOf opda:Evidence ;
-    owl:equivalentClass opda:ElectronicRecord ;
+    skos:altLabel "ElectronicRecord"@en ;
+    skos:exactMatch <https://w3id.org/opda/#evidenceMethod/Electronic-Record> ;
     skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA electronic-record evidence category (S009 Rule 5)."@en .
 
 opda:Evidence
-    rdf:type owl:Class ;
+    rdf:type owl:Class, opda:RoleMixin ;
     rdfs:label "Evidence"@en ;
-    rdfs:comment "Generic evidence supertype. PROV-O Entity. Three named subtypes per S009 Rule 5 (do NOT collapse): DocumentEvidence (paper or scanned artefacts); ElectronicRecordEvidence (API-retrieved structured records); VouchEvidence (formal attestations by regulated professionals). Each subtype carries type-specific facets; SHACL sh:xone dispatches on subtype at validation time (ADR-0012 emits the shape)."@en ;
+    rdfs:comment "Evidence supporting a Claim. UFO RoleMixin (anti-rigid, cross-categorial — a bearer is evidence only qua a VerificationActivity using it; ODR-0006 Seller/Buyer pattern); PROV-O Entity. Three named subtypes per S009 Rule 5 (do NOT collapse): DocumentEvidence (paper/scanned artefacts); ElectronicRecordEvidence (API-retrieved structured records); VouchEvidence (an Agent-founded attestation, a Relator — not a document). The acquisition method is a coded facet (opda:evidenceType → opda:EvidenceMethodScheme, OIDC4IDA); per-kind obligations are validated VALUE-KEYED by opda:EvidenceFacetShape (sh:targetSubjectsOf opda:evidenceType + sh:or material implication; ADR-0012; Council session-036), with type↔value coherence enforced by the opda:*CoherenceShape family."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). The three subtypes correspond to OIDC4IDA / eIDAS evidence categories (S009 Rule 5)."@en .
@@ -100,27 +88,29 @@ opda:VerificationActivity
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "PROV-O: Activity (W3C PROV-O REC §3.2). UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7)."@en .
 
-opda:Vouch
-    rdf:type owl:Class ;
-    rdfs:label "Vouch"@en ;
-    rdfs:comment "Alias for opda:VouchEvidence retained for exemplar compatibility. owl:equivalentClass binding ensures one OWL identity."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    skos:scopeNote "Short-name alias for opda:VouchEvidence per ADR-0011 within-engineering option (b)."@en .
-
 opda:VouchEvidence
-    rdf:type owl:Class ;
+    rdf:type owl:Class, opda:Relator ;
     rdfs:label "Vouch Evidence"@en ;
-    rdfs:comment "Vouch evidence subtype — formal attestation by a regulated professional (e.g. SRA-licensed solicitor). Qualitatively weaker than document or electronic-record evidence; eIDAS Low assurance regardless of voucher quality (Q3 SKOS scheme). The vouch is prov:wasAttributedTo an Agent — an attestation, not a document derivation. Equivalent class: opda:Vouch."@en ;
+    rdfs:comment "Vouch evidence subtype — formal attestation by a regulated professional (e.g. SRA-licensed solicitor). Qualitatively weaker than document or electronic-record evidence; eIDAS Low assurance regardless of voucher quality (Q3 SKOS scheme). The vouch is prov:wasAttributedTo an Agent — an attestation (a UFO Relator binding Agent ↔ Claim), NOT a document derivation; this is why the three evidence subtypes must not be collapsed (S009 R5). Evidence kind 'Vouch' is carried as the opda:evidenceType facet (skos:exactMatch the OIDC4IDA scheme concept); the short name 'Vouch' is a skos:altLabel, not a class (session-035 retired the owl:equivalentClass alias)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
     rdfs:subClassOf opda:Evidence ;
-    owl:equivalentClass opda:Vouch ;
-    skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS vouch-evidence category (S009 Rule 5). Vouch is prov:wasAttributedTo an Agent — an attestation, not a document."@en .
+    skos:altLabel "Vouch"@en ;
+    skos:exactMatch <https://w3id.org/opda/#evidenceMethod/Vouch> ;
+    skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). UFO: Relator (Guizzardi 2005 Ch. 4 §4.5 — agent-founded attestation). OIDC4IDA / eIDAS vouch-evidence category (S009 Rule 5)."@en .
 
 opda:digest
     rdf:type owl:DatatypeProperty ;
     rdfs:label "digest"@en ;
     rdfs:comment "Cryptographic digest of a Claim or Evidence (algorithm + value, e.g. 'sha256:e3b0...'). Local term per S009 5-residue (PROV-O has no notion of signature or hash). Algorithm validation by opda:DigestAlgorithmScheme SKOS scheme (ADR-0012 emits the constraint)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q4> ;
+    rdfs:range xsd:string .
+
+opda:evidenceType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "evidence type"@en ;
+    rdfs:comment "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed, extensible discriminator that replaced the retired short-name owl:equivalentClass aliases (Council session-035), validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). Each evidence subclass skos:exactMatch-es its scheme concept (ODR-0011 §8a), so rdf:type dispatch and coded-value dispatch stay interoperable. rdfs:domain is documentary (ODR-0026 §R2); the real constraint is SHACL."@en ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    rdfs:domain opda:Evidence ;
     rdfs:range xsd:string .
 
 opda:attestedBy

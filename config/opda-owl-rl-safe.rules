@@ -1,0 +1,78 @@
+# =============================================================================
+# OPDA Custom OWL 2 RL "Safe Group" Entailment Ruleset
+# =============================================================================
+# Source of truth: ODR-0025 (Entailment Regime) §R1/§R2 + ODR-0026 (wholesale
+# adoption + model-but-don't-evaluate). Replicated verbatim from
+# ~/source/hm/semantic-modelling/config/hm-owl-rl-safe.rules (hm ODR-0036);
+# the rule bodies cite only rdf:/rdfs:/owl: vocabulary, so they transfer
+# unchanged — only this header, the entailment-graph IRI, and the consistency-
+# gate namespace differ (ADR-0035 §Rules).
+#
+# Safe Group: 7 constructs with inferencing ENABLED.
+# Excluded (ODR-0025 §R2): rdfs:domain, rdfs:range, owl:FunctionalProperty,
+# owl:InverseFunctionalProperty, owl:equivalentClass, owl:equivalentProperty —
+# AUTHORED as documentation/identity (ODR-0026 §R2 model-but-don't-evaluate)
+# but NEVER evaluated by the closure. NEVER load a default RDFS profile — it
+# includes domain/range inference, which mis-types multi-domain properties and
+# (per ODR-0025 §R7) would re-introduce the EPCCertificate false positive.
+#
+# opda materialises these via SPARQL INSERT at Jena load time
+# (scripts/fuseki-load.mjs::materializeEntailments) into the derived graph
+# <https://w3id.org/opda/graph/inferred/entailment>; this file is the canonical
+# contract of WHICH rules are safe (ADR-0035 Option A). It also drives the
+# documented fallback (ADR-0035 Option B) — a live Jena assembler:
+#   ja:reasoner [ ja:reasonerURL <urn:x-hp-direct-predicate> ;
+#                 ja:rules <file:config/opda-owl-rl-safe.rules> ] .
+# =============================================================================
+
+# --- RDFS subclass entailment (ENABLED) ---
+# ?instance rdf:type ?Superclass  when  ?Subclass rdfs:subClassOf ?Superclass
+[rdfs9: (?v rdf:type ?x), (?x rdfs:subClassOf ?y) -> (?v rdf:type ?y)]
+
+# --- RDFS subclass transitivity (ENABLED) ---
+[rdfs11: (?x rdfs:subClassOf ?y), (?y rdfs:subClassOf ?z) -> (?x rdfs:subClassOf ?z)]
+
+# --- RDFS subproperty entailment (ENABLED) ---
+[rdfs7: (?p rdfs:subPropertyOf ?q), (?x ?p ?y) -> (?x ?q ?y)]
+
+# --- RDFS subproperty transitivity (ENABLED) ---
+[rdfs5: (?p rdfs:subPropertyOf ?q), (?q rdfs:subPropertyOf ?r) -> (?p rdfs:subPropertyOf ?r)]
+
+# --- OWL inverse property (ENABLED, both directions) ---
+[owl-inv:  (?p owl:inverseOf ?q), (?x ?p ?y) -> (?y ?q ?x)]
+[owl-inv2: (?p owl:inverseOf ?q), (?x ?q ?y) -> (?y ?p ?x)]
+
+# --- OWL transitive property (ENABLED) ---
+[owl-tra: (?p rdf:type owl:TransitiveProperty), (?x ?p ?y), (?y ?p ?z) -> (?x ?p ?z)]
+
+# --- OWL symmetric property (ENABLED) ---
+[owl-sym: (?p rdf:type owl:SymmetricProperty), (?x ?p ?y) -> (?y ?p ?x)]
+
+# --- OWL disjointness checking (ENABLED — validation, not entailment) ---
+# Jena emits a validation violation rather than a domain triple; the SPARQL-
+# INSERT implementation (ADR-0035) runs this as a post-load COUNT gate, not an
+# INSERT (the "disjointness as validation, not materialisation" split).
+[owl-disj: (?C1 owl:disjointWith ?C2), (?X rdf:type ?C1), (?X rdf:type ?C2)
+           -> (?X rb:violation error('disjoint', 'Instance has disjoint types', ?C1, ?C2))]
+
+# =============================================================================
+# EXCLUDED FROM RULESET (documented for auditability — ODR-0025 §R2)
+# =============================================================================
+# RDFS domain/range (DISABLED — multi-domain explosion; ODR-0025 §R2, §R7)
+# [rdfs2: (?p rdfs:domain ?c), (?x ?p ?y) -> (?x rdf:type ?c)]     # EXCLUDED
+# [rdfs3: (?p rdfs:range  ?c), (?x ?p ?y) -> (?y rdf:type ?c)]     # EXCLUDED
+#
+# OWL FunctionalProperty / InverseFunctionalProperty (DISABLED — owl:sameAs
+# identity-merge; ODR-0005 §R5 / ODR-0017 §R6 anti-pattern)
+# [owl-fp:  (?p rdf:type owl:FunctionalProperty), (?x ?p ?y), (?x ?p ?z) -> (?y owl:sameAs ?z)]  # EXCLUDED
+# [owl-ifp: (?p rdf:type owl:InverseFunctionalProperty), (?x ?p ?z), (?y ?p ?z) -> (?x owl:sameAs ?y)]  # EXCLUDED
+#
+# OWL equivalentClass / equivalentProperty (DISABLED — uncontrolled
+# bidirectional propagation + transitive explosion; ODR-0025 §R2). NB the
+# evidence-class aliases were RETIRED entirely by Council session-035 — they no
+# longer exist to be evaluated or excluded.
+# [owl-eqc1: (?x owl:equivalentClass ?y), (?v rdf:type ?x) -> (?v rdf:type ?y)]  # EXCLUDED
+# [owl-eqc2: (?x owl:equivalentClass ?y), (?v rdf:type ?y) -> (?v rdf:type ?x)]  # EXCLUDED
+# [owl-eqp1: (?x owl:equivalentProperty ?y), (?s ?x ?o) -> (?s ?y ?o)]  # EXCLUDED
+# [owl-eqp2: (?x owl:equivalentProperty ?y), (?s ?y ?o) -> (?s ?x ?o)]  # EXCLUDED
+# =============================================================================

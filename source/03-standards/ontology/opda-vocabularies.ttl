@@ -178,13 +178,13 @@ opda:DeedSupplyStatusScheme
 
 opda:EvidenceMethodScheme
     rdf:type skos:ConceptScheme ;
-    skos:prefLabel "Evidence Method"@en ;
-    skos:definition "Quality Values for the method by which identity evidence was obtained, per the OIDC4IDA `evidence` taxonomy."@en ;
+    skos:prefLabel "Evidence Kind"@en ;
+    skos:definition "The OIDC4IDA `evidence.type` kinds of identity evidence (Document, Electronic-Record, Vouch) — the governed facet for opda:evidenceType, bound to the evidence subclasses by skos:exactMatch (ODR-0011 §8a)."@en ;
     dct:source <https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html> ;
-    dct:title "Identity-evidence method (OIDC4IDA)"@en ;
-    skos:scopeNote "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). Members inherited verbatim from OpenID Connect for Identity Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-citation discipline."@en ;
+    dct:title "Identity-evidence kind (OIDC4IDA evidence.type)"@en ;
+    skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members inherited verbatim from OpenID Connect for Identity Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-citation discipline; each binds to its opda:*Evidence subclass via skos:exactMatch (NEVER owl:sameAs). NOTE (Council session-036): the scheme IRI retains the historical 'evidenceMethod' token by design — it denotes the evidence-KIND axis (OIDC4IDA evidence.type); do NOT rename the dereferenceable IRI (opaque-IRI / Cool-URIs discipline; renaming is ODR-0024 §R4 namespace-landmine churn)."@en ;
     opda:hasSteward "Moreau (S009 Q3)"@en ;
-    opda:ufoCategory "Quality Value" .
+    opda:ufoCategory "Substance Kind label" .
 
 opda:FeeTypeScheme
     rdf:type skos:ConceptScheme ;

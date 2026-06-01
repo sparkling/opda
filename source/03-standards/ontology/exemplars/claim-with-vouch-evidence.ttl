@@ -42,8 +42,10 @@ opda-x:verification-activity
 
 # The vouch (the evidence) — a formal attestation by a regulated professional
 opda-x:vouch-attestation
-    a opda:Vouch , prov:Entity ;
+    a opda:VouchEvidence , prov:Entity ;
     rdfs:label "Solicitor vouch of residency for Aaron Patel (signed 2024-06-04)" ;
+    opda:evidenceType "Vouch" ;
+    opda:attestedBy opda-x:solicitor-andrea-kessler ;
     opda:voucherRegulator <opda:SRA> ;
     opda:voucherLicenseNumber "SRA-541234" ;
     opda:attestationDate "2024-06-04"^^xsd:date ;

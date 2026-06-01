@@ -696,7 +696,7 @@ opda:supplyClassification
 opda:tenureKind
     rdf:type owl:DatatypeProperty ;
     rdfs:label "tenure kind"@en ;
-    rdfs:comment "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold). Each member binds to its corresponding OWL sub-class via skos:exactMatch per ODR-0011 §8a (NEVER owl:sameAs per ODR-0005 Anti-pattern §5)."@en ;
+    rdfs:comment "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels)."@en ;
     dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
     rdfs:range xsd:string .

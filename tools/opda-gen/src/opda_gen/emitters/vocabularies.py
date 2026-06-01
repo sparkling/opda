@@ -1012,21 +1012,36 @@ def _evidence_method_scheme() -> Scheme:
             "attestation by a trusted third party.",
         ),
     ]
+    # Council session-035: repurposed from "method" → the evidence-KIND facet
+    # (its members ARE OIDC4IDA `evidence.type`, not method values). The scheme
+    # IRI (local_name) is held stable for IRI stability; the prefLabel,
+    # definition, scopeNote and ufoCategory are corrected to the kind axis. It is
+    # now the governed facet bound to the evidence subclasses by skos:exactMatch
+    # (claim.py; ODR-0011 §8a Substance-Kind-label) and validated by
+    # opda:EvidenceFacetShape. (A future cosmetic IRI rename → EvidenceKindScheme
+    # is noted in ODR-0009; deferred to avoid a scheme-IRI ripple.)
     return Scheme(
         local_name="EvidenceMethodScheme",
         slug_base="evidenceMethod",
-        pref_label="Evidence Method",
-        title="Identity-evidence method (OIDC4IDA)",
+        pref_label="Evidence Kind",
+        title="Identity-evidence kind (OIDC4IDA evidence.type)",
         definition=(
-            "Quality Values for the method by which identity evidence was "
-            "obtained, per the OIDC4IDA `evidence` taxonomy."
+            "The OIDC4IDA `evidence.type` kinds of identity evidence "
+            "(Document, Electronic-Record, Vouch) — the governed facet for "
+            "opda:evidenceType, bound to the evidence subclasses by "
+            "skos:exactMatch (ODR-0011 §8a)."
         ),
-        ufo_category="Quality Value",
+        ufo_category="Substance Kind label",
         scope_note=(
-            "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). "
-            "Members inherited verbatim from OpenID Connect for Identity "
-            "Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-"
-            "citation discipline."
+            "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members "
+            "inherited verbatim from OpenID Connect for Identity Assurance "
+            "1.0 `evidence` type per ODR-0011 §4a regulator-citation "
+            "discipline; each binds to its opda:*Evidence subclass via "
+            "skos:exactMatch (NEVER owl:sameAs). NOTE (Council session-036): "
+            "the scheme IRI retains the historical 'evidenceMethod' token by "
+            "design — it denotes the evidence-KIND axis (OIDC4IDA evidence.type); "
+            "do NOT rename the dereferenceable IRI (opaque-IRI / Cool-URIs "
+            "discipline; renaming is ODR-0024 §R4 namespace-landmine churn)."
         ),
         steward="Moreau (S009 Q3)",
         scheme_source=oidc4ida,

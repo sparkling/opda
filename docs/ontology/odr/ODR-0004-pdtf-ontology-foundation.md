@@ -161,7 +161,9 @@ The build pipeline emits **three source graphs** (canonical, Council-ratified) a
 |---|---|---|
 | `opda-validation.ttl` | `opda-classes.ttl` ⊕ `opda-shapes.ttl` | SHACL validators |
 | `opda-ui.ttl` | `opda-classes.ttl` ⊕ `opda-shapes.ttl` ⊕ `opda-annotations.ttl` | Form generators, LLM UIs |
-| `opda-inference.ttl` | `opda-classes.ttl` alone | OWL reasoners |
+| `opda-inference.ttl` | `opda-classes.ttl` alone | Optional classes-alone export (third-party OWL-DL tooling) — NOT opda's inference path |
+
+> **Amendment (ODR-0025 §R6, ratified 2026-06-01).** The `opda-inference.ttl` row originally read "Consumed by: OWL reasoners" — a full OWL-DL TBox-classification projection (HermiT/Pellet/Konclude). That **DL-classification intent is superseded**: opda's inference is the load-time **OWL-RL-safe closure** materialised into `https://w3id.org/opda/graph/inferred/entailment` (ODR-0025 §R1/§R4; ADR-0035), **not** external DL classification. The `opda-inference.ttl` artefact name is retained only as an *optional* classes-alone export for third-party DL tooling; opda's own pipeline never builds or consumes it for reasoning. See ODR-0025, ODR-0026, ADR-0035.
 
 **Shapes-graph version-pointer.** `<opda-shapes> opda:targetsClassGraph <opda-classes-version-IRI>`. A consumer loading mismatched versions gets a documented mismatch warning, not silent inconsistency.
 

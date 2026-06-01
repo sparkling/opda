@@ -15,7 +15,15 @@
     rdf:type sh:ValidationReport ;
     dct:source <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence> ;
     sh:conforms "false"^^xsd:boolean ;
-    sh:result <https://w3id.org/opda/data/exemplar-reports/result-d134591d192d> .
+    sh:result <https://w3id.org/opda/data/exemplar-reports/result-8e1246128448>, <https://w3id.org/opda/data/exemplar-reports/result-d134591d192d> .
+
+<https://w3id.org/opda/data/exemplar-reports/result-8e1246128448>
+    rdf:type sh:ValidationResult ;
+    sh:focusNode <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence/vouch-attestation> ;
+    sh:resultMessage "Evidence with opda:evidenceType 'Vouch' MUST carry opda:attestedBy a prov:Agent (a vouch is an Agent-founded attestation). Value-keyed, entailment-free (Council session-036)."@en ;
+    sh:resultSeverity sh:Violation ;
+    sh:sourceConstraintComponent sh:OrConstraintComponent ;
+    sh:value <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence/vouch-attestation> .
 
 <https://w3id.org/opda/data/exemplar-reports/result-d134591d192d>
     rdf:type sh:ValidationResult ;

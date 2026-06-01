@@ -29,11 +29,37 @@ opda:ClaimIdentityKeyShape
     sh:property _:b2b18495da174 ;
     sh:targetClass opda:Claim .
 
+opda:DocumentEvidenceCoherenceShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    sh:property _:b135eca6ec330 ;
+    sh:targetClass opda:DocumentEvidence .
+
+opda:ElectronicRecordEvidenceCoherenceShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    sh:property _:b9c5f217f1072 ;
+    sh:targetClass opda:ElectronicRecordEvidence .
+
+opda:EvidenceFacetShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    sh:message "Evidence with opda:evidenceType 'Vouch' MUST carry opda:attestedBy a prov:Agent (a vouch is an Agent-founded attestation). Value-keyed, entailment-free (Council session-036)."@en ;
+    sh:or _:bbbccba3a693a ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:evidenceType .
+
 opda:EvidenceIdentityKeyShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
     sh:property _:bd9c7ae50e511 ;
     sh:targetClass opda:Evidence .
+
+opda:EvidenceTypeValueShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    sh:property _:b5287b3f74db3 ;
+    sh:targetSubjectsOf opda:evidenceType .
 
 opda:PROVOClaimsRule
     rdf:type sh:NodeShape ;
@@ -57,6 +83,12 @@ opda:VerificationActivitySuccessionRule
     sh:severity sh:Info ;
     sh:targetClass opda:VerificationActivity .
 
+opda:VouchEvidenceCoherenceShape
+    rdf:type sh:NodeShape ;
+    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    sh:property _:b70249d4b64dd ;
+    sh:targetClass opda:VouchEvidence .
+
 _:b28ba9d05939d
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
@@ -65,6 +97,21 @@ _:bb11b45f9d7c0
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
 
+_:b135eca6ec330
+    sh:hasValue "Document" ;
+    sh:message "An opda:DocumentEvidence MUST carry opda:evidenceType 'Document' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
+    sh:path opda:evidenceType ;
+    sh:severity sh:Violation .
+
+_:b14e9dedb13dc
+    sh:class prov:Agent ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:attestedBy .
+
+_:b25f7bf2c84b1
+    sh:hasValue "Vouch" ;
+    sh:path opda:evidenceType .
+
 _:b2b18495da174
     sh:datatype xsd:string ;
     sh:maxCount "1"^^xsd:integer ;
@@ -72,11 +119,50 @@ _:b2b18495da174
     sh:path opda:digest ;
     sh:severity sh:Violation .
 
+_:b5287b3f74db3
+    sh:datatype xsd:string ;
+    sh:in _:ba3ea797b70ff ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "opda:evidenceType MUST be one of the opda:EvidenceMethodScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."@en ;
+    sh:path opda:evidenceType ;
+    sh:severity sh:Violation .
+
+_:b64cd56bf2a15
+    rdf:first "Vouch" ;
+    rdf:rest rdf:nil .
+
+_:b70249d4b64dd
+    sh:hasValue "Vouch" ;
+    sh:message "An opda:VouchEvidence MUST carry opda:evidenceType 'Vouch' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
+    sh:path opda:evidenceType ;
+    sh:severity sh:Violation .
+
+_:b85bde3319752
+    sh:not _:bfe7c49b7f882 .
+
+_:b9c5f217f1072
+    sh:hasValue "Electronic-Record" ;
+    sh:message "An opda:ElectronicRecordEvidence MUST carry opda:evidenceType 'Electronic-Record' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
+    sh:path opda:evidenceType ;
+    sh:severity sh:Violation .
+
+_:ba3ea797b70ff
+    rdf:first "Document" ;
+    rdf:rest _:bbfc13064f35a .
+
+_:bbbccba3a693a
+    rdf:first _:b85bde3319752 ;
+    rdf:rest _:be82336d54432 .
+
 _:bbf6f8958de90
     sh:message "Claim MUST carry prov:wasDerivedFrom (or be explicitly marked unverified per Moreau S009 amendment). ODR-0013 §Severity tiering Cat 2: unprovenanced Claims are a Violation-tier IC breach."@en ;
     sh:minCount "1"^^xsd:integer ;
     sh:path prov:wasDerivedFrom ;
     sh:severity sh:Violation .
+
+_:bbfc13064f35a
+    rdf:first "Electronic-Record" ;
+    rdf:rest _:b64cd56bf2a15 .
 
 _:bd9c7ae50e511
     sh:datatype xsd:string ;
@@ -84,3 +170,13 @@ _:bd9c7ae50e511
     sh:message "Evidence digest MUST be a single xsd:string value when present. Provides content-addressable provenance per ODR-0009 §Q1."@en ;
     sh:path opda:digest ;
     sh:severity sh:Violation .
+
+_:be82336d54432
+    rdf:first _:bf280338638b2 ;
+    rdf:rest rdf:nil .
+
+_:bf280338638b2
+    sh:property _:b14e9dedb13dc .
+
+_:bfe7c49b7f882
+    sh:property _:b25f7bf2c84b1 .

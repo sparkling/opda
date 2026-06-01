@@ -476,9 +476,14 @@ def build_graph() -> Graph:
     g.add((OPDA.tenureKind, RDFS.label, Literal("tenure kind", lang="en")))
     g.add((OPDA.tenureKind, RDFS.comment, Literal(
         "Tenure classification per opda:TenureKindScheme — Substance "
-        "Kind label (Freehold / Leasehold / Commonhold). Each member "
-        "binds to its corresponding OWL sub-class via skos:exactMatch "
-        "per ODR-0011 §8a (NEVER owl:sameAs per ODR-0005 Anti-pattern §5).",
+        "Kind label (Freehold / Leasehold / Commonhold), a coded facet on "
+        "opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a "
+        "load-bearing cascade (Council session-036), tenure is +R but −I "
+        "(no distinct identity criterion; tenure-change is a value change, "
+        "not a re-typing) → classification, NOT a subclass: opda does NOT "
+        "mint Freehold/Leasehold/Commonhold OWL sub-classes, and no "
+        "skos:exactMatch-to-subclass is emitted (the §8a subclass binding "
+        "applies only to load-bearing +I labels).",
         lang="en",
     )))
     g.add((OPDA.tenureKind, DCTERMS.source, _ODR_0008_S5A))

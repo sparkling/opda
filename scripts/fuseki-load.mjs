@@ -133,6 +133,156 @@ async function uploadTtl(filePath) {
   return fileName;
 }
 
+// ── Load-time inference (ADR-0035; ODR-0025/0026 OWL-RL-safe closure) ────────
+
+const ENDPOINT_UPDATE = `${FUSEKI_URL}/${DATASET}/update`;
+const ENTAILMENT_GRAPH = 'https://w3id.org/opda/graph/inferred/entailment';
+// Jena's built-in union-of-all-named-graphs pseudo-graph: lets the rule
+// WHERE-clauses read across every module graph (and the inferred graph itself,
+// for the FILTER NOT EXISTS idempotency check) without reconfiguring the
+// dataset to unionDefaultGraph. Faithful to hm's materialisation, dataset-config-free.
+const UNION = 'urn:x-arq:UnionGraph';
+
+const PFX =
+  'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n' +
+  'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n' +
+  'PREFIX owl: <http://www.w3.org/2002/07/owl#>\n';
+
+// The 7 Safe-Group rules (ODR-0025 §R1 / config/opda-owl-rl-safe.rules), each
+// as an idempotent INSERT … FILTER NOT EXISTS, in dependency order: schema
+// closure first, then propagation, then data rules.
+const SAFE_RULES = [
+  // 1. rdfs:subClassOf transitivity
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?x rdfs:subClassOf ?z } }
+   WHERE { GRAPH <${UNION}> { ?x rdfs:subClassOf ?y . ?y rdfs:subClassOf ?z }
+           FILTER(?x != ?z) FILTER NOT EXISTS { GRAPH <${UNION}> { ?x rdfs:subClassOf ?z } } }`,
+  // 2. rdfs:subPropertyOf transitivity
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?p rdfs:subPropertyOf ?r } }
+   WHERE { GRAPH <${UNION}> { ?p rdfs:subPropertyOf ?q . ?q rdfs:subPropertyOf ?r }
+           FILTER(?p != ?r) FILTER NOT EXISTS { GRAPH <${UNION}> { ?p rdfs:subPropertyOf ?r } } }`,
+  // 3. rdfs:subPropertyOf value propagation
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?x ?q ?y } }
+   WHERE { GRAPH <${UNION}> { ?p rdfs:subPropertyOf ?q . ?x ?p ?y }
+           FILTER(?p != ?q) FILTER NOT EXISTS { GRAPH <${UNION}> { ?x ?q ?y } } }`,
+  // 4. rdfs:subClassOf type propagation
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?v rdf:type ?y } }
+   WHERE { GRAPH <${UNION}> { ?v rdf:type ?x . ?x rdfs:subClassOf ?y }
+           FILTER(?x != ?y) FILTER NOT EXISTS { GRAPH <${UNION}> { ?v rdf:type ?y } } }`,
+  // 5a. owl:inverseOf (forward)
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?y ?q ?x } }
+   WHERE { GRAPH <${UNION}> { ?p owl:inverseOf ?q . ?x ?p ?y }
+           FILTER NOT EXISTS { GRAPH <${UNION}> { ?y ?q ?x } } }`,
+  // 5b. owl:inverseOf (reverse)
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?y ?p ?x } }
+   WHERE { GRAPH <${UNION}> { ?p owl:inverseOf ?q . ?x ?q ?y }
+           FILTER NOT EXISTS { GRAPH <${UNION}> { ?y ?p ?x } } }`,
+  // 6. owl:SymmetricProperty
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?y ?p ?x } }
+   WHERE { GRAPH <${UNION}> { ?p a owl:SymmetricProperty . ?x ?p ?y }
+           FILTER NOT EXISTS { GRAPH <${UNION}> { ?y ?p ?x } } }`,
+  // 7. owl:TransitiveProperty
+  `INSERT { GRAPH <${ENTAILMENT_GRAPH}> { ?x ?p ?z } }
+   WHERE { GRAPH <${UNION}> { ?p a owl:TransitiveProperty . ?x ?p ?y . ?y ?p ?z }
+           FILTER(?x != ?z) FILTER NOT EXISTS { GRAPH <${UNION}> { ?x ?p ?z } } }`,
+];
+
+/** Run a SPARQL UPDATE against the dataset. */
+async function sparqlUpdate(update) {
+  const res = await fetch(ENDPOINT_UPDATE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/sparql-update',
+      Authorization: BASIC_AUTH,
+    },
+    body: update,
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`SPARQL UPDATE failed: ${res.status} ${body}`);
+  }
+}
+
+/** COUNT helper for the union of all named graphs (asserted + inferred). */
+async function countUnion() {
+  const res = await fetch(ENDPOINT_QUERY, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/sparql-query',
+      Accept: 'application/sparql-results+json',
+      Authorization: BASIC_AUTH,
+    },
+    body: 'SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }',
+  });
+  if (!res.ok) return 0;
+  const json = await res.json();
+  return +(json.results?.bindings?.[0]?.n?.value ?? 0);
+}
+
+/** COUNT helper for an arbitrary ASK-style violation query (returns the count). */
+async function countQuery(query) {
+  const res = await fetch(ENDPOINT_QUERY, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/sparql-query',
+      Accept: 'application/sparql-results+json',
+      Authorization: BASIC_AUTH,
+    },
+    body: query,
+  });
+  if (!res.ok) return 0;
+  const json = await res.json();
+  return +(json.results?.bindings?.[0]?.c?.value ?? 0);
+}
+
+/**
+ * Materialise the ODR-0025 §R1 OWL-RL-safe closure into the derived
+ * entailment graph (ADR-0035). Idempotent rebuild: DROP the graph, then run
+ * the 7 rules to a fixpoint (re-run until a pass adds 0 triples; guard 10).
+ * Runs on every load — `--clear` and incremental alike.
+ */
+async function materializeEntailments() {
+  console.log(`[fuseki-load] Materialising OWL-RL-safe closure → <${ENTAILMENT_GRAPH}>`);
+  await sparqlUpdate(`DROP SILENT GRAPH <${ENTAILMENT_GRAPH}>`);
+  let pass = 0;
+  for (;;) {
+    pass++;
+    const before = await countUnion();
+    for (const rule of SAFE_RULES) {
+      await sparqlUpdate(PFX + rule);
+    }
+    const after = await countUnion();
+    const added = after - before;
+    console.log(`[fuseki-load]   pass ${pass}: +${added} triples`);
+    if (added === 0) break;
+    if (pass >= 10) {
+      console.warn('[fuseki-load]   WARNING: fixpoint not reached after 10 passes');
+      break;
+    }
+  }
+  const inferred = await countQuery(
+    `SELECT (COUNT(*) AS ?c) WHERE { GRAPH <${ENTAILMENT_GRAPH}> { ?s ?p ?o } }`,
+  );
+  console.log(`[fuseki-load]   inferred: ${inferred} triples`);
+}
+
+/**
+ * Post-load consistency gate (ADR-0035 §Rules): owl:disjointWith violations
+ * fail the load. Validates the R2-disabled disjointness construct WITHOUT
+ * entailing it ("disjointness as validation, not materialisation").
+ */
+async function consistencyGate() {
+  const disjoint = await countQuery(
+    'PREFIX owl: <http://www.w3.org/2002/07/owl#> ' +
+    'PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ' +
+    'SELECT (COUNT(*) AS ?c) WHERE { GRAPH ?g1 { ?c1 owl:disjointWith ?c2 } ' +
+    'GRAPH ?g2 { ?x rdf:type ?c1 } GRAPH ?g3 { ?x rdf:type ?c2 } FILTER(?c1 != ?c2) }',
+  );
+  if (disjoint > 0) {
+    throw new Error(`Consistency gate FAILED: ${disjoint} owl:disjointWith violation(s)`);
+  }
+  console.log('[fuseki-load]   consistency gate: OK (0 disjointness violations)');
+}
+
 /** Count total triples in the dataset. */
 async function countTriples() {
   const res = await fetch(ENDPOINT_QUERY, {
@@ -176,8 +326,15 @@ for (const file of ttlFiles) {
   }
 }
 
+if (errors > 0) {
+  console.error(`\n[fuseki-load] ${errors} upload error(s) — skipping inference`);
+  process.exit(1);
+}
+
+// ADR-0035: materialise the OWL-RL-safe closure, then run the consistency gate.
+await materializeEntailments();
+await consistencyGate();
+
 const total = await countTriples();
 console.log(`\n[fuseki-load] Done: ${loaded} files loaded, ${errors} errors`);
-if (total != null) console.log(`[fuseki-load] Total triples in dataset: ${total}`);
-
-if (errors > 0) process.exit(1);
+if (total != null) console.log(`[fuseki-load] Total triples in dataset (asserted + inferred): ${total}`);
