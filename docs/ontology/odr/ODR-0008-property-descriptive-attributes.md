@@ -87,7 +87,7 @@ A leaf or leaf-cluster promotes to a Class iff ANY of: (a) authority-retrieved p
 
 #### Q5a — Datatype vs SKOS per-leaf binding table
 
-ODR-0011 §8a-named schemes become SKOS concept schemes; non-§8a one-shot enums stay `xsd:string + sh:in`. Burden of SKOS promotion on the proposer per leaf. Initial binding table:
+ODR-0011 §8a-named schemes become SKOS concept schemes; non-§8a one-shot enums stay `xsd:string + sh:in`. Burden of SKOS promotion on the proposer per leaf. **The classify-vs-subclass call is governed by the ODR-0011 §8a load-bearing cascade (Council session-036): default to a coded facet + `sh:in`; promote a label to an OWL sub-class only on a distinct identity criterion (+I). The `tenureKind` "sub-Kind via `skos:exactMatch`" row below is realised coded-only — `tenureKind` is +R∧−I, so NO Freehold/Leasehold/Commonhold sub-class is minted (session-036 keystone correction).** Initial binding table:
 
 | ODR-0008 leaf | UFO category | SHACL modelling |
 |---|---|---|
