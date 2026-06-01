@@ -1,6 +1,16 @@
 services:
   fuseki:
-    image: stain/jena-fuseki:latest
+    # ADR-0036/0037 call for Apache Jena 6.1.0, but NO Fuseki Docker image is
+    # published at 6.x anywhere: `apache/jena-fuseki` has no repo on Docker Hub,
+    # `stain/jena-fuseki` tops out at 5.1.0, `secoresearch/fuseki` at 5.5.0
+    # (verified 2026-06-01). The container's sole job here is ADR-0035 inference
+    # materialisation via SPARQL UPDATE — identical across Jena 5.x/6.x and needs
+    # neither SHACL 1.2 nor RDF 1.2 triple-terms. SHACL-1.2 conformance (ADR-0036)
+    # runs on the Apache Jena 6.1.0 *binary* `shacl` CLI, not on this container.
+    # Pinned to the newest real `stain` tag (5.1.0) — preserves the loader's
+    # ADMIN_PASSWORD / FUSEKI_DATASET_1 / admin-endpoint contract and pins away
+    # from the mutable `:latest`.
+    image: stain/jena-fuseki:5.1.0
     container_name: opda-fuseki
     ports:
       - "3031:3030"
