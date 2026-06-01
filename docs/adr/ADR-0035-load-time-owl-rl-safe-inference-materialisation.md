@@ -56,6 +56,8 @@ A new CI gate (suggested `ci-inference-closure`) asserts, after a load:
 4. the post-load consistency gate exits non-zero on any `owl:disjointWith` violation;
 5. the existing byte-identity and three-graph gates stay green (the inferred graph is derived; canonical sources are untouched).
 
+> **Implementation note (2026-06-01, as built).** `ci-inference-closure` is implemented and green over TBox + the 15 exemplars (30 inferred triples). Criteria 1, 3, 4, 5 hold as written. Criterion 2 is **only partially demonstrable on the current model**: opda's ontology declares **zero** `owl:inverseOf`, `owl:TransitiveProperty`, and `owl:SymmetricProperty` and has a flat class hierarchy, so **`rdfs:subClassOf` type-propagation is the only one of the 7 safe rules that ever fires.** The gate therefore asserts subclass type-entailment positively and carries the inverse/transitive/symmetric checks as **conditional guards that pass vacuously now and begin enforcing the instant such a construct lands** in the model. This is an honest reflection of the model, not a relaxation of R1.
+
 ## Pros and Cons of the Options
 
 ### A — SPARQL-`INSERT` fixpoint at load

@@ -53,6 +53,10 @@ The pyshacl/`rdflib` path is **retired**, not retained. A parity gate proves Jen
 * **1.2-feature smoke test**: a shape using a 1.2-only feature (e.g. `sh:ShapeClass` or `sh:targetObjectsOf`) validates correctly under Jena and is demonstrably skipped by pyshacl — the guard that proves *why* the swap is required.
 * The validator runs against the ADR-0035 R1 closure (or the asserted graph), never ad-hoc full RDFS.
 
+> **Implementation note (2026-06-01, as built — transition COMPLETE).** The parity gate passed **17/17 exemplars** (pyshacl ≡ Jena on `sh:conforms`) once a missing `PREFIX rdf:` was added to the `ShInSemantics_MetaShape` SHACL-SPARQL query (strict Jena rejected it; pyshacl had tolerated it). With the floor demonstrated, **pyshacl is removed** — `jena-shacl` 6.1.0 is now opda's sole SHACL engine (`opda_gen.jena_shacl`), the parity machinery (`ci-shacl-parity`) is retired, and the pyshacl dependency is dropped. The dual-run window is closed.
+>
+> **No Fuseki/Jena _container_.** Apache publishes no Jena 6.x Fuseki Docker image, so — as this ADR already specifies — opda uses the **Apache Jena 6.1.0 binary distribution**, not a container: the `shacl` CLI is resolved from `OPDA_JENA_HOME`/`PATH` or auto-provisioned (downloaded + sha512-verified into `.jena/`), and CI provisions only a JDK (`setup-java@21`). The inference runtime (ADR-0035/0037) likewise runs the local **Fuseki 6.1.0** binary via `config/fuseki-config.ttl`, with Docker dropped from the build path entirely.
+
 ## Pros and Cons of the Options
 
 ### A — Jena `jena-shacl` 6.1.0 + `riot` (`rdflib`/pyshacl retired)
