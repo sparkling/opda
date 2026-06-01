@@ -30,27 +30,27 @@ opda:DocumentEvidenceRefinement
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:PublicTask ;
-    opda:targetsKind opda:DocumentEvidence ;
-    opda:variantPredicate rdf:type ;
-    opda:variantValue "document-evidence" .
+    opda:targetsKind opda:Evidence ;
+    opda:variantPredicate opda:evidenceType ;
+    opda:variantValue "Document" .
 
 opda:ElectronicRecordEvidenceRefinement
     rdf:type opda:DPVMappingRefinement ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:LegitimateInterest ;
-    opda:targetsKind opda:ElectronicRecordEvidence ;
-    opda:variantPredicate rdf:type ;
-    opda:variantValue "electronic-record-evidence" .
+    opda:targetsKind opda:Evidence ;
+    opda:variantPredicate opda:evidenceType ;
+    opda:variantValue "Electronic-Record" .
 
 opda:VouchEvidenceRefinement
     rdf:type opda:DPVMappingRefinement ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:Consent ;
-    opda:targetsKind opda:VouchEvidence ;
-    opda:variantPredicate rdf:type ;
-    opda:variantValue "vouch-evidence" .
+    opda:targetsKind opda:Evidence ;
+    opda:variantPredicate opda:evidenceType ;
+    opda:variantValue "Vouch" .
 
 opda:Claim
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;

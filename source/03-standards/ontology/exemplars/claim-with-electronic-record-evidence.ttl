@@ -41,7 +41,7 @@ opda-x:verification-activity
 
 # The electronic-record evidence (the API response)
 opda-x:hmrc-api-response
-    a opda:ElectronicRecordEvidence , prov:Entity ;
+    a opda:Evidence , prov:Entity ;
     rdfs:label "HMRC tax-record API response for NI QQ987654A" ;
     opda:evidenceType "Electronic-Record" ;
     opda:apiEndpoint <https://api.hmrc.gov.uk/individuals/employments/v1.0> ;

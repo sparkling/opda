@@ -3,27 +3,31 @@ Module claim.
 
 Realises:
 - ADR-0011 §"Per-module detail — opda-claim.ttl" — Claim (subclass of
-  prov:Entity) + Evidence (subclass of prov:Entity) + DocumentEvidence +
-  ElectronicRecordEvidence + VouchEvidence + VerificationActivity +
-  AssuranceLevel + TrustFramework + the three short-name aliases
-  (Document / ElectronicRecord / Vouch) via owl:equivalentClass.
+  prov:Entity) + Evidence (a RoleMixin over prov:Entity) + the neutral
+  document Kind AttachedDocument + VerificationActivity + AssuranceLevel +
+  TrustFramework.
 - ADR-0007 §"A9 per-kind discipline output" — every class carries
   rdfs:label + rdfs:comment + skos:scopeNote + dct:source.
 - ODR-0009 §Rules + S009 Q1 80%-PROV-O / 5-residue mapping —
-  Claim → prov:Entity; Evidence subtypes → prov:Entity subclasses;
+  Claim → prov:Entity; Evidence → a role over prov:Entity;
   VerificationActivity → prov:Activity. Local terms minted here per
   S009 5-residue: opda:digest, opda:assuranceLevel, opda:TrustFramework.
 - ODR-0018 §Rule 1 — class-level DPV baseline declaration lives in
   opda-annotations.ttl (ADR-0012); only the Kind classes emit here.
 
-Short-name / long-name decision (within-engineering, per ADR-0011
-§"Surfaced ambiguity routing"): option (b) — emit both the long names
-(DocumentEvidence / ElectronicRecordEvidence / VouchEvidence) AND the
-short names (Document / ElectronicRecord / Vouch) used in the exemplars,
-linked by owl:equivalentClass. This is the cleanest UFO-aligned approach
-without touching the exemplar source (which is a nested git repo under
-source/03-standards/) and preserves the longer, more discriminating names
-for downstream use in shapes + annotations.
+Evidence-kind modelling (ODR-0027 §R6; directing-authority adoption of the hm
+approach; supersedes session-035/036's keep-the-subclasses disposition):
+"evidence is a role a document plays, not every document's Kind" → a Role is
+NEVER rdfs:subClassOf a Kind (ODR-0027 §R3; hm ODR-0010/0025/0026). So evidence
+KIND is a coded `isMemberOf` classification — opda:evidenceType over
+opda:EvidenceMethodScheme (the OIDC4IDA evidence.type value-space: Document /
+Electronic-Record / Vouch) — NOT a subclass tree. The former
+DocumentEvidence / ElectronicRecordEvidence / VouchEvidence subclasses are
+RETIRED; their short names are skos:Concept notations in the scheme, never
+opda: classes. opda:AttachedDocument is the one genuine Kind (own IC); a
+document plays the evidence role via the coded value. Kind-specific attributes
+(opda:attestedBy …) are facets borne by opda:Evidence (ODR-0027 §R2), validated
+value-keyed on opda:evidenceType (opda:EvidenceFacetShape, ADR-0012).
 """
 
 from __future__ import annotations
@@ -43,10 +47,10 @@ _ODR_0009_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q5")
 
 # ODR-0024 R7 (council session-028 Q7) — the neutral opda:AttachedDocument
 # bearer. A registry-attached document (titlesToBeSold[].additionalDocuments[])
-# is NOT evidence: binding its filing-metadata to opda:DocumentEvidence (≡
-# opda:Document) would entail eIDAS-Substantial assurance on EVERY attached doc.
-# R7 introduces a neutral document Kind; DocumentEvidence becomes its
-# evidence-playing subclass.
+# is NOT evidence: treating every attached doc as evidence would entail
+# eIDAS-Substantial assurance on all of them. R7 keeps a neutral document Kind;
+# a document plays the evidence role via opda:evidenceType (ODR-0027 §R6), not by
+# subclassing into evidence.
 _ODR_0024_R7 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R7")
 
 
@@ -54,12 +58,9 @@ CLASSES = (
     OPDA.AssuranceLevel,
     OPDA.AttachedDocument,
     OPDA.Claim,
-    OPDA.DocumentEvidence,
-    OPDA.ElectronicRecordEvidence,
     OPDA.Evidence,
     OPDA.TrustFramework,
     OPDA.VerificationActivity,
-    OPDA.VouchEvidence,
 )
 
 OBJECT_PROPERTIES = (
@@ -67,12 +68,13 @@ OBJECT_PROPERTIES = (
     OPDA.supportedBy,
 )
 
-# Council session-035: the OIDC4IDA evidence-kind facet is the existing
-# opda:EvidenceMethodScheme; each evidence subclass binds to its scheme concept
-# by skos:exactMatch (ODR-0011 §8a Substance-Kind-label — NEVER owl:sameAs).
-_EVIDENCE_KIND_DOCUMENT = OPDA["evidenceMethod/Document"]
-_EVIDENCE_KIND_RECORD = OPDA["evidenceMethod/Electronic-Record"]
-_EVIDENCE_KIND_VOUCH = OPDA["evidenceMethod/Vouch"]
+# Council session-036 / ODR-0027 §R6: evidence-KIND is a coded `isMemberOf`
+# classification (opda:evidenceType → opda:EvidenceMethodScheme), NOT a subclass
+# tree. "Evidence is a role a document plays" → a Role is never rdfs:subClassOf a
+# Kind (ODR-0027 §R3; hm ODR-0010/0025/0026). The DocumentEvidence /
+# ElectronicRecordEvidence / VouchEvidence subclasses are RETIRED; opda:Evidence
+# is the role, opda:AttachedDocument the one genuine Kind. Kind-specific
+# attributes are facets borne by the role (ODR-0027 §R2).
 
 DATATYPE_PROPERTIES = (
     OPDA.digest,
@@ -120,17 +122,16 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.Claim, DCTERMS.source, _ODR_0009_Q1))
 
-    # --- opda:Evidence — RoleMixin over prov:Entity (ODR-0009 §Q1;
-    #     recast per Council session-035) --------------------------------
-    # session-035: evidence-hood is anti-rigid (a document is evidence only
-    # qua a VerificationActivity using it) → opda:Evidence is a cross-categorial
+    # --- opda:Evidence — a RoleMixin over prov:Entity (ODR-0009 §Q1;
+    #     ODR-0027 §R6) ---------------------------------------------------
+    # Evidence-hood is anti-rigid (a thing is evidence only qua a
+    # VerificationActivity using it) → opda:Evidence is a cross-categorial
     # RoleMixin founded by the verification (the ODR-0006 Seller/Buyer pattern),
-    # additively typed alongside owl:Class (punning, as Seller/Buyer). The three
-    # subtypes stay as rigid structure-bearers (they partition by provenance
-    # ORIGIN). The evidence-KIND discriminator is the SKOS facet opda:evidenceType
-    # → opda:EvidenceMethodScheme, with per-subtype validation emitted by
-    # ADR-0012 (opda:EvidenceFacetShape). Short names retired (were
-    # owl:equivalentClass aliases) → skos:altLabel on each canonical class.
+    # additively typed alongside owl:Class (punning, as Seller/Buyer). Evidence
+    # KIND is a coded isMemberOf classification — opda:evidenceType →
+    # opda:EvidenceMethodScheme — NOT a subclass tree (ODR-0027 §R3/§R6; the
+    # former …Evidence subclasses are RETIRED). Per-kind obligations are facets
+    # borne by the role, validated VALUE-keyed.
     g.add((OPDA.Evidence, RDF.type, OWL.Class))
     g.add((OPDA.Evidence, RDF.type, OPDA.RoleMixin))
     g.add((OPDA.Evidence, RDFS.subClassOf, PROV.Entity))
@@ -139,21 +140,24 @@ def build_graph() -> Graph:
         "Evidence supporting a Claim. UFO RoleMixin (anti-rigid, "
         "cross-categorial — a bearer is evidence only qua a "
         "VerificationActivity using it; ODR-0006 Seller/Buyer pattern); "
-        "PROV-O Entity. Three named subtypes per S009 Rule 5 (do NOT "
-        "collapse): DocumentEvidence (paper/scanned artefacts); "
-        "ElectronicRecordEvidence (API-retrieved structured records); "
-        "VouchEvidence (an Agent-founded attestation, a Relator — not a "
-        "document). The acquisition method is a coded facet "
-        "(opda:evidenceType → opda:EvidenceMethodScheme, OIDC4IDA); per-kind "
-        "obligations are validated VALUE-KEYED by opda:EvidenceFacetShape "
-        "(sh:targetSubjectsOf opda:evidenceType + sh:or material implication; "
-        "ADR-0012; Council session-036), with type↔value coherence enforced by "
-        "the opda:*CoherenceShape family.",
+        "PROV-O Entity. Evidence KIND is a coded isMemberOf classification — "
+        "opda:evidenceType over opda:EvidenceMethodScheme (the OIDC4IDA "
+        "evidence.type value-space: Document / Electronic-Record / Vouch) — "
+        "NOT a subclass tree (ODR-0027 §R6; the former …Evidence subclasses "
+        "are retired, since 'evidence is a role a document plays' and a Role "
+        "is never rdfs:subClassOf a Kind). The three kinds are NOT collapsed "
+        "(S009 R5): they remain distinct scheme concepts. Kind-specific "
+        "attributes (opda:attestedBy for vouches; document/record specifics) "
+        "are facets borne by the role; per-kind obligations are validated "
+        "VALUE-KEYED by opda:EvidenceFacetShape (sh:targetSubjectsOf "
+        "opda:evidenceType + sh:or material implication; ADR-0012).",
         lang="en",
     )))
     g.add((OPDA.Evidence, SKOS.scopeNote, Literal(
-        "PROV-O: Entity (W3C PROV-O REC §3.2). The three subtypes "
-        "correspond to OIDC4IDA / eIDAS evidence categories (S009 Rule 5).",
+        "PROV-O: Entity (W3C PROV-O REC §3.2). The three evidence kinds "
+        "(Document / Electronic-Record / Vouch) are OIDC4IDA / eIDAS "
+        "evidence.type concepts in opda:EvidenceMethodScheme (S009 Rule 5), "
+        "carried as the coded opda:evidenceType value (ODR-0027 §R6).",
         lang="en",
     )))
     g.add((OPDA.Evidence, DCTERMS.source, _ODR_0009_Q1))
@@ -180,117 +184,40 @@ def build_graph() -> Graph:
         "Information Object; PROV-O Entity. A NEUTRAL document Kind — NOT "
         "evidence: it bears filing metadata (opda:documentDate / "
         "opda:documentTypeCode / opda:filedUnder / opda:retrievedOn) without "
-        "the eIDAS-assurance commitment opda:DocumentEvidence carries "
-        "(ODR-0024 R7 / session-028 Q7 — reusing the evidence class as the "
-        "bearer would entail every attached doc is Substantial-tier evidence). "
+        "the eIDAS-assurance commitment a document playing the evidence role "
+        "carries (ODR-0024 R7 / session-028 Q7 — entailing every attached doc "
+        "is Substantial-tier evidence). "
         "IC: individuated by its content + issuing activity (the artefact the "
         "registry holds), NOT by documentTypeCode / documentDate (mutable "
-        "descriptive facets, not an identity principle). opda:DocumentEvidence "
-        "is its evidence-playing subclass — an attached document stands as "
+        "descriptive facets, not an identity principle). A document BECOMES "
+        "evidence by playing the evidence role — recorded as "
+        "opda:evidenceType 'Document' on an opda:Evidence (ODR-0027 §R6), NOT "
+        "by an rdfs:subClassOf into evidence; an attached document stands as "
         "evidence only under ODR-0009, never by mere attachment.",
         lang="en",
     )))
     g.add((OPDA.AttachedDocument, SKOS.scopeNote, Literal(
         "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information "
         "artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral "
-        "document bearer per ODR-0024 R7; opda:DocumentEvidence ⊑ "
-        "opda:AttachedDocument (evidence is a role a document plays, not the "
-        "document's Kind).",
+        "document bearer per ODR-0024 R7 — the one genuine Kind in the "
+        "evidence family (ODR-0027 §R6); a document plays the evidence role "
+        "(opda:evidenceType), it is not sub-classed into it.",
         lang="en",
     )))
     g.add((OPDA.AttachedDocument, DCTERMS.source, _ODR_0024_R7))
 
-    # --- opda:DocumentEvidence + opda:Document equivalence --------------
-    # ODR-0024 R7: DocumentEvidence ⊑ opda:AttachedDocument (the neutral
-    # bearer above) — the evidence-playing subclass. The owl:equivalentClass
-    # opda:Document alias is PRESERVED (exemplar short-name; ADR-0011); only the
-    # bearer of the four filing-metadata props moved to opda:AttachedDocument so
-    # plain attached docs are no longer entailed to be eIDAS evidence.
-    g.add((OPDA.DocumentEvidence, RDF.type, OWL.Class))
-    g.add((OPDA.DocumentEvidence, RDFS.subClassOf, OPDA.Evidence))
-    g.add((OPDA.DocumentEvidence, RDFS.subClassOf, OPDA.AttachedDocument))
-    g.add((OPDA.DocumentEvidence, RDFS.label,
-           Literal("Document Evidence", lang="en")))
-    g.add((OPDA.DocumentEvidence, RDFS.comment, Literal(
-        "Document-evidence subtype — paper or scanned artefacts issued by "
-        "authoritative source (e.g. grant of probate by HMCTS). eIDAS "
-        "Substantial-tier assurance for court-issued instruments. A subclass "
-        "of opda:AttachedDocument (the neutral document Kind; ODR-0024 R7) — "
-        "evidence is a role a document plays, not every document's Kind. "
-        "Evidence kind 'Document' is carried as the opda:evidenceType facet "
-        "(skos:exactMatch the OIDC4IDA scheme concept); the short name "
-        "'Document' is a skos:altLabel, not a class (Council session-035 "
-        "retired the owl:equivalentClass alias).",
-        lang="en",
-    )))
-    g.add((OPDA.DocumentEvidence, SKOS.altLabel, Literal("Document", lang="en")))
-    g.add((OPDA.DocumentEvidence, SKOS.exactMatch, _EVIDENCE_KIND_DOCUMENT))
-    g.add((OPDA.DocumentEvidence, SKOS.scopeNote, Literal(
-        "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA / eIDAS "
-        "document-evidence category (S009 Rule 5).",
-        lang="en",
-    )))
-    g.add((OPDA.DocumentEvidence, DCTERMS.source, _ODR_0009_Q1))
-
-    # --- opda:ElectronicRecordEvidence + opda:ElectronicRecord ----------
-    g.add((OPDA.ElectronicRecordEvidence, RDF.type, OWL.Class))
-    g.add((OPDA.ElectronicRecordEvidence, RDFS.subClassOf, OPDA.Evidence))
-    g.add((OPDA.ElectronicRecordEvidence, RDFS.label,
-           Literal("Electronic Record Evidence", lang="en")))
-    g.add((OPDA.ElectronicRecordEvidence, RDFS.comment, Literal(
-        "Electronic-record evidence subtype — API-retrieved structured "
-        "records from authoritative source (e.g. HMRC tax-record API). "
-        "eIDAS Substantial-tier assurance via real-time API verification. "
-        "Evidence kind 'Electronic-Record' is carried as the opda:evidenceType "
-        "facet (skos:exactMatch the OIDC4IDA scheme concept); the short name "
-        "'ElectronicRecord' is a skos:altLabel, not a class (Council "
-        "session-035 retired the owl:equivalentClass alias).",
-        lang="en",
-    )))
-    g.add((OPDA.ElectronicRecordEvidence, SKOS.altLabel,
-           Literal("ElectronicRecord", lang="en")))
-    g.add((OPDA.ElectronicRecordEvidence, SKOS.exactMatch, _EVIDENCE_KIND_RECORD))
-    g.add((OPDA.ElectronicRecordEvidence, SKOS.scopeNote, Literal(
-        "PROV-O: Entity (W3C PROV-O REC §3.2). OIDC4IDA "
-        "electronic-record evidence category (S009 Rule 5).",
-        lang="en",
-    )))
-    g.add((OPDA.ElectronicRecordEvidence, DCTERMS.source, _ODR_0009_Q1))
-
-    # --- opda:VouchEvidence — an Agent-founded attestation Relator ------
-    # Council session-035: categorially ≠ the document/record evidences — a
-    # vouch is prov:wasAttributedTo an Agent (an attestation binding Agent ↔
-    # Claim = a Relator, two-relata dependence), NOT an Information Object.
-    # Additively typed opda:Relator (punning, as Transaction/Proprietorship).
-    # This is WHY S009 R5 "do NOT collapse the three" is correct.
-    g.add((OPDA.VouchEvidence, RDF.type, OWL.Class))
-    g.add((OPDA.VouchEvidence, RDF.type, OPDA.Relator))
-    g.add((OPDA.VouchEvidence, RDFS.subClassOf, OPDA.Evidence))
-    g.add((OPDA.VouchEvidence, RDFS.label,
-           Literal("Vouch Evidence", lang="en")))
-    g.add((OPDA.VouchEvidence, RDFS.comment, Literal(
-        "Vouch evidence subtype — formal attestation by a regulated "
-        "professional (e.g. SRA-licensed solicitor). Qualitatively "
-        "weaker than document or electronic-record evidence; eIDAS Low "
-        "assurance regardless of voucher quality (Q3 SKOS scheme). The "
-        "vouch is prov:wasAttributedTo an Agent — an attestation (a UFO "
-        "Relator binding Agent ↔ Claim), NOT a document derivation; this is "
-        "why the three evidence subtypes must not be collapsed (S009 R5). "
-        "Evidence kind 'Vouch' is carried as the opda:evidenceType facet "
-        "(skos:exactMatch the OIDC4IDA scheme concept); the short name "
-        "'Vouch' is a skos:altLabel, not a class (session-035 retired the "
-        "owl:equivalentClass alias).",
-        lang="en",
-    )))
-    g.add((OPDA.VouchEvidence, SKOS.altLabel, Literal("Vouch", lang="en")))
-    g.add((OPDA.VouchEvidence, SKOS.exactMatch, _EVIDENCE_KIND_VOUCH))
-    g.add((OPDA.VouchEvidence, SKOS.scopeNote, Literal(
-        "PROV-O: Entity (W3C PROV-O REC §3.2). UFO: Relator (Guizzardi 2005 "
-        "Ch. 4 §4.5 — agent-founded attestation). OIDC4IDA / eIDAS "
-        "vouch-evidence category (S009 Rule 5).",
-        lang="en",
-    )))
-    g.add((OPDA.VouchEvidence, DCTERMS.source, _ODR_0009_Q1))
+    # --- Evidence kind: a coded isMemberOf classification, NOT subclasses ---
+    # ODR-0027 §R6 (directing-authority adoption of the hm approach;
+    # supersedes session-036): "evidence is a role a document plays" → a Role is
+    # never rdfs:subClassOf a Kind (ODR-0027 §R3). The former
+    # DocumentEvidence / ElectronicRecordEvidence / VouchEvidence subclasses are
+    # RETIRED. Evidence-kind is the coded opda:evidenceType facet (→
+    # opda:EvidenceMethodScheme, the OIDC4IDA evidence.type value-space);
+    # kind-specific attributes (opda:attestedBy for vouches, document/record
+    # specifics) are facets borne by opda:Evidence (ODR-0027 §R2), enforced
+    # value-keyed on opda:evidenceType (opda:EvidenceFacetShape, ADR-0012). The
+    # short names Document/Electronic-Record/Vouch live as skos:Concept notations
+    # in opda:EvidenceMethodScheme, never as opda: classes.
 
     # --- opda:VerificationActivity — subclass of prov:Activity ----------
     g.add((OPDA.VerificationActivity, RDF.type, OWL.Class))
@@ -383,27 +310,34 @@ def build_graph() -> Graph:
     g.add((OPDA.supportedBy, DCTERMS.source, _ODR_0009_Q1))
 
     # --- ObjectProperty: opda:attestedBy --------------------------------
+    # A facet borne by an opda:Evidence playing the vouch role (ODR-0027 §R2);
+    # rdfs:domain opda:Evidence (documentary, ODR-0026 §R2) — the vouch-only
+    # obligation is enforced VALUE-keyed on opda:evidenceType="Vouch" by
+    # opda:EvidenceFacetShape (ADR-0012), not by a VouchEvidence subclass.
     g.add((OPDA.attestedBy, RDF.type, OWL.ObjectProperty))
-    g.add((OPDA.attestedBy, RDFS.domain, OPDA.VouchEvidence))
+    g.add((OPDA.attestedBy, RDFS.domain, OPDA.Evidence))
     g.add((OPDA.attestedBy, RDFS.range, PROV.Agent))
     g.add((OPDA.attestedBy, RDFS.label, Literal("attested by", lang="en")))
     g.add((OPDA.attestedBy, RDFS.comment, Literal(
-        "Vouch → Agent attestation join. Mirror of prov:wasAttributedTo "
-        "for vouch-specific use. The voucher's role (e.g. "
+        "Vouch → Agent attestation join. A facet borne by evidence playing "
+        "the vouch role (opda:evidenceType 'Vouch'); mirror of "
+        "prov:wasAttributedTo for vouch-specific use. The voucher's role (e.g. "
         "opda:VoucherRole) is captured via prov:qualifiedAttribution → "
         "prov:Attribution → prov:hadRole per S009 Q2 qualified-form "
-        "discipline.",
+        "discipline. Presence is required value-keyed when evidenceType='Vouch' "
+        "(opda:EvidenceFacetShape, ADR-0012).",
         lang="en",
     )))
     g.add((OPDA.attestedBy, DCTERMS.source, _ODR_0009_Q1))
 
-    # --- ObjectProperty: opda:evidenceType (Council session-035) --------
-    # The governed evidence-KIND facet: replaces the retired short-name
-    # owl:equivalentClass aliases. Range is a skos:Concept from
-    # opda:EvidenceMethodScheme (OIDC4IDA evidence.type). Validated by
-    # opda:EvidenceFacetShape (sh:in the scheme members + per-kind
-    # sh:qualifiedValueShape dispatch; ADR-0012). rdfs:range is documentary
-    # under ODR-0026 §R2 (model-but-don't-evaluate); the real constraint is SHACL.
+    # --- DatatypeProperty: opda:evidenceType (the isMemberOf classifier) -
+    # ODR-0027 §R6: the coded evidence-KIND classification that replaced both
+    # the retired short-name aliases (session-035) AND the retired …Evidence
+    # subclass tree. Value = an opda:EvidenceMethodScheme member notation
+    # (OIDC4IDA evidence.type). Validated by opda:EvidenceTypeValueShape (sh:in
+    # the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space
+    # idiom) + opda:EvidenceFacetShape (the value-keyed per-kind obligations).
+    # rdfs:range is documentary (ODR-0026 §R2); the real constraint is SHACL.
     g.add((OPDA.evidenceType, RDF.type, OWL.DatatypeProperty))
     g.add((OPDA.evidenceType, RDFS.domain, OPDA.Evidence))
     g.add((OPDA.evidenceType, RDFS.range, XSD.string))
@@ -411,14 +345,14 @@ def build_graph() -> Graph:
     g.add((OPDA.evidenceType, RDFS.comment, Literal(
         "The OIDC4IDA acquisition kind of a piece of evidence — the "
         "opda:EvidenceMethodScheme member notation (Document / "
-        "Electronic-Record / Vouch). The governed, extensible discriminator "
-        "that replaced the retired short-name owl:equivalentClass aliases "
-        "(Council session-035), validated by opda:EvidenceTypeValueShape "
-        "(sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType "
-        "value-space idiom). Each evidence subclass skos:exactMatch-es its "
-        "scheme concept (ODR-0011 §8a), so rdf:type dispatch and coded-value "
-        "dispatch stay interoperable. rdfs:domain is documentary "
-        "(ODR-0026 §R2); the real constraint is SHACL.",
+        "Electronic-Record / Vouch). The governed isMemberOf classifier "
+        "(ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree "
+        "(a Role is never rdfs:subClassOf a Kind); it replaced the retired "
+        "short-name aliases and the retired …Evidence subclasses. Validated by "
+        "opda:EvidenceTypeValueShape (sh:in the scheme, via "
+        "sh:targetSubjectsOf — the opda:ownerType value-space idiom). "
+        "rdfs:domain/range are documentary (ODR-0026 §R2); the real "
+        "constraint is SHACL.",
         lang="en",
     )))
     g.add((OPDA.evidenceType, DCTERMS.source, _ODR_0009_Q1))

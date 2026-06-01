@@ -29,18 +29,6 @@ opda:ClaimIdentityKeyShape
     sh:property _:b2b18495da174 ;
     sh:targetClass opda:Claim .
 
-opda:DocumentEvidenceCoherenceShape
-    rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    sh:property _:b135eca6ec330 ;
-    sh:targetClass opda:DocumentEvidence .
-
-opda:ElectronicRecordEvidenceCoherenceShape
-    rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    sh:property _:b9c5f217f1072 ;
-    sh:targetClass opda:ElectronicRecordEvidence .
-
 opda:EvidenceFacetShape
     rdf:type sh:NodeShape ;
     dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
@@ -83,12 +71,6 @@ opda:VerificationActivitySuccessionRule
     sh:severity sh:Info ;
     sh:targetClass opda:VerificationActivity .
 
-opda:VouchEvidenceCoherenceShape
-    rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
-    sh:property _:b70249d4b64dd ;
-    sh:targetClass opda:VouchEvidence .
-
 _:b28ba9d05939d
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
@@ -96,12 +78,6 @@ _:b28ba9d05939d
 _:bb11b45f9d7c0
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
-
-_:b135eca6ec330
-    sh:hasValue "Document" ;
-    sh:message "An opda:DocumentEvidence MUST carry opda:evidenceType 'Document' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
-    sh:path opda:evidenceType ;
-    sh:severity sh:Violation .
 
 _:b14e9dedb13dc
     sh:class prov:Agent ;
@@ -131,20 +107,8 @@ _:b64cd56bf2a15
     rdf:first "Vouch" ;
     rdf:rest rdf:nil .
 
-_:b70249d4b64dd
-    sh:hasValue "Vouch" ;
-    sh:message "An opda:VouchEvidence MUST carry opda:evidenceType 'Vouch' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
-    sh:path opda:evidenceType ;
-    sh:severity sh:Violation .
-
 _:b85bde3319752
     sh:not _:bfe7c49b7f882 .
-
-_:b9c5f217f1072
-    sh:hasValue "Electronic-Record" ;
-    sh:message "An opda:ElectronicRecordEvidence MUST carry opda:evidenceType 'Electronic-Record' — the class and the coded value must agree (Council session-036 class↔value coherence; the skos:exactMatch bridge, enforced in SHACL)."@en ;
-    sh:path opda:evidenceType ;
-    sh:severity sh:Violation .
 
 _:ba3ea797b70ff
     rdf:first "Document" ;

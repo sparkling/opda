@@ -1022,34 +1022,13 @@ def build_claim_shapes() -> Graph:
         lang="en",
     )))
 
-    # --- Council session-036: the one principled class-keyed shape -------
-    # opda:EvidenceClassCoherenceShape — value-keyed enforcement is rdf:type-
-    # blind, so this is the ONE place class-targeting is correct: it enforces in
-    # SHACL the type↔value agreement that skos:exactMatch only documents
-    # (ODR-0026 §R2 leaves equivalentClass/exactMatch unevaluated). Each evidence
-    # subclass MUST carry its matching opda:evidenceType code (Guizzardi residue,
-    # accepted by Knublauch; session-036 §Q3 item 4).
-    for _cls, _code in (
-        (OPDA.DocumentEvidence, "Document"),
-        (OPDA.ElectronicRecordEvidence, "Electronic-Record"),
-        (OPDA.VouchEvidence, "Vouch"),
-    ):
-        _shape_iri = OPDA[f"{str(_cls).rsplit('#', 1)[-1]}CoherenceShape"]
-        _coh_p = BNode()
-        g.add((_shape_iri, RDF.type, SH.NodeShape))
-        g.add((_shape_iri, SH.targetClass, _cls))
-        g.add((_shape_iri, SH.property, _coh_p))
-        g.add((_shape_iri, DCTERMS.source, _ODR_0009_Q1))
-        g.add((_coh_p, SH.path, OPDA.evidenceType))
-        g.add((_coh_p, SH.hasValue, Literal(_code)))
-        g.add((_coh_p, SH.severity, SH.Violation))
-        g.add((_coh_p, SH.message, Literal(
-            f"An opda:{str(_cls).rsplit('#', 1)[-1]} MUST carry "
-            f"opda:evidenceType '{_code}' — the class and the coded value must "
-            "agree (Council session-036 class↔value coherence; the skos:exactMatch "
-            "bridge, enforced in SHACL).",
-            lang="en",
-        )))
+    # --- Council session-036's class↔value coherence shapes: RETIRED -----
+    # ODR-0027 §R6 retired the …Evidence subclasses (evidence-kind is now the
+    # coded opda:evidenceType classification, not a subclass tree). With no
+    # subclasses to cohere against, the opda:*CoherenceShape family is dropped;
+    # enforcement rests on the value-keyed opda:EvidenceTypeValueShape (value-
+    # space gate) + opda:EvidenceFacetShape (per-kind obligations), both
+    # sh:targetSubjectsOf opda:evidenceType — entailment-free and subclass-free.
 
     # --- Cat 2: Unprovenanced Claim shape (per ODR-0013 §Q1 + ODR-0009) -
     # ODR-0013 §Severity tiering: an unprovenanced Claim (no

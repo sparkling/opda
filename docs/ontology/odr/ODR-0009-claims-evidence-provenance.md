@@ -230,7 +230,7 @@ No collapse; the subclasses stand as structure-bearers. Codified generally in OD
 - `opda:AttachedDocument` — the one genuine **Kind** (own IC: content + issuing activity, ODR-0024 §R7) — **stays** an OWL class; a document *plays* the evidence role, it is not sub-classed into it.
 - The `*CoherenceShape` family (class↔value, session-036) is dropped (no `…Evidence` classes to cohere); the value-space gate (`EvidenceTypeValueShape`) + value-keyed obligation (`EvidenceFacetShape`) carry enforcement.
 
-**Status: recorded + mandated; emitter re-model (claim.py / shapes.py / annotations.py / exemplars; ADR-0011/0012) PENDING implementation** — flagged here as the accepted-but-unbuilt step, consistent with how this corpus tracks the accepted-but-pending Jena validator swap (ADR-0036/0037).
+**Status: IMPLEMENTED (2026-06-01).** The emitter re-model landed: `claim.py` retired the three `…Evidence` subclasses (`opda:Evidence` is now `owl:Class, opda:RoleMixin` only; `opda:AttachedDocument` stays the Kind); `opda:evidenceType` is the coded classifier; `opda:attestedBy` re-homed `rdfs:domain opda:Evidence` (a role-borne facet); `shapes.py` dropped the `*CoherenceShape` family (no subclasses to cohere), enforcement value-keyed on `opda:EvidenceTypeValueShape` + `opda:EvidenceFacetShape`; `annotations.py` re-pointed the 3 DPV refinements to `opda:Evidence` + `opda:evidenceType` `variantValue`; the 3 exemplars re-typed to `a opda:Evidence`. All 7 CI gates + 337 pytest + 27 round-trip green; byte-identity re-pinned.
 
 ## Alternatives
 

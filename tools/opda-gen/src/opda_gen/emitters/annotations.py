@@ -434,43 +434,48 @@ def build_claim_annotations() -> Graph:
         source_iri=_ODR_0009_Q6,
     )
 
-    # --- Evidence subclass refinements per ODR-0009 §Q6 ---------------
-    # DocumentEvidence — regulated-profession provenance → PublicTask
+    # --- Evidence-KIND refinements per ODR-0009 §Q6 (value-keyed) ------
+    # ODR-0027 §R6: the …Evidence subclasses are retired; evidence-kind is the
+    # coded opda:evidenceType classification. Each refinement keys on
+    # kind=opda:Evidence + variantPredicate=opda:evidenceType + the OIDC4IDA
+    # notation value (matching opda:EvidenceMethodScheme + the exemplars), so the
+    # per-kind lawful-basis distinction is preserved on the coded value, not a
+    # subclass rdf:type.
+    # Document-kind — regulated-profession provenance → PublicTask
     _add_dpv_variant_refinement(
         g,
         map_iri=OPDA.DocumentEvidenceRefinement,
-        kind=OPDA.DocumentEvidence,
-        variant_predicate=RDF.type,
-        variant_value="document-evidence",
+        kind=OPDA.Evidence,
+        variant_predicate=OPDA.evidenceType,
+        variant_value="Document",
         lawful_basis=DPV_PUBLICTASK,
         regulator_source=URIRef(
             "https://ico.org.uk/for-organisations/guide-to-data-protection/"
         ),
         source_iri=_ODR_0009_Q6,
     )
-    # ElectronicRecordEvidence — statutory provenance → LegalObligation
-    # (we use DPV_LEGITIMATEINTEREST as the closest DPV term currently
-    # in the bootstrap registry; full DPV namespace expansion is
+    # Electronic-Record kind — statutory provenance → LegitimateInterest
+    # (closest DPV term in the bootstrap registry; full DPV expansion
     # deferred to ADR-0013).
     _add_dpv_variant_refinement(
         g,
         map_iri=OPDA.ElectronicRecordEvidenceRefinement,
-        kind=OPDA.ElectronicRecordEvidence,
-        variant_predicate=RDF.type,
-        variant_value="electronic-record-evidence",
+        kind=OPDA.Evidence,
+        variant_predicate=OPDA.evidenceType,
+        variant_value="Electronic-Record",
         lawful_basis=DPV_LEGITIMATEINTEREST,
         regulator_source=URIRef(
             "https://ico.org.uk/for-organisations/guide-to-data-protection/"
         ),
         source_iri=_ODR_0009_Q6,
     )
-    # VouchEvidence — private grant → Consent
+    # Vouch kind — private grant → Consent
     _add_dpv_variant_refinement(
         g,
         map_iri=OPDA.VouchEvidenceRefinement,
-        kind=OPDA.VouchEvidence,
-        variant_predicate=RDF.type,
-        variant_value="vouch-evidence",
+        kind=OPDA.Evidence,
+        variant_predicate=OPDA.evidenceType,
+        variant_value="Vouch",
         lawful_basis=DPV_CONSENT,
         regulator_source=URIRef(
             "https://ico.org.uk/for-organisations/guide-to-data-protection/"

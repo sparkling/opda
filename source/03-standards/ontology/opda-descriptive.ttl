@@ -276,7 +276,7 @@ opda:districtCouncil
 opda:documentDate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "document date"@en ;
-    rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — NOT opda:Document/DocumentEvidence, so an attached doc is not entailed eIDAS evidence); flat per §Q6a."@en ;
+    rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — an attached doc is NOT evidence by mere attachment; a document plays the evidence role via opda:evidenceType, ODR-0027 §R6); flat per §Q6a."@en ;
     dct:source <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].additionalDocuments[].documentDate>, <https://w3id.org/opda/data-dictionary#propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentDate> ;
     rdfs:domain opda:AttachedDocument ;
     rdfs:range xsd:date .

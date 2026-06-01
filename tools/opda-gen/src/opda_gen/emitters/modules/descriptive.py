@@ -953,8 +953,9 @@ def build_graph() -> Graph:
             OPDA.documentDate, OPDA.AttachedDocument, XSD.date, "document date",
             "Date of a title / additional document. xsd:date. Domain "
             "opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — "
-            "NOT opda:Document/DocumentEvidence, so an attached doc is not "
-            "entailed eIDAS evidence); flat per §Q6a.",
+            "an attached doc is NOT evidence by mere attachment; a document "
+            "plays the evidence role via opda:evidenceType, ODR-0027 §R6); "
+            "flat per §Q6a.",
             (
                 "propertyPack.titlesToBeSold[].additionalDocuments[]."
                 "documentDate",
