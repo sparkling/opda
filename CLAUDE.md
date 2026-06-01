@@ -84,11 +84,9 @@ npm run lint
 | Situation | Use | Never |
 |---|---|---|
 | Multi-file / fan-out work | `Agent` tool, `run_in_background:true`, all spawns in ONE message | Poll status; use CLI as substitute |
-| High-stakes decision, ADR ratification, multi-perspective review | `hive-mind_spawn` (or `ruflo hive-mind spawn --claude`) | Treat as anti-sprawl violation |
 | Reflexive coordination at task start | (skip) | `swarm_init` unless user asked or persistent state needed |
 | User explicitly asked for a claude-flow swarm | `swarm_init` (CLI auto-reuses matching) | `--new` flag unless parallel swarm genuinely needed |
 
-- Use `hive-mind_spawn` (or `ruflo hive-mind spawn --claude`) when convening a council: named experts, per-question voting, Byzantine consensus, queen synthesis. (ADR-0115 carve-out — NOT bundled into swarm-sprawl prohibition.)
 - DO NOT call `swarm_init` reflexively at task start (ADR-0098 — applies to flat-coordination swarms only).
 - After spawning agents: STOP and wait for results. Do not poll.
 
@@ -99,7 +97,6 @@ When you need a capability, choose in this order. Stop at the first match.
 | You need to... | Use | Prefer over |
 |---|---|---|
 | Coordinate parallel sub-tasks | `Agent` tool with `run_in_background: true` | `swarm_init` for one-shot work |
-| Convene a council on a high-stakes decision | `mcp__ruflo__hive-mind_spawn` (or invoke the `hive-mind-advanced` skill) | `Agent` fan-out (no synthesis) |
 | Persist patterns/decisions across sessions | `mcp__ruflo__memory_store` | Writing to MEMORY.md from in-session work |
 | Recall past decisions/patterns | `mcp__ruflo__memory_search` | Asking the user to re-explain |
 
