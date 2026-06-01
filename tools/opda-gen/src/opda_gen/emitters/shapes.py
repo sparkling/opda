@@ -383,6 +383,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
     g.add((OPDA.ShInSemantics_MetaShape, DCTERMS.source, _ODR_0010_RULE_IN))
     g.add((sparql_in, SH.select, Literal(
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
         "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n"
         "SELECT ?overlayShape ?value WHERE {\n"
         "  ?overlayShape sh:property [\n"

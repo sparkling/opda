@@ -69,7 +69,7 @@ opda:ShInSemantics_MetaShape
     dct:source <https://w3id.org/opda/odr/ODR-0010#section-Rule-sh-in> ;
     sh:message "Overlay profile sh:in constraint must union into the base SKOS scheme members (ODR-0010 three-rule interface contract, Rule 1)."@en ;
     sh:severity sh:Violation ;
-    sh:sparql _:ba5e7fdcce4fc ;
+    sh:sparql _:b397fb8fe7504 ;
     sh:targetClass sh:NodeShape ;
     opda:metaShapeJustification "ODR-0010 three-rule interface contract Rule 1: overlay sh:in MUST be a subset of base sh:in (which itself unions into the SKOS scheme members per ODR-0011)."@en .
 
@@ -90,11 +90,11 @@ _:be6b6213de607
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dct: <http://purl.org/dc/terms/>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nCONSTRUCT {\n  ?concept opda:hasDeprecationStatus ?status .\n  ?concept opda:hasSuccessor ?successor .\n}\nWHERE {\n  ?concept a skos:Concept ;\n           owl:deprecated true .\n  OPTIONAL { ?concept dct:isReplacedBy ?successor }\n  BIND (IF(BOUND(?successor), \"with-succession\", \"without-succession\") AS ?status)\n}" .
 
+_:b397fb8fe7504
+    sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT ?overlayShape ?value WHERE {\n  ?overlayShape sh:property [\n    sh:path ?path ;\n    sh:in/rdf:rest*/rdf:first ?value\n  ] .\n  ?baseShape sh:property [\n    sh:path ?path ;\n    sh:in/rdf:rest*/rdf:first ?baseValue\n  ] .\n  FILTER NOT EXISTS {\n    ?baseScheme skos:hasTopConcept|skos:member ?value .\n  }\n}" .
+
 _:b4c20cfb30e26
     sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nSELECT ?overlayShape ?path WHERE {\n  ?overlayShape sh:property [\n    sh:path ?path ;\n    sh:severity ?overlaySev\n  ] .\n  ?baseShape sh:property [\n    sh:path ?path ;\n    sh:severity sh:Violation\n  ] .\n  FILTER (?overlaySev != sh:Violation)\n}" .
-
-_:ba5e7fdcce4fc
-    sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT ?overlayShape ?value WHERE {\n  ?overlayShape sh:property [\n    sh:path ?path ;\n    sh:in/rdf:rest*/rdf:first ?value\n  ] .\n  ?baseShape sh:property [\n    sh:path ?path ;\n    sh:in/rdf:rest*/rdf:first ?baseValue\n  ] .\n  FILTER NOT EXISTS {\n    ?baseScheme skos:hasTopConcept|skos:member ?value .\n  }\n}" .
 
 _:be563e0a22322
     sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX opda: <https://w3id.org/opda/#>\nSELECT ?shape WHERE {\n  ?shape sh:targetClass sh:NodeShape .\n  ?shape sh:severity sh:Violation .\n  FILTER NOT EXISTS {\n    ?shape opda:metaShapeJustification ?j .\n  }\n}" .
