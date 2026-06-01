@@ -22,7 +22,9 @@ implements: []
 >
 > Prefix: `@prefix opda: <https://w3id.org/opda/pdtf/> .` — so `opda:Property` → `https://w3id.org/opda/pdtf/Property`.
 >
-> A second namespace, **`https://w3id.org/opda/harness/`**, replaces `openpropdata.org.uk` for every **non-term build/governance artefact** (ADRs, ODRs, exemplars, named graphs, instance/test data). The **standard's content** (terms, SKOS schemes, the data-dictionary) lives under `…/pdtf/`; the **harness** holds everything that is *about* the standard rather than *part of* it.
+> A second namespace, **`https://w3id.org/opda/harness/`**, replaces `openpropdata.org.uk`. The dividing line is **standard entities vs physical resources**:
+> - **`…/pdtf/`** holds *only* the abstract published **standard entities** — the ontology classes and properties, and the SKOS concept schemes + concepts the standard defines. These are what a consumer cites *as* the PDTF standard.
+> - **`…/harness/`** holds everything else: **physical resources** (the data-dictionary's concrete PDTF data-field entries; instance/test data; named graphs) and the **governance/build apparatus** (ADRs, ODRs, exemplars). The data-dictionary is *not* a standard entity — its entries are the physical PDTF data fields, so they live in the harness, not `/pdtf/`.
 >
 > ### Canonical mapping (old → new)
 > | Kind | Old | New |
@@ -30,7 +32,7 @@ implements: []
 > | Ontology term | `…/opda/#Property` | `…/opda/pdtf/Property` |
 > | SKOS concept | `…/opda/#role/Buyer` | `…/opda/pdtf/role/Buyer` |
 > | Concept scheme | `…/opda/vocabularies/role` | `…/opda/pdtf/role` |
-> | data-dictionary entry | `…/opda/data-dictionary#propertyPack.x.y` | `…/opda/pdtf/data-dictionary/propertyPack.x.y` |
+> | data-dictionary entry *(physical PDTF data field — **not** a standard entity)* | `…/opda/data-dictionary#propertyPack.x.y` | `…/opda/harness/data-dictionary/propertyPack.x.y` |
 > | Version IRI | `…/opda/1.0.0/` | *removed* → `…/opda/pdtf/` + `owl:versionInfo "1.0.0"` |
 > | Per-module ontology IRIs | `…/opda/property`, `…/opda/property-shapes`, `…/opda/property/1.0.0/` | single flat `…/opda/pdtf/` namespace (no module segment) |
 > | Profile | `…/opda/profiles/baspi5/0.1.0/` | `…/opda/pdtf/profiles/baspi5` |
@@ -39,12 +41,28 @@ implements: []
 > | ADR citation | `openpropdata.org.uk/adr/ADR-NNNN-slug` | `…/opda/harness/adr/ADR-NNNN-slug` |
 > | ODR anchor | `…/opda/odr/ODR-NNNN#section-5a` | `…/opda/harness/odr/ODR-NNNN/section-5a` |
 > | Exemplar anchor | `openpropdata.org.uk/data/exemplar/<stem>` | `…/opda/harness/data/exemplar/<stem>` |
+> | SHACL shape *node* (base + profile) | `…/opda/#PropertyShape` | `…/opda/pdtf/PropertyShape` (co-normative; **no `/shacl/`**) — *session-037 Q7* |
+> | SHACL shape / profile *document* | `…/opda/property-shapes`, `…/opda/profiles/baspi5` (doc IRI) | `…/opda/harness/…` (graph/document) — *session-037 Q7/Q8* |
+> | Profile (form overlay) | `…/opda/profiles/baspi5/0.1.0/` | default `…/opda/harness/profiles/baspi5`; `…/opda/pdtf/profiles/baspi5` only on warranted adoption — *session-037 Q8, operator call* |
 >
 > ### Implementation note — multi-file ontology identity
 > With no module segment, the six module TTLs can no longer each carry a distinct `…/opda/<module>` `owl:Ontology` IRI. Resolution: the published ontology is **one** `owl:Ontology` at `https://w3id.org/opda/pdtf/` (declared once); the module files contribute terms to it and are **not separately addressable** in the term URL scheme. Any document-level identity the build needs (e.g. per-file provenance) uses the **harness** namespace, never the `/pdtf/` term space.
 >
 > ### Redirect infrastructure (revised)
-> Two W3C PICG redirects: **`/opda/pdtf/`** (the standard) and **`/opda/harness/`** (governance/build) → the hosting target(s). The bare `/opda/` redirect may remain for the organisation. The original single `/opda/ → openpropdata.org.uk/ontology/` rule below is superseded.
+> Two W3C PICG redirects: **`/opda/pdtf/`** (the standard entities) and **`/opda/harness/`** (physical resources + governance/build) → the hosting target(s). The bare `/opda/` redirect may remain for the organisation. The original single `/opda/ → openpropdata.org.uk/ontology/` rule below is superseded.
+>
+> ### Council session-037 dispositions (2026-06-01) — proposed, operator ratifies
+>
+> [Session 037](../ontology/odr/council/session-037-url-scheme.md) (Full Council; Queen Kendall, DA Davis; Baker, Gandon, Allemang, Knublauch, Pandit) reviewed this scheme against best practice + the hm and DPV prior art. Decisive criterion (Baker, all-voices): **governance/identity boundaries in the URI; logical/serialisation/version distinctions in the triples — never in the URI string.** The base path (Q1, 7-0-0), version-out-of-IRI (Q3), flat namespace (Q4, 6-1-0), and the standard/physical distinction + data-dictionary→harness (Q5/Q6) are **affirmed**. Six amendments fold in:
+>
+> 1. **Q2 (slash) — conditional (5-1-1).** Slash is retained, but rule 2 MUST add a dereference commitment or the URIs 404: *"Per-term slash URIs resolve via 302 to the single `pdtf` ontology document, which returns the full graph; opda does not commit to per-term content negotiation at this scale. Reopening trigger: a named consumer requires per-term partial retrieval, OR any single served document exceeds ~1,000 terms in active dereference traffic."* **HELD DISSENT (Gandon + Davis):** a hash *within* the standard segment (`https://w3id.org/opda/pdtf#Property`) is the lower-risk, DPV-aligned option for a ≈147-term vocabulary. **Re-open trigger:** if the slash-resolution infrastructure above is not actually delivered, the hash option is reinstated.
+> 2. **Q3 (versioning).** Keep the version-free term IRI **and** carry both `owl:versionIRI` and `owl:versionInfo` on the ontology header (OWL 2 §3.1 — `versionInfo` alone has no machine identity), plus a dated release snapshot under `/harness/release/<v>/`.
+> 3. **Q4 (flat).** Flat now, with a recorded reopening criterion: *introduce a module segment only when a sub-vocabulary acquires an independent versioning clock OR is adopted/imported independently of the whole.*
+> 4. **Q5 (split).** Keep `/pdtf/` vs `/harness/`, but govern membership by the **mechanical test "is it in the published graph? + `rdf:type`"** (Davis; aligns with ODR-0027 classification-over-inheritance), with **one-directional dependency** (nothing in `/pdtf/` may `rdfs:isDefinedBy`/depend on `/harness/`; Baker). Realisation note (Allemang): `/harness/` MAY be a path under one `/opda/` PICG redirect rather than a second coordinate root — a deploy-side choice ADR-0006 already decouples from URI policy.
+> 5. **Q7 (SHACL shapes) — 7-0-0.** Shape **nodes** (base + profile, `opda:` namespace) → `/pdtf/` (co-located with their `sh:targetClass`; co-normative with the ontology). Shape **documents** (serialised files / named graphs) → `/harness/`. **No `/shacl/` namespace** — the shapes-graph/data-graph separation (SHACL Rec §1.5) is a graph-level partition, not a naming one. *(This resolves the directing-authority's `/shacl/` question: rejected.)*
+> 6. **Q8 (profiles) — disaggregate + WARRANTY test.** Profile **documents + conformant-submission fixtures** → `/harness/`. Profile **shape-node/resource** placement is governed by **warranty, not subject-matter** (Pandit): a profile opda governs and warrants as a normative PDTF conformance target → `/pdtf/profiles/<form>`; an overlay that merely maps to an externally-owned form (`dct:source` → third-party instrument: BASPI/TA6/CON29/LLC1) → `/harness/profiles/<form>`. **Default the 31 form overlays to `/harness/profiles/`; promote individually on a recorded warranted adoption.** ⚠ **OPERATOR POLICY CALL (open):** does opda publish the overlay profiles AS normative parts of the PDTF standard (→ promote to `/pdtf/profiles/`), or as opda's mapping-views onto externally-owned forms (→ `/harness/profiles/`)? The council defaults to harness pending this ruling.
+>
+> **Framing correction (record):** opda diverges from **both** DPV (slash-module + `#`-terms) and hm (`/ns/pf/`, `/ns/sds/` context modules) on hash (Q2) and modules (Q4) — *deliberately, on pre-publication + single-context grounds*. DPV is a **counter-precedent** to flat-slash-per-term, not an endorsement of it; do not cite it as supporting slash.
 
 ## Context and Problem Statement
 
