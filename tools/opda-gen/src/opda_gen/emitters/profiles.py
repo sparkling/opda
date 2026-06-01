@@ -266,7 +266,26 @@ _EXTENSION_TITLES: dict[str, str] = {
 }
 
 
+# --- S034 enumeration scope (ADR-0029 gap-1) -----------------------------
+# The 12 ref-carrying main forms enumerated by the bind-only-what-exists
+# resolver. oc1/llc1 are ODR-0008d authority-retrieved register EXTRACTS
+# (zero form-question refs is ontologically correct) — they stay THIN, held
+# per S034 Q2 (re-open trigger: a register-data consumer query). The 16 NTS2
+# extensions (all keyed on `ntsRef`) are also enumerated.
+_ENUMERATED_MAIN_OVERLAYS: tuple[str, ...] = (
+    "ta6", "ta7", "ta10", "lpe1", "fme1", "piq", "rds",
+    "con29R", "con29DW", "sr24", "nts2", "ntsl2",
+)
+_THIN_MAIN_OVERLAYS: tuple[str, ...] = ("oc1", "llc1")
+
+
 def _thin_description(title: str, community: URIRef) -> str:
+    """Thin (header + community) description for oc1/llc1 — the two held
+    ODR-0008d authority-retrieved register extracts (S034 Q2; held-as-live,
+    Davis). Kept VERBATIM from the pre-S034 emission so oc1.ttl / llc1.ttl
+    stay byte-identical (the S034 implementation regression gate). The
+    re-typing as register artefacts is recorded in ODR-0008d / the session
+    record, not minted into the thin TTL (it would break byte-identity)."""
     ctx = str(community).rsplit("#", 1)[-1]
     return (
         f"SHACL overlay profile for {title}. Per S022 (ODR-0010 / "
@@ -278,26 +297,106 @@ def _thin_description(title: str, community: URIRef) -> str:
     )
 
 
-def _thin_specs() -> dict[str, ProfileSpec]:
-    """Build the 30 thin (header + community) non-BASPI5 ProfileSpecs."""
+def _enumerated_specs() -> dict[str, ProfileSpec]:
+    """Build the enumerated (S034) ProfileSpecs: the 12 ref-carrying main
+    forms + the 16 NTS2 extensions.
+
+    Coverage is computed ONCE per form at spec-construction time (walking the
+    overlay through the resolver) so the per-form gap register can be baked
+    into the spec ``description`` (S034 Q4: emitted, literal). The
+    ``shape_builder`` is a closure factory-bound to ``form_id`` that re-runs
+    the enumeration onto the profile graph at emit time (deterministic — same
+    inputs, same output).
+    """
+    from opda_gen.inputs.leaf_resolver import (
+        bind,
+        emitted_predicates,
+        walk_form,
+    )
+
+    onto_dir = _default_ontology_dir_for_resolver()
+    predicates = emitted_predicates(onto_dir)
+
+    def _coverage(form_id: str) -> dict[str, object]:
+        form = walk_form(form_id, _overlay_path(form_id))
+        seen: set[str] = set()
+        gaps: dict[str, list[str]] = {}
+        bound = 0
+        for leaf in form.leaves:
+            if leaf.ref in seen:
+                gaps.setdefault("ref-collision", []).append(leaf.leaf_path)
+                continue
+            seen.add(leaf.ref)
+            pred = bind(leaf, predicates)
+            if pred is not None:
+                bound += 1
+                continue
+            from opda_gen.inputs.leaf_resolver import resolve
+            resolved = resolve(leaf.name)
+            if resolved not in predicates:
+                gaps.setdefault("no-predicate", []).append(leaf.leaf_path)
+            elif predicates[resolved].domain_iri is None:
+                gaps.setdefault("no-domain", []).append(leaf.leaf_path)
+            else:
+                gaps.setdefault("collider-ambiguous", []).append(
+                    leaf.leaf_path
+                )
+        return {
+            "total": len(form.leaves),
+            "bound": bound,
+            "gapped": sum(len(v) for v in gaps.values()),
+            "gaps_by_reason": gaps,
+        }
+
+    def _builder(form_id: str) -> Callable[[Graph, URIRef], None]:
+        def build(g: Graph, profile_iri: URIRef) -> None:
+            _build_enumerated_shapes_for(g, profile_iri, form_id)
+        return build
+
     specs: dict[str, ProfileSpec] = {}
-    for fid, title in _MAIN_FORM_TITLES.items():
+    for fid in _ENUMERATED_MAIN_OVERLAYS:
+        title = _MAIN_FORM_TITLES[fid]
+        community = OVERLAY_COMMUNITY[fid]
+        cov = _coverage(fid)
+        specs[fid] = ProfileSpec(
+            form_id=fid,
+            title=f"{title} overlay profile",
+            description=_gap_register_description(title, cov),
+            community=community,
+            dct_source=_ADR_0029,
+            shape_builder=_builder(fid),
+            comment_header=_enumerated_comment_header,
+        )
+    for code, topic in _EXTENSION_TITLES.items():
+        community = OVERLAY_COMMUNITY[code]
+        title = f"NTS2 extension: {topic}"
+        cov = _coverage(code)
+        specs[code] = ProfileSpec(
+            form_id=code,
+            title=f"{title} overlay profile",
+            description=_gap_register_description(title, cov),
+            community=community,
+            dct_source=_ADR_0029,
+            shape_builder=_builder(code),
+            comment_header=_enumerated_comment_header,
+        )
+    return specs
+
+
+def _thin_specs() -> dict[str, ProfileSpec]:
+    """Build the thin (header + community) non-BASPI5 ProfileSpecs.
+
+    Per S034 only oc1/llc1 stay thin (ODR-0008d authority-retrieved register
+    extracts, held). The 12 ref-carrying mains + 16 extensions are now
+    ENUMERATED (`_enumerated_specs`)."""
+    specs: dict[str, ProfileSpec] = {}
+    for fid in _THIN_MAIN_OVERLAYS:
+        title = _MAIN_FORM_TITLES[fid]
         community = OVERLAY_COMMUNITY[fid]
         specs[fid] = ProfileSpec(
             form_id=fid,
             title=f"{title} overlay profile",
             description=_thin_description(title, community),
-            community=community,
-            dct_source=_ADR_0029,
-            comment_header=_thin_comment_header,
-        )
-    for code, topic in _EXTENSION_TITLES.items():
-        community = OVERLAY_COMMUNITY[code]
-        full = f"the NTS2 extension overlay ({topic})"
-        specs[code] = ProfileSpec(
-            form_id=code,
-            title=f"NTS2 extension: {topic} overlay profile",
-            description=_thin_description(full, community),
             community=community,
             dct_source=_ADR_0029,
             comment_header=_thin_comment_header,
@@ -327,6 +426,247 @@ def _thin_comment_header(
         "# S022/ADR-0029: a form IS its SHACL overlay graph. This profile "
         "is THIN (header + community tag) pending the ADR-0028 descriptive-"
         "layer terms that give its leaves opda: property paths to constrain.",
+        "",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+# --- S034 overlay-leaf enumerator (ADR-0029 gap-1) -----------------------
+# The generic `shape_builder` that enumerates a ref-carrying overlay's
+# *bindable* leaves into SHACL NodeShapes via the bind-only-what-exists
+# resolver (opda_gen.inputs.leaf_resolver). Council session-034 ruling:
+# "full coverage" = full coverage of the bindable set + an emitted per-form
+# gap register. A GAPped leaf emits NO sh:path and NO dct:source (so the
+# hard G3 gate stays green) but IS named in the form's gap register.
+_OVERLAYS_SUBPATH = (
+    "source/03-standards/schemas/src/schemas/v3/overlays"
+)
+
+
+def _overlays_dir() -> Path:
+    """Resolve the PDTF v3 overlays directory (the nested upstream schemas
+    repo). Walks upward from this module for the OPDA repo root (a dir with
+    both `.git` and `source/03-standards/`), mirroring the cli.py locator.
+    """
+    here = Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / ".git").exists() and (
+            parent / "source" / "03-standards"
+        ).exists():
+            return parent / _OVERLAYS_SUBPATH
+    return Path.cwd() / _OVERLAYS_SUBPATH
+
+
+def _overlay_path(form_id: str) -> Path:
+    """The overlay JSON path for ``form_id`` (extensions live one level down)."""
+    from opda_gen.inputs.leaf_resolver import _EXTENSION_CODES
+
+    base = _overlays_dir()
+    if form_id in _EXTENSION_CODES:
+        return base / "extensions" / f"{form_id}.json"
+    return base / f"{form_id}.json"
+
+
+def _title_form(form_id: str) -> str:
+    """Title-case a form id for a shape IRI segment (ta6 -> Ta6, con29R ->
+    Con29R, nts2 -> Nts2)."""
+    return form_id[:1].upper() + form_id[1:]
+
+
+def _local_name(iri: URIRef) -> str:
+    return str(iri).rsplit("#", 1)[-1].rsplit("/", 1)[-1]
+
+
+def _schema_leaf_source(schema_id: str, leaf_path: str) -> URIRef:
+    """Build the JSON-pointer schema-leaf-path `dct:source` anchor.
+
+    ODR-0022 §Rules.2 G2 (S034 amendment): a JSON-pointer into the overlay
+    schema — `<schema $id>#/path/to/field` — is an admissible `dct:source`;
+    it dereferences to the originating leaf and is NOT the deciding ODR. The
+    dotted leaf_path is rendered as a JSON Pointer (`/seg/seg`).
+    """
+    pointer = "/" + leaf_path.replace(".", "/")
+    return URIRef(f"{schema_id}#{pointer}")
+
+
+def _maybe_scheme_members(
+    range_local: str, enum: tuple[str, ...] | None,
+) -> list[str] | None:
+    """Return `sh:in` members for a bound leaf, or None.
+
+    Only when the predicate's `rdfs:range` is an emitted `opda:*Scheme` that
+    maps to a registry scheme AND the leaf carries an enum. The corpus
+    currently emits NO `*Scheme`-ranged predicates (all ranges are XSD
+    datatypes or value-structured classes), so this returns None in practice;
+    kept for forward-correctness per the S034 spec. `_scheme_members` raises
+    ValueError on an unknown scheme — caught here → omit `sh:in` on miss.
+    """
+    if not enum or not range_local.endswith("Scheme"):
+        return None
+    try:
+        return _scheme_members(range_local)
+    except ValueError:
+        return None
+
+
+def _build_enumerated_shapes_for(
+    g: Graph, profile_iri: URIRef, form_id: str,
+) -> dict[str, object]:
+    """Enumerate a ref-carrying overlay's bindable leaves into NodeShapes.
+
+    Returns a coverage dict (total ref leaves / bound / gapped-by-reason +
+    the GAP list) so the spec builder can emit the per-form gap register and
+    the caller can print coverage. Deterministic: leaves walked sorted by
+    leaf_path; bound leaves grouped by target class; shapes + properties
+    emitted in sorted order.
+
+    Contract (S034 / ODR-0022 / ODR-0024):
+    - bind each ref-bearing leaf via the resolver (else GAP);
+    - one ref -> one sh:path (dedupe; never double-bind — the G3 hard gate
+      fails on double-binds);
+    - one sh:NodeShape per (form, target-class), IRI
+      `opda:<TitleForm>_<TargetLocalName>Shape`, sh:targetClass <domain>;
+    - each leaf -> _add_property_shape(path=<pred iri>, min_count=1 iff
+      required, dct_source_iri=<JSON-pointer anchor>, severity sh:Violation,
+      sh:in only on a scheme-ranged enum leaf);
+    - GAPs emit NO sh:path + NO dct:source.
+    """
+    from opda_gen.inputs.leaf_resolver import (
+        bind,
+        emitted_predicates,
+        resolve,
+        walk_form,
+    )
+
+    onto_dir = _default_ontology_dir_for_resolver()
+    predicates = emitted_predicates(onto_dir)
+    form = walk_form(form_id, _overlay_path(form_id))
+
+    bound_by_class: dict[URIRef, list[tuple]] = {}
+    seen_refs: set[str] = set()
+    gaps_by_reason: dict[str, list[str]] = {}
+    total = len(form.leaves)
+    bound_count = 0
+
+    def _gap(reason: str, leaf_path: str) -> None:
+        gaps_by_reason.setdefault(reason, []).append(leaf_path)
+
+    for leaf in form.leaves:  # already sorted by leaf_path
+        # one ref -> one sh:path (dedupe; later same-ref leaves GAP).
+        if leaf.ref in seen_refs:
+            _gap("ref-collision", leaf.leaf_path)
+            continue
+        seen_refs.add(leaf.ref)
+
+        pred = bind(leaf, predicates)
+        if pred is None:
+            resolved = resolve(leaf.name)
+            if resolved not in predicates:
+                _gap("no-predicate", leaf.leaf_path)
+            elif predicates[resolved].domain_iri is None:
+                _gap("no-domain", leaf.leaf_path)
+            else:
+                _gap("collider-ambiguous", leaf.leaf_path)
+            continue
+
+        bound_count += 1
+        bound_by_class.setdefault(pred.domain_iri, []).append((leaf, pred))
+
+    # Emit one NodeShape per target class, deterministically.
+    for domain_iri in sorted(bound_by_class, key=str):
+        target_local = _local_name(domain_iri)
+        shape_iri = OPDA[f"{_title_form(form_id)}_{target_local}Shape"]
+        g.add((shape_iri, RDF.type, SH.NodeShape))
+        g.add((shape_iri, SH.targetClass, domain_iri))
+        for leaf, pred in sorted(
+            bound_by_class[domain_iri], key=lambda lp: lp[0].leaf_path
+        ):
+            range_local = (
+                _local_name(pred.range_iri) if pred.range_iri else ""
+            )
+            members = _maybe_scheme_members(range_local, leaf.enum)
+            _add_property_shape(
+                g, shape_iri,
+                path=pred.iri,
+                min_count=1 if leaf.required else None,
+                in_scheme_members=members,
+                dct_source_iri=_schema_leaf_source(
+                    form.schema_id, leaf.leaf_path
+                ),
+            )
+
+    return {
+        "form_id": form_id,
+        "total": total,
+        "bound": bound_count,
+        "gaps_by_reason": {k: sorted(v) for k, v in gaps_by_reason.items()},
+        "gapped": sum(len(v) for v in gaps_by_reason.values()),
+    }
+
+
+def _default_ontology_dir_for_resolver() -> Path:
+    """Resolve `source/03-standards/ontology/` for the resolver's predicate
+    inventory (the same locator the CLI uses)."""
+    here = Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / ".git").exists() and (
+            parent / "source" / "03-standards"
+        ).exists():
+            return parent / "source" / "03-standards" / "ontology"
+    return Path.cwd() / "source" / "03-standards" / "ontology"
+
+
+def _gap_register_description(title: str, coverage: dict[str, object]) -> str:
+    """The emitted per-form gap register (S034 Q4 — literally emitted, an
+    `rdfs:comment`/`dct:description` on the form header, NOT a published
+    DCTAP artefact). Names the GAP count by reason."""
+    total = coverage["total"]
+    bound = coverage["bound"]
+    gapped = coverage["gapped"]
+    by_reason = coverage["gaps_by_reason"]
+    reason_summary = (
+        ", ".join(f"{r}: {len(v)}" for r, v in sorted(by_reason.items()))
+        or "none"
+    )
+    return (
+        f"SHACL overlay profile for {title}. Per S034 (ADR-0029 gap-1) this "
+        f"graph enumerates the form's ref-bearing overlay leaves via the "
+        f"bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): "
+        f"a leaf binds to its emitted opda: predicate (with exactly one "
+        f"rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no "
+        f"dct:source). Coverage: {total} ref leaves; {bound} bindable leaves "
+        f"enumerated; {gapped} GAPped pending their opda: term "
+        f"[{reason_summary}]. dct:source on each property shape is the "
+        f"JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, "
+        f"S034-amended). The gap register is internal generator output, not a "
+        f"published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT "
+        f"discharge G3's worked-query limb (per-consumer, session-034)."
+    )
+
+
+def _enumerated_comment_header(
+    form_id: str, filename: str, emission_date: str, git_sha: str,
+) -> str:
+    """Generator-comment block for an enumerated (S034) overlay profile."""
+    lines = [
+        f"# profiles/{filename} — {form_id} overlay profile (enumerated)",
+        f"# Generated by opda-gen {__version__} at {emission_date}; "
+        f"DO NOT HAND-EDIT.",
+        "# Specification: "
+        "https://openpropdata.org.uk/adr/ADR-0007-ontology-generator-specification",
+        "# Implementation: "
+        "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
+        "# This emission: "
+        "https://openpropdata.org.uk/adr/"
+        "ADR-0029-overlay-profile-emitter-generalisation-and-rollout",
+        f"# Generator version: opda-gen-{__version__}",
+        f"# Source commit: {git_sha}",
+        "# Ratifying ODR(s): ODR-0010 (overlay-profile mechanism); ODR-0020 "
+        "(form->community via dct:subject); ODR-0022 §Rules.2 G1/G2 "
+        "(path-aware binning + JSON-pointer anchor); ODR-0024 (COLLAPSED).",
+        "# S034/ADR-0029 gap-1: this profile ENUMERATES the form's bindable "
+        "overlay leaves (bind-only-what-exists). Un-bindable leaves are "
+        "GAPped (named in the header gap register) — never fabricated.",
         "",
     ]
     return "\n".join(lines) + "\n"
@@ -371,6 +711,7 @@ def _add_property_shape(
     sh_order: int | None = None,
     sh_group: URIRef | None = None,
     form_question_anchor: str | None = None,
+    dct_source_iri: URIRef | None = None,
     message: str | None = None,
 ) -> BNode:
     """Attach a `sh:property` block to ``parent_shape`` with the given
@@ -381,6 +722,12 @@ def _add_property_shape(
     sh:severity, dash:viewer/editor, sh:order, sh:group, dct:source,
     sh:message. Each argument is honoured iff supplied; the helper does
     NOT inject defaults beyond `severity = sh:Violation`.
+
+    `dct:source` is set by EITHER ``form_question_anchor`` (the baspi5
+    `https://www.basp.uk/forms/baspi5#<anchor>` mint, ODR-0010 §Q3) OR
+    ``dct_source_iri`` (a pre-built IRI — used by the S034 overlay
+    enumerator to carry a JSON-pointer schema-leaf-path anchor,
+    ODR-0022 §Rules.2 G2 as S034-amended). At most one is given.
     """
     prop = BNode()
     g.add((parent_shape, SH.property, prop))
@@ -402,6 +749,8 @@ def _add_property_shape(
         g.add((prop, SH.group, sh_group))
     if form_question_anchor is not None:
         g.add((prop, DCTERMS.source, _baspi5_question(form_question_anchor)))
+    if dct_source_iri is not None:
+        g.add((prop, DCTERMS.source, dct_source_iri))
     if message is not None:
         g.add((prop, SH.message, Literal(message, lang="en")))
     return prop
@@ -911,7 +1260,11 @@ _BASPI5_SPEC = ProfileSpec(
     comment_header=_comment_header,
 )
 
-_PROFILE_SPECS: dict[str, ProfileSpec] = {"baspi5": _BASPI5_SPEC, **_thin_specs()}
+_PROFILE_SPECS: dict[str, ProfileSpec] = {
+    "baspi5": _BASPI5_SPEC,
+    **_enumerated_specs(),
+    **_thin_specs(),
+}
 
 
 # --- Public API ----------------------------------------------------------

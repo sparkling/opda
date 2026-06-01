@@ -55,11 +55,25 @@ OPDA = Namespace("https://w3id.org/opda/#")
 # CI module has no import dependency on the emitter (boundary discipline).
 BASPI5_FORMS_AUTHORITY = "https://www.basp.uk/forms/baspi5"
 
-# Every overlay form-question authority follows `https://www.basp.uk/forms/`
-# (the ADR-0029 per-form profile namespace). Any `dct:source` under this prefix
-# is treated as a schema leaf path (a form-question IRI); anything else (an ODR
-# section anchor, an ADR prov citation) is NOT a form leaf.
+# Schema-leaf-path authorities (ODR-0022 §Rules.2 G2, S034-amended). A
+# `dct:source` under any of these prefixes is a schema leaf path (a
+# form-question IRI or a JSON-pointer into the overlay schema); anything else
+# (an ODR section anchor, an ADR prov citation) is NOT a form leaf.
+#   - the baspi5 human form-question authority `https://www.basp.uk/forms/`
+#     (ADR-0029 per-form profile namespace);
+#   - the overlay `$id` authority `https://trust.propdata.org.uk/.../overlays/`
+#     used by the S034 enumerator's JSON-pointer anchors (`<$id>#/path/to/field`).
+# G2's "schema leaf path" is satisfied by EITHER form (S034); the gate must
+# SEE both so it counts the enumerated forms' refs and hard-fails on any
+# double-bind.
 FORMS_AUTHORITY_PREFIX = "https://www.basp.uk/forms/"
+OVERLAY_SCHEMA_AUTHORITY_PREFIX = (
+    "https://trust.propdata.org.uk/schemas/v3/overlays/"
+)
+_FORMS_AUTHORITY_PREFIXES: tuple[str, ...] = (
+    FORMS_AUTHORITY_PREFIX,
+    OVERLAY_SCHEMA_AUTHORITY_PREFIX,
+)
 
 # Schema-sanctioned shared form-question refs. baspi5.json assigns ONE
 # `baspi5Ref` to MORE THAN ONE schema leaf — a single coarse form question
@@ -79,10 +93,14 @@ _SCHEMA_SANCTIONED_SHARED_REFS: frozenset[str] = frozenset({
 
 
 def _is_form_leaf(o: object) -> bool:
-    """True iff ``o`` is a form-question IRI (a schema leaf path under the
-    overlay forms authority). Per G2 this is the `dct:source` target a
-    collapsed-category instance or G property MUST carry."""
-    return isinstance(o, URIRef) and str(o).startswith(FORMS_AUTHORITY_PREFIX)
+    """True iff ``o`` is a schema leaf path (a form-question IRI under the
+    baspi5 forms authority OR a JSON-pointer under the overlay `$id`
+    authority). Per G2 (S034-amended) this is the `dct:source` target a
+    collapsed-category instance, a G property, or an enumerated overlay
+    leaf MUST carry."""
+    return isinstance(o, URIRef) and str(o).startswith(
+        _FORMS_AUTHORITY_PREFIXES
+    )
 
 
 @dataclass(frozen=True)
