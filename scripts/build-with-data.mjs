@@ -8,27 +8,31 @@
  *   # or via npm script:
  *   npm run build:data
  *
- * Prerequisites:
- *   - Docker + `docker compose` (V2) in PATH
- *   - W-API deliverables in place:
- *       docker-compose.yml  (W-API owns this)
- *       scripts/fuseki-load (W-API owns this)
- *       src/api/server.js   (W-API owns this)
+ * Fuseki runtime (ADR-0036/0037 — full hm parity, NO Docker): the build runs a
+ * local Apache Jena Fuseki 6.1.0 binary launched against config/fuseki-config.ttl.
+ * The dist is self-provisioned (downloaded + sha512-verified into .fuseki/) when
+ * absent, so dev and CI both need only Java 17+ and network access — no Docker.
+ * Honour an external install via FUSEKI_HOME (must contain fuseki-server.jar).
  *
  * Environment:
- *   OPDA_API   — base URL for the GRLC API (default http://localhost:3000)
- *   FUSEKI_PORT — Fuseki SPARQL port (default 3030)
- *   API_PORT    — GRLC API port (default 3000)
+ *   OPDA_API    — base URL for the GRLC API (default http://localhost:3002)
+ *   FUSEKI_PORT — Fuseki SPARQL port (default 3031)
+ *   API_PORT    — GRLC API port (default 3002)
+ *   FUSEKI_HOME — optional path to a pre-installed Fuseki (skips the download)
  *
- * CI: the GitHub Actions deploy job (.github/workflows/deploy.yml) runs this
- * whole orchestration via `npm run build:data` on ubuntu-latest (Docker is
- * available there). Fuseki + the GRLC API are therefore build-exclusive and
- * ephemeral — bound to localhost on the runner, torn down at job end, never
- * deployed; only dist/ ships to Cloudflare Pages (ADR-0021 §CI integration).
- * The defaults below (API :3002, Fuseki :3031) match docker-compose.yml.
+ * CI: the GitHub Actions deploy job (.github/workflows/deploy.yml) runs this via
+ * `npm run build:data` on ubuntu-latest with a JDK provisioned by setup-java.
+ * Fuseki + the GRLC API are build-exclusive and ephemeral — bound to localhost,
+ * torn down at job end, never deployed; only dist/ ships to Cloudflare Pages.
  */
 
-import { spawn, execSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import { execSync } from 'node:child_process';
+import { createWriteStream, existsSync, mkdirSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -36,6 +40,14 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const API_PORT = process.env.API_PORT || '3002';
 const OPDA_API = process.env.OPDA_API || `http://localhost:${API_PORT}`;
 const FUSEKI_PORT = process.env.FUSEKI_PORT || '3031';
+
+// Apache Jena Fuseki 6.1.0, built from the official Apache binary distribution.
+const FUSEKI_VERSION = '6.1.0';
+const FUSEKI_TARBALL = `apache-jena-fuseki-${FUSEKI_VERSION}.tar.gz`;
+const FUSEKI_DOWNLOAD = `https://archive.apache.org/dist/jena/binaries/${FUSEKI_TARBALL}`;
+const FUSEKI_SHA512 =
+  '75457f45d14397876a41ed51abe7ae5d2f1e708dfe1315765f858158bc5c6813bc036ec1539ddc4dffd26201f5cc31fadec299ca5c3dc2548b723513ed31d326';
+const CACHE_DIR = path.join(ROOT, '.fuseki');
 
 // How long (ms) to wait for each service to be ready.
 const READY_TIMEOUT = 60_000;
@@ -68,33 +80,80 @@ async function waitForUrl(url, label) {
   throw new Error(`Timed out waiting for ${label} at ${url}`);
 }
 
+/**
+ * Resolve a Fuseki 6.1.0 `fuseki-server.jar`, downloading + verifying the
+ * Apache dist into .fuseki/ if neither FUSEKI_HOME nor a prior cache exists.
+ */
+async function ensureFuseki() {
+  if (process.env.FUSEKI_HOME) {
+    const jar = path.join(process.env.FUSEKI_HOME, 'fuseki-server.jar');
+    if (existsSync(jar)) return jar;
+    throw new Error(`FUSEKI_HOME set but ${jar} not found`);
+  }
+  const home = path.join(CACHE_DIR, `apache-jena-fuseki-${FUSEKI_VERSION}`);
+  const jar = path.join(home, 'fuseki-server.jar');
+  if (existsSync(jar)) return jar;
+
+  mkdirSync(CACHE_DIR, { recursive: true });
+  const tarball = path.join(CACHE_DIR, FUSEKI_TARBALL);
+  console.log(`  [provision] downloading Apache Jena Fuseki ${FUSEKI_VERSION}`);
+  const res = await fetch(FUSEKI_DOWNLOAD);
+  if (!res.ok) throw new Error(`Fuseki download failed: ${res.status}`);
+  await pipeline(Readable.fromWeb(res.body), createWriteStream(tarball));
+
+  const digest = crypto.createHash('sha512').update(await readFile(tarball)).digest('hex');
+  if (digest !== FUSEKI_SHA512) {
+    throw new Error(`Fuseki ${FUSEKI_TARBALL} sha512 mismatch — refusing to use`);
+  }
+  execSync(`tar xzf "${FUSEKI_TARBALL}" -C .`, { cwd: CACHE_DIR, stdio: 'inherit' });
+  if (!existsSync(jar)) throw new Error(`fuseki-server.jar missing after extract: ${jar}`);
+  return jar;
+}
+
 let apiProcess = null;
+let fusekiProcess = null;
 
 async function main() {
   console.log('build:data — Phase 2 full pipeline (ADR-0021)\n');
 
-  // 1. Bring Fuseki up (W-API docker-compose.yml owns this service).
-  console.log('1. docker compose up fuseki -d');
-  await run('docker', ['compose', 'up', 'fuseki', '-d']);
-  await waitForUrl(
-    `http://localhost:${FUSEKI_PORT}/$/ping`,
-    `Fuseki :${FUSEKI_PORT}`,
+  // 1. Launch local Fuseki 6.1.0 against the assembler config (no Docker).
+  console.log('1. Start Apache Jena Fuseki 6.1.0');
+  const fusekiJar = await ensureFuseki();
+  const fusekiBase = path.join(ROOT, 'run', 'fuseki');
+  mkdirSync(fusekiBase, { recursive: true });
+  mkdirSync(path.join(ROOT, 'run', 'databases'), { recursive: true });
+  fusekiProcess = spawn(
+    'java',
+    [
+      process.env.FUSEKI_JVM_ARGS || '-Xmx2g',
+      '-jar', fusekiJar,
+      '--config', path.join(ROOT, 'config', 'fuseki-config.ttl'),
+      '--port', FUSEKI_PORT,
+    ],
+    { cwd: ROOT, stdio: 'inherit', env: { ...process.env, FUSEKI_BASE: fusekiBase } },
   );
+  await waitForUrl(`http://localhost:${FUSEKI_PORT}/$/ping`, `Fuseki :${FUSEKI_PORT}`);
 
-  // 2. Load TTLs (W-API script; path may vary).
+  // 2. Load TTLs into the declared `opda` dataset (--clear drops stale graphs).
   console.log('2. Load TTLs into Fuseki');
-  // --clear ensures no stale named graphs from a previous run.
   const fusekiLoad = path.join(ROOT, 'scripts', 'fuseki-load.mjs');
-  await run('node', [fusekiLoad, '--clear']);
+  await run('node', [fusekiLoad, '--clear'], {
+    env: { ...process.env, FUSEKI_URL: `http://localhost:${FUSEKI_PORT}` },
+  });
 
-  // 3. Start GRLC API server (W-API src/api/server.js).
+  // 3. Start GRLC API server (src/api/server.js).
   console.log('3. Start GRLC API');
-  // INTEGRATION POINT (Phase 2): W-API delivers src/api/server.js.
   const apiServer = path.join(ROOT, 'src', 'api', 'server.js');
   apiProcess = spawn('node', [apiServer], {
     cwd: ROOT,
     stdio: 'inherit',
-    env: { ...process.env, PORT: API_PORT },
+    env: {
+      ...process.env,
+      PORT: API_PORT,
+      // lib/sparql-client.js reads FUSEKI_ENDPOINT — point it at our local
+      // Fuseki's /opda/sparql (not the stale 3030 default; hm's Fuseki uses 3030).
+      FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql`,
+    },
   });
   await waitForUrl(`${OPDA_API}/api/entities`, 'GRLC API /api/entities');
 
@@ -118,9 +177,8 @@ main()
       console.log('Stopping GRLC API');
       apiProcess.kill();
     }
-    try {
-      execSync('docker compose down fuseki', { cwd: ROOT, stdio: 'inherit' });
-    } catch {
-      // best-effort
+    if (fusekiProcess && !fusekiProcess.killed) {
+      console.log('Stopping Fuseki');
+      fusekiProcess.kill();
     }
   });

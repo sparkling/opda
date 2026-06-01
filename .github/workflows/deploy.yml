@@ -16,7 +16,7 @@ on:
       - 'tsconfig.json'
       # ADR-0021: entity pages are generated from the ontology at build time, so
       # the triplestore inputs + build-time API + orchestration must also trigger.
-      - 'docker-compose.yml'
+      - 'config/fuseki-config.ttl'
       - 'scripts/**'
       - 'source/03-standards/ontology/**'
       - '.github/workflows/deploy.yml'
@@ -42,14 +42,22 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      # ADR-0036/0037: build:data runs a local Apache Jena Fuseki 6.1.0 binary
+      # (no Docker), which needs a JDK 17+ on the runner. The Fuseki dist itself
+      # is self-provisioned (downloaded + sha512-verified) by build-with-data.mjs.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
       - run: pnpm install --frozen-lockfile
 
       # Build-time GRLC API's own deps (express, js-yaml).
       - run: npm --prefix src/api install --no-audit --no-fund
 
-      # ADR-0021: bring up Fuseki (Docker) + load the ontology TTLs + start the
-      # GRLC API on localhost, run `astro build` (which queries the API to
-      # generate entity pages), then tear it all down. The triplestore + API are
+      # ADR-0021: launch local Fuseki + load the ontology TTLs + start the GRLC
+      # API on localhost, run `astro build` (which queries the API to generate
+      # entity pages), then tear it all down. The triplestore + API are
       # build-exclusive + ephemeral — only dist/ (static HTML) is deployed;
       # production never runs, reaches, or exposes them.
       - run: npm run build:data

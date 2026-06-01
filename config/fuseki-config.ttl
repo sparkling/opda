@@ -1,0 +1,41 @@
+## =============================================================================
+## opda — Apache Jena Fuseki 6.1.0 assembler configuration
+## =============================================================================
+## ADR-0036/0037: opda standardises on a Jena 6.1.0 toolchain. Mirrors the hm/
+## semantic-modelling fuseki-config.ttl pattern (full hm parity — no Docker):
+## the dataset is DECLARED here and the server is launched with
+##   fuseki-server --config=config/fuseki-config.ttl --port=<port>
+## (see scripts/build-with-data.mjs). No admin-API dataset creation, no auth.
+##
+##   - TDB2 persistent dataset at run/databases/opda (gitignored)
+##   - unionDefaultGraph: unqualified queries (the GRLC API, ADR-0021) see every
+##     named graph without GRAPH clauses. Note the OWL-RL-safe materialisation
+##     (ADR-0035, scripts/fuseki-load.mjs) reads the named graphs via Jena's
+##     explicit `urn:x-arq:UnionGraph` and is independent of this flag.
+## =============================================================================
+
+@prefix :       <#> .
+@prefix fuseki: <http://jena.apache.org/fuseki#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tdb2:   <http://jena.apache.org/2016/tdb#> .
+@prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+## --- Fuseki Server ---
+[] a fuseki:Server ;
+   fuseki:services ( :opda_service ) .
+
+## --- Service: /opda ---
+:opda_service a fuseki:Service ;
+    fuseki:name                       "opda" ;
+    fuseki:serviceQuery               "query", "sparql" ;
+    fuseki:serviceUpdate              "update" ;
+    fuseki:serviceUpload              "upload" ;
+    fuseki:serviceReadWriteGraphStore "data" ;
+    fuseki:serviceReadGraphStore      "get" ;
+    fuseki:dataset                    :opda_dataset .
+
+## --- Dataset: TDB2 with union default graph ---
+:opda_dataset a tdb2:DatasetTDB2 ;
+    tdb2:location          "run/databases/opda" ;
+    tdb2:unionDefaultGraph true .
