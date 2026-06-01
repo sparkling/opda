@@ -1,13 +1,50 @@
 ---
 status: accepted
 date: 2026-05-27
-tags: [ontology, namespace, infrastructure, w3c, picg, deployment]
+amended: 2026-06-01
+tags: [ontology, namespace, infrastructure, w3c, picg, deployment, pdtf, slash, harness]
 supersedes: []
 depends-on: [ODR-0004]
 implements: []
 ---
 
 # Ontology namespace at w3id.org/opda/ via W3C PICG redirect
+
+> ## ⚠ Amendment (2026-06-01) — `opda/pdtf` slash-based scheme
+>
+> On **directing-authority instruction** the namespace scheme is revised. This supersedes the **hash** commitment and the **`openpropdata.org.uk`** hosting/citation references in the body below (retained for provenance). The override is admissible because the ontology is **pre-publication** — no ecosystem-propagation cost yet applies (cf. the DPV slash→hash six-month precedent that motivated the original hash choice) — and the directing authority ratifies modelling decisions directly for this greenfield build. Where the body conflicts with this amendment, **the amendment governs**. Cross-corpus: **ODR-0004 §Rules.1's "single `opda:` HASH namespace" is correspondingly overridden** and must be amended to match.
+>
+> ### The scheme — four rules
+> 1. **`opda` is the organisation; `pdtf` is the standard.** The ontology (Property Data Trust Framework) lives under `https://w3id.org/opda/pdtf/`.
+> 2. **Slash, not hash.** Terms are per-term URIs; no `#` anywhere in the scheme.
+> 3. **No version segment** in any IRI. Versioning is carried by an `owl:versionInfo` literal on the ontology, not the URL.
+> 4. **No module segment** in term IRIs. One flat term namespace; the per-module TTL files are organisational splits, not URL segments.
+>
+> Prefix: `@prefix opda: <https://w3id.org/opda/pdtf/> .` — so `opda:Property` → `https://w3id.org/opda/pdtf/Property`.
+>
+> A second namespace, **`https://w3id.org/opda/harness/`**, replaces `openpropdata.org.uk` for every **non-term build/governance artefact** (ADRs, ODRs, exemplars, named graphs, instance/test data). The **standard's content** (terms, SKOS schemes, the data-dictionary) lives under `…/pdtf/`; the **harness** holds everything that is *about* the standard rather than *part of* it.
+>
+> ### Canonical mapping (old → new)
+> | Kind | Old | New |
+> |---|---|---|
+> | Ontology term | `…/opda/#Property` | `…/opda/pdtf/Property` |
+> | SKOS concept | `…/opda/#role/Buyer` | `…/opda/pdtf/role/Buyer` |
+> | Concept scheme | `…/opda/vocabularies/role` | `…/opda/pdtf/role` |
+> | data-dictionary entry | `…/opda/data-dictionary#propertyPack.x.y` | `…/opda/pdtf/data-dictionary/propertyPack.x.y` |
+> | Version IRI | `…/opda/1.0.0/` | *removed* → `…/opda/pdtf/` + `owl:versionInfo "1.0.0"` |
+> | Per-module ontology IRIs | `…/opda/property`, `…/opda/property-shapes`, `…/opda/property/1.0.0/` | single flat `…/opda/pdtf/` namespace (no module segment) |
+> | Profile | `…/opda/profiles/baspi5/0.1.0/` | `…/opda/pdtf/profiles/baspi5` |
+> | Named graph | `…/opda/graph/foundation` | `…/opda/harness/graph/foundation` |
+> | Instance/test data | `…/opda/data/baspi5-conformant/…` | `…/opda/harness/data/baspi5-conformant/…` |
+> | ADR citation | `openpropdata.org.uk/adr/ADR-NNNN-slug` | `…/opda/harness/adr/ADR-NNNN-slug` |
+> | ODR anchor | `…/opda/odr/ODR-NNNN#section-5a` | `…/opda/harness/odr/ODR-NNNN/section-5a` |
+> | Exemplar anchor | `openpropdata.org.uk/data/exemplar/<stem>` | `…/opda/harness/data/exemplar/<stem>` |
+>
+> ### Implementation note — multi-file ontology identity
+> With no module segment, the six module TTLs can no longer each carry a distinct `…/opda/<module>` `owl:Ontology` IRI. Resolution: the published ontology is **one** `owl:Ontology` at `https://w3id.org/opda/pdtf/` (declared once); the module files contribute terms to it and are **not separately addressable** in the term URL scheme. Any document-level identity the build needs (e.g. per-file provenance) uses the **harness** namespace, never the `/pdtf/` term space.
+>
+> ### Redirect infrastructure (revised)
+> Two W3C PICG redirects: **`/opda/pdtf/`** (the standard) and **`/opda/harness/`** (governance/build) → the hosting target(s). The bare `/opda/` redirect may remain for the organisation. The original single `/opda/ → openpropdata.org.uk/ontology/` rule below is superseded.
 
 ## Context and Problem Statement
 
