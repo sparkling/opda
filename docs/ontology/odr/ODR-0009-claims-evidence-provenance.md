@@ -222,6 +222,16 @@ Council [session-036](council/session-036-classification-over-inheritance.md) (8
 
 No collapse; the subclasses stand as structure-bearers. Codified generally in ODR-0011 §8a (the cascade).
 
+### Amendment — ODR-0027 R6 (directing-authority adoption of the hm approach; 2026-06-01)
+
+**[ODR-0027](./ODR-0027-classification-roles-inheritance-skos-doctrine.md) §R6 supersedes the session-036 keep-the-subclasses disposition above.** opda's own model states "evidence is a role a document plays, not every document's Kind" — so under the adopted hm doctrine (Roles are NEVER `rdfs:subClassOf` a Kind; hm ODR-0010/0025/0026), evidence-kind is an `isMemberOf` **coded classification** (`opda:evidenceType` → `opda:EvidenceMethodScheme`), not a subclass tree:
+
+- The three `…Evidence rdfs:subClassOf opda:Evidence` axioms are **retired**; `opda:Evidence` is the role target (a `RoleMixin`); kind-specific attributes (`opda:attestedBy` etc.) become **facets borne by the role** (re-homed `rdfs:domain opda:Evidence`, documentary), enforced **value-keyed** on `opda:evidenceType` (the session-036 `EvidenceFacetShape` already is).
+- `opda:AttachedDocument` — the one genuine **Kind** (own IC: content + issuing activity, ODR-0024 §R7) — **stays** an OWL class; a document *plays* the evidence role, it is not sub-classed into it.
+- The `*CoherenceShape` family (class↔value, session-036) is dropped (no `…Evidence` classes to cohere); the value-space gate (`EvidenceTypeValueShape`) + value-keyed obligation (`EvidenceFacetShape`) carry enforcement.
+
+**Status: recorded + mandated; emitter re-model (claim.py / shapes.py / annotations.py / exemplars; ADR-0011/0012) PENDING implementation** — flagged here as the accepted-but-unbuilt step, consistent with how this corpus tracks the accepted-but-pending Jena validator swap (ADR-0036/0037).
+
 ## Alternatives
 
 - **PROV-O only** — flattens evidential weight into a causal trace and requires inventing `prov:` extensions for signatures and assurance tiers that PROV-DM deliberately does not model.
