@@ -745,6 +745,58 @@ def ci_category_g_coverage(ontology_dir: Path | None, strict: bool) -> None:
         )
 
 
+@main.command(name="ci-baspi5-roundtrip")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the base shape TTLs + profiles/baspi5.ttl + "
+        "exemplars/ + the class TBox. Defaults to source/03-standards/"
+        "ontology/ relative to the OPDA repo root."
+    ),
+)
+def ci_baspi5_roundtrip(ontology_dir: Path | None) -> None:
+    """Run the ODR-0003 signal-1 BASPI5 MVP round-trip gate.
+
+    Loads base shapes + the BASPI5 overlay profile + the TBox and validates
+    the two committed transaction exemplars, asserting: (a) the conformant
+    transaction conforms with zero violations; (b) the non-conformant
+    transaction (PoA seller with no evidenced authority) trips a violation
+    that traces to form-question B1.3.2 via the SellersCapacity xone; (c)
+    every BASPI5 property shape carrying a form-question dct:source also
+    carries a DASH render hint (the in-scope half of the round-trip; the UI
+    render is the documented consumer boundary). Exits non-zero on any
+    failure (ADR-0014; ODR-0010 §Rules).
+    """
+    from opda_gen.ci.baspi5_roundtrip_test import run
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run(target)
+    if not report.available:
+        click.echo(
+            f"baspi5 round-trip: UNAVAILABLE ({report.unavailable_reason})",
+            err=True,
+        )
+        sys.exit(1)
+    click.echo(
+        "baspi5 round-trip (ODR-0003 signal 1): "
+        f"(a) conformant conforms={report.conformant_conforms}; "
+        f"(b) non-conformant violations={report.nonconformant_violation_count}, "
+        f"B1.3.2-traceable={report.nonconformant_traces_to_b132}; "
+        f"(c) {report.render_summary}."
+    )
+    if report.violations:
+        for v in report.violations:
+            click.echo(f"BASPI5-ROUNDTRIP VIOLATION: {v}", err=True)
+        sys.exit(1)
+    click.echo(
+        "baspi5 round-trip CI: PASS (conformant + non-conformant + "
+        "B1.3.2 traceability + render-contract)"
+    )
+
+
 @main.command(name="emit-exemplar-reports")
 @click.option(
     "--ontology-dir",

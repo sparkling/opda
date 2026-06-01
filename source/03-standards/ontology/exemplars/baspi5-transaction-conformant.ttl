@@ -1,0 +1,68 @@
+# baspi5-transaction-conformant.ttl — BASPI5 round-trip exemplar (conformant)
+# Hand-authored ABox fixture (ODR-0003 termination signal 1 / ODR-0010 §Rules (a)).
+# The transaction-side complement to the profile-side G3 coverage check: a
+# minimal conformant BASPI5 transaction validated against
+#   base shapes + the loaded BASPI5 overlay profile + the class TBox
+# (with rdfs inference) by the `ci-baspi5-roundtrip` gate
+# (tools/opda-gen/src/opda_gen/ci/baspi5_roundtrip_test.py) — it MUST conform
+# with zero SHACL violations.
+#
+# Contents: an opda:Property carrying the BASPI5-required leaves (uprn, address,
+# propertyType, builtForm, currentEnergyRating, heatingType), an opda:Address
+# (line1 + postcode), an opda:Seller acting as "Legal Owner" (branch (a) of the
+# sellersCapacity sh:xone — no evidenced authority required), an opda:Buyer, and
+# an opda:LegalEstate (ownershipType + tenureKind). Every enum value is an exact
+# member of the BASPI5 sh:in list for its leaf.
+#
+# NOTE — EPCCertificate is modelled by-attribute on the Property
+# (opda:currentEnergyRating), NOT as a separate opda:EPCCertificate node. The
+# emitted Baspi5_EPCCertificateShape binds opda:currentEnergyRating, but that
+# predicate has rdfs:domain opda:Property in the TBox; under rdfs inference an
+# EPCCertificate node carrying currentEnergyRating is inferred to ALSO be an
+# opda:Property and then trips every Baspi5_PropertyShape minCount on that node.
+# That is a latent BASPI5-profile defect (a Property-domain predicate reused on a
+# non-Property target shape), reported as a B2 follow-up — NOT modelled around
+# silently. The conformant transaction therefore carries the energy rating where
+# the domain places it (on the Property); the profile does not require a separate
+# EPCCertificate instance to exist.
+#
+# This is instance data (ABox); it changes no emitted TBox/profile, and is not
+# paired with an expected-report.ttl (it is validated against the BASPI5 profile
+# by ci-baspi5-roundtrip, not against the foundation shapes by the ADR-0014
+# exemplar-regression layer).
+@prefix opda: <https://w3id.org/opda/#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+
+<https://w3id.org/opda/data/baspi5-conformant/property>
+    a opda:Property ;
+    rdfs:label "BASPI5 conformant transaction — property"@en ;
+    opda:hasUPRN "100023336956" ;
+    opda:hasAddress <https://w3id.org/opda/data/baspi5-conformant/address> ;
+    opda:propertyType "House" ;
+    opda:builtForm "Detached" ;
+    opda:currentEnergyRating "C" ;
+    opda:heatingType "Central heating" .
+
+<https://w3id.org/opda/data/baspi5-conformant/address>
+    a opda:Address ;
+    vcard:street-address "1 Conformant Way, Testville" ;
+    vcard:postal-code "TE1 1ST" .
+
+<https://w3id.org/opda/data/baspi5-conformant/seller>
+    a opda:Person, opda:Seller ;
+    vcard:fn "Alex Vendor" ;
+    vcard:email "alex.vendor@example.org" ;
+    opda:role "Seller" ;
+    opda:hasAssertedCapacity "Legal Owner" .
+
+<https://w3id.org/opda/data/baspi5-conformant/buyer>
+    a opda:Person, opda:Buyer ;
+    vcard:fn "Sam Purchaser" ;
+    vcard:email "sam.purchaser@example.org" ;
+    opda:role "Buyer" .
+
+<https://w3id.org/opda/data/baspi5-conformant/estate>
+    a opda:LegalEstate ;
+    opda:ownershipType "Freehold" ;
+    opda:tenureKind "Freehold" .

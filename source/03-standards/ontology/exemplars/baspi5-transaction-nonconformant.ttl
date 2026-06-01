@@ -1,0 +1,57 @@
+# baspi5-transaction-nonconformant.ttl — BASPI5 round-trip exemplar (non-conformant)
+# Hand-authored ABox fixture (ODR-0003 termination signal 1 / ODR-0010 §Rules (b)).
+# Identical to baspi5-transaction-conformant.ttl EXCEPT the opda:Seller asserts
+# capacity "Under Power of Attorney" (branch (b) of the sellersCapacity sh:xone)
+# with NO opda:hasEvidencedAuthority. This is the canonical ODR-0010 §Rules (b)
+# case (BASPI form-question B1.3.2): a Seller acting as Attorney / Personal
+# Representative with no evidenced authority MUST trip
+# opda:Baspi5_SellersCapacityShape (sh:xone, sh:Violation) — the violation
+# traces via dct:source to <https://www.basp.uk/forms/baspi5#B1.3.2>.
+#
+# Validated against base shapes + the loaded BASPI5 overlay profile + the class
+# TBox (with rdfs inference) by the `ci-baspi5-roundtrip` gate — it MUST report
+# at least one sh:Violation whose source shape is Baspi5_SellersCapacityShape.
+# Everything else in the transaction is conformant so the SellersCapacity xone
+# is the only failure (see the conformant exemplar header for the EPC modelling
+# note).
+#
+# This is instance data (ABox); it changes no emitted TBox/profile, and is not
+# paired with an expected-report.ttl.
+@prefix opda: <https://w3id.org/opda/#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+
+<https://w3id.org/opda/data/baspi5-nonconformant/property>
+    a opda:Property ;
+    rdfs:label "BASPI5 non-conformant transaction — property"@en ;
+    opda:hasUPRN "100023336957" ;
+    opda:hasAddress <https://w3id.org/opda/data/baspi5-nonconformant/address> ;
+    opda:propertyType "House" ;
+    opda:builtForm "Detached" ;
+    opda:currentEnergyRating "C" ;
+    opda:heatingType "Central heating" .
+
+<https://w3id.org/opda/data/baspi5-nonconformant/address>
+    a opda:Address ;
+    vcard:street-address "2 Nonconformant Way, Testville" ;
+    vcard:postal-code "TE2 2ST" .
+
+# The defect: a Seller acting "Under Power of Attorney" (branch (b)) with NO
+# opda:hasEvidencedAuthority. Trips Baspi5_SellersCapacityShape at B1.3.2.
+<https://w3id.org/opda/data/baspi5-nonconformant/seller>
+    a opda:Person, opda:Seller ;
+    vcard:fn "Pat Attorney" ;
+    vcard:email "pat.attorney@example.org" ;
+    opda:role "Seller" ;
+    opda:hasAssertedCapacity "Under Power of Attorney" .
+
+<https://w3id.org/opda/data/baspi5-nonconformant/buyer>
+    a opda:Person, opda:Buyer ;
+    vcard:fn "Sam Purchaser" ;
+    vcard:email "sam.purchaser@example.org" ;
+    opda:role "Buyer" .
+
+<https://w3id.org/opda/data/baspi5-nonconformant/estate>
+    a opda:LegalEstate ;
+    opda:ownershipType "Freehold" ;
+    opda:tenureKind "Freehold" .

@@ -39,9 +39,18 @@ from .conftest import EXEMPLARS_DIR
 # ---------------------------------------------------------------------------
 # Exemplar discovery — parametrise over the 15 canonical exemplars.
 # ---------------------------------------------------------------------------
+# The ODR-0004 §8a diagnostic set is the 15 foundation-level exemplars
+# validated against the foundation + per-module shapes (shapes_only_graph).
+# The `baspi5-transaction-*` fixtures are a DIFFERENT layer — BASPI5
+# profile-round-trip exemplars validated against the loaded BASPI5 overlay by
+# `ci-baspi5-roundtrip` (opda_gen.ci.baspi5_roundtrip_test), not against the
+# foundation shapes, and deliberately unpaired with an expected-report.ttl.
+# They are excluded from this layer's discovery so the §8a count + pairing
+# invariants stay over the canonical diagnostic set.
 _EXEMPLAR_STEMS = sorted(
     p.stem for p in EXEMPLARS_DIR.glob("*.ttl")
     if not p.stem.endswith("-expected-report")
+    and not p.stem.startswith("baspi5-transaction-")
 )
 
 
