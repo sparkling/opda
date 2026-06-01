@@ -9,8 +9,8 @@ Realises:
 - ADR-0014 §"Exemplar regression layer" — `shapes_only_graph` fixture
   provides just the shape graph (foundation + 6 per-module) for the
   exemplar regression layer; the exemplars were authored against this
-  surface and the regression compares pyshacl's actual report to the
-  committed expected-report.ttl pairing.
+  surface and the regression compares the SHACL engine's actual report
+  to the committed expected-report.ttl pairing.
 - ADR-0014 §"Round-trip layer" — `baspi5_sample` fixture loads the
   synthetic BASPI5 submission used to exercise the JSON ↔ RDF
   translation.

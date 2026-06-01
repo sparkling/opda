@@ -4,9 +4,9 @@ Module exemplar_reports.
 Realises:
 - ADR-0014 §"Exemplar regression layer" lines 101-150 — emits the
   paired `<exemplar>-expected-report.ttl` for each diagnostic exemplar
-  by running pyshacl against the foundation + module shape graph and
-  serialising the resulting `sh:ValidationReport` via the canonical
-  serialiser per ADR-0007.
+  by running Apache Jena SHACL (ADR-0036/0037) against the foundation +
+  module shape graph and serialising the resulting `sh:ValidationReport`
+  via the canonical serialiser per ADR-0007.
 - ODR-0004 §8a — diagnostic exemplar pairing: every exemplar TTL pairs
   with an expected-report.ttl that CI regression compares actual vs
   expected on every push.
@@ -20,11 +20,11 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from pyshacl import validate
 from rdflib import BNode, Graph, Literal, URIRef
-from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
+from rdflib.namespace import DCTERMS, RDF
 
 from opda_gen import __version__
+from opda_gen.jena_shacl import validate as jena_validate
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
@@ -78,12 +78,11 @@ def _build_merged_shapes_graph(ontology_dir: Path) -> Graph:
 
 
 def _normalise_report(report_graph: Graph) -> Graph:
-    """Strip pyshacl's blank-node IDs to make the report stable across
-    runs. Each blank-node subject is replaced with a deterministic IRI
-    minted from its (focusNode, resultPath, sourceConstraintComponent,
-    resultSeverity, resultMessage) tuple so the result-set is in the
-    same place every run regardless of pyshacl's internal BNode
-    minting.
+    """Strip the SHACL engine's blank-node IDs to make the report stable
+    across runs. Each blank-node subject is replaced with a deterministic
+    IRI minted from its (focusNode, resultPath, sourceConstraintComponent,
+    resultSeverity, resultMessage) tuple so the result-set is in the same
+    place every run regardless of the engine's internal BNode minting.
     """
     SH_NS = "http://www.w3.org/ns/shacl#"
     out = Graph()
@@ -121,8 +120,8 @@ def _normalise_report(report_graph: Graph) -> Graph:
             continue
         skolems[bn] = URIRef(f"https://w3id.org/opda/data/exemplar-reports/{label}")
 
-    # Predicates we keep in the report — drop sh:sourceShape because
-    # pyshacl serialises the inline shape definition with non-stable
+    # Predicates we keep in the report — drop sh:sourceShape because the
+    # engine serialises the inline shape definition with non-stable
     # blank-node sub-graphs; the (focusNode, path, message) tuple is
     # what matters for regression.
     KEEP = {
@@ -213,7 +212,7 @@ def emit_exemplar_reports(
 
     Each report:
     - Validates the exemplar against the foundation + 6 per-module
-      shape graph via pyshacl with advanced=True.
+      shape graph via Apache Jena SHACL (ADR-0036/0037).
     - Normalises blank-node identifiers to deterministic skolem URIs
       so the report is byte-identical across regenerations.
     - Carries the generator-comment header per ADR-0009 §G6.
@@ -224,16 +223,7 @@ def emit_exemplar_reports(
 
     written: dict[Path, str] = {}
     for exemplar_path in _exemplar_files(exemplars_dir):
-        data = Graph()
-        data.parse(exemplar_path, format="turtle")
-
-        _conforms, report_graph, _text = validate(
-            data,
-            shacl_graph=shapes_graph,
-            inference="rdfs",
-            advanced=True,
-            debug=False,
-        )
+        _conforms, report_graph = jena_validate(shapes_graph, exemplar_path)
 
         normalised = _normalise_report(report_graph)
 
@@ -265,7 +255,7 @@ def validate_exemplar(
     exemplar_path: Path,
     ontology_dir: Path | None = None,
 ) -> tuple[bool, str]:
-    """Run pyshacl against an exemplar; compare to the paired
+    """Run Apache Jena SHACL against an exemplar; compare to the paired
     `<stem>-expected-report.ttl`. Returns (ok, diagnostic-message).
     """
     ontology_dir = ontology_dir or _ontology_root()
@@ -276,16 +266,7 @@ def validate_exemplar(
         return False, f"no expected report at {expected_path}"
 
     shapes_graph = _build_merged_shapes_graph(ontology_dir)
-    data = Graph()
-    data.parse(exemplar_path, format="turtle")
-
-    _conforms, report_graph, _text = validate(
-        data,
-        shacl_graph=shapes_graph,
-        inference="rdfs",
-        advanced=True,
-        debug=False,
-    )
+    _conforms, report_graph = jena_validate(shapes_graph, exemplar_path)
     actual = _normalise_report(report_graph)
 
     expected = Graph()

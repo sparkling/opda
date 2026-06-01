@@ -44,7 +44,7 @@ Realises:
 - ADR-0014 §"Exemplar regression layer" + §Confirmation #2 —
   `emit-exemplar-reports` writes the 15 `<stem>-expected-report.ttl`
   pairings to `source/03-standards/ontology/exemplars/`.
-  `validate-exemplar` runs pyshacl against a single exemplar and
+  `validate-exemplar` runs Apache Jena SHACL against a single exemplar and
   compares the actual report to the committed expected report (used
   by the per-exemplar matrix job in
   `.github/workflows/baspi5-round-trip.yml`).
@@ -831,53 +831,6 @@ def ci_inference_closure(ontology_dir: Path | None) -> None:
     click.echo("inference closure CI: PASS (ADR-0035 §Confirmation)")
 
 
-@main.command(name="ci-shacl-parity")
-@click.option(
-    "--ontology-dir",
-    type=click.Path(exists=True, file_okay=False, path_type=Path),
-    required=False,
-    default=None,
-    help=(
-        "Directory containing the shape TTLs + exemplars/. Defaults to "
-        "source/03-standards/ontology/ relative to the OPDA repo root."
-    ),
-)
-def ci_shacl_parity(ontology_dir: Path | None) -> None:
-    """Run the ADR-0036 §Confirmation pyshacl↔Jena SHACL-1.2 parity gate.
-
-    Validates every exemplar under both pyshacl (incumbent) and Apache Jena
-    `jena-shacl` (target), asserting both engines agree on sh:conforms. This
-    is the precondition to retiring pyshacl (ADR-0036/0037). Point
-    OPDA_JENA_HOME at an unpacked apache-jena-6.1.0 distribution. Exits
-    non-zero if Jena is unavailable or any exemplar's verdicts diverge.
-    """
-    from opda_gen.ci.shacl_parity_test import run
-
-    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
-    report = run(target)
-    if not report.available:
-        click.echo(f"shacl parity: UNAVAILABLE ({report.unavailable_reason})", err=True)
-        sys.exit(1)
-    for r in report.results:
-        verdict = "AGREE" if r.agree else "DIVERGE"
-        click.echo(
-            f"  [{verdict}] {r.name}: pyshacl={r.pyshacl_conforms} "
-            f"jena={r.jena_conforms}"
-            + (f"  ({r.note})" if r.note else "")
-        )
-    if report.divergences:
-        click.echo(
-            f"shacl parity: FAIL — {len(report.divergences)}/"
-            f"{len(report.results)} exemplar(s) diverge between pyshacl and Jena",
-            err=True,
-        )
-        sys.exit(1)
-    click.echo(
-        f"shacl parity CI: PASS ({len(report.results)} exemplars; "
-        "pyshacl ≡ Jena on sh:conforms)"
-    )
-
-
 @main.command(name="emit-exemplar-reports")
 @click.option(
     "--ontology-dir",
@@ -919,7 +872,7 @@ def emit_exemplar_reports(ontology_dir: Path | None) -> None:
     ),
 )
 def validate_exemplar(path: Path, ontology_dir: Path | None) -> None:
-    """Run pyshacl against an exemplar; compare to expected-report.
+    """Run Apache Jena SHACL against an exemplar; compare to expected-report.
 
     Realises ADR-0014 §"Exemplar regression layer" + §Confirmation #4.
     Exit code: 0 = report matches committed expected; 1 = differs.

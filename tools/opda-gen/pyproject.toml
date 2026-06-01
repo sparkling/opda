@@ -8,8 +8,10 @@ version = "0.1.0"
 description = "OPDA ontology generator — realises ADR-0007 specification per ADR-0008 infrastructure."
 requires-python = ">=3.11,<3.12"
 dependencies = [
+    # SHACL validation runs on the Apache Jena 6.1.0 `shacl` CLI (ADR-0036/0037,
+    # opda_gen.jena_shacl) — pyshacl is retired. The Jena dist is resolved from
+    # OPDA_JENA_HOME / PATH or auto-provisioned; the runner needs only a JDK 17+.
     "rdflib==7.0.0",
-    "pyshacl==0.25.0",
     "click==8.1.7",
     "pydantic==2.5.0",
     "tomli==2.0.1",

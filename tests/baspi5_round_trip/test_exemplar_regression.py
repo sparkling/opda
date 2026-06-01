@@ -6,15 +6,15 @@ Realises:
   #4 — every diagnostic exemplar in
   `source/03-standards/ontology/exemplars/` pairs with an
   `<stem>-expected-report.ttl` recording the
-  `sh:ValidationReport` pyshacl produces when the exemplar is
+  `sh:ValidationReport` Apache Jena SHACL produces when the exemplar is
   validated against the foundation + module shape graph. CI
   regression catches any TBox/shape change that breaks an
   exemplar's validation outcome.
 - ODR-0004 §8a — diagnostic exemplar pairing discipline.
 
 For each exemplar:
-1. Validate via pyshacl against the foundation + module shape graph.
-2. Normalise pyshacl's blank-node IDs via `_normalise_report`.
+1. Validate via Apache Jena SHACL against the foundation + module shape graph.
+2. Normalise the engine's blank-node IDs via `_normalise_report`.
 3. Compare to the committed `<stem>-expected-report.ttl`.
 4. PASS = semantically equivalent (same focusNode/resultPath/severity
    tuples); FAIL = drift.
@@ -59,12 +59,12 @@ def test_exemplar_validation_matches_expected_report(
     exemplar_stem: str,
     shapes_only_graph: Graph,
 ) -> None:
-    """For each exemplar: pyshacl(exemplar, shapes) ≡ committed
+    """For each exemplar: Jena SHACL(exemplar, shapes) ≡ committed
     expected-report.ttl (semantic equivalence per
     compare_reports.reports_equivalent).
     """
     from opda_gen.emitters.exemplar_reports import _normalise_report
-    from pyshacl import validate
+    from opda_gen.jena_shacl import validate
 
     exemplar_path = EXEMPLARS_DIR / f"{exemplar_stem}.ttl"
     expected_path = EXEMPLARS_DIR / f"{exemplar_stem}-expected-report.ttl"
@@ -72,16 +72,7 @@ def test_exemplar_validation_matches_expected_report(
         f"missing expected report for {exemplar_stem}: {expected_path}"
     )
 
-    data = Graph()
-    data.parse(exemplar_path, format="turtle")
-
-    _conforms, report_graph, _text = validate(
-        data,
-        shacl_graph=shapes_only_graph,
-        inference="rdfs",
-        advanced=True,
-        debug=False,
-    )
+    _conforms, report_graph = validate(shapes_only_graph, exemplar_path)
     actual = _normalise_report(report_graph)
     expected = Graph()
     expected.parse(expected_path, format="turtle")

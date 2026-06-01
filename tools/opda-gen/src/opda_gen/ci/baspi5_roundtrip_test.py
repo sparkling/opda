@@ -23,7 +23,7 @@ Realises:
 Boundary: CI infrastructure only. It mints no IRIs, modifies no emitter,
 re-pins no byte-identity. It reads the emitted corpus (base shapes + the
 BASPI5 overlay profile + the class TBox) and two committed RDF transaction
-exemplars, runs pyshacl, and computes a `RoundTripReport`.
+exemplars, runs Apache Jena SHACL, and computes a `RoundTripReport`.
 
 The (c) check is the *data-contract* half: every BASPI5 property shape that
 carries a form-question `dct:source` also carries a DASH render hint
@@ -203,19 +203,16 @@ def _rdf_list(g: Graph, head: object) -> list:
 
 
 def _validate(data_ttl: Path, shapes: Graph, tbox: Graph):
-    from pyshacl import validate
+    from opda_gen.jena_shacl import validate
 
-    data = Graph()
-    data.parse(data_ttl, format="turtle")
-    conforms, report_graph, _text = validate(
-        data,
-        shacl_graph=shapes,
-        ont_graph=tbox,
-        inference="rdfs",
-        advanced=True,
-        debug=False,
-    )
-    return conforms, report_graph
+    # Jena's `shacl` CLI does no RDFS pre-inference, so merge the TBox into the
+    # data graph (it carries the class hierarchy + explicit types) before
+    # validating — the ADR-0036/0037 Jena equivalent of pyshacl's ont_graph.
+    merged = Graph()
+    merged.parse(data_ttl, format="turtle")
+    for triple in tbox:
+        merged.add(triple)
+    return validate(shapes, merged)
 
 
 def render_contract_summary(shapes: Graph) -> tuple[int, int, list[str]]:

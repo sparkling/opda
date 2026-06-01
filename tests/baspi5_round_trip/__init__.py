@@ -7,8 +7,8 @@ Realises:
   end-to-end. Round-trip equivalence after normalisation is the MVP
   gate per ODR-0010 §Q7 and ODR-0003 §"Programme retirement
   criterion" (condition i).
-- ADR-0014 §"Exemplar regression layer" — pyshacl validates each of
-  the 15 diagnostic exemplars against the foundation + module shape
+- ADR-0014 §"Exemplar regression layer" — Apache Jena SHACL validates
+  each of the 15 diagnostic exemplars against the foundation + module shape
   graph and compares the resulting sh:ValidationReport to its
   committed expected-report.ttl pairing per ODR-0004 §8a.
 - ADR-0014 §"`dct:source` traceability layer" — SPARQL queries verify

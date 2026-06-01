@@ -25,6 +25,19 @@ jobs:
         with:
           python-version: '3.11'
 
+      # SHACL validation runs on the Apache Jena 6.1.0 `shacl` CLI (ADR-0036/0037);
+      # the dist is auto-provisioned into .jena/ by opda_gen.jena_shacl.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Apache Jena dist
+        uses: actions/cache@v4
+        with:
+          path: .jena
+          key: jena-6.1.0
+
       - name: Install opda-gen + harness deps
         working-directory: tools/opda-gen
         run: pip install -e .[dev]
@@ -81,6 +94,17 @@ jobs:
         with:
           python-version: '3.11'
 
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Apache Jena dist
+        uses: actions/cache@v4
+        with:
+          path: .jena
+          key: jena-6.1.0
+
       - name: Install opda-gen
         working-directory: tools/opda-gen
         run: pip install -e .[dev]
@@ -91,9 +115,9 @@ jobs:
             source/03-standards/ontology/exemplars/${{ matrix.exemplar }}.ttl
 
   # Layer 3 — generator-emitted expected-report.ttl files are
-  # byte-identical across regenerations. Catches drift in pyshacl
-  # output or shape semantics that would silently change the expected
-  # reports without anyone noticing.
+  # byte-identical across regenerations. Catches drift in Apache Jena
+  # SHACL output or shape semantics that would silently change the
+  # expected reports without anyone noticing.
   expected-report-byte-identity:
     runs-on: ubuntu-latest
     steps:
@@ -104,6 +128,17 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Apache Jena dist
+        uses: actions/cache@v4
+        with:
+          path: .jena
+          key: jena-6.1.0
 
       - name: Install opda-gen
         working-directory: tools/opda-gen

@@ -4,7 +4,7 @@ Module compare_reports.
 Realises:
 - ADR-0014 §"CI integration" lines 222-228 — semantic-equivalence
   comparator for SHACL `sh:ValidationReport` Turtle files.
-  Blank-node renames between pyshacl runs are tolerated; the
+  Blank-node renames between validation runs are tolerated; the
   comparison key is the (focusNode, sourceShape, resultPath,
   resultSeverity, resultMessage) tuple per sh:result.
 
@@ -32,7 +32,7 @@ def _result_tuples(g: Graph) -> list[tuple]:
 
     Blank-node IRIs are replaced with `BNODE` so the comparator is
     insensitive to rdflib's BNode minting (the same logical violation
-    surfaces with a different blank label on each pyshacl run).
+    surfaces with a different blank label on each validation run).
     """
     SH_NS = "http://www.w3.org/ns/shacl#"
     out: list[tuple] = []

@@ -36,9 +36,11 @@ dist/
 /src/generated/
 /public/data/diagram-links.json
 
-# Local Fuseki runtime (ADR-0036/0037): self-provisioned 6.1.0 dist + TDB2 data.
-# Both rebuilt on demand by scripts/build-with-data.mjs; never tracked or shipped.
+# Local Jena 6.1.0 runtime (ADR-0036/0037): self-provisioned Fuseki + SHACL CLI
+# dists + TDB2 data. Rebuilt on demand (build-with-data.mjs / opda_gen.jena_shacl);
+# never tracked or shipped.
 /.fuseki/
+/.jena/
 /run/
 
 # TailwindPlus downloader workspace (credentials, session, component dump)
