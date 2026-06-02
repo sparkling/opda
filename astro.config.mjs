@@ -154,7 +154,7 @@ const serveProjectRoots = {
 //   source/      — research archive, dev-only via the serveProjectRoots
 //                  middleware below; not in the production bundle.
 export default defineConfig({
-  site:    'https://opda-kb.pages.dev',
+  site:    'https://opda.org.uk',
   outDir:  './dist',
   // ADR-0021 §"Separate task": the report generator emits static HTML for
   // embedded meta-reports before build/dev resolves the page imports.

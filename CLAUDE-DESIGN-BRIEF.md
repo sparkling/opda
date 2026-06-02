@@ -149,7 +149,7 @@ Tone is editorial-authoritative, not playful.
 
 ```
 Recreate the OPDA Knowledge Base in this design system. The live site is
-at https://opda-kb.pages.dev/ — start with the homepage (/), then the eight
+at https://opda.org.uk/ — start with the homepage (/), then the eight
 section landings (Strategy, Governance, Engagement, Modelling, Schema,
 Implementation, Adoption, Library), then the data-dictionary topic page at
 /modelling/data-dictionary.
@@ -175,7 +175,7 @@ look:
 3. I'll translate the visual decisions into a minimal diff against
    `docs/ui/design-tokens.css` and the targeted bits of
    `docs/ui/design-system.css`.
-4. `./deploy.sh` ships it to `opda-kb.pages.dev`.
+4. `./deploy.sh` ships it to `opda.org.uk`.
 
 ---
 

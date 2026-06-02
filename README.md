@@ -11,7 +11,7 @@ The site is a static HTML / vanilla JS / Mermaid build with two interactive data
 
 ## Live site
 
-Deployed to [opda-kb.pages.dev](https://opda-kb.pages.dev) via Cloudflare Pages.
+Deployed to [opda.org.uk](https://opda.org.uk) via Cloudflare Pages.
 
 ## Project layout
 

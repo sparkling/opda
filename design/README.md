@@ -36,7 +36,7 @@ schema fragments are typeset in mono.
 - **Related** — [`Property-Data-Trust-Framework/schemas`](https://github.com/Property-Data-Trust-Framework/schemas)
   (PDTF schemas + overlays), [`Property-Data-Trust-Framework/web`](https://github.com/Property-Data-Trust-Framework/web)
   (propdata.org.uk informational site), [`Property-Data-Trust-Framework/api`](https://github.com/Property-Data-Trust-Framework/api).
-- **Live site** — [opda-kb.pages.dev](https://opda-kb.pages.dev).
+- **Live site** — [opda.org.uk](https://opda.org.uk).
 
 If you'd like to dig deeper, the repos above hold every page, schema overlay,
 and Mermaid diagram source the production site builds from. The four

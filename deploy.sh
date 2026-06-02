@@ -86,7 +86,7 @@ else
   gh repo create "$REPO_FULL" \
     --public \
     --description "OPDA Knowledge Base — Property Data Trust Framework documentation and semantic models" \
-    --homepage "https://opda-kb.pages.dev" >/dev/null
+    --homepage "https://opda.org.uk" >/dev/null
   S "created $REPO_FULL"
 fi
 
