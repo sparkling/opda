@@ -22,7 +22,7 @@ The canonical `@context` carries three sets of mappings.
 "@vocab": "https://opda.org.uk/pdtf/"
 ```
 
-Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's HASH namespace without explicit prefix. Per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md), the HASH namespace decision means `opda:Property` serialises as `https://opda.org.uk/pdtf/Property` — the `@vocab` setting honours this.
+Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's flat term namespace without explicit prefix. Per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md), the slash-based scheme means `opda:Property` serialises as `https://opda.org.uk/pdtf/Property` — the `@vocab` setting honours this.
 
 ### 2. Standard ontology prefixes
 
@@ -73,14 +73,13 @@ A consumer requesting `https://opda.org.uk/pdtf/shape/profiles/baspi5` with `Acc
   "dct:title": { "@value": "BASPI5 overlay profile", "@language": "en" },
   "dct:source": "https://opda.org.uk/pdtf/harness/adr/ADR-0013-overlay-profile-emission",
   "owl:imports": [
-    "https://opda.org.uk/pdtf/harness/release/1.0.0/",
-    "https://opda.org.uk/pdtf/scheme/"
+    "https://opda.org.uk/pdtf/"
   ],
-  "owl:versionIRI": "https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/"
+  "owl:versionIRI": "https://opda.org.uk/pdtf/harness/release/profiles/baspi5/0.1.0/"
 }
 ```
 
-Note that `owl:imports` is a single JSON array (driven by `@container: @set` in the context) and IRI values stay bare strings (driven by `@id` coercion); a consumer round-trips this to the BASPI5 profile graph without needing per-predicate handling code.
+Note that `owl:imports` is a single JSON array (driven by `@container: @set` in the context) and IRI values stay bare strings (driven by `@id` coercion); a consumer round-trips this to the BASPI5 profile graph without needing per-predicate handling code. The profile imports the one collapsed ontology at `https://opda.org.uk/pdtf/` (modules + SKOS schemes fold into it; ADR-0006), and its `owl:versionIRI` points at a harness release snapshot.
 
 ## Versioning
 
@@ -88,5 +87,5 @@ The `@context` itself is versioned. A breaking change (e.g. adding a new type-co
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — HASH namespace decision the `@vocab` honours.
+- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — slash-based namespace the `@vocab` honours.
 - [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — derived-profile composition that feeds JSON-LD serialisation.

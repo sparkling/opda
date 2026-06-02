@@ -1,71 +1,47 @@
 # Content negotiation
 
-OPDA's persistent namespace is `https://opda.org.uk/pdtf/*`, served via the W3C PICG redirect (per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). The redirect target is `https://opda.org.uk/pdtf/` (the OPDA institutional domain). Consumers fetch resources via standard HTTP with `Accept:` headers; the deployment serves TTL, JSON-LD, RDF/XML, or HTML depending on the header.
+OPDA's persistent namespace is `https://opda.org.uk/pdtf/*` (per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). These IRIs are **identifiers first** — graph-node names a consumer cites and compares. Dereferenceability is **optional and aspirational**, not required for the standard to be valid: a consumer never has to fetch an IRI to use the ontology (the council ranked resolution "aspirational, not required").
 
-## The redirect chain
-
-<img src="diagrams/README/redirect-chain.png" alt="W3id redirect chain" width="80%">
-
-<details>
-<summary>Mermaid Source</summary>
-
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
-sequenceDiagram
-    autonumber
-    accTitle: w3id.org redirect chain for ontology dereference
-    accDescr: Shows a consumer GETting an OPDA entity at w3id.org, getting a 302 redirect to openpropdata.org.uk, then GETting the redirect target and receiving Turtle.
-
-    participant C as Consumer
-    participant W as w3id.org
-    participant O as openpropdata.org.uk
-    C->>W: GET https://opda.org.uk/pdtf/Property<br/>Accept: text/turtle
-    W-->>C: 302 Found<br/>Location: https://opda.org.uk/pdtf/Property
-    C->>O: GET https://opda.org.uk/pdtf/Property<br/>Accept: text/turtle
-    O-->>C: 200 OK<br/>Content-Type: text/turtle<br/>(opda-property.ttl fragment containing opda:Property)
-```
-
-</details>
+When resolution **is** offered, it is served **directly from opda-controlled hosting** — `opda.org.uk` DNS + origin under OPDA's control. There is **no W3C PICG redirect**: ADR-0006 dropped the `w3id.org/opda → openpropdata.org.uk` redirect chain when the base moved to `opda.org.uk`, because opda now owns the domain and serves RDF from it directly. The serving model below describes that **planned** behaviour; DNS for the per-term endpoints is not yet configured.
 
 ## Accept-header content-negotiation flow
 
-<img src="diagrams/README/content-negotiation-flow.png" alt="Accept-header content-negotiation flow" width="80%">
+When served, consumers fetch resources via standard HTTP with `Accept:` headers; the origin returns TTL, JSON-LD, RDF/XML, or HTML depending on the header.
 
 <details>
 <summary>Mermaid Source</summary>
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#E8F5E9", "primaryTextColor": "#1B5E20", "primaryBorderColor": "#2E7D32", "lineColor": "#37474F"}}}%%
 sequenceDiagram
     autonumber
     accTitle: Accept-header content-negotiation flow
-    accDescr: Shows the four Accept-header response paths the deployment supports (Turtle JSON-LD RDF-XML HTML) and which source the server returns for each.
+    accDescr: Shows the four Accept-header response paths the deployment supports (Turtle, JSON-LD, RDF/XML, HTML) and which source the opda.org.uk origin returns for each.
 
     participant C as Client
-    participant S as openpropdata.org.uk
+    participant S as opda.org.uk
 
     alt Accept text/turtle
-        C->>S: GET .../opda/Property<br/>Accept: text/turtle
+        C->>S: GET .../pdtf/Property<br/>Accept: text/turtle
         S-->>C: 200 OK<br/>Content-Type: text/turtle<br/>(opda-property.ttl)
     else Accept application/ld+json
-        C->>S: GET .../opda/Property<br/>Accept: application/ld+json
+        C->>S: GET .../pdtf/Property<br/>Accept: application/ld+json
         S-->>C: 200 OK<br/>Content-Type: application/ld+json<br/>(TTL transformed via shared @context)
     else Accept application/rdf+xml
-        C->>S: GET .../opda/Property<br/>Accept: application/rdf+xml
+        C->>S: GET .../pdtf/Property<br/>Accept: application/rdf+xml
         S-->>C: 200 OK<br/>Content-Type: application/rdf+xml<br/>(TTL re-serialised via rdflib)
     else Accept text/html or */*
-        C->>S: GET .../opda/Property<br/>Accept: text/html
+        C->>S: GET .../pdtf/Property<br/>Accept: text/html
         S-->>C: 302 Found<br/>Location: /docs/manual/concept/property/Property
     end
 ```
 
 </details>
 
-The redirect is `302 Found` (not `301 Moved Permanently`) per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md): the redirect target stays editable without breaking cached consumers, until the hosting target stabilises.
+The HTML branch is a `302 Found` to the Concept-tier page (not a permanent redirect), so the human-readable target stays editable as the manual evolves.
 
 ## Accept-header routing
 
-The server responds to the `Accept` header per the matrix below:
+The origin responds to the `Accept` header per the matrix below:
 
 | Accept value | Response format | Source |
 |---|---|---|
@@ -82,7 +58,7 @@ A **single canonical `@context`** applies to every JSON-LD response, regardless 
 
 Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), the canonical context preserves:
 
-- `@vocab` → `https://opda.org.uk/pdtf/` (so all unqualified terms resolve to OPDA's HASH namespace)
+- `@vocab` → `https://opda.org.uk/pdtf/` (so all unqualified terms resolve to OPDA's flat term namespace)
 - Standard ontology prefixes: `dct:`, `dpv:`, `owl:`, `rdf:`, `rdfs:`, `skos:`, `sh:`, `dash:`, `xsd:`, `vann:`, `prov:`
 - OPDA-specific predicate type-coercions so a JSON consumer can treat `opda:hasSpecialCategoryData` as a boolean, `opda:formVersion` as a string, etc., without explicit `@type` annotations on every literal.
 
@@ -91,16 +67,16 @@ Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), the canonical
 See [format-matrix.md](./format-matrix.md) for the per-resource table:
 
 - Foundation namespace `https://opda.org.uk/pdtf/`
-- Version-IRI `https://opda.org.uk/pdtf/harness/release/1.0.0/` (immutable; bumps on every release)
+- Release snapshot `https://opda.org.uk/pdtf/harness/release/1.0.0/` (immutable; the `owl:versionIRI` target, bumps on every release)
 - BASPI5 profile `https://opda.org.uk/pdtf/shape/profiles/baspi5`
 - Per-entity dereference `https://opda.org.uk/pdtf/<EntityLocalName>` (e.g. `https://opda.org.uk/pdtf/Property`)
 
 ## Caching
 
-- TTL / JSON-LD / RDF/XML responses: `Cache-Control: public, max-age=3600` for version-IRI URIs (immutable per release); shorter for the foundation namespace and per-entity dereferences (revalidate against `ETag`).
-- The 302 redirect from `w3id.org` is uncached on the consumer side by spec; the origin response is cacheable per the above.
+- TTL / JSON-LD / RDF/XML responses: `Cache-Control: public, max-age=3600` for release-snapshot URIs (immutable per release); shorter for the foundation namespace and per-entity dereferences (revalidate against `ETag`).
+- The HTML-branch `302` to the Concept-tier page is uncached on the consumer side by spec; the origin RDF responses are cacheable per the above.
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace + redirect chain.
+- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace scheme + opda-direct serving (the original w3id/PICG redirect was dropped when the base moved to `opda.org.uk`).
 - [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — derived-profile composition feeding content negotiation.

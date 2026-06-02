@@ -6,7 +6,7 @@ title: Format matrix
 
 # Format matrix
 
-Per-resource format availability against the OPDA namespace `https://opda.org.uk/pdtf/*`. The 302 redirect via W3C PICG resolves each URL to the OPDA institutional domain (`https://opda.org.uk/pdtf/`); the matrix below shows what the origin server returns at the redirect target per `Accept` header.
+Per-resource format availability against the OPDA namespace `https://opda.org.uk/pdtf/*`. These IRIs are identifiers; resolution is **optional and aspirational** (see [content negotiation](./README.md)). When served, `opda.org.uk` is the origin **directly** — no W3C PICG redirect (ADR-0006 dropped it when the base moved to opda's own domain). The matrix below shows what that origin would return per `Accept` header.
 
 ## Headline matrix
 
@@ -15,14 +15,13 @@ Per-resource format availability against the OPDA namespace `https://opda.org.uk
 | `https://opda.org.uk/pdtf/` | yes | yes | yes | redirect to docs | Foundation namespace; serves `foundation.ttl` (15 triples) |
 | `https://opda.org.uk/pdtf/harness/release/1.0.0/` | yes | yes | yes | yes | Version-IRI; immutable per release |
 | `https://opda.org.uk/pdtf/scheme/` | yes | yes | yes | redirect to docs | SKOS scheme aggregate (873 triples; 23 schemes) |
-| `https://opda.org.uk/pdtf/<module>/` | yes | yes | yes | yes | Module TBox where `<module>` ∈ {property, agent, transaction, claim, governance, descriptive} |
-| `https://opda.org.uk/pdtf/<module>/1.0.0/` | yes | yes | yes | yes | Module version-IRI |
-| `https://opda.org.uk/pdtf/<module>-shapes/` | yes | yes | yes | redirect to docs | Per-module SHACL shapes |
-| `https://opda.org.uk/pdtf/<module>-annotations/` | yes | yes | yes | redirect to docs | Per-module DPV annotations |
+| `https://opda.org.uk/pdtf/graph/<module>` | yes | yes | yes | yes | Module class graph where `<module>` ∈ {property, agent, transaction, claim, governance, descriptive} (the modules contribute to the one `…/pdtf/` ontology; no separate per-module ontology IRI) |
+| `https://opda.org.uk/pdtf/graph/<module>-shapes` | yes | yes | yes | redirect to docs | Per-module SHACL shapes graph |
+| `https://opda.org.uk/pdtf/graph/<module>-annotations` | yes | yes | yes | redirect to docs | Per-module DPV annotations graph |
 | `https://opda.org.uk/pdtf/graph/shapes` | yes | yes | yes | redirect to docs | Foundation meta-shapes |
 | `https://opda.org.uk/pdtf/graph/annotations` | yes | yes | yes | redirect to docs | Foundation meta-annotations |
 | `https://opda.org.uk/pdtf/shape/profiles/baspi5` | yes | yes | yes | docs page | BASPI5 overlay profile (488 triples) |
-| `https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/` | yes | yes | yes | yes | BASPI5 version-IRI |
+| `https://opda.org.uk/pdtf/harness/release/profiles/baspi5/0.1.0/` | yes | yes | yes | yes | BASPI5 profile release snapshot (`owl:versionIRI` target) |
 | `https://opda.org.uk/pdtf/<EntityLocalName>` | yes | yes | yes | Concept-tier page | Per-entity dereference (e.g. `…/Property`, `…/LegalEstate`, `…/Buyer`) |
 | `https://opda.org.uk/pdtf/derived/opda-validation.ttl` | yes | yes | yes | redirect to docs | Pending composer activation |
 | `https://opda.org.uk/pdtf/derived/opda-ui.ttl` | yes | yes | yes | redirect to docs | Pending composer activation |
@@ -47,5 +46,5 @@ Origin server honours `If-None-Match` (`ETag`-based) and `If-Modified-Since` (`L
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace + per-resource resolution.
+- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace scheme + opda-direct (optional) resolution.
 - [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — BASPI5 + derived-profile URLs.
