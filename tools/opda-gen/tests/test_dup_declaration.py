@@ -35,6 +35,8 @@ from opda_gen.ci.dup_declaration_test import (
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -58,8 +60,8 @@ def test_declared_opda_terms_ignores_references() -> None:
     g.add((OPDA.bar, RDFS.domain, OPDA.Property))
     g.add((OPDA.bar, RDFS.range, OPDA.SomeRange))
     # opda:fooShape references opda:Foo via sh:path / sh:targetClass.
-    g.add((OPDA.fooShape, SH.path, OPDA.Foo))
-    g.add((OPDA.fooShape, SH.targetClass, OPDA.Foo))
+    g.add((OPDA_SHAPE.fooShape, SH.path, OPDA.Foo))
+    g.add((OPDA_SHAPE.fooShape, SH.targetClass, OPDA.Foo))
     declared = declared_opda_terms(g)
     assert set(declared) == {OPDA.bar}
     assert OPDA.Property not in declared
@@ -84,9 +86,9 @@ def test_declared_opda_terms_scopes_to_opda_namespace() -> None:
     """
     g = Graph()
     g.add((URIRef("https://w3id.org/dpv#Concept"), RDF.type, SKOS.Concept))
-    g.add((OPDA.localScheme, RDF.type, SKOS.ConceptScheme))
+    g.add((OPDA_SCHEME.localScheme, RDF.type, SKOS.ConceptScheme))
     declared = declared_opda_terms(g)
-    assert set(declared) == {OPDA.localScheme}
+    assert set(declared) == {OPDA_SCHEME.localScheme}
 
 
 # --- check_cross_module_duplicates: the invariant -------------------------

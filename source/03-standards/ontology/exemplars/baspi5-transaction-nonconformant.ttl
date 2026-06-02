@@ -17,41 +17,41 @@
 #
 # This is instance data (ABox); it changes no emitted TBox/profile, and is not
 # paired with an expected-report.ttl.
-@prefix opda: <https://w3id.org/opda/#> .
+@prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
 
-<https://w3id.org/opda/data/baspi5-nonconformant/property>
+<https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/property>
     a opda:Property ;
     rdfs:label "BASPI5 non-conformant transaction — property"@en ;
     opda:hasUPRN "100023336957" ;
-    opda:hasAddress <https://w3id.org/opda/data/baspi5-nonconformant/address> ;
+    opda:hasAddress <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/address> ;
     opda:propertyType "House" ;
     opda:builtForm "Detached" ;
     opda:currentEnergyRating "C" ;
     opda:heatingType "Central heating" .
 
-<https://w3id.org/opda/data/baspi5-nonconformant/address>
+<https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/address>
     a opda:Address ;
     vcard:street-address "2 Nonconformant Way, Testville" ;
     vcard:postal-code "TE2 2ST" .
 
 # The defect: a Seller acting "Under Power of Attorney" (branch (b)) with NO
 # opda:hasEvidencedAuthority. Trips Baspi5_SellersCapacityShape at B1.3.2.
-<https://w3id.org/opda/data/baspi5-nonconformant/seller>
+<https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/seller>
     a opda:Person, opda:Seller ;
     vcard:fn "Pat Attorney" ;
     vcard:email "pat.attorney@example.org" ;
     opda:role "Seller" ;
     opda:hasAssertedCapacity "Under Power of Attorney" .
 
-<https://w3id.org/opda/data/baspi5-nonconformant/buyer>
+<https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/buyer>
     a opda:Person, opda:Buyer ;
     vcard:fn "Sam Purchaser" ;
     vcard:email "sam.purchaser@example.org" ;
     opda:role "Buyer" .
 
-<https://w3id.org/opda/data/baspi5-nonconformant/estate>
+<https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/estate>
     a opda:LegalEstate ;
     opda:ownershipType "Freehold" ;
     opda:tenureKind "Freehold" .

@@ -30,6 +30,8 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV = Namespace("https://w3id.org/dpv")
 
@@ -91,20 +93,20 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
     for name, path in emitted_modules.items():
         g = Graph()
         g.parse(str(path), format="turtle")
-        module_iri = URIRef(f"https://w3id.org/opda/{name}/")
+        module_iri = URIRef(f"https://opda.org.uk/pdtf/graph/{name}")
         assert (module_iri, RDF.type, OWL.Ontology) in g, (
             f"module {name} missing owl:Ontology header at {module_iri}"
         )
         assert (
-            module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")
+            module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")
         ) in g, f"module {name} missing foundation owl:imports"
         assert (
-            module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")
+            module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")
         ) in g, f"module {name} missing vocabularies owl:imports"
         assert (
             module_iri,
             OWL.versionIRI,
-            URIRef(f"https://w3id.org/opda/{name}/1.0.0/"),
+            URIRef(f"https://opda.org.uk/pdtf/harness/release/{name}/1.0.0/"),
         ) in g, f"module {name} missing versionIRI 1.0.0"
 
 

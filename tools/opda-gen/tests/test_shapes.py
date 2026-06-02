@@ -29,6 +29,8 @@ from rdflib.namespace import OWL, RDF, RDFS
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 
@@ -104,12 +106,12 @@ def test_foundation_shapes_extended_with_meta_shapes(
     g = Graph()
     g.parse(str(emitted_shapes["foundation"]), format="turtle")
     expected = {
-        OPDA.NoIdentityOverride_MetaShape,
-        OPDA.ShInSemantics_MetaShape,
-        OPDA.ShViolationFloor_MetaShape,
-        OPDA.MetaShapeOverShapeGraphMetaShape,
-        OPDA.PIIWithoutDPVCoAnnotationRule,
-        OPDA.DeprecationChainRule,
+        OPDA_SHAPE.NoIdentityOverride_MetaShape,
+        OPDA_SHAPE.ShInSemantics_MetaShape,
+        OPDA_SHAPE.ShViolationFloor_MetaShape,
+        OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape,
+        OPDA_SHAPE.PIIWithoutDPVCoAnnotationRule,
+        OPDA_SHAPE.DeprecationChainRule,
     }
     nodes = set(g.subjects(RDF.type, SH.NodeShape))
     missing = expected - nodes
@@ -244,12 +246,12 @@ def test_cat1_identity_key_shapes_present(
     # Expect at least Property, LegalEstate, Person, Organisation,
     # Transaction, Claim identity-key shapes.
     expected = {
-        OPDA.PropertyIdentityKeyShape,
-        OPDA.LegalEstateIdentityKeyShape,
-        OPDA.PersonIdentityKeyShape,
-        OPDA.OrganisationIdentityKeyShape,
-        OPDA.TransactionIdentityKeyShape,
-        OPDA.ClaimIdentityKeyShape,
+        OPDA_SHAPE.PropertyIdentityKeyShape,
+        OPDA_SHAPE.LegalEstateIdentityKeyShape,
+        OPDA_SHAPE.PersonIdentityKeyShape,
+        OPDA_SHAPE.OrganisationIdentityKeyShape,
+        OPDA_SHAPE.TransactionIdentityKeyShape,
+        OPDA_SHAPE.ClaimIdentityKeyShape,
     }
     nodes = set(g_all.subjects(RDF.type, SH.NodeShape))
     missing = expected - nodes
@@ -264,7 +266,7 @@ def test_cat2_ic_breach_shape_present(
     anti-pattern per ODR-0005 Rule 5)."""
     g = Graph()
     g.parse(str(emitted_shapes["property"]), format="turtle")
-    assert (OPDA.PropertyICBreachShape, RDF.type, SH.NodeShape) in g
+    assert (OPDA_SHAPE.PropertyICBreachShape, RDF.type, SH.NodeShape) in g
 
 
 def test_cat3_no_identity_override_meta_shape_present(
@@ -275,10 +277,10 @@ def test_cat3_no_identity_override_meta_shape_present(
     g = Graph()
     g.parse(str(emitted_shapes["foundation"]), format="turtle")
     assert (
-        OPDA.NoIdentityOverride_MetaShape, RDF.type, SH.NodeShape
+        OPDA_SHAPE.NoIdentityOverride_MetaShape, RDF.type, SH.NodeShape
     ) in g
     # Verify severity is sh:Violation
-    sev = list(g.objects(OPDA.NoIdentityOverride_MetaShape, SH.severity))
+    sev = list(g.objects(OPDA_SHAPE.NoIdentityOverride_MetaShape, SH.severity))
     assert SH.Violation in sev
 
 
@@ -289,7 +291,7 @@ def test_cat4_special_category_pii_shape_present(
     g = Graph()
     g.parse(str(emitted_shapes["agent"]), format="turtle")
     assert (
-        OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+        OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
         RDF.type, SH.NodeShape,
     ) in g
 
@@ -301,9 +303,9 @@ def test_cat5_meta_shape_over_shape_graph_present(
     g = Graph()
     g.parse(str(emitted_shapes["foundation"]), format="turtle")
     assert (
-        OPDA.MetaShapeOverShapeGraphMetaShape, RDF.type, SH.NodeShape
+        OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, RDF.type, SH.NodeShape
     ) in g
-    sev = list(g.objects(OPDA.MetaShapeOverShapeGraphMetaShape, SH.severity))
+    sev = list(g.objects(OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, SH.severity))
     assert SH.Violation in sev
 
 
@@ -316,9 +318,9 @@ def test_three_rule_interface_contract_meta_shapes_present(
     g = Graph()
     g.parse(str(emitted_shapes["foundation"]), format="turtle")
     rules = (
-        OPDA.NoIdentityOverride_MetaShape,    # Rule 3 (no-identity-override)
-        OPDA.ShInSemantics_MetaShape,         # Rule 1 (sh:in semantics)
-        OPDA.ShViolationFloor_MetaShape,      # Rule 2 (sh:Violation floor)
+        OPDA_SHAPE.NoIdentityOverride_MetaShape,    # Rule 3 (no-identity-override)
+        OPDA_SHAPE.ShInSemantics_MetaShape,         # Rule 1 (sh:in semantics)
+        OPDA_SHAPE.ShViolationFloor_MetaShape,      # Rule 2 (sh:Violation floor)
     )
     for r in rules:
         assert (r, RDF.type, SH.NodeShape) in g, (
@@ -342,7 +344,7 @@ def test_eleven_shacl_af_citing_sites_all_emit(
         all_shapes.update(g.subjects(RDF.type, SH.NodeShape))
 
     expected_iris = {
-        OPDA[local_name] for local_name, _ in SHACL_AF_CITING_SITES
+        OPDA_SHAPE[local_name] for local_name, _ in SHACL_AF_CITING_SITES
     }
     missing = expected_iris - all_shapes
     assert not missing, (
@@ -358,7 +360,7 @@ def test_pii_rule_is_warning_severity(
 ) -> None:
     g = Graph()
     g.parse(str(emitted_shapes["foundation"]), format="turtle")
-    sev = list(g.objects(OPDA.PIIWithoutDPVCoAnnotationRule, SH.severity))
+    sev = list(g.objects(OPDA_SHAPE.PIIWithoutDPVCoAnnotationRule, SH.severity))
     assert SH.Warning in sev, (
         "PIIWithoutDPVCoAnnotationRule must be sh:Warning per ADR-0012 "
         "§SHACL-AF rule emission (silent PII leakage is high-impact)"
@@ -370,7 +372,7 @@ def test_uprn_succession_rule_is_info_severity(
 ) -> None:
     g = Graph()
     g.parse(str(emitted_shapes["property"]), format="turtle")
-    sev = list(g.objects(OPDA.UPRNSuccessionRule, SH.severity))
+    sev = list(g.objects(OPDA_SHAPE.UPRNSuccessionRule, SH.severity))
     assert SH.Info in sev, (
         "UPRNSuccessionRule must be sh:Info per ODR-0017 §1a "
         "(substantive-succession case)"
@@ -435,7 +437,7 @@ def test_special_category_shape_binds_core_dpv_for_lawful_basis(
     selects = [
         str(sel)
         for sparql in g.objects(
-            OPDA.SpecialCategoryPIIWithoutLawfulBasisShape, SH.sparql
+            OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape, SH.sparql
         )
         for sel in g.objects(sparql, SH.select)
     ]

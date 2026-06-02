@@ -1214,7 +1214,7 @@ def _add_enum_value_shape(
     url value shapes), so the value-space holds standalone without the bearer's
     base shape OR an overlay profile (this is what closes the ownerType gap:
     opda:Proprietor has no overlay)."""
-    local = str(prop).rsplit("#", 1)[-1]
+    local = str(prop).rsplit("/", 1)[-1]
     g.add((shape_iri, RDF.type, SH.NodeShape))
     g.add((shape_iri, SH.targetSubjectsOf, prop))
     g.add((shape_iri, DCTERMS.source, source))
@@ -1549,7 +1549,7 @@ def build_descriptive_shapes() -> Graph:
         g.add((p_uri, SH.pattern, Literal(_uri_pattern)))
         g.add((p_uri, SH.severity, SH.Violation))
         g.add((p_uri, SH.message, Literal(
-            f"opda:{str(prop).rsplit('#', 1)[-1]} ({ref_label}) MUST be a "
+            f"opda:{str(prop).rsplit('/', 1)[-1]} ({ref_label}) MUST be a "
             "well-formed http(s) URI (sh:datatype xsd:anyURI + URI "
             "sh:pattern). The property is rdfs:domain-less (cross-artefact "
             "reference; ODR-0024 R11 / session-028 Q5) — this shape "

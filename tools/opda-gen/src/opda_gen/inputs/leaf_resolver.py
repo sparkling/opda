@@ -153,7 +153,7 @@ def emitted_predicates(ontology_dir: Path) -> dict[str, EmittedPredicate]:
         for s in g.subjects(RDF.type, ptype):
             if not isinstance(s, URIRef) or not str(s).startswith(str(OPDA)):
                 continue
-            local = str(s).split("#", 1)[1]
+            local = str(s)[len(str(OPDA)):]
             domains = list(g.objects(s, RDFS.domain))
             ranges = list(g.objects(s, RDFS.range))
             out[local] = EmittedPredicate(

@@ -289,7 +289,7 @@ def _thin_description(title: str, community: URIRef) -> str:
     stay byte-identical (the S034 implementation regression gate). The
     re-typing as register artefacts is recorded in ODR-0008d / the session
     record, not minted into the thin TTL (it would break byte-identity)."""
-    ctx = str(community).rsplit("#", 1)[-1]
+    ctx = str(community).rsplit("/", 1)[-1]
     return (
         f"SHACL overlay profile for {title}. Per S022 (ODR-0010 / "
         f"ADR-0029) the SHACL overlay IS the form; this graph carries the "
@@ -832,7 +832,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     _add_property_group(g, grp_completion, label="Completion", order=9)
 
     # --- Baspi5_AddressShape (BASPI5 A1.1) -----------------------------
-    addr_shape = OPDA.Baspi5_AddressShape
+    addr_shape = OPDA_SHAPE.Baspi5_AddressShape
     g.add((addr_shape, RDF.type, SH.NodeShape))
     g.add((addr_shape, SH.targetClass, OPDA.Address))
     g.add((addr_shape, DCTERMS.source, _baspi5_question("A1.1")))
@@ -858,7 +858,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     )
 
     # --- Baspi5_PropertyShape (BASPI5 propertyPack.*) ------------------
-    prop_shape = OPDA.Baspi5_PropertyShape
+    prop_shape = OPDA_SHAPE.Baspi5_PropertyShape
     g.add((prop_shape, RDF.type, SH.NodeShape))
     g.add((prop_shape, SH.targetClass, OPDA.Property))
     # G19: anchor realigned from `A1` (no baspi5Ref) to `A1.1` (the
@@ -1016,7 +1016,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         )
 
     # --- Baspi5_LegalEstateShape (BASPI5 ownership / tenure) -----------
-    estate_shape = OPDA.Baspi5_LegalEstateShape
+    estate_shape = OPDA_SHAPE.Baspi5_LegalEstateShape
     g.add((estate_shape, RDF.type, SH.NodeShape))
     g.add((estate_shape, SH.targetClass, OPDA.LegalEstate))
     g.add((estate_shape, DCTERMS.source, _baspi5_question("A1.3")))
@@ -1069,7 +1069,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         )
 
     # --- Baspi5_SellerShape (BASPI5 participants[].role==Seller) ------
-    seller_shape = OPDA.Baspi5_SellerShape
+    seller_shape = OPDA_SHAPE.Baspi5_SellerShape
     g.add((seller_shape, RDF.type, SH.NodeShape))
     g.add((seller_shape, SH.targetClass, OPDA.Seller))
     g.add((seller_shape, DCTERMS.source, _baspi5_question("B1")))
@@ -1117,7 +1117,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     #   (a) Legal Owner / Mortgagee in Possession (no extra requirements)
     #   (b) Personal Representative / Power of Attorney / Assistant /
     #       Other → REQUIRE sellersCapacityDetails + attachments.
-    capacity_shape = OPDA.Baspi5_SellersCapacityShape
+    capacity_shape = OPDA_SHAPE.Baspi5_SellersCapacityShape
     g.add((capacity_shape, RDF.type, SH.NodeShape))
     g.add((capacity_shape, SH.targetClass, OPDA.Seller))
     g.add((capacity_shape, SH.severity, SH.Violation))
@@ -1175,7 +1175,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     Collection(g, xone_list, [branch_a, branch_b])
 
     # --- Baspi5_BuyerShape (participants[].role==Buyer) ----------------
-    buyer_shape = OPDA.Baspi5_BuyerShape
+    buyer_shape = OPDA_SHAPE.Baspi5_BuyerShape
     g.add((buyer_shape, RDF.type, SH.NodeShape))
     g.add((buyer_shape, SH.targetClass, OPDA.Buyer))
     g.add((buyer_shape, DCTERMS.source, _baspi5_question("B1")))
@@ -1197,7 +1197,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     )
 
     # --- Baspi5_EPCCertificateShape (BASPI5 A1.8.3.1) -----------------
-    epc_shape = OPDA.Baspi5_EPCCertificateShape
+    epc_shape = OPDA_SHAPE.Baspi5_EPCCertificateShape
     g.add((epc_shape, RDF.type, SH.NodeShape))
     g.add((epc_shape, SH.targetClass, OPDA.EPCCertificate))
     g.add((epc_shape, DCTERMS.source, _baspi5_question("A1.8.3.1")))

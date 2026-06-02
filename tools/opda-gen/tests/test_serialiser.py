@@ -38,6 +38,8 @@ from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -55,7 +57,7 @@ def _build_mixed_graph() -> Graph:
     g.add((prop, RDFS.label, Literal("foo property", lang="en")))
     g.add((prop, RDF.type, OWL.DatatypeProperty))
     g.add((prop, DCTERMS.source, URIRef("https://w3id.org/opda/odr/X#prop")))
-    shape = OPDA.fooShape
+    shape = OPDA_SHAPE.fooShape
     g.add((shape, SH.targetClass, OPDA.Foo))
     g.add((shape, RDF.type, SH.NodeShape))
     cls = OPDA.Foo
@@ -301,7 +303,7 @@ def test_multi_object_blank_node_list_byte_identical_across_runs() -> None:
         g = Graph()
         g.bind("opda", OPDA)
         g.bind("sh", SH)
-        shape = OPDA.MultiObjectShape
+        shape = OPDA_SHAPE.MultiObjectShape
         g.add((shape, RDF.type, SH.NodeShape))
         for label in ["alpha", "beta", "gamma"]:
             # We use a fresh BNode per Graph construction so the rdflib

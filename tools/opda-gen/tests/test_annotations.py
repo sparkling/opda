@@ -26,6 +26,8 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
@@ -547,7 +549,7 @@ def test_pii_floor_active_count_matches_baseline_count(
         s
         for s in g.subjects(_HAS_PD, None)
         if str(s).startswith("https://opda.org.uk/pdtf/")
-        and str(s).split("#", 1)[1][:1].isupper()
+        and str(s).rsplit("/", 1)[-1][:1].isupper()
     }
     assert len(pii_classes) > 0, (
         "the PII floor is a no-op — no class is marked opda:isPIIBearing "

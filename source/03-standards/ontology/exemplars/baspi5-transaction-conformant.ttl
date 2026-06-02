@@ -30,39 +30,39 @@
 # paired with an expected-report.ttl (it is validated against the BASPI5 profile
 # by ci-baspi5-roundtrip, not against the foundation shapes by the ADR-0014
 # exemplar-regression layer).
-@prefix opda: <https://w3id.org/opda/#> .
+@prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
 
-<https://w3id.org/opda/data/baspi5-conformant/property>
+<https://opda.org.uk/pdtf/harness/data/baspi5-conformant/property>
     a opda:Property ;
     rdfs:label "BASPI5 conformant transaction — property"@en ;
     opda:hasUPRN "100023336956" ;
-    opda:hasAddress <https://w3id.org/opda/data/baspi5-conformant/address> ;
+    opda:hasAddress <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/address> ;
     opda:propertyType "House" ;
     opda:builtForm "Detached" ;
     opda:currentEnergyRating "C" ;
     opda:heatingType "Central heating" .
 
-<https://w3id.org/opda/data/baspi5-conformant/address>
+<https://opda.org.uk/pdtf/harness/data/baspi5-conformant/address>
     a opda:Address ;
     vcard:street-address "1 Conformant Way, Testville" ;
     vcard:postal-code "TE1 1ST" .
 
-<https://w3id.org/opda/data/baspi5-conformant/seller>
+<https://opda.org.uk/pdtf/harness/data/baspi5-conformant/seller>
     a opda:Person, opda:Seller ;
     vcard:fn "Alex Vendor" ;
     vcard:email "alex.vendor@example.org" ;
     opda:role "Seller" ;
     opda:hasAssertedCapacity "Legal Owner" .
 
-<https://w3id.org/opda/data/baspi5-conformant/buyer>
+<https://opda.org.uk/pdtf/harness/data/baspi5-conformant/buyer>
     a opda:Person, opda:Buyer ;
     vcard:fn "Sam Purchaser" ;
     vcard:email "sam.purchaser@example.org" ;
     opda:role "Buyer" .
 
-<https://w3id.org/opda/data/baspi5-conformant/estate>
+<https://opda.org.uk/pdtf/harness/data/baspi5-conformant/estate>
     a opda:LegalEstate ;
     opda:ownershipType "Freehold" ;
     opda:tenureKind "Freehold" .

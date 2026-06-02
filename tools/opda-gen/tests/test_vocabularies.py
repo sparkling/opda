@@ -34,6 +34,8 @@ from opda_gen.emitters.vocabularies import (
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -154,7 +156,7 @@ def test_emit_vocabularies_produces_47_schemes(emitted_graph: Graph) -> None:
         f"+ 2 Cat-E + 7 ODR-0024), got {len(schemes)}: "
         f"{sorted(str(s) for s in schemes)}"
     )
-    emitted_names = {str(s).rsplit("#", 1)[-1] for s in schemes}
+    emitted_names = {str(s).rsplit("/", 1)[-1] for s in schemes}
     assert emitted_names == _ALL_SCHEME_NAMES, (
         f"diff: {_ALL_SCHEME_NAMES ^ emitted_names}"
     )
@@ -164,13 +166,13 @@ def test_currency_scheme(emitted_graph: Graph) -> None:
     """ODR-0024 R3 — opda:CurrencyScheme is the ISO-4217 currency value-space
     for opda:MonetaryAmount, seeded GBP / EUR / USD (extensible), each a flat
     top concept."""
-    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA.CurrencyScheme))
+    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.CurrencyScheme))
     notations = {
         str(n) for m in members for n in emitted_graph.objects(m, SKOS.notation)
     }
     assert notations == {"GBP", "EUR", "USD"}
     for m in members:
-        assert (m, SKOS.topConceptOf, OPDA.CurrencyScheme) in emitted_graph
+        assert (m, SKOS.topConceptOf, OPDA_SCHEME.CurrencyScheme) in emitted_graph
 
 
 # --- Confirmation #2 (byte-identity) -------------------------------------
@@ -412,7 +414,7 @@ def _scheme_by_name(name: str) -> object:
 def test_category_c_schemes_present(emitted_graph: Graph) -> None:
     """All 14 Category-C reused status-enum value-spaces are emitted as
     `skos:ConceptScheme`s (ODR-0022 §1)."""
-    emitted = {str(s).rsplit("#", 1)[-1] for s in
+    emitted = {str(s).rsplit("/", 1)[-1] for s in
                emitted_graph.subjects(RDF.type, SKOS.ConceptScheme)}
     missing = _CATEGORY_C_SCHEMES - emitted
     assert not missing, f"missing Category-C schemes: {missing}"
@@ -438,7 +440,7 @@ def test_category_c_member_counts(emitted_graph: Graph) -> None:
         "UnitOfAreaScheme": 2,
     }
     for name, count in expected_counts.items():
-        scheme_uri = OPDA[name]
+        scheme_uri = OPDA_SCHEME[name]
         members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
         assert len(members) == count, (
             f"{name}: expected {count} members, got {len(members)}"
@@ -452,7 +454,7 @@ def test_inclusion_status_scheme_members(emitted_graph: Graph) -> None:
     property itself is NOT emitted here (boundary)."""
     members = {
         str(n)
-        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.InclusionStatusScheme)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.InclusionStatusScheme)
         for n in emitted_graph.objects(m, SKOS.notation)
     }
     assert members == {"Included", "Excluded", "None"}
@@ -477,7 +479,7 @@ def test_category_c_member_source_is_schema_leaf_not_odr(
     schema leaf path (the data-dictionary IRI), NOT at the deciding ODR."""
     dd_prefix = "https://opda.org.uk/pdtf/harness/data-dictionary/"
     for name in _CATEGORY_C_SCHEMES:
-        scheme_uri = OPDA[name]
+        scheme_uri = OPDA_SCHEME[name]
         for m in emitted_graph.subjects(SKOS.inScheme, scheme_uri):
             sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
             assert sources, f"{m} missing dct:source"
@@ -497,13 +499,13 @@ def test_no_per_leaf_scheme_explosion(emitted_graph: Graph) -> None:
     Verified by: the InclusionStatusScheme exists, has 3 members, and is
     sourced (per-member) from multiple distinct fixtures leaf paths — i.e.
     one value-space reused across many leaves, not one scheme per leaf."""
-    scheme_uri = OPDA.InclusionStatusScheme
+    scheme_uri = OPDA_SCHEME.InclusionStatusScheme
     assert (scheme_uri, RDF.type, SKOS.ConceptScheme) in emitted_graph
     members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
     assert len(members) == 3, "InclusionStatusScheme must reuse one 3-value set"
     # No scheme should be named after an individual fixtures item or leaf.
     scheme_names = {
-        str(s).rsplit("#", 1)[-1]
+        str(s).rsplit("/", 1)[-1]
         for s in emitted_graph.subjects(RDF.type, SKOS.ConceptScheme)
     }
     leafish = {
@@ -520,7 +522,7 @@ def test_category_c_schemes_are_quale_in_region(emitted_graph: Graph) -> None:
     for name in _CATEGORY_C_SCHEMES:
         cats = [
             str(c)
-            for c in emitted_graph.objects(OPDA[name], OPDA.ufoCategory)
+            for c in emitted_graph.objects(OPDA_SCHEME[name], OPDA.ufoCategory)
         ]
         assert cats == ["Quale-in-Region"], f"{name} ufoCategory = {cats}"
 
@@ -529,7 +531,7 @@ def test_category_c_schemes_are_quale_in_region(emitted_graph: Graph) -> None:
 def test_fixture_item_scheme_present_with_89_items(emitted_graph: Graph) -> None:
     """ODR-0022 §4 Category D: `opda:FixtureItemScheme` carries the ~89
     fixtures-checklist item concepts (ITEMS ONLY)."""
-    scheme_uri = OPDA.FixtureItemScheme
+    scheme_uri = OPDA_SCHEME.FixtureItemScheme
     assert (scheme_uri, RDF.type, SKOS.ConceptScheme) in emitted_graph
     members = list(emitted_graph.subjects(SKOS.inScheme, scheme_uri))
     assert len(members) == 89, (
@@ -544,7 +546,7 @@ def test_fixture_item_member_uris_encode_category(emitted_graph: Graph) -> None:
     not the 61 distinct bare names."""
     members = [
         str(m)
-        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.FixtureItemScheme)
     ]
     # All member URIs share the fixtureItem slug base and are unique.
     assert len(set(members)) == 89, "fixture item URIs must be distinct"
@@ -566,7 +568,7 @@ def test_fixture_item_inclusion_property_not_on_items(
     item)."""
     incl_props = {OPDA.inclusionStatus, OPDA.isIncludedExcludedOrNone}
     violations = []
-    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme):
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.FixtureItemScheme):
         for p in emitted_graph.predicates(m, None):
             if p in incl_props:
                 violations.append((str(m), str(p)))
@@ -579,7 +581,7 @@ def test_fixture_item_source_is_schema_leaf(emitted_graph: Graph) -> None:
     """Every fixture-item `dct:source` points at the schema
     `isIncludedExcludedOrNone` leaf path (ODR-0022 G2)."""
     dd_prefix = "https://opda.org.uk/pdtf/harness/data-dictionary/"
-    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme):
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.FixtureItemScheme):
         sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
         assert sources, f"{m} missing dct:source"
         for src in sources:
@@ -594,7 +596,7 @@ def test_fixture_item_source_is_schema_leaf(emitted_graph: Graph) -> None:
 def test_peril_scheme_has_exactly_12_concepts(emitted_graph: Graph) -> None:
     """ODR-0008d Rule 2: opda:PerilScheme carries EXACTLY 12 skos:Concepts —
     the canonical environmental/search peril axis."""
-    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme))
+    members = list(emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.PerilScheme))
     assert len(members) == 12, (
         f"expected 12 peril concepts, got {len(members)}: "
         f"{sorted(str(m) for m in members)}"
@@ -605,7 +607,7 @@ def test_peril_scheme_member_set_matches_rule_2(emitted_graph: Graph) -> None:
     """The 12 perils are exactly those ODR-0008d Rule 2 names (by notation)."""
     notations = {
         str(n)
-        for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme)
+        for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.PerilScheme)
         for n in emitted_graph.objects(m, SKOS.notation)
     }
     assert notations == {
@@ -619,11 +621,11 @@ def test_peril_concepts_are_top_concepts_and_quale(emitted_graph: Graph) -> None
     """Each peril is skos:topConceptOf the scheme (mirroring
     opda:BoundedContextScheme) and the scheme carries opda:ufoCategory
     'Quale-in-Region' (Rule 2)."""
-    assert (OPDA.PerilScheme, OPDA.ufoCategory, None) in emitted_graph
-    ufo = list(emitted_graph.objects(OPDA.PerilScheme, OPDA.ufoCategory))
+    assert (OPDA_SCHEME.PerilScheme, OPDA.ufoCategory, None) in emitted_graph
+    ufo = list(emitted_graph.objects(OPDA_SCHEME.PerilScheme, OPDA.ufoCategory))
     assert [str(x) for x in ufo] == ["Quale-in-Region"]
-    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme):
-        assert (m, SKOS.topConceptOf, OPDA.PerilScheme) in emitted_graph, (
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.PerilScheme):
+        assert (m, SKOS.topConceptOf, OPDA_SCHEME.PerilScheme) in emitted_graph, (
             f"peril {m} is not skos:topConceptOf the scheme"
         )
 
@@ -633,7 +635,7 @@ def test_peril_members_source_to_governing_authority(
 ) -> None:
     """ODR-0008d Rule 2: each peril's dct:source is its governing data
     authority (an external regulator URL), NOT a schema leaf / ODR section."""
-    for m in emitted_graph.subjects(SKOS.inScheme, OPDA.PerilScheme):
+    for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.PerilScheme):
         sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
         assert sources, f"{m} missing dct:source"
         for src in sources:
@@ -650,7 +652,7 @@ def test_peril_members_source_to_governing_authority(
 
 def test_peril_scheme_steward_is_baker(emitted_graph: Graph) -> None:
     """ODR-0008d Rule 2: steward Baker (deputy Isaac)."""
-    stewards = [str(s) for s in emitted_graph.objects(OPDA.PerilScheme, OPDA.hasSteward)]
+    stewards = [str(s) for s in emitted_graph.objects(OPDA_SCHEME.PerilScheme, OPDA.hasSteward)]
     assert len(stewards) == 1
     assert "Baker" in stewards[0]
 
@@ -661,7 +663,7 @@ def test_action_alert_rating_scheme_values(emitted_graph: Graph) -> None:
     notations = {
         str(n)
         for m in emitted_graph.subjects(
-            SKOS.inScheme, OPDA.ActionAlertRatingScheme
+            SKOS.inScheme, OPDA_SCHEME.ActionAlertRatingScheme
         )
         for n in emitted_graph.objects(m, SKOS.notation)
     }
@@ -670,7 +672,7 @@ def test_action_alert_rating_scheme_values(emitted_graph: Graph) -> None:
     labels = {
         str(lbl)
         for m in emitted_graph.subjects(
-            SKOS.inScheme, OPDA.ActionAlertRatingScheme
+            SKOS.inScheme, OPDA_SCHEME.ActionAlertRatingScheme
         )
         for lbl in emitted_graph.objects(m, SKOS.prefLabel)
     }

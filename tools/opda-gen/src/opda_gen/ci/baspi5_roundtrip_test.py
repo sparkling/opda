@@ -45,6 +45,7 @@ from rdflib.namespace import DCTERMS, RDF
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 DASH = Namespace("http://datashapes.org/dash#")
 
 # The BASPI5 form-question authority — duplicated here (not imported from the
@@ -83,7 +84,7 @@ _CLASS_TTLS = (
 _CONFORMANT = "baspi5-transaction-conformant.ttl"
 _NONCONFORMANT = "baspi5-transaction-nonconformant.ttl"
 
-_CAPACITY_SHAPE = OPDA.Baspi5_SellersCapacityShape
+_CAPACITY_SHAPE = OPDA_SHAPE.Baspi5_SellersCapacityShape
 _RDF_NIL = URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#nil")
 
 

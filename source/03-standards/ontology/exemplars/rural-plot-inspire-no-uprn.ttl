@@ -2,14 +2,14 @@
 # Situation: a rural plot with an INSPIRE Identifier (cadastral feature) but no UPRN — the
 # plot is undeveloped land (no built dwelling, no postal delivery point), so AddressBase
 # has no UPRN to issue. The INSPIRE identifier is the only operational join surface.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
 # Amended 2026-05-27 post-S015 close: added explicit opda:Address instance with addressVariant
 # "inspire" (S015 Q1 Kind commitment + Q2 IC rule 5 INSPIRE-only locatedness made manifest).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/rural-plot-inspire-no-uprn/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/rural-plot-inspire-no-uprn/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .

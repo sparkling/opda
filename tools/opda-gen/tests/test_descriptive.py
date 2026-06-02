@@ -23,6 +23,8 @@ from opda_gen.term_sourcing import schema_leaf_source, schema_leaf_sources
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 
 
 # ---------------------------------------------------------------------------
@@ -92,7 +94,7 @@ def test_schema_leaf_source_mints_form_question_iri() -> None:
         "baspi5", "propertyPack.buildInformation.building.builtForm"
     )
     assert iri == (
-        "https://w3id.org/opda/forms/baspi5"
+        "https://opda.org.uk/pdtf/harness/forms/baspi5"
         "#propertyPack.buildInformation.building.builtForm"
     )
     # Crucially: it must NOT be a deciding-ODR section anchor (the G2 defect).
@@ -129,9 +131,9 @@ def test_schema_leaf_sources_is_per_overlay_array() -> None:
     }
     sources = schema_leaf_sources("builtForm", dictionary)
     assert sources == [
-        "https://w3id.org/opda/forms/nts2"
+        "https://opda.org.uk/pdtf/harness/forms/nts2"
         "#propertyPack.buildInformation.building.builtForm",
-        "https://w3id.org/opda/forms/pdtf-transaction"
+        "https://opda.org.uk/pdtf/harness/forms/pdtf-transaction"
         "#propertyPack.energyEfficiency.certificate.builtForm",
     ]
     # Every source is a schema leaf path, never a deciding ODR section.
@@ -224,7 +226,7 @@ def test_room_dimension_emitted() -> None:
     assert (OPDA.Building, RDF.type, OWL.Class) not in g
     # keyless shape (no owl:hasKey on the value structure)
     sg = shapes.build_descriptive_shapes()
-    assert (OPDA.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension) in sg
+    assert (OPDA_SHAPE.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension) in sg
     assert (OPDA.RoomDimension, OWL.hasKey, None) not in g
 
 
@@ -302,19 +304,19 @@ def test_r5_followon_walk_emitted() -> None:
     # the six R6 enum properties are wired to their schemes (base value shapes)
     sg = shapes.build_descriptive_shapes()
     for shape, prop in (
-        (OPDA.ConstructionTypeValueShape, OPDA.constructionType),
-        (OPDA.PriceQualifierValueShape, OPDA.priceQualifier),
-        (OPDA.TransportTypeValueShape, OPDA.transportType),
-        (OPDA.BroadbandConnectionValueShape, OPDA.typeOfConnection),
-        (OPDA.OfstedRatingValueShape, OPDA.ofstedRating),
-        (OPDA.MarketingTenureValueShape, OPDA.marketingTenure),
+        (OPDA_SHAPE.ConstructionTypeValueShape, OPDA.constructionType),
+        (OPDA_SHAPE.PriceQualifierValueShape, OPDA.priceQualifier),
+        (OPDA_SHAPE.TransportTypeValueShape, OPDA.transportType),
+        (OPDA_SHAPE.BroadbandConnectionValueShape, OPDA.typeOfConnection),
+        (OPDA_SHAPE.OfstedRatingValueShape, OPDA.ofstedRating),
+        (OPDA_SHAPE.MarketingTenureValueShape, OPDA.marketingTenure),
     ):
         assert (shape, SH.targetSubjectsOf, prop) in sg, shape
         assert list(sg.objects(shape, SH.property)), shape
 
     # ownerType wired in agent-shapes — closes the §G23 Proprietor-overlay gap
     ag = shapes.build_agent_shapes()
-    assert (OPDA.OwnerTypeValueShape, SH.targetSubjectsOf, OPDA.ownerType) in ag
+    assert (OPDA_SHAPE.OwnerTypeValueShape, SH.targetSubjectsOf, OPDA.ownerType) in ag
 
 
 def test_category_e_properties_emitted() -> None:
@@ -400,7 +402,7 @@ def test_price_is_single_shared_property() -> None:
     assert (OPDA.price, RDFS.range, XSD.decimal) in g
     # No per-item price property family was minted.
     dtps = set(g.subjects(RDF.type, OWL.DatatypeProperty))
-    price_like = {p for p in dtps if str(p).rsplit("#", 1)[-1].lower().endswith("price")}
+    price_like = {p for p in dtps if str(p).rsplit("/", 1)[-1].lower().endswith("price")}
     assert price_like == {OPDA.price}
 
 
@@ -419,11 +421,11 @@ def test_risk_assessment_node_shape_present() -> None:
     opda:disclosureDetail, prov:wasAttributedTo, and recurses via
     opda:hasSubAssessment (sh:node)."""
     g = _descriptive_shapes_graph()
-    assert (OPDA.RiskAssessmentShape, RDF.type, SH.NodeShape) in g
-    assert (OPDA.RiskAssessmentShape, SH.targetClass, OPDA.RiskAssessment) in g
+    assert (OPDA_SHAPE.RiskAssessmentShape, RDF.type, SH.NodeShape) in g
+    assert (OPDA_SHAPE.RiskAssessmentShape, SH.targetClass, OPDA.RiskAssessment) in g
     paths = {
         str(p)
-        for pshape in g.objects(OPDA.RiskAssessmentShape, SH.property)
+        for pshape in g.objects(OPDA_SHAPE.RiskAssessmentShape, SH.property)
         for p in g.objects(pshape, SH.path)
     }
     assert str(OPDA.peril) in paths
@@ -435,10 +437,10 @@ def test_risk_assessment_node_shape_present() -> None:
     # The recursion is realised via sh:node back onto the same shape.
     sub = [
         pshape
-        for pshape in g.objects(OPDA.RiskAssessmentShape, SH.property)
+        for pshape in g.objects(OPDA_SHAPE.RiskAssessmentShape, SH.property)
         if (pshape, SH.path, OPDA.hasSubAssessment) in g
     ]
-    assert sub and (sub[0], SH.node, OPDA.RiskAssessmentShape) in g
+    assert sub and (sub[0], SH.node, OPDA_SHAPE.RiskAssessmentShape) in g
 
 
 def test_peril_property_shape_pins_the_12_concepts() -> None:
@@ -449,7 +451,7 @@ def test_peril_property_shape_pins_the_12_concepts() -> None:
     g = _descriptive_shapes_graph()
     peril_shape = [
         pshape
-        for pshape in g.objects(OPDA.RiskAssessmentShape, SH.property)
+        for pshape in g.objects(OPDA_SHAPE.RiskAssessmentShape, SH.property)
         if (pshape, SH.path, OPDA.peril) in g
     ]
     assert len(peril_shape) == 1
@@ -457,7 +459,7 @@ def test_peril_property_shape_pins_the_12_concepts() -> None:
     assert len(in_list) == 1
     members = list(Collection(g, in_list[0]))
     assert len(members) == 12
-    assert all(str(m).startswith("https://opda.org.uk/pdtf/peril/") for m in members)
+    assert all(str(m).startswith("https://opda.org.uk/pdtf/scheme/peril/") for m in members)
 
 
 def test_five_classes_have_internal_structure_shapes() -> None:
@@ -470,7 +472,7 @@ def test_five_classes_have_internal_structure_shapes() -> None:
         OPDA.Survey, OPDA.EPCCertificate, OPDA.Search,
         OPDA.Valuation, OPDA.Comparable,
     ):
-        shape = URIRef(f"{str(cls)}InternalStructureShape")
+        shape = OPDA_SHAPE[f"{str(cls).rsplit('/', 1)[-1]}InternalStructureShape"]
         assert (shape, RDF.type, SH.NodeShape) in g
         assert (shape, SH.targetClass, cls) in g
         paths = {
@@ -489,17 +491,17 @@ def test_fixtures_list_shape_is_transaction_scoped() -> None:
     opda:FixtureItemScheme, and constrains opda:inclusionStatus (sh:in) +
     opda:price + opda:disclosureDetail. NO FixtureItem class is targeted."""
     g = _descriptive_shapes_graph()
-    assert (OPDA.FixturesListShape, RDF.type, SH.NodeShape) in g
-    assert (OPDA.FixturesListShape, SH.targetClass, OPDA.Transaction) in g
-    assert (OPDA.FixturesListShape, SH.targetClass, OPDA.Property) not in g
+    assert (OPDA_SHAPE.FixturesListShape, RDF.type, SH.NodeShape) in g
+    assert (OPDA_SHAPE.FixturesListShape, SH.targetClass, OPDA.Transaction) in g
+    assert (OPDA_SHAPE.FixturesListShape, SH.targetClass, OPDA.Property) not in g
     # No FixtureItem class is invented as a target anywhere in the shapes.
     targets = {str(t) for t in g.objects(None, SH.targetClass)}
     assert "https://opda.org.uk/pdtf/FixtureItem" not in targets
     # Ties the controlled item vocabulary.
-    assert (OPDA.FixturesListShape, DCTERMS.references, OPDA.FixtureItemScheme) in g
+    assert (OPDA_SHAPE.FixturesListShape, DCTERMS.references, OPDA_SCHEME.FixtureItemScheme) in g
     paths = {
         str(p)
-        for pshape in g.objects(OPDA.FixturesListShape, SH.property)
+        for pshape in g.objects(OPDA_SHAPE.FixturesListShape, SH.property)
         for p in g.objects(pshape, SH.path)
     }
     assert str(OPDA.inclusionStatus) in paths

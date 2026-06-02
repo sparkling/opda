@@ -5,11 +5,11 @@
 # Tests Q5 lease term as OWL-Time interval (`time:ProperInterval`); Q1 Transaction-vs-Event
 # (this is a lifecycle event on an existing estate, not a new estate vesting); cross-cite
 # Hendler S005 Q5 lease-extension consumer-fails case (charge-event on title-record, not on estate).
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/lease-extension-transaction/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix time:    <http://www.w3.org/2006/time#> .
 @prefix dct:     <http://purl.org/dc/terms/> .

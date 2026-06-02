@@ -1,7 +1,7 @@
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
 # Situation: flat 5C Glasshouse Mansions. The building was subdivided; UPRN re-issued.
 # The physical flat is the same individual before and after — UPRN succession is administrative, not identity.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: proposed (council: session-005; namespace block carries).
 # Amended 2026-05-27 post-S005 close: scope-note updated to note reified opda:UPRNSuccessionEvent
@@ -9,8 +9,8 @@
 # as denormalised convenience for dash:uniqueValueForClass stale-reference checks. Cagle SHACL-AF
 # rule (S005 §6a) materialises the chain into the validation report at sh:Info severity.
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/flat-with-split-uprn/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/flat-with-split-uprn/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .

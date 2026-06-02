@@ -34,6 +34,8 @@ from opda_gen.ci.three_graph_test import (
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -53,8 +55,8 @@ def test_shacl_in_annotations_fail() -> None:
 
 def test_no_owl_imports_in_clean_shapes() -> None:
     g = Graph()
-    g.add((OPDA.fooShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.fooShape, SH.targetClass, OPDA.Foo))
+    g.add((OPDA_SHAPE.fooShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.fooShape, SH.targetClass, OPDA.Foo))
     assert check_no_owl_imports_in_shapes(g) == []
 
 
@@ -68,13 +70,13 @@ def test_owl_imports_in_shapes_fail() -> None:
 
 def test_no_advisory_in_clean_shapes() -> None:
     g = Graph()
-    g.add((OPDA.fooShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.fooShape, RDF.type, SH.NodeShape))
     assert check_no_advisory_in_shapes(g) == []
 
 
 def test_advisory_in_shapes_fail() -> None:
     g = Graph()
-    g.add((OPDA.fooShape, OPDA.aiHint, Literal("don't")))
+    g.add((OPDA_SHAPE.fooShape, OPDA.aiHint, Literal("don't")))
     violations = check_no_advisory_in_shapes(g)
     assert len(violations) == 1
 
@@ -83,14 +85,14 @@ def test_target_class_resolves_pass() -> None:
     classes = Graph()
     classes.add((OPDA.Foo, RDF.type, OWL.Class))
     shapes = Graph()
-    shapes.add((OPDA.fooShape, SH.targetClass, OPDA.Foo))
+    shapes.add((OPDA_SHAPE.fooShape, SH.targetClass, OPDA.Foo))
     assert check_target_class_resolves(shapes, classes) == []
 
 
 def test_target_class_unresolved_fail() -> None:
     classes = Graph()  # empty
     shapes = Graph()
-    shapes.add((OPDA.fooShape, SH.targetClass, OPDA.Missing))
+    shapes.add((OPDA_SHAPE.fooShape, SH.targetClass, OPDA.Missing))
     violations = check_target_class_resolves(shapes, classes)
     assert len(violations) == 1
     assert "Missing" in violations[0]

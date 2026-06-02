@@ -44,6 +44,8 @@ from opda_gen.emitters.vocabularies import emit_vocabularies
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 
 
 # --- Fixtures ------------------------------------------------------------

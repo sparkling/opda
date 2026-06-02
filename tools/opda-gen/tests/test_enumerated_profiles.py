@@ -26,6 +26,8 @@ from opda_gen.emitters.profiles import emit_profile
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 _ENUMERATED = (
@@ -164,7 +166,7 @@ def test_enumerated_form_emits_gap_register(
     form_id: str, tmp_path: Path
 ) -> None:
     g = _emit_and_parse(form_id, tmp_path)
-    pi = URIRef(f"https://w3id.org/opda/profiles/{form_id}")
+    pi = URIRef(f"https://opda.org.uk/pdtf/shape/profiles/{form_id}")
     descs = [str(d) for d in g.objects(pi, DCTERMS.description)]
     assert descs, f"{form_id}: missing gap register (dct:description)"
     reg = descs[0]

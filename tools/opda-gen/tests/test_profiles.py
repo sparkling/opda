@@ -32,6 +32,8 @@ from opda_gen.emitters.profiles import (
 
 
 OPDA = Namespace("https://opda.org.uk/pdtf/")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+OPDA_SHAPE = Namespace("https://opda.org.uk/pdtf/shape/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DASH = Namespace("http://datashapes.org/dash#")
 
@@ -84,16 +86,16 @@ def test_baspi5_byte_identical_across_two_runs(tmp_path: Path) -> None:
 def test_baspi5_ontology_header(emitted_baspi5: Graph) -> None:
     """The profile declares an owl:Ontology with dct:title, owl:imports
     (foundation + vocabularies), and owl:versionIRI."""
-    profile_iri = URIRef("https://w3id.org/opda/profiles/baspi5")
+    profile_iri = URIRef("https://opda.org.uk/pdtf/shape/profiles/baspi5")
     assert (profile_iri, RDF.type, OWL.Ontology) in emitted_baspi5
     titles = list(emitted_baspi5.objects(profile_iri, DCTERMS.title))
     assert any(t.language == "en" for t in titles)
     imports = list(emitted_baspi5.objects(profile_iri, OWL.imports))
-    assert URIRef("https://w3id.org/opda/1.0.0/") in imports
-    assert URIRef("https://w3id.org/opda/vocabularies/") in imports
+    assert URIRef("https://opda.org.uk/pdtf/") in imports
+    assert URIRef("https://opda.org.uk/pdtf/") in imports
     assert (
         profile_iri, OWL.versionIRI,
-        URIRef("https://w3id.org/opda/profiles/baspi5/0.1.0/"),
+        URIRef("https://opda.org.uk/pdtf/harness/release/profiles/baspi5/0.1.0/"),
     ) in emitted_baspi5
 
 
@@ -130,7 +132,7 @@ def test_baspi5_community_dct_subject(emitted_baspi5: Graph) -> None:
     context concept (Estate Agency for BASPI5)."""
     from rdflib.namespace import DCTERMS
 
-    profile_iri = URIRef("https://w3id.org/opda/profiles/baspi5")
+    profile_iri = URIRef("https://opda.org.uk/pdtf/shape/profiles/baspi5")
     subjects = list(emitted_baspi5.objects(profile_iri, DCTERMS.subject))
     assert subjects == [OPDA.EstateAgencyContext], \
         f"expected one dct:subject → EstateAgencyContext, got {subjects}"
@@ -162,13 +164,13 @@ def test_baspi5_per_class_shapes_exist(emitted_baspi5: Graph) -> None:
     + the SellersCapacityShape (sh:xone discriminator)."""
     node_shapes = set(emitted_baspi5.subjects(RDF.type, SH.NodeShape))
     for shape in (
-        OPDA.Baspi5_PropertyShape,
-        OPDA.Baspi5_AddressShape,
-        OPDA.Baspi5_LegalEstateShape,
-        OPDA.Baspi5_SellerShape,
-        OPDA.Baspi5_BuyerShape,
-        OPDA.Baspi5_EPCCertificateShape,
-        OPDA.Baspi5_SellersCapacityShape,
+        OPDA_SHAPE.Baspi5_PropertyShape,
+        OPDA_SHAPE.Baspi5_AddressShape,
+        OPDA_SHAPE.Baspi5_LegalEstateShape,
+        OPDA_SHAPE.Baspi5_SellerShape,
+        OPDA_SHAPE.Baspi5_BuyerShape,
+        OPDA_SHAPE.Baspi5_EPCCertificateShape,
+        OPDA_SHAPE.Baspi5_SellersCapacityShape,
     ):
         assert shape in node_shapes, f"profile missing {shape}"
 
@@ -177,13 +179,13 @@ def test_baspi5_shapes_target_correct_classes(emitted_baspi5: Graph) -> None:
     """Each Baspi5_*Shape NodeShape carries sh:targetClass matching its
     canonical OPDA class."""
     expected: dict[URIRef, URIRef] = {
-        OPDA.Baspi5_PropertyShape: OPDA.Property,
-        OPDA.Baspi5_AddressShape: OPDA.Address,
-        OPDA.Baspi5_LegalEstateShape: OPDA.LegalEstate,
-        OPDA.Baspi5_SellerShape: OPDA.Seller,
-        OPDA.Baspi5_BuyerShape: OPDA.Buyer,
-        OPDA.Baspi5_EPCCertificateShape: OPDA.EPCCertificate,
-        OPDA.Baspi5_SellersCapacityShape: OPDA.Seller,
+        OPDA_SHAPE.Baspi5_PropertyShape: OPDA.Property,
+        OPDA_SHAPE.Baspi5_AddressShape: OPDA.Address,
+        OPDA_SHAPE.Baspi5_LegalEstateShape: OPDA.LegalEstate,
+        OPDA_SHAPE.Baspi5_SellerShape: OPDA.Seller,
+        OPDA_SHAPE.Baspi5_BuyerShape: OPDA.Buyer,
+        OPDA_SHAPE.Baspi5_EPCCertificateShape: OPDA.EPCCertificate,
+        OPDA_SHAPE.Baspi5_SellersCapacityShape: OPDA.Seller,
     }
     for shape, cls in expected.items():
         targets = list(emitted_baspi5.objects(shape, SH.targetClass))
@@ -218,7 +220,7 @@ def test_baspi5_xone_pattern_for_sellers_capacity(
     """The Baspi5_SellersCapacityShape uses sh:xone to express the
     BASPI5 sellersCapacity oneOf discriminator per ODR-0010 §Q5."""
     xone_objects = list(
-        emitted_baspi5.objects(OPDA.Baspi5_SellersCapacityShape, SH.xone)
+        emitted_baspi5.objects(OPDA_SHAPE.Baspi5_SellersCapacityShape, SH.xone)
     )
     assert len(xone_objects) == 1, (
         f"expected 1 sh:xone on SellersCapacityShape, got "
@@ -322,7 +324,7 @@ def test_every_profile_has_single_community_tag(tmp_path: Path) -> None:
         path = next(iter(written))
         g = Graph()
         g.parse(path, format="turtle")
-        prof = URIRef(f"https://w3id.org/opda/profiles/{overlay}")
+        prof = URIRef(f"https://opda.org.uk/pdtf/shape/profiles/{overlay}")
         subjects = list(g.objects(prof, DCTERMS.subject))
         assert len(subjects) == 1, f"{overlay}: expected 1 dct:subject, got {subjects}"
         assert subjects[0] in scheme_concepts, \
