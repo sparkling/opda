@@ -162,7 +162,7 @@ def _module_annotations_header(
         (module_iri, RDF.type, OWL.Ontology),
         (module_iri, DCTERMS.title, Literal(title, lang="en")),
         (module_iri, OPDA.targetsClassGraph,
-         URIRef("https://w3id.org/opda/1.0.0/")),
+         URIRef("https://opda.org.uk/pdtf/")),
         (module_iri, DCTERMS.references, DPV_PD),
     ]
 
@@ -259,7 +259,7 @@ def build_property_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/property-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/property-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Property Annotations",
     ):
@@ -330,7 +330,7 @@ def build_agent_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/agent-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/agent-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Agent Annotations",
     ):
@@ -396,7 +396,7 @@ def build_transaction_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/transaction-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/transaction-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Transaction Annotations",
     ):
@@ -422,7 +422,7 @@ def build_claim_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/claim-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/claim-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Claim Annotations",
     ):
@@ -495,7 +495,7 @@ def build_governance_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/governance-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/governance-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Governance Annotations",
     ):
@@ -520,7 +520,7 @@ def build_descriptive_annotations() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/descriptive-annotations/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/descriptive-annotations")
     for t in _module_annotations_header(
         module_iri=module_iri, title="OPDA Descriptive Annotations",
     ):

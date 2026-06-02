@@ -87,12 +87,15 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, SKOS, XSD
 
 from opda_gen import __version__
+from opda_gen.namespaces import OPDA, OPDA_SCHEME
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces ----------------------------------------------------------
-OPDA = Namespace("https://opda.org.uk/pdtf/")
-OPDA_V = Namespace("https://w3id.org/opda/vocabularies/")
+# ADR-0006 ruling #1: SKOS schemes + concepts live under `…/pdtf/scheme/`
+# (disambiguated from the flat term namespace). `opda-v` is retained as the
+# prefix name for that scheme namespace.
+OPDA_V = OPDA_SCHEME
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
@@ -339,10 +342,10 @@ class Scheme:
     placeholder_warning: str | None = None
 
     def scheme_uri(self) -> URIRef:
-        return URIRef(f"{OPDA}{self.local_name}")
+        return URIRef(f"{OPDA_SCHEME}{self.local_name}")
 
     def member_uri(self, member: Member) -> URIRef:
-        return URIRef(f"{OPDA}{self.slug_base}/{member.uri_slug()}")
+        return URIRef(f"{OPDA_SCHEME}{self.slug_base}/{member.uri_slug()}")
 
 
 # --- Builders for each scheme --------------------------------------------

@@ -51,7 +51,7 @@ from pathlib import Path
 from rdflib import Dataset, URIRef
 
 # The derived inferred-graph IRI — same as the loader's ENTAILMENT_GRAPH.
-ENTAILMENT_GRAPH = "https://w3id.org/opda/graph/inferred/entailment"
+ENTAILMENT_GRAPH = "https://opda.org.uk/pdtf/graph/inferred/entailment"
 
 _PFX = (
     "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -130,7 +130,7 @@ def _load_asserted(ontology_dir: Path) -> tuple[Dataset, list[str]]:
         if not path.exists():
             missing.append(f"missing TBox file: {path}")
             continue
-        ds.graph(URIRef(f"https://w3id.org/opda/graph/{name}")).parse(
+        ds.graph(URIRef(f"https://opda.org.uk/pdtf/graph/{name}")).parse(
             str(path), format="turtle"
         )
     exemplars_dir = ontology_dir / "exemplars"

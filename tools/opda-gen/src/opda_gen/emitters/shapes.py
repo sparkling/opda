@@ -71,11 +71,12 @@ from rdflib.collection import Collection
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 from opda_gen import __version__
+from opda_gen.namespaces import OPDA, OPDA_SCHEME, OPDA_SHAPE
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces -----------------------------------------------------------
-OPDA = Namespace("https://opda.org.uk/pdtf/")
+# OPDA (terms), OPDA_SHAPE (shape nodes), OPDA_SCHEME (SKOS) come from the SoT.
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
@@ -200,7 +201,7 @@ def _module_shapes_header(
         (module_iri, RDF.type, OWL.Ontology),
         (module_iri, DCTERMS.title, Literal(title, lang="en")),
         (module_iri, OPDA.targetsClassGraph,
-         URIRef("https://w3id.org/opda/1.0.0/")),
+         URIRef("https://opda.org.uk/pdtf/")),
     ]
 
 
@@ -333,24 +334,24 @@ def build_foundation_meta_shapes(g: Graph) -> None:
 
     # --- Category 3: NoIdentityOverride meta-shape (ODR-0010 §Q6) -------
     sparql_node = BNode()
-    g.add((OPDA.NoIdentityOverride_MetaShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.NoIdentityOverride_MetaShape, SH.targetClass, SH.NodeShape))
-    g.add((OPDA.NoIdentityOverride_MetaShape, SH.sparql, sparql_node))
-    g.add((OPDA.NoIdentityOverride_MetaShape, SH.severity, SH.Violation))
-    g.add((OPDA.NoIdentityOverride_MetaShape, SH.message, Literal(
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, SH.targetClass, SH.NodeShape))
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, SH.sparql, sparql_node))
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, SH.message, Literal(
         "Profile shape attempts to override identity-key of Substance "
         "Kind; identity properties cannot be removed by overlays "
         "(ODR-0010 §Q6 three-rule interface contract).",
         lang="en",
     )))
-    g.add((OPDA.NoIdentityOverride_MetaShape, OPDA.metaShapeJustification,
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, OPDA.metaShapeJustification,
            Literal(
                "ODR-0013 §Q1 Category 3: profile cannot override identity-"
                "key; this meta-shape enforces the three-rule interface "
                "contract per ODR-0010 §Q6.",
                lang="en",
            )))
-    g.add((OPDA.NoIdentityOverride_MetaShape, DCTERMS.source, _ODR_0010_Q6))
+    g.add((OPDA_SHAPE.NoIdentityOverride_MetaShape, DCTERMS.source, _ODR_0010_Q6))
     g.add((sparql_node, SH.select, Literal(
         "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
@@ -363,24 +364,24 @@ def build_foundation_meta_shapes(g: Graph) -> None:
 
     # --- Three-rule interface contract: sh:in semantics meta-shape ------
     sparql_in = BNode()
-    g.add((OPDA.ShInSemantics_MetaShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.ShInSemantics_MetaShape, SH.targetClass, SH.NodeShape))
-    g.add((OPDA.ShInSemantics_MetaShape, SH.sparql, sparql_in))
-    g.add((OPDA.ShInSemantics_MetaShape, SH.severity, SH.Violation))
-    g.add((OPDA.ShInSemantics_MetaShape, SH.message, Literal(
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, SH.targetClass, SH.NodeShape))
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, SH.sparql, sparql_in))
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, SH.message, Literal(
         "Overlay profile sh:in constraint must union into the base "
         "SKOS scheme members (ODR-0010 three-rule interface contract, "
         "Rule 1).",
         lang="en",
     )))
-    g.add((OPDA.ShInSemantics_MetaShape, OPDA.metaShapeJustification,
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, OPDA.metaShapeJustification,
            Literal(
                "ODR-0010 three-rule interface contract Rule 1: overlay "
                "sh:in MUST be a subset of base sh:in (which itself unions "
                "into the SKOS scheme members per ODR-0011).",
                lang="en",
            )))
-    g.add((OPDA.ShInSemantics_MetaShape, DCTERMS.source, _ODR_0010_RULE_IN))
+    g.add((OPDA_SHAPE.ShInSemantics_MetaShape, DCTERMS.source, _ODR_0010_RULE_IN))
     g.add((sparql_in, SH.select, Literal(
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -402,24 +403,24 @@ def build_foundation_meta_shapes(g: Graph) -> None:
 
     # --- Three-rule interface contract: sh:Violation floor meta-shape ---
     sparql_floor = BNode()
-    g.add((OPDA.ShViolationFloor_MetaShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.ShViolationFloor_MetaShape, SH.targetClass, SH.NodeShape))
-    g.add((OPDA.ShViolationFloor_MetaShape, SH.sparql, sparql_floor))
-    g.add((OPDA.ShViolationFloor_MetaShape, SH.severity, SH.Violation))
-    g.add((OPDA.ShViolationFloor_MetaShape, SH.message, Literal(
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, SH.targetClass, SH.NodeShape))
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, SH.sparql, sparql_floor))
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, SH.message, Literal(
         "Overlay profile attempts to downgrade a base sh:Violation "
         "severity; ODR-0010 three-rule interface contract Rule 2 "
         "establishes a Violation floor that overlays cannot weaken.",
         lang="en",
     )))
-    g.add((OPDA.ShViolationFloor_MetaShape, OPDA.metaShapeJustification,
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, OPDA.metaShapeJustification,
            Literal(
                "ODR-0010 three-rule interface contract Rule 2: no overlay "
                "shape may set sh:severity to sh:Warning or sh:Info on a "
                "property where the base shape declared sh:Violation.",
                lang="en",
            )))
-    g.add((OPDA.ShViolationFloor_MetaShape, DCTERMS.source, _ODR_0010_RULE_FLOOR))
+    g.add((OPDA_SHAPE.ShViolationFloor_MetaShape, DCTERMS.source, _ODR_0010_RULE_FLOOR))
     g.add((sparql_floor, SH.select, Literal(
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
         "SELECT ?overlayShape ?path WHERE {\n"
@@ -437,23 +438,23 @@ def build_foundation_meta_shapes(g: Graph) -> None:
 
     # --- Category 5: meta-shape-over-shape-graph drift (ODR-0017 §2a) ---
     sparql_meta = BNode()
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, SH.targetClass, SH.NodeShape))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, SH.sparql, sparql_meta))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, SH.severity, SH.Violation))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, SH.message, Literal(
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, SH.targetClass, SH.NodeShape))
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, SH.sparql, sparql_meta))
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, SH.message, Literal(
         "Meta-shape over shape-graph using sh:Violation severity requires "
         "explicit opda:metaShapeJustification (ODR-0017 §2a amendment).",
         lang="en",
     )))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape,
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape,
            OPDA.metaShapeJustification, Literal(
                "ODR-0013 §Q1 Category 5 + ODR-0017 §2a: meta-shapes "
                "targeting sh:NodeShape using sh:Violation severity must "
                "justify their elevation above the ODR-0017 sh:Info default.",
                lang="en",
            )))
-    g.add((OPDA.MetaShapeOverShapeGraphMetaShape, DCTERMS.source, _ODR_0017_S2A))
+    g.add((OPDA_SHAPE.MetaShapeOverShapeGraphMetaShape, DCTERMS.source, _ODR_0017_S2A))
     g.add((sparql_meta, SH.select, Literal(
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
         "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -471,7 +472,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
     # (not sh:Info) because silent PII leakage is high-impact.
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.PIIWithoutDPVCoAnnotationRule,
+        shape_iri=OPDA_SHAPE.PIIWithoutDPVCoAnnotationRule,
         target_class=OWL.Class,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -503,7 +504,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
     # --- SHACL-AF rule: DeprecationChainRule (ODR-0011 §5a) -------------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.DeprecationChainRule,
+        shape_iri=OPDA_SHAPE.DeprecationChainRule,
         target_class=SKOS.Concept,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -542,7 +543,7 @@ def build_property_shapes() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/property-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/property-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Property Shapes",
     ):
@@ -551,7 +552,7 @@ def build_property_shapes() -> Graph:
     # --- Cat 1: identity-key shapes -------------------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.PropertyIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.PropertyIdentityKeyShape,
         target_class=OPDA.Property,
         identity_predicate=OPDA.hasUPRN,
         datatype=XSD.string,
@@ -565,7 +566,7 @@ def build_property_shapes() -> Graph:
     )
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.LegalEstateIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.LegalEstateIdentityKeyShape,
         target_class=OPDA.LegalEstate,
         identity_predicate=OPDA.tenureKind,
         datatype=XSD.string,
@@ -580,7 +581,7 @@ def build_property_shapes() -> Graph:
     )
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.AddressIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.AddressIdentityKeyShape,
         target_class=OPDA.Address,
         identity_predicate=OPDA.addressVariant,
         datatype=XSD.string,
@@ -598,7 +599,7 @@ def build_property_shapes() -> Graph:
     # --- Cat 2: IC breach shape — opda:identifiesSameProperty -----------
     _add_ic_breach_shape(
         g,
-        shape_iri=OPDA.PropertyICBreachShape,
+        shape_iri=OPDA_SHAPE.PropertyICBreachShape,
         target_class=OPDA.Property,
         forbidden_via_property=OPDA.identifiesSameProperty,
         message=(
@@ -613,7 +614,7 @@ def build_property_shapes() -> Graph:
     # --- SHACL-AF rule #1: UPRNSuccessionRule (ODR-0005 §6a) ------------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.UPRNSuccessionRule,
+        shape_iri=OPDA_SHAPE.UPRNSuccessionRule,
         target_class=OPDA.Property,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -644,7 +645,7 @@ def build_property_shapes() -> Graph:
     # --- SHACL-AF rule #3: INSPIRESuccessionRule (ODR-0015 §4a) ---------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.INSPIRESuccessionRule,
+        shape_iri=OPDA_SHAPE.INSPIRESuccessionRule,
         target_class=OPDA.Address,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -680,7 +681,7 @@ def build_agent_shapes() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/agent-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/agent-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Agent Shapes",
     ):
@@ -689,7 +690,7 @@ def build_agent_shapes() -> Graph:
     # --- Cat 1: Person identity-key ------------------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.PersonIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.PersonIdentityKeyShape,
         target_class=OPDA.Person,
         identity_predicate=OPDA.hasAssertedCapacity,
         datatype=XSD.string,
@@ -706,7 +707,7 @@ def build_agent_shapes() -> Graph:
     # --- Cat 1: Organisation identity-key ------------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.OrganisationIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.OrganisationIdentityKeyShape,
         target_class=OPDA.Organisation,
         identity_predicate=OPDA.hasAssertedCapacity,
         datatype=XSD.string,
@@ -729,22 +730,22 @@ def build_agent_shapes() -> Graph:
     # fires the violation only on the conditional intersection per
     # ODR-0013 §Q1 Cat 4 intent.
     sparql_node = BNode()
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            RDF.type, SH.NodeShape))
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.targetClass, OPDA.Person))
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.severity, SH.Violation))
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.message, Literal(
         "Special-category PII (GDPR Article 10) MUST have an associated "
         "dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 "
         "Category 4: lawful-basis-elevated PII is a Violation-tier breach.",
         lang="en",
     )))
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            DCTERMS.source, _ODR_0012_Q3))
-    g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
+    g.add((OPDA_SHAPE.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.sparql, sparql_node))
     g.add((sparql_node, SH.select, Literal(
         "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -759,7 +760,7 @@ def build_agent_shapes() -> Graph:
     # --- SHACL-AF rule #5: IdentifierSuccessionRule (ODR-0006 Q1) -------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.IdentifierSuccessionRule,
+        shape_iri=OPDA_SHAPE.IdentifierSuccessionRule,
         target_class=OPDA.Person,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -787,7 +788,7 @@ def build_agent_shapes() -> Graph:
     # --- SHACL-AF rule #6: CapacityAuthorityMatchRule (ODR-0006 Q4) -----
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.CapacityAuthorityMatchRule,
+        shape_iri=OPDA_SHAPE.CapacityAuthorityMatchRule,
         target_class=OPDA.Person,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -819,7 +820,7 @@ def build_agent_shapes() -> Graph:
     # to carry it (the pre-existing §G23 gap). Wire it to opda:OwnerTypeScheme
     # via sh:targetSubjectsOf so the value-space holds standalone.
     _add_enum_value_shape(
-        g, OPDA.OwnerTypeValueShape, OPDA.ownerType, "OwnerTypeScheme",
+        g, OPDA_SHAPE.OwnerTypeValueShape, OPDA.ownerType, "OwnerTypeScheme",
         _ODR_0024_R6,
     )
 
@@ -832,7 +833,7 @@ def build_transaction_shapes() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/transaction-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/transaction-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Transaction Shapes",
     ):
@@ -841,7 +842,7 @@ def build_transaction_shapes() -> Graph:
     # --- Cat 1: Transaction identity-key (the founding-event tuple) ------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.TransactionIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.TransactionIdentityKeyShape,
         target_class=OPDA.Transaction,
         identity_predicate=OPDA.occurredAtTime,
         datatype=XSD.dateTime,
@@ -858,7 +859,7 @@ def build_transaction_shapes() -> Graph:
     # --- Cat 1: Milestone identity-key -----------------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.MilestoneIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.MilestoneIdentityKeyShape,
         target_class=OPDA.Milestone,
         identity_predicate=OPDA.plannedAtTime,
         datatype=XSD.dateTime,
@@ -875,7 +876,7 @@ def build_transaction_shapes() -> Graph:
     # reference it by URI.
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.LeaseTermSuccessionRule,
+        shape_iri=OPDA_SHAPE.LeaseTermSuccessionRule,
         target_class=OPDA.LeaseTerm,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -906,7 +907,7 @@ def build_transaction_shapes() -> Graph:
     # --- SHACL-AF rule #8: MilestoneVarianceRule (ODR-0007 Q6) ----------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.MilestoneVarianceRule,
+        shape_iri=OPDA_SHAPE.MilestoneVarianceRule,
         target_class=OPDA.Milestone,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -943,7 +944,7 @@ def build_claim_shapes() -> Graph:
     """Claim identity + provenance + VerificationActivitySuccession rules."""
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/claim-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/claim-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Claim Shapes",
     ):
@@ -952,7 +953,7 @@ def build_claim_shapes() -> Graph:
     # --- Cat 1: Claim identity-key (digest hash) -------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.ClaimIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.ClaimIdentityKeyShape,
         target_class=OPDA.Claim,
         identity_predicate=OPDA.digest,
         datatype=XSD.string,
@@ -967,7 +968,7 @@ def build_claim_shapes() -> Graph:
     # --- Cat 1: Evidence identity-key -----------------------------------
     _add_identity_key_shape(
         g,
-        shape_iri=OPDA.EvidenceIdentityKeyShape,
+        shape_iri=OPDA_SHAPE.EvidenceIdentityKeyShape,
         target_class=OPDA.Evidence,
         identity_predicate=OPDA.digest,
         datatype=XSD.string,
@@ -985,7 +986,7 @@ def build_claim_shapes() -> Graph:
     # opda:EvidenceMethodScheme via the sh:targetSubjectsOf idiom — the
     # opda:ownerType precedent (ODR-0024 R6); entailment-free, holds standalone.
     _add_enum_value_shape(
-        g, OPDA.EvidenceTypeValueShape, OPDA.evidenceType,
+        g, OPDA_SHAPE.EvidenceTypeValueShape, OPDA.evidenceType,
         "EvidenceMethodScheme", _ODR_0009_Q1,
     )
 
@@ -1011,12 +1012,12 @@ def build_claim_shapes() -> Graph:
     g.add((_att_p, SH["class"], PROV.Agent))
     _or_list = BNode()
     Collection(g, _or_list, [_not_vouch, _has_att])
-    g.add((OPDA.EvidenceFacetShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.EvidenceFacetShape, SH.targetSubjectsOf, OPDA.evidenceType))
-    g.add((OPDA.EvidenceFacetShape, SH["or"], _or_list))
-    g.add((OPDA.EvidenceFacetShape, SH.severity, SH.Violation))
-    g.add((OPDA.EvidenceFacetShape, DCTERMS.source, _ODR_0009_Q1))
-    g.add((OPDA.EvidenceFacetShape, SH.message, Literal(
+    g.add((OPDA_SHAPE.EvidenceFacetShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.EvidenceFacetShape, SH.targetSubjectsOf, OPDA.evidenceType))
+    g.add((OPDA_SHAPE.EvidenceFacetShape, SH["or"], _or_list))
+    g.add((OPDA_SHAPE.EvidenceFacetShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.EvidenceFacetShape, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA_SHAPE.EvidenceFacetShape, SH.message, Literal(
         "Evidence with opda:evidenceType 'Vouch' MUST carry opda:attestedBy a "
         "prov:Agent (a vouch is an Agent-founded attestation). Value-keyed, "
         "entailment-free (Council session-036).",
@@ -1037,10 +1038,10 @@ def build_claim_shapes() -> Graph:
     # Violation-tier breach. This shape enforces presence of one or the
     # other.
     pshape = BNode()
-    g.add((OPDA.UnprovenancedClaimShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.UnprovenancedClaimShape, SH.targetClass, OPDA.Claim))
-    g.add((OPDA.UnprovenancedClaimShape, SH.property, pshape))
-    g.add((OPDA.UnprovenancedClaimShape, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA_SHAPE.UnprovenancedClaimShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.UnprovenancedClaimShape, SH.targetClass, OPDA.Claim))
+    g.add((OPDA_SHAPE.UnprovenancedClaimShape, SH.property, pshape))
+    g.add((OPDA_SHAPE.UnprovenancedClaimShape, DCTERMS.source, _ODR_0009_Q1))
     g.add((pshape, SH.path, PROV.wasDerivedFrom))
     g.add((pshape, SH.minCount, Literal(1)))
     g.add((pshape, SH.severity, SH.Violation))
@@ -1054,7 +1055,7 @@ def build_claim_shapes() -> Graph:
     # --- SHACL-AF rule #4: PROVOClaimsRule (ODR-0009 Q7) ----------------
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.PROVOClaimsRule,
+        shape_iri=OPDA_SHAPE.PROVOClaimsRule,
         target_class=OPDA.Claim,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -1083,7 +1084,7 @@ def build_claim_shapes() -> Graph:
     # --- SHACL-AF rule #9: VerificationActivitySuccessionRule (ODR-0009 Q7) -
     _add_sparql_rule_shape(
         g,
-        shape_iri=OPDA.VerificationActivitySuccessionRule,
+        shape_iri=OPDA_SHAPE.VerificationActivitySuccessionRule,
         target_class=OPDA.VerificationActivity,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
@@ -1115,7 +1116,7 @@ def build_governance_shapes() -> Graph:
     """Governance module shape graph — DPV mapping record validation."""
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/governance-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/governance-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Governance Shapes",
     ):
@@ -1124,11 +1125,11 @@ def build_governance_shapes() -> Graph:
     # --- Cat 1: DPVMappingRecord identity-key ---------------------------
     # A DPVMappingRecord MUST target a Kind class (Cat 1: identity surface).
     pshape = BNode()
-    g.add((OPDA.DPVMappingRecordIdentityKeyShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.DPVMappingRecordIdentityKeyShape,
+    g.add((OPDA_SHAPE.DPVMappingRecordIdentityKeyShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.DPVMappingRecordIdentityKeyShape,
            SH.targetClass, OPDA.DPVMappingRecord))
-    g.add((OPDA.DPVMappingRecordIdentityKeyShape, SH.property, pshape))
-    g.add((OPDA.DPVMappingRecordIdentityKeyShape,
+    g.add((OPDA_SHAPE.DPVMappingRecordIdentityKeyShape, SH.property, pshape))
+    g.add((OPDA_SHAPE.DPVMappingRecordIdentityKeyShape,
            DCTERMS.source, _ODR_0012_PHASE1))
     g.add((pshape, SH.path, OPDA.targetsKind))
     g.add((pshape, SH.minCount, Literal(1)))
@@ -1250,7 +1251,7 @@ def build_descriptive_shapes() -> Graph:
     """
     g = Graph()
     _bind_common(g)
-    module_iri = URIRef("https://w3id.org/opda/descriptive-shapes/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/descriptive-shapes")
     for t in _module_shapes_header(
         module_iri=module_iri, title="OPDA Descriptive Shapes",
     ):
@@ -1267,7 +1268,7 @@ def build_descriptive_shapes() -> Graph:
         OPDA.Survey, OPDA.EPCCertificate, OPDA.Search,
         OPDA.Valuation, OPDA.Comparable,
     ):
-        shape_iri = URIRef(f"{str(cls)}IdentityKeyShape")
+        shape_iri = OPDA_SHAPE[f"{str(cls).rsplit('/', 1)[-1]}IdentityKeyShape"]
         pshape = BNode()
         g.add((shape_iri, RDF.type, SH.NodeShape))
         g.add((shape_iri, SH.targetClass, cls))
@@ -1300,7 +1301,7 @@ def build_descriptive_shapes() -> Graph:
         (OPDA.Valuation, "valuation"),
         (OPDA.Comparable, "comparable record"),
     ):
-        shape_iri = URIRef(f"{str(cls)}InternalStructureShape")
+        shape_iri = OPDA_SHAPE[f"{str(cls).rsplit('/', 1)[-1]}InternalStructureShape"]
         g.add((shape_iri, RDF.type, SH.NodeShape))
         g.add((shape_iri, SH.targetClass, cls))
         g.add((shape_iri, DCTERMS.source, _ODR_0008D_RULE_3))
@@ -1344,13 +1345,13 @@ def build_descriptive_shapes() -> Graph:
         )))
 
     # --- Rule 1c: the opda:RiskAssessment node shape (~6 property shapes) -
-    g.add((OPDA.RiskAssessmentShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.RiskAssessmentShape, SH.targetClass, OPDA.RiskAssessment))
-    g.add((OPDA.RiskAssessmentShape, DCTERMS.source, _ODR_0008D_RULE_1))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.targetClass, OPDA.RiskAssessment))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, DCTERMS.source, _ODR_0008D_RULE_1))
 
     # (1) opda:peril — sh:in the 12 PerilScheme concepts.
     p_peril = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_peril))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_peril))
     g.add((p_peril, SH.path, OPDA.peril))
     g.add((p_peril, SH.maxCount, Literal(1)))
     g.add((p_peril, SH.nodeKind, SH.IRI))
@@ -1367,7 +1368,7 @@ def build_descriptive_shapes() -> Graph:
     # riskIndicator's value-space {No, Not known, Yes} IS YesNoNotKnownScheme;
     # it reuses that scheme rather than minting a duplicate (ODR-0022 Cat C).
     p_ri = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_ri))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_ri))
     g.add((p_ri, SH.path, OPDA.riskIndicator))
     g.add((p_ri, SH.maxCount, Literal(1)))
     _add_in_literal_list(
@@ -1384,7 +1385,7 @@ def build_descriptive_shapes() -> Graph:
 
     # (3) opda:actionAlertRating — sh:in the ActionAlertRatingScheme (1..5).
     p_aar = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_aar))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_aar))
     g.add((p_aar, SH.path, OPDA.actionAlertRating))
     g.add((p_aar, SH.maxCount, Literal(1)))
     _add_in_literal_list(
@@ -1405,7 +1406,7 @@ def build_descriptive_shapes() -> Graph:
     # (ODR-0022 Category A); the specific field is carried by the instance-
     # level dct:source, never a per-field property.
     p_detail = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_detail))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_detail))
     g.add((p_detail, SH.path, OPDA.disclosureDetail))
     g.add((p_detail, SH.datatype, XSD.string))
     g.add((p_detail, SH.severity, SH.Info))
@@ -1420,7 +1421,7 @@ def build_descriptive_shapes() -> Graph:
     # (5) prov:wasAttributedTo — datasetAttribution (Rule 1c / Rule 5:
     # datasetAttribution ≡ prov:wasAttributedTo; reuse, do NOT mint).
     p_attr = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_attr))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_attr))
     g.add((p_attr, SH.path, PROV.wasAttributedTo))
     g.add((p_attr, SH.nodeKind, SH.IRI))
     g.add((p_attr, SH.severity, SH.Info))
@@ -1435,9 +1436,9 @@ def build_descriptive_shapes() -> Graph:
     # for riskSubcategories[] (Rule 1c / Rule 4). A sub-result is itself a
     # leaf RiskAssessment validated by this same shape.
     p_sub = BNode()
-    g.add((OPDA.RiskAssessmentShape, SH.property, p_sub))
+    g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_sub))
     g.add((p_sub, SH.path, OPDA.hasSubAssessment))
-    g.add((p_sub, SH.node, OPDA.RiskAssessmentShape))
+    g.add((p_sub, SH.node, OPDA_SHAPE.RiskAssessmentShape))
     g.add((p_sub, SH.severity, SH.Violation))
     # ODR-0024 R11: acyclicity guard. Core SHACL cannot express "the
     # opda:hasSubAssessment graph is a tree" (no transitive-closure test in a
@@ -1467,13 +1468,13 @@ def build_descriptive_shapes() -> Graph:
     # (sh:in Included/Excluded/None) + opda:price + opda:disclosureDetail
     # (the A-grade comment). NO FixtureItem class is minted (ODR-0022 §4 —
     # promotion only on a named §Q4a query; none attested).
-    g.add((OPDA.FixturesListShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.FixturesListShape, SH.targetClass, OPDA.Transaction))
-    g.add((OPDA.FixturesListShape, DCTERMS.source, _ODR_0022_S4))
+    g.add((OPDA_SHAPE.FixturesListShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.FixturesListShape, SH.targetClass, OPDA.Transaction))
+    g.add((OPDA_SHAPE.FixturesListShape, DCTERMS.source, _ODR_0022_S4))
     # Tie the controlled item vocabulary (FixtureItemScheme) without minting
     # an item-reference predicate or a FixtureItem class.
-    g.add((OPDA.FixturesListShape, DCTERMS.references, OPDA.FixtureItemScheme))
-    g.add((OPDA.FixturesListShape, RDFS.comment, Literal(
+    g.add((OPDA_SHAPE.FixturesListShape, DCTERMS.references, OPDA_SCHEME.FixtureItemScheme))
+    g.add((OPDA_SHAPE.FixturesListShape, RDFS.comment, Literal(
         "Transaction-scoped fixtures-and-fittings list (ODR-0022 §4 / "
         "session-027 R4). The fixtures items are the opda:FixtureItemScheme "
         "concepts (referenced via dct:references); each item's inclusion in "
@@ -1485,7 +1486,7 @@ def build_descriptive_shapes() -> Graph:
     )))
     # opda:inclusionStatus — sh:in the InclusionStatusScheme value-space.
     p_incl = BNode()
-    g.add((OPDA.FixturesListShape, SH.property, p_incl))
+    g.add((OPDA_SHAPE.FixturesListShape, SH.property, p_incl))
     g.add((p_incl, SH.path, OPDA.inclusionStatus))
     _add_in_literal_list(
         g, p_incl,
@@ -1501,7 +1502,7 @@ def build_descriptive_shapes() -> Graph:
     )))
     # opda:price — a shared monetary-amount (xsd:decimal).
     p_price = BNode()
-    g.add((OPDA.FixturesListShape, SH.property, p_price))
+    g.add((OPDA_SHAPE.FixturesListShape, SH.property, p_price))
     g.add((p_price, SH.path, OPDA.price))
     g.add((p_price, SH.datatype, XSD.decimal))
     g.add((p_price, SH.severity, SH.Info))
@@ -1513,7 +1514,7 @@ def build_descriptive_shapes() -> Graph:
     )))
     # opda:disclosureDetail — the A-grade fixtures comment.
     p_comment = BNode()
-    g.add((OPDA.FixturesListShape, SH.property, p_comment))
+    g.add((OPDA_SHAPE.FixturesListShape, SH.property, p_comment))
     g.add((p_comment, SH.path, OPDA.disclosureDetail))
     g.add((p_comment, SH.datatype, XSD.string))
     g.add((p_comment, SH.severity, SH.Info))
@@ -1535,8 +1536,8 @@ def build_descriptive_shapes() -> Graph:
     # contract-template / planning-permission-page links.)
     _uri_pattern = "^https?://"
     for shape_iri, prop, ref_label in (
-        (OPDA.MediaUrlShape, OPDA.mediaUrl, "media URL"),
-        (OPDA.UrlShape, OPDA.url, "URL"),
+        (OPDA_SHAPE.MediaUrlShape, OPDA.mediaUrl, "media URL"),
+        (OPDA_SHAPE.UrlShape, OPDA.url, "URL"),
     ):
         g.add((shape_iri, RDF.type, SH.NodeShape))
         g.add((shape_iri, SH.targetSubjectsOf, prop))
@@ -1566,12 +1567,12 @@ def build_descriptive_shapes() -> Graph:
     # the default. currency is sh:in-restricted to the CurrencyScheme concepts
     # (a dereferenceable code, never an opaque string — as opda:peril is to
     # PerilScheme).
-    g.add((OPDA.MonetaryAmountShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.MonetaryAmountShape, SH.targetClass, OPDA.MonetaryAmount))
-    g.add((OPDA.MonetaryAmountShape, DCTERMS.source, _ODR_0024_R3))
+    g.add((OPDA_SHAPE.MonetaryAmountShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.MonetaryAmountShape, SH.targetClass, OPDA.MonetaryAmount))
+    g.add((OPDA_SHAPE.MonetaryAmountShape, DCTERMS.source, _ODR_0024_R3))
 
     p_amount = BNode()
-    g.add((OPDA.MonetaryAmountShape, SH.property, p_amount))
+    g.add((OPDA_SHAPE.MonetaryAmountShape, SH.property, p_amount))
     g.add((p_amount, SH.path, OPDA.amount))
     g.add((p_amount, SH.datatype, XSD.decimal))
     g.add((p_amount, SH.minCount, Literal(1)))
@@ -1585,7 +1586,7 @@ def build_descriptive_shapes() -> Graph:
     )))
 
     p_currency = BNode()
-    g.add((OPDA.MonetaryAmountShape, SH.property, p_currency))
+    g.add((OPDA_SHAPE.MonetaryAmountShape, SH.property, p_currency))
     g.add((p_currency, SH.path, OPDA.currency))
     g.add((p_currency, SH.nodeKind, SH.IRI))
     g.add((p_currency, SH.minCount, Literal(1)))
@@ -1607,16 +1608,16 @@ def build_descriptive_shapes() -> Graph:
     # "wire the minted schemes to their consuming properties" step at base-shape
     # level, so the value-space holds without an overlay (ADR-0005 §G23).
     for shape_iri, prop, scheme_local in (
-        (OPDA.ConstructionTypeValueShape, OPDA.constructionType,
+        (OPDA_SHAPE.ConstructionTypeValueShape, OPDA.constructionType,
          "ConstructionTypeScheme"),
-        (OPDA.PriceQualifierValueShape, OPDA.priceQualifier,
+        (OPDA_SHAPE.PriceQualifierValueShape, OPDA.priceQualifier,
          "PriceQualifierScheme"),
-        (OPDA.TransportTypeValueShape, OPDA.transportType,
+        (OPDA_SHAPE.TransportTypeValueShape, OPDA.transportType,
          "TransportTypeScheme"),
-        (OPDA.BroadbandConnectionValueShape, OPDA.typeOfConnection,
+        (OPDA_SHAPE.BroadbandConnectionValueShape, OPDA.typeOfConnection,
          "BroadbandConnectionTypeScheme"),
-        (OPDA.OfstedRatingValueShape, OPDA.ofstedRating, "OfstedRatingScheme"),
-        (OPDA.MarketingTenureValueShape, OPDA.marketingTenure,
+        (OPDA_SHAPE.OfstedRatingValueShape, OPDA.ofstedRating, "OfstedRatingScheme"),
+        (OPDA_SHAPE.MarketingTenureValueShape, OPDA.marketingTenure,
          "TenureKindScheme"),
     ):
         _add_enum_value_shape(g, shape_iri, prop, scheme_local, _ODR_0024_R6)
@@ -1627,16 +1628,16 @@ def build_descriptive_shapes() -> Graph:
     # identity key (it has no IC — individuated by value; roomName is non-rigid
     # and never a key), NO base sh:minCount (per-form cardinality lives in the
     # overlay profile, ODR-0010 §Q7a).
-    g.add((OPDA.RoomDimensionShape, RDF.type, SH.NodeShape))
-    g.add((OPDA.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension))
-    g.add((OPDA.RoomDimensionShape, DCTERMS.source, _ODR_0024_R10))
+    g.add((OPDA_SHAPE.RoomDimensionShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.RoomDimensionShape, SH.targetClass, OPDA.RoomDimension))
+    g.add((OPDA_SHAPE.RoomDimensionShape, DCTERMS.source, _ODR_0024_R10))
     for _rd_path, _rd_dt, _rd_ref in (
         (OPDA.length, XSD.decimal, "length (metres)"),
         (OPDA.width, XSD.decimal, "width (metres)"),
         (OPDA.roomName, XSD.string, "roomName (non-rigid label)"),
     ):
         p_rd = BNode()
-        g.add((OPDA.RoomDimensionShape, SH.property, p_rd))
+        g.add((OPDA_SHAPE.RoomDimensionShape, SH.property, p_rd))
         g.add((p_rd, SH.path, _rd_path))
         g.add((p_rd, SH.datatype, _rd_dt))
         g.add((p_rd, SH.maxCount, Literal(1)))

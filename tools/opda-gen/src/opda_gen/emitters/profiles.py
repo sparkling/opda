@@ -60,11 +60,11 @@ from rdflib.collection import Collection
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 from opda_gen import __version__
+from opda_gen.namespaces import OPDA, OPDA_HARNESS, OPDA_SHAPE
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces -----------------------------------------------------------
-OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DASH = Namespace("http://datashapes.org/dash#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
@@ -187,10 +187,13 @@ class ProfileSpec:
     comment_header: Callable[[str, str, str, str], str] | None = None
 
     def profile_iri(self) -> URIRef:
-        return URIRef(f"https://w3id.org/opda/profiles/{self.form_id}")
+        # ADR-0006: profiles are normative-standard SHACL → /pdtf/shape/profiles/,
+        # no version in the IRI.
+        return OPDA_SHAPE[f"profiles/{self.form_id}"]
 
     def version_iri(self) -> URIRef:
-        return URIRef(f"https://w3id.org/opda/profiles/{self.form_id}/0.1.0/")
+        # owl:versionIRI → harness release snapshot (version out of the IRI path).
+        return OPDA_HARNESS[f"release/profiles/{self.form_id}/0.1.0/"]
 
 
 def _build_profile(spec: ProfileSpec) -> Graph:
@@ -216,8 +219,8 @@ def _build_profile(spec: ProfileSpec) -> Graph:
     g.add((pi, RDF.type, OWL.Ontology))
     g.add((pi, DCTERMS.title, Literal(spec.title, lang="en")))
     g.add((pi, DCTERMS.description, Literal(spec.description, lang="en")))
-    g.add((pi, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
-    g.add((pi, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
+    # ADR-0006: one collapsed ontology at …/pdtf/ (modules + vocab folded in).
+    g.add((pi, OWL.imports, URIRef(str(OPDA))))
     g.add((pi, OWL.versionIRI, spec.version_iri()))
     g.add((pi, DCTERMS.source, spec.dct_source))
     # S022: the one form↔community link (no opda:overlaysContext / PROF).
@@ -575,7 +578,7 @@ def _build_enumerated_shapes_for(
     # Emit one NodeShape per target class, deterministically.
     for domain_iri in sorted(bound_by_class, key=str):
         target_local = _local_name(domain_iri)
-        shape_iri = OPDA[f"{_title_form(form_id)}_{target_local}Shape"]
+        shape_iri = OPDA_SHAPE[f"{_title_form(form_id)}_{target_local}Shape"]
         g.add((shape_iri, RDF.type, SH.NodeShape))
         g.add((shape_iri, SH.targetClass, domain_iri))
         for leaf, pred in sorted(

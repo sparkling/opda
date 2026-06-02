@@ -165,7 +165,7 @@ def _ratifying_anchor(exemplar_stem: str) -> URIRef:
     back to the exemplar by name).
     """
     return URIRef(
-        f"https://openpropdata.org.uk/data/exemplar/{exemplar_stem}"
+        f"https://opda.org.uk/pdtf/harness/data/exemplar/{exemplar_stem}"
     )
 
 

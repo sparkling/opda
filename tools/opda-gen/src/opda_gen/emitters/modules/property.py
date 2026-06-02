@@ -238,13 +238,13 @@ def build_graph() -> Graph:
     g.bind("time", TIME)
 
     # --- Module ontology header per ADR-0011 §"Module emission template" --
-    module_iri = URIRef("https://w3id.org/opda/property/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/property")
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title, Literal("OPDA Property Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
+    g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
+    g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/property/1.0.0/")))
+           URIRef("https://opda.org.uk/pdtf/harness/release/property/1.0.0/")))
 
     # --- opda:Property — UFO Substance Kind (ODR-0005 §2a) --------------
     g.add((OPDA.Property, RDF.type, OWL.Class))

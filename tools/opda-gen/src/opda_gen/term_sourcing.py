@@ -372,7 +372,7 @@ def resolve_term(
 # `…/forms/<overlay>#<leaf.path>` shape ratified for per-leaf provenance
 # (ADR-0029 §"ODR-0010 canonical mapping" Rule 4; ADR-0028 §"the walk"),
 # minted under the stable `w3id.org/opda` redirect (ODR-0004 §1 base).
-_SCHEMA_LEAF_AUTHORITY = "https://w3id.org/opda/forms"
+_SCHEMA_LEAF_AUTHORITY = "https://opda.org.uk/pdtf/harness/forms"
 
 
 def schema_leaf_source(overlay: str, leaf_path: str) -> str:

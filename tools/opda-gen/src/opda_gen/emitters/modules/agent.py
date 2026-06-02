@@ -100,13 +100,13 @@ def build_graph() -> Graph:
     g.bind("prov", PROV)
 
     # --- Module ontology header --------------------------------------------
-    module_iri = URIRef("https://w3id.org/opda/agent/")
+    module_iri = URIRef("https://opda.org.uk/pdtf/graph/agent")
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title, Literal("OPDA Agent Module", lang="en")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/1.0.0/")))
-    g.add((module_iri, OWL.imports, URIRef("https://w3id.org/opda/vocabularies/")))
+    g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
+    g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://w3id.org/opda/agent/1.0.0/")))
+           URIRef("https://opda.org.uk/pdtf/harness/release/agent/1.0.0/")))
 
     # --- opda:Person — UFO Substance Kind (ODR-0006 §Q1) -----------------
     g.add((OPDA.Person, RDF.type, OWL.Class))

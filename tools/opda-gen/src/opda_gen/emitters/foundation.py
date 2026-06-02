@@ -80,17 +80,17 @@ from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 from opda_gen import __version__
+from opda_gen.namespaces import OPDA, OPDA_GRAPH, release_iri
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces -----------------------------------------------------------
-OPDA = Namespace("https://opda.org.uk/pdtf/")
 VANN = Namespace("http://purl.org/vocab/vann/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
 # --- Constants pinned by ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 -------
-_ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
+_ONTOLOGY_IRI = URIRef("https://opda.org.uk/pdtf/")
 # `owl:versionIRI` is the CLASS-GRAPH identity; it advances when the
 # class-graph content materially extends (new owl:Class declarations or
 # property declarations), NOT when shapes / annotations / SKOS substrate
@@ -108,9 +108,14 @@ _ONTOLOGY_IRI = URIRef("https://w3id.org/opda/")
 # (`opda_gen.__version__`) tracks the toolchain's emitter capabilities;
 # 1.0.0 here marks the MVP-gate release per ODR-0003 §Programme
 # retirement criterion.
-_VERSION_IRI = URIRef("https://w3id.org/opda/1.0.0/")
-_SHAPES_GRAPH_IRI = URIRef("https://w3id.org/opda/shapes")
-_ANNOTATIONS_GRAPH_IRI = URIRef("https://w3id.org/opda/annotations")
+# ADR-0006: version is OUT of the IRI path. `owl:versionIRI` now points at a
+# harness release snapshot (`…/pdtf/harness/release/1.0.0/`); the version
+# label itself is carried by `owl:versionInfo`.
+_RELEASE_IRI = release_iri("1.0.0")
+# ADR-0006: named graphs are logical groupings under `…/pdtf/graph/` (the
+# foundation shapes + annotations graphs).
+_SHAPES_GRAPH_IRI = OPDA_GRAPH["shapes"]
+_ANNOTATIONS_GRAPH_IRI = OPDA_GRAPH["annotations"]
 _OPDA_NS_LITERAL = Literal("https://opda.org.uk/pdtf/", datatype=XSD.anyURI)
 _LICENSE_IRI = URIRef("https://creativecommons.org/publicdomain/zero/1.0/")
 # ADR-0009 fixes the dct:issued at the date of first emission.
@@ -236,7 +241,7 @@ def build_foundation_graph(emission_date: str) -> Graph:
     """Build the foundation ontology-header graph per ADR-0009 §"foundation.ttl".
 
     Subjects:
-    - ``<https://w3id.org/opda/>`` — `owl:Ontology` with dct/vann/owl
+    - ``<https://opda.org.uk/pdtf/>`` — `owl:Ontology` with dct/vann/owl
       metadata and an `sh:declare` blank-node pointer.
     - one anonymous BNode declaring the opda prefix via `sh:prefix` +
       `sh:namespace`.
@@ -259,7 +264,7 @@ def build_foundation_graph(emission_date: str) -> Graph:
     g.add((_ONTOLOGY_IRI, DCTERMS.license, _LICENSE_IRI))
     g.add((_ONTOLOGY_IRI, VANN.preferredNamespacePrefix, Literal("opda")))
     g.add((_ONTOLOGY_IRI, VANN.preferredNamespaceUri, _OPDA_NS_LITERAL))
-    g.add((_ONTOLOGY_IRI, OWL.versionIRI, _VERSION_IRI))
+    g.add((_ONTOLOGY_IRI, OWL.versionIRI, _RELEASE_IRI))
     g.add((_ONTOLOGY_IRI, OWL.versionInfo, Literal(_VERSION_INFO)))
     g.add((_ONTOLOGY_IRI, OPDA.generatorVersion, Literal(_GENERATOR_VERSION_LABEL)))
 
@@ -553,7 +558,7 @@ def build_shapes_graph() -> Graph:
     g.add((_SHAPES_GRAPH_IRI, DCTERMS.title, Literal(
         "OPDA SHACL Shapes Graph", lang="en"
     )))
-    g.add((_SHAPES_GRAPH_IRI, OPDA.targetsClassGraph, _VERSION_IRI))
+    g.add((_SHAPES_GRAPH_IRI, OPDA.targetsClassGraph, _ONTOLOGY_IRI))
 
     # Lazy import to keep the foundation builder dependency-free at
     # import time (the shapes builder lives in a sibling module).
@@ -577,7 +582,7 @@ def build_annotations_graph() -> Graph:
     No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples;
     no DPV triples (the foundation classes carry no PII regime); only
     the ontology header declaring `opda:targetsClassGraph
-    <https://w3id.org/opda/1.0.0/>` (post-ADR-0014 G14 + MVP-gate
+    <https://opda.org.uk/pdtf/harness/release/1.0.0/>` (post-ADR-0014 G14 + MVP-gate
     version bump).
     """
     g = Graph()
@@ -586,7 +591,7 @@ def build_annotations_graph() -> Graph:
     g.add((_ANNOTATIONS_GRAPH_IRI, DCTERMS.title, Literal(
         "OPDA Advisory Annotations Graph", lang="en"
     )))
-    g.add((_ANNOTATIONS_GRAPH_IRI, OPDA.targetsClassGraph, _VERSION_IRI))
+    g.add((_ANNOTATIONS_GRAPH_IRI, OPDA.targetsClassGraph, _ONTOLOGY_IRI))
     return g
 
 
