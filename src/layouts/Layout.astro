@@ -107,43 +107,6 @@ const showSidebar = !hideSidebar && !!activeSection;
     })();
   </script>
 
-  {/* Site-wide auth gate. Pre-paint hide so content never flashes before
-      Auth0 sign-in is confirmed. Skips /callback (runs its own redirect
-      handler) and any tab that already confirmed a session this visit
-      (opda-auth-ok), so view-transition navigations don't re-hide.
-      Reveal / redirect logic is the module script at the end of <body>. */}
-  <style is:inline>
-    #auth-gate { display: none; }
-    html.auth-pending #app { display: none !important; }
-    html.auth-pending #auth-gate {
-      display: flex; position: fixed; inset: 0; z-index: 99999;
-      flex-direction: column; align-items: center; justify-content: center;
-      gap: 1rem; padding: 1.5rem; text-align: center;
-      background: #0b0e14; color: #e8eaed;
-      font: 500 1rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
-    }
-    html[data-theme="light"].auth-pending #auth-gate { background: #ffffff; color: #1a1a1a; }
-    .auth-gate__spinner {
-      width: 28px; height: 28px; border-radius: 50%; opacity: 0.7;
-      border: 3px solid currentColor; border-right-color: transparent;
-      animation: auth-gate-spin 0.7s linear infinite;
-    }
-    @keyframes auth-gate-spin { to { transform: rotate(360deg); } }
-    .auth-gate__btn {
-      font: inherit; padding: 0.55rem 1.1rem; border-radius: 8px; cursor: pointer;
-      border: 1px solid currentColor; background: transparent; color: inherit;
-    }
-  </style>
-  <script is:inline data-astro-rerun>
-    (function () {
-      var p = location.pathname;
-      if (/^\/callback\/?$/.test(p)) return;
-      var ok = false;
-      try { ok = sessionStorage.getItem('opda-auth-ok') === '1'; } catch (e) {}
-      if (!ok) document.documentElement.classList.add('auth-pending');
-    })();
-  </script>
-
   {tailwindPlus && (
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
   )}
@@ -171,82 +134,7 @@ const showSidebar = !hideSidebar && !!activeSection;
     </div>
   </div>
 
-  {/* Auth-gate splash — sibling of #app so it stays visible while #app is
-      hidden. Shown only when <html class="auth-pending"> (see head). */}
-  <div id="auth-gate" aria-live="polite">
-    <div class="auth-gate__spinner" id="auth-gate-spinner" aria-hidden="true"></div>
-    <p id="auth-gate-msg">Checking sign-in…</p>
-    <button class="auth-gate__btn" id="auth-gate-signin" type="button" hidden>Sign in</button>
-  </div>
-
   <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
-
-  {/* Site-wide auth gate: reuses the existing Auth0 SPA client. Reveals the
-      page when signed in, otherwise redirects to Auth0 login (once per tab,
-      to avoid loops if the allowlist Action denies a user). */}
-  <script>
-    import { getAuth0Client } from '@/lib/auth0';
-
-    async function gate() {
-      if (/^\/callback\/?$/.test(location.pathname)) return;
-
-      const reveal = () => {
-        try { sessionStorage.setItem('opda-auth-ok', '1'); } catch {}
-        try { sessionStorage.removeItem('opda-gate-redirected'); } catch {}
-        document.documentElement.classList.remove('auth-pending');
-      };
-      const prompt = (msg: string) => {
-        document.documentElement.classList.add('auth-pending');
-        const m = document.getElementById('auth-gate-msg');
-        const sp = document.getElementById('auth-gate-spinner');
-        const btn = document.getElementById('auth-gate-signin') as HTMLButtonElement | null;
-        if (m) m.textContent = msg;
-        if (sp) sp.hidden = true;
-        if (btn) {
-          btn.hidden = false;
-          if (!btn.dataset.bound) {
-            btn.dataset.bound = '1';
-            btn.addEventListener('click', async () => {
-              try {
-                try { sessionStorage.removeItem('opda-gate-redirected'); } catch {}
-                const auth = await getAuth0Client();
-                await auth.loginWithRedirect({
-                  appState: { returnTo: location.pathname + location.search },
-                });
-              } catch { /* leave the prompt visible */ }
-            });
-          }
-        }
-      };
-
-      try {
-        const auth = await getAuth0Client();
-        if (await auth.isAuthenticated()) { reveal(); return; }
-
-        let redirected = false;
-        try { redirected = sessionStorage.getItem('opda-gate-redirected') === '1'; } catch {}
-        if (redirected) {
-          prompt('Please sign in to view the OPDA Knowledge Base.');
-          return;
-        }
-        try { sessionStorage.setItem('opda-gate-redirected', '1'); } catch {}
-        const auth2 = await getAuth0Client();
-        await auth2.loginWithRedirect({
-          appState: { returnTo: location.pathname + location.search },
-        });
-      } catch (err) {
-        console.warn('[OPDA] auth gate failed:', err);
-        prompt('Sign-in is required to view this page.');
-      }
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', gate);
-    } else {
-      gate();
-    }
-    document.addEventListener('astro:page-load', gate);
-  </script>
   <slot name="scripts" />
 </body>
 </html>
