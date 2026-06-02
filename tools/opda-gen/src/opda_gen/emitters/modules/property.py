@@ -42,7 +42,7 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 VCARD = Namespace("http://www.w3.org/2006/vcard/ns#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 TIME = Namespace("http://www.w3.org/2006/time#")
@@ -51,13 +51,13 @@ TIME = Namespace("http://www.w3.org/2006/time#")
 # Data-dictionary schema-leaf-path dct:source (ODR-0022 G2). Mirrors the
 # `_dd_source` helper in emitters/vocabularies.py (kept local so this module
 # carries no cross-emitter import for a one-liner): the per-property G2 IRI is
-# `<https://w3id.org/opda/data-dictionary#<leaf_path>>`, the same form the SKOS
+# `<https://opda.org.uk/pdtf/harness/data-dictionary/<leaf_path>>`, the same form the SKOS
 # member sources use, with array `[]` markers preserved one-to-one and
 # whitespace percent-encoded.
 def _dd_source(leaf_path: str) -> URIRef:
     """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
     safe = leaf_path.replace(" ", "%20").replace("'", "%27")
-    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+    return URIRef(f"https://opda.org.uk/pdtf/harness/data-dictionary/{safe}")
 
 
 # ADR-0031 work-item 1 — the six G11∩candidate-G overlap leaves carry their
@@ -91,15 +91,15 @@ _G2_PROPERTY_TYPE_G = _dd_source(
 
 
 # Per-class dct:source URIs — every class cites the ratifying ODR section.
-_ODR_0005_S2A = URIRef("https://w3id.org/opda/odr/ODR-0005#section-2a")
-_ODR_0005_S3B = URIRef("https://w3id.org/opda/odr/ODR-0005#section-3b")
-_ODR_0005_S3C = URIRef("https://w3id.org/opda/odr/ODR-0005#section-3c")
-_ODR_0005_S6A = URIRef("https://w3id.org/opda/odr/ODR-0005#section-6a")
-_ODR_0005_S6B = URIRef("https://w3id.org/opda/odr/ODR-0005#section-6b")
-_ODR_0007_S5 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q5-lease-term")
-_ODR_0008_S5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
-_ODR_0015_S2A = URIRef("https://w3id.org/opda/odr/ODR-0015#section-2a")
-_ODR_0015_S3A = URIRef("https://w3id.org/opda/odr/ODR-0015#section-3a")
+_ODR_0005_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a")
+_ODR_0005_S3B = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b")
+_ODR_0005_S3C = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c")
+_ODR_0005_S6A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a")
+_ODR_0005_S6B = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6b")
+_ODR_0007_S5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-lease-term")
+_ODR_0008_S5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
+_ODR_0015_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a")
+_ODR_0015_S3A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a")
 
 
 # Module catalogue — classes + properties this module mints. Tests
@@ -421,7 +421,7 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.addressVariant, DCTERMS.source,
-           URIRef("https://w3id.org/opda/odr/ODR-0015#section-Rule-6")))
+           URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6")))
 
     # --- DatatypeProperty: opda:builtForm (ODR-0008 §Q5a) ---------------
     # ADR-0031 register: STANDS on opda:Property; Quale-in-Region; flat

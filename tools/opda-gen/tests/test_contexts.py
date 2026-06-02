@@ -22,7 +22,7 @@ from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
 from opda_gen.emitters.contexts import CONTEXTS_FILENAME, emit_contexts
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 SCHEME = OPDA.BoundedContextScheme
 

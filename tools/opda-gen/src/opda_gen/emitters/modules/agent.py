@@ -31,16 +31,16 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 ORG = Namespace("http://www.w3.org/ns/org#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
-_ODR_0006_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q1")
-_ODR_0006_Q2 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q2")
-_ODR_0006_Q3 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q3")
-_ODR_0006_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q4")
-_ODR_0006_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q6")
+_ODR_0006_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1")
+_ODR_0006_Q2 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2")
+_ODR_0006_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3")
+_ODR_0006_Q4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4")
+_ODR_0006_Q6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q6")
 
 
 # Data-dictionary schema-leaf-path dct:source (ODR-0022 G2); same form as the
@@ -48,7 +48,7 @@ _ODR_0006_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q6")
 def _dd_source(leaf_path: str) -> URIRef:
     """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
     safe = leaf_path.replace(" ", "%20").replace("'", "%27")
-    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+    return URIRef(f"https://opda.org.uk/pdtf/harness/data-dictionary/{safe}")
 
 
 CLASSES = (
@@ -312,7 +312,7 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.ownerType, DCTERMS.source,
-           URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")))
+           URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")))
 
     # --- DatatypeProperty: opda:hasOthersAged17OrOver (occupier) ---------
     g.add((OPDA.hasOthersAged17OrOver, RDF.type, OWL.DatatypeProperty))
@@ -327,7 +327,7 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasOthersAged17OrOver, DCTERMS.source,
-           URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")))
+           URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")))
 
     # --- ADR-0014 G18 — opda:role DatatypeProperty (DASH ergonomics) -----
     # Domain: foundation opda:RoleMixin (cross-sortal role pattern).

@@ -21,7 +21,7 @@ from rdflib.namespace import DCTERMS, RDF
 
 
 SH = URIRef("http://www.w3.org/ns/shacl#")
-OPDA = URIRef("https://w3id.org/opda/#")
+OPDA = URIRef("https://opda.org.uk/pdtf/")
 
 
 # ---------------------------------------------------------------------------
@@ -123,7 +123,7 @@ def test_every_validation_context_has_dct_source(
     """The BASPI5 ValidationContext reification MUST carry dct:source
     per ODR-0010 §Q1.
     """
-    OPDA_NS = "https://w3id.org/opda/#"
+    OPDA_NS = "https://opda.org.uk/pdtf/"
     contexts = list(
         baspi5_profile_graph.subjects(
             RDF.type, URIRef(OPDA_NS + "ValidationContext"),
@@ -144,7 +144,7 @@ def test_every_minted_class_has_dct_source(opda_ontology: Graph) -> None:
     opda_classes = [
         s for s in opda_ontology.subjects(RDF.type, OWL.Class)
         if isinstance(s, URIRef) and str(s).startswith(
-            "https://w3id.org/opda/#"
+            "https://opda.org.uk/pdtf/"
         )
     ]
     assert opda_classes, "no opda: owl:Class declarations found"
@@ -171,7 +171,7 @@ def test_every_minted_datatype_property_has_dct_source(
     dp = [
         s for s in opda_ontology.subjects(RDF.type, OWL.DatatypeProperty)
         if isinstance(s, URIRef) and str(s).startswith(
-            "https://w3id.org/opda/#"
+            "https://opda.org.uk/pdtf/"
         )
     ]
     assert dp, "no opda: owl:DatatypeProperty declarations found"

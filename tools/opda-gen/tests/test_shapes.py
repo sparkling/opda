@@ -28,7 +28,7 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, RDFS
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 

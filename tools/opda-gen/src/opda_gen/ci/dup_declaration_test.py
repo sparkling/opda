@@ -20,7 +20,7 @@ Motivating regression (caught by hand 2026-05-30, not by CI):
 undetected. This gate fails CI on the next such duplicate.
 
 Scope decision: this gate scopes strictly to the `opda:` namespace
-(`https://w3id.org/opda/#`). "Declared in exactly one module" is a claim
+(`https://opda.org.uk/pdtf/`). "Declared in exactly one module" is a claim
 about *our* terms; re-asserting an external term's `rdf:type` across two
 files (e.g. typing an imported DPV concept) is a different concern and out
 of scope here. See `OPDA` below.
@@ -44,7 +44,7 @@ from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, SKOS
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # ---------------------------------------------------------------------------

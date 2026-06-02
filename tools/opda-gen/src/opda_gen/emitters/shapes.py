@@ -75,7 +75,7 @@ from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces -----------------------------------------------------------
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
@@ -124,47 +124,47 @@ MODULE_SHAPE_METADATA: dict[str, tuple[str, str, str]] = {
 
 
 # --- dct:source URIs to ODR sections -------------------------------------
-_ODR_0005_S6A = URIRef("https://w3id.org/opda/odr/ODR-0005#section-6a")
-_ODR_0005_RULE_5 = URIRef("https://w3id.org/opda/odr/ODR-0005#section-Rule-5")
-_ODR_0005_RULE_6 = URIRef("https://w3id.org/opda/odr/ODR-0005#section-Rule-6")
-_ODR_0005_S2A = URIRef("https://w3id.org/opda/odr/ODR-0005#section-2a")
-_ODR_0005_S3B = URIRef("https://w3id.org/opda/odr/ODR-0005#section-3b")
-_ODR_0005_S3C = URIRef("https://w3id.org/opda/odr/ODR-0005#section-3c")
-_ODR_0006_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q1")
-_ODR_0006_Q2 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q2")
-_ODR_0006_Q3 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q3")
-_ODR_0006_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0006#section-Q4")
-_ODR_0007_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q1")
-_ODR_0007_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q5")
-_ODR_0007_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q6")
-_ODR_0008_Q4A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q4a")
-_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
-_ODR_0008D_RULE_1 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-1")
-_ODR_0008D_RULE_3 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-3")
-_ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
+_ODR_0005_S6A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a")
+_ODR_0005_RULE_5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-Rule-5")
+_ODR_0005_RULE_6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-Rule-6")
+_ODR_0005_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a")
+_ODR_0005_S3B = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b")
+_ODR_0005_S3C = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c")
+_ODR_0006_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1")
+_ODR_0006_Q2 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2")
+_ODR_0006_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3")
+_ODR_0006_Q4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4")
+_ODR_0007_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1")
+_ODR_0007_Q5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5")
+_ODR_0007_Q6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6")
+_ODR_0008_Q4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a")
+_ODR_0008_Q5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
+_ODR_0008D_RULE_1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-1")
+_ODR_0008D_RULE_3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-3")
+_ODR_0022_S4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rules-4")
 # ODR-0024 R11 (council session-028 Q5) — the SHACL constraints the domain-less
 # URI properties (opda:mediaUrl / opda:url) need (sh:datatype xsd:anyURI + a URI
 # sh:pattern) so they are constrained somewhere, plus the acyclicity guard on
 # the self-referential opda:hasSubAssessment.
-_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
-_ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
-_ODR_0024_R10 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R10")
-_ODR_0024_R11 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R11")
-_ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
-_ODR_0009_Q7 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q7")
-_ODR_0010_Q6 = URIRef("https://w3id.org/opda/odr/ODR-0010#section-Q6")
-_ODR_0010_RULE_IN = URIRef("https://w3id.org/opda/odr/ODR-0010#section-Rule-sh-in")
+_ODR_0024_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3")
+_ODR_0024_R6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6")
+_ODR_0024_R10 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R10")
+_ODR_0024_R11 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R11")
+_ODR_0009_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1")
+_ODR_0009_Q7 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7")
+_ODR_0010_Q6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q6")
+_ODR_0010_RULE_IN = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Rule-sh-in")
 _ODR_0010_RULE_FLOOR = URIRef(
-    "https://w3id.org/opda/odr/ODR-0010#section-Rule-violation-floor"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Rule-violation-floor"
 )
-_ODR_0011_S5A = URIRef("https://w3id.org/opda/odr/ODR-0011#section-5a")
-_ODR_0012_PHASE1 = URIRef("https://w3id.org/opda/odr/ODR-0012#section-Phase-1")
-_ODR_0012_Q3 = URIRef("https://w3id.org/opda/odr/ODR-0012#section-Q3")
-_ODR_0012_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0012#section-Q5")
-_ODR_0013_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0013#section-Q1")
-_ODR_0015_S4A = URIRef("https://w3id.org/opda/odr/ODR-0015#section-4a")
-_ODR_0017_S1A = URIRef("https://w3id.org/opda/odr/ODR-0017#section-1a")
-_ODR_0017_S2A = URIRef("https://w3id.org/opda/odr/ODR-0017#section-2a")
+_ODR_0011_S5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-5a")
+_ODR_0012_PHASE1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1")
+_ODR_0012_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q3")
+_ODR_0012_Q5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5")
+_ODR_0013_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0013/section-Q1")
+_ODR_0015_S4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a")
+_ODR_0017_S1A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-1a")
+_ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a")
 
 
 # --- Common helpers -------------------------------------------------------
@@ -230,7 +230,7 @@ def _add_identity_key_shape(
             sh:severity sh:Violation ;
             sh:message "..."@en ;
         ] ;
-        dct:source <https://w3id.org/opda/odr/ODR-XXXX#section-Yy> .
+        dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-XXXX/section-Yy> .
     ```
 
     `min_count` defaults to 0 because the shapes target Substance Kinds
@@ -352,7 +352,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
            )))
     g.add((OPDA.NoIdentityOverride_MetaShape, DCTERMS.source, _ODR_0010_Q6))
     g.add((sparql_node, SH.select, Literal(
-        "PREFIX opda: <https://w3id.org/opda/#>\n"
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
         "SELECT ?profileShape WHERE {\n"
         "  ?profileShape sh:targetClass ?kind .\n"
@@ -456,7 +456,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
     g.add((OPDA.MetaShapeOverShapeGraphMetaShape, DCTERMS.source, _ODR_0017_S2A))
     g.add((sparql_meta, SH.select, Literal(
         "PREFIX sh: <http://www.w3.org/ns/shacl#>\n"
-        "PREFIX opda: <https://w3id.org/opda/#>\n"
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
         "SELECT ?shape WHERE {\n"
         "  ?shape sh:targetClass sh:NodeShape .\n"
         "  ?shape sh:severity sh:Violation .\n"
@@ -474,7 +474,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
         shape_iri=OPDA.PIIWithoutDPVCoAnnotationRule,
         target_class=OWL.Class,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX dpv-pd: <https://w3id.org/dpv/pd#>\n"
             "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
             "CONSTRUCT {\n"
@@ -506,7 +506,7 @@ def build_foundation_meta_shapes(g: Graph) -> None:
         shape_iri=OPDA.DeprecationChainRule,
         target_class=SKOS.Concept,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX dct: <http://purl.org/dc/terms/>\n"
             "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
             "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n"
@@ -591,7 +591,7 @@ def build_property_shapes() -> Graph:
             "the Address instance."
         ),
         source_iri=URIRef(
-            "https://w3id.org/opda/odr/ODR-0015#section-Rule-6"
+            "https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6"
         ),
     )
 
@@ -616,7 +616,7 @@ def build_property_shapes() -> Graph:
         shape_iri=OPDA.UPRNSuccessionRule,
         target_class=OPDA.Property,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "CONSTRUCT {\n"
             "  ?property opda:hasUPRNSuccessionStatus ?status .\n"
@@ -647,7 +647,7 @@ def build_property_shapes() -> Graph:
         shape_iri=OPDA.INSPIRESuccessionRule,
         target_class=OPDA.Address,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "CONSTRUCT {\n"
             "  ?address opda:hasINSPIRESuccessionStatus ?status .\n"
@@ -747,7 +747,7 @@ def build_agent_shapes() -> Graph:
     g.add((OPDA.SpecialCategoryPIIWithoutLawfulBasisShape,
            SH.sparql, sparql_node))
     g.add((sparql_node, SH.select, Literal(
-        "PREFIX opda: <https://w3id.org/opda/#>\n"
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
         "PREFIX dpv: <https://w3id.org/dpv#>\n"
         "SELECT $this ?path WHERE {\n"
         "  $this opda:hasSpecialCategoryData true .\n"
@@ -762,7 +762,7 @@ def build_agent_shapes() -> Graph:
         shape_iri=OPDA.IdentifierSuccessionRule,
         target_class=OPDA.Person,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "CONSTRUCT {\n"
             "  ?person opda:hasIdentifierSuccessionEvent ?event .\n"
@@ -790,7 +790,7 @@ def build_agent_shapes() -> Graph:
         shape_iri=OPDA.CapacityAuthorityMatchRule,
         target_class=OPDA.Person,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "CONSTRUCT {\n"
             "  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n"
             "}\n"
@@ -878,7 +878,7 @@ def build_transaction_shapes() -> Graph:
         shape_iri=OPDA.LeaseTermSuccessionRule,
         target_class=OPDA.LeaseTerm,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "PREFIX time: <http://www.w3.org/2006/time#>\n"
             "CONSTRUCT {\n"
@@ -909,7 +909,7 @@ def build_transaction_shapes() -> Graph:
         shape_iri=OPDA.MilestoneVarianceRule,
         target_class=OPDA.Milestone,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
             "CONSTRUCT {\n"
             "  ?milestone opda:hasVarianceStatus ?varianceCategory .\n"
@@ -1057,7 +1057,7 @@ def build_claim_shapes() -> Graph:
         shape_iri=OPDA.PROVOClaimsRule,
         target_class=OPDA.Claim,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "CONSTRUCT {\n"
             "  ?claim opda:hasProvenanceChainStatus ?status .\n"
@@ -1086,7 +1086,7 @@ def build_claim_shapes() -> Graph:
         shape_iri=OPDA.VerificationActivitySuccessionRule,
         target_class=OPDA.VerificationActivity,
         sparql_construct=(
-            "PREFIX opda: <https://w3id.org/opda/#>\n"
+            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "CONSTRUCT {\n"
             "  ?activity opda:hasVerificationSuccessionStatus ?status .\n"
@@ -1678,11 +1678,11 @@ def _comment_header(
         f"# Generated by opda-gen {__version__} at {emission_date}; "
         f"DO NOT HAND-EDIT.",
         "# Specification: "
-        "https://openpropdata.org.uk/adr/ADR-0007-ontology-generator-specification",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0007-ontology-generator-specification",
         "# Implementation: "
-        "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
-        "https://openpropdata.org.uk/adr/ADR-0012-shacl-and-dpv-annotation-emission",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0012-shacl-and-dpv-annotation-emission",
         f"# Ratifying ODR(s): {ratifying_odrs}",
         f"# Generator version: opda-gen-{__version__}",
         f"# Source commit: {git_sha}",

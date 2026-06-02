@@ -35,7 +35,7 @@ from rdflib.namespace import OWL
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # ---------------------------------------------------------------------------

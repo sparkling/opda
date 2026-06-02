@@ -25,12 +25,12 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 GUFO = Namespace("http://purl.org/nemo/gufo#")
-_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
+_ODR_0008_Q5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
 
 
 MODULE_NAMES = (
@@ -546,7 +546,7 @@ def test_pii_floor_active_count_matches_baseline_count(
     baseline_classes = {
         s
         for s in g.subjects(_HAS_PD, None)
-        if str(s).startswith("https://w3id.org/opda/#")
+        if str(s).startswith("https://opda.org.uk/pdtf/")
         and str(s).split("#", 1)[1][:1].isupper()
     }
     assert len(pii_classes) > 0, (

@@ -91,7 +91,7 @@ from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
 # --- Namespaces ----------------------------------------------------------
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 OPDA_V = Namespace("https://w3id.org/opda/vocabularies/")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
@@ -131,7 +131,7 @@ _DEPRECATION_CHAIN_RULE_SPARQL = """\
 # Targets: opda:EnumValueBearer instances whose chosen value is owl:deprecated.
 # Emits: an advisory note listing the deprecated value + (optional) replacement.
 
-PREFIX opda: <https://w3id.org/opda/#>
+PREFIX opda: <https://opda.org.uk/pdtf/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX dct:  <http://purl.org/dc/terms/>
@@ -150,13 +150,13 @@ SELECT $this ?value ?successor WHERE {
 # the UFO category + steward) or the external regulator (where the regulator
 # governs the concept per ODR-0011 §4a verbatim-citation discipline).
 _ODR_0011_SECTION_8A = URIRef(
-    "https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category"
 )
 _ODR_0011_SECTION_1A = URIRef(
-    "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward"
 )
 _ODR_0011_SECTION_4A = URIRef(
-    "https://w3id.org/opda/odr/ODR-0011#section-4a-regulator-citation"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-4a-regulator-citation"
 )
 _GOV_UK_COUNCIL_TAX_BANDS = URIRef("https://www.gov.uk/council-tax-bands")
 _SAA_COUNCIL_TAX_BANDS = URIRef(
@@ -190,10 +190,10 @@ _ISO_4217 = URIRef("https://www.iso.org/iso-4217-currency-codes.html")
 # matching the §8a-anchor convention every other scheme uses for its
 # scheme-level source; the per-member sources are the governing authorities).
 _ODR_0008D_RULE_2 = URIRef(
-    "https://w3id.org/opda/odr/ODR-0008d#section-Rule-2"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-2"
 )
 _ODR_0008D_RULE_4 = URIRef(
-    "https://w3id.org/opda/odr/ODR-0008d#section-Rule-4"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-4"
 )
 
 # --- ODR-0024 (Curated Category-G Walk) section anchors ------------------
@@ -201,9 +201,9 @@ _ODR_0008D_RULE_4 = URIRef(
 # data-attested-enum SKOS schemes (construction / price-qualifier / transport /
 # broadband / Ofsted). These are scheme-level `dct:source` anchors (the
 # ratifying Council record), matching the §8a-anchor convention.
-_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
-_ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
-_ODR_0024_R6 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R6")
+_ODR_0024_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3")
+_ODR_0024_R4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R4")
+_ODR_0024_R6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6")
 # Ofsted authority `dct:source` (ODR-0024 R6 — the OfstedRatingScheme is a
 # regulator-governed value-space, so its scheme-level source is the authority).
 _OFSTED = URIRef("https://www.gov.uk/government/organisations/ofsted")
@@ -214,7 +214,7 @@ def _dd_source(leaf_path: str) -> URIRef:
     leaf (and, optionally, the enum-member value) that supplied the value.
 
     The IRI format mirrors the ADR-0010 §"Emission structure" template
-    (line 88): `<https://w3id.org/opda/data-dictionary#<leaf_path>>`.
+    (line 88): `<https://opda.org.uk/pdtf/harness/data-dictionary/<leaf_path>>`.
     Bracketed array indices (`[]`) in the leaf path are preserved as in
     the data dictionary so the round-trip back to a leaf record is
     one-to-one; whitespace inside an enum-member suffix is percent-encoded
@@ -225,7 +225,7 @@ def _dd_source(leaf_path: str) -> URIRef:
     # (`.`, `[`, `]`, alphanumerics) are tolerated by rdflib's URIRef
     # validator and by Turtle's <iri> grammar.
     safe_path = leaf_path.replace(" ", "%20").replace("'", "%27")
-    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe_path}")
+    return URIRef(f"https://opda.org.uk/pdtf/harness/data-dictionary/{safe_path}")
 
 
 # --- Scheme definitions --------------------------------------------------
@@ -826,7 +826,7 @@ def _milestone_kind_scheme() -> Scheme:
     # transaction-lifecycle stages. dct:source cites ODR-0007 §Q2
     # (Council-ratified transaction-lifecycle pattern) which is the
     # ratifying authority for these milestones.
-    odr_0007 = URIRef("https://w3id.org/opda/odr/ODR-0007#section-Q2")
+    odr_0007 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2")
     members_data = [
         (
             "instruction",
@@ -931,7 +931,7 @@ def _assurance_level_scheme() -> Scheme:
     eidas = URIRef(
         "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
     )
-    odr_0009 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q3")
+    odr_0009 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3")
     members_data = [
         (
             "Low",
@@ -1057,7 +1057,7 @@ def _address_variant_scheme() -> Scheme:
     # (Address Substance Kind + Quality particularising); members emit
     # real per-member metadata sourced from the Council-ratified anchor.
     odr0015 = URIRef(
-        "https://w3id.org/opda/odr/ODR-0015#section-2a-address-variant"
+        "https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a-address-variant"
     )
     members_data = [
         (
@@ -1115,7 +1115,7 @@ def _yes_no_scheme() -> Scheme:
     # of BASPI5 boolean-discriminator leaves (yesNo / hasGreenDealLoan
     # / hasDelayFactors etc.).
     odr_0011 = URIRef(
-        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+        "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward"
     )
     members_data = [
         ("Yes", "Affirmative answer to a binary BASPI5 question."),
@@ -1148,7 +1148,7 @@ def _yes_no_scheme() -> Scheme:
 
 def _yes_no_not_applicable_scheme() -> Scheme:
     odr_0011 = URIRef(
-        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+        "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward"
     )
     members_data = [
         ("Yes", "Affirmative answer."),
@@ -1181,7 +1181,7 @@ def _yes_no_not_applicable_scheme() -> Scheme:
 
 def _yes_no_not_known_scheme() -> Scheme:
     odr_0011 = URIRef(
-        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+        "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward"
     )
     members_data = [
         ("Yes", "Affirmative answer."),
@@ -1214,7 +1214,7 @@ def _yes_no_not_known_scheme() -> Scheme:
 
 def _yes_no_not_required_scheme() -> Scheme:
     odr_0011 = URIRef(
-        "https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward"
+        "https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward"
     )
     members_data = [
         ("Yes", "Affirmative answer."),
@@ -2844,13 +2844,13 @@ def _comment_header(emission_date: str, git_sha: str) -> str:
         f"# Generated by opda-gen {__version__} at {emission_date}; "
         f"DO NOT HAND-EDIT.",
         "# Specification: "
-        "https://openpropdata.org.uk/adr/ADR-0007-ontology-generator-specification",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0007-ontology-generator-specification",
         "# Implementation: "
-        "https://openpropdata.org.uk/adr/ADR-0008-generator-implementation-infrastructure",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0008-generator-implementation-infrastructure",
         "# This emission: "
-        "https://openpropdata.org.uk/adr/ADR-0010-skos-vocabulary-emission",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0010-skos-vocabulary-emission",
         "# Scope expansion (G8/G9/G10): "
-        "https://openpropdata.org.uk/adr/ADR-0013-overlay-profile-emission",
+        "https://opda.org.uk/pdtf/harness/adr/ADR-0013-overlay-profile-emission",
         f"# Generator version: opda-gen-{__version__}",
         f"# Source commit: {git_sha}",
         "# Schemes per ODR-0011 §1a + ODR-0011 §8a seven-category UFO framework.",

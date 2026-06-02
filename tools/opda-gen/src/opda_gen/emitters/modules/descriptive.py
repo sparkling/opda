@@ -58,7 +58,7 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
@@ -67,34 +67,34 @@ PROV = Namespace("http://www.w3.org/ns/prov#")
 def _dd_source(leaf_path: str) -> URIRef:
     """Return the data-dictionary schema-leaf-path `dct:source` IRI (G2)."""
     safe = leaf_path.replace(" ", "%20").replace("'", "%27")
-    return URIRef(f"https://w3id.org/opda/data-dictionary#{safe}")
+    return URIRef(f"https://opda.org.uk/pdtf/harness/data-dictionary/{safe}")
 
 
-_ODR_0008_Q4A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q4a")
-_ODR_0008_Q5A = URIRef("https://w3id.org/opda/odr/ODR-0008#section-Q5a")
+_ODR_0008_Q4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a")
+_ODR_0008_Q5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
 
 # ODR-0024 R4 (council session-028 Q1) — the UFO Substance-Kind re-warrant of
 # opda:NearbyFacility. §Q4a (a provenance / lifecycle / PII test) does NOT
 # license a real-world facility bearer; ODR-0024 R4 supplies the correct
 # warrant (a referenced facility is a mind-independent social-physical endurant
 # with its own IC, not a Property Quality) and the schoolType→SKOS rule.
-_ODR_0024_R3 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R3")
-_ODR_0024_R4 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R4")
-_ODR_0024_R10 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R10")
+_ODR_0024_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3")
+_ODR_0024_R4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R4")
+_ODR_0024_R10 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R10")
 
 # ODR-0008d (Authority-Retrieved Artefacts) section anchors — the Category-E
 # RiskAssessment class + its peril/rating-bearing properties cite the Rule
 # that mints them (mirrors the §Q4a/§Q5a anchor convention above).
-_ODR_0008D_RULE_1 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-1")
-_ODR_0008D_RULE_3 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-3")
-_ODR_0008D_RULE_4 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-4")
-_ODR_0008D_RULE_5 = URIRef("https://w3id.org/opda/odr/ODR-0008d#section-Rule-5")
+_ODR_0008D_RULE_1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-1")
+_ODR_0008D_RULE_3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-3")
+_ODR_0008D_RULE_4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-4")
+_ODR_0008D_RULE_5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-5")
 
 # ODR-0022 §4 / session-027 R4 — the Category-D inclusion-as-transaction-Mode
 # anchor. opda:inclusionStatus is a Mode/Relator of the sale transaction
 # (ODR-0007), confirmed by session-027 R4; its `dct:source` cites ODR-0022 §4
 # (the deciding record), per the same convention disclosureDetail uses.
-_ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
+_ODR_0022_S4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rules-4")
 
 # Category A (ODR-0022 §Rules.1) — the single reusable disclosure-detail
 # annotation property is decided by ODR-0022 §1 itself; its `dct:source`
@@ -103,7 +103,7 @@ _ODR_0022_S4 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-4")
 # of the deferred Category-G walk — a reusable annotation property is not
 # one of those leaves; the question is carried by the subject + the
 # instance-level `dct:source` per ODR-0022 §Rules.1 / §Rules.6.)
-_ODR_0022_S1 = URIRef("https://w3id.org/opda/odr/ODR-0022#section-Rules-1")
+_ODR_0022_S1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rules-1")
 
 
 CLASSES = (

@@ -44,7 +44,7 @@ from rdflib.namespace import DCTERMS, RDF
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 DASH = Namespace("http://datashapes.org/dash#")
 
 # The BASPI5 form-question authority — duplicated here (not imported from the

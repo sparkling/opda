@@ -39,7 +39,7 @@ from rdflib.namespace import OWL, RDF
 from opda_gen.inputs.category_g_curation import COLLAPSED
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 # rdf:type objects that count as a candidate-G leaf being "minted": a property
 # (the overwhelming majority) or a class (a Q4a promotion). SKOS concepts /

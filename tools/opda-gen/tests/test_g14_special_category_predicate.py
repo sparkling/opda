@@ -24,8 +24,8 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 from opda_gen.emitters.foundation import emit_foundation
 
 
-OPDA = URIRef("https://w3id.org/opda/#")
-HAS_SCD = URIRef("https://w3id.org/opda/#hasSpecialCategoryData")
+OPDA = URIRef("https://opda.org.uk/pdtf/")
+HAS_SCD = URIRef("https://opda.org.uk/pdtf/hasSpecialCategoryData")
 
 
 def _classes_graph(tmp_path: Path) -> Graph:

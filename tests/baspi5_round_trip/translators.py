@@ -11,7 +11,7 @@ Realises:
 Scope:
 - JSON → RDF: walks a BASPI5 sample JSON document and emits OPDA
   TBox-typed individuals at canonical URIs under
-  https://w3id.org/opda/data/baspi5/<txid>/.
+  https://opda.org.uk/pdtf/harness/data/baspi5/<txid>/.
 - RDF → JSON: reverses the walk by reading the BASPI5 profile
   `sh:property` blocks and reconstructing the JSON shape.
 
@@ -30,13 +30,13 @@ from rdflib.namespace import RDF, XSD
 
 
 # --- Namespaces -----------------------------------------------------------
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 VCARD = Namespace("http://www.w3.org/2006/vcard/ns#")
 
 
 def _data_ns(tx_id: str) -> Namespace:
     """Return the per-transaction data namespace."""
-    return Namespace(f"https://w3id.org/opda/data/baspi5/{tx_id}/")
+    return Namespace(f"https://opda.org.uk/pdtf/harness/data/baspi5/{tx_id}/")
 
 
 # ---------------------------------------------------------------------------
@@ -185,9 +185,9 @@ def rdf_to_baspi5_json(
     tx_id = "tx-unknown"
     for s in rdf_graph.subjects():
         s_str = str(s)
-        if s_str.startswith("https://w3id.org/opda/data/baspi5/"):
+        if s_str.startswith("https://opda.org.uk/pdtf/harness/data/baspi5/"):
             tx_id = s_str.split(
-                "https://w3id.org/opda/data/baspi5/", 1
+                "https://opda.org.uk/pdtf/harness/data/baspi5/", 1
             )[1].split("/", 1)[0]
             break
     out["transactionId"] = tx_id

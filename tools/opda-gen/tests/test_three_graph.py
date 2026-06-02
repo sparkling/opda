@@ -33,7 +33,7 @@ from opda_gen.ci.three_graph_test import (
 )
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 

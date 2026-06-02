@@ -33,7 +33,7 @@ from opda_gen.emitters.vocabularies import (
 )
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -475,7 +475,7 @@ def test_category_c_member_source_is_schema_leaf_not_odr(
 ) -> None:
     """ODR-0022 G2: every Category-C *member* `dct:source` points at a
     schema leaf path (the data-dictionary IRI), NOT at the deciding ODR."""
-    dd_prefix = "https://w3id.org/opda/data-dictionary#"
+    dd_prefix = "https://opda.org.uk/pdtf/harness/data-dictionary/"
     for name in _CATEGORY_C_SCHEMES:
         scheme_uri = OPDA[name]
         for m in emitted_graph.subjects(SKOS.inScheme, scheme_uri):
@@ -578,7 +578,7 @@ def test_fixture_item_inclusion_property_not_on_items(
 def test_fixture_item_source_is_schema_leaf(emitted_graph: Graph) -> None:
     """Every fixture-item `dct:source` points at the schema
     `isIncludedExcludedOrNone` leaf path (ODR-0022 G2)."""
-    dd_prefix = "https://w3id.org/opda/data-dictionary#"
+    dd_prefix = "https://opda.org.uk/pdtf/harness/data-dictionary/"
     for m in emitted_graph.subjects(SKOS.inScheme, OPDA.FixtureItemScheme):
         sources = [str(s) for s in emitted_graph.objects(m, DCTERMS.source)]
         assert sources, f"{m} missing dct:source"

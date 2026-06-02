@@ -92,8 +92,8 @@ def _run_checks_on(ds: Dataset) -> list[str]:
         violations.append("sameAs")
     if m._q_count(
         ds,
-        f"{inf} {{ <https://w3id.org/opda/#EPCCertificate> "
-        f"rdf:type <https://w3id.org/opda/#Property> }}",
+        f"{inf} {{ <https://opda.org.uk/pdtf/EPCCertificate> "
+        f"rdf:type <https://opda.org.uk/pdtf/Property> }}",
     ) > 0:
         violations.append("epc")
     if m._q_count(
@@ -122,16 +122,16 @@ def test_detects_spurious_epc_property() -> None:
     ds = _minimal_dataset()
     m.materialise(ds)
     ds.graph(URIRef(m.ENTAILMENT_GRAPH)).parse(
-        data="<https://w3id.org/opda/#EPCCertificate> "
+        data="<https://opda.org.uk/pdtf/EPCCertificate> "
         "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> "
-        "<https://w3id.org/opda/#Property> .",
+        "<https://opda.org.uk/pdtf/Property> .",
         format="turtle",
     )
     inf = f"GRAPH <{m.ENTAILMENT_GRAPH}>"
     epc = m._q_count(
         ds,
-        f"{inf} {{ <https://w3id.org/opda/#EPCCertificate> "
-        f"rdf:type <https://w3id.org/opda/#Property> }}",
+        f"{inf} {{ <https://opda.org.uk/pdtf/EPCCertificate> "
+        f"rdf:type <https://opda.org.uk/pdtf/Property> }}",
     )
     assert epc > 0
 

@@ -22,7 +22,7 @@ from opda_gen.inputs.data_dictionary import DictionaryLeaf
 from opda_gen.term_sourcing import schema_leaf_source, schema_leaf_sources
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # ---------------------------------------------------------------------------
@@ -73,7 +73,7 @@ def test_disclosure_detail_sources_to_odr_0022_not_a_leaf() -> None:
     g = descriptive.build_graph()
     sources = list(g.objects(OPDA.disclosureDetail, DCTERMS.source))
     assert len(sources) == 1
-    assert str(sources[0]) == "https://w3id.org/opda/odr/ODR-0022#section-Rules-1"
+    assert str(sources[0]) == "https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rules-1"
 
 
 def test_disclosure_detail_in_module_catalogue() -> None:
@@ -457,7 +457,7 @@ def test_peril_property_shape_pins_the_12_concepts() -> None:
     assert len(in_list) == 1
     members = list(Collection(g, in_list[0]))
     assert len(members) == 12
-    assert all(str(m).startswith("https://w3id.org/opda/#peril/") for m in members)
+    assert all(str(m).startswith("https://opda.org.uk/pdtf/peril/") for m in members)
 
 
 def test_five_classes_have_internal_structure_shapes() -> None:
@@ -494,7 +494,7 @@ def test_fixtures_list_shape_is_transaction_scoped() -> None:
     assert (OPDA.FixturesListShape, SH.targetClass, OPDA.Property) not in g
     # No FixtureItem class is invented as a target anywhere in the shapes.
     targets = {str(t) for t in g.objects(None, SH.targetClass)}
-    assert "https://w3id.org/opda/#FixtureItem" not in targets
+    assert "https://opda.org.uk/pdtf/FixtureItem" not in targets
     # Ties the controlled item vocabulary.
     assert (OPDA.FixturesListShape, DCTERMS.references, OPDA.FixtureItemScheme) in g
     paths = {

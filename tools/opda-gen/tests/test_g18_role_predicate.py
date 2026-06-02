@@ -26,8 +26,8 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, XSD
 from opda_gen.emitters.classes import emit_module
 
 
-OPDA_ROLE = URIRef("https://w3id.org/opda/#role")
-OPDA_ROLE_MIXIN = URIRef("https://w3id.org/opda/#RoleMixin")
+OPDA_ROLE = URIRef("https://opda.org.uk/pdtf/role")
+OPDA_ROLE_MIXIN = URIRef("https://opda.org.uk/pdtf/RoleMixin")
 
 
 def _agent_graph(tmp_path: Path) -> Graph:

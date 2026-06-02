@@ -29,7 +29,7 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DPV = Namespace("https://w3id.org/dpv")
 
@@ -200,7 +200,7 @@ def test_exemplars_parse_against_modules(emitted_modules: dict[str, Path]) -> No
         used = {
             str(o)
             for o in eg.objects(predicate=RDF.type)
-            if str(o).startswith("https://w3id.org/opda/#")
+            if str(o).startswith("https://opda.org.uk/pdtf/")
         }
         missing = used - declared_classes
         if missing:

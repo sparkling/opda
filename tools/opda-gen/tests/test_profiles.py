@@ -31,7 +31,7 @@ from opda_gen.emitters.profiles import (
 )
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 DASH = Namespace("http://datashapes.org/dash#")
 

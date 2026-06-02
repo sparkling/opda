@@ -37,7 +37,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS
 from opda_gen.serialiser.canonical import to_canonical_turtle
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
@@ -164,11 +164,11 @@ def test_literal_iri_lexical_value_retains_prefix() -> None:
     contribute to the referenced-IRI set so the canonical serialiser
     retains the bound prefix.
 
-    Scenario: an ontology header with `sh:namespace "https://w3id.org/opda/#"
+    Scenario: an ontology header with `sh:namespace "https://opda.org.uk/pdtf/"
     ^^xsd:anyURI` is the ONLY reference to the opda namespace string. Before
     G2, the opda prefix would be filtered out because the URIRef set
     contained `https://w3id.org/opda/` (no trailing `#`) which does not
-    `startswith("https://w3id.org/opda/#")`. After G2, the literal's lexical
+    `startswith("https://opda.org.uk/pdtf/")`. After G2, the literal's lexical
     value joins the referenced-IRI set and the opda prefix survives.
     """
     from rdflib.namespace import XSD as _XSD
@@ -182,7 +182,7 @@ def test_literal_iri_lexical_value_retains_prefix() -> None:
     onto = URIRef("https://w3id.org/opda/")
     g.add((onto, RDF.type, OWL.Ontology))
     g.add((onto, SH.namespace, Literal(
-        "https://w3id.org/opda/#", datatype=_XSD.anyURI
+        "https://opda.org.uk/pdtf/", datatype=_XSD.anyURI
     )))
     out = to_canonical_turtle(g).decode("utf-8")
     # The opda prefix MUST appear in the output because the literal lexical
@@ -234,7 +234,7 @@ def test_literal_url_inside_scope_note_does_not_bind_new_prefix() -> None:
     g = Graph()
     g.bind("opda", OPDA)
     g.bind("skos", SKOS)
-    scheme = URIRef("https://w3id.org/opda/#TestScheme")
+    scheme = URIRef("https://opda.org.uk/pdtf/TestScheme")
     g.add((scheme, RDF.type, URIRef("http://www.w3.org/2004/02/skos/core#ConceptScheme")))
     g.add((scheme, SKOS.scopeNote, Literal(
         "Verbatim source: VOA council-tax bands published at "
@@ -263,7 +263,7 @@ def test_literal_url_lexical_value_does_not_bind_unbound_namespace() -> None:
     g = Graph()
     g.bind("opda", OPDA)
     g.bind("skos", SKOS)
-    scheme = URIRef("https://w3id.org/opda/#OtherScheme")
+    scheme = URIRef("https://opda.org.uk/pdtf/OtherScheme")
     g.add((scheme, RDF.type, URIRef("http://www.w3.org/2004/02/skos/core#ConceptScheme")))
     # Literal lexical value is just the URL — the most aggressive case.
     g.add((scheme, DCTERMS.source, Literal("https://www.gov.uk/council-tax-bands")))
@@ -310,7 +310,7 @@ def test_multi_object_blank_node_list_byte_identical_across_runs() -> None:
             # deterministic.
             prop = _BN()
             g.add((shape, SH.property, prop))
-            g.add((prop, SH.path, URIRef(f"https://w3id.org/opda/#{label}Path")))
+            g.add((prop, SH.path, URIRef(f"https://opda.org.uk/pdtf/{label}Path")))
             g.add((prop, SH.minCount, Literal(1)))
         return g
 

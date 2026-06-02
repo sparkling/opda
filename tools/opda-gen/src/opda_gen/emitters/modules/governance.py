@@ -30,22 +30,22 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 
 
 _ODR_0012_PHASE1 = URIRef(
-    "https://w3id.org/opda/odr/ODR-0012#section-Phase-1"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1"
 )
 _ODR_0012_EVIDENCE = URIRef(
-    "https://w3id.org/opda/odr/ODR-0012#section-evidence-co-annotation"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-evidence-co-annotation"
 )
 _ODR_0018_RULE4 = URIRef(
-    "https://w3id.org/opda/odr/ODR-0018#section-Rule4"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4"
 )
 _ODR_0018_3A = URIRef(
-    "https://w3id.org/opda/odr/ODR-0018#section-3a"
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-3a"
 )
 _GDPR_ART_10 = URIRef("https://gdpr-info.eu/art-10-gdpr/")
 

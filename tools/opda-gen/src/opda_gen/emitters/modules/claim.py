@@ -36,14 +36,14 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
-_ODR_0009_Q1 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q1")
-_ODR_0009_Q3 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q3")
-_ODR_0009_Q4 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q4")
-_ODR_0009_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q5")
+_ODR_0009_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1")
+_ODR_0009_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3")
+_ODR_0009_Q4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q4")
+_ODR_0009_Q5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q5")
 
 # ODR-0024 R7 (council session-028 Q7) — the neutral opda:AttachedDocument
 # bearer. A registry-attached document (titlesToBeSold[].additionalDocuments[])
@@ -51,7 +51,7 @@ _ODR_0009_Q5 = URIRef("https://w3id.org/opda/odr/ODR-0009#section-Q5")
 # eIDAS-Substantial assurance on all of them. R7 keeps a neutral document Kind;
 # a document plays the evidence role via opda:evidenceType (ODR-0027 §R6), not by
 # subclassing into evidence.
-_ODR_0024_R7 = URIRef("https://w3id.org/opda/odr/ODR-0024#section-Rules-R7")
+_ODR_0024_R7 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R7")
 
 
 CLASSES = (

@@ -43,7 +43,7 @@ from opda_gen.emitters.profiles import emit_profile
 from opda_gen.emitters.vocabularies import emit_vocabularies
 
 
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # --- Fixtures ------------------------------------------------------------
@@ -141,7 +141,7 @@ def test_schema_sanctioned_shared_ref_is_addressable_not_doubly_bound(
     )
     paths = {str(p) for p in retrieve_by_path(baspi5_graph, ref)}
     assert {
-        "https://w3id.org/opda/#hasUPRN",
+        "https://opda.org.uk/pdtf/hasUPRN",
         "http://www.w3.org/2006/vcard/ns#postal-code",
     } <= paths, f"both uprn + postcode paths must be recoverable; got {paths}"
     # The fabricated disambiguator must not reappear (G19).

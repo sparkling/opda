@@ -41,7 +41,7 @@ from opda_gen.inputs.category_g_curation import COLLAPSED
 
 # FIX 1 — OPDA is defined inline (no `from ..namespaces import OPDA`; there is
 # no such module — ~17 emitter files define it inline; match them).
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # --- ref-key map (FIX 2) --------------------------------------------------

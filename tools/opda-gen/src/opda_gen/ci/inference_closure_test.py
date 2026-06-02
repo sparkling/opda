@@ -264,8 +264,8 @@ def run(ontology_dir: Path) -> list[str]:
     # --- Clause 3b: NO spurious EPCCertificate a Property (R7 regression) ---
     epc = _q_count(
         ds,
-        f"{inf} {{ <https://w3id.org/opda/#EPCCertificate> "
-        f"rdf:type <https://w3id.org/opda/#Property> }}",
+        f"{inf} {{ <https://opda.org.uk/pdtf/EPCCertificate> "
+        f"rdf:type <https://opda.org.uk/pdtf/Property> }}",
     )
     if epc > 0:
         violations.append(

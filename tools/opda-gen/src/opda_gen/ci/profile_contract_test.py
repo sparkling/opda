@@ -40,7 +40,7 @@ from rdflib.namespace import RDF, SKOS
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 
 # The identity-key properties that MUST NEVER be sh:maxCount 0 in any

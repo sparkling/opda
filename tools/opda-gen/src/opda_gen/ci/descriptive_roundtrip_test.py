@@ -47,7 +47,7 @@ from rdflib.namespace import DCTERMS, RDF, SKOS
 
 
 SH = Namespace("http://www.w3.org/ns/shacl#")
-OPDA = Namespace("https://w3id.org/opda/#")
+OPDA = Namespace("https://opda.org.uk/pdtf/")
 
 # The BASPI5 form-question authority — the `dct:source` namespace that marks a
 # schema leaf path (ODR-0008 §Q3a per-overlay array). Mirrors
