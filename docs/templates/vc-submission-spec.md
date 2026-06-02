@@ -28,7 +28,7 @@ Fields the intake validator MUST find:
 
 | Field | Source | Notes |
 |---|---|---|
-| `@context` | W3C VC v2 base + OPDA accreditation context | **Decided:** `https://opda.org.uk/accreditation/v1` — a sibling opda scheme (NOT a PDTF ontology term, so not under `/pdtf/`; ADR-0006 "future second standard" provision). Host the context at that URL. |
+| `@context` | W3C VC v2 base + OPDA accreditation context | **Decided:** `https://opda.org.uk/pdtf/harness/accreditation/v1` — accreditation is PDTF governance apparatus, so it lives in the `/pdtf/harness/` namespace (not a term, not a separate standard). Host the context at that URL. |
 | `type` | `["VerifiableCredential", "AccreditationStatement"]` | The `AccreditationStatement` type is OPDA's; defined in the OPDA context. |
 | `issuer` | did:web DID of the issuing firm | Must resolve via the Trust Registry per `source/03-standards/trust-framework/docs/governance.md` §B. |
 | `validFrom` | ISO 8601 timestamp at submission | Per VC 2.0 (`issuanceDate` is deprecated in favour of `validFrom`). |
@@ -113,7 +113,7 @@ Resubmission window: **Decided** — 7 days from notification, capped at the pub
 
 Greenfield build — these are decided directly now, not gated on a WG (overridable later):
 
-1. **JSON-LD context URL.** `https://opda.org.uk/accreditation/v1` — a sibling opda scheme (not under `/pdtf/`; ADR-0006 "future second standard"). OPDA hosts it; versioned `v1`, `v2`, … on a breaking-change bump (old URLs keep serving), per the [content-negotiation versioning rule](../manual/physical-database/content-negotiation/jsonld-context.md#versioning).
+1. **JSON-LD context URL.** `https://opda.org.uk/pdtf/harness/accreditation/v1` — accreditation is PDTF governance apparatus, so it sits in the `/pdtf/harness/` namespace (not a term, not a separate standard). OPDA hosts it; versioned `v1`, `v2`, … on a breaking-change bump (old URLs keep serving), per the [content-negotiation versioning rule](../manual/physical-database/content-negotiation/jsonld-context.md#versioning).
 2. **Proof type mandate.** **Data Integrity** (Linked Data Proofs) only — preserves JSON-LD semantics; single type keeps the validator surface single.
 3. **Submission interface for first publish.** **Direct PR / commit**; CLI helper later; web form Phase 5+.
 4. **Capability-key governance.** The canonical allowlist **is** the published capability-bundle key set; new keys are added by batching into the quarter-end refresh (not ad-hoc mid-quarter). Unknown keys at intake are warned-and-included (§"Validation rules" rule 7).
