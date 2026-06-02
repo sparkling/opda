@@ -63,7 +63,7 @@ Optional sections (where they help):
 
 ## Cross-tier traceability
 
-Every entity has a stable URI in OPDA's ontology namespace (`https://w3id.org/opda/#<EntityLocalName>`). The Concept-tier file's location encodes that URI:
+Every entity has a stable URI in OPDA's ontology namespace (`https://opda.org.uk/pdtf/<EntityLocalName>`). The Concept-tier file's location encodes that URI:
 
 - URL: `/docs/manual/concept/<module>/<entity>.md`
 - Anchor pattern: `#<entity-name-lowercase>` (the H1 anchor)

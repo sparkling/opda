@@ -13,7 +13,7 @@ This document specifies how the **Physical-tier (deployment / database) presenta
 
 ## What "physical database" means for OPDA
 
-OPDA's "database" is the **deployed form of the ontology** — the published graph at `https://w3id.org/opda/#`, the named-graph layout that a triplestore consumer loads, the derived consumer profiles assembled by the build-step composer, and the HTTP content-negotiation that delivers each consumer profile in the right format.
+OPDA's "database" is the **deployed form of the ontology** — the published graph at `https://opda.org.uk/pdtf/`, the named-graph layout that a triplestore consumer loads, the derived consumer profiles assembled by the build-step composer, and the HTTP content-negotiation that delivers each consumer profile in the right format.
 
 The Physical-Ontology tier documents the *source* TTLs as they live in the repository; the Physical-Database tier documents the *deployed* form those TTLs take when a downstream consumer loads them into a triplestore, queries them via SPARQL, or fetches them as JSON-LD over HTTP.
 
@@ -31,7 +31,7 @@ Triplestore operators, SPARQL endpoint consumers, downstream ontology integrator
 
 ## Purpose
 
-Show **how the ontology is shaped for consumption**: which named graphs hold which TTLs, what load order produces a coherent graph, how the three derived consumer profiles compose, how HTTP requests to `https://w3id.org/opda/<resource>` resolve to TTL / JSON-LD / RDF/XML representations, how BASPI5 profile composition lands a deployable validation graph.
+Show **how the ontology is shaped for consumption**: which named graphs hold which TTLs, what load order produces a coherent graph, how the three derived consumer profiles compose, how HTTP requests to `https://opda.org.uk/pdtf/<resource>` resolve to TTL / JSON-LD / RDF/XML representations, how BASPI5 profile composition lands a deployable validation graph.
 
 ## File layout
 
@@ -63,7 +63,7 @@ docs/manual/physical-database/
 
 Used in `named-graphs.md`. One section per named graph the deployment exposes.
 
-1. **`### <graph-iri>`** — H3 with the named graph IRI as title (e.g. `### https://w3id.org/opda/0.4.0/`).
+1. **`### <graph-iri>`** — H3 with the named graph IRI as title (e.g. `### https://opda.org.uk/pdtf/harness/release/0.4.0/`).
 2. **`#### Source TTL(s)`** — which repository TTLs this graph aggregates (e.g. `foundation.ttl` + `opda-classes.ttl`).
 3. **`#### Purpose`** — what consumers load this graph for (validation / inference / UI / round-trip).
 4. **`#### Load order`** — list of `owl:imports` resolution: which other named graphs must be loaded first.
@@ -100,10 +100,10 @@ Used in `content-negotiation/format-matrix.md`. Table:
 
 | Resource path | TTL | JSON-LD | RDF/XML | HTML | Notes |
 |---|---|---|---|---|---|
-| `https://w3id.org/opda/` | ✅ | ✅ | ✅ | redirect to docs | Foundation namespace |
-| `https://w3id.org/opda/0.4.0/` | ✅ | ✅ | ✅ | ✅ | Version-IRI; immutable |
-| `https://w3id.org/opda/profiles/baspi5` | ✅ | ✅ | ✅ | docs | Overlay profile |
-| `https://w3id.org/opda/<EntityLocalName>` | ✅ | ✅ | ✅ | Concept-tier page | Per-entity dereference |
+| `https://opda.org.uk/pdtf/` | ✅ | ✅ | ✅ | redirect to docs | Foundation namespace |
+| `https://opda.org.uk/pdtf/harness/release/0.4.0/` | ✅ | ✅ | ✅ | ✅ | Version-IRI; immutable |
+| `https://opda.org.uk/pdtf/shape/profiles/baspi5` | ✅ | ✅ | ✅ | docs | Overlay profile |
+| `https://opda.org.uk/pdtf/<EntityLocalName>` | ✅ | ✅ | ✅ | Concept-tier page | Per-entity dereference |
 
 The JSON-LD `@context` is canonical: one shared context across all JSON-LD responses, documented in `content-negotiation/jsonld-context.md`.
 

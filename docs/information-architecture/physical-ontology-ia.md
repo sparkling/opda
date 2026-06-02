@@ -197,7 +197,7 @@ opda:<LocalName>
     rdfs:label "<Label>"@en ;
     rdfs:comment "<IC + hard cases>"@en ;
     skos:scopeNote "<UFO + DOLCE citation>"@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-NNNN#section-Ya> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-NNNN/section-Ya> ;
     .
 ```
 

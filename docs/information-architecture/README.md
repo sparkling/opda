@@ -19,7 +19,7 @@ OPDA's ontology model is documented as four tiers. Each tier has its own audienc
 |---|---|---|---|
 | **Concept** | Property-industry SMEs (surveyors, conveyancers, lenders, government data leads) | What each business object *means* and *why*; non-technical narrative + diagrams | [`concept-model-ia.md`](./concept-model-ia.md) |
 | **Logical** | Data engineers, solution architects, integrators | Entity-relationship view: typed attributes + cardinalities + relationships, platform-independent | [`logical-model-ia.md`](./logical-model-ia.md) |
-| **Physical — deployment / database** | Triplestore operators, SPARQL consumers, ontology integrators, devops | Named-graph layout, derived consumer profiles, content-negotiation, BASPI5 overlay composition, CI gates — the deployed/served form of the ontology at `w3id.org/opda/` | [`physical-database-ia.md`](./physical-database-ia.md) |
+| **Physical — deployment / database** | Triplestore operators, SPARQL consumers, ontology integrators, devops | Named-graph layout, derived consumer profiles, content-negotiation, BASPI5 overlay composition, CI gates — the deployed/served form of the ontology at `opda.org.uk/pdtf/` | [`physical-database-ia.md`](./physical-database-ia.md) |
 | **Physical — ontology** | Ontology engineers, SHACL implementers, SPARQL consumers, regulators | OWL/SHACL/SKOS Turtle layout: per-module classes, three-graph separation, severity tiers, SHACL-AF rules, overlay profiles | [`physical-ontology-ia.md`](./physical-ontology-ia.md) |
 
 The four tiers are **linked but independent**. A reader of the Concept tier never needs to read Turtle; a reader of the Physical-Ontology tier should be able to trace any class back to the Concept-tier narrative via `dct:source` URIs.
@@ -30,7 +30,7 @@ OPDA's stakeholders span business and engineering audiences with overlapping but
 
 - **Concept tier** answers *"what does an OPDA Property mean, and why does Identity-Criterion (IC) matter?"* — narrative-first, no jargon.
 - **Logical tier** answers *"what attributes does a Property have, and how does it relate to Address, LegalEstate, Transaction?"* — schema-shape without commitment to RDF, JSON-LD, or any particular serialisation.
-- **Physical-DB tier** answers *"which named graph holds `opda:Property`, what derived consumer profiles include it, and how do I fetch it from `w3id.org/opda/Property` via content negotiation?"* — deployment + serving navigation.
+- **Physical-DB tier** answers *"which named graph holds `opda:Property`, what derived consumer profiles include it, and how do I fetch it from `opda.org.uk/pdtf/Property` via content negotiation?"* — deployment + serving navigation.
 - **Physical-Ontology tier** answers *"which Turtle file emits `opda:Property`, what SHACL shapes constrain it, and what `dct:source` URIs trace its definition?"* — RDF / SHACL / SKOS specifics in source-tree form.
 
 Skipping a tier produces predictable friction: SMEs reading Turtle, engineers reading marketing prose, devops guessing at named-graph layout from OWL declarations. The four tiers de-couple those audiences without losing traceability.
