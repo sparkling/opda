@@ -56,7 +56,13 @@
   // next visit requires a fresh Auth0 password login — no silent SSO re-entry.
   // (The Access app's allowed_logout_urls must include ACCESS_LOGOUT.)
   const ACCESS_APP_CLIENT_ID = '0jaHgKDx17TcMmag0uU3UxMElNBsiWDU';
-  const ACCESS_LOGOUT = 'https://graph-w2s-pages.cloudflareaccess.com/cdn-cgi/access/logout';
+  // The Access logout honours ?returnTo=, so after clearing the edge session it
+  // sends the user back to the site (gated → fresh login) instead of stranding
+  // them on Cloudflare's generic logout page. Auth0 accepts this whole URL as
+  // its own returnTo (base is in the app's allowed_logout_urls; query allowed).
+  const ACCESS_LOGOUT =
+    'https://graph-w2s-pages.cloudflareaccess.com/cdn-cgi/access/logout' +
+    '?returnTo=' + encodeURIComponent('https://opda.org.uk/');
   const FULL_LOGOUT =
     `https://${AUTH0_DOMAIN}/v2/logout?client_id=${ACCESS_APP_CLIENT_ID}` +
     `&returnTo=${encodeURIComponent(ACCESS_LOGOUT)}`;
