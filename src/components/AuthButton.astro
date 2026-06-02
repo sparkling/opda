@@ -45,6 +45,25 @@
 <script>
   import { getAuth0Client } from '@/lib/auth0';
 
+  // The site is gated by Cloudflare Access at the edge, so a rendered page
+  // means the visitor is authenticated. We drive this button from the Access
+  // identity (not the comments-only SPA session, which can be signed out
+  // independently and would otherwise show a misleading "Sign in" over gated
+  // content). The SPA path below is the fallback for origins NOT behind Access
+  // (local dev, *.pages.dev).
+  const ACCESS_LOGOUT = 'https://graph-w2s-pages.cloudflareaccess.com/cdn-cgi/access/logout';
+
+  async function accessIdentity() {
+    try {
+      const r = await fetch('/cdn-cgi/access/get-identity', { credentials: 'same-origin' });
+      if (!r.ok) return null;
+      const j = await r.json();
+      return (j && (j.email || j.name)) ? j : null;
+    } catch {
+      return null;
+    }
+  }
+
   async function reconcile() {
     const loginBtn = document.getElementById('auth-login-btn') as HTMLButtonElement | null;
     const userMenu = document.getElementById('auth-user-menu') as HTMLDivElement | null;
@@ -53,6 +72,21 @@
     const userAvatar = document.getElementById('auth-user-avatar');
     if (!loginBtn || !userMenu) return;
 
+    // Primary: Cloudflare Access identity. If present, the visitor is gated-in,
+    // so always show the signed-in menu — never "Sign in".
+    const accessId = await accessIdentity();
+    if (accessId) {
+      const display = accessId.name || accessId.email || 'Account';
+      if (userEmail) userEmail.textContent = display;
+      if (userFull) userFull.textContent = accessId.email || display;
+      if (userAvatar) userAvatar.textContent = display.slice(0, 1).toUpperCase();
+      userMenu.dataset.mode = 'access';
+      loginBtn.hidden = true;
+      userMenu.hidden = false;
+      return;
+    }
+
+    // Fallback: comments-only SPA session (dev / non-Access origins).
     try {
       const auth = await getAuth0Client();
       const isAuthenticated = await auth.isAuthenticated();
@@ -100,11 +134,19 @@
     if (logoutBtn && !logoutBtn.dataset.bound) {
       logoutBtn.dataset.bound = '1';
       logoutBtn.addEventListener('click', async () => {
-        // Clear the cached Artalk SSO JWT so the Comments widget on
-        // the next load can't reuse it. Auth0's own logout clears
-        // its session, but the Artalk token in localStorage outlives
-        // Auth0 (~3 days) and would keep showing the widget.
+        // Clear the cached Artalk SSO JWT so the Comments widget can't reuse it.
         try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
+        if (document.getElementById('auth-user-menu')?.dataset.mode === 'access') {
+          // Behind Cloudflare Access: clear the SPA session locally (no redirect
+          // of its own), then do the single authoritative redirect to the Access
+          // logout endpoint — this clears the EDGE session so the gate blocks
+          // again. Without this, "Log out" left the Access cookie valid and the
+          // page stayed viewable.
+          try { const auth = await getAuth0Client(); await auth.logout({ openUrl: false }); } catch { /* ignore */ }
+          window.location.href = ACCESS_LOGOUT;
+          return;
+        }
+        // Fallback (dev / non-Access origin): plain Auth0 SPA logout.
         const auth = await getAuth0Client();
         await auth.logout({
           logoutParams: { returnTo: window.location.origin },
