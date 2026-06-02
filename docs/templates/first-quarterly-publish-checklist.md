@@ -34,7 +34,7 @@ Roughly the 29th–30th of the quarter-end month.
 - [ ] Diff between dry-run JSON and last quarter's `current.json` reviewed — large unexpected deltas (e.g. a firm dropping multiple capability scores) flagged for sanity check before publish.
 - [ ] `pnpm run build` succeeds against the dry-run JSON (no Astro page errors, no broken links).
 - [ ] Local render of `/governance/accreditation-directory` shows the expected firms with the expected AL coverage badges and per-section averages.
-- [ ] `scripts/smoke-test.mjs` (Playwright) passes on the staging deploy. ***WG decision required:*** does this script exist yet? [ADR-0005](../adr/ADR-0005-deferred-work-register.md) E1 leaves it as TBD pending Henrik's next session — if not built, this line stays as a manual checklist instead.
+- [ ] `scripts/smoke-test.mjs` (Playwright) passes. The script exists; for the first publish there is no dedicated staging URL, so it runs against the local preview (see Decisions §1).
 - [ ] Spot-check **3 random firms** by hand: pull each firm's submitted VC from `source/04-governance-bodies/accreditation/credentials/`, eyeball the cards on the staging Directory, confirm scores match exactly. Discrepancy = blocker.
 - [ ] Stale-flag logic verified (per ADR-0004 §4): firms whose data is >9 months old are showing the "stale" badge; firms within the freshness window are not.
 
@@ -51,7 +51,7 @@ The 1st of the month following quarter end.
 
 ## Comms (publish day + 1)
 
-The 2nd of the month following quarter end. ***WG decision required:*** are member firms notified privately before the public announcement on the same day, or staggered? Recommend same-day to avoid leak risk.
+The 2nd of the month following quarter end. **Decided:** member firms and the public are notified **same-day** (avoids leak risk) — the private member notice goes out first thing, the public announcement later the same day.
 
 - [ ] Member firms — private notice that the Directory has been refreshed; specifically flag any firm whose score changed materially since last quarter so they are not surprised by external questions.
 - [ ] Engagement WG announces publicly via the usual channels (OPDA mailing list, openpropdata.org.uk update, member-only Slack if used).
@@ -60,7 +60,7 @@ The 2nd of the month following quarter end. ***WG decision required:*** are memb
 
 ## Sign-off matrix
 
-***WG decision required:*** confirm role-by-role who signs. Proposed defaults below.
+**Decided:** the four roles below sign off (defaults adopted); names are filled per cycle.
 
 | Role | Name | Signature / date |
 |---|---|---|
@@ -84,7 +84,7 @@ The Lessons learned from publish *n* feed the Pre-flight tweaks for publish *n+1
 
 ## Open questions
 
-1. **Staging environment.** Does OPDA have a true staging URL for T-2 smoke tests, or is staging-equivalent done locally? ***WG decision required:*** if no staging, the Playwright smoke test runs against local preview and the "verify the live URL" step at publish day is the first end-to-end check on real infrastructure — acceptable but riskier.
+1. **Staging environment — Decided.** OPDA has no dedicated staging URL for the first publish; the Playwright smoke test runs against the local preview, and the publish-day "verify the live URL" step is the first end-to-end check on real infrastructure. Accepted as the first-publish posture (revisit if a staging URL is stood up).
 2. **Material-change threshold for regulator cc.** What counts as material is currently judgement-call. After 2–3 publishes there will be enough precedent to write a rule.
 3. **Cutoff enforcement.** ADR-0004 §4 says submissions are due by the 15th. If a firm submits on the 16th, do they make this quarter (and shift Pre-flight forward) or roll to next quarter? Recommend: hard cutoff for the first publish, soften only if firms surface real-world reasons.
 4. **Sign-off recording.** Where exactly does the signed checklist live? Options: append to ADR-0005 lifecycle log; new `source/04-governance-bodies/accreditation/publish-log/` directory; EC decision-log row pointing at a stored PDF.

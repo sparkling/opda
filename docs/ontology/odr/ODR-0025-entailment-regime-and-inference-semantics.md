@@ -98,7 +98,7 @@ opda's declared closure is **narrower** than the `inference="rdfs"` setting the 
 - opda's RDF toolchain standardises on Apache Jena — `riot` for parse/serialise, `jena-shacl` for validation (ADR-0036); `rdflib`/pyshacl are **retired** from the parse/validate path (not retained as a crutch), with the cut-over gated on demonstrated parity against the ODR-0010 capability floor.
 - Statement-level annotation may use RDF 1.2 triple-term syntax going forward; the BASPI5 round-trip harness (ADR-0014) and any `rdflib` use in `opda-gen` migrate to Jena. opda does not downgrade the data model to remain `rdflib`-parseable — the anti-pattern documented for the sibling in `docs/hm-handoff-rdf-1.2-triple-term-jena-fix.md`.
 - A new rule-contract artefact `config/opda-owl-rl-safe.rules` becomes a governed file.
-- **ODR-0004 §3a requires amendment** to reflect R6 (the `opda-inference.ttl` re-scope) — pending ratification; until then this ODR stays `proposed`.
+- **ODR-0004 §3a requires amendment** to reflect R6 (the `opda-inference.ttl` re-scope) — a directing-authority edit (greenfield: no WG ratification gate), not a blocker on this ODR.
 - The BASPI5 round-trip (ADR-0014) must validate against the R1 closure rather than ad-hoc full RDFS (R7); the EPCCertificate emitter mismatch should be fixed at source.
 - ODR-0008 §Q6a's "reasoner-independence test" baseline (written for entailment-off endpoints) must be re-read against a defined closure: hierarchy-admission queries now have a declared entailment to test against.
 - Consuming SPARQL must expect symmetric/inverse/transitive duplicates from the closure and use `DISTINCT` / `FILTER NOT EXISTS` where appropriate.

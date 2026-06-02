@@ -25,7 +25,7 @@ The review's job is **not** to do the Wave 3 work — it's to *decide whether th
 
 ## Pre-meeting prep (Engagement WG)
 
-Engagement WG owns the prep packet. ***WG decision required:*** confirm Engagement WG (vs. C&R WG or Tech WG) is the right owner — the items span all three.
+**Decided:** Engagement WG owns the prep packet (the items span C&R and Tech too, but Engagement coordinates and pulls their inputs).
 
 Seven days before the meeting:
 
@@ -84,9 +84,9 @@ An item that **continues** for 12 months without progress gets the "still releva
 
 ## Open questions for first run
 
-1. **Prep owner.** Default proposal: Engagement WG drafts the one-pagers. Alternative: rotate among C&R / Tech / Engagement so the WG closest to a given item summarises it. ***WG decision required.***
-2. **Decision feedback into ADR-0005.** When the EC decides "promote D2", who updates [ADR-0005](../adr/ADR-0005-deferred-work-register.md) to reflect the new ADR owner — the EC secretary, the Engagement WG prep owner, or whoever drafts the promoting ADR? Propose: EC secretary as part of the decision-log entry. ***WG decision required.***
-3. **Threshold for adding new Wave 3 items mid-year.** Can a WG add a Wave 3 item between annual reviews, or only at the review? Permissive (anyone with edit rights) is the lowest-friction; strict (review-only) gives the EC a single read each year. Recommend permissive with the trade-off that the annual review may surface items the EC hasn't previously seen.
+1. **Prep owner — Decided.** Engagement WG drafts the one-pagers (not rotated — single owner keeps the packet coherent).
+2. **Decision feedback into ADR-0005 — Decided.** The EC secretary updates [ADR-0005](../adr/ADR-0005-deferred-work-register.md) to reflect a new ADR owner, as part of the decision-log entry.
+3. **Threshold for adding new Wave 3 items mid-year — Decided.** Permissive: a WG can add a Wave 3 item between annual reviews; the annual review may surface items the EC hasn't previously seen (accepted trade-off for lowest friction).
 
 ## References
 
