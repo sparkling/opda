@@ -1,5 +1,5 @@
 {
-  "uri": "https://w3id.org/opda/#Property",
+  "uri": "https://opda.org.uk/pdtf/Property",
   "localName": "Property",
   "label": "Property",
   "module": "property",

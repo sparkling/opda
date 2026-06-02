@@ -18,7 +18,7 @@
 #
 # opda materialises these via SPARQL INSERT at Jena load time
 # (scripts/fuseki-load.mjs::materializeEntailments) into the derived graph
-# <https://w3id.org/opda/graph/inferred/entailment>; this file is the canonical
+# <https://opda.org.uk/pdtf/graph/inferred/entailment>; this file is the canonical
 # contract of WHICH rules are safe (ADR-0035 Option A). It also drives the
 # documented fallback (ADR-0035 Option B) — a live Jena assembler:
 #   ja:reasoner [ ja:reasonerURL <urn:x-hp-direct-predicate> ;
