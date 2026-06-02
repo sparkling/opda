@@ -98,18 +98,18 @@ async function clearDataset() {
 
 /**
  * Derive a named-graph IRI from a TTL filename.
- * opda-agent.ttl → https://w3id.org/opda/graph/agent
- * foundation.ttl → https://w3id.org/opda/graph/foundation
- * opda-classes.ttl → https://w3id.org/opda/graph/foundation
+ * opda-agent.ttl → https://opda.org.uk/pdtf/graph/agent
+ * foundation.ttl → https://opda.org.uk/pdtf/graph/foundation
+ * opda-classes.ttl → https://opda.org.uk/pdtf/graph/foundation
  *   (classes are the foundation cross-module classes; normalise to 'foundation'
  *    so entity module routes match docs/manual/{tier}/foundation/*)
  */
 function graphIriFromFilename(fileName) {
   if (fileName === 'opda-classes.ttl') {
-    return 'https://w3id.org/opda/graph/foundation';
+    return 'https://opda.org.uk/pdtf/graph/foundation';
   }
   const base = fileName.replace('.ttl', '').replace(/^opda-/, '');
-  return `https://w3id.org/opda/graph/${base}`;
+  return `https://opda.org.uk/pdtf/graph/${base}`;
 }
 
 /** Upload a single TTL file via GSP POST to a named graph (module identity). */
@@ -136,7 +136,7 @@ async function uploadTtl(filePath) {
 // ── Load-time inference (ADR-0035; ODR-0025/0026 OWL-RL-safe closure) ────────
 
 const ENDPOINT_UPDATE = `${FUSEKI_URL}/${DATASET}/update`;
-const ENTAILMENT_GRAPH = 'https://w3id.org/opda/graph/inferred/entailment';
+const ENTAILMENT_GRAPH = 'https://opda.org.uk/pdtf/graph/inferred/entailment';
 // Jena's built-in union-of-all-named-graphs pseudo-graph: lets the rule
 // WHERE-clauses read across every module graph (and the inferred graph itself,
 // for the FILTER NOT EXISTS idempotency check) without reconfiguring the
