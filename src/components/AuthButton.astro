@@ -43,7 +43,7 @@
 </div>
 
 <script>
-  import { getAuth0Client } from '@/lib/auth0';
+  import { getAuth0Client, AUTH0_DOMAIN } from '@/lib/auth0';
 
   // The site is gated by Cloudflare Access at the edge, so a rendered page
   // means the visitor is authenticated. We drive this button from the Access
@@ -51,7 +51,15 @@
   // independently and would otherwise show a misleading "Sign in" over gated
   // content). The SPA path below is the fallback for origins NOT behind Access
   // (local dev, *.pages.dev).
+  // Full sign-out chain: Auth0 /v2/logout ends the tenant SSO session, then
+  // returnTo → Cloudflare Access logout ends the edge session. Net result: the
+  // next visit requires a fresh Auth0 password login — no silent SSO re-entry.
+  // (The Access app's allowed_logout_urls must include ACCESS_LOGOUT.)
+  const ACCESS_APP_CLIENT_ID = '0jaHgKDx17TcMmag0uU3UxMElNBsiWDU';
   const ACCESS_LOGOUT = 'https://graph-w2s-pages.cloudflareaccess.com/cdn-cgi/access/logout';
+  const FULL_LOGOUT =
+    `https://${AUTH0_DOMAIN}/v2/logout?client_id=${ACCESS_APP_CLIENT_ID}` +
+    `&returnTo=${encodeURIComponent(ACCESS_LOGOUT)}`;
 
   async function accessIdentity() {
     try {
@@ -138,12 +146,10 @@
         try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
         if (document.getElementById('auth-user-menu')?.dataset.mode === 'access') {
           // Behind Cloudflare Access: clear the SPA session locally (no redirect
-          // of its own), then do the single authoritative redirect to the Access
-          // logout endpoint — this clears the EDGE session so the gate blocks
-          // again. Without this, "Log out" left the Access cookie valid and the
-          // page stayed viewable.
+          // of its own), then redirect through the full sign-out chain (Auth0
+          // SSO logout → Access edge logout). Re-entry then needs a fresh login.
           try { const auth = await getAuth0Client(); await auth.logout({ openUrl: false }); } catch { /* ignore */ }
-          window.location.href = ACCESS_LOGOUT;
+          window.location.href = FULL_LOGOUT;
           return;
         }
         // Fallback (dev / non-Access origin): plain Auth0 SPA logout.
