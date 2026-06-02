@@ -12,6 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # The profile/descriptive emitters read upstream overlay JSON schemas at
+      # source/03-standards/schemas/src/schemas/v3/overlays/*.json (profiles.py
+      # walks them at import). That tree is an external PDTF repo, gitignored
+      # locally (not a git submodule), so checkout does not provide it — clone
+      # it explicitly, pinned to the commit the ontology was traced against
+      # (matches .github/workflows/baspi5-round-trip.yml).
+      - name: Fetch PDTF schemas (external traceability dependency)
+        run: |
+          git clone --quiet https://github.com/Property-Data-Trust-Framework/schemas.git source/03-standards/schemas
+          git -C source/03-standards/schemas checkout --quiet 996a56adc297e762bbee935a9ae2883df791e1d4
+
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
