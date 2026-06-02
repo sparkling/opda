@@ -1,14 +1,27 @@
 ---
 status: accepted
 date: 2026-05-27
-amended: 2026-06-01
-tags: [ontology, namespace, infrastructure, w3c, picg, deployment, pdtf, slash, harness]
+amended: 2026-06-02
+tags: [ontology, namespace, infrastructure, w3c, picg, deployment, pdtf, slash, harness, opda-org-uk]
 supersedes: []
 depends-on: [ODR-0004]
 implements: []
 ---
 
 # Ontology namespace at w3id.org/opda/ via W3C PICG redirect
+
+> ## ⚠ Amendment (2026-06-02) — base domain → `https://opda.org.uk/` (supersedes the w3id/PICG choice)
+>
+> On directing-authority instruction the base moves from the W3C-PICG path `https://w3id.org/opda/` to **opda's own domain `https://opda.org.uk/`**. This **reverses this ADR's core decision** (and S004's choice of w3id over an institutional domain for PICG persistence — the old Option A/C). Admissible on the same greenfield/pre-publication grounds as the 2026-06-01 amendment; the directing authority owns the persistence-vs-control trade for this build.
+>
+> **Mechanical effect:** everywhere below (body + the 2026-06-01 amendment) read `https://w3id.org/opda/` as **`https://opda.org.uk/`** — the `opda` org path-segment is absorbed into the domain. The org/standard split is preserved as **domain = organisation, path = standard**:
+> - standard entities → **`https://opda.org.uk/pdtf/`** (prefix `@prefix opda: <https://opda.org.uk/pdtf/> .`)
+> - physical resources + governance → **`https://opda.org.uk/harness/`**
+> - future second standard → `https://opda.org.uk/<other>/`
+>
+> **Infrastructure:** the W3C PICG redirect (the original subject of this ADR) is **no longer needed** — opda controls `opda.org.uk` DNS + hosting directly and serves RDF from it. **Bearing on session-037 Q2:** opda-controlled hosting means per-term resolution / content-negotiation is fully in opda's hands (the w3id flat-302 limitation that was the last objection to slash is gone) — the council's slash verdict is reinforced; the hash recommendation's resolution premise no longer applies.
+>
+> *(The redirect-target persistence trade — losing the PICG guarantee that survives org changes — is the cost; opda accepts it. Re-open trigger: if opda's organisational continuity becomes a concern, reconsider a PICG redirect layer in front of `opda.org.uk`.)*
 
 > ## ⚠ Amendment (2026-06-01) — `opda/pdtf` slash-based scheme
 >
