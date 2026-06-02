@@ -10,6 +10,26 @@ implements: []
 
 # Ontology namespace at w3id.org/opda/ via W3C PICG redirect
 
+> ## ✅ CURRENT SCHEME (definitive — 2026-06-02)
+>
+> This block is authoritative; it supersedes every amendment, council placement, and the body below wherever they differ. Base **`https://opda.org.uk/`**; the PDTF standard family lives under **`/pdtf/`** with role/kind sub-segments. **Slash, no hash, no version-in-IRI** (version via `owl:versionInfo` + `owl:versionIRI` → release snapshot). `@prefix opda: <https://opda.org.uk/pdtf/> .`
+>
+> | Resource | IRI |
+> |---|---|
+> | Ontology IRI | `https://opda.org.uk/pdtf/` (+ `owl:versionInfo "1.0.0"`) |
+> | Class / property | `…/pdtf/Property`, `…/pdtf/evidenceType` |
+> | SKOS scheme / concept | `…/pdtf/role` · `…/pdtf/role/Buyer` |
+> | SHACL shape node | `…/pdtf/shape/EvidenceFacetShape`, `…/pdtf/shape/Baspi5_PropertyShape` |
+> | Profile (form overlay) | `…/pdtf/shape/profiles/baspi5` |
+> | Named graph | `…/pdtf/graph/foundation`, `…/pdtf/graph/inferred/entailment` |
+> | data-dictionary entry | `…/pdtf/harness/data-dictionary/propertyPack.environmentalIssues.flooding` |
+> | ODR anchor | `…/pdtf/harness/odr/ODR-0011/section-5a` |
+> | ADR link | `…/pdtf/harness/adr/ADR-0007-ontology-generator-specification` |
+> | instance / test data | `…/pdtf/harness/data/…`, `…/pdtf/harness/data/exemplar/<stem>` |
+> | release snapshot | `…/pdtf/harness/release/1.0.0/` |
+>
+> **Directing-authority overrides of the council (greenfield):** everything nests under the `/pdtf/` family root; SHACL shapes get a **`/pdtf/shape/`** segment (overrides Q7's no-`/shacl/` — milder: under pdtf authority, an organisational sub-namespace not a separate standard); named graphs get **`/pdtf/graph/`**; **`/pdtf/harness/`** nests (was a sibling). **Profiles → `/pdtf/shape/profiles/` — treated as normative standard SHACL (resolves Q8 toward normative).** **Retained from the council:** slash, flat term namespace (no domain-module segments), no version segment, the standard-vs-physical distinction (now core+`shape`+`graph` vs `harness`), Baker's placement procedure, one-directional dependency (nothing in core `/pdtf/` depends on `/pdtf/harness/`).
+
 > ## ⚠ Amendment (2026-06-02) — base domain → `https://opda.org.uk/` (supersedes the w3id/PICG choice)
 >
 > On directing-authority instruction the base moves from the W3C-PICG path `https://w3id.org/opda/` to **opda's own domain `https://opda.org.uk/`**. This **reverses this ADR's core decision** (and S004's choice of w3id over an institutional domain for PICG persistence — the old Option A/C). Admissible on the same greenfield/pre-publication grounds as the 2026-06-01 amendment; the directing authority owns the persistence-vs-control trade for this build.
