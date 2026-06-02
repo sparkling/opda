@@ -18,7 +18,7 @@ implements: []
 > |---|---|
 > | Ontology IRI | `https://opda.org.uk/pdtf/` (+ `owl:versionInfo "1.0.0"`) |
 > | Class / property | `…/pdtf/Property`, `…/pdtf/evidenceType` |
-> | SKOS scheme / concept | `…/pdtf/role` · `…/pdtf/role/Buyer` |
+> | SKOS scheme / concept | `…/pdtf/scheme/role` · `…/pdtf/scheme/role/Buyer` |
 > | SHACL shape node | `…/pdtf/shape/EvidenceFacetShape`, `…/pdtf/shape/Baspi5_PropertyShape` |
 > | Profile (form overlay) | `…/pdtf/shape/profiles/baspi5` |
 > | Named graph | `…/pdtf/graph/foundation`, `…/pdtf/graph/inferred/entailment` |
@@ -28,7 +28,9 @@ implements: []
 > | instance / test data | `…/pdtf/harness/data/…`, `…/pdtf/harness/data/exemplar/<stem>` |
 > | release snapshot | `…/pdtf/harness/release/1.0.0/` |
 >
-> **Directing-authority overrides of the council (greenfield):** everything nests under the `/pdtf/` family root; SHACL shapes get a **`/pdtf/shape/`** segment (overrides Q7's no-`/shacl/` — milder: under pdtf authority, an organisational sub-namespace not a separate standard); named graphs get **`/pdtf/graph/`**; **`/pdtf/harness/`** nests (was a sibling). **Profiles → `/pdtf/shape/profiles/` — treated as normative standard SHACL (resolves Q8 toward normative).** **Retained from the council:** slash, flat term namespace (no domain-module segments), no version segment, the standard-vs-physical distinction (now core+`shape`+`graph` vs `harness`), Baker's placement procedure, one-directional dependency (nothing in core `/pdtf/` depends on `/pdtf/harness/`).
+> **Directing-authority overrides of the council (greenfield):** everything nests under the `/pdtf/` family root; SHACL shapes get a **`/pdtf/shape/`** segment (overrides Q7's no-`/shacl/` — milder: under pdtf authority, an organisational sub-namespace not a separate standard); named graphs get **`/pdtf/graph/`**; SKOS schemes + concepts get a **`/pdtf/scheme/`** segment (ruling 2026-06-02 — disambiguates the scheme namespace from the flat term namespace, so a property `opda:role` at `…/pdtf/role` cannot collide with the `role` scheme at `…/pdtf/scheme/role`; applies to all schemes, not just colliding ones); **`/pdtf/harness/`** nests (was a sibling). **Profiles → `/pdtf/shape/profiles/` — treated as normative standard SHACL (resolves Q8 toward normative).** **Retained from the council:** slash, flat term namespace (no domain-module segments), no version segment, the standard-vs-physical distinction (now core+`scheme`+`shape`+`graph` vs `harness`), Baker's placement procedure, one-directional dependency (nothing in core `/pdtf/` depends on `/pdtf/harness/`).
+>
+> **As-built (2026-06-02):** the migration is **implemented and green** — `opda_gen.namespaces` is the single source of truth (`OPDA`, `OPDA_SCHEME`, `OPDA_SHAPE`, `OPDA_GRAPH`, `OPDA_HARNESS` + `odr_ref`/`adr_ref`/`dd_entry`/`release_iri` helpers + a flatten-collision guard). Per-module ontology IRIs collapsed to `…/pdtf/graph/<module>` importing the one ontology `…/pdtf/`; per-module/per-profile `owl:versionIRI` → `…/pdtf/harness/release/…`. `dct:source` → harness ODR/ADR/dd retained as provenance comments (not core→harness dependencies; the one definitional `rdfs:isDefinedBy`→ODR on `opda:consumesFrom` repointed to the core ontology). `owl:Class`-typed `*Scheme` (e.g. `SpecialCategoryScheme`, `BoundedContextScheme`) stay in the term namespace; only `skos:ConceptScheme` instances move to `/pdtf/scheme/`. Verified: 345 pytest + 8 CI gates (incl. byte-identity) + 27 repo-root round-trip. See `docs/PLAN-2026-06-02-namespace-migration.md`.
 
 > ## ⚠ Amendment (2026-06-02) — base domain → `https://opda.org.uk/` (supersedes the w3id/PICG choice)
 >
