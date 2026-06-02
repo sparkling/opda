@@ -26,7 +26,7 @@ opda:TenureKindScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Tenure Kind"@en ;
     skos:definition "Substance Kind labels for tenure (Freehold, Leasehold, Commonhold). Each member binds to its corresponding OWL sub-class via `skos:exactMatch` per ODR-0011 §8a Substance Kind label cross-scheme consistency check (NEVER `owl:sameAs`)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "UFO Substance Kind label for tenure"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members bind to OWL sub-classes via `skos:exactMatch`; OPDA pattern per ODR-0005 Anti-pattern §5."@en ;
     opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en ;
@@ -44,27 +44,27 @@ opda:TenureKindScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#tenureKind/Commonhold>
+<https://opda.org.uk/pdtf/scheme/tenureKind/Commonhold>
     rdf:type skos:Concept ;
     skos:prefLabel "Commonhold"@en ;
     skos:definition "Substance Kind: commonhold tenure."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.marketingTenure.Commonhold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.marketingTenure.Commonhold> ;
     skos:inScheme opda:TenureKindScheme ;
     skos:notation "Commonhold" .
 
-<https://w3id.org/opda/#tenureKind/Freehold>
+<https://opda.org.uk/pdtf/scheme/tenureKind/Freehold>
     rdf:type skos:Concept ;
     skos:prefLabel "Freehold"@en ;
     skos:definition "Substance Kind: freehold tenure."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.marketingTenure.Freehold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.marketingTenure.Freehold> ;
     skos:inScheme opda:TenureKindScheme ;
     skos:notation "Freehold" .
 
-<https://w3id.org/opda/#tenureKind/Leasehold>
+<https://opda.org.uk/pdtf/scheme/tenureKind/Leasehold>
     rdf:type skos:Concept ;
     skos:prefLabel "Leasehold"@en ;
     skos:definition "Substance Kind: leasehold tenure."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.marketingTenure.Leasehold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.marketingTenure.Leasehold> ;
     skos:inScheme opda:TenureKindScheme ;
     skos:notation "Leasehold" .
 ```
@@ -89,7 +89,7 @@ flowchart LR
     accTitle: opda:TenureKindScheme membership graph
     accDescr: 3 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

@@ -21,10 +21,10 @@ title: Governance shapes
 ## Header
 
 ```turtle
-<https://w3id.org/opda/governance-shapes/>
+<https://opda.org.uk/pdtf/graph/governance-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Governance Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:DPVMappingRecordIdentityKeyShape
@@ -32,7 +32,7 @@ title: Governance shapes
 ```turtle
 opda:DPVMappingRecordIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Phase-1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1> ;
     sh:property _:bf33f0b16c30f ;
     sh:targetClass opda:DPVMappingRecord .
 

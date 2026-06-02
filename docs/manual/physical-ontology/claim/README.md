@@ -19,17 +19,17 @@ The Claim module emits 11 OWL classes covering verifiable claims (`Claim`), evid
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/claim/>
+<https://opda.org.uk/pdtf/graph/claim>
     rdf:type owl:Ontology ;
     dct:title "OPDA Claim Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/claim/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/claim/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation
-- `<https://w3id.org/opda/vocabularies/>` — SKOS schemes (AssuranceLevel, EvidenceMethod)
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation
+- `<https://opda.org.uk/pdtf/scheme/>` — SKOS schemes (AssuranceLevel, EvidenceMethod)
 
 External vocabularies referenced (not imported):
 - `prov:Entity`, `prov:Activity`, `prov:Agent` — PROV-O alignment (S009 Rule 1 — 80%-PROV-O mapping)
@@ -136,7 +136,7 @@ flowchart LR
     accTitle: Claim shapes and their target classes
     accDescr: Five SHACL shapes targeting Claim, Evidence, and VerificationActivity. Identity-key shapes are Cat 1; the UnprovenancedClaimShape is Cat 2; two SHACL-AF rules emit derived predicates at Info severity.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -179,7 +179,7 @@ flowchart LR
     accTitle: Claim module — DPV personal-data co-annotations
     accDescr: Claim carries dpv-pd:OfficialID baseline. Three evidence-variant refinements scope lawful basis: DocumentEvidence to PublicTask, ElectronicRecordEvidence to LegitimateInterest, VouchEvidence to Consent.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
     %% @prefix dpv: <https://w3id.org/dpv#>
 

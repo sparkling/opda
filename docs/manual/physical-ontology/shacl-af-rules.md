@@ -35,7 +35,7 @@ flowchart LR
     accTitle: SHACL-AF rule citation graph — 11 rules and the ODRs that cite each as the rule source
     accDescr: Each SHACL-AF rule materialises a derived predicate; this graph shows the rule, the ODR that names it as a citing site, the module it lives in, and the derived predicate it constructs.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef rule fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
@@ -135,14 +135,14 @@ Per ODR-0017 §1a, 11 ODRs cite the SHACL-AF pattern as their non-blocking-quali
 opda:UPRNSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "UPRN succession rule (ODR-0005 §6a; SHACL-AF citing site #1). Materialises opda:hasUPRNSuccessionStatus on every Property with a UPRN: 'succession-tracked' when prov:wasDerivedFrom names a predecessor with a different UPRN; 'primary-uprn' otherwise. Per ODR-0017 §1a non-blocking-quality-rule pattern."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-6a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
     sh:rule _:b16e82da2b31c ;
     sh:severity sh:Info ;
     sh:targetClass opda:Property .
 
 _:b16e82da2b31c
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?property opda:hasUPRNSuccessionStatus ?status .\n}\nWHERE {\n  ?property a opda:Property ;\n            opda:hasUPRN ?currentUPRN .\n  OPTIONAL { ?property prov:wasDerivedFrom ?predecessor .\n             ?predecessor opda:hasUPRN ?priorUPRN .\n             FILTER (?currentUPRN != ?priorUPRN) }\n  BIND (IF(BOUND(?priorUPRN), \"succession-tracked\", \"primary-uprn\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?property opda:hasUPRNSuccessionStatus ?status .\n}\nWHERE {\n  ?property a opda:Property ;\n            opda:hasUPRN ?currentUPRN .\n  OPTIONAL { ?property prov:wasDerivedFrom ?predecessor .\n             ?predecessor opda:hasUPRN ?priorUPRN .\n             FILTER (?currentUPRN != ?priorUPRN) }\n  BIND (IF(BOUND(?priorUPRN), \"succession-tracked\", \"primary-uprn\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -169,14 +169,14 @@ _:b16e82da2b31c
 opda:DeprecationChainRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Meta-rule per ODR-0011 §5a: materialises the deprecation chain for any SKOS Concept marked owl:deprecated true. Severity sh:Info when dct:isReplacedBy is present; the Three-tier severity decision table in ODR-0017 §2a notes that deprecation-without-successor escalates to sh:Warning (handled by the materialised opda:hasDeprecationStatus value rather than a separate shape)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-5a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-5a> ;
     sh:rule _:be6b6213de607 ;
     sh:severity sh:Info ;
     sh:targetClass skos:Concept .
 
 _:be6b6213de607
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dct: <http://purl.org/dc/terms/>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nCONSTRUCT {\n  ?concept opda:hasDeprecationStatus ?status .\n  ?concept opda:hasSuccessor ?successor .\n}\nWHERE {\n  ?concept a skos:Concept ;\n           owl:deprecated true .\n  OPTIONAL { ?concept dct:isReplacedBy ?successor }\n  BIND (IF(BOUND(?successor), \"with-succession\", \"without-succession\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX dct: <http://purl.org/dc/terms/>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nCONSTRUCT {\n  ?concept opda:hasDeprecationStatus ?status .\n  ?concept opda:hasSuccessor ?successor .\n}\nWHERE {\n  ?concept a skos:Concept ;\n           owl:deprecated true .\n  OPTIONAL { ?concept dct:isReplacedBy ?successor }\n  BIND (IF(BOUND(?successor), \"with-succession\", \"without-succession\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -202,14 +202,14 @@ _:be6b6213de607
 opda:INSPIRESuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "INSPIRE Identifier / OS AddressBase succession rule (ODR-0015 §4a; SHACL-AF citing site #3). Materialises opda:hasINSPIRESuccessionStatus on inspire-variant Address instances. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a> ;
     sh:rule _:becbeff0baa17 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Address .
 
 _:becbeff0baa17
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?address opda:hasINSPIRESuccessionStatus ?status .\n}\nWHERE {\n  ?address a opda:Address ;\n           opda:addressVariant \"inspire\" .\n  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n             ?prior opda:addressVariant \"inspire\" }\n  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?address opda:hasINSPIRESuccessionStatus ?status .\n}\nWHERE {\n  ?address a opda:Address ;\n           opda:addressVariant \"inspire\" .\n  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n             ?prior opda:addressVariant \"inspire\" }\n  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -235,14 +235,14 @@ _:becbeff0baa17
 opda:PROVOClaimsRule
     rdf:type sh:NodeShape ;
     rdfs:comment "PROV-O Claims/Evidence rule (ODR-0009 §Q7; SHACL-AF citing site #4). Materialises opda:hasProvenanceChainStatus to surface Claims with absent or partial PROV-O chains. Per ODR-0017 §1a; complements the UnprovenancedClaimShape (which is a Violation-tier shape; this is informative)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q7> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7> ;
     sh:rule _:bb11b45f9d7c0 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Claim .
 
 _:bb11b45f9d7c0
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -268,14 +268,14 @@ _:bb11b45f9d7c0
 opda:IdentifierSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Person identifier-succession rule (ODR-0006 §Q1; SHACL-AF citing site #5). Materialises opda:hasIdentifierSuccessionEvent for downstream audit when a NameChangeEvent (or subclass: passport-renewal, NI-renumbering) names the Person via prov:wasAssociatedWith. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
     sh:rule _:b04ddc2ae8a10 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Person .
 
 _:b04ddc2ae8a10
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?person opda:hasIdentifierSuccessionEvent ?event .\n}\nWHERE {\n  ?person a opda:Person .\n  ?event a opda:NameChangeEvent ;\n         prov:wasAssociatedWith ?person .\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?person opda:hasIdentifierSuccessionEvent ?event .\n}\nWHERE {\n  ?person a opda:Person .\n  ?event a opda:NameChangeEvent ;\n         prov:wasAssociatedWith ?person .\n}" .
 ```
 
 #### Derives
@@ -301,14 +301,14 @@ _:b04ddc2ae8a10
 opda:CapacityAuthorityMatchRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Capacity-authority match rule (ODR-0006 §Q4; SHACL-AF citing site #6). Materialises opda:hasCapacityAuthorityMatchStatus to surface Persons declaring a capacity (e.g. 'Director', 'Trustee') without an evidenced authority triple. Status value 'unevidenced-capacity' is a hook for downstream-tooling escalation per ODR-0017 §2a without-substantive-succession discipline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4> ;
     sh:rule _:bcd856a2c693b ;
     sh:severity sh:Info ;
     sh:targetClass opda:Person .
 
 _:bcd856a2c693b
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -334,14 +334,14 @@ _:bcd856a2c693b
 opda:LeaseTermSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "LeaseTerm succession rule (ODR-0007 §Q5; SHACL-AF citing site #7). Materialises opda:hasLeaseTermSuccessionStatus: extended-from-predecessor when the term carries prov:wasDerivedFrom to another LeaseTerm; primary-term otherwise. Per ODR-0017 §1a + LeaseExtensionEvent (ODR-0005 §3b)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q5> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5> ;
     sh:rule _:b6dbc2616d1c0 ;
     sh:severity sh:Info ;
     sh:targetClass opda:LeaseTerm .
 
 _:b6dbc2616d1c0
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX time: <http://www.w3.org/2006/time#>\nCONSTRUCT {\n  ?term opda:hasLeaseTermSuccessionStatus ?status .\n}\nWHERE {\n  ?term a opda:LeaseTerm .\n  OPTIONAL { ?term prov:wasDerivedFrom ?prior .\n             ?prior a opda:LeaseTerm }\n  BIND (IF(BOUND(?prior), \"extended-from-predecessor\", \"primary-term\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX time: <http://www.w3.org/2006/time#>\nCONSTRUCT {\n  ?term opda:hasLeaseTermSuccessionStatus ?status .\n}\nWHERE {\n  ?term a opda:LeaseTerm .\n  OPTIONAL { ?term prov:wasDerivedFrom ?prior .\n             ?prior a opda:LeaseTerm }\n  BIND (IF(BOUND(?prior), \"extended-from-predecessor\", \"primary-term\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -367,14 +367,14 @@ _:b6dbc2616d1c0
 opda:MilestoneVarianceRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Milestone variance rule (ODR-0007 §Q6; SHACL-AF citing site #8). Dynamic severity per ODR-0007 §Q6: less-than-14-day slip surfaces as 'info-flagged'; otherwise 'warning-flagged'. The materialised opda:hasVarianceStatus value is the consumer's escalation hook; the shape itself stays sh:Info per ODR-0017 §1a (the rule is informative; consumer tooling interprets the variance category)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6> ;
     sh:rule _:b55cf070b367d ;
     sh:severity sh:Info ;
     sh:targetClass opda:Milestone .
 
 _:b55cf070b367d
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nCONSTRUCT {\n  ?milestone opda:hasVarianceStatus ?varianceCategory .\n  ?milestone opda:hasVarianceDays ?days .\n}\nWHERE {\n  ?milestone a opda:Milestone ;\n             opda:occurredAtTime ?actual ;\n             opda:plannedAtTime ?planned .\n  BIND (xsd:integer((?actual - ?planned) / xsd:dayTimeDuration(\"P1D\")) AS ?days)\n  BIND (IF(?days < 14, \"info-flagged\", \"warning-flagged\") AS ?varianceCategory)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nCONSTRUCT {\n  ?milestone opda:hasVarianceStatus ?varianceCategory .\n  ?milestone opda:hasVarianceDays ?days .\n}\nWHERE {\n  ?milestone a opda:Milestone ;\n             opda:occurredAtTime ?actual ;\n             opda:plannedAtTime ?planned .\n  BIND (xsd:integer((?actual - ?planned) / xsd:dayTimeDuration(\"P1D\")) AS ?days)\n  BIND (IF(?days < 14, \"info-flagged\", \"warning-flagged\") AS ?varianceCategory)\n}" .
 ```
 
 #### Derives
@@ -400,14 +400,14 @@ _:b55cf070b367d
 opda:VerificationActivitySuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "VerificationActivity succession rule (ODR-0009 §Q7; SHACL-AF citing site #9). Materialises opda:hasVerificationSuccessionStatus to track re-verification chains via prov:wasInformedBy. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q7> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7> ;
     sh:rule _:b28ba9d05939d ;
     sh:severity sh:Info ;
     sh:targetClass opda:VerificationActivity .
 
 _:b28ba9d05939d
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -433,14 +433,14 @@ _:b28ba9d05939d
 opda:PIIWithoutDPVCoAnnotationRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Meta-rule: any class marked opda:isPIIBearing true that lacks a dpv-pd:hasPersonalDataCategory annotation in the annotation graph is flagged as a PII-without-co-annotation breach. Severity sh:Warning per ADR-0012 §SHACL-AF rule emission (silent PII leakage is high-impact even though the rule is SHACL-AF-pattern-shaped)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q5> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5> ;
     sh:rule _:b3f168211e733 ;
     sh:severity sh:Warning ;
     sh:targetClass owl:Class .
 
 _:b3f168211e733
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dpv-pd: <https://w3id.org/dpv/pd#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nCONSTRUCT {\n  ?class opda:hasPIIWithoutCoAnnotationFlag true .\n}\nWHERE {\n  ?class a owl:Class ;\n         opda:isPIIBearing true .\n  FILTER NOT EXISTS {\n    ?class dpv-pd:hasPersonalDataCategory ?category .\n  }\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX dpv-pd: <https://w3id.org/dpv/pd#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nCONSTRUCT {\n  ?class opda:hasPIIWithoutCoAnnotationFlag true .\n}\nWHERE {\n  ?class a owl:Class ;\n         opda:isPIIBearing true .\n  FILTER NOT EXISTS {\n    ?class dpv-pd:hasPersonalDataCategory ?category .\n  }\n}" .
 ```
 
 #### Derives

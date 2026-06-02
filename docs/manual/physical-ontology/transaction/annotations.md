@@ -21,13 +21,13 @@ Header-only. Per ODR-0012 §Phase-1: Transactions, Milestones, and TransactionCh
 ## Header
 
 ```turtle
-<https://w3id.org/opda/transaction-annotations/>
+<https://opda.org.uk/pdtf/graph/transaction-annotations>
     rdf:type owl:Ontology ;
     rdfs:comment "Transactions, Milestones, and TransactionChains are UFO Relators and event particulars — they are not personal data themselves. DPV co-annotations attach to the participating Person / Organisation roles (see opda-agent-annotations.ttl) and to the Property side (see opda-property-annotations.ttl)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Phase-1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1> ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Transaction Annotations"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 No class-level baselines emitted in this module.

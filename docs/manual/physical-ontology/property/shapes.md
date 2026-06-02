@@ -21,10 +21,10 @@ Six SHACL shapes (4 identity-key + 1 IC-breach + 1 INSPIRE rule) plus 1 UPRN suc
 ## Header
 
 ```turtle
-<https://w3id.org/opda/property-shapes/>
+<https://opda.org.uk/pdtf/graph/property-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Property Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:AddressIdentityKeyShape
@@ -32,7 +32,7 @@ Six SHACL shapes (4 identity-key + 1 IC-breach + 1 INSPIRE rule) plus 1 UPRN suc
 ```turtle
 opda:AddressIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-Rule-6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6> ;
     sh:property _:b89b6f844e401 ;
     sh:targetClass opda:Address .
 
@@ -66,7 +66,7 @@ For every `opda:Address` instance, pyshacl checks that `opda:addressVariant` is 
 ```turtle
 opda:LegalEstateIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-3b> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
     sh:property _:bdd41e84ee3f5 ;
     sh:targetClass opda:LegalEstate .
 
@@ -100,7 +100,7 @@ For every `opda:LegalEstate` instance, `opda:tenureKind` MUST be at most one xsd
 ```turtle
 opda:PropertyIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-6a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
     sh:property _:ba17cdd559a14 ;
     sh:targetClass opda:Property .
 
@@ -134,7 +134,7 @@ For every `opda:Property` instance, `opda:hasUPRN` MUST be at most one xsd:strin
 ```turtle
 opda:PropertyICBreachShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-Rule-5> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-Rule-5> ;
     sh:property _:b6a1eb5c7e44d ;
     sh:targetClass opda:Property .
 
@@ -168,14 +168,14 @@ For every `opda:Property` instance, `opda:identifiesSameProperty` MUST be IRI-va
 opda:UPRNSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "UPRN succession rule (ODR-0005 §6a; SHACL-AF citing site #1). Materialises opda:hasUPRNSuccessionStatus on every Property with a UPRN: 'succession-tracked' when prov:wasDerivedFrom names a predecessor with a different UPRN; 'primary-uprn' otherwise. Per ODR-0017 §1a non-blocking-quality-rule pattern."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-6a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
     sh:rule _:b16e82da2b31c ;
     sh:severity sh:Info ;
     sh:targetClass opda:Property .
 
 _:b16e82da2b31c
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?property opda:hasUPRNSuccessionStatus ?status .\n}\nWHERE {\n  ?property a opda:Property ;\n            opda:hasUPRN ?currentUPRN .\n  OPTIONAL { ?property prov:wasDerivedFrom ?predecessor .\n             ?predecessor opda:hasUPRN ?priorUPRN .\n             FILTER (?currentUPRN != ?priorUPRN) }\n  BIND (IF(BOUND(?priorUPRN), \"succession-tracked\", \"primary-uprn\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?property opda:hasUPRNSuccessionStatus ?status .\n}\nWHERE {\n  ?property a opda:Property ;\n            opda:hasUPRN ?currentUPRN .\n  OPTIONAL { ?property prov:wasDerivedFrom ?predecessor .\n             ?predecessor opda:hasUPRN ?priorUPRN .\n             FILTER (?currentUPRN != ?priorUPRN) }\n  BIND (IF(BOUND(?priorUPRN), \"succession-tracked\", \"primary-uprn\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -202,14 +202,14 @@ _:b16e82da2b31c
 opda:INSPIRESuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "INSPIRE Identifier / OS AddressBase succession rule (ODR-0015 §4a; SHACL-AF citing site #3). Materialises opda:hasINSPIRESuccessionStatus on inspire-variant Address instances. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a> ;
     sh:rule _:becbeff0baa17 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Address .
 
 _:becbeff0baa17
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?address opda:hasINSPIRESuccessionStatus ?status .\n}\nWHERE {\n  ?address a opda:Address ;\n           opda:addressVariant \"inspire\" .\n  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n             ?prior opda:addressVariant \"inspire\" }\n  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?address opda:hasINSPIRESuccessionStatus ?status .\n}\nWHERE {\n  ?address a opda:Address ;\n           opda:addressVariant \"inspire\" .\n  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n             ?prior opda:addressVariant \"inspire\" }\n  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n}" .
 ```
 
 #### Derives

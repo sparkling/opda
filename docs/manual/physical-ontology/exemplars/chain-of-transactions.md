@@ -41,8 +41,8 @@ flowchart LR
     accTitle: chain-of-transactions exemplar instance graph
     accDescr: Three-link chain of Transactions linked by buyer-also-seller participants. Four Persons, three Properties, three Titles, three Transactions plus one TransactionChain Aggregate. Recursive opda:dependsOnTransaction predicate plus the parent chain resource — dual-mechanism per S007 Q4.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
-    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/chain-of-transactions/>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
+    %% @prefix opda-x: <https://opda.org.uk/pdtf/harness/data/exemplar/chain-of-transactions/>
 
     classDef person fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
     classDef prop fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
@@ -93,11 +93,11 @@ flowchart LR
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0007 (Transactions & Lifecycle).
 # Situation: three-link chain of property sales — buyer of property A is selling property B
 # (which has a buyer who is selling property C). Tests Q4 chain modelling.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/chain-of-transactions/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/chain-of-transactions/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -170,9 +170,9 @@ opda-x:chain
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/chain-of-transactions> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/chain-of-transactions> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

@@ -26,7 +26,7 @@ opda:OwnershipTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Ownership Type"@en ;
     skos:definition "Classification of a legal estate's ownership structure (Freehold, Leasehold, Commonhold, Other)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Legal-estate ownership type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). NTS2 four-value canonical set used as authority (per data dictionary)."@en ;
     opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en ;
@@ -45,35 +45,35 @@ opda:OwnershipTypeScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#ownershipType/Commonhold>
+<https://opda.org.uk/pdtf/scheme/ownershipType/Commonhold>
     rdf:type skos:Concept ;
     skos:prefLabel "Commonhold"@en ;
     skos:definition "Freehold ownership of a unit within a commonhold development, with shared ownership of common parts."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Commonhold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Commonhold> ;
     skos:inScheme opda:OwnershipTypeScheme ;
     skos:notation "Commonhold" .
 
-<https://w3id.org/opda/#ownershipType/Freehold>
+<https://opda.org.uk/pdtf/scheme/ownershipType/Freehold>
     rdf:type skos:Concept ;
     skos:prefLabel "Freehold"@en ;
     skos:definition "Outright ownership of the property and the land it sits on."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Freehold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Freehold> ;
     skos:inScheme opda:OwnershipTypeScheme ;
     skos:notation "Freehold" .
 
-<https://w3id.org/opda/#ownershipType/Leasehold>
+<https://opda.org.uk/pdtf/scheme/ownershipType/Leasehold>
     rdf:type skos:Concept ;
     skos:prefLabel "Leasehold"@en ;
     skos:definition "Ownership of the property for a fixed period under a lease from the freeholder."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Leasehold> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Leasehold> ;
     skos:inScheme opda:OwnershipTypeScheme ;
     skos:notation "Leasehold" .
 
-<https://w3id.org/opda/#ownershipType/Other>
+<https://opda.org.uk/pdtf/scheme/ownershipType/Other>
     rdf:type skos:Concept ;
     skos:prefLabel "Other"@en ;
     skos:definition "Ownership type falling outside the standard categories."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Other> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Other> ;
     skos:inScheme opda:OwnershipTypeScheme ;
     skos:notation "Other" .
 ```
@@ -98,7 +98,7 @@ flowchart LR
     accTitle: opda:OwnershipTypeScheme membership graph
     accDescr: 4 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

@@ -27,7 +27,7 @@ opda:DPVMappingRecord
     rdf:type owl:Class ;
     rdfs:label "DPV Mapping Record"@en ;
     rdfs:comment "Mapping record from an OPDA Kind class to its DPV baseline personal-data category and optional variant-conditional refinements. UFO Information Particular. Per ODR-0018 §Rule 4 + ODR-0012 §Evidence co-annotation, ODR-0012 is the authoring authority — this module emits the mapping records; ADR-0012 emits the resulting DPV co-annotation triples into opda-annotations.ttl (three-graph separation)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     skos:scopeNote "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a."@en .
 ```
 
@@ -35,7 +35,7 @@ opda:DPVMappingRecord
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://w3id.org/opda/odr/ODR-0018#section-Rule4>` | [ODR-0018 §Rule 4](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4>` | [ODR-0018 §Rule 4](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md) |
 | `skos:scopeNote @en` | "UFO: Information Particular. Mapping-record-as-resource pattern per ODR-0018 §3a." | Guizzardi 2005 |
 | `rdfs:comment @en` | "Mapping record from an OPDA Kind class to its DPV baseline personal-data category…" | ODR-0018 §Rule 4 + ODR-0012 |
 
@@ -102,7 +102,7 @@ None (class declaration only; member emission deferred).
 opda:ClaimDPVMapping
     rdf:type opda:DPVMappingRecord ;
     rdfs:label "Claim DPV mapping"@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     opda:baselineCategory dpv-pd:OfficialID ;
     opda:targetsKind opda:Claim .
 ```
@@ -113,7 +113,7 @@ opda:ClaimDPVMapping
 opda:OrganisationDPVMapping
     rdf:type opda:DPVMappingRecord ;
     rdfs:label "Organisation DPV mapping"@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-evidence-co-annotation> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-evidence-co-annotation> ;
     opda:targetsKind opda:Organisation .
 ```
 
@@ -125,7 +125,7 @@ Organisation mapping carries `opda:targetsKind` but no `opda:baselineCategory` �
 opda:PersonDPVMapping
     rdf:type opda:DPVMappingRecord ;
     rdfs:label "Person DPV mapping"@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     opda:baselineCategory dpv-pd:Name ;
     opda:targetsKind opda:Person .
 ```
@@ -137,14 +137,14 @@ opda:baselineCategory
     rdf:type owl:ObjectProperty ;
     rdfs:label "baseline category"@en ;
     rdfs:comment "Reference to a DPV-PD category that all instances of the target Kind bear by default. Per ODR-0018 §Rule 1, every PII-bearing Kind declares its baseline. Per ODR-0012 §Reference-not-import + ODR-0018 §Rule 4, the DPV URI is cited but DPV is NOT imported."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     rdfs:domain opda:DPVMappingRecord .
 
 opda:targetsKind
     rdf:type owl:ObjectProperty ;
     rdfs:label "targets kind"@en ;
     rdfs:comment "DPV mapping record → OPDA Kind class. The Kind is the class whose instances bear the personal-data category named by opda:baselineCategory (with optional variant refinements)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     rdfs:domain opda:DPVMappingRecord ;
     rdfs:range owl:Class .
 ```

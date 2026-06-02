@@ -21,18 +21,18 @@ Mixed: 1 class with DPV baseline (`EPCCertificate`), 4 without baseline (PII flo
 ## Header
 
 ```turtle
-<https://w3id.org/opda/descriptive-annotations/>
+<https://opda.org.uk/pdtf/graph/descriptive-annotations>
     rdf:type owl:Ontology ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Descriptive Annotations"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ## EPCCertificate — class-level baseline
 
 ```turtle
 opda:EPCCertificate
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> ;
     dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress .
 ```
 
@@ -45,7 +45,7 @@ EPCs carry `dpv-pd:PostalAddress` baseline (the EPC includes the property addres
 ```turtle
 opda:Comparable
     rdfs:comment "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> .
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> .
 ```
 
 ### opda:Search
@@ -53,7 +53,7 @@ opda:Comparable
 ```turtle
 opda:Search
     rdfs:comment "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> .
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> .
 ```
 
 ### opda:Survey
@@ -61,7 +61,7 @@ opda:Search
 ```turtle
 opda:Survey
     rdfs:comment "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> .
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> .
 ```
 
 ### opda:Valuation
@@ -69,7 +69,7 @@ opda:Survey
 ```turtle
 opda:Valuation
     rdfs:comment "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> .
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> .
 ```
 
 ## Source ODR + ADR

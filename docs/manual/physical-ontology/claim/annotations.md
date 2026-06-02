@@ -21,11 +21,11 @@ DPV co-annotation + 3 evidence refinements, emitted into `opda-claim-annotations
 ## Header
 
 ```turtle
-<https://w3id.org/opda/claim-annotations/>
+<https://opda.org.uk/pdtf/graph/claim-annotations>
     rdf:type owl:Ontology ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Claim Annotations"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ## Class-level baseline
@@ -34,7 +34,7 @@ DPV co-annotation + 3 evidence refinements, emitted into `opda-claim-annotations
 
 ```turtle
 opda:Claim
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q6> ;
     dpv-pd:hasPersonalDataCategory dpv-pd:OfficialID .
 ```
 
@@ -47,7 +47,7 @@ Claims carry `dpv-pd:OfficialID` baseline (claims typically embed official ident
 ```turtle
 opda:DocumentEvidenceRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:PublicTask ;
     opda:targetsKind opda:DocumentEvidence ;
@@ -62,7 +62,7 @@ Document-evidence (court-issued) uses `dpv:PublicTask` lawful basis.
 ```turtle
 opda:ElectronicRecordEvidenceRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:LegitimateInterest ;
     opda:targetsKind opda:ElectronicRecordEvidence ;
@@ -77,7 +77,7 @@ Electronic-record evidence (HMRC tax API etc.) uses `dpv:LegitimateInterest` law
 ```turtle
 opda:VouchEvidenceRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q6> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:Consent ;
     opda:targetsKind opda:VouchEvidence ;

@@ -71,7 +71,7 @@ Every entity has a stable URI in OPDA's ontology namespace (`https://opda.org.uk
 - Physical-DB tier resolves URI → JSON path table
 - Physical-Ontology tier's `dct:source` URI points at the Concept-tier anchor
 
-The Concept tier is the **canonical narrative**; the other tiers cite it via this URI mapping. When the ontology emits a Class with `dct:source <https://openpropdata.org.uk/manual/concept/property/property#property>`, the URL must resolve to the Concept-tier entity file's H1.
+The Concept tier is the **canonical narrative**; the other tiers cite it via this URI mapping. When the ontology emits a Class with `dct:source <https://opda.org.uk/manual/concept/property/property#property>`, the URL must resolve to the Concept-tier entity file's H1.
 
 **Scope clarification: Kinds, not Schemes.** The Concept tier publishes per-Kind narrative pages (one file per `owl:Class`) and intentionally does NOT publish per-scheme pages. SKOS schemes are documented at the Logical tier (one file per scheme under `logical/<module>/enumerations/<scheme>.md`) and at the Physical-Ontology tier (one file per scheme under `physical-ontology/vocabularies/<scheme>.md`). The Concept tier narrates a scheme's *meaning* indirectly through the using-entity's `## Hard cases` and `## Identity Criterion` discussion — never via a per-scheme file.
 

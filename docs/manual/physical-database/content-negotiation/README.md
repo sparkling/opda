@@ -1,6 +1,6 @@
 # Content negotiation
 
-OPDA's persistent namespace is `https://w3id.org/opda/*`, served via the W3C PICG redirect (per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). The redirect target is `https://openpropdata.org.uk/ontology/` (the OPDA institutional domain). Consumers fetch resources via standard HTTP with `Accept:` headers; the deployment serves TTL, JSON-LD, RDF/XML, or HTML depending on the header.
+OPDA's persistent namespace is `https://opda.org.uk/pdtf/*`, served via the W3C PICG redirect (per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). The redirect target is `https://opda.org.uk/pdtf/` (the OPDA institutional domain). Consumers fetch resources via standard HTTP with `Accept:` headers; the deployment serves TTL, JSON-LD, RDF/XML, or HTML depending on the header.
 
 ## The redirect chain
 
@@ -19,9 +19,9 @@ sequenceDiagram
     participant C as Consumer
     participant W as w3id.org
     participant O as openpropdata.org.uk
-    C->>W: GET https://w3id.org/opda/Property<br/>Accept: text/turtle
-    W-->>C: 302 Found<br/>Location: https://openpropdata.org.uk/ontology/Property
-    C->>O: GET https://openpropdata.org.uk/ontology/Property<br/>Accept: text/turtle
+    C->>W: GET https://opda.org.uk/pdtf/Property<br/>Accept: text/turtle
+    W-->>C: 302 Found<br/>Location: https://opda.org.uk/pdtf/Property
+    C->>O: GET https://opda.org.uk/pdtf/Property<br/>Accept: text/turtle
     O-->>C: 200 OK<br/>Content-Type: text/turtle<br/>(opda-property.ttl fragment containing opda:Property)
 ```
 
@@ -78,11 +78,11 @@ Per-resource availability is documented in the [format matrix](./format-matrix.m
 
 ## JSON-LD context
 
-A **single canonical `@context`** applies to every JSON-LD response, regardless of which resource the consumer requests. The context is documented in [jsonld-context.md](./jsonld-context.md) and is served at `https://w3id.org/opda/context.jsonld`.
+A **single canonical `@context`** applies to every JSON-LD response, regardless of which resource the consumer requests. The context is documented in [jsonld-context.md](./jsonld-context.md) and is served at `https://opda.org.uk/pdtf/context.jsonld`.
 
 Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), the canonical context preserves:
 
-- `@vocab` → `https://w3id.org/opda/#` (so all unqualified terms resolve to OPDA's HASH namespace)
+- `@vocab` → `https://opda.org.uk/pdtf/` (so all unqualified terms resolve to OPDA's HASH namespace)
 - Standard ontology prefixes: `dct:`, `dpv:`, `owl:`, `rdf:`, `rdfs:`, `skos:`, `sh:`, `dash:`, `xsd:`, `vann:`, `prov:`
 - OPDA-specific predicate type-coercions so a JSON consumer can treat `opda:hasSpecialCategoryData` as a boolean, `opda:formVersion` as a string, etc., without explicit `@type` annotations on every literal.
 
@@ -90,10 +90,10 @@ Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), the canonical
 
 See [format-matrix.md](./format-matrix.md) for the per-resource table:
 
-- Foundation namespace `https://w3id.org/opda/`
-- Version-IRI `https://w3id.org/opda/1.0.0/` (immutable; bumps on every release)
-- BASPI5 profile `https://w3id.org/opda/profiles/baspi5`
-- Per-entity dereference `https://w3id.org/opda/<EntityLocalName>` (e.g. `https://w3id.org/opda/Property`)
+- Foundation namespace `https://opda.org.uk/pdtf/`
+- Version-IRI `https://opda.org.uk/pdtf/harness/release/1.0.0/` (immutable; bumps on every release)
+- BASPI5 profile `https://opda.org.uk/pdtf/shape/profiles/baspi5`
+- Per-entity dereference `https://opda.org.uk/pdtf/<EntityLocalName>` (e.g. `https://opda.org.uk/pdtf/Property`)
 
 ## Caching
 

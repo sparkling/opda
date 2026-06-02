@@ -45,7 +45,7 @@ opda:AssuranceLevelScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#assuranceLevel/High>
+<https://opda.org.uk/pdtf/scheme/assuranceLevel/High>
     rdf:type skos:Concept ;
     skos:prefLabel "High"@en ;
     skos:definition "High degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(c) High)."@en ;
@@ -53,7 +53,7 @@ opda:AssuranceLevelScheme
     skos:inScheme opda:AssuranceLevelScheme ;
     skos:notation "High" .
 
-<https://w3id.org/opda/#assuranceLevel/Low>
+<https://opda.org.uk/pdtf/scheme/assuranceLevel/Low>
     rdf:type skos:Concept ;
     skos:prefLabel "Low"@en ;
     skos:definition "Limited degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(a) Low)."@en ;
@@ -61,15 +61,15 @@ opda:AssuranceLevelScheme
     skos:inScheme opda:AssuranceLevelScheme ;
     skos:notation "Low" .
 
-<https://w3id.org/opda/#assuranceLevel/PDTF-Standard>
+<https://opda.org.uk/pdtf/scheme/assuranceLevel/PDTF-Standard>
     rdf:type skos:Concept ;
     skos:prefLabel "PDTF-Standard"@en ;
     skos:definition "OPDA-specific intermediate assurance level per ODR-0009 §Q3, applicable to PDTF transactions where eIDAS LoA mapping is not directly available."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q3> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3> ;
     skos:inScheme opda:AssuranceLevelScheme ;
     skos:notation "PDTF-Standard" .
 
-<https://w3id.org/opda/#assuranceLevel/Substantial>
+<https://opda.org.uk/pdtf/scheme/assuranceLevel/Substantial>
     rdf:type skos:Concept ;
     skos:prefLabel "Substantial"@en ;
     skos:definition "Substantial degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(b) Substantial)."@en ;
@@ -98,7 +98,7 @@ flowchart LR
     accTitle: opda:AssuranceLevelScheme membership graph
     accDescr: 4 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

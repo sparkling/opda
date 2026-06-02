@@ -19,10 +19,10 @@ This tier documents the OWL / SHACL / SKOS Turtle artefacts that OPDA's generato
 | `dct:issued` | `2026-05-27` |
 | `dct:modified` | `2026-05-28` |
 | `dct:license` | <https://creativecommons.org/publicdomain/zero/1.0/> |
-| `owl:versionIRI` | <https://w3id.org/opda/1.0.0/> |
+| `owl:versionIRI` | <https://opda.org.uk/pdtf/harness/release/1.0.0/> |
 | `owl:versionInfo` | "1.0.0 — foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData" |
 | `vann:preferredNamespacePrefix` | `opda` |
-| `vann:preferredNamespaceUri` | `https://w3id.org/opda/#` |
+| `vann:preferredNamespaceUri` | `https://opda.org.uk/pdtf/` |
 | Generator version | `opda-gen-1.0.0` |
 
 Source: [`foundation.ttl`](../../../source/03-standards/ontology/foundation.ttl).
@@ -31,11 +31,11 @@ Source: [`foundation.ttl`](../../../source/03-standards/ontology/foundation.ttl)
 
 Per ADR-0011 (module TBox emission) + ADR-0010 (SKOS vocabulary emission) + ADR-0013 (overlay profile emission), consumers loading the full ontology should follow this order so `owl:imports` resolves:
 
-1. `foundation.ttl` — ontology header (`<https://w3id.org/opda/>`, `owl:versionIRI <https://w3id.org/opda/1.0.0/>`)
+1. `foundation.ttl` — ontology header (`<https://opda.org.uk/pdtf/>`, `owl:versionIRI <https://opda.org.uk/pdtf/harness/release/1.0.0/>`)
 2. `opda-classes.ttl` — foundation class graph (6 classes + `opda:hasSpecialCategoryData`)
 3. `opda-vocabularies.ttl` — 23 SKOS concept schemes (137 concepts)
 4. `opda-<module>.ttl` × 6 (per-module class graphs):
-   - `opda-property.ttl` (imports `<https://w3id.org/opda/1.0.0/>` + `<https://w3id.org/opda/vocabularies/>`)
+   - `opda-property.ttl` (imports `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` + `<https://opda.org.uk/pdtf/scheme/>`)
    - `opda-agent.ttl`
    - `opda-transaction.ttl`
    - `opda-claim.ttl`
@@ -45,7 +45,7 @@ Per ADR-0011 (module TBox emission) + ADR-0010 (SKOS vocabulary emission) + ADR-
 6. `opda-<module>-shapes.ttl` × 6 — per-module SHACL shapes (Cat 1/2 identity-key, IC-breach, succession rules)
 7. `opda-annotations.ttl` — foundation annotations (header-only)
 8. `opda-<module>-annotations.ttl` × 6 — DPV co-annotations
-9. `profiles/baspi5.ttl` — BASPI5 overlay profile (imports `<https://w3id.org/opda/1.0.0/>` + `<https://w3id.org/opda/vocabularies/>`)
+9. `profiles/baspi5.ttl` — BASPI5 overlay profile (imports `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` + `<https://opda.org.uk/pdtf/scheme/>`)
 
 Profiles are loaded after the base ontology + shapes; they compose without modifying upstream graphs.
 
@@ -73,7 +73,7 @@ flowchart LR
     accTitle: Physical-Ontology tier file layout and owl:imports chain
     accDescr: Shows the 24 source TTL files organised by category (foundation, classes, shapes, annotations, vocabularies, profiles, exemplars) and the owl:imports chain that joins them. Foundation + vocabularies are the import roots; per-module class graphs import both; profiles compose over the base.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
 
     classDef foundation fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
     classDef classes fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B

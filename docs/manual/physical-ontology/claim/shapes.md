@@ -21,10 +21,10 @@ title: Claim shapes
 ## Header
 
 ```turtle
-<https://w3id.org/opda/claim-shapes/>
+<https://opda.org.uk/pdtf/graph/claim-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Claim Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:ClaimIdentityKeyShape
@@ -32,7 +32,7 @@ title: Claim shapes
 ```turtle
 opda:ClaimIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     sh:property _:b2b18495da174 ;
     sh:targetClass opda:Claim .
 
@@ -66,7 +66,7 @@ For every `opda:Claim` instance, `opda:digest` MUST be at most one xsd:string wh
 ```turtle
 opda:EvidenceIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     sh:property _:bd9c7ae50e511 ;
     sh:targetClass opda:Evidence .
 
@@ -100,7 +100,7 @@ For every `opda:Evidence` instance (including subtypes), `opda:digest` MUST be a
 ```turtle
 opda:UnprovenancedClaimShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     sh:property _:bbf6f8958de90 ;
     sh:targetClass opda:Claim .
 
@@ -135,14 +135,14 @@ For every `opda:Claim` instance, at least one `prov:wasDerivedFrom` triple MUST 
 opda:PROVOClaimsRule
     rdf:type sh:NodeShape ;
     rdfs:comment "PROV-O Claims/Evidence rule (ODR-0009 §Q7; SHACL-AF citing site #4). Materialises opda:hasProvenanceChainStatus to surface Claims with absent or partial PROV-O chains. Per ODR-0017 §1a; complements the UnprovenancedClaimShape (which is a Violation-tier shape; this is informative)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q7> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7> ;
     sh:rule _:bb11b45f9d7c0 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Claim .
 
 _:bb11b45f9d7c0
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?claim opda:hasProvenanceChainStatus ?status .\n}\nWHERE {\n  ?claim a opda:Claim .\n  OPTIONAL { ?claim prov:wasDerivedFrom ?source }\n  OPTIONAL { ?claim prov:wasGeneratedBy ?activity }\n  BIND (IF(BOUND(?source) || BOUND(?activity), \"chain-present\", \"chain-absent\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -169,14 +169,14 @@ _:bb11b45f9d7c0
 opda:VerificationActivitySuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "VerificationActivity succession rule (ODR-0009 §Q7; SHACL-AF citing site #9). Materialises opda:hasVerificationSuccessionStatus to track re-verification chains via prov:wasInformedBy. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0009#section-Q7> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7> ;
     sh:rule _:b28ba9d05939d ;
     sh:severity sh:Info ;
     sh:targetClass opda:VerificationActivity .
 
 _:b28ba9d05939d
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?activity opda:hasVerificationSuccessionStatus ?status .\n}\nWHERE {\n  ?activity a opda:VerificationActivity .\n  OPTIONAL { ?activity prov:wasInformedBy ?prior .\n             ?prior a opda:VerificationActivity }\n  BIND (IF(BOUND(?prior), \"re-verified\", \"initial-verification\") AS ?status)\n}" .
 ```
 
 #### Derives

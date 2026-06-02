@@ -22,8 +22,8 @@ SHACL profile graph for the BASPI5 (British Association of Surveyors Property In
 |---|---|
 | Authority | BASPI |
 | Form version | 5.0.3 |
-| Profile URI | `<https://w3id.org/opda/profiles/baspi5>` |
-| Version IRI | `<https://w3id.org/opda/profiles/baspi5/0.1.0/>` |
+| Profile URI | `<https://opda.org.uk/pdtf/shape/profiles/baspi5>` |
+| Version IRI | `<https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/>` |
 | Production status | MVP gate (ODR-0010 §Q7) |
 | Source | [`profiles/baspi5.ttl`](../../../../source/03-standards/ontology/profiles/baspi5.ttl) |
 
@@ -47,7 +47,7 @@ flowchart LR
     accTitle: BASPI5 overlay profile dependency graph
     accDescr: Shows the BASPI5 profile's owl:imports chain (foundation + vocabularies), the ValidationContext reification with its five properties, the seven per-Kind Baspi5 NodeShapes, and the SKOS scheme bindings that each shape uses via sh:in.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
     %% @prefix dash: <http://datashapes.org/dash#>
 
@@ -146,13 +146,13 @@ flowchart LR
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/profiles/baspi5>
+<https://opda.org.uk/pdtf/shape/profiles/baspi5>
     rdf:type owl:Ontology ;
-    dct:source <https://openpropdata.org.uk/adr/ADR-0013-overlay-profile-emission> ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0013-overlay-profile-emission> ;
     dct:description "SHACL profile graph for the BASPI5 (British Association of Surveyors Property Information) version 5 form. Per-form cardinality, enum subsets, DASH UI rendering. Composes over the foundation + module TBox + base shapes per ODR-0010."@en ;
     dct:title "BASPI5 overlay profile"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/profiles/baspi5/0.1.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/> .
 ```
 
 ## opda:ValidationContext (per ODR-0010 §Q1)
@@ -160,10 +160,10 @@ flowchart LR
 ```turtle
 opda:Baspi5ValidationContext
     rdf:type opda:ValidationContext ;
-    dct:source <https://w3id.org/opda/odr/ODR-0010#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1> ;
     opda:formVersion "5.0.3" ;
-    opda:overlaysContext <https://w3id.org/opda/profiles/foundation> ;
-    opda:profileURI <https://w3id.org/opda/profiles/baspi5> ;
+    opda:overlaysContext <https://opda.org.uk/pdtf/shape/profiles/foundation> ;
+    opda:profileURI <https://opda.org.uk/pdtf/shape/profiles/baspi5> ;
     opda:requires opda:Address, opda:Buyer, opda:EPCCertificate, opda:LegalEstate, opda:Property, opda:Seller, opda:Survey ;
     opda:sourcedFrom <https://www.basp.uk/forms/baspi5> .
 ```
@@ -172,9 +172,9 @@ opda:Baspi5ValidationContext
 
 | Property | Value | Purpose |
 |---|---|---|
-| `opda:profileURI` | `<https://w3id.org/opda/profiles/baspi5>` | Self-reference — names the profile |
+| `opda:profileURI` | `<https://opda.org.uk/pdtf/shape/profiles/baspi5>` | Self-reference — names the profile |
 | `opda:requires` | 7 Kinds (Address, Buyer, EPCCertificate, LegalEstate, Property, Seller, Survey) | Which Kinds this profile constrains |
-| `opda:overlaysContext` | `<https://w3id.org/opda/profiles/foundation>` | The base context being overlayed |
+| `opda:overlaysContext` | `<https://opda.org.uk/pdtf/shape/profiles/foundation>` | The base context being overlayed |
 | `opda:sourcedFrom` | `<https://www.basp.uk/forms/baspi5>` | External authoring source URL |
 | `opda:formVersion` | `"5.0.3"` | The form version this profile binds against |
 

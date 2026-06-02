@@ -21,9 +21,9 @@ The Descriptive module covers EPCCertificate, Search, Survey, Valuation, Compara
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/descriptive/` | `opda-descriptive.ttl` | 35 | `https://w3id.org/opda/descriptive/1.0.0/` |
-| `https://w3id.org/opda/descriptive-shapes/` | `opda-descriptive-shapes.ttl` | 27 | — |
-| `https://w3id.org/opda/descriptive-annotations/` | `opda-descriptive-annotations.ttl` | 14 | — |
+| `https://opda.org.uk/pdtf/graph/descriptive` | `opda-descriptive.ttl` | 35 | `https://opda.org.uk/pdtf/harness/release/descriptive/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/descriptive-shapes` | `opda-descriptive-shapes.ttl` | 27 | — |
+| `https://opda.org.uk/pdtf/graph/descriptive-annotations` | `opda-descriptive-annotations.ttl` | 14 | — |
 
 **Load order:** TBox graph imports foundation + vocabularies. Shape graph carries per-class identity keys (e.g. `opda:EPCCertificate` identity by EPC certificate number + Address).
 
@@ -51,15 +51,15 @@ A future home-condition-overlay or RICS-survey overlay is the expected first ove
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/descriptive/` | descriptive module TBox |
-| `https://w3id.org/opda/descriptive/1.0.0/` | descriptive versionIRI snapshot |
-| `https://w3id.org/opda/descriptive-shapes/` | descriptive shape graph |
-| `https://w3id.org/opda/descriptive-annotations/` | descriptive annotation graph |
-| `https://w3id.org/opda/EPCCertificate` | per-entity dereference |
-| `https://w3id.org/opda/Search` | per-entity dereference |
-| `https://w3id.org/opda/Survey` | per-entity dereference |
-| `https://w3id.org/opda/Valuation` | per-entity dereference |
-| `https://w3id.org/opda/Comparable` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/descriptive` | descriptive module TBox |
+| `https://opda.org.uk/pdtf/harness/release/descriptive/1.0.0/` | descriptive versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/descriptive-shapes` | descriptive shape graph |
+| `https://opda.org.uk/pdtf/graph/descriptive-annotations` | descriptive annotation graph |
+| `https://opda.org.uk/pdtf/EPCCertificate` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Search` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Survey` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Valuation` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Comparable` | per-entity dereference |
 
 ## Deployment graph
 
@@ -94,9 +94,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/descriptive/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/descriptive-shapes/"]:::infra
-        NGA["w3id.org/opda/descriptive-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/descriptive<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/descriptive-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/descriptive-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -114,10 +114,10 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/descriptive/"]:::service
-        H2["w3id.org/opda/EPCCertificate"]:::service
-        H3["w3id.org/opda/Survey"]:::service
-        H4["w3id.org/opda/Valuation"]:::service
+        H1["opda.org.uk/pdtf/graph/descriptive"]:::service
+        H2["opda.org.uk/pdtf/EPCCertificate"]:::service
+        H3["opda.org.uk/pdtf/Survey"]:::service
+        H4["opda.org.uk/pdtf/Valuation"]:::service
     end
 
     subgraph CONS["Consumers"]

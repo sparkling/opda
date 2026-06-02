@@ -363,5 +363,5 @@ Phases 2 + 3 run in parallel after Phase 1; Phase 4 + 5 gate on the parallel pai
   - Authoring the 227 manual content entries (already done — they live in `docs/manual/`).
   - PDF export from the site (the local `_export/` workflow handles offline PDF; the Astro site is HTML-only).
   - Per-overlay route templates for TA6 / NTS / LPE1 etc. (defer until those overlay profiles emit; ADR-0013 Phase-2/3 work).
-  - JSON-LD HTTP content negotiation for `https://w3id.org/opda/<EntityLocalName>` URI dereference (separate deployment-layer work; the manual page is the HTML landing target for those redirects but the redirect setup itself is in ADR-0006).
+  - JSON-LD HTTP content negotiation for `https://opda.org.uk/pdtf/<EntityLocalName>` URI dereference (separate deployment-layer work; the manual page is the HTML landing target for those redirects but the redirect setup itself is in ADR-0006).
   - Migrating the existing `src/pages/modelling/` content into content collections — owned by [ADR-0019](./ADR-0019-modelling-manual-handshake.md) per-page decision.

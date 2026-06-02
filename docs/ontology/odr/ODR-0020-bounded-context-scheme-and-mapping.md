@@ -35,7 +35,7 @@ opda:BoundedContextScheme a skos:ConceptScheme ;
     rdfs:label "PDTF Bounded Contexts"@en ;
     skos:definition "The six industry bounded contexts of the UK PDTF, each owning a SHACL overlay profile (ODR-0010). Domain-term membership is DERIVED via opda:servesContext from opda:overlaysContext — never hand-authored except per ODR-0019 Rule 8."@en ;
     opda:hasSteward "OPDA Architecture WG"@en ;        # Literal, per value-scheme house style
-    dct:source <https://w3id.org/opda/odr/ODR-0020> .
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0020> .
 
 opda:ConveyancingContext a skos:Concept ;
     skos:inScheme opda:BoundedContextScheme ;

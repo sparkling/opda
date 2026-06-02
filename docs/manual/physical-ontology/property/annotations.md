@@ -21,11 +21,11 @@ DPV co-annotations + 3 variant refinements, emitted into `opda-property-annotati
 ## Header
 
 ```turtle
-<https://w3id.org/opda/property-annotations/>
+<https://opda.org.uk/pdtf/graph/property-annotations>
     rdf:type owl:Ontology ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Property Annotations"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ## Class-level DPV baselines (3)
@@ -34,7 +34,7 @@ DPV co-annotations + 3 variant refinements, emitted into `opda-property-annotati
 
 ```turtle
 opda:Address
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-7a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;
     dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress .
 ```
 
@@ -44,7 +44,7 @@ Per ODR-0015 §7a — Address instances carry a `dpv-pd:PostalAddress` PII basel
 
 ```turtle
 opda:Property
-    dct:source <https://w3id.org/opda/odr/ODR-0018#section-Rule1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> ;
     dpv-pd:hasPersonalDataCategory dpv-pd:PostalAddress .
 ```
 
@@ -54,7 +54,7 @@ Per ODR-0018 §Rule 1 — Property instances inherit `PostalAddress` baseline (t
 
 ```turtle
 opda:RegisteredTitle
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-3c> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c> ;
     dpv-pd:hasPersonalDataCategory dpv-pd:PublicData .
 ```
 
@@ -69,7 +69,7 @@ Per ODR-0015 §7a, three `opda:DPVMappingRefinement` instances refine the Addres
 ```turtle
 opda:AddressVariantInspireRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-7a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;
     dct:references <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32007L0002> ;
     opda:lawfulBasis dpv:PublicTask ;
     opda:targetsKind opda:Address ;
@@ -84,7 +84,7 @@ INSPIRE-variant Addresses use `dpv:PublicTask` lawful basis (EU Directive 2007/2
 ```turtle
 opda:AddressVariantMarketingRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-7a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;
     dct:references <https://ico.org.uk/for-organisations/guide-to-data-protection/> ;
     opda:lawfulBasis dpv:Consent ;
     opda:targetsKind opda:Address ;
@@ -99,7 +99,7 @@ Marketing-variant Addresses use `dpv:Consent` lawful basis (ICO guidance).
 ```turtle
 opda:AddressVariantTitleRefinement
     rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://w3id.org/opda/odr/ODR-0015#section-7a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;
     dct:references <https://www.gov.uk/government/organisations/land-registry> ;
     opda:lawfulBasis dpv:PublicTask ;
     opda:targetsKind opda:Address ;

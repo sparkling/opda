@@ -26,7 +26,7 @@ opda:MilestoneKindScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Milestone Kind"@en ;
     skos:definition "Method/plan codes for the procedural milestones authorising stages of a Transaction Activity (instruction → offerAccepted → exchange → completion → registration)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     dct:title "Transaction milestone kind code"@en ;
     skos:scopeNote "UFO: Method/plan code (Guizzardi 2005 Ch. 4 + Guizzardi & Wagner 2010 action-modelling). Codes are ratified by ODR-0007 §Q2 transaction-lifecycle pattern; each milestone corresponds to a stage transition in the PDTF process."@en ;
     opda:hasSteward "Guizzardi (S007 Q2)"@en ;
@@ -46,43 +46,43 @@ opda:MilestoneKindScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#milestoneKind/completion>
+<https://opda.org.uk/pdtf/scheme/milestoneKind/completion>
     rdf:type skos:Concept ;
     skos:prefLabel "completion"@en ;
     skos:definition "Completion; legal title transfers; keys handed over."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     skos:inScheme opda:MilestoneKindScheme ;
     skos:notation "completion" .
 
-<https://w3id.org/opda/#milestoneKind/exchange>
+<https://opda.org.uk/pdtf/scheme/milestoneKind/exchange>
     rdf:type skos:Concept ;
     skos:prefLabel "exchange"@en ;
     skos:definition "Contracts exchanged; transaction binding on both parties."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     skos:inScheme opda:MilestoneKindScheme ;
     skos:notation "exchange" .
 
-<https://w3id.org/opda/#milestoneKind/instruction>
+<https://opda.org.uk/pdtf/scheme/milestoneKind/instruction>
     rdf:type skos:Concept ;
     skos:prefLabel "instruction"@en ;
     skos:definition "Property instructed to market by Seller; transaction lifecycle begins."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     skos:inScheme opda:MilestoneKindScheme ;
     skos:notation "instruction" .
 
-<https://w3id.org/opda/#milestoneKind/offerAccepted>
+<https://opda.org.uk/pdtf/scheme/milestoneKind/offerAccepted>
     rdf:type skos:Concept ;
     skos:prefLabel "offerAccepted"@en ;
     skos:definition "Offer accepted by Seller; transaction enters Under Offer phase."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     skos:inScheme opda:MilestoneKindScheme ;
     skos:notation "offerAccepted" .
 
-<https://w3id.org/opda/#milestoneKind/registration>
+<https://opda.org.uk/pdtf/scheme/milestoneKind/registration>
     rdf:type skos:Concept ;
     skos:prefLabel "registration"@en ;
     skos:definition "Registration completed at HM Land Registry."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q2> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     skos:inScheme opda:MilestoneKindScheme ;
     skos:notation "registration" .
 ```
@@ -107,7 +107,7 @@ flowchart LR
     accTitle: opda:MilestoneKindScheme membership graph
     accDescr: 5 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

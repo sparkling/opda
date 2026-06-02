@@ -67,8 +67,8 @@ Per ODR-0004 §8a:
 
 ## Namespace conventions
 
-- Class graph: `https://w3id.org/opda/#` (WG-ratified 2026-05-27 per Session 003b + ADR-0006)
-- Per-exemplar instance prefix: `https://openpropdata.org.uk/data/exemplar/<name>/`
+- Class graph: `https://opda.org.uk/pdtf/` (WG-ratified 2026-05-27 per Session 003b + ADR-0006)
+- Per-exemplar instance prefix: `https://opda.org.uk/pdtf/harness/data/exemplar/<name>/`
 
 ## Source ODR + ADR
 

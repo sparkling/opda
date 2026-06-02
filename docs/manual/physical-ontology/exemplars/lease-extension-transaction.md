@@ -41,8 +41,8 @@ flowchart LR
     accTitle: lease-extension-transaction exemplar instance graph
     accDescr: Statutory lease extension. The LegalEstate persists through the event (S005 §3b Rule 1). Original LeaseTerm (99 years) is superseded by current LeaseTerm (189 years) via prov:wasDerivedFrom. The extension-activity co-types as Transaction AND LeaseExtensionEvent — the dual typing reflects the property-lifecycle vs relator perspectives.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
-    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction/>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
+    %% @prefix opda-x: <https://opda.org.uk/pdtf/harness/data/exemplar/lease-extension-transaction/>
     %% @prefix prov: <http://www.w3.org/ns/prov#>
     %% @prefix time: <http://www.w3.org/2006/time#>
 
@@ -88,11 +88,11 @@ flowchart LR
 # Tests Q5 lease term as OWL-Time interval (`time:ProperInterval`); Q1 Transaction-vs-Event
 # (this is a lifecycle event on an existing estate, not a new estate vesting); cross-cite
 # Hendler S005 Q5 lease-extension consumer-fails case (charge-event on title-record, not on estate).
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004); ODR-0007 status: accepted (council: session-007).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/lease-extension-transaction/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix time:    <http://www.w3.org/2006/time#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
@@ -167,9 +167,9 @@ opda-x:extension-activity
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/lease-extension-transaction> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/lease-extension-transaction> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

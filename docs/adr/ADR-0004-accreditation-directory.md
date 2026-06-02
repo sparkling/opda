@@ -92,7 +92,7 @@ This means:
 ```json
 {
   "@context": ["https://www.w3.org/2018/credentials/v1",
-               "https://w3id.org/opda/accreditation/v1"],
+               "https://opda.org.uk/pdtf/accreditation/v1"],
   "type": ["VerifiableCredential", "AccreditationStatement"],
   "issuer": "did:web:firm.example.com",
   "issuanceDate": "2026-06-15T00:00:00Z",

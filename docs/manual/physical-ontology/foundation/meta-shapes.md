@@ -21,10 +21,10 @@ Five meta-shapes + two cross-cutting SHACL-AF rules, emitted into `opda-shapes.t
 ## Header
 
 ```turtle
-<https://w3id.org/opda/shapes>
+<https://opda.org.uk/pdtf/graph/shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA SHACL Shapes Graph"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:NoIdentityOverride_MetaShape
@@ -32,7 +32,7 @@ Five meta-shapes + two cross-cutting SHACL-AF rules, emitted into `opda-shapes.t
 ```turtle
 opda:NoIdentityOverride_MetaShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0010#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q6> ;
     sh:message "Profile shape attempts to override identity-key of Substance Kind; identity properties cannot be removed by overlays (ODR-0010 §Q6 three-rule interface contract)."@en ;
     sh:severity sh:Violation ;
     sh:sparql _:beede7fbafeaf ;
@@ -40,7 +40,7 @@ opda:NoIdentityOverride_MetaShape
     opda:metaShapeJustification "ODR-0013 §Q1 Category 3: profile cannot override identity-key; this meta-shape enforces the three-rule interface contract per ODR-0010 §Q6."@en .
 
 _:beede7fbafeaf
-    sh:select "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nSELECT ?profileShape WHERE {\n  ?profileShape sh:targetClass ?kind .\n  ?kind opda:identityKey ?key .\n  ?profileShape sh:property [ sh:path ?key ; sh:maxCount 0 ] .\n}" .
+    sh:select "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nSELECT ?profileShape WHERE {\n  ?profileShape sh:targetClass ?kind .\n  ?kind opda:identityKey ?key .\n  ?profileShape sh:property [ sh:path ?key ; sh:maxCount 0 ] .\n}" .
 ```
 
 #### Severity tier
@@ -66,7 +66,7 @@ For any candidate overlay shape, pyshacl runs the SPARQL select. If the overlay 
 ```turtle
 opda:ShInSemantics_MetaShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0010#section-Rule-sh-in> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Rule-sh-in> ;
     sh:message "Overlay profile sh:in constraint must union into the base SKOS scheme members (ODR-0010 three-rule interface contract, Rule 1)."@en ;
     sh:severity sh:Violation ;
     sh:sparql _:ba5e7fdcce4fc ;
@@ -100,7 +100,7 @@ For every overlay shape with `sh:in` constraints, pyshacl checks each enumerated
 ```turtle
 opda:ShViolationFloor_MetaShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0010#section-Rule-violation-floor> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Rule-violation-floor> ;
     sh:message "Overlay profile attempts to downgrade a base sh:Violation severity; ODR-0010 three-rule interface contract Rule 2 establishes a Violation floor that overlays cannot weaken."@en ;
     sh:severity sh:Violation ;
     sh:sparql _:b4c20cfb30e26 ;
@@ -134,7 +134,7 @@ For every overlay shape, pyshacl looks for `sh:property` blocks with severity le
 ```turtle
 opda:MetaShapeOverShapeGraphMetaShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0017#section-2a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a> ;
     sh:message "Meta-shape over shape-graph using sh:Violation severity requires explicit opda:metaShapeJustification (ODR-0017 §2a amendment)."@en ;
     sh:severity sh:Violation ;
     sh:sparql _:be563e0a22322 ;
@@ -142,7 +142,7 @@ opda:MetaShapeOverShapeGraphMetaShape
     opda:metaShapeJustification "ODR-0013 §Q1 Category 5 + ODR-0017 §2a: meta-shapes targeting sh:NodeShape using sh:Violation severity must justify their elevation above the ODR-0017 sh:Info default."@en .
 
 _:be563e0a22322
-    sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX opda: <https://w3id.org/opda/#>\nSELECT ?shape WHERE {\n  ?shape sh:targetClass sh:NodeShape .\n  ?shape sh:severity sh:Violation .\n  FILTER NOT EXISTS {\n    ?shape opda:metaShapeJustification ?j .\n  }\n}" .
+    sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX opda: <https://opda.org.uk/pdtf/>\nSELECT ?shape WHERE {\n  ?shape sh:targetClass sh:NodeShape .\n  ?shape sh:severity sh:Violation .\n  FILTER NOT EXISTS {\n    ?shape opda:metaShapeJustification ?j .\n  }\n}" .
 ```
 
 #### Severity tier
@@ -171,7 +171,7 @@ See [shacl-af-rules.md#opdadeprecationchainrule](../shacl-af-rules.md#opdadeprec
 opda:DeprecationChainRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Meta-rule per ODR-0011 §5a: materialises the deprecation chain for any SKOS Concept marked owl:deprecated true. Severity sh:Info when dct:isReplacedBy is present; the Three-tier severity decision table in ODR-0017 §2a notes that deprecation-without-successor escalates to sh:Warning (handled by the materialised opda:hasDeprecationStatus value rather than a separate shape)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-5a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-5a> ;
     sh:rule _:be6b6213de607 ;
     sh:severity sh:Info ;
     sh:targetClass skos:Concept .
@@ -203,7 +203,7 @@ See [shacl-af-rules.md#opdapiiwithoutdpvcoannotationrule](../shacl-af-rules.md#o
 opda:PIIWithoutDPVCoAnnotationRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Meta-rule: any class marked opda:isPIIBearing true that lacks a dpv-pd:hasPersonalDataCategory annotation in the annotation graph is flagged as a PII-without-co-annotation breach. Severity sh:Warning per ADR-0012 §SHACL-AF rule emission (silent PII leakage is high-impact even though the rule is SHACL-AF-pattern-shaped)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q5> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5> ;
     sh:rule _:b3f168211e733 ;
     sh:severity sh:Warning ;
     sh:targetClass owl:Class .

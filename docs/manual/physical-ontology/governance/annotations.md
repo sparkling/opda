@@ -21,13 +21,13 @@ Header-only. Per ODR-0012 + ODR-0018 §Rule 1: governance classes (`DPVMappingRe
 ## Header
 
 ```turtle
-<https://w3id.org/opda/governance-annotations/>
+<https://opda.org.uk/pdtf/graph/governance-annotations>
     rdf:type owl:Ontology ;
     rdfs:comment "Governance classes (DPVMappingRecord, SpecialCategoryScheme) are meta-records declaring the DPV regime; they themselves carry no DPV class-level baseline (the categories they declare appear in the per-Kind annotation files). Per ODR-0012 + ODR-0018 §Rule 1 — the DPV co-annotation pattern applies to PII-bearing Substance Kinds, not to the meta-records that describe the DPV scheme itself."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Phase-1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1> ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Governance Annotations"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 No class-level baselines emitted in this module.

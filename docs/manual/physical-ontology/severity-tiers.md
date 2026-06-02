@@ -35,7 +35,7 @@ flowchart LR
     accTitle: Severity tier framework — 4 tiers, 5 Violation subcategories, and every emitted shape grouped as a leaf
     accDescr: Shows the four sh:severity tiers (Violation, Warning, Info, Pass) with the five Violation subcategories per ODR-0013 Q1, and each emitted SHACL shape attached to its category.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef violation fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C

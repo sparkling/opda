@@ -15,8 +15,8 @@ title: BASPI5
 ## Source profile TTL
 
 - [`profiles/baspi5.ttl`](../../../../source/03-standards/ontology/profiles/baspi5.ttl) ([Physical-Ontology tier →](../../physical-ontology/profiles/baspi5.md))
-- Named graph IRI: `https://w3id.org/opda/profiles/baspi5`
-- Version IRI: `https://w3id.org/opda/profiles/baspi5/0.1.0/`
+- Named graph IRI: `https://opda.org.uk/pdtf/shape/profiles/baspi5`
+- Version IRI: `https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/`
 - Triple count: 488 (HEAD; bytes 23 520; sha256 `c647c45e00ca…`)
 
 The profile emits seven per-class `sh:NodeShape`s targeting Property, Address, LegalEstate, Seller, Buyer, EPCCertificate, plus the discriminator shape `Baspi5_SellersCapacityShape` for the nested `sellersCapacity` `oneOf`. Every shape carries `dct:source <https://www.basp.uk/forms/baspi5#…>` form-question IRIs per [ODR-0010 §Q3](../../../ontology/odr/). DASH UI predicates (`dash:viewer`, `dash:editor`, `dash:propertyRole`, `sh:order`, `sh:group`) ride on each `sh:property` per [ODR-0010 §Q4](../../../ontology/odr/).
@@ -28,12 +28,12 @@ The profile carries one `opda:Baspi5ValidationContext` instance per [ODR-0010 §
 | Predicate | Value |
 |---|---|
 | `rdf:type` | `opda:ValidationContext` |
-| `opda:profileURI` | `https://w3id.org/opda/profiles/baspi5` |
+| `opda:profileURI` | `https://opda.org.uk/pdtf/shape/profiles/baspi5` |
 | `opda:requires` | `opda:Address`, `opda:Buyer`, `opda:EPCCertificate`, `opda:LegalEstate`, `opda:Property`, `opda:Seller`, `opda:Survey` |
-| `opda:overlaysContext` | `https://w3id.org/opda/profiles/foundation` |
+| `opda:overlaysContext` | `https://opda.org.uk/pdtf/shape/profiles/foundation` |
 | `opda:sourcedFrom` | `https://www.basp.uk/forms/baspi5` |
 | `opda:formVersion` | `5.0.3` |
-| `dct:source` | `https://w3id.org/opda/odr/ODR-0010#section-Q1` |
+| `dct:source` | `https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1` |
 
 ## Deployable composition
 
@@ -59,7 +59,7 @@ flowchart LR
     classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B
     classDef service fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
 
-    foundation["foundation.ttl<br/>w3id.org/opda/"]:::data
+    foundation["foundation.ttl<br/>opda.org.uk/pdtf/"]:::data
     vocabularies["opda-vocabularies.ttl"]:::data
     classes["opda-classes.ttl"]:::data
     shapesf["opda-shapes.ttl"]:::data

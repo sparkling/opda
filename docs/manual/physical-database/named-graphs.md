@@ -31,15 +31,15 @@ flowchart LR
     classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
     classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
 
-    F["foundation.ttl<br/>w3id.org/opda/<br/>versionIRI 1.0.0/"]:::data
-    V["opda-vocabularies.ttl<br/>w3id.org/opda/vocabularies/<br/>dct:references DPV"]:::data
+    F["foundation.ttl<br/>opda.org.uk/pdtf/<br/>versionIRI 1.0.0/"]:::data
+    V["opda-vocabularies.ttl<br/>opda.org.uk/pdtf/vocabularies/<br/>dct:references DPV"]:::data
     Cl["opda-classes.ttl<br/>no ontology IRI<br/>class declarations"]:::data
-    SH["opda-shapes.ttl<br/>w3id.org/opda/shapes<br/>foundation meta-shapes"]:::data
-    AN["opda-annotations.ttl<br/>w3id.org/opda/annotations<br/>meta-annotations"]:::data
+    SH["opda-shapes.ttl<br/>opda.org.uk/pdtf/graph/shapes<br/>foundation meta-shapes"]:::data
+    AN["opda-annotations.ttl<br/>opda.org.uk/pdtf/graph/annotations<br/>meta-annotations"]:::data
     P["opda-MODULE.ttl × 6<br/>module TBoxes"]:::data
     PS["opda-MODULE-shapes.ttl × 6<br/>module shapes"]:::data
     PA["opda-MODULE-annotations.ttl × 6<br/>DPV annotations"]:::data
-    B["profiles/baspi5.ttl<br/>w3id.org/opda/profiles/baspi5"]:::data
+    B["profiles/baspi5.ttl<br/>opda.org.uk/pdtf/profiles/baspi5"]:::data
 
     F -->|owl:imports| P
     V -->|owl:imports| P
@@ -78,10 +78,10 @@ flowchart TB
     classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
 
     subgraph FND["Foundation cluster"]
-        FN1["w3id.org/opda/<br/>1.0.0/"]:::infra
+        FN1["opda.org.uk/pdtf/<br/>1.0.0/"]:::infra
         FN2["opda-classes<br/>(no IRI)"]:::data
-        FN3["w3id.org/opda/shapes"]:::infra
-        FN4["w3id.org/opda/annotations"]:::infra
+        FN3["opda.org.uk/pdtf/graph/shapes"]:::infra
+        FN4["opda.org.uk/pdtf/graph/annotations"]:::infra
     end
 
     subgraph VOC["Vocabularies cluster"]
@@ -89,34 +89,34 @@ flowchart TB
     end
 
     subgraph MCLS["Module-TBox cluster (6)"]
-        MC1["w3id.org/opda/property/<br/>1.0.0/"]:::infra
-        MC2["w3id.org/opda/agent/<br/>1.0.0/"]:::infra
-        MC3["w3id.org/opda/transaction/<br/>1.0.0/"]:::infra
-        MC4["w3id.org/opda/claim/<br/>1.0.0/"]:::infra
-        MC5["w3id.org/opda/governance/<br/>1.0.0/"]:::infra
-        MC6["w3id.org/opda/descriptive/<br/>1.0.0/"]:::infra
+        MC1["opda.org.uk/pdtf/graph/property<br/>1.0.0/"]:::infra
+        MC2["opda.org.uk/pdtf/graph/agent<br/>1.0.0/"]:::infra
+        MC3["opda.org.uk/pdtf/graph/transaction<br/>1.0.0/"]:::infra
+        MC4["opda.org.uk/pdtf/graph/claim<br/>1.0.0/"]:::infra
+        MC5["opda.org.uk/pdtf/graph/governance<br/>1.0.0/"]:::infra
+        MC6["opda.org.uk/pdtf/graph/descriptive<br/>1.0.0/"]:::infra
     end
 
     subgraph MSH["Module-shape cluster (6)"]
-        MS1["w3id.org/opda/property-shapes/"]:::infra
-        MS2["w3id.org/opda/agent-shapes/"]:::infra
-        MS3["w3id.org/opda/transaction-shapes/"]:::infra
-        MS4["w3id.org/opda/claim-shapes/"]:::infra
-        MS5["w3id.org/opda/governance-shapes/"]:::infra
-        MS6["w3id.org/opda/descriptive-shapes/"]:::infra
+        MS1["opda.org.uk/pdtf/graph/property-shapes"]:::infra
+        MS2["opda.org.uk/pdtf/graph/agent-shapes"]:::infra
+        MS3["opda.org.uk/pdtf/graph/transaction-shapes"]:::infra
+        MS4["opda.org.uk/pdtf/graph/claim-shapes"]:::infra
+        MS5["opda.org.uk/pdtf/graph/governance-shapes"]:::infra
+        MS6["opda.org.uk/pdtf/graph/descriptive-shapes"]:::infra
     end
 
     subgraph MAN["Module-annotation cluster (6)"]
-        MA1["w3id.org/opda/property-annotations/"]:::infra
-        MA2["w3id.org/opda/agent-annotations/"]:::infra
-        MA3["w3id.org/opda/transaction-annotations/"]:::infra
-        MA4["w3id.org/opda/claim-annotations/"]:::infra
-        MA5["w3id.org/opda/governance-annotations/"]:::infra
-        MA6["w3id.org/opda/descriptive-annotations/"]:::infra
+        MA1["opda.org.uk/pdtf/graph/property-annotations"]:::infra
+        MA2["opda.org.uk/pdtf/graph/agent-annotations"]:::infra
+        MA3["opda.org.uk/pdtf/graph/transaction-annotations"]:::infra
+        MA4["opda.org.uk/pdtf/graph/claim-annotations"]:::infra
+        MA5["opda.org.uk/pdtf/graph/governance-annotations"]:::infra
+        MA6["opda.org.uk/pdtf/graph/descriptive-annotations"]:::infra
     end
 
     subgraph OVR["Overlay-profile cluster"]
-        OB1["w3id.org/opda/profiles/baspi5<br/>versionIRI 0.1.0/"]:::infra
+        OB1["opda.org.uk/pdtf/profiles/baspi5<br/>versionIRI 0.1.0/"]:::infra
     end
 
     FND --> MCLS
@@ -132,7 +132,7 @@ flowchart TB
 
 ## Named-graph dependency graph
 
-`owl:imports` chains across the deployment. The foundation versionIRI `https://w3id.org/opda/1.0.0/` is imported by every module-TBox graph and by every overlay profile. The vocabularies graph (cited as `https://w3id.org/opda/vocabularies/`) is imported alongside the foundation in every module TBox and overlay. Shape graphs declare no `owl:imports` (per ODR-0004 §3a separation rule 3) and load alongside their matching TBox graph.
+`owl:imports` chains across the deployment. The foundation versionIRI `https://opda.org.uk/pdtf/harness/release/1.0.0/` is imported by every module-TBox graph and by every overlay profile. The vocabularies graph (cited as `https://opda.org.uk/pdtf/scheme/`) is imported alongside the foundation in every module TBox and overlay. Shape graphs declare no `owl:imports` (per ODR-0004 §3a separation rule 3) and load alongside their matching TBox graph.
 
 <img src="diagrams/named-graphs/named-graph-dependency.png" alt="Named-graph dependency graph" width="90%">
 
@@ -154,17 +154,17 @@ flowchart LR
 
     classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100
 
-    F["w3id.org/opda/1.0.0/<br/>foundation versionIRI"]:::data
-    V["w3id.org/opda/vocabularies/<br/>SKOS schemes"]:::data
+    F["opda.org.uk/pdtf/1.0.0/<br/>foundation versionIRI"]:::data
+    V["opda.org.uk/pdtf/vocabularies/<br/>SKOS schemes"]:::data
 
-    P["w3id.org/opda/property/"]:::data
-    A["w3id.org/opda/agent/"]:::data
-    T["w3id.org/opda/transaction/"]:::data
-    Cl["w3id.org/opda/claim/"]:::data
-    G["w3id.org/opda/governance/"]:::data
-    D["w3id.org/opda/descriptive/"]:::data
+    P["opda.org.uk/pdtf/graph/property"]:::data
+    A["opda.org.uk/pdtf/graph/agent"]:::data
+    T["opda.org.uk/pdtf/graph/transaction"]:::data
+    Cl["opda.org.uk/pdtf/graph/claim"]:::data
+    G["opda.org.uk/pdtf/graph/governance"]:::data
+    D["opda.org.uk/pdtf/graph/descriptive"]:::data
 
-    B["w3id.org/opda/profiles/baspi5"]:::data
+    B["opda.org.uk/pdtf/profiles/baspi5"]:::data
 
     F -->|owl:imports| P
     F -->|owl:imports| A
@@ -187,7 +187,7 @@ flowchart LR
 
 ## Foundation graphs
 
-### https://w3id.org/opda/
+### https://opda.org.uk/pdtf/
 
 #### Source TTL(s)
 
@@ -207,7 +207,7 @@ Default-graph entry point. Carries the `owl:Ontology` declaration for the OPDA n
 
 #### Version IRI
 
-`https://w3id.org/opda/1.0.0/`. Bumped on every module-TBox or vocabulary release per [ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md). Last bump: 1.0.0 (foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData — ADR-0009..ADR-0014).
+`https://opda.org.uk/pdtf/harness/release/1.0.0/`. Bumped on every module-TBox or vocabulary release per [ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md). Last bump: 1.0.0 (foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData — ADR-0009..ADR-0014).
 
 ### (no ontology IRI — class graph)
 
@@ -231,7 +231,7 @@ The class graph carries the six foundation `owl:Class` declarations (DiagnosticE
 
 None at file level — class graph rides on the foundation `owl:versionIRI`.
 
-### https://w3id.org/opda/shapes
+### https://opda.org.uk/pdtf/graph/shapes
 
 #### Source TTL(s)
 
@@ -253,7 +253,7 @@ Foundation SHACL meta-shapes (Cat 3 NoIdentityOverride, Cat 5 MetaShapeOverShape
 
 None at file level.
 
-### https://w3id.org/opda/annotations
+### https://opda.org.uk/pdtf/graph/annotations
 
 #### Source TTL(s)
 
@@ -289,7 +289,7 @@ The 23 SKOS Concept Schemes per [ODR-0011 §1a + §8a](../../ontology/odr/) seve
 
 #### Load order
 
-- No `owl:imports`. Pure SKOS-scheme aggregate. Loaded by every module TBox via the canonical `https://w3id.org/opda/vocabularies/` import.
+- No `owl:imports`. Pure SKOS-scheme aggregate. Loaded by every module TBox via the canonical `https://opda.org.uk/pdtf/scheme/` import.
 
 #### Triple count
 
@@ -297,13 +297,13 @@ The 23 SKOS Concept Schemes per [ODR-0011 §1a + §8a](../../ontology/odr/) seve
 
 #### Version IRI
 
-None at file level; module imports cite `https://w3id.org/opda/vocabularies/` as the canonical import target (the redirect serves this file).
+None at file level; module imports cite `https://opda.org.uk/pdtf/scheme/` as the canonical import target (the redirect serves this file).
 
 ## Module-TBox graphs
 
 Each module-TBox graph imports the foundation + vocabularies via canonical URLs. The composer rewrites these to local file paths during build; at deploy time the W3C PICG redirect resolves them.
 
-### https://w3id.org/opda/property/
+### https://opda.org.uk/pdtf/graph/property
 
 #### Source TTL(s)
 
@@ -315,8 +315,8 @@ Property module TBox: physical Property, LegalEstate, RegisteredTitle, Address +
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>` — foundation.
-- `owl:imports <https://w3id.org/opda/vocabularies/>` — SKOS schemes.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>` — SKOS schemes.
 
 #### Triple count
 
@@ -324,9 +324,9 @@ Property module TBox: physical Property, LegalEstate, RegisteredTitle, Address +
 
 #### Version IRI
 
-`https://w3id.org/opda/property/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/property/1.0.0/`.
 
-### https://w3id.org/opda/agent/
+### https://opda.org.uk/pdtf/graph/agent
 
 #### Source TTL(s)
 
@@ -338,8 +338,8 @@ Agent module TBox: Person, Organisation, Proprietor + Proprietorship Relator, Se
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 
 #### Triple count
 
@@ -347,9 +347,9 @@ Agent module TBox: Person, Organisation, Proprietor + Proprietorship Relator, Se
 
 #### Version IRI
 
-`https://w3id.org/opda/agent/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/agent/1.0.0/`.
 
-### https://w3id.org/opda/transaction/
+### https://opda.org.uk/pdtf/graph/transaction
 
 #### Source TTL(s)
 
@@ -361,8 +361,8 @@ Transaction module TBox: Transaction Relator, Milestone, TransactionChain.
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 
 #### Triple count
 
@@ -370,9 +370,9 @@ Transaction module TBox: Transaction Relator, Milestone, TransactionChain.
 
 #### Version IRI
 
-`https://w3id.org/opda/transaction/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/transaction/1.0.0/`.
 
-### https://w3id.org/opda/claim/
+### https://opda.org.uk/pdtf/graph/claim
 
 #### Source TTL(s)
 
@@ -384,8 +384,8 @@ Claim module TBox: Claim, three Evidence subtypes (Document, ElectronicRecord, V
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 
 #### Triple count
 
@@ -393,9 +393,9 @@ Claim module TBox: Claim, three Evidence subtypes (Document, ElectronicRecord, V
 
 #### Version IRI
 
-`https://w3id.org/opda/claim/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/claim/1.0.0/`.
 
-### https://w3id.org/opda/governance/
+### https://opda.org.uk/pdtf/graph/governance
 
 #### Source TTL(s)
 
@@ -407,8 +407,8 @@ Governance module TBox: DPV mapping records that link OPDA kinds to GDPR persona
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 
 #### Triple count
 
@@ -416,9 +416,9 @@ Governance module TBox: DPV mapping records that link OPDA kinds to GDPR persona
 
 #### Version IRI
 
-`https://w3id.org/opda/governance/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/governance/1.0.0/`.
 
-### https://w3id.org/opda/descriptive/
+### https://opda.org.uk/pdtf/graph/descriptive
 
 #### Source TTL(s)
 
@@ -430,8 +430,8 @@ Descriptive module TBox: EPCCertificate, Search, Survey, Valuation, Comparable.
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 
 #### Triple count
 
@@ -439,13 +439,13 @@ Descriptive module TBox: EPCCertificate, Search, Survey, Valuation, Comparable.
 
 #### Version IRI
 
-`https://w3id.org/opda/descriptive/1.0.0/`.
+`https://opda.org.uk/pdtf/harness/release/descriptive/1.0.0/`.
 
 ## Module-shape graphs
 
 Each per-module shape graph carries Cat 1/2 identity + IC-breach shapes plus SHACL-AF non-blocking quality rules. None declare `owl:imports`; consumers load them alongside the matching TBox graph.
 
-### https://w3id.org/opda/property-shapes/
+### https://opda.org.uk/pdtf/graph/property-shapes
 
 #### Source TTL(s)
 
@@ -467,7 +467,7 @@ Property identity-key shapes (e.g. UPRN-keyed identity), IC-breach (anti-pattern
 
 None at file level.
 
-### https://w3id.org/opda/agent-shapes/
+### https://opda.org.uk/pdtf/graph/agent-shapes
 
 #### Source TTL(s)
 
@@ -489,7 +489,7 @@ Agent identity-key + IC-breach shapes.
 
 None at file level.
 
-### https://w3id.org/opda/transaction-shapes/
+### https://opda.org.uk/pdtf/graph/transaction-shapes
 
 #### Source TTL(s)
 
@@ -511,7 +511,7 @@ Transaction Relator and Milestone identity + IC-breach shapes; SHACL-AF rules fo
 
 None at file level.
 
-### https://w3id.org/opda/claim-shapes/
+### https://opda.org.uk/pdtf/graph/claim-shapes
 
 #### Source TTL(s)
 
@@ -533,7 +533,7 @@ Claim, Evidence, VerificationActivity identity + IC-breach shapes.
 
 None at file level.
 
-### https://w3id.org/opda/governance-shapes/
+### https://opda.org.uk/pdtf/graph/governance-shapes
 
 #### Source TTL(s)
 
@@ -555,7 +555,7 @@ DPV mapping-record shapes.
 
 None at file level.
 
-### https://w3id.org/opda/descriptive-shapes/
+### https://opda.org.uk/pdtf/graph/descriptive-shapes
 
 #### Source TTL(s)
 
@@ -581,7 +581,7 @@ None at file level.
 
 Each per-module annotation graph carries DPV class-level baselines + variant-conditional refinement maps per [ODR-0018](../../ontology/odr/). Reference-not-import for DPV: DPV terms cited via `dct:references` and URIRef triples; no `owl:imports <https://w3id.org/dpv/pd>` per [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md).
 
-### https://w3id.org/opda/property-annotations/
+### https://opda.org.uk/pdtf/graph/property-annotations
 
 #### Source TTL(s)
 
@@ -603,7 +603,7 @@ DPV annotations for Property module: baseline categories per class + per-variant
 
 None at file level.
 
-### https://w3id.org/opda/agent-annotations/
+### https://opda.org.uk/pdtf/graph/agent-annotations
 
 #### Source TTL(s)
 
@@ -625,7 +625,7 @@ DPV annotations for Agent module (Person PII baseline, etc.).
 
 None at file level.
 
-### https://w3id.org/opda/transaction-annotations/
+### https://opda.org.uk/pdtf/graph/transaction-annotations
 
 #### Source TTL(s)
 
@@ -647,7 +647,7 @@ DPV annotations for Transaction module.
 
 None at file level.
 
-### https://w3id.org/opda/claim-annotations/
+### https://opda.org.uk/pdtf/graph/claim-annotations
 
 #### Source TTL(s)
 
@@ -669,7 +669,7 @@ DPV annotations for Claim module.
 
 None at file level.
 
-### https://w3id.org/opda/governance-annotations/
+### https://opda.org.uk/pdtf/graph/governance-annotations
 
 #### Source TTL(s)
 
@@ -691,7 +691,7 @@ DPV annotations for Governance module.
 
 None at file level.
 
-### https://w3id.org/opda/descriptive-annotations/
+### https://opda.org.uk/pdtf/graph/descriptive-annotations
 
 #### Source TTL(s)
 
@@ -715,7 +715,7 @@ None at file level.
 
 ## Overlay-profile graph
 
-### https://w3id.org/opda/profiles/baspi5
+### https://opda.org.uk/pdtf/shape/profiles/baspi5
 
 #### Source TTL(s)
 
@@ -727,8 +727,8 @@ BASPI5 (British Association of Surveyors Property Information, version 5) overla
 
 #### Load order
 
-- `owl:imports <https://w3id.org/opda/1.0.0/>`.
-- `owl:imports <https://w3id.org/opda/vocabularies/>`.
+- `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`.
+- `owl:imports <https://opda.org.uk/pdtf/scheme/>`.
 - Implicit: every per-module shape graph (consumers loading this profile typically merge with all 6 module-shape graphs for full validation).
 
 #### Triple count
@@ -737,4 +737,4 @@ BASPI5 (British Association of Surveyors Property Information, version 5) overla
 
 #### Version IRI
 
-`https://w3id.org/opda/profiles/baspi5/0.1.0/`. Form version 5.0.3 (per `opda:Baspi5ValidationContext`).
+`https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/`. Form version 5.0.3 (per `opda:Baspi5ValidationContext`).

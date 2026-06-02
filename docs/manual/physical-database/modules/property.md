@@ -21,14 +21,14 @@ The Property module is the **Identity-Criterion crux** of OPDA. Property, LegalE
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/property/` | `opda-property.ttl` | 199 | `https://w3id.org/opda/property/1.0.0/` |
-| `https://w3id.org/opda/property-shapes/` | `opda-property-shapes.ttl` | 54 | — |
-| `https://w3id.org/opda/property-annotations/` | `opda-property-annotations.ttl` | 31 | — |
+| `https://opda.org.uk/pdtf/graph/property` | `opda-property.ttl` | 199 | `https://opda.org.uk/pdtf/harness/release/property/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/property-shapes` | `opda-property-shapes.ttl` | 54 | — |
+| `https://opda.org.uk/pdtf/graph/property-annotations` | `opda-property-annotations.ttl` | 31 | — |
 
 **Load order:** the TBox graph imports the foundation + vocabularies substrate:
 
 ```turtle
-owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/>
+owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/>
 ```
 
 Consumers must load the foundation graphs first (transitively via `owl:imports`). Property shape + annotation graphs declare no `owl:imports` and load alongside the TBox graph.
@@ -61,16 +61,16 @@ See [overlay-deployment/baspi5.md §Source profile TTL](../overlay-deployment/ba
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/property/` | property module TBox (`opda-property.ttl`) |
-| `https://w3id.org/opda/property/1.0.0/` | property versionIRI snapshot |
-| `https://w3id.org/opda/property-shapes/` | property shape graph (`opda-property-shapes.ttl`) |
-| `https://w3id.org/opda/property-annotations/` | property annotation graph (`opda-property-annotations.ttl`) |
-| `https://w3id.org/opda/Property` | per-entity dereference (TBox + matching shape fragment) |
-| `https://w3id.org/opda/Address` | per-entity dereference |
-| `https://w3id.org/opda/LegalEstate` | per-entity dereference |
-| `https://w3id.org/opda/RegisteredTitle` | per-entity dereference |
-| `https://w3id.org/opda/UPRNSuccessionEvent` | per-entity dereference |
-| `https://w3id.org/opda/LeaseExtensionEvent` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/property` | property module TBox (`opda-property.ttl`) |
+| `https://opda.org.uk/pdtf/harness/release/property/1.0.0/` | property versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/property-shapes` | property shape graph (`opda-property-shapes.ttl`) |
+| `https://opda.org.uk/pdtf/graph/property-annotations` | property annotation graph (`opda-property-annotations.ttl`) |
+| `https://opda.org.uk/pdtf/Property` | per-entity dereference (TBox + matching shape fragment) |
+| `https://opda.org.uk/pdtf/Address` | per-entity dereference |
+| `https://opda.org.uk/pdtf/LegalEstate` | per-entity dereference |
+| `https://opda.org.uk/pdtf/RegisteredTitle` | per-entity dereference |
+| `https://opda.org.uk/pdtf/UPRNSuccessionEvent` | per-entity dereference |
+| `https://opda.org.uk/pdtf/LeaseExtensionEvent` | per-entity dereference |
 
 Content-type routing per the [Accept-header matrix](../content-negotiation/README.md#accept-header-routing).
 
@@ -107,9 +107,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/property/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/property-shapes/"]:::infra
-        NGA["w3id.org/opda/property-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/property<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/property-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/property-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -129,10 +129,10 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/property/"]:::service
-        H2["w3id.org/opda/Property"]:::service
-        H3["w3id.org/opda/Address"]:::service
-        H4["w3id.org/opda/LegalEstate"]:::service
+        H1["opda.org.uk/pdtf/graph/property"]:::service
+        H2["opda.org.uk/pdtf/Property"]:::service
+        H3["opda.org.uk/pdtf/Address"]:::service
+        H4["opda.org.uk/pdtf/LegalEstate"]:::service
     end
 
     subgraph CONS["Consumers"]

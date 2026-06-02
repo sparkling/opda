@@ -38,9 +38,9 @@ Per ODR-0010 §Q1 (Guarino withdrawal condition), every profile is reified as an
 
 | Property | Value |
 |---|---|
-| `opda:profileURI` | The profile's URI (e.g. `<https://w3id.org/opda/profiles/baspi5>`) |
+| `opda:profileURI` | The profile's URI (e.g. `<https://opda.org.uk/pdtf/shape/profiles/baspi5>`) |
 | `opda:requires` | The Kind classes the profile constrains |
-| `opda:overlaysContext` | The base context the profile overlays (typically `<https://w3id.org/opda/profiles/foundation>`) |
+| `opda:overlaysContext` | The base context the profile overlays (typically `<https://opda.org.uk/pdtf/shape/profiles/foundation>`) |
 | `opda:sourcedFrom` | The external authoring source (e.g. BASPI form URL) |
 | `opda:formVersion` | The form version (e.g. "5.0.3") |
 

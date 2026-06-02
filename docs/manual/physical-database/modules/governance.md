@@ -21,9 +21,9 @@ The Governance module is the smallest business module by triple count (54 across
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/governance/` | `opda-governance.ttl` | 42 | `https://w3id.org/opda/governance/1.0.0/` |
-| `https://w3id.org/opda/governance-shapes/` | `opda-governance-shapes.ttl` | 13 | — |
-| `https://w3id.org/opda/governance-annotations/` | `opda-governance-annotations.ttl` | 6 | — |
+| `https://opda.org.uk/pdtf/graph/governance` | `opda-governance.ttl` | 42 | `https://opda.org.uk/pdtf/harness/release/governance/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/governance-shapes` | `opda-governance-shapes.ttl` | 13 | — |
+| `https://opda.org.uk/pdtf/graph/governance-annotations` | `opda-governance-annotations.ttl` | 6 | — |
 
 **Load order:** TBox graph imports foundation + vocabularies. Governance mapping records reference DPV terms via `dct:references` per [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) (reference-not-import).
 
@@ -47,12 +47,12 @@ A future ICO-compliance overlay or DPIA-mandated overlay is the expected first o
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/governance/` | governance module TBox |
-| `https://w3id.org/opda/governance/1.0.0/` | governance versionIRI snapshot |
-| `https://w3id.org/opda/governance-shapes/` | governance shape graph |
-| `https://w3id.org/opda/governance-annotations/` | governance annotation graph |
-| `https://w3id.org/opda/DataCategoryMapping` | per-entity dereference |
-| `https://w3id.org/opda/LegalBasisMapping` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/governance` | governance module TBox |
+| `https://opda.org.uk/pdtf/harness/release/governance/1.0.0/` | governance versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/governance-shapes` | governance shape graph |
+| `https://opda.org.uk/pdtf/graph/governance-annotations` | governance annotation graph |
+| `https://opda.org.uk/pdtf/DataCategoryMapping` | per-entity dereference |
+| `https://opda.org.uk/pdtf/LegalBasisMapping` | per-entity dereference |
 
 ## Deployment graph
 
@@ -88,9 +88,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/governance/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/governance-shapes/"]:::infra
-        NGA["w3id.org/opda/governance-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/governance<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/governance-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/governance-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -108,9 +108,9 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/governance/"]:::service
-        H2["w3id.org/opda/DataCategoryMapping"]:::service
-        H3["w3id.org/opda/LegalBasisMapping"]:::service
+        H1["opda.org.uk/pdtf/graph/governance"]:::service
+        H2["opda.org.uk/pdtf/DataCategoryMapping"]:::service
+        H3["opda.org.uk/pdtf/LegalBasisMapping"]:::service
     end
 
     subgraph CONS["Consumers"]

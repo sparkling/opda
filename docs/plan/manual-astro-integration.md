@@ -175,7 +175,7 @@ Validation report committed at `docs/adr/validation/ADR-NNNN-validation-report.m
 - **Authoring 227 manual content entries** — already done; they live in `docs/manual/`.
 - **PDF export from the site** — local `_export/` workflow handles offline PDF; site is HTML-only.
 - **Per-overlay route templates for TA6 / NTS / LPE1 etc.** — defer until those overlay profiles emit (Phase-2/3 of ADR-0013).
-- **JSON-LD HTTP content negotiation for `w3id.org/opda/<EntityLocalName>` URI dereference** — separate deployment-layer work; the manual page is the redirect target, but redirect setup is ADR-0006.
+- **JSON-LD HTTP content negotiation for `opda.org.uk/pdtf/<EntityLocalName>` URI dereference** — separate deployment-layer work; the manual page is the redirect target, but redirect setup is ADR-0006.
 - **Migrating existing `src/pages/modelling/` content into content collections** — ADR-0019 decides the handshake but doesn't refactor modelling-section content into collections.
 - **The G14 Council-routed item** (opda:hasSpecialCategoryData canonical naming via S012 Q3) — orthogonal to this plan; surfaces as a doc-side note if it lands during the integration.
 

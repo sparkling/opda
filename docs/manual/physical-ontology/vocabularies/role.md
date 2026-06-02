@@ -26,7 +26,7 @@ opda:RoleScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Participant Role"@en ;
     skos:definition "Role labels for the anti-rigid Roles a Person/Organisation plays as a Participant in a Transaction Relator."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Transaction participant role label"@en ;
     skos:scopeNote "UFO: Role label (Guizzardi 2005 Ch. 4 — anti-rigid Roles in a Relator). DOLCE: Endurant-played-role (Masolo D18 §4)."@en ;
     opda:hasSteward "Guizzardi (RoleMixin steward per S006 Q2)"@en ;
@@ -53,19 +53,19 @@ opda:RoleScheme
 ### Member Turtle (sample)
 
 ```turtle
-<https://w3id.org/opda/#role/Buyer>
+<https://opda.org.uk/pdtf/scheme/role/Buyer>
     rdf:type skos:Concept ;
     skos:prefLabel "Buyer"@en ;
     skos:definition "Party acquiring legal title."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#participants[].role.Buyer> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].role.Buyer> ;
     skos:inScheme opda:RoleScheme ;
     skos:notation "Buyer" .
 
-<https://w3id.org/opda/#role/Seller>
+<https://opda.org.uk/pdtf/scheme/role/Seller>
     rdf:type skos:Concept ;
     skos:prefLabel "Seller"@en ;
     skos:definition "Party transferring legal title."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#participants[].role.Seller> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].role.Seller> ;
     skos:inScheme opda:RoleScheme ;
     skos:notation "Seller" .
 
@@ -93,7 +93,7 @@ flowchart LR
     accTitle: opda:RoleScheme membership graph
     accDescr: 12 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

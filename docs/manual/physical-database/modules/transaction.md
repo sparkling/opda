@@ -21,9 +21,9 @@ The Transaction module covers the Transaction Relator, Milestones, and Transacti
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/transaction/` | `opda-transaction.ttl` | 39 | `https://w3id.org/opda/transaction/1.0.0/` |
-| `https://w3id.org/opda/transaction-shapes/` | `opda-transaction-shapes.ttl` | 37 | — |
-| `https://w3id.org/opda/transaction-annotations/` | `opda-transaction-annotations.ttl` | 6 | — |
+| `https://opda.org.uk/pdtf/graph/transaction` | `opda-transaction.ttl` | 39 | `https://opda.org.uk/pdtf/harness/release/transaction/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/transaction-shapes` | `opda-transaction-shapes.ttl` | 37 | — |
+| `https://opda.org.uk/pdtf/graph/transaction-annotations` | `opda-transaction-annotations.ttl` | 6 | — |
 
 **Load order:** TBox graph imports foundation + vocabularies. Shape graph carries the `ChainOverlapDetectionRule` SHACL-AF rule that flags multi-transaction chains where chain links contradict.
 
@@ -45,13 +45,13 @@ A future overlay (e.g. a Land Registry conveyancing overlay) is the expected fir
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/transaction/` | transaction module TBox |
-| `https://w3id.org/opda/transaction/1.0.0/` | transaction versionIRI snapshot |
-| `https://w3id.org/opda/transaction-shapes/` | transaction shape graph |
-| `https://w3id.org/opda/transaction-annotations/` | transaction annotation graph |
-| `https://w3id.org/opda/Transaction` | per-entity dereference |
-| `https://w3id.org/opda/Milestone` | per-entity dereference |
-| `https://w3id.org/opda/TransactionChain` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/transaction` | transaction module TBox |
+| `https://opda.org.uk/pdtf/harness/release/transaction/1.0.0/` | transaction versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/transaction-shapes` | transaction shape graph |
+| `https://opda.org.uk/pdtf/graph/transaction-annotations` | transaction annotation graph |
+| `https://opda.org.uk/pdtf/Transaction` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Milestone` | per-entity dereference |
+| `https://opda.org.uk/pdtf/TransactionChain` | per-entity dereference |
 
 ## Deployment graph
 
@@ -87,9 +87,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/transaction/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/transaction-shapes/"]:::infra
-        NGA["w3id.org/opda/transaction-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/transaction<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/transaction-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/transaction-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -107,10 +107,10 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/transaction/"]:::service
-        H2["w3id.org/opda/Transaction"]:::service
-        H3["w3id.org/opda/Milestone"]:::service
-        H4["w3id.org/opda/TransactionChain"]:::service
+        H1["opda.org.uk/pdtf/graph/transaction"]:::service
+        H2["opda.org.uk/pdtf/Transaction"]:::service
+        H3["opda.org.uk/pdtf/Milestone"]:::service
+        H4["opda.org.uk/pdtf/TransactionChain"]:::service
     end
 
     subgraph CONS["Consumers"]

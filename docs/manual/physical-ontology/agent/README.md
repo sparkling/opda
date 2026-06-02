@@ -19,17 +19,17 @@ The Agent module emits 7 OWL classes: 2 Substance Kinds (Person, Organisation), 
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/agent/>
+<https://opda.org.uk/pdtf/graph/agent>
     rdf:type owl:Ontology ;
     dct:title "OPDA Agent Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/agent/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/agent/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation (Role, RoleMixin, Relator meta-classes)
-- `<https://w3id.org/opda/vocabularies/>` — SKOS schemes (RoleScheme, OwnerType, SellersCapacity)
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation (Role, RoleMixin, Relator meta-classes)
+- `<https://opda.org.uk/pdtf/scheme/>` — SKOS schemes (RoleScheme, OwnerType, SellersCapacity)
 
 External vocabularies referenced (not imported):
 - `org:Organization` — `opda:Organisation rdfs:subClassOf org:Organization`
@@ -125,7 +125,7 @@ flowchart LR
     accTitle: Agent shapes and their target classes
     accDescr: Two identity-key shapes plus one Cat-4 PII shape plus two SHACL-AF rules; all five target opda:Person or opda:Organisation.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -168,7 +168,7 @@ flowchart LR
     accTitle: Agent module — DPV personal-data co-annotations
     accDescr: Person carries dpv-pd:Name baseline. Organisation carries no class-level baseline per ODR-0006 Q6 plus ODR-0018 Rule 4. Two variant refinements scope lawful basis for dateOfBirth and email predicates.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
 
     classDef pii fill:#E0F2F1,stroke:#00695C,stroke-width:2px,color:#004D40

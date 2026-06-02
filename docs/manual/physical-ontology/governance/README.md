@@ -19,18 +19,18 @@ The Governance module emits 2 OWL classes (DPVMappingRecord meta-record class + 
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/governance/>
+<https://opda.org.uk/pdtf/graph/governance>
     rdf:type owl:Ontology ;
     dct:references <https://w3id.org/dpv/pd> ;
     dct:title "OPDA Governance Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/governance/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/governance/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation
-- `<https://w3id.org/opda/vocabularies/>` — SKOS substrate
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation
+- `<https://opda.org.uk/pdtf/scheme/>` — SKOS substrate
 
 External vocabularies referenced (not imported):
 - `dpv-pd:` — cited via `dct:references` on the module header + per-instance `opda:baselineCategory` triples
@@ -101,7 +101,7 @@ flowchart LR
     accTitle: Governance shape and its target class
     accDescr: Single identity-key shape — DPVMappingRecordIdentityKeyShape — targets DPVMappingRecord meta-records and enforces a single targetsKind binding per record.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -132,7 +132,7 @@ flowchart LR
     accTitle: Governance module — DPV co-annotations (header-only)
     accDescr: Governance classes are meta-records — they declare the DPV regime; they themselves carry no DPV class-level baseline. The three DPVMappingRecord instances bind Kinds (Claim, Organisation, Person) to DPV categories.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
 
     classDef note fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238

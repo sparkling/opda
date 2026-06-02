@@ -6,7 +6,7 @@ title: Shared JSON-LD `@context`
 
 # Shared JSON-LD `@context`
 
-OPDA serves a **single canonical JSON-LD `@context`** across every `Accept: application/ld+json` response, independent of which resource is requested. The context is published at `https://w3id.org/opda/context.jsonld` and embedded inline in every JSON-LD response.
+OPDA serves a **single canonical JSON-LD `@context`** across every `Accept: application/ld+json` response, independent of which resource is requested. The context is published at `https://opda.org.uk/pdtf/context.jsonld` and embedded inline in every JSON-LD response.
 
 ## Why one context
 
@@ -19,10 +19,10 @@ The canonical `@context` carries three sets of mappings.
 ### 1. Default vocabulary
 
 ```json
-"@vocab": "https://w3id.org/opda/#"
+"@vocab": "https://opda.org.uk/pdtf/"
 ```
 
-Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's HASH namespace without explicit prefix. Per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md), the HASH namespace decision means `opda:Property` serialises as `https://w3id.org/opda/#Property` — the `@vocab` setting honours this.
+Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's HASH namespace without explicit prefix. Per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md), the HASH namespace decision means `opda:Property` serialises as `https://opda.org.uk/pdtf/Property` — the `@vocab` setting honours this.
 
 ### 2. Standard ontology prefixes
 
@@ -63,20 +63,20 @@ Type-coercions let JSON consumers omit explicit `@type` on every literal. The OP
 
 ## Worked example
 
-A consumer requesting `https://w3id.org/opda/profiles/baspi5` with `Accept: application/ld+json` receives:
+A consumer requesting `https://opda.org.uk/pdtf/shape/profiles/baspi5` with `Accept: application/ld+json` receives:
 
 ```json
 {
-  "@context": "https://w3id.org/opda/context.jsonld",
-  "@id": "https://w3id.org/opda/profiles/baspi5",
+  "@context": "https://opda.org.uk/pdtf/context.jsonld",
+  "@id": "https://opda.org.uk/pdtf/shape/profiles/baspi5",
   "@type": "owl:Ontology",
   "dct:title": { "@value": "BASPI5 overlay profile", "@language": "en" },
-  "dct:source": "https://openpropdata.org.uk/adr/ADR-0013-overlay-profile-emission",
+  "dct:source": "https://opda.org.uk/pdtf/harness/adr/ADR-0013-overlay-profile-emission",
   "owl:imports": [
-    "https://w3id.org/opda/1.0.0/",
-    "https://w3id.org/opda/vocabularies/"
+    "https://opda.org.uk/pdtf/harness/release/1.0.0/",
+    "https://opda.org.uk/pdtf/scheme/"
   ],
-  "owl:versionIRI": "https://w3id.org/opda/profiles/baspi5/0.1.0/"
+  "owl:versionIRI": "https://opda.org.uk/pdtf/shape/profiles/baspi5/0.1.0/"
 }
 ```
 
@@ -84,7 +84,7 @@ Note that `owl:imports` is a single JSON array (driven by `@container: @set` in 
 
 ## Versioning
 
-The `@context` itself is versioned. A breaking change (e.g. adding a new type-coercion that changes how an existing predicate serialises) bumps the context URL to `https://w3id.org/opda/context-2.jsonld` and the old URL continues to serve the prior version. Consumers pin to a context URL; the deployment never silently mutates a published context.
+The `@context` itself is versioned. A breaking change (e.g. adding a new type-coercion that changes how an existing predicate serialises) bumps the context URL to `https://opda.org.uk/pdtf/context-2.jsonld` and the old URL continues to serve the prior version. Consumers pin to a context URL; the deployment never silently mutates a published context.
 
 ## Source ADR
 

@@ -37,8 +37,8 @@ flowchart LR
     accTitle: organisation-with-merger exemplar instance graph
     accDescr: Three Organisation individuals — two dissolved predecessors plus one successor with prov:wasDerivedFrom links to both. New CRN and LEI for the successor. No owl:sameAs anywhere.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
-    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/organisation-with-merger/>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
+    %% @prefix opda-x: <https://opda.org.uk/pdtf/harness/data/exemplar/organisation-with-merger/>
     %% @prefix prov: <http://www.w3.org/ns/prov#>
 
     classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
@@ -83,11 +83,11 @@ flowchart LR
 # Organisation has its own Companies House number, LEI, and trading name. Pre-merger
 # transactions were associated with the predecessors; post-merger with the successor.
 # The IC must determine when an Organisation persists through change and when it does not.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/organisation-with-merger/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/organisation-with-merger/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -145,9 +145,9 @@ opda-x:org-successor
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/organisation-with-merger> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/organisation-with-merger> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

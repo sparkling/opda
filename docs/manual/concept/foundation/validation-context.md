@@ -25,7 +25,7 @@ If you are a SHACL engineer asking "where do the per-profile constraints attach?
 
 ## Identity Criterion
 
-Each Validation Context is identified by its **profile URI** — for example, `https://w3id.org/opda/#Baspi5ValidationContext`. Two records reference the same Context only if they cite the same URI. See the [Logical tier →](../../logical/foundation/validation-context.md) for the field-level shape (profile URI, required-set, overlaid-context, source, form version).
+Each Validation Context is identified by its **profile URI** — for example, `https://opda.org.uk/pdtf/Baspi5ValidationContext`. Two records reference the same Context only if they cite the same URI. See the [Logical tier →](../../logical/foundation/validation-context.md) for the field-level shape (profile URI, required-set, overlaid-context, source, form version).
 
 ## Related Kinds
 

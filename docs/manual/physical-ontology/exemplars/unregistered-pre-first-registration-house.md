@@ -37,8 +37,8 @@ flowchart LR
     accTitle: unregistered-pre-first-registration-house exemplar instance graph
     accDescr: Two RDF instances — Property and LegalEstate. No RegisteredTitle (first registration not yet completed). UPRN absent (Cagle graceful-degradation case).
 
-    %% @prefix opda: <https://w3id.org/opda/#>
-    %% @prefix opda-x: <https://openpropdata.org.uk/data/exemplar/unregistered-pre-first-registration-house/>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
+    %% @prefix opda-x: <https://opda.org.uk/pdtf/harness/data/exemplar/unregistered-pre-first-registration-house/>
 
     classDef instance fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
     classDef literal fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
@@ -72,15 +72,15 @@ flowchart LR
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
 # Situation: rural cottage, owner-occupied for decades, no first registration yet (isFirstRegistration = Yes).
 # UPRN deliberately absent — Cagle's graceful-degradation challenge (ODR-0005 Rule 3 + Anti-patterns).
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: accepted (council: session-005).
 # Amended 2026-05-27 post-S005 close: added common-law opda:LegalEstate individual explicitly.
 # This discharges the Kendall+Davis cardinality-test requirement (S005 Q5 + Q7) — manifests the
 # LegalEstate-without-RegisteredTitle case and shows the 3-class commitment gives the right answer.
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/unregistered-pre-first-registration-house/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/unregistered-pre-first-registration-house/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
@@ -128,9 +128,9 @@ opda-x:estate opda:identifiesSameProperty opda-x:property .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/unregistered-pre-first-registration-house> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/unregistered-pre-first-registration-house> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

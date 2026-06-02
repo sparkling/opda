@@ -21,10 +21,10 @@ title: Agent shapes
 ## Header
 
 ```turtle
-<https://w3id.org/opda/agent-shapes/>
+<https://opda.org.uk/pdtf/graph/agent-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Agent Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:OrganisationIdentityKeyShape
@@ -32,7 +32,7 @@ title: Agent shapes
 ```turtle
 opda:OrganisationIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4> ;
     sh:property _:b2ea199d949d8 ;
     sh:targetClass opda:Organisation .
 
@@ -66,7 +66,7 @@ For every `opda:Organisation` instance, `opda:hasAssertedCapacity` MUST be at mo
 ```turtle
 opda:PersonIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
     sh:property _:bf660b84eaa1e ;
     sh:targetClass opda:Person .
 
@@ -100,14 +100,14 @@ For every `opda:Person` instance, `opda:hasAssertedCapacity` MUST be at most one
 ```turtle
 opda:SpecialCategoryPIIWithoutLawfulBasisShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0012#section-Q3> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q3> ;
     sh:message "Special-category PII (GDPR Article 10) MUST have an associated dpv:hasLegalBasis triple. ODR-0012 Phase 1 + ODR-0013 §Q1 Category 4: lawful-basis-elevated PII is a Violation-tier breach."@en ;
     sh:severity sh:Violation ;
     sh:sparql _:b1ced501bb698 ;
     sh:targetClass opda:Person .
 
 _:b1ced501bb698
-    sh:select "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX dpv: <https://w3id.org/dpv/pd#>\nSELECT $this ?path WHERE {\n  $this opda:hasSpecialCategoryData true .\n  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n  BIND (opda:hasSpecialCategoryData AS ?path)\n}" .
+    sh:select "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX dpv: <https://w3id.org/dpv/pd#>\nSELECT $this ?path WHERE {\n  $this opda:hasSpecialCategoryData true .\n  FILTER NOT EXISTS { $this dpv:hasLegalBasis ?basis }\n  BIND (opda:hasSpecialCategoryData AS ?path)\n}" .
 ```
 
 #### Severity tier
@@ -134,14 +134,14 @@ For every `opda:Person` instance carrying `opda:hasSpecialCategoryData true`, py
 opda:IdentifierSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Person identifier-succession rule (ODR-0006 §Q1; SHACL-AF citing site #5). Materialises opda:hasIdentifierSuccessionEvent for downstream audit when a NameChangeEvent (or subclass: passport-renewal, NI-renumbering) names the Person via prov:wasAssociatedWith. Per ODR-0017 §1a."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
     sh:rule _:b04ddc2ae8a10 ;
     sh:severity sh:Info ;
     sh:targetClass opda:Person .
 
 _:b04ddc2ae8a10
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?person opda:hasIdentifierSuccessionEvent ?event .\n}\nWHERE {\n  ?person a opda:Person .\n  ?event a opda:NameChangeEvent ;\n         prov:wasAssociatedWith ?person .\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?person opda:hasIdentifierSuccessionEvent ?event .\n}\nWHERE {\n  ?person a opda:Person .\n  ?event a opda:NameChangeEvent ;\n         prov:wasAssociatedWith ?person .\n}" .
 ```
 
 #### Derives
@@ -168,14 +168,14 @@ _:b04ddc2ae8a10
 opda:CapacityAuthorityMatchRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Capacity-authority match rule (ODR-0006 §Q4; SHACL-AF citing site #6). Materialises opda:hasCapacityAuthorityMatchStatus to surface Persons declaring a capacity (e.g. 'Director', 'Trustee') without an evidenced authority triple. Status value 'unevidenced-capacity' is a hook for downstream-tooling escalation per ODR-0017 §2a without-substantive-succession discipline."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0006#section-Q4> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4> ;
     sh:rule _:bcd856a2c693b ;
     sh:severity sh:Info ;
     sh:targetClass opda:Person .
 
 _:bcd856a2c693b
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
 ```
 
 #### Derives

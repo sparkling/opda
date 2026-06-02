@@ -27,7 +27,7 @@ Cross-link: [Concept tier — Address hard cases](../../concept/property/address
 # Situation: a Grade II-listed building with three divergent address presentations —
 # the title address (as on the HMLR register), the marketing address (as on Rightmove),
 # and the INSPIRE-derived cadastral address. All three identify the same physical Property.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: proposed (council: session-005); ODR-0015 status: proposed (council: session-015).
 # This exemplar was authored under the Kind reading natively (S015 Q1 Substance Kind verdict);
@@ -35,8 +35,8 @@ Cross-link: [Concept tier — Address hard cases](../../concept/property/address
 # Amended 2026-05-27 post-S015 close: added opda:hasAddress join predicate from Property side
 # (S005 §6b + S015 Q3 — opda:hasAddress is the canonical Property→Address join).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/listed-building-divergent-addresses/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/listed-building-divergent-addresses/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
@@ -111,9 +111,9 @@ opda-x:property opda:hasAddress opda-x:title-address , opda-x:marketing-address 
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/listed-building-divergent-addresses> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/listed-building-divergent-addresses> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

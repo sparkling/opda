@@ -12,7 +12,7 @@ The foundation graph carries the **6 cross-cutting classes** that the per-module
 
 | File | Role | Source |
 |---|---|---|
-| `foundation.ttl` | Ontology header (`<https://w3id.org/opda/>` + `owl:versionIRI`) | [foundation.ttl](../../../../source/03-standards/ontology/foundation.ttl) |
+| `foundation.ttl` | Ontology header (`<https://opda.org.uk/pdtf/>` + `owl:versionIRI`) | [foundation.ttl](../../../../source/03-standards/ontology/foundation.ttl) |
 | `opda-classes.ttl` | 6 foundation classes + `opda:hasSpecialCategoryData` datatype property | [opda-classes.ttl](../../../../source/03-standards/ontology/opda-classes.ttl) |
 | `opda-shapes.ttl` | 5 meta-shapes + 2 cross-cutting SHACL-AF rules | [opda-shapes.ttl](../../../../source/03-standards/ontology/opda-shapes.ttl) |
 | `opda-annotations.ttl` | Header-only (no class-level DPV baseline) | [opda-annotations.ttl](../../../../source/03-standards/ontology/opda-annotations.ttl) |
@@ -20,7 +20,7 @@ The foundation graph carries the **6 cross-cutting classes** that the per-module
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/>
+<https://opda.org.uk/pdtf/>
     rdf:type owl:Ontology ;
     dct:creator "OPDA Linked Data Council" ;
     dct:description "Linked-data ontology for UK residential property transaction data; the Trust Framework's machine-readable vocabulary."@en ;
@@ -29,14 +29,14 @@ The foundation graph carries the **6 cross-cutting classes** that the per-module
     dct:modified "2026-05-28"^^xsd:date ;
     dct:title "OPDA — Open Property Data Association Ontology"@en ;
     vann:preferredNamespacePrefix "opda" ;
-    vann:preferredNamespaceUri "https://w3id.org/opda/#"^^xsd:anyURI ;
-    owl:versionIRI <https://w3id.org/opda/1.0.0/> ;
+    vann:preferredNamespaceUri "https://opda.org.uk/pdtf/"^^xsd:anyURI ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/1.0.0/> ;
     owl:versionInfo "1.0.0 — foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData (ADR-0009 + ADR-0010 + ADR-0011 + ADR-0012 + ADR-0013 + ADR-0014)" ;
     sh:declare _:b0bdbfe4f895a ;
     opda:generatorVersion "opda-gen-1.0.0" .
 
 _:b0bdbfe4f895a
-    sh:namespace "https://w3id.org/opda/#"^^xsd:anyURI ;
+    sh:namespace "https://opda.org.uk/pdtf/"^^xsd:anyURI ;
     sh:prefix "opda" .
 ```
 
@@ -103,7 +103,7 @@ flowchart LR
     accTitle: Foundation meta-shapes and their targets
     accDescr: Five meta-shapes plus two cross-cutting SHACL-AF rules. Each meta-shape targets sh:NodeShape (SPARQL-based) or skos:Concept or owl:Class.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -166,7 +166,7 @@ See [`meta-shapes.md`](./meta-shapes.md) for per-shape blocks.
 The foundation graph has no `owl:imports` (it is the base). Per-module graphs import it via:
 
 ```turtle
-owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/>
+owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/>
 ```
 
 (both `opda:` foundation + SKOS substrate)

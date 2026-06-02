@@ -26,7 +26,7 @@ opda:PropertyTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Property Type"@en ;
     skos:definition "Substance Kind labels for the physical-form kind of a Property (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from BuiltFormScheme which carries the structural Quale (Detached / Semi-detached / Terrace)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Property type Substance Kind label"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members may bind to OWL sub-classes of opda:Property via skos:exactMatch when conditional Building/Room class promotions trigger (per ODR-0008 §Q4a held-as-live). Distinct from BuiltFormScheme (Quale-in-Region)."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
@@ -47,51 +47,51 @@ opda:PropertyTypeScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#propertyType/Bungalow>
+<https://opda.org.uk/pdtf/scheme/propertyType/Bungalow>
     rdf:type skos:Concept ;
     skos:prefLabel "Bungalow"@en ;
     skos:definition "A single-storey detached dwelling."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Bungalow> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.Bungalow> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Bungalow" .
 
-<https://w3id.org/opda/#propertyType/Flat>
+<https://opda.org.uk/pdtf/scheme/propertyType/Flat>
     rdf:type skos:Concept ;
     skos:prefLabel "Flat"@en ;
     skos:definition "A self-contained dwelling forming part of a larger building."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Flat> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.Flat> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Flat" .
 
-<https://w3id.org/opda/#propertyType/House>
+<https://opda.org.uk/pdtf/scheme/propertyType/House>
     rdf:type skos:Concept ;
     skos:prefLabel "House"@en ;
     skos:definition "A self-contained dwelling occupying a complete structure."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.House> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.House> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "House" .
 
-<https://w3id.org/opda/#propertyType/Maisonette>
+<https://opda.org.uk/pdtf/scheme/propertyType/Maisonette>
     rdf:type skos:Concept ;
     skos:prefLabel "Maisonette"@en ;
     skos:definition "A self-contained dwelling within a larger building, typically with its own external entrance."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Maisonette> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.Maisonette> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Maisonette" .
 
-<https://w3id.org/opda/#propertyType/Other>
+<https://opda.org.uk/pdtf/scheme/propertyType/Other>
     rdf:type skos:Concept ;
     skos:prefLabel "Other"@en ;
     skos:definition "Property type falling outside the standard categories."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Other> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.Other> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Other" .
 
-<https://w3id.org/opda/#propertyType/Park-home>
+<https://opda.org.uk/pdtf/scheme/propertyType/Park-home>
     rdf:type skos:Concept ;
     skos:prefLabel "Park home"@en ;
     skos:definition "A detached single-storey dwelling sited within a residential park."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.buildInformation.building.propertyType.Park%20home> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType.Park%20home> ;
     skos:inScheme opda:PropertyTypeScheme ;
     skos:notation "Park home" .
 ```
@@ -116,7 +116,7 @@ flowchart LR
     accTitle: opda:PropertyTypeScheme membership graph
     accDescr: 6 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

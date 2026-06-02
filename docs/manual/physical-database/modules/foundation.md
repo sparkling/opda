@@ -22,12 +22,12 @@ The foundation module is the base of every other module. It declares the OPDA na
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/` | `foundation.ttl` | 15 | `https://w3id.org/opda/1.0.0/` |
+| `https://opda.org.uk/pdtf/` | `foundation.ttl` | 15 | `https://opda.org.uk/pdtf/harness/release/1.0.0/` |
 | *(no ontology IRI — class graph)* | `opda-classes.ttl` | 36 | — (rides on foundation versionIRI) |
-| `https://w3id.org/opda/shapes` | `opda-shapes.ttl` | 51 | — |
-| `https://w3id.org/opda/annotations` | `opda-annotations.ttl` | 3 | — |
+| `https://opda.org.uk/pdtf/graph/shapes` | `opda-shapes.ttl` | 51 | — |
+| `https://opda.org.uk/pdtf/graph/annotations` | `opda-annotations.ttl` | 3 | — |
 
-**Load order:** foundation graphs have no `owl:imports`. They are loaded first by every consumer. Every per-module TBox graph imports `<https://w3id.org/opda/1.0.0/>` (the foundation versionIRI) as one of its two foundation-substrate imports.
+**Load order:** foundation graphs have no `owl:imports`. They are loaded first by every consumer. Every per-module TBox graph imports `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` (the foundation versionIRI) as one of its two foundation-substrate imports.
 
 See [named-graphs.md §Foundation graphs](../named-graphs.md#foundation-graphs) for per-graph details.
 
@@ -43,7 +43,7 @@ Foundation classes appear in all three profiles because they are the substrate e
 
 ## Overlay bindings
 
-**Every** deployed overlay imports the foundation graph via `owl:imports <https://w3id.org/opda/1.0.0/>`. The BASPI5 overlay is the only overlay currently in production:
+**Every** deployed overlay imports the foundation graph via `owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>`. The BASPI5 overlay is the only overlay currently in production:
 
 - [`profiles/baspi5.ttl`](../../../../source/03-standards/ontology/profiles/baspi5.ttl) imports foundation + uses `opda:ValidationContext` to reify its `opda:Baspi5ValidationContext` instance per ODR-0010 §Q1.
 
@@ -53,17 +53,17 @@ The foundation meta-shapes (Cat 3 NoIdentityOverride, Cat 5 MetaShapeOverShapeGr
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/` | foundation default graph (`foundation.ttl`) |
-| `https://w3id.org/opda/1.0.0/` | foundation versionIRI snapshot (immutable per release) |
-| `https://w3id.org/opda/DiagnosticExemplar` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/GeneratorRun` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/Relator` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/Role` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/RoleMixin` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/ValidationContext` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/hasSpecialCategoryData` | per-entity dereference into `opda-classes.ttl` |
-| `https://w3id.org/opda/shapes` | `opda-shapes.ttl` (named-graph endpoint) |
-| `https://w3id.org/opda/annotations` | `opda-annotations.ttl` (named-graph endpoint) |
+| `https://opda.org.uk/pdtf/` | foundation default graph (`foundation.ttl`) |
+| `https://opda.org.uk/pdtf/harness/release/1.0.0/` | foundation versionIRI snapshot (immutable per release) |
+| `https://opda.org.uk/pdtf/DiagnosticExemplar` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/GeneratorRun` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/Relator` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/Role` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/RoleMixin` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/ValidationContext` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/hasSpecialCategoryData` | per-entity dereference into `opda-classes.ttl` |
+| `https://opda.org.uk/pdtf/graph/shapes` | `opda-shapes.ttl` (named-graph endpoint) |
+| `https://opda.org.uk/pdtf/graph/annotations` | `opda-annotations.ttl` (named-graph endpoint) |
 
 Content-type routing per the [Accept-header matrix](../content-negotiation/README.md#accept-header-routing).
 
@@ -101,9 +101,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGF["w3id.org/opda/<br/>versionIRI 1.0.0/"]:::infra
-        NGSh["w3id.org/opda/shapes"]:::infra
-        NGAn["w3id.org/opda/annotations"]:::infra
+        NGF["opda.org.uk/pdtf/<br/>versionIRI 1.0.0/"]:::infra
+        NGSh["opda.org.uk/pdtf/graph/shapes"]:::infra
+        NGAn["opda.org.uk/pdtf/graph/annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -121,8 +121,8 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/"]:::service
-        H2["w3id.org/opda/1.0.0/"]:::service
+        H1["opda.org.uk/pdtf/"]:::service
+        H2["opda.org.uk/pdtf/1.0.0/"]:::service
         H3["per-entity dereference<br/>Role / Relator / etc."]:::service
     end
 

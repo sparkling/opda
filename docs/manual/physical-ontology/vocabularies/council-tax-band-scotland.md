@@ -50,7 +50,7 @@ opda:CouncilTaxBandSchemeScotland
 ### Member Turtle (9 bands; identical structure — sample)
 
 ```turtle
-<https://w3id.org/opda/#councilTaxBandScotland/I>
+<https://opda.org.uk/pdtf/scheme/councilTaxBandScotland/I>
     rdf:type skos:Concept ;
     skos:prefLabel "I"@en ;
     skos:definition "Council tax band I as defined by the Scottish Assessors Association for properties in Scotland."@en ;
@@ -81,7 +81,7 @@ flowchart LR
     accTitle: opda:CouncilTaxBandSchemeScotland membership graph
     accDescr: 9 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

@@ -6,7 +6,7 @@ title: opda-inference
 
 # opda-inference
 
-**Status: optional export only; NOT opda's inference path (ODR-0025 §R6, 2026-06-01).** opda's inference is the load-time **OWL-RL-safe closure** materialised into `https://w3id.org/opda/graph/inferred/entailment` at Jena load time (ODR-0025/0026; ADR-0035; `scripts/fuseki-load.mjs`). Full OWL-DL classification is **out of scope** (ODR-0025 §Decision). This classes-alone projection is retained only as an *optional* export for third-party DL tooling that wants to run its own classifier; opda's pipeline never builds or consumes it for reasoning. The DL-reasoner framing below is preserved for that optional-export audience.
+**Status: optional export only; NOT opda's inference path (ODR-0025 §R6, 2026-06-01).** opda's inference is the load-time **OWL-RL-safe closure** materialised into `https://opda.org.uk/pdtf/graph/inferred/entailment` at Jena load time (ODR-0025/0026; ADR-0035; `scripts/fuseki-load.mjs`). Full OWL-DL classification is **out of scope** (ODR-0025 §Decision). This classes-alone projection is retained only as an *optional* export for third-party DL tooling that wants to run its own classifier; opda's pipeline never builds or consumes it for reasoning. The DL-reasoner framing below is preserved for that optional-export audience.
 
 ## Summary
 

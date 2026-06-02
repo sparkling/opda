@@ -11,7 +11,7 @@ implements: []
 
 ## Context and Problem Statement
 
-ODR-0025 commits opda to a bounded entailment regime — RDFS plus a curated OWL 2 RL-*safe* rule subset, materialised at Jena load time. opda has no such mechanism today: `scripts/fuseki-load.mjs` performs a plain Graph Store Protocol `PUT` of each module TTL into `https://w3id.org/opda/graph/<module>` and counts triples. There is no reasoner, no ruleset, and no entailed graph; the live triplestore holds only asserted triples.
+ODR-0025 commits opda to a bounded entailment regime — RDFS plus a curated OWL 2 RL-*safe* rule subset, materialised at Jena load time. opda has no such mechanism today: `scripts/fuseki-load.mjs` performs a plain Graph Store Protocol `PUT` of each module TTL into `https://opda.org.uk/pdtf/graph/<module>` and counts triples. There is no reasoner, no ruleset, and no entailed graph; the live triplestore holds only asserted triples.
 
 This ADR specifies *how* opda materialises the ODR-0025 R1 closure at load time. The reference implementation is the sibling project's `~/source/hm/semantic-modelling/scripts/fuseki-load-ontology.sh`. Its council (sessions 103/104/105) chose **explicit SPARQL-`INSERT` materialisation** over a live Jena `ja:reasoner` after the Jena 6 assembler proved unable to wrap an `InfModel` around a multi-graph TDB2 dataset without losing the named-graph GSP upload its loader depends on — and because materialisation preserves queryable asserted-vs-inferred provenance.
 
@@ -35,7 +35,7 @@ This ADR specifies *how* opda materialises the ODR-0025 R1 closure at load time.
 
 Chosen option: **A — SPARQL-`INSERT` fixpoint at load**, because it needs no Java build, sidesteps the Jena-6 `InfModel`/named-graph limitation, yields queryable asserted-vs-inferred provenance, and is proven across the sibling's three council sessions. **B is retained as a documented fallback** if scale (≳500K triples) ever makes the fixpoint loop too slow; the rule contract (`config/opda-owl-rl-safe.rules`) is deliberately authored to drive *both* A and B, so the A→B switch is cheap. C adds an offline Java step for no provenance benefit over A. D is what ODR-0025 supersedes.
 
-The entailed graph IRI is `https://w3id.org/opda/graph/inferred/entailment` (sibling of the per-module graphs). The `opda` dataset is set `tdb2:unionDefaultGraph true` so inferred triples are visible to un-GRAPH-qualified queries and the export CONSTRUCT for free.
+The entailed graph IRI is `https://opda.org.uk/pdtf/graph/inferred/entailment` (sibling of the per-module graphs). The `opda` dataset is set `tdb2:unionDefaultGraph true` so inferred triples are visible to un-GRAPH-qualified queries and the export CONSTRUCT for free.
 
 ### Consequences
 
@@ -91,14 +91,14 @@ A new governed file, adapted from the sibling's `config/hm-owl-rl-safe.rules`. T
 
 Runs after the upload loop, before the final triple count, on **both** `--clear` and incremental loads (the inferred graph is always rebuilt fresh):
 
-1. `DROP GRAPH <https://w3id.org/opda/graph/inferred/entailment>` — idempotent rebuild; the graph is derived, never hand-edited.
+1. `DROP GRAPH <https://opda.org.uk/pdtf/graph/inferred/entailment>` — idempotent rebuild; the graph is derived, never hand-edited.
 2. Fixpoint loop (guard ≤ 10 passes): each pass runs the 7 R1 `INSERT`s in dependency order — schema closure first (`subClassOf` transitivity → `subPropertyOf` transitivity), then propagation (`subPropertyOf` value → `subClassOf` type), then data rules (`inverseOf` ×2 → symmetric → transitive); count total triples each pass; break when a pass adds 0.
 3. Each `INSERT` targets the inferred graph and uses `FILTER NOT EXISTS` to stay monotonic and idempotent; sent via `Content-Type: application/sparql-update` with the loader's existing `BASIC_AUTH` header.
 
 Representative (R1 rule #2, `subClassOf` type propagation):
 
 ```sparql
-INSERT { GRAPH <https://w3id.org/opda/graph/inferred/entailment> { ?v a ?y } }
+INSERT { GRAPH <https://opda.org.uk/pdtf/graph/inferred/entailment> { ?v a ?y } }
 WHERE  { ?v a ?x . ?x rdfs:subClassOf ?y
          FILTER(?x != ?y) FILTER NOT EXISTS { ?v a ?y } }
 ```
@@ -111,17 +111,17 @@ Set the `opda` TDB2 dataset `tdb2:unionDefaultGraph true` so the inferred named 
 
 ### Entailed-graph export (optional — only if a consumer needs it)
 
-A CONSTRUCT over the (union) default graph, adapted from the sibling's ADR-0022 export, swapping the namespace allow-list to `https://w3id.org/opda/`:
+A CONSTRUCT over the (union) default graph, adapted from the sibling's ADR-0022 export, swapping the namespace allow-list to `https://opda.org.uk/pdtf/`:
 
 ```sparql
 CONSTRUCT { ?s ?p ?o } WHERE {
   { ?s ?p ?o
-    FILTER(STRSTARTS(STR(?s), "https://w3id.org/opda/"))
+    FILTER(STRSTARTS(STR(?s), "https://opda.org.uk/pdtf/"))
     FILTER(!STRSTARTS(STR(?p), "http://jena.hpl.hp.com/")) }
   UNION
   { ?s ?p ?o FILTER(isBlank(?s))
     ?parent <http://www.w3.org/ns/shacl#property> ?s
-    FILTER(STRSTARTS(STR(?parent), "https://w3id.org/opda/")) }
+    FILTER(STRSTARTS(STR(?parent), "https://opda.org.uk/pdtf/")) }
 }
 ```
 

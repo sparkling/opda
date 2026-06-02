@@ -14,13 +14,13 @@ The per-module breakdown is **complementary** to the existing tier organisation 
 
 | Module | Source TTLs | Module-TBox named graph | Derived profile(s) | Overlay binding |
 |---|---|---|---|---|
-| [foundation](./foundation.md) | `foundation.ttl` + `opda-classes.ttl` + `opda-shapes.ttl` + `opda-annotations.ttl` | `https://w3id.org/opda/` | all three | every overlay imports it |
-| [property](./property.md) | `opda-property.ttl` + `opda-property-shapes.ttl` + `opda-property-annotations.ttl` | `https://w3id.org/opda/property/` | all three | BASPI5 (Property, Address, LegalEstate) |
-| [agent](./agent.md) | `opda-agent.ttl` + `opda-agent-shapes.ttl` + `opda-agent-annotations.ttl` | `https://w3id.org/opda/agent/` | all three | BASPI5 (Seller, Buyer) |
-| [transaction](./transaction.md) | `opda-transaction.ttl` + `opda-transaction-shapes.ttl` + `opda-transaction-annotations.ttl` | `https://w3id.org/opda/transaction/` | all three | none yet |
-| [claim](./claim.md) | `opda-claim.ttl` + `opda-claim-shapes.ttl` + `opda-claim-annotations.ttl` | `https://w3id.org/opda/claim/` | all three | none yet |
-| [governance](./governance.md) | `opda-governance.ttl` + `opda-governance-shapes.ttl` + `opda-governance-annotations.ttl` | `https://w3id.org/opda/governance/` | all three | none yet |
-| [descriptive](./descriptive.md) | `opda-descriptive.ttl` + `opda-descriptive-shapes.ttl` + `opda-descriptive-annotations.ttl` | `https://w3id.org/opda/descriptive/` | all three | BASPI5 (EPCCertificate) |
+| [foundation](./foundation.md) | `foundation.ttl` + `opda-classes.ttl` + `opda-shapes.ttl` + `opda-annotations.ttl` | `https://opda.org.uk/pdtf/` | all three | every overlay imports it |
+| [property](./property.md) | `opda-property.ttl` + `opda-property-shapes.ttl` + `opda-property-annotations.ttl` | `https://opda.org.uk/pdtf/graph/property` | all three | BASPI5 (Property, Address, LegalEstate) |
+| [agent](./agent.md) | `opda-agent.ttl` + `opda-agent-shapes.ttl` + `opda-agent-annotations.ttl` | `https://opda.org.uk/pdtf/graph/agent` | all three | BASPI5 (Seller, Buyer) |
+| [transaction](./transaction.md) | `opda-transaction.ttl` + `opda-transaction-shapes.ttl` + `opda-transaction-annotations.ttl` | `https://opda.org.uk/pdtf/graph/transaction` | all three | none yet |
+| [claim](./claim.md) | `opda-claim.ttl` + `opda-claim-shapes.ttl` + `opda-claim-annotations.ttl` | `https://opda.org.uk/pdtf/graph/claim` | all three | none yet |
+| [governance](./governance.md) | `opda-governance.ttl` + `opda-governance-shapes.ttl` + `opda-governance-annotations.ttl` | `https://opda.org.uk/pdtf/graph/governance` | all three | none yet |
+| [descriptive](./descriptive.md) | `opda-descriptive.ttl` + `opda-descriptive-shapes.ttl` + `opda-descriptive-annotations.ttl` | `https://opda.org.uk/pdtf/graph/descriptive` | all three | BASPI5 (EPCCertificate) |
 
 "All three" derived profiles means `opda-validation`, `opda-ui`, and `opda-inference` — see [derived-profiles/](../derived-profiles/) for projection-rule differences.
 
@@ -32,7 +32,7 @@ Each module page follows this skeleton:
 2. **Named graph(s)** — the `owl:Ontology` IRIs declared and their `owl:versionIRI`; load order (which graphs must be loaded before this module's graphs).
 3. **Derived-profile membership** — table showing how `opda-validation.ttl` / `opda-ui.ttl` / `opda-inference.ttl` project this module's TTLs.
 4. **Overlay bindings** — which deployed overlays target classes/properties from this module.
-5. **Content-negotiation entry points** — HTTP resources at `https://w3id.org/opda/<EntityLocalName>` that resolve into this module's TTLs.
+5. **Content-negotiation entry points** — HTTP resources at `https://opda.org.uk/pdtf/<EntityLocalName>` that resolve into this module's TTLs.
 6. **Per-module deployment-graph diagram** — Mermaid `flowchart` showing TTL → named graph → derived profile → overlay binding → HTTP entry point.
 7. **Cross-tier links** — back-link to the Logical-tier and Physical-Ontology-tier module pages.
 

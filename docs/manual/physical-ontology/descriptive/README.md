@@ -19,17 +19,17 @@ The Descriptive module emits 5 OWL classes class-promoted per ODR-0008 §Q4a thr
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/descriptive/>
+<https://opda.org.uk/pdtf/graph/descriptive>
     rdf:type owl:Ontology ;
     dct:title "OPDA Descriptive Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/descriptive/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/descriptive/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation
-- `<https://w3id.org/opda/vocabularies/>` — SKOS substrate
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation
+- `<https://opda.org.uk/pdtf/scheme/>` — SKOS substrate
 
 External vocabularies referenced (not imported):
 - `prov:Entity` — superclass of all 5 descriptive classes
@@ -108,7 +108,7 @@ flowchart LR
     accTitle: Descriptive shapes and their target classes
     accDescr: Five identity-key shapes — one per class-promoted Kind — sharing the same prov:wasGeneratedBy property-shape blank node. All Cat 1 Violation severity per ODR-0008 Q4a.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
     %% @prefix prov: <http://www.w3.org/ns/prov#>
 
@@ -162,7 +162,7 @@ flowchart LR
     accTitle: Descriptive module — DPV personal-data co-annotations
     accDescr: EPCCertificate carries dpv-pd:PostalAddress baseline. The other four classes (Comparable, Search, Survey, Valuation) have no class-level baseline — PII flows transitively via the linked Property.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
 
     classDef pii fill:#E0F2F1,stroke:#00695C,stroke-width:2px,color:#004D40

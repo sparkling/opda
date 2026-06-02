@@ -19,17 +19,17 @@ The Transaction module emits 3 OWL classes: 1 Relator (Transaction), 1 Event par
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/transaction/>
+<https://opda.org.uk/pdtf/graph/transaction>
     rdf:type owl:Ontology ;
     dct:title "OPDA Transaction Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/transaction/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/transaction/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation (Relator meta-class)
-- `<https://w3id.org/opda/vocabularies/>` — SKOS schemes (MilestoneKind, TransactionStatus)
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation (Relator meta-class)
+- `<https://opda.org.uk/pdtf/scheme/>` — SKOS schemes (MilestoneKind, TransactionStatus)
 
 External vocabularies referenced (not imported):
 - `prov:Activity` — superclass of `opda:Milestone`; pattern for `opda:Transaction` lifecycle
@@ -98,7 +98,7 @@ flowchart LR
     accTitle: Transaction shapes and their target classes
     accDescr: Two identity-key shapes plus two SHACL-AF rules. Shapes target Milestone, Transaction, and LeaseTerm (from the Property module — shape lives here because it pairs with MilestoneVarianceRule per ODR-0007 Q5).
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -139,7 +139,7 @@ flowchart LR
     accTitle: Transaction module — DPV co-annotations (header-only)
     accDescr: No class-level DPV baselines in the Transaction module. PII flows through participating Person and Organisation roles (Agent module) and through the Property side (Property module). The header documents the cross-module routing.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
 
     classDef note fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238

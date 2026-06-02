@@ -29,11 +29,11 @@ Cross-link: [Concept tier — Proprietorship hard cases](../../concept/agent/pro
 # Proprietorship relator binds two Person Role instances (Proprietor-A, Proprietor-B) to one
 # RegisteredTitle. Each Proprietor borrows identity from its Person bearer; the Relator
 # itself has no independent identity beyond the Title + Persons it mediates.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004); ODR-0006 status: accepted (council: session-006).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/proprietorship-relator-multi-proprietor/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/proprietorship-relator-multi-proprietor/> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
@@ -95,9 +95,9 @@ opda-x:proprietorship
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/proprietorship-relator-multi-proprietor> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/proprietorship-relator-multi-proprietor> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

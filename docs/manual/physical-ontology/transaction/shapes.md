@@ -21,10 +21,10 @@ title: Transaction shapes
 ## Header
 
 ```turtle
-<https://w3id.org/opda/transaction-shapes/>
+<https://opda.org.uk/pdtf/graph/transaction-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Transaction Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ### opda:MilestoneIdentityKeyShape
@@ -32,7 +32,7 @@ title: Transaction shapes
 ```turtle
 opda:MilestoneIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6> ;
     sh:property _:b9133da93f27b ;
     sh:targetClass opda:Milestone .
 
@@ -66,7 +66,7 @@ For every `opda:Milestone` instance, `opda:plannedAtTime` MUST be at most one xs
 ```turtle
 opda:TransactionIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q1> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
     sh:property _:b47548231a7b4 ;
     sh:targetClass opda:Transaction .
 
@@ -101,14 +101,14 @@ For every `opda:Transaction` instance, `opda:occurredAtTime` MUST be at most one
 opda:LeaseTermSuccessionRule
     rdf:type sh:NodeShape ;
     rdfs:comment "LeaseTerm succession rule (ODR-0007 §Q5; SHACL-AF citing site #7). Materialises opda:hasLeaseTermSuccessionStatus: extended-from-predecessor when the term carries prov:wasDerivedFrom to another LeaseTerm; primary-term otherwise. Per ODR-0017 §1a + LeaseExtensionEvent (ODR-0005 §3b)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q5> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5> ;
     sh:rule _:b6dbc2616d1c0 ;
     sh:severity sh:Info ;
     sh:targetClass opda:LeaseTerm .
 
 _:b6dbc2616d1c0
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX time: <http://www.w3.org/2006/time#>\nCONSTRUCT {\n  ?term opda:hasLeaseTermSuccessionStatus ?status .\n}\nWHERE {\n  ?term a opda:LeaseTerm .\n  OPTIONAL { ?term prov:wasDerivedFrom ?prior .\n             ?prior a opda:LeaseTerm }\n  BIND (IF(BOUND(?prior), \"extended-from-predecessor\", \"primary-term\") AS ?status)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX time: <http://www.w3.org/2006/time#>\nCONSTRUCT {\n  ?term opda:hasLeaseTermSuccessionStatus ?status .\n}\nWHERE {\n  ?term a opda:LeaseTerm .\n  OPTIONAL { ?term prov:wasDerivedFrom ?prior .\n             ?prior a opda:LeaseTerm }\n  BIND (IF(BOUND(?prior), \"extended-from-predecessor\", \"primary-term\") AS ?status)\n}" .
 ```
 
 #### Derives
@@ -136,14 +136,14 @@ _:b6dbc2616d1c0
 opda:MilestoneVarianceRule
     rdf:type sh:NodeShape ;
     rdfs:comment "Milestone variance rule (ODR-0007 §Q6; SHACL-AF citing site #8). Dynamic severity per ODR-0007 §Q6: less-than-14-day slip surfaces as 'info-flagged'; otherwise 'warning-flagged'. The materialised opda:hasVarianceStatus value is the consumer's escalation hook; the shape itself stays sh:Info per ODR-0017 §1a (the rule is informative; consumer tooling interprets the variance category)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0007#section-Q6> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6> ;
     sh:rule _:b55cf070b367d ;
     sh:severity sh:Info ;
     sh:targetClass opda:Milestone .
 
 _:b55cf070b367d
     rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://w3id.org/opda/#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nCONSTRUCT {\n  ?milestone opda:hasVarianceStatus ?varianceCategory .\n  ?milestone opda:hasVarianceDays ?days .\n}\nWHERE {\n  ?milestone a opda:Milestone ;\n             opda:occurredAtTime ?actual ;\n             opda:plannedAtTime ?planned .\n  BIND (xsd:integer((?actual - ?planned) / xsd:dayTimeDuration(\"P1D\")) AS ?days)\n  BIND (IF(?days < 14, \"info-flagged\", \"warning-flagged\") AS ?varianceCategory)\n}" .
+    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nCONSTRUCT {\n  ?milestone opda:hasVarianceStatus ?varianceCategory .\n  ?milestone opda:hasVarianceDays ?days .\n}\nWHERE {\n  ?milestone a opda:Milestone ;\n             opda:occurredAtTime ?actual ;\n             opda:plannedAtTime ?planned .\n  BIND (xsd:integer((?actual - ?planned) / xsd:dayTimeDuration(\"P1D\")) AS ?days)\n  BIND (IF(?days < 14, \"info-flagged\", \"warning-flagged\") AS ?varianceCategory)\n}" .
 ```
 
 #### Derives

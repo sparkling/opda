@@ -29,12 +29,12 @@ Cross-link: [Concept tier — Vouch evidence hard cases](../../concept/claim/vou
 # solicitor) — qualitatively weaker than document or electronic-record evidence; eIDAS Low.
 # Tests vouch-evidence type; Q2 prov:qualifiedAttribution with prov:hadRole for the voucher;
 # Q3 assurance-level downgrade for vouch-only evidence.
-# Status: ratified. Namespace: https://w3id.org/opda/# (Session 003b + ADR-0006).
+# Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0009 status: proposed (S009 to ratify).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -113,15 +113,15 @@ opda-x:claim
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence> ;
     sh:conforms "false"^^xsd:boolean ;
-    sh:result <https://w3id.org/opda/data/exemplar-reports/result-d134591d192d> .
+    sh:result <https://opda.org.uk/pdtf/data/exemplar-reports/result-d134591d192d> .
 
-<https://w3id.org/opda/data/exemplar-reports/result-d134591d192d>
+<https://opda.org.uk/pdtf/data/exemplar-reports/result-d134591d192d>
     rdf:type sh:ValidationResult ;
-    sh:focusNode <https://openpropdata.org.uk/data/exemplar/claim-with-vouch-evidence/claim> ;
+    sh:focusNode <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence/claim> ;
     sh:resultMessage "Claim MUST carry prov:wasDerivedFrom (or be explicitly marked unverified per Moreau S009 amendment). ODR-0013 §Severity tiering Cat 2: unprovenanced Claims are a Violation-tier IC breach."@en ;
     sh:resultPath prov:wasDerivedFrom ;
     sh:resultSeverity sh:Violation ;

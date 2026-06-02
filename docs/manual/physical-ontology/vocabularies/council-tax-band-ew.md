@@ -49,7 +49,7 @@ opda:CouncilTaxBandSchemeEW
 ### Member Turtle (8 bands; identical structure — sample)
 
 ```turtle
-<https://w3id.org/opda/#councilTaxBandEW/A>
+<https://opda.org.uk/pdtf/scheme/councilTaxBandEW/A>
     rdf:type skos:Concept ;
     skos:prefLabel "A"@en ;
     skos:definition "Council tax band A as defined by the Valuation Office Agency for properties in England & Wales."@en ;
@@ -80,7 +80,7 @@ flowchart LR
     accTitle: opda:CouncilTaxBandSchemeEW membership graph
     accDescr: 8 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

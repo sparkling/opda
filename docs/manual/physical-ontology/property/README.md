@@ -19,17 +19,17 @@ The Property module emits 7 OWL classes covering the physical-property identity 
 ## Ontology header
 
 ```turtle
-<https://w3id.org/opda/property/>
+<https://opda.org.uk/pdtf/graph/property>
     rdf:type owl:Ontology ;
     dct:title "OPDA Property Module"@en ;
-    owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/> ;
-    owl:versionIRI <https://w3id.org/opda/property/1.0.0/> .
+    owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/> ;
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/property/1.0.0/> .
 ```
 
 ## Import chain
 
-- `<https://w3id.org/opda/1.0.0/>` — foundation TBox (Relator / Role / RoleMixin / ValidationContext / DiagnosticExemplar / GeneratorRun)
-- `<https://w3id.org/opda/vocabularies/>` — 23 SKOS schemes (BuiltForm, OwnershipType, TenureKind, AddressVariant, etc.)
+- `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` — foundation TBox (Relator / Role / RoleMixin / ValidationContext / DiagnosticExemplar / GeneratorRun)
+- `<https://opda.org.uk/pdtf/scheme/>` — 23 SKOS schemes (BuiltForm, OwnershipType, TenureKind, AddressVariant, etc.)
 
 External vocabularies referenced (not imported):
 - `vcard:Address` — `opda:Address rdfs:subClassOf vcard:Address`
@@ -109,7 +109,7 @@ flowchart LR
     accTitle: Property shapes and their target classes
     accDescr: Each SHACL shape in opda-property-shapes.ttl points to the Kind it targets via sh:targetClass. Identity-key shapes use Cat 1 severity; the IC-breach shape is Cat 2; the two SHACL-AF rules emit derived predicates at Info severity.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
 
     classDef shape fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,stroke-dasharray:5 5,color:#1B5E20
@@ -154,7 +154,7 @@ flowchart LR
     accTitle: Property module — DPV personal-data co-annotations
     accDescr: PII-bearing classes in the Property module and their dpv-pd:hasPersonalDataCategory baselines, plus the three Address variant refinements that scope lawful basis to title / marketing / inspire variants.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
     %% @prefix dpv: <https://w3id.org/dpv#>
 

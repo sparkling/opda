@@ -44,7 +44,7 @@ opda:EvidenceMethodScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#evidenceMethod/Document>
+<https://opda.org.uk/pdtf/scheme/evidenceMethod/Document>
     rdf:type skos:Concept ;
     skos:prefLabel "Document"@en ;
     skos:definition "OIDC4IDA Document evidence: identity evidence obtained by inspecting a physical or digital identity document (passport, driving licence, identity card, etc.)."@en ;
@@ -52,7 +52,7 @@ opda:EvidenceMethodScheme
     skos:inScheme opda:EvidenceMethodScheme ;
     skos:notation "Document" .
 
-<https://w3id.org/opda/#evidenceMethod/Electronic-Record>
+<https://opda.org.uk/pdtf/scheme/evidenceMethod/Electronic-Record>
     rdf:type skos:Concept ;
     skos:prefLabel "Electronic-Record"@en ;
     skos:definition "OIDC4IDA ElectronicRecord evidence: identity evidence obtained from a verified electronic record held by an authoritative source."@en ;
@@ -60,7 +60,7 @@ opda:EvidenceMethodScheme
     skos:inScheme opda:EvidenceMethodScheme ;
     skos:notation "Electronic-Record" .
 
-<https://w3id.org/opda/#evidenceMethod/Vouch>
+<https://opda.org.uk/pdtf/scheme/evidenceMethod/Vouch>
     rdf:type skos:Concept ;
     skos:prefLabel "Vouch"@en ;
     skos:definition "OIDC4IDA Vouch evidence: identity evidence obtained through attestation by a trusted third party."@en ;
@@ -89,7 +89,7 @@ flowchart LR
     accTitle: opda:EvidenceMethodScheme membership graph
     accDescr: 3 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

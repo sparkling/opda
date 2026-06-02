@@ -1,18 +1,18 @@
 # OPDA Physical-Database Tier
 
-This is the **Physical-Database tier** view of OPDA's ontology — written for triplestore operators, SPARQL endpoint consumers, downstream ontology integrators, devops engineers running the deployment, and JSON-LD client developers. It describes the **deployed/served form** of the ontology: which named graphs hold which TTLs, what load order produces a coherent graph, how derived consumer profiles compose, and how HTTP requests to `https://w3id.org/opda/<resource>` resolve to TTL / JSON-LD / RDF/XML representations.
+This is the **Physical-Database tier** view of OPDA's ontology — written for triplestore operators, SPARQL endpoint consumers, downstream ontology integrators, devops engineers running the deployment, and JSON-LD client developers. It describes the **deployed/served form** of the ontology: which named graphs hold which TTLs, what load order produces a coherent graph, how derived consumer profiles compose, and how HTTP requests to `https://opda.org.uk/pdtf/<resource>` resolve to TTL / JSON-LD / RDF/XML representations.
 
 If you have ever asked questions like:
 
 - "Which named graph do I load to validate a BASPI5 submission?"
 - "What's the difference between `opda-validation.ttl` and `opda-ui.ttl`?"
 - "How does the build-step composer assemble the derived consumer profiles?"
-- "What does `Accept: text/turtle` against `https://w3id.org/opda/Property` return?"
+- "What does `Accept: text/turtle` against `https://opda.org.uk/pdtf/Property` return?"
 - "Which CI gate blocks a commit that introduces drift in expected SHACL reports?"
 
 then this tier is for you. It is operational, not deliberative — the Physical-Ontology tier owns the source TTLs; this tier owns the deployment.
 
-OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://w3id.org/opda/*` namespace via the W3C PICG redirect ratified by [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md).
+OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://opda.org.uk/pdtf/*` namespace via the W3C PICG redirect ratified by [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md).
 
 A build-step composer ([ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md)) projects the 24 source TTLs into **three derived consumer profiles** — `opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl` — and the deployment serves each via HTTP content negotiation.
 
@@ -76,7 +76,7 @@ flowchart LR
         DI["opda-inference.ttl<br/>classes only"]:::data
     end
 
-    subgraph EP["Endpoint — w3id.org/opda/*"]
+    subgraph EP["Endpoint — opda.org.uk/pdtf/*"]
         EPHTTP["HTTP content negotiation<br/>TTL JSON-LD RDF/XML HTML"]:::service
         EPSP["SPARQL endpoint<br/>per named graph"]:::service
     end
@@ -187,10 +187,10 @@ The 25 named graphs the deployment exposes, grouped by role. Triple counts measu
 
 | Named graph IRI | Source TTL | Triples |
 |---|---|---|
-| `https://w3id.org/opda/` (default graph) | `foundation.ttl` | 15 |
+| `https://opda.org.uk/pdtf/` (default graph) | `foundation.ttl` | 15 |
 | *(no ontology IRI — class graph)* | `opda-classes.ttl` | 36 |
-| `https://w3id.org/opda/shapes` | `opda-shapes.ttl` | 51 |
-| `https://w3id.org/opda/annotations` | `opda-annotations.ttl` | 3 |
+| `https://opda.org.uk/pdtf/graph/shapes` | `opda-shapes.ttl` | 51 |
+| `https://opda.org.uk/pdtf/graph/annotations` | `opda-annotations.ttl` | 3 |
 
 ### Vocabulary graph
 
@@ -202,40 +202,40 @@ The 25 named graphs the deployment exposes, grouped by role. Triple counts measu
 
 | Named graph IRI | Source TTL | Triples |
 |---|---|---|
-| `https://w3id.org/opda/property/` | `opda-property.ttl` | 199 |
-| `https://w3id.org/opda/agent/` | `opda-agent.ttl` | 77 |
-| `https://w3id.org/opda/transaction/` | `opda-transaction.ttl` | 39 |
-| `https://w3id.org/opda/claim/` | `opda-claim.ttl` | 86 |
-| `https://w3id.org/opda/governance/` | `opda-governance.ttl` | 42 |
-| `https://w3id.org/opda/descriptive/` | `opda-descriptive.ttl` | 35 |
+| `https://opda.org.uk/pdtf/graph/property` | `opda-property.ttl` | 199 |
+| `https://opda.org.uk/pdtf/graph/agent` | `opda-agent.ttl` | 77 |
+| `https://opda.org.uk/pdtf/graph/transaction` | `opda-transaction.ttl` | 39 |
+| `https://opda.org.uk/pdtf/graph/claim` | `opda-claim.ttl` | 86 |
+| `https://opda.org.uk/pdtf/graph/governance` | `opda-governance.ttl` | 42 |
+| `https://opda.org.uk/pdtf/graph/descriptive` | `opda-descriptive.ttl` | 35 |
 
 ### Module-shape graphs
 
 | Named graph IRI | Source TTL | Triples |
 |---|---|---|
-| `https://w3id.org/opda/property-shapes/` | `opda-property-shapes.ttl` | 54 |
-| `https://w3id.org/opda/agent-shapes/` | `opda-agent-shapes.ttl` | 44 |
-| `https://w3id.org/opda/transaction-shapes/` | `opda-transaction-shapes.ttl` | 37 |
-| `https://w3id.org/opda/claim-shapes/` | `opda-claim-shapes.ttl` | 45 |
-| `https://w3id.org/opda/governance-shapes/` | `opda-governance-shapes.ttl` | 13 |
-| `https://w3id.org/opda/descriptive-shapes/` | `opda-descriptive-shapes.ttl` | 27 |
+| `https://opda.org.uk/pdtf/graph/property-shapes` | `opda-property-shapes.ttl` | 54 |
+| `https://opda.org.uk/pdtf/graph/agent-shapes` | `opda-agent-shapes.ttl` | 44 |
+| `https://opda.org.uk/pdtf/graph/transaction-shapes` | `opda-transaction-shapes.ttl` | 37 |
+| `https://opda.org.uk/pdtf/graph/claim-shapes` | `opda-claim-shapes.ttl` | 45 |
+| `https://opda.org.uk/pdtf/graph/governance-shapes` | `opda-governance-shapes.ttl` | 13 |
+| `https://opda.org.uk/pdtf/graph/descriptive-shapes` | `opda-descriptive-shapes.ttl` | 27 |
 
 ### Module-annotation graphs
 
 | Named graph IRI | Source TTL | Triples |
 |---|---|---|
-| `https://w3id.org/opda/property-annotations/` | `opda-property-annotations.ttl` | 31 |
-| `https://w3id.org/opda/agent-annotations/` | `opda-agent-annotations.ttl` | 22 |
-| `https://w3id.org/opda/transaction-annotations/` | `opda-transaction-annotations.ttl` | 6 |
-| `https://w3id.org/opda/claim-annotations/` | `opda-claim-annotations.ttl` | 27 |
-| `https://w3id.org/opda/governance-annotations/` | `opda-governance-annotations.ttl` | 6 |
-| `https://w3id.org/opda/descriptive-annotations/` | `opda-descriptive-annotations.ttl` | 14 |
+| `https://opda.org.uk/pdtf/graph/property-annotations` | `opda-property-annotations.ttl` | 31 |
+| `https://opda.org.uk/pdtf/graph/agent-annotations` | `opda-agent-annotations.ttl` | 22 |
+| `https://opda.org.uk/pdtf/graph/transaction-annotations` | `opda-transaction-annotations.ttl` | 6 |
+| `https://opda.org.uk/pdtf/graph/claim-annotations` | `opda-claim-annotations.ttl` | 27 |
+| `https://opda.org.uk/pdtf/graph/governance-annotations` | `opda-governance-annotations.ttl` | 6 |
+| `https://opda.org.uk/pdtf/graph/descriptive-annotations` | `opda-descriptive-annotations.ttl` | 14 |
 
 ### Overlay-profile graph
 
 | Named graph IRI | Source TTL | Triples |
 |---|---|---|
-| `https://w3id.org/opda/profiles/baspi5` | `profiles/baspi5.ttl` | 488 |
+| `https://opda.org.uk/pdtf/shape/profiles/baspi5` | `profiles/baspi5.ttl` | 488 |
 
 **Corpus total: 2 273 triples across 25 named graphs** (24 source TTLs + 1 overlay profile).
 

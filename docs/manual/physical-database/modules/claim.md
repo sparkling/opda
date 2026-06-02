@@ -21,9 +21,9 @@ The Claim module covers Claim, three Evidence subtypes (Document, ElectronicReco
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/claim/` | `opda-claim.ttl` | 86 | `https://w3id.org/opda/claim/1.0.0/` |
-| `https://w3id.org/opda/claim-shapes/` | `opda-claim-shapes.ttl` | 45 | — |
-| `https://w3id.org/opda/claim-annotations/` | `opda-claim-annotations.ttl` | 27 | — |
+| `https://opda.org.uk/pdtf/graph/claim` | `opda-claim.ttl` | 86 | `https://opda.org.uk/pdtf/harness/release/claim/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/claim-shapes` | `opda-claim-shapes.ttl` | 45 | — |
+| `https://opda.org.uk/pdtf/graph/claim-annotations` | `opda-claim-annotations.ttl` | 27 | — |
 
 **Load order:** TBox graph imports foundation + vocabularies. Claim is the second-largest business module by triple count (158 across three TTLs) after Property.
 
@@ -45,18 +45,18 @@ A future Land Registry conveyancing overlay or trust-framework-specific overlay 
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/claim/` | claim module TBox |
-| `https://w3id.org/opda/claim/1.0.0/` | claim versionIRI snapshot |
-| `https://w3id.org/opda/claim-shapes/` | claim shape graph |
-| `https://w3id.org/opda/claim-annotations/` | claim annotation graph |
-| `https://w3id.org/opda/Claim` | per-entity dereference |
-| `https://w3id.org/opda/Evidence` | per-entity dereference (Evidence supertype) |
-| `https://w3id.org/opda/Document` | per-entity dereference |
-| `https://w3id.org/opda/ElectronicRecord` | per-entity dereference |
-| `https://w3id.org/opda/Vouch` | per-entity dereference |
-| `https://w3id.org/opda/VerificationActivity` | per-entity dereference |
-| `https://w3id.org/opda/AssuranceLevel` | per-entity dereference |
-| `https://w3id.org/opda/TrustFramework` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/claim` | claim module TBox |
+| `https://opda.org.uk/pdtf/harness/release/claim/1.0.0/` | claim versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/claim-shapes` | claim shape graph |
+| `https://opda.org.uk/pdtf/graph/claim-annotations` | claim annotation graph |
+| `https://opda.org.uk/pdtf/Claim` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Evidence` | per-entity dereference (Evidence supertype) |
+| `https://opda.org.uk/pdtf/Document` | per-entity dereference |
+| `https://opda.org.uk/pdtf/ElectronicRecord` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Vouch` | per-entity dereference |
+| `https://opda.org.uk/pdtf/VerificationActivity` | per-entity dereference |
+| `https://opda.org.uk/pdtf/AssuranceLevel` | per-entity dereference |
+| `https://opda.org.uk/pdtf/TrustFramework` | per-entity dereference |
 
 ## Deployment graph
 
@@ -92,9 +92,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/claim/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/claim-shapes/"]:::infra
-        NGA["w3id.org/opda/claim-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/claim<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/claim-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/claim-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -112,11 +112,11 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/claim/"]:::service
-        H2["w3id.org/opda/Claim"]:::service
-        H3["w3id.org/opda/Evidence"]:::service
-        H4["w3id.org/opda/VerificationActivity"]:::service
-        H5["w3id.org/opda/AssuranceLevel"]:::service
+        H1["opda.org.uk/pdtf/graph/claim"]:::service
+        H2["opda.org.uk/pdtf/Claim"]:::service
+        H3["opda.org.uk/pdtf/Evidence"]:::service
+        H4["opda.org.uk/pdtf/VerificationActivity"]:::service
+        H5["opda.org.uk/pdtf/AssuranceLevel"]:::service
     end
 
     subgraph CONS["Consumers"]

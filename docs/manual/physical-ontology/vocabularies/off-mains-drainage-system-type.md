@@ -26,7 +26,7 @@ opda:OffMainsDrainageSystemTypeScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Off-Mains Drainage System Type"@en ;
     skos:definition "Classification of a Property's off-mains drainage system (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-8a-ufo-meta-category> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Off-mains drainage system type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Applies only when the Property is not connected to the mains sewerage system."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
@@ -47,11 +47,11 @@ opda:OffMainsDrainageSystemTypeScheme
 ### Member Turtle (sample)
 
 ```turtle
-<https://w3id.org/opda/#offMainsDrainageSystemType/Sustainable-Drainage-System>
+<https://opda.org.uk/pdtf/scheme/offMainsDrainageSystemType/Sustainable-Drainage-System>
     rdf:type skos:Concept ;
     skos:prefLabel "Sustainable Drainage System"@en ;
     skos:definition "Drainage routed to a SuDS (Sustainable Drainage System) designed to manage surface water close to source."@en ;
-    dct:source <https://w3id.org/opda/data-dictionary#propertyPack.waterAndDrainage.drainage.offMainsDrainageSystemType.Sustainable%20Drainage%20System> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.offMainsDrainageSystemType.Sustainable%20Drainage%20System> ;
     skos:inScheme opda:OffMainsDrainageSystemTypeScheme ;
     skos:notation "Sustainable Drainage System" .
 
@@ -81,7 +81,7 @@ flowchart LR
     accTitle: opda:OffMainsDrainageSystemTypeScheme membership graph
     accDescr: 6 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

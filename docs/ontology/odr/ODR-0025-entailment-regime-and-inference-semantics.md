@@ -61,7 +61,7 @@ Load-time inference (R1) produces triples. SHACL (ADR-0036) consumes triples. Th
 
 ### R4 — Materialisation target: a derived entailed graph, never a canonical source
 
-Entailed triples are written to a dedicated derived named graph `https://w3id.org/opda/graph/inferred/entailment`, sibling to the per-module graphs. They MUST NOT be written back into `opda-classes.ttl`, `opda-shapes.ttl`, or `opda-annotations.ttl` (ODR-0004 §3a three-graph invariant and its CI tests). The entailed graph is **derived, rebuilt on every load, never hand-edited** — consistent with §3a's "consumer profiles are generated, never hand-edited." It is an ABox+TBox **closure** graph (entailing instance types and relations), distinct from the §3a `opda-inference.ttl` classes-alone TBox *projection* — see R6.
+Entailed triples are written to a dedicated derived named graph `https://opda.org.uk/pdtf/graph/inferred/entailment`, sibling to the per-module graphs. They MUST NOT be written back into `opda-classes.ttl`, `opda-shapes.ttl`, or `opda-annotations.ttl` (ODR-0004 §3a three-graph invariant and its CI tests). The entailed graph is **derived, rebuilt on every load, never hand-edited** — consistent with §3a's "consumer profiles are generated, never hand-edited." It is an ABox+TBox **closure** graph (entailing instance types and relations), distinct from the §3a `opda-inference.ttl` classes-alone TBox *projection* — see R6.
 
 ### R5 — RDF 1.2: adopted in full, on a Jena toolchain
 

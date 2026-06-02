@@ -37,7 +37,7 @@ flowchart LR
     accTitle: Three-graph separation — MUST/MUST-NOT triple-type assignments + 5-part CI test
     accDescr: Shows how each module emits three disjoint files (classes, shapes, annotations) with strict triple-type isolation, and the five SPARQL ASK checks that the opda-gen ci-three-graph CI gate runs.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix sh: <http://www.w3.org/ns/shacl#>
     %% @prefix dpv-pd: <https://w3id.org/dpv/pd#>
 

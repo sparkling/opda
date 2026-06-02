@@ -21,10 +21,10 @@ title: Descriptive shapes
 ## Header
 
 ```turtle
-<https://w3id.org/opda/descriptive-shapes/>
+<https://opda.org.uk/pdtf/graph/descriptive-shapes>
     rdf:type owl:Ontology ;
     dct:title "OPDA Descriptive Shapes"@en ;
-    opda:targetsClassGraph <https://w3id.org/opda/1.0.0/> .
+    opda:targetsClassGraph <https://opda.org.uk/pdtf/harness/release/1.0.0/> .
 ```
 
 ## Shared property shape
@@ -46,7 +46,7 @@ The property shape requires at least one `prov:wasGeneratedBy` triple on every c
 ```turtle
 opda:ComparableIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     sh:property _:b218dcfc815ed ;
     sh:targetClass opda:Comparable .
 ```
@@ -73,7 +73,7 @@ Every `opda:Comparable` instance MUST carry at least one `prov:wasGeneratedBy` t
 ```turtle
 opda:EPCCertificateIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     sh:property _:b218dcfc815ed ;
     sh:targetClass opda:EPCCertificate .
 ```
@@ -100,7 +100,7 @@ Every `opda:EPCCertificate` instance MUST carry at least one `prov:wasGeneratedB
 ```turtle
 opda:SearchIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     sh:property _:b218dcfc815ed ;
     sh:targetClass opda:Search .
 ```
@@ -127,7 +127,7 @@ Every `opda:Search` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 ```turtle
 opda:SurveyIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     sh:property _:b218dcfc815ed ;
     sh:targetClass opda:Survey .
 ```
@@ -154,7 +154,7 @@ Every `opda:Survey` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 ```turtle
 opda:ValuationIdentityKeyShape
     rdf:type sh:NodeShape ;
-    dct:source <https://w3id.org/opda/odr/ODR-0008#section-Q4a> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     sh:property _:b218dcfc815ed ;
     sh:targetClass opda:Valuation .
 ```

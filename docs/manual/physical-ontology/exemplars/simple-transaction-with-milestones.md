@@ -36,8 +36,8 @@ Cross-link: [Concept tier — Transaction hard cases](../../concept/transaction/
 # opda:plannedAtTime with `prov:qualifiedAssociation` linkage from Activity; (ii) Q2 refactor of
 # completion + registration milestones to interval form (`prov:startedAtTime` + `prov:endedAtTime`).
 
-@prefix opda:    <https://w3id.org/opda/#> .
-@prefix opda-x:  <https://openpropdata.org.uk/data/exemplar/simple-transaction-with-milestones/> .
+@prefix opda:    <https://opda.org.uk/pdtf/> .
+@prefix opda-x:  <https://opda.org.uk/pdtf/harness/data/exemplar/simple-transaction-with-milestones/> .
 @prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix dct:     <http://purl.org/dc/terms/> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -195,9 +195,9 @@ opda-x:milestone-registration
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/opda/data/exemplar-reports/report>
+<https://opda.org.uk/pdtf/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
-    dct:source <https://openpropdata.org.uk/data/exemplar/simple-transaction-with-milestones> ;
+    dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/simple-transaction-with-milestones> ;
     sh:conforms "true"^^xsd:boolean .
 ```
 

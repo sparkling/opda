@@ -21,14 +21,14 @@ The Agent module covers Person, Organisation, Proprietor + Proprietorship Relato
 
 | Named graph IRI | Source TTL | Triples | `owl:versionIRI` |
 |---|---|---|---|
-| `https://w3id.org/opda/agent/` | `opda-agent.ttl` | 77 | `https://w3id.org/opda/agent/1.0.0/` |
-| `https://w3id.org/opda/agent-shapes/` | `opda-agent-shapes.ttl` | 44 | — |
-| `https://w3id.org/opda/agent-annotations/` | `opda-agent-annotations.ttl` | 22 | — |
+| `https://opda.org.uk/pdtf/graph/agent` | `opda-agent.ttl` | 77 | `https://opda.org.uk/pdtf/harness/release/agent/1.0.0/` |
+| `https://opda.org.uk/pdtf/graph/agent-shapes` | `opda-agent-shapes.ttl` | 44 | — |
+| `https://opda.org.uk/pdtf/graph/agent-annotations` | `opda-agent-annotations.ttl` | 22 | — |
 
 **Load order:** TBox graph imports foundation + vocabularies:
 
 ```turtle
-owl:imports <https://w3id.org/opda/1.0.0/>, <https://w3id.org/opda/vocabularies/>
+owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org.uk/pdtf/scheme/>
 ```
 
 Shape + annotation graphs load alongside the TBox graph.
@@ -59,17 +59,17 @@ The DPV annotation graph is particularly load-bearing for the Agent module: Pers
 
 | Resource path | Resolves to |
 |---|---|
-| `https://w3id.org/opda/agent/` | agent module TBox |
-| `https://w3id.org/opda/agent/1.0.0/` | agent versionIRI snapshot |
-| `https://w3id.org/opda/agent-shapes/` | agent shape graph |
-| `https://w3id.org/opda/agent-annotations/` | agent annotation graph |
-| `https://w3id.org/opda/Person` | per-entity dereference |
-| `https://w3id.org/opda/Organisation` | per-entity dereference |
-| `https://w3id.org/opda/Proprietor` | per-entity dereference |
-| `https://w3id.org/opda/Proprietorship` | per-entity dereference |
-| `https://w3id.org/opda/Seller` | per-entity dereference |
-| `https://w3id.org/opda/Buyer` | per-entity dereference |
-| `https://w3id.org/opda/NameChangeEvent` | per-entity dereference |
+| `https://opda.org.uk/pdtf/graph/agent` | agent module TBox |
+| `https://opda.org.uk/pdtf/harness/release/agent/1.0.0/` | agent versionIRI snapshot |
+| `https://opda.org.uk/pdtf/graph/agent-shapes` | agent shape graph |
+| `https://opda.org.uk/pdtf/graph/agent-annotations` | agent annotation graph |
+| `https://opda.org.uk/pdtf/Person` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Organisation` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Proprietor` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Proprietorship` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Seller` | per-entity dereference |
+| `https://opda.org.uk/pdtf/Buyer` | per-entity dereference |
+| `https://opda.org.uk/pdtf/NameChangeEvent` | per-entity dereference |
 
 ## Deployment graph
 
@@ -104,9 +104,9 @@ flowchart LR
     end
 
     subgraph NG["Named graphs"]
-        NGT["w3id.org/opda/agent/<br/>versionIRI 1.0.0/"]:::infra
-        NGS["w3id.org/opda/agent-shapes/"]:::infra
-        NGA["w3id.org/opda/agent-annotations/"]:::infra
+        NGT["opda.org.uk/pdtf/graph/agent<br/>versionIRI 1.0.0/"]:::infra
+        NGS["opda.org.uk/pdtf/graph/agent-shapes"]:::infra
+        NGA["opda.org.uk/pdtf/graph/agent-annotations"]:::infra
     end
 
     subgraph CMP["Composer"]
@@ -126,10 +126,10 @@ flowchart LR
     end
 
     subgraph HTTP["HTTP entry points"]
-        H1["w3id.org/opda/agent/"]:::service
-        H2["w3id.org/opda/Person"]:::service
-        H3["w3id.org/opda/Seller"]:::service
-        H4["w3id.org/opda/Buyer"]:::service
+        H1["opda.org.uk/pdtf/graph/agent"]:::service
+        H2["opda.org.uk/pdtf/Person"]:::service
+        H3["opda.org.uk/pdtf/Seller"]:::service
+        H4["opda.org.uk/pdtf/Buyer"]:::service
     end
 
     subgraph CONS["Consumers"]

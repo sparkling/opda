@@ -26,7 +26,7 @@ opda:YesNoScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Yes/No"@en ;
     skos:definition "Binary register for affirmative/negative answers to BASPI5 discriminator questions (Yes / No)."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     dct:title "Yes/No binary register"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Used by ~276 BASPI5 discriminator questions; emitted as a shared scheme per ODR-0011 §1a one-scheme-per-enum discipline."@en ;
     opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
@@ -43,19 +43,19 @@ opda:YesNoScheme
 ### Member Turtle
 
 ```turtle
-<https://w3id.org/opda/#yesNo/No>
+<https://opda.org.uk/pdtf/scheme/yesNo/No>
     rdf:type skos:Concept ;
     skos:prefLabel "No"@en ;
     skos:definition "Negative answer to a binary BASPI5 question."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     skos:inScheme opda:YesNoScheme ;
     skos:notation "No" .
 
-<https://w3id.org/opda/#yesNo/Yes>
+<https://opda.org.uk/pdtf/scheme/yesNo/Yes>
     rdf:type skos:Concept ;
     skos:prefLabel "Yes"@en ;
     skos:definition "Affirmative answer to a binary BASPI5 question."@en ;
-    dct:source <https://w3id.org/opda/odr/ODR-0011#section-1a-scheme-steward> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     skos:inScheme opda:YesNoScheme ;
     skos:notation "Yes" .
 ```
@@ -80,7 +80,7 @@ flowchart LR
     accTitle: opda:YesNoScheme membership graph
     accDescr: 2 skos:Concept members bound to the scheme via skos:inScheme.
 
-    %% @prefix opda: <https://w3id.org/opda/#>
+    %% @prefix opda: <https://opda.org.uk/pdtf/>
     %% @prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
     classDef scheme fill:#F8BBD9,stroke:#AD1457,stroke-width:2px,color:#880E4F

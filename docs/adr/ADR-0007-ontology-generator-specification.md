@@ -224,7 +224,7 @@ opda:LegalEstate
     rdfs:label "Legal Estate" ;
     rdfs:comment "UFO Substance Kind / DOLCE NonPhysicalEndurant. IC: rights-bundle persistence — same individual through grant, transfer, registration, and discharge events; distinguishable from coexisting RegisteredTitle and physical Property by extension of property rights." ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant" ;
-    dct:source <https://w3id.org/opda/odr/ODR-0005#section-3b> ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
     .
 ```
 
