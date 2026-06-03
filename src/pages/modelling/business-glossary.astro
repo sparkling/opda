@@ -119,10 +119,19 @@ SKOS · 554 concepts`"]:::data
         <li><a class="resource-link" href="/resource.html?path=source/04-governance-bodies/working-groups/technical/Glossary.xlsx"><code>source/04-governance-bodies/working-groups/technical/Glossary.xlsx</code></a></li>
       </ul>
 
-<script slot="scripts" is:inline src="/ui/data-browser.js"></script>
-<script slot="scripts" is:inline src="/data/entities.js"></script>
-<script slot="scripts" is:inline>
-  (function () {
+<script slot="scripts" is:inline data-astro-rerun src="/ui/data-browser.js"></script>
+<script slot="scripts" is:inline data-astro-rerun src="/data/entities.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  // Mount is deferred to astro:page-load so the src scripts above (data-browser.js,
+  // entities.js) are guaranteed to have finished loading before this runs.
+  // astro:page-load fires after runScripts() on SPA nav AND after window load on
+  // hard refresh — both paths land here with window.OPDA and window.OPDA_ENTITIES set.
+  // The handler is stored on window so each re-run (data-astro-rerun) can remove
+  // the previous listener, preventing multiple mounts after repeated SPA navigations.
+  if (window._opdaBizGlossaryMount) {
+    document.removeEventListener('astro:page-load', window._opdaBizGlossaryMount);
+  }
+  window._opdaBizGlossaryMount = function () {
     function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));}
     var mountEl = document.getElementById('entities-browser');
     var data = window.OPDA_ENTITIES || [];
@@ -204,7 +213,8 @@ SKOS · 554 concepts`"]:::data
           render:function(v){return v?'<code class="tiny">'+esc(v)+'</code>':'<span class="muted tiny">—</span>';}},
       ],
     });
-  })();
+  };
+  document.addEventListener('astro:page-load', window._opdaBizGlossaryMount);
 </script>
 </Layout>
 

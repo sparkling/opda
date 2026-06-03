@@ -265,10 +265,19 @@ SKOS · 554 concepts`"]:::data
         </li>
       </ol>
 
-<script slot="scripts" is:inline src="/ui/data-browser.js"></script>
-<script slot="scripts" is:inline src="/data/properties.js"></script>
-<script slot="scripts" is:inline>
-  (function () {
+<script slot="scripts" is:inline data-astro-rerun src="/ui/data-browser.js"></script>
+<script slot="scripts" is:inline data-astro-rerun src="/data/properties.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  // Mount is deferred to astro:page-load so the src scripts above (data-browser.js,
+  // properties.js) are guaranteed to have finished loading before this runs.
+  // astro:page-load fires after runScripts() on SPA nav AND after window load on
+  // hard refresh — both paths land here with window.OPDA and window.OPDA_PROPERTIES set.
+  // The handler is stored on window so each re-run (data-astro-rerun) can remove
+  // the previous listener, preventing multiple mounts after repeated SPA navigations.
+  if (window._opdaDataDictMount) {
+    document.removeEventListener('astro:page-load', window._opdaDataDictMount);
+  }
+  window._opdaDataDictMount = function () {
     function esc(s) { return String(s == null ? '' : s).replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c])); }
 
     var data = window.OPDA_PROPERTIES || [];
@@ -362,7 +371,8 @@ SKOS · 554 concepts`"]:::data
         },
       ],
     });
-  })();
+  };
+  document.addEventListener('astro:page-load', window._opdaDataDictMount);
 </script>
 </Layout>
 
