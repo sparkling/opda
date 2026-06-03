@@ -80,7 +80,6 @@ import Diagram from '@/components/Diagram.astro';
           schema alone, with no overlays of its own. Legacy overlays (<code>baspi4</code>,
           <code>nts</code>, <code>ntsl</code>) ship alongside their successors for
           backward compatibility.">
-%%&lbrace;init: &lbrace;'flowchart': &lbrace;'rankSpacing': 120, 'nodeSpacing': 25&rbrace;&rbrace;&rbrace;%%
 flowchart LR
   BASE["`pdtf-transaction.json
 *base transaction schema*`"]:::infra
@@ -99,47 +98,82 @@ flowchart LR
   BASE --> PTEC
   BASE --> PDS
 
-  EA --> BASPI4["Buyers and Sellers Property Information v4<br/>(BASPI4)"]:::data
-  EA --> BASPI5["Buyers and Sellers Property Information v5<br/>(BASPI5)"]:::data
-  EA --> NTS["NTS Material Information — Sales 2023<br/>(NTS)"]:::data
-  EA --> NTS2["NTS Material Information — Sales 2025<br/>(NTS2)"]:::data
-  EA --> NTSL["NTS Material Information — Lettings 2023<br/>(NTSL)"]:::data
-  EA --> NTSL2["NTS Material Information — Lettings 2025<br/>(NTSL2)"]:::data
+  EA --> BASPI4["`Buyers and Sellers Property Information v4
+(BASPI4)`"]:::data
+  EA --> BASPI5["`Buyers and Sellers Property Information v5
+(BASPI5)`"]:::data
+  EA --> NTS["`NTS Material Information — Sales 2023
+(NTS)`"]:::data
+  EA --> NTS2["`NTS Material Information — Sales 2025
+(NTS2)`"]:::data
+  EA --> NTSL["`NTS Material Information — Lettings 2023
+(NTSL)`"]:::data
+  EA --> NTSL2["`NTS Material Information — Lettings 2025
+(NTSL2)`"]:::data
 
-  EA --> EXT["+ 16 extension overlays<br/>(NTS2 fragments)"]:::process
+  EA --> EXT["`+ 16 extension overlays
+(NTS2 fragments)`"]:::process
 
-  EXT --> EAS["Asbestos<br/>(AS)"]:::process
-  EXT --> EDR["Dry-rot treatment<br/>(DR)"]:::process
-  EXT --> EJK["Japanese knotweed<br/>(JK)"]:::process
-  EXT --> ESB["Subsidence / structural faults<br/>(SB)"]:::process
-  EXT --> EHS["Health &amp; safety issues<br/>(HS)"]:::process
-  EXT --> EOA["Outside areas<br/>(OA)"]:::process
-  EXT --> ELA["Loft access &amp; insulation<br/>(LA)"]:::process
-  EXT --> ESF["Spray-foam insulation<br/>(SF)"]:::process
-  EXT --> EMC["Main construction type<br/>(MC)"]:::process
-  EXT --> EER["Estate rentcharges<br/>(ER)"]:::process
-  EXT --> EMA["Managing agent<br/>(MA)"]:::process
-  EXT --> ETF["Transfer fees<br/>(TF)"]:::process
-  EXT --> ESL["Solar-panel ownership<br/>(SL)"]:::process
-  EXT --> EHI["Heating installation date<br/>(HI)"]:::process
-  EXT --> EFD["Flood defences<br/>(FD)"]:::process
-  EXT --> EOC["Other property chain dependency<br/>(OC)"]:::process
+  EXT --> EAS["`Asbestos
+(AS)`"]:::process
+  EXT --> EDR["`Dry-rot treatment
+(DR)`"]:::process
+  EXT --> EJK["`Japanese knotweed
+(JK)`"]:::process
+  EXT --> ESB["`Subsidence / structural faults
+(SB)`"]:::process
+  EXT --> EHS["`Health & safety issues
+(HS)`"]:::process
+  EXT --> EOA["`Outside areas
+(OA)`"]:::process
+  EXT --> ELA["`Loft access & insulation
+(LA)`"]:::process
+  EXT --> ESF["`Spray-foam insulation
+(SF)`"]:::process
+  EXT --> EMC["`Main construction type
+(MC)`"]:::process
+  EXT --> EER["`Estate rentcharges
+(ER)`"]:::process
+  EXT --> EMA["`Managing agent
+(MA)`"]:::process
+  EXT --> ETF["`Transfer fees
+(TF)`"]:::process
+  EXT --> ESL["`Solar-panel ownership
+(SL)`"]:::process
+  EXT --> EHI["`Heating installation date
+(HI)`"]:::process
+  EXT --> EFD["`Flood defences
+(FD)`"]:::process
+  EXT --> EOC["`Other property chain dependency
+(OC)`"]:::process
 
-  CONV --> TA6["Property Information Form<br/>(TA6)"]:::data
-  CONV --> TA7["Leasehold Information Form<br/>(TA7)"]:::data
-  CONV --> TA10["Fittings &amp; Contents Form<br/>(TA10)"]:::data
-  CONV --> LPE1["Leasehold Property Enquiries<br/>(LPE1)"]:::data
+  CONV --> TA6["`Property Information Form
+(TA6)`"]:::data
+  CONV --> TA7["`Leasehold Information Form
+(TA7)`"]:::data
+  CONV --> TA10["`Fittings & Contents Form
+(TA10)`"]:::data
+  CONV --> LPE1["`Leasehold Property Enquiries
+(LPE1)`"]:::data
 
-  MORT --> FME1["Freehold Management Enquiries<br/>(FME1)"]:::data
+  MORT --> FME1["`Freehold Management Enquiries
+(FME1)`"]:::data
 
-  SURV --> PIQ["Property Information Questionnaire<br/>(PIQ)"]:::data
+  SURV --> PIQ["`Property Information Questionnaire
+(PIQ)`"]:::data
 
-  PDS --> RDS["Residential Development Survey<br/>(RDS)"]:::data
-  PDS --> OC1["HMLR Official Copies of the Register<br/>(OC1)"]:::data
-  PDS --> LLC1["Local Land Charges Search<br/>(LLC1)"]:::data
-  PDS --> CON29R["Local Authority Search<br/>(CON29R)"]:::data
-  PDS --> CON29DW["Drainage &amp; Water Search<br/>(CON29DW)"]:::data
-  PDS --> SR24["Sustainability Report 2024<br/>(SR24)"]:::data
+  PDS --> RDS["`Residential Development Survey
+(RDS)`"]:::data
+  PDS --> OC1["`HMLR Official Copies of the Register
+(OC1)`"]:::data
+  PDS --> LLC1["`Local Land Charges Search
+(LLC1)`"]:::data
+  PDS --> CON29R["`Local Authority Search
+(CON29R)`"]:::data
+  PDS --> CON29DW["`Drainage & Water Search
+(CON29DW)`"]:::data
+  PDS --> SR24["`Sustainability Report 2024
+(SR24)`"]:::data
 </Diagram>
 
       <h2 id="whatIsAnOverlay">What an overlay is — and is not</h2>

@@ -135,7 +135,8 @@ import Diagram from '@/components/Diagram.astro';
 
       <Diagram caption="Phase sequence with cross-phase dependencies. Each task box shows duration in days; arrows show what blocks what.">
 flowchart LR
-  subgraph P1["Phase 1 — Foundations<br/><i>2 weeks</i>"]
+  subgraph P1["`Phase 1 — Foundations
+*2 weeks*`"]
     direction TB
     p1a["`Read SoW + synthesis
 3d`"]:::neutral
@@ -150,7 +151,8 @@ flowchart LR
     p1a --> p1d
   end
 
-  subgraph P2["Phase 2 — Semantic model<br/><i>3 weeks</i>"]
+  subgraph P2["`Phase 2 — Semantic model
+*3 weeks*`"]
     direction TB
     p2a["`Concept taxonomy
 SKOS · 7d`"]:::neutral
@@ -164,7 +166,8 @@ BASPI v5 · 7d`"]:::neutral
     p2c --> p2d
   end
 
-  subgraph P3["Phase 3 — Governance docs<br/><i>5 weeks</i>"]
+  subgraph P3["`Phase 3 — Governance docs
+*5 weeks*`"]
     direction TB
     p3a["`L4 Ecosystem doc
 14d`"]:::neutral
@@ -182,7 +185,8 @@ BASPI v5 · 7d`"]:::neutral
     p3a --> p3e
   end
 
-  subgraph P4["Phase 4 — Presentations<br/><i>2 weeks</i>"]
+  subgraph P4["`Phase 4 — Presentations
+*2 weeks*`"]
     direction TB
     p4a["`Approach deck
 10d`"]:::neutral
