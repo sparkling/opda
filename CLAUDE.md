@@ -33,22 +33,29 @@
 
 ## Build & Test
 
-```bash
-# Build
-npm run build
+Tasks run through the **Makefile** (thin wrappers over npm scripts + the
+`opda-gen` CLI). `make help` prints the grouped list. Key targets:
 
-# Test
-npm test
+| Target | What it does |
+|---|---|
+| `make dev` | Astro dev server (auto-picks port 4330–4339) |
+| `make build` | Static site → `dist/` (no triplestore) |
+| `make build-data` | Full build: Fuseki + GRLC API + astro → `dist/` (what CI deploys; needs JDK 17+) |
+| `make serve-data` | Start Fuseki + the GRLC API and keep them running (develop pages/queries against live data) |
+| `make jena-load` | Load the ontology TTLs into a running Fuseki |
+| `make api` | Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031) |
+| `make test` | Remark plugin tests (the JS unit suite) |
+| `make verify-ontology` | Byte-identity: re-emit the ontology and diff vs the committed corpus |
+| `make ci-ontology` | All `opda-gen` CI gates (byte-identity, three-graph, dup, profile, baspi5) — mirrors the GH workflows |
+| `make ci` | Everything CI checks locally (JS + ontology gates) |
+| `make deploy` | Push `main` → CI builds & deploys to Cloudflare Pages |
 
-# Run a single test file
-npm test -- path/to/test.ts
+Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run jena:load`).
 
-# Lint
-npm run lint
-```
-
-- ALWAYS run tests after making code changes
-- ALWAYS verify build succeeds before committing
+- There is **no `lint` script** — validation is `make test` (JS) + `make ci-ontology` (ontology).
+- `opda-gen` targets run in `tools/opda-gen/` and need `make ontology-install` once first.
+- Deploys are **CI-only** (push to `main`); `make deploy-manual` (direct wrangler) is an escape hatch — avoid it.
+- ALWAYS run `make test` after code changes; run `make build` (or `make build-data` for triplestore-backed pages) before committing.
 
 ### Feature Workflow
 
