@@ -266,23 +266,60 @@
     themeVars.fontFamily = fontFamily;
     themeVars.fontSize = fontSize;
     injectInlineThemeDirective(themeVars, isDark);
+
     try {
       window.mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: themeVars, securityLevel: 'loose' });
-      var runPromise = window.mermaid.run({ querySelector: '.mermaid' });
-      if (runPromise && typeof runPromise.then === 'function') {
-        runPromise.then(function () {
-          fixErRowContrast(isDark);
-          loadDiagramLinks().then(function () { scheduleEnhanceDiagrams(); });
-          installMermaidResizeObserver();
-        });
-      } else {
-        fixErRowContrast(isDark);
-        loadDiagramLinks().then(function () { scheduleEnhanceDiagrams(); });
-        installMermaidResizeObserver();
-      }
     } catch (err) {
-      console.warn('[OPDA] mermaid run failed:', err);
+      console.warn('[OPDA] mermaid initialize failed:', err);
     }
+
+    // Render every .mermaid block, retrying any that don't come out with an
+    // <svg>. mermaid.run() can reject at first paint when a diagram container
+    // is still being laid out (its width not yet settled); the same source
+    // renders cleanly a beat later. The previous code attached .then() with no
+    // .catch and no retry, so that first-paint rejection was swallowed and the
+    // block was left showing its raw `%%{init…}` source — the "diagram displays
+    // its own code" bug seen on governance pages (e.g. /governance/data-stewardship).
+    // Re-running is safe: injectInlineThemeDirective skips blocks that already
+    // have an <svg>, so rendered diagrams are never clobbered. finalize()
+    // (ER-row contrast, lightbox/zoom wiring, resize observer) runs once, after
+    // rendering settles.
+    var MAX_ATTEMPTS = 6;
+    var finalized = false;
+    function finalize() {
+      if (finalized) return;
+      finalized = true;
+      fixErRowContrast(isDark);
+      loadDiagramLinks().then(function () { scheduleEnhanceDiagrams(); });
+      installMermaidResizeObserver();
+    }
+    function unrendered() {
+      return Array.prototype.filter.call(
+        document.querySelectorAll('.mermaid'),
+        function (el) { return !el.querySelector('svg'); }
+      );
+    }
+    function attempt(n) {
+      if (!unrendered().length) { finalize(); return; }
+      if (n > 0) injectInlineThemeDirective(themeVars, isDark); // reset + re-inject the stragglers
+      var p;
+      try {
+        p = window.mermaid.run({ querySelector: '.mermaid:not([data-processed])' });
+      } catch (err) {
+        p = Promise.reject(err);
+      }
+      if (!p || typeof p.then !== 'function') p = Promise.resolve();
+      function next(err) {
+        if (err) console.warn('[OPDA] mermaid run failed (attempt ' + (n + 1) + '):', err);
+        if (unrendered().length && n + 1 < MAX_ATTEMPTS) {
+          setTimeout(function () { attempt(n + 1); }, 150 + 150 * n);
+        } else {
+          finalize();
+        }
+      }
+      p.then(function () { next(null); }, function (err) { next(err); });
+    }
+    attempt(0);
   }
 
   // Mermaid 11's ER renderer paints alternating attribute-row backgrounds as
@@ -825,6 +862,7 @@
     var directive = "%%{init: { 'theme':'base', 'themeVariables': { " + pairs.join(', ') + " } }}%%\n";
     var classDefBlock = cagleClassDefs(!!isDark);
     document.querySelectorAll('.mermaid').forEach(function (el) {
+      if (el.querySelector('svg')) return; // already rendered — never clobber it on a re-run
       var src = (el.dataset.mermaidSrc || el.textContent || '').trim();
       src = src.replace(/%%\{init:[^}]*\}\}%%\s*\n?/g, '');
       src = src.replace(/^\s+/, '');
