@@ -697,6 +697,13 @@
   // Schedule enhanceDiagrams across short delays to handle ELK async SVG mount.
   // Stops when all figures have zoom buttons and ER nodes are wired, or after ~6s.
   var __misrenderRecheckOnce = false;
+  // Each diagram is correction-attempted at most once per page load. Without this a
+  // genuinely small diagram (narrower than 60% of a wide container — a false positive
+  // of the heuristic in correctMisrenderedDiagrams) gets reset + re-rendered,
+  // scheduleEnhanceDiagrams re-arms the check, it is still small, and it re-renders
+  // forever — the "flickering diagram" loop (worst on wide viewports / after a sidebar
+  // collapse widens the container).
+  var __misrenderFixed = new WeakSet();
   function scheduleEnhanceDiagrams() {
     __misrenderRecheckOnce = false; // reset on each mermaid run
     var attempts = 0;
@@ -735,6 +742,7 @@
     __misrenderRecheckOnce = true;
     var toFix = [];
     document.querySelectorAll('.mermaid').forEach(function (el) {
+      if (__misrenderFixed.has(el)) return; // already attempted once — never loop on a naturally-narrow diagram
       var svg = el.querySelector('svg');
       if (!svg || !el.dataset.mermaidSrc) return;
       var containerW = el.getBoundingClientRect().width;
@@ -745,6 +753,7 @@
     });
     if (!toFix.length) return;
     toFix.forEach(function (el) {
+      __misrenderFixed.add(el); // mark before re-render so the correction is one-shot
       el.textContent = el.dataset.mermaidSrc;
       el.removeAttribute('data-processed');
     });
@@ -766,31 +775,57 @@
     if (typeof ResizeObserver === 'undefined') return;
     var lastWidth = new WeakMap();
     var debounce = null;
+
+    // CRITICAL: observe each diagram's CONTAINER, not the .mermaid element itself.
+    // Re-rendering swaps the .mermaid element's <svg> for raw text and back, which
+    // makes *that element's* width swing — observing it feeds the resize straight
+    // back into itself and loops forever (the "flickering diagram" bug). The
+    // container's width is layout-driven (sidebar / viewport), so it only changes on
+    // a real resize. `suppressUntil` is a second guard: ignore any resize that lands
+    // in the window right after we deliberately re-render.
+    var suppressUntil = 0;
+    function containerOf(el) { return el.closest('.diagram') || el.parentElement || el; }
+
+    function rerunNow() {
+      suppressUntil = Date.now() + 1000;
+      document.querySelectorAll('.mermaid').forEach(function (el) {
+        if (el.dataset.mermaidSrc) {
+          el.textContent = el.dataset.mermaidSrc;
+          el.removeAttribute('data-processed');
+        }
+      });
+      _runMermaidInner();
+      // After the render paints, re-baseline container widths so the next delta is a
+      // genuine layout change rather than our own churn.
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          document.querySelectorAll('.mermaid').forEach(function (el) {
+            var c = containerOf(el);
+            lastWidth.set(c, Math.round(c.getBoundingClientRect().width));
+          });
+        });
+      });
+    }
     function scheduleRerun() {
       clearTimeout(debounce);
-      debounce = setTimeout(function () {
-        document.querySelectorAll('.mermaid').forEach(function (el) {
-          if (el.dataset.mermaidSrc) {
-            el.textContent = el.dataset.mermaidSrc;
-            el.removeAttribute('data-processed');
-          }
-        });
-        _runMermaidInner();
-      }, 200);
+      debounce = setTimeout(rerunNow, 250);
     }
+
     var ro = new ResizeObserver(function (entries) {
+      if (Date.now() < suppressUntil) return; // our own re-render — never re-trigger
       var rerunNeeded = false;
       entries.forEach(function (e) {
         var w = Math.round(e.contentRect.width);
         var prev = lastWidth.get(e.target) || 0;
-        if (Math.abs(w - prev) >= 30 || (prev < 200 && w >= 200)) rerunNeeded = true;
+        if (Math.abs(w - prev) >= 40 || (prev < 200 && w >= 200)) rerunNeeded = true;
         lastWidth.set(e.target, w);
       });
       if (rerunNeeded) scheduleRerun();
     });
     document.querySelectorAll('.mermaid').forEach(function (el) {
-      lastWidth.set(el, el.getBoundingClientRect().width);
-      ro.observe(el);
+      var c = containerOf(el);
+      lastWidth.set(c, Math.round(c.getBoundingClientRect().width));
+      ro.observe(c);
     });
     if (document.readyState !== 'complete') {
       window.addEventListener('load', scheduleRerun, { once: true });
