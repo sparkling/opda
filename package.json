@@ -9,14 +9,20 @@
     "dev:bare": "astro dev",
     "start": "node scripts/dev.mjs",
     "build": "pnpm run css && astro build",
+    "build:data": "node scripts/build-with-data.mjs",
+    "serve:data": "node scripts/build-with-data.mjs --serve",
+    "api": "FUSEKI_ENDPOINT=http://localhost:3031/opda/sparql node --watch src/api/server.js",
+    "jena:load": "node scripts/fuseki-load.mjs --clear",
     "preview": "astro preview",
     "astro": "astro",
     "css": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --minify",
     "css:watch": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --watch",
     "tailwindplus:download": "bash scripts/tailwindplus-download.sh",
     "test": "node --test tests/lib/remark/*.test.mjs",
-    "build:data": "node scripts/build-with-data.mjs",
-    "deploy": "bash deploy.sh"
+    "test:smoke": "npx playwright test scripts/smoke-test.mjs",
+    "clean": "rm -rf dist .astro",
+    "deploy": "bash deploy.sh",
+    "deploy:ci": "git push origin main"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.19.3",

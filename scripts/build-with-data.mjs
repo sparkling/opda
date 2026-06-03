@@ -41,6 +41,11 @@ const API_PORT = process.env.API_PORT || '3002';
 const OPDA_API = process.env.OPDA_API || `http://localhost:${API_PORT}`;
 const FUSEKI_PORT = process.env.FUSEKI_PORT || '3031';
 
+// --serve: bring Fuseki + the GRLC API up and keep them running (skip the astro
+// build + teardown) so the ontology API / SPARQL endpoint can be used locally —
+// e.g. run `npm run dev` against it. Ctrl-C stops both services.
+const SERVE = process.argv.includes('--serve');
+
 // Apache Jena Fuseki 6.1.0, built from the official Apache binary distribution.
 const FUSEKI_VERSION = '6.1.0';
 const FUSEKI_TARBALL = `apache-jena-fuseki-${FUSEKI_VERSION}.tar.gz`;
@@ -113,6 +118,15 @@ async function ensureFuseki() {
 let apiProcess = null;
 let fusekiProcess = null;
 
+function stopServices() {
+  if (apiProcess && !apiProcess.killed) { console.log('Stopping GRLC API'); apiProcess.kill(); }
+  if (fusekiProcess && !fusekiProcess.killed) { console.log('Stopping Fuseki'); fusekiProcess.kill(); }
+}
+
+// In --serve mode main() never resolves, so teardown happens here on Ctrl-C.
+process.on('SIGINT', () => { stopServices(); process.exit(0); });
+process.on('SIGTERM', () => { stopServices(); process.exit(0); });
+
 async function main() {
   console.log('build:data — Phase 2 full pipeline (ADR-0021)\n');
 
@@ -157,6 +171,18 @@ async function main() {
   });
   await waitForUrl(`${OPDA_API}/api/entities`, 'GRLC API /api/entities');
 
+  if (SERVE) {
+    console.log(
+      `\nServices up — leave this running:\n` +
+      `  Fuseki SPARQL : http://localhost:${FUSEKI_PORT}/opda/sparql\n` +
+      `  GRLC API      : ${OPDA_API}/api/entities\n\n` +
+      `Run \`npm run dev\` (or set OPDA_API=${OPDA_API}) in another shell to develop\n` +
+      `pages against the live API. Ctrl-C to stop.\n`,
+    );
+    await new Promise(() => {}); // keep services alive until SIGINT/SIGTERM
+    return;
+  }
+
   // 4. Run astro build with the API live.
   console.log('4. astro build (OPDA_API=' + OPDA_API + ')');
   await run('pnpm', ['run', 'build'], {
@@ -172,13 +198,6 @@ main()
     process.exitCode = 1;
   })
   .finally(() => {
-    // 5. Tear down services.
-    if (apiProcess && !apiProcess.killed) {
-      console.log('Stopping GRLC API');
-      apiProcess.kill();
-    }
-    if (fusekiProcess && !fusekiProcess.killed) {
-      console.log('Stopping Fuseki');
-      fusekiProcess.kill();
-    }
+    // 5. Tear down services (build mode). --serve mode tears down via SIGINT/SIGTERM.
+    if (!SERVE) stopServices();
   });
