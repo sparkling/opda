@@ -1,0 +1,94 @@
+# Edge stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
+#
+# The us-east-1 stack: the two resources CloudFront's control plane requires
+# in that region (ADR-0038 §Region) —
+#   - the ACM certificate for the distribution
+#   - the Lambda@Edge viewer-request gate (code in ./edge-gate/, staged via
+#     `aws cloudformation package` into the opda-artifacts bucket; SAM's
+#     AutoPublishAlias publishes the numbered version Lambda@Edge requires)
+#
+# Deployed by CI (.github/workflows/infra.yml) BEFORE the site stack, which
+# consumes CertificateArn + GateFunctionVersionArn as parameters (exports do
+# not cross regions).
+#
+# Certificate validation note (cutover sequencing): the validation CNAME is
+# written into the Route 53 hosted zone automatically, but until the registrar
+# NS cutover Cloudflare is still authoritative — the same CNAME must be added
+# there (DNS-only) for the first issuance to complete (ADR-0040 cutover).
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  opda.org.uk edge resources (us-east-1): ACM certificate + Lambda@Edge OAuth
+  gate (ADR-0038/ADR-0040).
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+  HostedZoneId:
+    Type: String
+    Description: Route 53 hosted zone (from the opda-bootstrap stack outputs).
+
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+
+  # Execution role: Lambda@Edge requires BOTH service principals (replicas
+  # run as edgelambda); logs land in the region of execution, hence the
+  # wildcard-region log ARNs. SSM read is the gate's runtime config
+  # (ADR-0038: no environment variables on Lambda@Edge).
+  GateFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-edge-gate
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - edgelambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: edge-gate
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:/aws/lambda/*'
+              - Effect: Allow
+                Action: ['ssm:GetParameter']
+                Resource: !Sub 'arn:aws:ssm:eu-west-2:${AWS::AccountId}:parameter/opda/gate/config'
+
+  GateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: opda-gate
+      CodeUri: edge-gate/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Architectures: [x86_64]   # Lambda@Edge: no arm64
+      MemorySize: 128
+      Timeout: 5                # viewer-request maximum
+      Role: !GetAtt GateFunctionRole.Arn
+      # Publishes a new numbered version whenever the code changes — CloudFront
+      # associates version ARNs, never $LATEST (Lambda@Edge restriction).
+      AutoPublishAlias: live
+
+Outputs:
+  CertificateArn:
+    Value: !Ref Certificate
+  GateFunctionVersionArn:
+    Description: Versioned ARN for the CloudFront viewer-request association.
+    Value: !Ref GateFunction.Version
