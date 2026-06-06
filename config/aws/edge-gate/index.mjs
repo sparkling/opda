@@ -51,8 +51,12 @@ const PUBLIC_EXACT = new Set([
 ]);
 const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/favicon'];
 
-// Cold-start caches (per edge-PoP execution environment).
+// Cold-start caches (per edge-PoP execution environment). Config is
+// re-fetched after a TTL so allowlist/IdP changes in SSM reach warm
+// instances within minutes, not at the next arbitrary cold start.
+const CONFIG_TTL_MS = 5 * 60 * 1000;
 let configPromise = null;
+let configFetchedAt = 0;
 let jwksPromise = null;
 
 const ssm = new SSMClient({ region: CONFIG_REGION });
@@ -62,13 +66,19 @@ async function getConfig() {
   // "opda.eu.auth0.com"); members is the lowercase member e-mail allowlist
   // (ADR-0038: Auth0's shared dev keys let any Google account authenticate,
   // so membership is enforced here at the gate).
-  configPromise ??= ssm
-    .send(new GetParameterCommand({ Name: CONFIG_PARAM }))
-    .then((r) => JSON.parse(r.Parameter.Value))
-    .catch((err) => {
-      configPromise = null; // retry on next request
-      throw err;
-    });
+  if (configPromise && Date.now() - configFetchedAt > CONFIG_TTL_MS) {
+    configPromise = null;
+  }
+  if (!configPromise) {
+    configFetchedAt = Date.now();
+    configPromise = ssm
+      .send(new GetParameterCommand({ Name: CONFIG_PARAM }))
+      .then((r) => JSON.parse(r.Parameter.Value))
+      .catch((err) => {
+        configPromise = null; // retry on next request
+        throw err;
+      });
+  }
   return configPromise;
 }
 
