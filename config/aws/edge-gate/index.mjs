@@ -1,11 +1,13 @@
 // Lambda@Edge viewer-request gate — opda.org.uk (ADR-0038 §Gate, ADR-0040)
 //
 // Server-side protection for the knowledge base: the public homepage and
-// static assets pass through; every other request must carry a valid Cognito
-// ID token in an HttpOnly cookie, or it is 302-redirected into the Cognito
-// hosted UI's OAuth 2.0 authorization-code flow (with PKCE — the app client
-// is public, no client secret exists anywhere). Gated HTML is never served
-// to an unauthenticated request.
+// static assets pass through; every other request must carry a valid Auth0
+// ID token in an HttpOnly cookie, or it is 302-redirected into Auth0
+// Universal Login's OAuth 2.0 authorization-code flow (with PKCE — the app
+// client is public/SPA-type, no client secret exists anywhere). Gated HTML
+// is never served to an unauthenticated request. Membership (the 3 allowed
+// e-mails) is enforced here too — Auth0's shared Google dev keys
+// authenticate anyone with a Google account.
 //
 // Lambda@Edge constraints shaping this file (ADR-0038 consequences):
 //  - No environment variables → runtime config (user pool / client / domain)
@@ -45,8 +47,10 @@ let jwksPromise = null;
 const ssm = new SSMClient({ region: CONFIG_REGION });
 
 async function getConfig() {
-  // { userPoolId, clientId, domain } — domain is the full Cognito hosted-UI
-  // host, e.g. "opda-auth.auth.eu-west-2.amazoncognito.com".
+  // { domain, clientId, members } — domain is the Auth0 tenant host (e.g.
+  // "opda.eu.auth0.com"); members is the lowercase member e-mail allowlist
+  // (ADR-0038: Auth0's shared dev keys let any Google account authenticate,
+  // so membership is enforced here at the gate).
   configPromise ??= ssm
     .send(new GetParameterCommand({ Name: CONFIG_PARAM }))
     .then((r) => JSON.parse(r.Parameter.Value))
@@ -58,8 +62,7 @@ async function getConfig() {
 }
 
 async function getJwks(cfg) {
-  const region = cfg.userPoolId.split('_')[0];
-  const url = `https://cognito-idp.${region}.amazonaws.com/${cfg.userPoolId}/.well-known/jwks.json`;
+  const url = `https://${cfg.domain}/.well-known/jwks.json`;
   jwksPromise ??= fetch(url)
     .then((r) => r.json())
     .then((body) => Object.fromEntries(body.keys.map((k) => [k.kid, k])))
@@ -90,11 +93,16 @@ async function verifyIdToken(token, cfg) {
   const header = decodeJwtPart(parts[0]);
   const payload = decodeJwtPart(parts[1]);
 
-  const region = cfg.userPoolId.split('_')[0];
-  if (payload.iss !== `https://cognito-idp.${region}.amazonaws.com/${cfg.userPoolId}`) return false;
+  if (payload.iss !== `https://${cfg.domain}/`) return false;
   if (payload.aud !== cfg.clientId) return false;
-  if (payload.token_use !== 'id') return false;
   if (typeof payload.exp !== 'number' || payload.exp * 1000 < Date.now()) return false;
+  // Membership: signature alone is not enough — Auth0 authenticates any
+  // Google account; only allowlisted member e-mails pass the gate.
+  // cfg.members is comma-separated (it arrives via a CloudFormation
+  // parameter, which cannot split strings).
+  const email = (payload.email ?? '').toLowerCase();
+  const members = String(cfg.members ?? '').toLowerCase().split(',').map((s) => s.trim());
+  if (!email || !members.includes(email)) return false;
 
   const jwk = (await getJwks(cfg))[header.kid];
   if (!jwk || header.alg !== 'RS256') return false;
@@ -126,7 +134,7 @@ const response = (status, statusDescription, headers) => ({ status, statusDescri
 function redirectToSignIn(cfg, returnPath) {
   const verifier = b64url(randomBytes(32));
   const challenge = b64url(createHash('sha256').update(verifier).digest());
-  const authorize = new URL(`https://${cfg.domain}/oauth2/authorize`);
+  const authorize = new URL(`https://${cfg.domain}/authorize`);
   authorize.search = new URLSearchParams({
     response_type: 'code',
     client_id: cfg.clientId,
@@ -154,7 +162,7 @@ async function handleCallback(request, cfg) {
   const verifier = parseCookies(request.headers)[VERIFIER_COOKIE];
   if (!code || !verifier) return redirectToSignIn(cfg, safeReturnPath(qs.get('state')));
 
-  const tokenRes = await fetch(`https://${cfg.domain}/oauth2/token`, {
+  const tokenRes = await fetch(`https://${cfg.domain}/oauth/token`, {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({

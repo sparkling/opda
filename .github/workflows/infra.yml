@@ -11,9 +11,10 @@ name: Infrastructure (CloudFormation)
 #
 # Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
 # Repository configuration required:
-#   vars.OPDA_SITE_DEPLOY_ROLE_ARN     — from the bootstrap stack outputs
-#   vars.OPDA_GOOGLE_OAUTH_CLIENT_ID   — Google OAuth client for Cognito
-#   secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET
+#   vars.OPDA_SITE_DEPLOY_ROLE_ARN — from the bootstrap stack outputs
+#   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain (IdP, retained)
+#   vars.OPDA_AUTH0_CLIENT_ID      — Auth0 SPA app (public, PKCE — no secret)
+#   vars.OPDA_MEMBER_EMAILS        — comma-separated gate allowlist
 
 on:
   push:
@@ -91,9 +92,9 @@ jobs:
       # ---- eu-west-2: site stack (consumes edge stack ARNs as parameters —
       # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy site stack (eu-west-2)
-        # Guarded on the Google OAuth client being configured — Cognito's
-        # Google IdP cannot be created with empty credentials.
-        if: hashFiles('config/aws/site-stack.yaml') != '' && vars.OPDA_GOOGLE_OAUTH_CLIENT_ID != ''
+        # Guarded on the Auth0 SPA application being configured — the gate
+        # cannot run its PKCE flow against an empty client.
+        if: hashFiles('config/aws/site-stack.yaml') != '' && vars.OPDA_AUTH0_CLIENT_ID != ''
         run: |
           CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
             --stack-name opda-edge \
@@ -109,6 +110,6 @@ jobs:
             --parameter-overrides \
               CertificateArn="$CERT_ARN" \
               GateFunctionVersionArn="$GATE_VERSION_ARN" \
-              GoogleClientId="${{ vars.OPDA_GOOGLE_OAUTH_CLIENT_ID }}" \
-              GoogleClientSecret="${{ secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET }}" \
+              Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
+              Auth0ClientId="${{ vars.OPDA_AUTH0_CLIENT_ID }}" \
               MemberEmails="${{ vars.OPDA_MEMBER_EMAILS || 'henrik@sparklingideas.co.uk' }}"

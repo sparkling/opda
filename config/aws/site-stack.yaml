@@ -4,11 +4,11 @@
 # exceptions (ACM cert + Lambda@Edge gate, which arrive as parameters from
 # the edge stack — exports do not cross regions).
 #
-#   - Cognito user pool: direct Google federation, pre-sign-up allowlist
-#     Lambda (only current member e-mails may establish an account), public
-#     app client (PKCE — no client secret; pairs with the edge gate)
 #   - SSM parameter /opda/gate/config — the edge gate's runtime config
-#     (Lambda@Edge has no environment variables, ADR-0038)
+#     (Lambda@Edge has no environment variables, ADR-0038): the Auth0 tenant
+#     + SPA client the gate runs its PKCE flow against, and the member
+#     e-mail allowlist the gate enforces (Auth0 is retained as the IdP;
+#     there are no AWS-side auth resources)
 #   - Private S3 site bucket + CloudFront distribution (OAC), viewer-request
 #     gate on every behavior; /api/v2/* routed to the Artalk comments origin
 #   - Route 53 apex alias records
@@ -20,8 +20,8 @@
 # Deployed by CI (.github/workflows/infra.yml) AFTER the edge stack.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  opda.org.uk site resources (eu-west-2): Cognito + Google federation, S3 +
-  CloudFront, Route 53 records, edge-gate config (ADR-0038/ADR-0040).
+  opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
+  edge-gate Auth0 config (ADR-0038/ADR-0040).
 
 Parameters:
   DomainName:
@@ -33,139 +33,32 @@ Parameters:
   GateFunctionVersionArn:
     Type: String
     Description: Lambda@Edge gate VERSION ARN (from the opda-edge stack).
-  GoogleClientId:
+  Auth0Domain:
     Type: String
-    Description: Google OAuth client ID for Cognito's direct social federation.
-  GoogleClientSecret:
+    Description: Auth0 tenant domain the gate authenticates against (e.g. opda.eu.auth0.com).
+  Auth0ClientId:
     Type: String
-    NoEcho: true
-    Description: Google OAuth client secret.
+    Description: Auth0 SPA application client ID (public, PKCE — no secret).
   MemberEmails:
     Type: String
     Default: henrik@sparklingideas.co.uk
     Description: >-
-      Comma-separated member e-mail allowlist (ADR-0038: the current Auth0
-      member identities). Only these may establish an account.
-  CognitoDomainPrefix:
-    Type: String
-    Default: opda-auth
-    Description: Hosted-UI domain prefix (region-unique).
+      Comma-separated member e-mail allowlist, enforced by the edge gate
+      (ADR-0038: Auth0's shared dev keys authenticate any Google account, so
+      membership is a gate-side check).
 
 Resources:
-  # ---------------- Cognito ----------------
-
-  PreSignUpRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: opda-presignup
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal: { Service: lambda.amazonaws.com }
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-
-  # ADR-0038 §Auth: the pre-sign-up allowlist — a social sign-in with a
-  # non-member e-mail is rejected; members auto-provision on first sign-in.
-  PreSignUpFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: opda-presignup
-      Runtime: nodejs22.x
-      Handler: index.handler
-      Role: !GetAtt PreSignUpRole.Arn
-      Timeout: 5
-      Environment:
-        Variables:
-          MEMBER_EMAILS: !Ref MemberEmails
-      Code:
-        ZipFile: |
-          exports.handler = async (event) => {
-            const allowed = (process.env.MEMBER_EMAILS || '')
-              .toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
-            const email = (event.request.userAttributes.email || '').toLowerCase();
-            if (!allowed.includes(email)) {
-              throw new Error('This e-mail address is not on the OPDA member list.');
-            }
-            return event;
-          };
-
-  PreSignUpPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref PreSignUpFunction
-      Action: lambda:InvokeFunction
-      Principal: cognito-idp.amazonaws.com
-      SourceArn: !GetAtt UserPool.Arn
-
-  UserPool:
-    Type: AWS::Cognito::UserPool
-    Properties:
-      UserPoolName: opda-members
-      UsernameAttributes: [email]
-      AutoVerifiedAttributes: [email]
-      LambdaConfig:
-        PreSignUp: !GetAtt PreSignUpFunction.Arn
-      Schema:
-        - Name: email
-          Required: true
-          Mutable: true
-
-  UserPoolDomain:
-    Type: AWS::Cognito::UserPoolDomain
-    Properties:
-      UserPoolId: !Ref UserPool
-      Domain: !Ref CognitoDomainPrefix
-
-  GoogleIdentityProvider:
-    Type: AWS::Cognito::UserPoolIdentityProvider
-    Properties:
-      UserPoolId: !Ref UserPool
-      ProviderName: Google
-      ProviderType: Google
-      ProviderDetails:
-        client_id: !Ref GoogleClientId
-        client_secret: !Ref GoogleClientSecret
-        authorize_scopes: openid email profile
-      AttributeMapping:
-        email: email
-        email_verified: email_verified
-
-  # Public client — PKCE only, no secret (pairs with the edge gate's flow;
-  # also what keeps secret-handling out of Lambda@Edge entirely, ADR-0038).
-  UserPoolClient:
-    Type: AWS::Cognito::UserPoolClient
-    DependsOn: GoogleIdentityProvider
-    Properties:
-      UserPoolId: !Ref UserPool
-      ClientName: opda-site-gate
-      GenerateSecret: false
-      SupportedIdentityProviders: [Google]
-      CallbackURLs:
-        - !Sub 'https://${DomainName}/_auth/callback'
-      AllowedOAuthFlowsUserPoolClient: true
-      AllowedOAuthFlows: [code]
-      AllowedOAuthScopes: [openid, email]
-      TokenValidityUnits:
-        IdToken: hours
-        AccessToken: hours
-        RefreshToken: days
-      IdTokenValidity: 12
-      AccessTokenValidity: 12
-      RefreshTokenValidity: 30
-      PreventUserExistenceErrors: ENABLED
-
   # The edge gate's runtime config (read at cold start from eu-west-2;
-  # Lambda@Edge cannot carry environment variables — ADR-0038).
+  # Lambda@Edge cannot carry environment variables — ADR-0038). Auth0 is the
+  # IdP (retained, ADR-0038 §Auth); the SPA client is public/PKCE so no
+  # secret appears here, and the member allowlist is enforced by the gate.
   GateConfigParameter:
     Type: AWS::SSM::Parameter
     Properties:
       Name: /opda/gate/config
       Type: String
       Value: !Sub |
-        {"userPoolId":"${UserPool}","clientId":"${UserPoolClient}","domain":"${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com"}
+        {"domain":"${Auth0Domain}","clientId":"${Auth0ClientId}","members":"${MemberEmails}"}
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -288,12 +181,6 @@ Outputs:
     Value: !Ref Distribution
   DistributionDomainName:
     Value: !GetAtt Distribution.DomainName
-  UserPoolId:
-    Value: !Ref UserPool
-  UserPoolClientId:
-    Value: !Ref UserPoolClient
-  CognitoHostedUiDomain:
-    Value: !Sub '${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com'
-  GoogleRedirectUri:
-    Description: Add as an authorized redirect URI on the Google OAuth client.
-    Value: !Sub 'https://${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse'
+  GateCallbackUrl:
+    Description: Must be listed in the Auth0 SPA application's allowed callback URLs.
+    Value: !Sub 'https://${DomainName}/_auth/callback'

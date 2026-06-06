@@ -11,7 +11,7 @@ implements: [ADR-0038]
 
 ## Context and Problem Statement
 
-ADR-0038 moves the site's hosting to AWS: S3 + CloudFront static delivery in `eu-west-2`, a Lambda@Edge OAuth gate against Cognito (the `us-east-1` control-plane exceptions), Artalk comments on ECS Fargate with Litestream→S3 persistence, and all infrastructure declared as **CloudFormation** committed to this repository. That decision needs a deployment pipeline.
+ADR-0038 moves the site's hosting to AWS: S3 + CloudFront static delivery in `eu-west-2`, a Lambda@Edge OAuth/PKCE gate against Auth0 (the gate and ACM certificate being the `us-east-1` control-plane exceptions), Artalk comments on ECS Fargate with Litestream→S3 persistence, and all infrastructure declared as **CloudFormation** committed to this repository. That decision needs a deployment pipeline.
 
 The incumbent pipeline (`.github/workflows/deploy.yml`) deploys to Cloudflare Pages: path-filtered on the production bundle, it runs the full data build (`npm run build:data` — self-provisioned Fuseki + build-time GRLC API per ADR-0021/0036/0037, only `dist/` ships), then `wrangler pages deploy`. Deploys are **CI-only** — push to `main` is the only deployment path; manual deploys are an escape hatch to be avoided.
 
