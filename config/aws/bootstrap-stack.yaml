@@ -102,6 +102,9 @@ Resources:
                 Resource:
                   - !Sub 'arn:aws:cloudformation:eu-west-2:${AWS::AccountId}:stack/opda-*/*'
                   - !Sub 'arn:aws:cloudformation:us-east-1:${AWS::AccountId}:stack/opda-*/*'
+                  # The edge stack uses the SAM transform; expanding it requires
+                  # CreateChangeSet on the transform's own AWS-owned ARN.
+                  - 'arn:aws:cloudformation:us-east-1:aws:transform/Serverless-2016-10-31'
               - Sid: TemplateValidation
                 Effect: Allow
                 Action: ['cloudformation:ValidateTemplate']
