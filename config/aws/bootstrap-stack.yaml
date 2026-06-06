@@ -128,9 +128,9 @@ Resources:
                   - route53:*
                   - acm:*
                   - lambda:*
-                  - cognito-idp:*
                   - ecs:*
                   - ecr:*
+                  - events:*
                   - ec2:Describe*
                   - ec2:CreateSecurityGroup
                   - ec2:DeleteSecurityGroup
@@ -142,6 +142,10 @@ Resources:
                   - logs:*
                   - application-autoscaling:Describe*
                 Resource: '*'
+              - Sid: GateConfigParameter
+                Effect: Allow
+                Action: ['ssm:*']
+                Resource: !Sub 'arn:aws:ssm:eu-west-2:${AWS::AccountId}:parameter/opda/*'
               - Sid: StackIamRoles
                 Effect: Allow
                 Action:
