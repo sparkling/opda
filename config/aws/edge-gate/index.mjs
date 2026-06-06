@@ -31,7 +31,11 @@ const CONFIG_PARAM = '/opda/gate/config';
 const CONFIG_REGION = 'eu-west-2';
 const SITE_ORIGIN = 'https://opda.org.uk';
 const CALLBACK_PATH = '/_auth/callback';
+const LOGIN_PATH = '/_auth/login';
+const LOGOUT_PATH = '/_auth/logout';
+const ME_PATH = '/_auth/me';
 const ID_COOKIE = 'opda_id';
+const AT_COOKIE = 'opda_at';
 const VERIFIER_COOKIE = 'opda_verifier';
 
 // Public surface: the coming-soon homepage and non-content assets. Hashed
@@ -139,7 +143,8 @@ function redirectToSignIn(cfg, returnPath) {
     response_type: 'code',
     client_id: cfg.clientId,
     redirect_uri: `${SITE_ORIGIN}${CALLBACK_PATH}`,
-    scope: 'openid email',
+    // profile gives name/picture for the header user-menu (/_auth/me).
+    scope: 'openid email profile',
     state: returnPath,
     code_challenge: challenge,
     code_challenge_method: 'S256',
@@ -181,8 +186,10 @@ async function handleCallback(request, cfg) {
     });
   }
 
-  // Cookie lifetime tracks the ID token's own exp (set per ADR-0038 in the
-  // site stack's token validity); an expired cookie just re-enters the flow.
+  // Cookie lifetime tracks the ID token's own exp; an expired cookie just
+  // re-enters the flow. The access token rides in a second HttpOnly cookie:
+  // /_auth/me hands it to same-origin JS so the comments widget can run the
+  // Artalk SSO exchange (the fork verifies it against Auth0's /userinfo).
   const maxAge = Math.max(60, decodeJwtPart(tokens.id_token.split('.')[1]).exp - Math.floor(Date.now() / 1000));
   return response('302', 'Found', {
     location: [{ key: 'Location', value: `${SITE_ORIGIN}${safeReturnPath(qs.get('state'))}` }],
@@ -193,9 +200,55 @@ async function handleCallback(request, cfg) {
       },
       {
         key: 'Set-Cookie',
+        value: `${AT_COOKIE}=${tokens.access_token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=${maxAge}`,
+      },
+      {
+        key: 'Set-Cookie',
         value: `${VERIFIER_COOKIE}=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0`,
       },
     ],
+    'cache-control': [{ key: 'Cache-Control', value: 'no-store' }],
+  });
+}
+
+// Same-origin session surface for the site's own JS (header user-menu and
+// the comments widget). 401 when unauthenticated — public pages handle it.
+async function handleMe(request, cfg) {
+  const cookies = parseCookies(request.headers);
+  const idToken = cookies[ID_COOKIE];
+  let payload = null;
+  try {
+    if (idToken && (await verifyIdToken(idToken, cfg))) {
+      payload = decodeJwtPart(idToken.split('.')[1]);
+    }
+  } catch { /* treat as unauthenticated */ }
+  const headers = {
+    'cache-control': [{ key: 'Cache-Control', value: 'no-store' }],
+    'content-type': [{ key: 'Content-Type', value: 'application/json' }],
+  };
+  if (!payload) return { ...response('401', 'Unauthorized', headers), body: '{}' };
+  return {
+    ...response('200', 'OK', headers),
+    body: JSON.stringify({
+      email: payload.email,
+      name: payload.name ?? null,
+      picture: payload.picture ?? null,
+      token: cookies[AT_COOKIE] ?? null, // for the Artalk SSO exchange
+    }),
+  };
+}
+
+function handleLogout(cfg) {
+  const expire = (name) =>
+    ({ key: 'Set-Cookie', value: `${name}=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0` });
+  const logout = new URL(`https://${cfg.domain}/v2/logout`);
+  logout.search = new URLSearchParams({
+    client_id: cfg.clientId,
+    returnTo: `${SITE_ORIGIN}/`,
+  }).toString();
+  return response('302', 'Found', {
+    location: [{ key: 'Location', value: logout.toString() }],
+    'set-cookie': [expire(ID_COOKIE), expire(AT_COOKIE), expire(VERIFIER_COOKIE)],
     'cache-control': [{ key: 'Cache-Control', value: 'no-store' }],
   });
 }
@@ -222,6 +275,12 @@ export async function handler(event) {
   }
 
   if (uri === CALLBACK_PATH) return handleCallback(request, cfg);
+  if (uri === ME_PATH) return handleMe(request, cfg);
+  if (uri === LOGOUT_PATH) return handleLogout(cfg);
+  if (uri === LOGIN_PATH) {
+    const qs = new URLSearchParams(request.querystring ?? '');
+    return redirectToSignIn(cfg, safeReturnPath(qs.get('return')));
+  }
 
   const idToken = parseCookies(request.headers)[ID_COOKIE];
   if (idToken) {

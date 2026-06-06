@@ -25,7 +25,6 @@
     "deploy:ci": "git push origin main"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^2.19.3",
     "@tailwindcss/vite": "^4.3.0",
     "artalk": "^2.9.1",
     "astro": "^6.3.3",

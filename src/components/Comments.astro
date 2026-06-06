@@ -1,20 +1,19 @@
 ---
 /**
- * Page comments — Artalk backend on Fly.io, SSO via the OPDA Auth0 session.
+ * Page comments — Artalk backend on AWS Fargate, same-origin via CloudFront,
+ * SSO via the edge gate's session (ADR-0038).
  *
  * Architecture:
- * - On init, if the user is Auth0-authenticated, fetch an Auth0 access token,
- *   POST it to the backend's /api/v2/sso/exchange, get back an Artalk JWT,
- *   and write it to localStorage["ArtalkUser"]. The Artalk widget then reads
- *   that localStorage entry at mount and considers the user fully logged in
- *   (is_login=true on the backend) — no popup, no password prompt.
- * - If the user isn't signed in to OPDA Auth0, we skip rendering the widget
- *   entirely (the allowlist gates SSO anyway, so anonymous use is moot).
+ * - The edge gate (Lambda@Edge) owns the Auth0 session. On init we ask it
+ *   for the session surface at /_auth/me; if authenticated it returns the
+ *   Auth0 access token, which we POST to /api/v2/sso/exchange (the fork's
+ *   SSO bridge, reached same-origin — CloudFront routes /api/v2/* to the
+ *   Artalk task). The returned Artalk JWT goes to localStorage["ArtalkUser"]
+ *   and the widget mounts fully logged-in — no popup, no password prompt.
+ * - On gated pages /_auth/me always succeeds (the gate already authenticated
+ *   the page load); a 401 just shows the signed-out prompt (dev servers).
  * - Theme follows OPDA's html[data-theme] via MutationObserver.
  * - Re-runs on `astro:page-load` so view transitions reset cleanly.
- *
- * Backend: opda-artalk Fly.io app (https://opda-artalk.fly.dev).
- * SSO bridge: the fork's /api/v2/sso/exchange (mints Artalk JWT from Auth0 token).
  */
 ---
 <section class="comments-section" aria-label="Comments">
@@ -27,11 +26,12 @@
 <script>
   import Artalk from 'artalk';
   import 'artalk/Artalk.css';
-  import { getAuth0Client, AUTH0_DOMAIN } from '@/lib/auth0';
 
-  const ARTALK_SERVER = 'https://opda-artalk.fly.dev';
-  const ARTALK_SITE = 'OPDA Knowledge Base';
-  const SSO_ENDPOINT = `${ARTALK_SERVER}/api/v2/sso/exchange`;
+  // Same origin: CloudFront routes /api/v2/* to the Artalk Fargate task
+  // (no CORS, and the edge gate covers the API too).
+  const ARTALK_SERVER = window.location.origin;
+  const ARTALK_SITE = 'OPDA';
+  const SSO_ENDPOINT = '/api/v2/sso/exchange';
   const LOCAL_USER_KEY = 'ArtalkUser';
 
   let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
@@ -109,20 +109,17 @@
       if (exp && exp > Math.floor(Date.now() / 1000) + 60) return true;
     }
 
-    // Need a fresh token. Get the Auth0 access token (silent if already signed in).
+    // Need a fresh token. The edge gate holds the Auth0 session — ask it
+    // for the access token (same-origin; cookies ride automatically).
     let auth0Token: string;
     try {
-      const auth = await getAuth0Client();
-      const authenticated = await auth.isAuthenticated();
-      if (!authenticated) return false;
-      auth0Token = await auth.getTokenSilently({
-        authorizationParams: {
-          audience: `https://${AUTH0_DOMAIN}/userinfo`,
-          scope: 'openid profile email',
-        },
-      });
+      const r = await fetch('/_auth/me', { credentials: 'same-origin' });
+      if (!r.ok) return false;
+      const me = (await r.json()) as { token?: string | null };
+      if (!me.token) return false;
+      auth0Token = me.token;
     } catch (err) {
-      console.warn('[OPDA] comments: Auth0 token fetch failed', err);
+      console.warn('[OPDA] comments: gate session fetch failed', err);
       return false;
     }
 
@@ -173,8 +170,8 @@
     container.innerHTML = '';
 
     // Gated: Artalk renders only for signed-in users. Sign-in is restricted to
-    // allowlisted emails by the Auth0 "OPDA KB Allowlist Gate" post-login Action,
-    // so a valid session implies an authorised user. Everyone else gets a prompt.
+    // allowlisted member e-mails by the edge gate (ADR-0038), so a valid
+    // session implies an authorised user. Everyone else gets a prompt.
     if (!signedIn) {
       container.innerHTML =
         '<p class="comments-section__gated" role="status">Sign in with an authorised OPDA account to view and post comments.</p>';

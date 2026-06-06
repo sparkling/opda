@@ -7,20 +7,35 @@ name: Deploy site to AWS
 # (at ~20 views/day, simpler than hashed-path bookkeeping and inside the
 # 1,000 free invalidation paths/month).
 #
-# CUTOVER STATE: workflow_dispatch only. Cloudflare (deploy.yml) remains the
-# production deploy path until the ADR-0038 cutover; at cutover, move the
-# push-paths trigger from deploy.yml here and delete deploy.yml (ADR-0040
-# §More Information, cutover sequence).
+# PRODUCTION since the 2026-06-06 NS cutover (deploy.yml/Cloudflare retired).
 #
 # Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
 # The bucket and distribution IDs are read from the opda-site stack outputs at
 # run time — no extra repository variables to drift.
 
 on:
+  # Only deploy when something in the production bundle changes. `astro build`
+  # ships src/ + public/ + the root build config; source/ and _build/ are
+  # dev-only (see astro.config.mjs) and docs/, .claude/, logs/ etc. never ship,
+  # so changes confined to those must not trigger a rebuild.
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
+      # ADR-0021: entity pages are generated from the ontology at build time, so
+      # the triplestore inputs + build-time API + orchestration must also trigger.
+      - 'config/fuseki-config.ttl'
+      - 'scripts/**'
+      - 'source/03-standards/ontology/**'
+      - '.github/workflows/deploy-aws.yml'
+  # Manual escape hatch: force a deploy from the Actions tab when a change
+  # outside the paths above needs publishing, or to re-run a build.
   workflow_dispatch:
-  # At cutover, replace the line above with deploy.yml's `push:` block
-  # (branches: [main] + the production-bundle paths filter) — kept identical
-  # so the move is a cut-and-paste.
 
 permissions:
   id-token: write
