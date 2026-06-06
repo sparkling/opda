@@ -143,6 +143,7 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: opda   # referenced by the bootstrap artalk-deploy role
+      CapacityProviders: [FARGATE, FARGATE_SPOT]
 
   LogGroup:
     Type: AWS::Logs::LogGroup
@@ -218,7 +219,13 @@ Resources:
     Properties:
       ServiceName: opda-artalk   # referenced by the bootstrap artalk-deploy role
       Cluster: !Ref Cluster
-      LaunchType: FARGATE
+      # Fargate SPOT (~70% off on-demand): a reclaim is a 2-minute-warned stop
+      # then auto-relaunch — the same path as a normal deploy (Litestream
+      # restore + DNS repoint), so brief, rare comment downtime is the whole
+      # cost. Acceptable at 3-user scale; single-writer invariant unaffected.
+      CapacityProviderStrategy:
+        - CapacityProvider: FARGATE_SPOT
+          Weight: 1
       DesiredCount: !Ref DesiredCount
       # Single-writer: stop-old-then-start-new (ADR-0038).
       DeploymentConfiguration:
