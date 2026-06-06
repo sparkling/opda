@@ -91,6 +91,23 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
 
+  # Artalk authenticates via the Authorization header and uses no cookies —
+  # and MUST NOT receive the viewer's cookie jar: the gate tokens plus any
+  # legacy cookies push the Cookie header past fasthttp's 4 KB request-header
+  # cap, and Artalk answers 431 before routing (root-caused 2026-06-06: the
+  # browser SSO exchange failed while a minimal-cookie curl succeeded). The
+  # gate still sees and validates cookies at viewer-request; the origin gets
+  # everything except them.
+  CommentsOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: opda-comments-no-cookies
+        Comment: All viewer headers except Host, all query strings, NO cookies
+        HeadersConfig: { HeaderBehavior: allViewer }
+        CookiesConfig: { CookieBehavior: none }
+        QueryStringsConfig: { QueryStringBehavior: all }
+
   OriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -143,7 +160,7 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
-            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader
+            OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy  # no cookies to Artalk
             LambdaFunctionAssociations:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn
