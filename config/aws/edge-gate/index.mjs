@@ -41,7 +41,14 @@ const VERIFIER_COOKIE = 'opda_verifier';
 // Public surface: the coming-soon homepage and non-content assets. Hashed
 // build assets (/_astro/) are deliberately public — they are styling/scripts,
 // not KB content, and the homepage needs them (ADR-0038: "/ and its assets").
-const PUBLIC_EXACT = new Set(['/', '/index.html', '/robots.txt', '/favicon.svg', '/favicon.ico']);
+const PUBLIC_EXACT = new Set([
+  '/',
+  '/index.html',
+  '/robots.txt',
+  '/favicon.svg',
+  '/favicon.ico',
+  '/coming-soon.jpg', // the homepage hero/og image
+]);
 const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/favicon'];
 
 // Cold-start caches (per edge-PoP execution environment).
