@@ -103,7 +103,7 @@ Resources:
   TaskSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Artalk task — CloudFront origin-facing ingress only
+      GroupDescription: Artalk task - CloudFront origin-facing ingress only
       VpcId: !Ref Vpc
       SecurityGroupIngress:
         - IpProtocol: tcp
