@@ -130,4 +130,5 @@ jobs:
             --no-fail-on-empty-changeset \
             --parameter-overrides \
               CloudFrontOriginFacingPrefixListId="$PREFIX_LIST_ID" \
+              Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
               DesiredCount="${{ vars.OPDA_ARTALK_DESIRED_COUNT || '0' }}"

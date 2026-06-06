@@ -40,6 +40,9 @@ Parameters:
     Description: >-
       Regional ID (pl-...) of the managed prefix list
       com.amazonaws.global.cloudfront.origin-facing (looked up by infra.yml).
+  Auth0Domain:
+    Type: String
+    Description: Auth0 tenant the SSO token-exchange endpoint validates against.
 
 Resources:
   # ---------------- Network (self-contained: no console-built VPC) ----------------
@@ -204,8 +207,16 @@ Resources:
             # The fork's entrypoint runs Litestream restore → artalk under
             # `litestream replicate -exec` (single supervised writer).
             - { Name: LITESTREAM_BUCKET, Value: !Ref LitestreamBucket }
+            - { Name: ATK_DB_TYPE, Value: sqlite }
+            - { Name: ATK_DB_FILE, Value: /data/artalk.db }
             - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
             - { Name: ATK_SITE_DEFAULT, Value: OPDA }
+            # Comments are gated to allowlisted signed-in members; captcha is
+            # redundant and breaks the popup-free SSO flow (matches fly.toml).
+            - { Name: ATK_CAPTCHA_ENABLED, Value: 'false' }
+            # The fork's SSO token exchange (ADR-0038: Artalk fork bullet).
+            - { Name: ATK_AUTH_SSO_ENABLED, Value: 'true' }
+            - { Name: ATK_AUTH_SSO_ISSUER, Value: !Ref Auth0Domain }
           LogConfiguration:
             LogDriver: awslogs
             Options:
