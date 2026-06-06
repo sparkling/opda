@@ -1,0 +1,299 @@
+# Site stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
+#
+# The eu-west-2 stack: everything except the two us-east-1 control-plane
+# exceptions (ACM cert + Lambda@Edge gate, which arrive as parameters from
+# the edge stack — exports do not cross regions).
+#
+#   - Cognito user pool: direct Google federation, pre-sign-up allowlist
+#     Lambda (only current member e-mails may establish an account), public
+#     app client (PKCE — no client secret; pairs with the edge gate)
+#   - SSM parameter /opda/gate/config — the edge gate's runtime config
+#     (Lambda@Edge has no environment variables, ADR-0038)
+#   - Private S3 site bucket + CloudFront distribution (OAC), viewer-request
+#     gate on every behavior; /api/v2/* routed to the Artalk comments origin
+#   - Route 53 apex alias records
+#
+# The Artalk runtime (VPC, ECS Fargate, ECR, Litestream bucket, the
+# comments-origin DNS updater) lives in the comments stack; this stack only
+# carries the CloudFront origin + behavior pointing at it.
+#
+# Deployed by CI (.github/workflows/infra.yml) AFTER the edge stack.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  opda.org.uk site resources (eu-west-2): Cognito + Google federation, S3 +
+  CloudFront, Route 53 records, edge-gate config (ADR-0038/ADR-0040).
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+  CertificateArn:
+    Type: String
+    Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
+  GateFunctionVersionArn:
+    Type: String
+    Description: Lambda@Edge gate VERSION ARN (from the opda-edge stack).
+  GoogleClientId:
+    Type: String
+    Description: Google OAuth client ID for Cognito's direct social federation.
+  GoogleClientSecret:
+    Type: String
+    NoEcho: true
+    Description: Google OAuth client secret.
+  MemberEmails:
+    Type: String
+    Default: henrik@sparklingideas.co.uk
+    Description: >-
+      Comma-separated member e-mail allowlist (ADR-0038: the current Auth0
+      member identities). Only these may establish an account.
+  CognitoDomainPrefix:
+    Type: String
+    Default: opda-auth
+    Description: Hosted-UI domain prefix (region-unique).
+
+Resources:
+  # ---------------- Cognito ----------------
+
+  PreSignUpRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-presignup
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  # ADR-0038 §Auth: the pre-sign-up allowlist — a social sign-in with a
+  # non-member e-mail is rejected; members auto-provision on first sign-in.
+  PreSignUpFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: opda-presignup
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Role: !GetAtt PreSignUpRole.Arn
+      Timeout: 5
+      Environment:
+        Variables:
+          MEMBER_EMAILS: !Ref MemberEmails
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            const allowed = (process.env.MEMBER_EMAILS || '')
+              .toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
+            const email = (event.request.userAttributes.email || '').toLowerCase();
+            if (!allowed.includes(email)) {
+              throw new Error('This e-mail address is not on the OPDA member list.');
+            }
+            return event;
+          };
+
+  PreSignUpPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref PreSignUpFunction
+      Action: lambda:InvokeFunction
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt UserPool.Arn
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: opda-members
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      LambdaConfig:
+        PreSignUp: !GetAtt PreSignUpFunction.Arn
+      Schema:
+        - Name: email
+          Required: true
+          Mutable: true
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Ref CognitoDomainPrefix
+
+  GoogleIdentityProvider:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ProviderName: Google
+      ProviderType: Google
+      ProviderDetails:
+        client_id: !Ref GoogleClientId
+        client_secret: !Ref GoogleClientSecret
+        authorize_scopes: openid email profile
+      AttributeMapping:
+        email: email
+        email_verified: email_verified
+
+  # Public client — PKCE only, no secret (pairs with the edge gate's flow;
+  # also what keeps secret-handling out of Lambda@Edge entirely, ADR-0038).
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn: GoogleIdentityProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: opda-site-gate
+      GenerateSecret: false
+      SupportedIdentityProviders: [Google]
+      CallbackURLs:
+        - !Sub 'https://${DomainName}/_auth/callback'
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [code]
+      AllowedOAuthScopes: [openid, email]
+      TokenValidityUnits:
+        IdToken: hours
+        AccessToken: hours
+        RefreshToken: days
+      IdTokenValidity: 12
+      AccessTokenValidity: 12
+      RefreshTokenValidity: 30
+      PreventUserExistenceErrors: ENABLED
+
+  # The edge gate's runtime config (read at cold start from eu-west-2;
+  # Lambda@Edge cannot carry environment variables — ADR-0038).
+  GateConfigParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /opda/gate/config
+      Type: String
+      Value: !Sub |
+        {"userPoolId":"${UserPool}","clientId":"${UserPoolClient}","domain":"${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com"}
+
+  # ---------------- Static site: S3 + CloudFront ----------------
+
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CloudFrontOacRead
+            Effect: Allow
+            Principal: { Service: cloudfront.amazonaws.com }
+            Action: s3:GetObject
+            Resource: !Sub '${SiteBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: opda-site-oac
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: opda.org.uk (ADR-0038)
+        Aliases: [!Ref DomainName]
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100   # NA + Europe — includes the London PoPs
+        DefaultRootObject: index.html
+        Origins:
+          - Id: site-s3
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !Ref OriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+          # Artalk comments origin — the comments stack maintains this DNS
+          # name (single Fargate task's public IP). Resolution happens at
+          # request time, so the origin may predate the record; /api/v2/*
+          # 502s until the comments stack is live, which is harmless.
+          - Id: comments
+            DomainName: !Sub 'comments-origin.${DomainName}'
+            CustomOriginConfig:
+              HTTPPort: 23366
+              OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+          TargetOriginId: site-s3
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
+          LambdaFunctionAssociations:
+            - EventType: viewer-request
+              LambdaFunctionARN: !Ref GateFunctionVersionArn
+        CacheBehaviors:
+          - PathPattern: '/api/v2/*'
+            TargetOriginId: comments
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader
+            LambdaFunctionAssociations:
+              - EventType: viewer-request
+                LambdaFunctionARN: !Ref GateFunctionVersionArn
+        CustomErrorResponses:
+          # OAC without ListBucket → S3 answers missing keys with 403.
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+
+  # ---------------- DNS ----------------
+
+  ApexRecords:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !ImportValue opda-hosted-zone-id
+      RecordSets:
+        - Name: !Ref DomainName
+          Type: A
+          AliasTarget:
+            DNSName: !GetAtt Distribution.DomainName
+            HostedZoneId: Z2FDTNDATAQYW2   # CloudFront's fixed zone ID
+        - Name: !Ref DomainName
+          Type: AAAA
+          AliasTarget:
+            DNSName: !GetAtt Distribution.DomainName
+            HostedZoneId: Z2FDTNDATAQYW2
+
+Outputs:
+  SiteBucketName:
+    Value: !Ref SiteBucket
+  DistributionId:
+    Value: !Ref Distribution
+  DistributionDomainName:
+    Value: !GetAtt Distribution.DomainName
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+  CognitoHostedUiDomain:
+    Value: !Sub '${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com'
+  GoogleRedirectUri:
+    Description: Add as an authorized redirect URI on the Google OAuth client.
+    Value: !Sub 'https://${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse'

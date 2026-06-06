@@ -91,7 +91,9 @@ jobs:
       # ---- eu-west-2: site stack (consumes edge stack ARNs as parameters —
       # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy site stack (eu-west-2)
-        if: hashFiles('config/aws/site-stack.yaml') != ''
+        # Guarded on the Google OAuth client being configured — Cognito's
+        # Google IdP cannot be created with empty credentials.
+        if: hashFiles('config/aws/site-stack.yaml') != '' && vars.OPDA_GOOGLE_OAUTH_CLIENT_ID != ''
         run: |
           CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
             --stack-name opda-edge \
@@ -108,4 +110,5 @@ jobs:
               CertificateArn="$CERT_ARN" \
               GateFunctionVersionArn="$GATE_VERSION_ARN" \
               GoogleClientId="${{ vars.OPDA_GOOGLE_OAUTH_CLIENT_ID }}" \
-              GoogleClientSecret="${{ secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET }}"
+              GoogleClientSecret="${{ secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET }}" \
+              MemberEmails="${{ vars.OPDA_MEMBER_EMAILS || 'henrik@sparklingideas.co.uk' }}"

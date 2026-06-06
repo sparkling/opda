@@ -112,6 +112,15 @@ async function verifyIdToken(token, cfg) {
 const safeReturnPath = (state) =>
   typeof state === 'string' && state.startsWith('/') && !state.startsWith('//') ? state : '/';
 
+// S3 origins don't resolve directory indexes (CloudFront's DefaultRootObject
+// covers "/" only) — rewrite pretty URLs to the index.html object the Astro
+// build emits. API paths pass through to the comments origin untouched.
+function rewriteIndex(uri) {
+  if (uri.startsWith('/api/')) return uri;
+  if (uri.endsWith('/')) return `${uri}index.html`;
+  return uri.split('/').pop().includes('.') ? uri : `${uri}/index.html`;
+}
+
 const response = (status, statusDescription, headers) => ({ status, statusDescription, headers });
 
 function redirectToSignIn(cfg, returnPath) {
@@ -188,6 +197,7 @@ export async function handler(event) {
   const uri = request.uri;
 
   if (PUBLIC_EXACT.has(uri) || PUBLIC_PREFIXES.some((p) => uri.startsWith(p))) {
+    request.uri = rewriteIndex(uri);
     return request;
   }
 
@@ -208,7 +218,10 @@ export async function handler(event) {
   const idToken = parseCookies(request.headers)[ID_COOKIE];
   if (idToken) {
     try {
-      if (await verifyIdToken(idToken, cfg)) return request;
+      if (await verifyIdToken(idToken, cfg)) {
+        request.uri = rewriteIndex(uri);
+        return request;
+      }
     } catch {
       // JWKS fetch failure etc. — fall through to re-auth rather than serve.
     }
