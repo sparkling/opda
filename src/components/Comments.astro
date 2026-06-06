@@ -24,8 +24,11 @@
 </section>
 
 <script>
-  import Artalk from 'artalk';
-  import 'artalk/Artalk.css';
+  // Artalk is loaded LAZILY (dynamic import, IntersectionObserver below):
+  // the page must render and become interactive without fetching, parsing,
+  // or running any comments code. Only the type is imported statically —
+  // erased at build time.
+  import type ArtalkType from 'artalk';
 
   // Same origin: CloudFront routes /api/v2/* to the Artalk Fargate task
   // (no CORS, and the edge gate covers the API too).
@@ -34,7 +37,7 @@
   const SSO_ENDPOINT = '/api/v2/sso/exchange';
   const LOCAL_USER_KEY = 'ArtalkUser';
 
-  let artalkInstance: ReturnType<typeof Artalk.init> | null = null;
+  let artalkInstance: ReturnType<typeof ArtalkType.init> | null = null;
   let themeObserver: MutationObserver | null = null;
   let initPromise: Promise<void> | null = null;
   let initedPageKey: string | null = null;
@@ -162,9 +165,15 @@
 
     tearDown();
 
-    const signedIn = await ensureArtalkSession();
-    // If the user navigated away while we were exchanging tokens, drop out
-    // — a fresh init() will run for the new page via astro:page-load.
+    // Code + session + config are all fetched only now — after the section
+    // neared the viewport — so none of it competes with page startup.
+    const [{ default: Artalk }, signedIn] = await Promise.all([
+      import('artalk'),
+      ensureArtalkSession(),
+      import('artalk/Artalk.css'),
+    ]);
+    // If the user navigated away while we were loading, drop out — a fresh
+    // init() will run for the new page via astro:page-load.
     if (window.location.pathname !== pageKey) return;
 
     container.innerHTML = '';
@@ -208,11 +217,39 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  // Lazy trigger: do nothing until the comments section approaches the
+  // viewport (600px early so it's usually ready by arrival). The page is
+  // fully loaded and responsive before any comments work happens; readers
+  // who never scroll down never pay for Artalk at all.
+  let observer: IntersectionObserver | null = null;
+
+  function arm() {
+    const container = document.getElementById('opda-comments');
+    observer?.disconnect();
+    observer = null;
+    if (!container) return;
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer?.disconnect();
+          observer = null;
+          init();
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+    observer.observe(container);
   }
-  document.addEventListener('astro:page-load', init);
-  document.addEventListener('astro:before-swap', tearDown);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', arm);
+  } else {
+    arm();
+  }
+  document.addEventListener('astro:page-load', arm);
+  document.addEventListener('astro:before-swap', () => {
+    observer?.disconnect();
+    observer = null;
+    tearDown();
+  });
 </script>
