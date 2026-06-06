@@ -1,0 +1,338 @@
+# Comments stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
+#
+# The Artalk comments runtime (eu-west-2): a single always-on Fargate task
+# running the sparkling/Artalk fork (SSO token-exchange endpoint), SQLite on
+# the task's ephemeral disk, persisted via Litestream to S3 (ADR-0038
+# §Comments/§Database/§Persistence — "SQLite backed by a bucket").
+#
+# Single-writer invariant (ADR-0038): desired count 1, and the deployment
+# configuration stops the old task BEFORE starting the new one
+# (minimumHealthyPercent=0, maximumPercent=100) — never two writers. The
+# pipeline relies on this declared configuration, not scripting (ADR-0040).
+#
+# Ingress: there is no load balancer (cost — ADR-0038 rejected an always-on
+# ALB at this scale). The task gets a public IP; a tiny EventBridge→Lambda
+# updater keeps comments-origin.opda.org.uk pointed at it (TTL 60), and the
+# site stack's CloudFront distribution routes /api/v2/* to that origin. The
+# security group admits only CloudFront's origin-facing address ranges
+# (managed prefix list), so the task is not directly reachable.
+#
+# The container image is built and pushed by the sparkling/Artalk fork's own
+# workflow (OIDC → opda-artalk-deploy role → ECR push → service bump),
+# ADR-0040 §4. DesiredCount stays 0 until the first image exists.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  opda.org.uk comments runtime (eu-west-2): Artalk on ECS Fargate, Litestream
+  S3 persistence, CloudFront-only ingress, origin DNS updater
+  (ADR-0038/ADR-0040).
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+  DesiredCount:
+    Type: Number
+    Default: 0
+    AllowedValues: [0, 1]   # single-writer: never more than one task
+    Description: Set to 1 once the fork has pushed the first image to ECR.
+  CloudFrontOriginFacingPrefixListId:
+    Type: String
+    Description: >-
+      Regional ID (pl-...) of the managed prefix list
+      com.amazonaws.global.cloudfront.origin-facing (looked up by infra.yml).
+
+Resources:
+  # ---------------- Network (self-contained: no console-built VPC) ----------------
+
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.42.0.0/24
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags: [{ Key: Name, Value: opda-comments }]
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VpcGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+
+  # Two subnets (AZ spread) so a replacement task can launch even during an
+  # AZ event; still only ever ONE task at a time.
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.42.0.0/25
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.42.0.128/25
+      AvailabilityZone: !Select [1, !GetAZs '']
+      MapPublicIpOnLaunch: true
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+
+  DefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VpcGatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  SubnetARouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties: { SubnetId: !Ref SubnetA, RouteTableId: !Ref RouteTable }
+
+  SubnetBRouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties: { SubnetId: !Ref SubnetB, RouteTableId: !Ref RouteTable }
+
+  TaskSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Artalk task — CloudFront origin-facing ingress only
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 23366
+          ToPort: 23366
+          SourcePrefixListId: !Ref CloudFrontOriginFacingPrefixListId
+
+  # ---------------- Image + persistence ----------------
+
+  EcrRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: opda-artalk   # referenced by the bootstrap deploy roles
+      ImageScanningConfiguration: { ScanOnPush: true }
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {"rules":[{"rulePriority":1,"description":"keep last 10 images",
+            "selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":10},
+            "action":{"type":"expire"}}]}
+
+  LitestreamBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      VersioningConfiguration: { Status: Enabled }
+
+  # ---------------- ECS ----------------
+
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: opda   # referenced by the bootstrap artalk-deploy role
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/opda-artalk
+      RetentionInDays: 30
+
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-artalk-exec
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ecs-tasks.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-artalk-task
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ecs-tasks.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: litestream
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [s3:ListBucket, s3:GetBucketLocation]
+                Resource: !GetAtt LitestreamBucket.Arn
+              - Effect: Allow
+                Action: [s3:GetObject, s3:PutObject, s3:DeleteObject]
+                Resource: !Sub '${LitestreamBucket.Arn}/*'
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: opda-artalk
+      RequiresCompatibilities: [FARGATE]
+      NetworkMode: awsvpc
+      Cpu: '256'
+      Memory: '512'
+      ExecutionRoleArn: !GetAtt ExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      ContainerDefinitions:
+        - Name: artalk
+          Image: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/opda-artalk:latest'
+          PortMappings: [{ ContainerPort: 23366, Protocol: tcp }]
+          Environment:
+            # The fork's entrypoint runs Litestream restore → artalk under
+            # `litestream replicate -exec` (single supervised writer).
+            - { Name: LITESTREAM_BUCKET, Value: !Ref LitestreamBucket }
+            - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
+            - { Name: ATK_SITE_DEFAULT, Value: OPDA }
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: artalk
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: DefaultRoute
+    Properties:
+      ServiceName: opda-artalk   # referenced by the bootstrap artalk-deploy role
+      Cluster: !Ref Cluster
+      LaunchType: FARGATE
+      DesiredCount: !Ref DesiredCount
+      # Single-writer: stop-old-then-start-new (ADR-0038).
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 0
+        MaximumPercent: 100
+      TaskDefinition: !Ref TaskDefinition
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: [!Ref SubnetA, !Ref SubnetB]
+          SecurityGroups: [!Ref TaskSecurityGroup]
+
+  # ---------------- Origin DNS updater ----------------
+  # No ALB at this scale: when the (single) task reaches RUNNING, point
+  # comments-origin.<domain> at its public IP so CloudFront's /api/v2/*
+  # origin follows task replacements (TTL 60).
+
+  DnsUpdaterRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-comments-dns
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: update-origin-record
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [ecs:DescribeTasks]
+                Resource: '*'
+                Condition:
+                  ArnEquals: { 'ecs:cluster': !GetAtt Cluster.Arn }
+              - Effect: Allow
+                Action: [ec2:DescribeNetworkInterfaces]
+                Resource: '*'
+              - Effect: Allow
+                Action: [route53:ChangeResourceRecordSets]
+                Resource: !Sub
+                  - 'arn:aws:route53:::hostedzone/${ZoneId}'
+                  - ZoneId: !ImportValue opda-hosted-zone-id
+
+  DnsUpdaterFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: opda-comments-dns
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Timeout: 30
+      Role: !GetAtt DnsUpdaterRole.Arn
+      Environment:
+        Variables:
+          HOSTED_ZONE_ID: !ImportValue opda-hosted-zone-id
+          RECORD_NAME: !Sub 'comments-origin.${DomainName}'
+      Code:
+        ZipFile: |
+          const { ECSClient, DescribeTasksCommand } = require('@aws-sdk/client-ecs');
+          const { EC2Client, DescribeNetworkInterfacesCommand } = require('@aws-sdk/client-ec2');
+          const { Route53Client, ChangeResourceRecordSetsCommand } = require('@aws-sdk/client-route-53');
+          exports.handler = async (event) => {
+            const { clusterArn, taskArn, lastStatus } = event.detail;
+            if (lastStatus !== 'RUNNING') return;
+            const ecs = new ECSClient();
+            const { tasks } = await ecs.send(new DescribeTasksCommand({ cluster: clusterArn, tasks: [taskArn] }));
+            const eniId = tasks?.[0]?.attachments?.[0]?.details?.find((d) => d.name === 'networkInterfaceId')?.value;
+            if (!eniId) return;
+            const ec2 = new EC2Client();
+            const { NetworkInterfaces } = await ec2.send(new DescribeNetworkInterfacesCommand({ NetworkInterfaceIds: [eniId] }));
+            const ip = NetworkInterfaces?.[0]?.Association?.PublicIp;
+            if (!ip) return;
+            const r53 = new Route53Client();
+            await r53.send(new ChangeResourceRecordSetsCommand({
+              HostedZoneId: process.env.HOSTED_ZONE_ID,
+              ChangeBatch: { Changes: [{ Action: 'UPSERT', ResourceRecordSet: {
+                Name: process.env.RECORD_NAME, Type: 'A', TTL: 60,
+                ResourceRecords: [{ Value: ip }],
+              } }] },
+            }));
+            console.log(`comments-origin -> ${ip}`);
+          };
+
+  TaskRunningRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Repoint comments-origin DNS when the Artalk task starts
+      EventPattern:
+        source: [aws.ecs]
+        detail-type: ['ECS Task State Change']
+        detail:
+          clusterArn: [!GetAtt Cluster.Arn]
+          lastStatus: [RUNNING]
+      Targets:
+        - Id: dns-updater
+          Arn: !GetAtt DnsUpdaterFunction.Arn
+
+  DnsUpdaterPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DnsUpdaterFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt TaskRunningRule.Arn
+
+Outputs:
+  EcrRepositoryUri:
+    Description: Push target for the sparkling/Artalk fork's workflow.
+    Value: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/opda-artalk'
+  LitestreamBucketName:
+    Value: !Ref LitestreamBucket
+  CommentsOriginRecord:
+    Value: !Sub 'comments-origin.${DomainName}'

@@ -113,3 +113,21 @@ jobs:
               Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
               Auth0ClientId="${{ vars.OPDA_AUTH0_CLIENT_ID }}" \
               MemberEmails="${{ vars.OPDA_MEMBER_EMAILS || 'henrik@sparklingideas.co.uk' }}"
+
+      # ---- eu-west-2: comments stack (Artalk runtime; independent of edge/site) ----
+      - name: Deploy comments stack (eu-west-2)
+        if: hashFiles('config/aws/comments-stack.yaml') != ''
+        run: |
+          # CloudFront's origin-facing ranges as a managed prefix list — the
+          # task security group admits only these (no direct ingress).
+          PREFIX_LIST_ID=$(aws ec2 describe-managed-prefix-lists --region eu-west-2 \
+            --filters Name=prefix-list-name,Values=com.amazonaws.global.cloudfront.origin-facing \
+            --query 'PrefixLists[0].PrefixListId' --output text)
+          aws cloudformation deploy --region eu-west-2 \
+            --stack-name opda-comments \
+            --template-file config/aws/comments-stack.yaml \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+              CloudFrontOriginFacingPrefixListId="$PREFIX_LIST_ID" \
+              DesiredCount="${{ vars.OPDA_ARTALK_DESIRED_COUNT || '0' }}"
