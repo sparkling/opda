@@ -1791,6 +1791,7 @@ a.card:hover .card-arrow { transform: translateX(3px); }
 .lead {
   font: var(--lead);
   color: var(--color-text-muted);
+  text-align: justify;
 }
 .source-note {
   font: 500 var(--text-xs) / 1.4 var(--font-sans);
