@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-06
 tags: [infrastructure, hosting, auth, deployment, comments]
 supersedes: []
