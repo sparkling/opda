@@ -215,6 +215,9 @@ Resources:
             # redundant and breaks the popup-free SSO flow (matches fly.toml).
             - { Name: ATK_CAPTCHA_ENABLED, Value: 'false' }
             # The fork's SSO token exchange (ADR-0038: Artalk fork bullet).
+            # The endpoint requires BOTH auth.enabled and auth.sso.enabled
+            # (server/handler/auth_sso_exchange.go answers 404 otherwise).
+            - { Name: ATK_AUTH_ENABLED, Value: 'true' }
             - { Name: ATK_AUTH_SSO_ENABLED, Value: 'true' }
             - { Name: ATK_AUTH_SSO_ISSUER, Value: !Ref Auth0Domain }
           LogConfiguration:
