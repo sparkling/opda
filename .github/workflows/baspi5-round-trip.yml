@@ -27,7 +27,7 @@ jobs:
 
       # SHACL validation runs on the Apache Jena 6.1.0 `shacl` CLI (ADR-0036/0037);
       # the dist is auto-provisioned into .jena/ by opda_gen.jena_shacl.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
@@ -94,7 +94,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
@@ -129,7 +129,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21

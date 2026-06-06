@@ -59,7 +59,7 @@ jobs:
       # ADR-0036/0037: build:data runs a local Apache Jena Fuseki 6.1.0 binary
       # (no Docker), which needs a JDK 17+ on the runner. The Fuseki dist itself
       # is self-provisioned (downloaded + sha512-verified) by build-with-data.mjs.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
