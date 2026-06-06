@@ -1,0 +1,107 @@
+name: Infrastructure (CloudFormation)
+
+# Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
+# in dependency order — artifacts (us-east-1) → edge (us-east-1: ACM cert +
+# Lambda@Edge gate) → site (eu-west-2: everything else). Change-set based and
+# idempotent (--no-fail-on-empty-changeset), so a run that touches only one
+# stack is a no-op for the others.
+#
+# The bootstrap stack (config/aws/bootstrap-stack.yaml) is deliberately NOT
+# deployed here — it creates the very role this workflow assumes (ADR-0040).
+#
+# Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
+# Repository configuration required:
+#   vars.OPDA_SITE_DEPLOY_ROLE_ARN     — from the bootstrap stack outputs
+#   vars.OPDA_GOOGLE_OAUTH_CLIENT_ID   — Google OAuth client for Cognito
+#   secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'config/aws/**'
+      - '.github/workflows/infra.yml'
+  # Manual escape hatch, and the sequencing tool for the rare coupled case
+  # (infra change that replaces the site bucket/distribution → run this, then
+  # the site deploy) — ADR-0040 §5.
+  workflow_dispatch:
+
+# Two infra runs must never interleave change sets (ADR-0040 §3).
+concurrency:
+  group: infra
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Lint templates
+        run: |
+          pipx install cfn-lint
+          cfn-lint config/aws/*.yaml
+
+      - name: Assume deploy role (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-2
+
+      - name: Validate templates
+        run: |
+          for t in config/aws/*.yaml; do
+            aws cloudformation validate-template --region eu-west-2 \
+              --template-body "file://$t" --query Description --output text
+          done
+
+      # ---- us-east-1: artifacts bucket (Lambda packaging) ----
+      - name: Deploy artifacts stack (us-east-1)
+        run: |
+          aws cloudformation deploy --region us-east-1 \
+            --stack-name opda-artifacts \
+            --template-file config/aws/artifacts-stack.yaml \
+            --no-fail-on-empty-changeset
+
+      # ---- us-east-1: edge stack (ACM cert + Lambda@Edge gate) ----
+      - name: Package and deploy edge stack (us-east-1)
+        if: hashFiles('config/aws/edge-stack.yaml') != ''
+        run: |
+          ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region us-east-1 \
+            --stack-name opda-artifacts \
+            --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
+          aws cloudformation package --region us-east-1 \
+            --template-file config/aws/edge-stack.yaml \
+            --s3-bucket "$ARTIFACTS_BUCKET" \
+            --output-template-file /tmp/edge-packaged.yaml
+          aws cloudformation deploy --region us-east-1 \
+            --stack-name opda-edge \
+            --template-file /tmp/edge-packaged.yaml \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset
+
+      # ---- eu-west-2: site stack (consumes edge stack ARNs as parameters —
+      # CloudFormation exports do not cross regions, ADR-0040 §3) ----
+      - name: Deploy site stack (eu-west-2)
+        if: hashFiles('config/aws/site-stack.yaml') != ''
+        run: |
+          CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
+            --stack-name opda-edge \
+            --query "Stacks[0].Outputs[?OutputKey=='CertificateArn'].OutputValue" --output text)
+          GATE_VERSION_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
+            --stack-name opda-edge \
+            --query "Stacks[0].Outputs[?OutputKey=='GateFunctionVersionArn'].OutputValue" --output text)
+          aws cloudformation deploy --region eu-west-2 \
+            --stack-name opda-site \
+            --template-file config/aws/site-stack.yaml \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+              CertificateArn="$CERT_ARN" \
+              GateFunctionVersionArn="$GATE_VERSION_ARN" \
+              GoogleClientId="${{ vars.OPDA_GOOGLE_OAUTH_CLIENT_ID }}" \
+              GoogleClientSecret="${{ secrets.OPDA_GOOGLE_OAUTH_CLIENT_SECRET }}"

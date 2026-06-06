@@ -1,0 +1,220 @@
+# Bootstrap stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
+#
+# THE ONE MANUALLY-APPLIED STACK. Everything else deploys through CI
+# (.github/workflows/infra.yml), but CI authenticates as the deploy role this
+# stack creates — chicken-and-egg — so this stack is applied once by an
+# operator (ADR-0040 §Pipeline components #1):
+#
+#   aws cloudformation deploy \
+#     --profile opda --region eu-west-2 \
+#     --stack-name opda-bootstrap \
+#     --template-file config/aws/bootstrap-stack.yaml \
+#     --capabilities CAPABILITY_NAMED_IAM
+#
+# Contents (foundational, rarely-changing resources only):
+#   - Route 53 public hosted zone for opda.org.uk (NS cutover happens at the
+#     registrar, Porkbun, only after the site stack is live — ADR-0040 §More
+#     Information, cutover sequence)
+#   - GitHub Actions OIDC identity provider
+#   - The CI deploy role, assumable only by sparkling/opda@main (full deploy
+#     verbs) and sparkling/Artalk@main (the ECR/ECS verbs it needs and nothing
+#     else — separate role below)
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  opda.org.uk bootstrap: Route 53 hosted zone, GitHub OIDC provider, CI deploy
+  roles (ADR-0038/ADR-0040). Applied manually, once.
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+  SiteRepoSub:
+    Type: String
+    Default: 'repo:sparkling/opda:ref:refs/heads/main'
+    Description: OIDC sub claim allowed to assume the site/infra deploy role.
+  ExistingGitHubOidcProviderArn:
+    Type: String
+    Default: ''
+    Description: >-
+      ARN of a pre-existing token.actions.githubusercontent.com OIDC provider.
+      IAM allows only one provider per URL account-wide; if one already exists
+      (as it did in this account at first deploy), pass its ARN and the stack
+      references it instead of creating its own.
+  ArtalkRepoSub:
+    Type: String
+    Default: 'repo:sparkling/Artalk:ref:refs/heads/main'
+    Description: OIDC sub claim allowed to assume the Artalk image deploy role.
+
+Conditions:
+  CreateOidcProvider: !Equals [!Ref ExistingGitHubOidcProviderArn, '']
+
+Resources:
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref DomainName
+      HostedZoneConfig:
+        Comment: opda.org.uk — created by opda-bootstrap (ADR-0038)
+
+  GitHubOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: CreateOidcProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      # AWS validates GitHub's cert against trusted root CAs regardless; the
+      # thumbprint is required by the API but effectively vestigial.
+      ThumbprintList:
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+
+  # Deploy role for sparkling/opda@main: CloudFormation deploys of the edge +
+  # site stacks, S3 site sync, CloudFront invalidation. CloudFormation acts
+  # with the caller's credentials (no service role), so this role must carry
+  # permissions for every resource family the stacks declare (ADR-0040).
+  # Family-scoped rather than resource-scoped where CloudFormation needs to
+  # create the resources (they don't exist to be named yet); ratchet down
+  # post-cutover if desired.
+  SiteDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-site-deploy
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If [CreateOidcProvider, !Ref GitHubOidcProvider, !Ref ExistingGitHubOidcProviderArn]
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !Ref SiteRepoSub
+      Policies:
+        - PolicyName: opda-deploy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: StackManagement
+                Effect: Allow
+                Action: ['cloudformation:*']
+                Resource:
+                  - !Sub 'arn:aws:cloudformation:eu-west-2:${AWS::AccountId}:stack/opda-*/*'
+                  - !Sub 'arn:aws:cloudformation:us-east-1:${AWS::AccountId}:stack/opda-*/*'
+              - Sid: TemplateValidation
+                Effect: Allow
+                Action: ['cloudformation:ValidateTemplate']
+                Resource: '*'
+              - Sid: SiteSync
+                Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - 'arn:aws:s3:::opda-*'
+                  - 'arn:aws:s3:::opda-*/*'
+              - Sid: StackResourceFamilies
+                Effect: Allow
+                Action:
+                  - s3:*
+                  - cloudfront:*
+                  - route53:*
+                  - acm:*
+                  - lambda:*
+                  - cognito-idp:*
+                  - ecs:*
+                  - ecr:*
+                  - ec2:Describe*
+                  - ec2:CreateSecurityGroup
+                  - ec2:DeleteSecurityGroup
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:AuthorizeSecurityGroupEgress
+                  - ec2:RevokeSecurityGroupIngress
+                  - ec2:RevokeSecurityGroupEgress
+                  - ec2:CreateTags
+                  - logs:*
+                  - application-autoscaling:Describe*
+                Resource: '*'
+              - Sid: StackIamRoles
+                Effect: Allow
+                Action:
+                  - iam:CreateRole
+                  - iam:DeleteRole
+                  - iam:GetRole
+                  - iam:UpdateRole
+                  - iam:PutRolePolicy
+                  - iam:DeleteRolePolicy
+                  - iam:GetRolePolicy
+                  - iam:AttachRolePolicy
+                  - iam:DetachRolePolicy
+                  - iam:TagRole
+                  - iam:UntagRole
+                  - iam:PassRole
+                  - iam:CreateServiceLinkedRole
+                Resource:
+                  - !Sub 'arn:aws:iam::${AWS::AccountId}:role/opda-*'
+                  - !Sub 'arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*'
+
+  # Deploy role for sparkling/Artalk@main: push the image, bump the service —
+  # nothing else (ADR-0040 §Pipeline components #4).
+  ArtalkDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-artalk-deploy
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If [CreateOidcProvider, !Ref GitHubOidcProvider, !Ref ExistingGitHubOidcProviderArn]
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !Ref ArtalkRepoSub
+      Policies:
+        - PolicyName: opda-artalk-deploy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: EcrLogin
+                Effect: Allow
+                Action: ['ecr:GetAuthorizationToken']
+                Resource: '*'
+              - Sid: EcrPush
+                Effect: Allow
+                Action:
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:CompleteLayerUpload
+                  - ecr:InitiateLayerUpload
+                  - ecr:PutImage
+                  - ecr:UploadLayerPart
+                  - ecr:BatchGetImage
+                  - ecr:GetDownloadUrlForLayer
+                Resource: !Sub 'arn:aws:ecr:eu-west-2:${AWS::AccountId}:repository/opda-artalk'
+              - Sid: ServiceBump
+                Effect: Allow
+                Action:
+                  - ecs:UpdateService
+                  - ecs:DescribeServices
+                Resource: !Sub 'arn:aws:ecs:eu-west-2:${AWS::AccountId}:service/opda/opda-artalk'
+
+Outputs:
+  HostedZoneId:
+    Value: !Ref HostedZone
+    Export:
+      Name: opda-hosted-zone-id
+  HostedZoneNameServers:
+    Description: Set these as the nameservers at the registrar (Porkbun) at cutover.
+    Value: !Join [', ', !GetAtt HostedZone.NameServers]
+  SiteDeployRoleArn:
+    Description: Configure as a GitHub Actions variable (not secret) in sparkling/opda.
+    Value: !GetAtt SiteDeployRole.Arn
+  ArtalkDeployRoleArn:
+    Description: Configure as a GitHub Actions variable (not secret) in sparkling/Artalk.
+    Value: !GetAtt ArtalkDeployRole.Arn

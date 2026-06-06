@@ -1,0 +1,40 @@
+# Artifacts stack — opda.org.uk AWS hosting (ADR-0040)
+#
+# A single private S3 bucket in us-east-1 used by `aws cloudformation package`
+# to stage Lambda@Edge deployment zips for the edge stack (Lambda@Edge code
+# must live in us-east-1, and exceeds CloudFormation's 4KB inline-code limit).
+#
+# Deployed by CI (.github/workflows/infra.yml) in us-east-1, before the edge
+# stack. Not a deviation from the two-stack split in spirit — it exists only
+# because the packaging step needs a bucket before the edge stack deploys.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  opda.org.uk Lambda packaging artifacts bucket (us-east-1) for the edge stack
+  (ADR-0040).
+
+Resources:
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          # Packaged zips are content-addressed and re-uploaded per deploy;
+          # old ones serve no purpose after the stack references move on.
+          - Id: expire-stale-artifacts
+            Status: Enabled
+            ExpirationInDays: 30
+
+Outputs:
+  ArtifactsBucketName:
+    Value: !Ref ArtifactsBucket
+    Export:
+      Name: opda-artifacts-bucket
