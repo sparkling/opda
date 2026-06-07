@@ -12,7 +12,7 @@ implements: [ODR-0003]
 
 # DPV Class-Level Co-Annotation Pattern
 
-## Context
+## Context and Problem Statement
 
 A pattern has emerged across four `kind: pattern` ODRs ratified through 2026-05-27: each established that **DPV (Data Privacy Vocabulary) co-annotations attach at the CLASS level** of OPDA Substance Kinds carrying PII, with **variant-conditional refinements at the instance level**. The pattern's contract is reusable: a `kind: pattern` ODR declares its PII-bearing Kinds + their distinguishing variants/sub-kinds; ODR-0012 (Data-Governance Layer; pending) authors the class-level baseline DPV co-annotations + variant-conditional lawful-basis refinements; instance-level lawful-basis lands at generation time.
 
@@ -60,9 +60,27 @@ flowchart LR
     SH -. "MUST NOT contain DPV triples" .-> SG
 ```
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Class-level `dpv-pd:hasPersonalDataCategory` baseline in `opda-annotations.ttl` + variant-conditional mapping table + instance-level lawful-basis dispatch.** The canonical pattern extracted as a reusable artefact from four citing sites.
+* **Option B — DPV co-annotations as OWL property restrictions on the class.** Rejected: would put DPV triples in the class graph, breaking ODR-0004 §3a three-graph separation; DPV is advisory annotation, not class-graph reasoning material.
+* **Option C — DPV co-annotations as SHACL `sh:property` constraints.** Rejected: would put DPV triples in the shapes graph; DPV co-annotations are NOT shape constraints (they don't validate; they advise).
+* **Option D — DPV co-annotations as `rdfs:comment` natural-language.** Rejected per Hellmann et al. (DBpedia 2017) LLM-fallback failure mode. Same lesson as ODR-0005 §6a + ODR-0011 §5a: structured machine-readable annotations > natural-language commentary.
+* **Option E — Per-instance-only DPV annotations (no class-level baseline).** Rejected: misses the class-level discriminator (S005 §3c PII regime distinction; S006 Q1 Person identifier aggregate). Instance-only requires LLM consumers to aggregate per-instance triples to derive class-level PII regime; class-level baseline gives the regime as data.
+
+## Decision Outcome
+
+Chosen option: "Class-level `dpv-pd:hasPersonalDataCategory` baseline in `opda-annotations.ttl`", because only this placement gives LLM and tooling consumers the class-level PII discriminator as structured data (ODR-0004 three-graph separation, Hellmann 2017 LLM-fallback rebuttal) and the fourth-citing-site threshold requires extraction as a shared artefact.
 
 Adopt the **DPV class-level co-annotation pattern** as the canonical mechanism for attaching `dpv-pd:` and `dpv:` annotations to OPDA Substance Kinds carrying PII: each PII-bearing Substance Kind class carries a **class-level `dpv-pd:hasPersonalDataCategory`** triple declaring the aggregate PII regime; **variant-conditional refinements** track distinguishing sub-kinds or variants (e.g. Address-variant; Evidence-subtype; Title-vs-Estate registration state) that drive **lawful-basis-trigger differences**; instance-level `dpv:hasLawfulBasis` lands at generation time, dispatched from the variant tag. Co-annotations live in `opda-annotations.ttl` per ODR-0004 §3a (advisory annotations, NOT shape constraints — they do not belong in the shapes graph).
+
+### Consequences
+
+* **Four-site `implements:` retrofitting.** ODR-0005 §3c, ODR-0015 §7a, ODR-0006 §Q1+Q4, ODR-0009 §Q6 all add `ODR-0018` to their `implements:` frontmatter and cite this pattern in their `## References`. The retrofit is a follow-up housekeeping task; flagged for next /loop fire.
+* **A9 pressure-test passes.** This is the second `kind: pattern` ODR that is itself a pattern-extraction record (after ODR-0017 SHACL-AF). The (a)/(b)/(c) discipline applies; this ODR discharges all three (UFO Quality category; five named hard cases for co-annotation identity; Turtle template in annotation graph).
+* **ODR-0012 (Data-Governance Layer) inherits this pattern as authoring contract.** When S012 ratifies, ODR-0012 §Rules will reference ODR-0018 as the canonical mechanism + author the actual DPV triples + variant mapping tables.
+* **`odr-review` lint extension.** Beyond existing planned extensions: any ODR declaring PII-bearing Kinds + variants MUST `implements: [..., ODR-0018]` if it follows the class-level co-annotation pattern; any DPV annotation MUST be in `opda-annotations.ttl` (CI test enforces).
+* **Namespace ratified; record `accepted`.** The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0018 is `accepted`. Generator output may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
 
 ### Three-tier co-annotation pattern structure
 
@@ -87,6 +105,20 @@ flowchart TD
     VT -->|"no — class baseline<br/>sufficient"| T3
 ```
 
+## More Information
+
+- **Methodology**: [ODR-0001 §What an ODR records (per-kind discipline)](./ODR-0001-linked-data-council-methodology.md) — A9 amendment 2026-05-27; §Artefact identity test (fourth-citing-site threshold this ODR satisfies); [ODR-0011 §8a](./ODR-0011-enumeration-vocabularies.md#8a-ufo-meta-category-per-scheme--seven-category-framework-s011-q8--b3-pilot-typed-output) (UFO Quality category source).
+- **Foundation**: [ODR-0004 §3a](./ODR-0004-pdtf-ontology-foundation.md#3a-three-graph-separation--source-graphs-derived-consumer-profiles-ci-test-s004-q3) (three-graph separation — annotation graph for DPV); §7a (term-sourcing five-line precedence — verbatim regulator citation).
+- **W3C / spec**: DPV Specification (Pandit et al. 2024 DPV 2.0); DPV-PD (Personal Data) module; GDPR Art. 5 + Art. 6 + Art. 9; ICO *Guidance on Public Authorities Lawful Bases* (2023).
+- **Foundational ontology**: Guizzardi 2005 Ch. 4 (UFO Quality); Masolo et al. 2003 D18 §4.3 (DOLCE Quality / Quale).
+- **AI-RDF citation**: Hellmann et al. 2017 DBpedia 2017 — LLM fallback when annotations are in `rdfs:comment` only.
+- **Citing sites (`implements:` retrofit pending)**:
+  - [ODR-0005 §3c](./ODR-0005-property-land-identity-crux.md#3c-ic-for-opdaregisteredtitle-over-five-named-hard-cases-s005-q3) — RegisteredTitle published-PII regime.
+  - [ODR-0015 §7a](./ODR-0015-address-and-geography.md#7a-pii-tagging-s015-q7) — Address baseline + three variant refinements.
+  - [ODR-0006 §Q1+Q4](./ODR-0006-agents-and-roles.md) — Person identifier predicates (property-level + class-level); Organisation registration data.
+  - [ODR-0009 §Q6](./ODR-0009-claims-evidence-provenance.md#q6--dpv-co-annotation-seam) — Evidence subclasses baseline + variant-conditional lawful basis.
+- **Council deliberation provenance**: spawned by [session-009](./council/session-009-claims-evidence-provenance.md) §Synthesis (fourth-citing-site spawn-rule fires); authored as Author-only follow-up to S009's closure per ODR-0001 §Self-amendment process + §Artefact identity test.
+- **Related**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); sibling pattern [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (SHACL-AF non-blocking-data-quality-rules — different pattern, same `kind: pattern` extraction discipline). Future authoring: [ODR-0012](./ODR-0012-data-governance-layer.md) (Data-Governance Layer — `implements: ODR-0018` when ratified; consumes mapping tables + authors DPV triples).
 ## Rules
 
 These rules constrain every `implements:` of this pattern.
@@ -188,13 +220,6 @@ flowchart TD
     ACC --> DONE["ACCEPTED"]:::success
 ```
 
-## Alternatives
-
-- **DPV co-annotations as OWL property restrictions on the class.** Rejected: would put DPV triples in the class graph, breaking ODR-0004 §3a three-graph separation; DPV is advisory annotation, not class-graph reasoning material.
-- **DPV co-annotations as SHACL `sh:property` constraints.** Rejected: would put DPV triples in the shapes graph; DPV co-annotations are NOT shape constraints (they don't validate; they advise). `sh:Info` SHACL-AF rules (ODR-0017) are ADJACENT but distinct — ODR-0017 produces validation-report assertions; this pattern produces annotation-graph metadata.
-- **DPV co-annotations as `rdfs:comment` natural-language.** Rejected per Hellmann et al. (DBpedia 2017) LLM-fallback failure mode. Same lesson as ODR-0005 §6a + ODR-0011 §5a: structured machine-readable annotations > natural-language commentary.
-- **Per-instance-only DPV annotations (no class-level baseline).** Rejected: misses the class-level discriminator (S005 §3c PII regime distinction; S006 Q1 Person identifier aggregate). Instance-only requires LLM consumers to aggregate per-instance triples to derive class-level PII regime; class-level baseline gives the regime as data.
-
 ### ODR dependency graph
 
 This diagram reflects the `depends-on`, `implements`, and `supersedes` frontmatter relationships declared for this record.
@@ -227,26 +252,3 @@ flowchart LR
     ODR18 -->|"sibling pattern"| ODR17
     ODR18 -->|"authoring authority<br/>(when ratified)"| ODR12
 ```
-
-## Consequences
-
-- **Four-site `implements:` retrofitting.** ODR-0005 §3c, ODR-0015 §7a, ODR-0006 §Q1+Q4, ODR-0009 §Q6 all add `ODR-0018` to their `implements:` frontmatter and cite this pattern in their `## References`. The retrofit is a follow-up housekeeping task; flagged for next /loop fire.
-- **A9 pressure-test passes.** This is the second `kind: pattern` ODR that is itself a pattern-extraction record (after ODR-0017 SHACL-AF). The (a)/(b)/(c) discipline applies; this ODR discharges all three (UFO Quality category; five named hard cases for co-annotation identity; Turtle template in annotation graph).
-- **ODR-0012 (Data-Governance Layer) inherits this pattern as authoring contract.** When S012 ratifies, ODR-0012 §Rules will reference ODR-0018 as the canonical mechanism + author the actual DPV triples + variant mapping tables.
-- **`odr-review` lint extension.** Beyond existing planned extensions: any ODR declaring PII-bearing Kinds + variants MUST `implements: [..., ODR-0018]` if it follows the class-level co-annotation pattern; any DPV annotation MUST be in `opda-annotations.ttl` (CI test enforces).
-- **Namespace ratified; record `accepted`.** The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0018 is `accepted`. Generator output may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
-
-## References
-
-- **Methodology**: [ODR-0001 §What an ODR records (per-kind discipline)](./ODR-0001-linked-data-council-methodology.md) — A9 amendment 2026-05-27; §Artefact identity test (fourth-citing-site threshold this ODR satisfies); [ODR-0011 §8a](./ODR-0011-enumeration-vocabularies.md#8a-ufo-meta-category-per-scheme--seven-category-framework-s011-q8--b3-pilot-typed-output) (UFO Quality category source).
-- **Foundation**: [ODR-0004 §3a](./ODR-0004-pdtf-ontology-foundation.md#3a-three-graph-separation--source-graphs-derived-consumer-profiles-ci-test-s004-q3) (three-graph separation — annotation graph for DPV); §7a (term-sourcing five-line precedence — verbatim regulator citation).
-- **W3C / spec**: DPV Specification (Pandit et al. 2024 DPV 2.0); DPV-PD (Personal Data) module; GDPR Art. 5 + Art. 6 + Art. 9; ICO *Guidance on Public Authorities Lawful Bases* (2023).
-- **Foundational ontology**: Guizzardi 2005 Ch. 4 (UFO Quality); Masolo et al. 2003 D18 §4.3 (DOLCE Quality / Quale).
-- **AI-RDF citation**: Hellmann et al. 2017 DBpedia 2017 — LLM fallback when annotations are in `rdfs:comment` only.
-- **Citing sites (`implements:` retrofit pending)**:
-  - [ODR-0005 §3c](./ODR-0005-property-land-identity-crux.md#3c-ic-for-opdaregisteredtitle-over-five-named-hard-cases-s005-q3) — RegisteredTitle published-PII regime.
-  - [ODR-0015 §7a](./ODR-0015-address-and-geography.md#7a-pii-tagging-s015-q7) — Address baseline + three variant refinements.
-  - [ODR-0006 §Q1+Q4](./ODR-0006-agents-and-roles.md) — Person identifier predicates (property-level + class-level); Organisation registration data.
-  - [ODR-0009 §Q6](./ODR-0009-claims-evidence-provenance.md#q6--dpv-co-annotation-seam) — Evidence subclasses baseline + variant-conditional lawful basis.
-- **Council deliberation provenance**: spawned by [session-009](./council/session-009-claims-evidence-provenance.md) §Synthesis (fourth-citing-site spawn-rule fires); authored as Author-only follow-up to S009's closure per ODR-0001 §Self-amendment process + §Artefact identity test.
-- **Related**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); sibling pattern [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (SHACL-AF non-blocking-data-quality-rules — different pattern, same `kind: pattern` extraction discipline). Future authoring: [ODR-0012](./ODR-0012-data-governance-layer.md) (Data-Governance Layer — `implements: ODR-0018` when ratified; consumes mapping tables + authors DPV triples).

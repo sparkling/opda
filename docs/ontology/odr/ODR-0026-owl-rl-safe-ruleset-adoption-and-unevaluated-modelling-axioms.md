@@ -11,15 +11,40 @@ implements: [ODR-0003]
 
 # OWL-RL-Safe Ruleset Adoption and Unevaluated Modelling Axioms
 
-## Context
+## Context and Problem Statement
 
 ODR-0025 set opda's entailment regime — RDFS plus a curated OWL 2 RL-*safe* rule subset, with certain OWL constructs excluded from the closure. Two questions were left open. First, whether to adopt the sibling project's specific safe ruleset as-is or re-derive one: analysis of `~/source/hm/semantic-modelling/config/hm-owl-rl-safe.rules` confirmed the rule bodies reference only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — zero domain IRIs — so they transfer verbatim. Second, what the exclusion of `rdfs:domain`/`rdfs:range`/`owl:equivalentClass` means for *authoring*: does opda stop using those constructs, or keep them but not evaluate them?
 
 opda already authors the "excluded" constructs where they carry information: **27** `rdfs:subClassOf`, **2** `rdfs:subPropertyOf`, **3** `owl:equivalentClass` (the evidence-class short/long-name aliases, ADR-0011 — **since RETIRED by Council session-035; see R3 amendment**), and `rdfs:domain` declarations (e.g. `opda:currentEnergyRating rdfs:domain opda:Property`, the case behind ODR-0025 §R7). Removing them to match the closure would discard genuine documentation and OWL-identity information. This ODR settles both questions.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Adopt the OWL-RL-safe ruleset wholesale and adopt the model-but-don't-evaluate principle.** Author `rdfs:domain`, `rdfs:range`, `owl:equivalentClass` where they carry information; the load-time closure does not evaluate them.
+* **Option B — Re-derive a bespoke opda ruleset.** Rejected: hm's safe set is pure W3C vocabulary, already council-ratified (hm S103–105) and validated; re-derivation adds risk for no gain.
+* **Option C — Stop authoring `domain`/`range`/`equivalentClass` because they are not evaluated.** Rejected: they carry documentation and OWL-identity value independent of entailment; removing them loses information for humans and external tooling.
+* **Option D — Evaluate `equivalentClass` for the internal aliases only (a carve-out).** Rejected: it re-opens the ODR-0025 safe-set boundary for a need better met in the shape layer (R3); revisit only if a named consumer requires it.
+
+## Decision Outcome
+
+Chosen option: "Option A — Adopt the OWL-RL-safe ruleset wholesale and adopt the model-but-don't-evaluate principle", because hm's safe set is pure W3C vocabulary transferring without semantic change, and `rdfs:domain`/`range`/`equivalentClass` carry real documentation and OWL-identity value independent of entailment.
 
 opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verbatim — only provenance, the entailment-graph IRI, and the consistency-gate namespace differ; ADR-0035) and adopts the **model-but-don't-evaluate** principle: opda continues to author `rdfs:domain`, `rdfs:range`, `owl:equivalentClass` (and the other ODR-0025 §R2-excluded constructs) because they carry real information — human documentation, OWL identity, and input for external DL tooling — while the load-time closure simply does not evaluate them; the ODR-0025 §R2 exclusion is a **non-evaluation, not a prohibition on authoring**.
+
+### Consequences
+
+* Author `config/opda-owl-rl-safe.rules` verbatim from hm's (ADR-0035), with the three opda deltas only.
+* Keep `rdfs:domain`/`range` and `owl:equivalentClass` in the emitted ontology — they are documentation/identity, not inference inputs; no authored axiom is removed.
+* SHACL shapes MUST NOT assume `equivalentClass` (or `domain`/`range`) entailment — target the actual asserted types. Audit any shape that targets a canonical evidence class while expecting short-name instances to match (R3).
+* The closure correctness test (ADR-0035 §Confirmation) asserts NO `equivalentClass`/`domain`/`range`-derived triple appears in the inferred graph.
+* No emitted IRIs change; opda's authored axioms are unchanged — only the entailment *evaluation* is bounded.
+
+## More Information
+
+- Refines: [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1/§R2 (ratifies wholesale adoption; clarifies the §R2 exclusion as non-evaluation) and §R7 (the EPCCertificate `domain` case).
+- Safe-set anchors: [ODR-0005](ODR-0005-property-land-identity-crux.md) §R5, [ODR-0017](ODR-0017-shacl-af-quality-rules-pattern.md) §R6 (no `owl:sameAs`).
+- Mechanism: ADR-0035 (`config/opda-owl-rl-safe.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
+- Alias origin: ADR-0011 (within-engineering short-name aliases for the diagnostic exemplar set).
+- Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, ODR-0036 (SHACL rules & OWL inferencing), ODR-0014 (domain/range as documentation), council sessions 103–105.
 
 ## Rules
 
@@ -42,24 +67,3 @@ The load-time closure (R1) **does not evaluate any of them**: no `domain`/`range
 
 > **Amendment — Council [session-035](council/session-035-evidence-alias-retirement-and-faceted-typing.md) (2026-06-01).** The "ADR-0011 question" flagged above was taken up and **resolved**: the three `owl:equivalentClass` evidence aliases are **RETIRED** (8–0–0), not retained-as-inert. R3's "documentation, not an entailment bridge" reading was correct but understated — a safe, evaluable, native substitute exists (`skos:altLabel` for the short name + `skos:exactMatch` to the governed `opda:EvidenceMethodScheme` concept), so model-but-don't-evaluate (R2) does **not** apply here: keep the *information*, drop the *unsafe-and-redundant axiom*. The three `owl:equivalentClass` axioms are accordingly removed from opda's emitted TBox and from the §R2 "authored-but-excluded" inventory; the evidence-kind discriminator is now the `opda:evidenceType` SHACL-validated facet. R2's general principle (genuine `rdfs:domain`/`range` documentation with no safe substitute stays authored-but-unevaluated) is unchanged.
 
-## Alternatives
-
-* **Re-derive a bespoke opda ruleset** — rejected: hm's safe set is pure W3C vocabulary, already council-ratified (hm S103–105) and validated; re-derivation adds risk for no gain.
-* **Stop authoring `domain`/`range`/`equivalentClass` because they are not evaluated** — rejected: they carry documentation and OWL-identity value independent of entailment; removing them loses information for humans and external tooling.
-* **Evaluate `equivalentClass` for the internal aliases only (a carve-out)** — rejected here: it re-opens the ODR-0025 safe-set boundary for a need better met in the shape layer (R3); revisit only if a named consumer requires it.
-
-## Consequences
-
-- Author `config/opda-owl-rl-safe.rules` verbatim from hm's (ADR-0035), with the three opda deltas only.
-- Keep `rdfs:domain`/`range` and `owl:equivalentClass` in the emitted ontology — they are documentation/identity, not inference inputs; no authored axiom is removed.
-- SHACL shapes MUST NOT assume `equivalentClass` (or `domain`/`range`) entailment — target the actual asserted types. Audit any shape that targets a canonical evidence class while expecting short-name instances to match (R3).
-- The closure correctness test (ADR-0035 §Confirmation) asserts NO `equivalentClass`/`domain`/`range`-derived triple appears in the inferred graph.
-- No emitted IRIs change; opda's authored axioms are unchanged — only the entailment *evaluation* is bounded.
-
-## References
-
-- Refines: [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1/§R2 (ratifies wholesale adoption; clarifies the §R2 exclusion as non-evaluation) and §R7 (the EPCCertificate `domain` case).
-- Safe-set anchors: [ODR-0005](ODR-0005-property-land-identity-crux.md) §R5, [ODR-0017](ODR-0017-shacl-af-quality-rules-pattern.md) §R6 (no `owl:sameAs`).
-- Mechanism: ADR-0035 (`config/opda-owl-rl-safe.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
-- Alias origin: ADR-0011 (within-engineering short-name aliases for the diagnostic exemplar set).
-- Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, ODR-0036 (SHACL rules & OWL inferencing), ODR-0014 (domain/range as documentation), council sessions 103–105.

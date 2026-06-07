@@ -15,7 +15,7 @@ implements: [ODR-0003]
 
 # W3C Verifiable Credentials / DID Compatibility Layer
 
-## Context
+## Context and Problem Statement
 
 > **Status: deferred-named.** This ODR is created as a placeholder stub per Scope-Check 1 (2026-05-26) Q7c verdict (8-1 NAME the work; 2 strong spawn-now from Davis and Pandit; others "name-but-defer"). Activation triggers are named below in `## Rules`. The session ratifying this ODR (Session 016) does **not** run in Phase 1.
 
@@ -27,10 +27,38 @@ The scope-check Council recognised this as a real gap and named the ODR forward 
 
 Guizzardi raised a **Truth-Maker question** that belongs in this ODR's deliberation: what *makes true* a Verifiable Credential? PROV-O names a derivation chain; the VC names a cryptographic signature; the assurance level names a regulatory judgement. Three truth-makers, one Claim. ODR-0009 collapses these into the PROV-O backbone plus the `opda:assuranceLevel` SKOS layer; ODR-0016 separates them per the VC ecosystem's own discipline.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Name ODR-0016 as deferred-but-named with fixed activation triggers.** The chosen approach: fix the URI, open the catalogue admission of `cred:` and `did:` prefixes, and give ODR-0009 Q8 a record to defer into.
+* **Option B — Defer indefinitely, refresh ODR-0009's Q8 ad hoc.** Rejected by scope-check (8-1 NAME): the URI cost of late naming + the catalogue-admission cost of `cred:`/`did:` prefixes are both better paid up front.
+* **Option C — Fold into ODR-0009 (Claims, Evidence & Provenance).** Rejected: ODR-0009 deliberately scoped to the PROV-O backbone and assurance layer; binding to W3C VCDM 2.0 + DID Core + signature suites + status lists is a separate Council-cycle volume (Hendler's session-001 framing — each W3C Rec is its own URI-graph commitment).
+* **Option D — Spawn now (Davis + Pandit position).** Rejected by majority (6-2 defer-with-name): Phase 1 work does not require it; spawning now adds a session without a clear MVP-blocking question.
+
+## Decision Outcome
+
+Chosen option: "Name ODR-0016 as deferred-but-named with fixed activation triggers", because the scope-check Council recognised this as a real gap and naming it forward fixes the URI, opens `cred:`/`did:` catalogue admission, and gives ODR-0009 Q8 a record to defer into without requiring a session Phase 1 does not need.
 
 Name **ODR-0016 (W3C VC / DID Compatibility Layer)** as a deferred-but-named record. Activation triggers and scope are fixed; the substantive `## Rules` are placeholder until activation. The catalogue (ODR-0002) admits `cred:` (W3C VCDM 2.0) and `did:` (DID Core) prefixes immediately in the Defer tier with an activation pointer to this ODR.
 
+### Consequences
+
+* ODR-0002 admits `cred:` and `did:` prefixes in the Defer tier immediately, with activation pointers to this ODR. Session 002 ratifies the admission.
+* ODR-0009 Q8 ("`opda:Claim` as `cred:VerifiableCredential`-compatible?") defers into this ODR rather than being answered inline. ODR-0009's `## References` cites this ODR explicitly.
+* ODR-0012 (Governance) Phase-2 ambition (consent / lawful-basis class vocabulary) has a target ODR for receipt shapes when it activates.
+* Trust Framework citation honoured — the `verifiedClaims` envelope's claim that PDTF *is* a trust framework now has a record committing the framework to interop.
+* Plan §5 adds a Phase 7 (deferred) for Session 016. Cost: zero until activated; one Full Council session when activated.
+* If no activation trigger fires through MVP, this ODR stays `proposed` and is reviewed at programme retirement (ODR-0003 retirement gate).
+
+## More Information
+
+- Council methodology: [ODR-0001](./ODR-0001-linked-data-council-methodology.md).
+- Programme anchor: [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).
+- Catalogue: [ODR-0002](./ODR-0002-ontology-language-adoption.md) — admits `cred:` and `did:` prefixes in Defer tier with activation pointers here.
+- Upstream: [ODR-0009](./ODR-0009-claims-evidence-provenance.md) — PROV-O backbone + assurance layer + Q8 deferred here.
+- Downstream consumers: [ODR-0012](./ODR-0012-data-governance-layer.md) — Phase-2 consent receipts; Pandit's lawful-basis ambition.
+- Deliberation provenance: [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md), Q7c. Named-but-deferred per 8-1 verdict.
+- External standards: W3C Verifiable Credentials Data Model 2.0; W3C DID Core 1.0; W3C Data Integrity 1.0; W3C VC Status List 2021; W3C VC Consent Receipt (Community Group draft); EU eIDAS 2.0 Regulation; Trust over IP (ToIP) layers; OIDC4IDA (already referenced by ODR-0009).
+- Truth-Maker discipline: Guarino (DOLCE truth-making); Guizzardi's appendix to Scope-Check 1 Q7c.
 ## Rules
 
 > All rules below are *placeholder* until Session 016 runs. The activation triggers and the convening shape are normative; the binding content lands at session time.
@@ -174,29 +202,3 @@ flowchart TD
 
     S016 --> RULES["Ratify substantive ## Rules:<br/>Claim binding · DID method ·<br/>Signature suites · Status lists ·<br/>JSON-LD context · Truth-makers ·<br/>Consent receipts · eIDAS mapping"]:::success
 ```
-
-## Alternatives
-
-- **Defer indefinitely, refresh ODR-0009's Q8 ad hoc.** Rejected by scope-check (8-1 NAME): the URI cost of late naming + the catalogue-admission cost of `cred:`/`did:` prefixes are both better paid up front.
-- **Fold into ODR-0009 (Claims, Evidence & Provenance).** Rejected: ODR-0009 deliberately scoped to the PROV-O backbone and assurance layer; binding to W3C VCDM 2.0 + DID Core + signature suites + status lists is a separate Council-cycle volume (Hendler's session-001 framing — each W3C Rec is its own URI-graph commitment).
-- **Spawn now (Davis + Pandit position).** Rejected by majority (6-2 defer-with-name): Phase 1 work does not require it; spawning now adds a session without a clear MVP-blocking question.
-
-## Consequences
-
-- ODR-0002 admits `cred:` and `did:` prefixes in the Defer tier immediately, with activation pointers to this ODR. Session 002 ratifies the admission.
-- ODR-0009 Q8 ("`opda:Claim` as `cred:VerifiableCredential`-compatible?") defers into this ODR rather than being answered inline. ODR-0009's `## References` cites this ODR explicitly.
-- ODR-0012 (Governance) Phase-2 ambition (consent / lawful-basis class vocabulary) has a target ODR for receipt shapes when it activates.
-- Trust Framework citation honoured — the `verifiedClaims` envelope's claim that PDTF *is* a trust framework now has a record committing the framework to interop.
-- Plan §5 adds a Phase 7 (deferred) for Session 016. Cost: zero until activated; one Full Council session when activated.
-- If no activation trigger fires through MVP, this ODR stays `proposed` and is reviewed at programme retirement (ODR-0003 retirement gate).
-
-## References
-
-- Council methodology: [ODR-0001](./ODR-0001-linked-data-council-methodology.md).
-- Programme anchor: [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).
-- Catalogue: [ODR-0002](./ODR-0002-ontology-language-adoption.md) — admits `cred:` and `did:` prefixes in Defer tier with activation pointers here.
-- Upstream: [ODR-0009](./ODR-0009-claims-evidence-provenance.md) — PROV-O backbone + assurance layer + Q8 deferred here.
-- Downstream consumers: [ODR-0012](./ODR-0012-data-governance-layer.md) — Phase-2 consent receipts; Pandit's lawful-basis ambition.
-- Deliberation provenance: [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md), Q7c. Named-but-deferred per 8-1 verdict.
-- External standards: W3C Verifiable Credentials Data Model 2.0; W3C DID Core 1.0; W3C Data Integrity 1.0; W3C VC Status List 2021; W3C VC Consent Receipt (Community Group draft); EU eIDAS 2.0 Regulation; Trust over IP (ToIP) layers; OIDC4IDA (already referenced by ODR-0009).
-- Truth-Maker discipline: Guarino (DOLCE truth-making); Guizzardi's appendix to Scope-Check 1 Q7c.

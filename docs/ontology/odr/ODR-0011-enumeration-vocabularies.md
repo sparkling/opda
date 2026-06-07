@@ -12,15 +12,35 @@ implements: [ODR-0003, ODR-0017]
 
 # Enumeration Vocabularies
 
-## Context
+## Context and Problem Statement
 
 The PDTF v3 corpus carries 160 leaves whose JSON `enum` arrays act as closed value lists — `role`, `ownershipType`, `marketingTenure`, `councilTaxBand` (A–I), `currentEnergyRating` (A–G), `builtForm`, `centralHeatingFuelType`, `sellersCapacity`, `participantStatus`, and many more. Each is presently a free-floating string constraint: no global identifier, no governable label, no provenance back to the form question it serves.
 
 A mechanical rewrite to either `owl:oneOf` bags of `owl:NamedIndividual`s or to bare `xsd:string` patterns is wrong: these enumerations are **controlled vocabularies** — registers of human-curated concepts with preferred labels, definitions, notations, and (sometimes) hierarchy — not logical extensions a reasoner should police, and not class hierarchies where `Freehold` is a subclass of anything. The register is cross-cutting: roles feed Agents & Roles (ODR-0006), tenure and restriction codes feed Property & Land (ODR-0005), built form and EPC bands feed descriptive attributes (ODR-0008), evidence and assurance codes feed Claims & Evidence (ODR-0009), and PII/purpose taxonomies feed Governance (ODR-0012).
 
-## Decision
+## Considered Options
 
-Each enum becomes a **SKOS concept scheme** whose members are `skos:Concept`s carrying `skos:prefLabel`, `skos:notation`, and `skos:definition` — because SKOS is purpose-built for controlled vocabularies and gives each value a dereferenceable URI, a governable label, and a definition without importing OWL membership-reasoning over a hand-curated list.
+* **Option A (chosen) — SKOS concept schemes.** Each enum becomes a `skos:ConceptScheme` whose members are `skos:Concept`s carrying `skos:prefLabel`, `skos:notation`, and `skos:definition` — purpose-built for controlled vocabularies, giving each value a dereferenceable URI and a governable label without importing OWL membership-reasoning.
+* **Option B — Bare string constraints.** Rejected: values have no URIs, no governable labels, no definitions, no provenance; identical literals across distinct enums carry no statement of co-reference.
+* **Option C — OWL enumerated classes (`owl:oneOf` / subclassing).** Rejected: conscripts a reasoner to police membership of a hand-curated list — machinery without a purpose — and misclassifies vocabulary terms (`Detached`) as either individuals or classes (Baker/Knublauch, Q5).
+
+## Decision Outcome
+
+Chosen option: "SKOS concept schemes", because SKOS is purpose-built for controlled vocabularies and gives each value a dereferenceable URI, a governable label, and a definition without importing OWL membership-reasoning over a hand-curated list.
+
+Each enum becomes a **SKOS concept scheme** whose members are `skos:Concept`s carrying `skos:prefLabel`, `skos:notation`, and `skos:definition`.
+
+### Consequences
+
+* Adopt SKOS as the mechanism for every enum register; do not model enums as OWL classes or bare string constraints.
+* Source `skos:prefLabel`/`skos:definition` from the business glossary verbatim where the term exists; cite `dct:source` on every concept (+ verbatim-citation discipline for regulator-governed concepts per §4a above).
+* Author one scheme per enum (no floor); reuse external schemes via `skos:exactMatch`/`skos:closeMatch` where a governed register exists.
+* Flag each scheme as closed or open-ended during drafting; closed schemes flow into a SHACL `sh:in` per [ODR-0013](./ODR-0013-shacl-validation-and-severity.md), open-ended schemes do not.
+* Reconciling cross-overlay synonymy (recurring `Freehold`/`Commonhold`; `Attached`/`To follow`/`Not applicable` across dozens of leaves) is a per-scheme drafting concern.
+* Namespace ratified; record `accepted`. The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0011 is `accepted`. Generator output for `opda:<scheme>Scheme` declarations may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
+* A9 pressure-test passes (third `kind: pattern` ODR). §Operational specifications 1a/2a/4a/5a/7a/8a discharge A9 (a) UFO/DOLCE meta-category at scheme level + (b) IC over named hard cases (closed-vs-open, three-case lifecycle, cardinality bands) + (c) artefact realisation via SHACL shapes + SHACL-AF deprecation rule + generator emission.
+* B3 pilot third-site verdict: EXPAND threshold satisfied. Two-artefact discipline (narrative + structured tally) confirmed at three pilot sites (S005 Full Council + S015 Reduced Council + S011 Full Council substrate-mode). Two-artefact discipline becomes the DEFAULT across remaining sessions (S006, S007, S009, S010, S012, S013).
+* `pattern`-extraction spawn-rule fires (fourth citing site reached). The SHACL-AF non-blocking-data-quality-rules pattern appears in: ODR-0005 §6a (UPRN succession `sh:Info`); ODR-0009 (PROV-O Claims/Evidence); ODR-0015 §4a (INSPIRE/AddressBase succession `sh:Info`); ODR-0011 §5a (concept deprecation chain `sh:Info`/`sh:Warning`). Per ODR-0001 A9 §Artefact identity test fourth-citing-site threshold, **spawn a shared `pattern` ODR** (suggested: `opda-shacl-af-quality-rules`). The four citing sites become `implements:` of the extracted pattern.
 
 ### Modelling options and the chosen outcome
 
@@ -64,6 +84,54 @@ flowchart LR
     C1 -->|"carries"| PROPS
     C2 -->|"carries"| PROPS
     CN -->|"carries"| PROPS
+```
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2 + SHACL-AF (`sh:rule`, `sh:sparql`), per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: SKOS (concept schemes, labels, notations, semantic relations) per W3C SKOS Reference 2009 (Miles & Bechhofer eds.) §§1.4, S14, S15, §3, §4, §S26-29, §S37-46; Core (`dct:source`/`dct:isReplacedBy`/`dct:modified`) per ODR-0004 §7a; PROV-O Recommendation (Moreau & Missier 2013) for derivation/lineage succession; OWL 2 (`owl:deprecated`, `owl:versionIRI`); ISO 25964-1:2011 §8 (thesaurus maintenance discipline).
+- **Foundational ontology**: Guizzardi 2005 *Ontological Foundations for Conceptual Modeling*, Ch. 4 (UFO Substance Kind / Role / Phase / Relator / Mode / Quale taxonomy); Guizzardi 2015 (UFO 2007/2011/2015 lineage); Masolo et al. 2003 *WonderWeb D18* §4.3 (DOLCE Quality / Quality Region / Quale); Guizzardi & Wagner 2010 (action-modelling / method-codes).
+- **Inputs**: data dictionary `enum` columns (`data-dictionary.md` / `data-dictionary-canonical.json`); business glossary (`source/00-deliverables/semantic-models/business-glossary.md`).
+- **External authority sources** (cited via `dct:source` with version pin per ODR-0004 §7a): HMLR Practice Guides (PG 1 First Registration; PG 16 Cancellation; PG 40 Plans) for `restrictionTypeCode` / `classOfTitleCode` / `subRegisterCode` definitions; VOA published council-tax band definitions; UK MEES regulation for EPC bands; FCA Handbook glossary for regulated-profession `role` values; ICO published taxonomies for PII categories; ISO 3166-1:2020 for `countryCode`.
+- **Related ODRs**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) (URI/term-sourcing/three-graph/exemplar inheritance); methodology [ODR-0001 §What an ODR records (per-kind discipline)](./ODR-0001-linked-data-council-methodology.md) (A9 — ODR-0011 is the **third** `kind: pattern` ODR to discharge under it). Upstream `pattern`-ODR precedents: [ODR-0005 §2a](./ODR-0005-property-land-identity-crux.md) (UFO Substance Kind discipline) + §6a (SHACL-AF rule pattern); [ODR-0015 §2a](./ODR-0015-address-and-geography.md) (UFO Quality particularising Substance Kind precedent for `addressVariant` Quality Value category). Downstream consumers: [ODR-0006](./ODR-0006-agents-and-roles.md) (role + participantStatus); [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (sellersCapacity + lifecycle phases); [ODR-0008](./ODR-0008-property-descriptive-attributes.md) (Quale-in-Region descriptive schemes); [ODR-0009](./ODR-0009-claims-evidence-provenance.md) (authors `opda:assuranceLevel` Quality Region; consumes verificationMethod); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles may filter schemes by UFO category); [ODR-0012](./ODR-0012-data-governance-layer.md) (governance-sensitivity column; PII history retention; DPV class-level co-annotations); [ODR-0013](./ODR-0013-shacl-validation-and-severity.md) (SHACL severity tier for Cagle deprecation rule).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (vocabulary admission); [scope-check-1-programme](./council/scope-check-1-programme.md) Q3 (Guizzardi UFO-per-scheme sub-finding adopted as A5, 8-1); **[session-011 — Enumeration Vocabularies](./council/session-011-enumeration-vocabularies.md)** (2026-05-27; Full Council, substrate mode; B3 pilot `consensus-mode: hive-mind/typed-output` for Q8; two-artefact discipline session-wide; Queen Isaac/Miles extended; DA Gandon — 2 withdrawn / 5 conceded, full DA withdrawal). 7 questions (Q3 deferred to Phase-3.5 audit). Q1-Q7 4-0 votes with Gandon DA Q5 mild attack converted into three-case discipline; Q8 4-0 typed-output verdict with seven-category framework + dual `dct:source` (upstream UFO/DOLCE + ODR-0011 Council-authored SKOS-binding). **B3 pilot third site EXPAND threshold reached** — two-artefact discipline becomes default across remaining sessions. **Pattern-extraction spawn-rule fires** for SHACL-AF non-blocking-data-quality-rules (fourth citing site). Per-expert working notes under [`council/session-011-enumeration-vocabularies/`](./council/session-011-enumeration-vocabularies/).
+- **Ratification provenance**: [session-011](./council/session-011-enumeration-vocabularies.md) (2026-05-27). Phase 2.5 substrate gate cleared substantively; formal `status: accepted` awaits WG namespace ratification (inherited from ODR-0004).
+- **Deliverables (when fleshed out)**: one TTL per scheme (or a consolidated `vocabularies.ttl`); the closed/open-ended register; the cross-overlay concept-deduplication map; cross-links to modules and SHACL/DASH consumers.
+- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); consumers — Agents & Roles [ODR-0006](./ODR-0006-agents-and-roles.md), Property & Land [ODR-0005](./ODR-0005-property-land-identity-crux.md), descriptive attributes [ODR-0008](./ODR-0008-property-descriptive-attributes.md), Claims & Evidence [ODR-0009](./ODR-0009-claims-evidence-provenance.md), Governance [ODR-0012](./ODR-0012-data-governance-layer.md); SHACL `sh:in`/DASH consumer [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); catalogue [ODR-0002](./ODR-0002-ontology-language-adoption.md) as amended by [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q5 (overlays/enums; Baker/Knublauch/Pandit). Q2 Dublin Core as commons substrate (Baker, carried) and Q2 SSSOM deferred (Cagle dissent in [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)) bear on this register.
+- **SKOS reviewers**: Antoine Isaac and Alistair Miles (SKOS Reference editors) inform the broader/narrower and integrity-constraint conventions.
+
+### ODR dependency and consumer graph
+
+ODR-0011 depends on ODR-0004 and is consumed by six downstream ODRs that author or inherit scheme content.
+
+```mermaid
+flowchart LR
+    accTitle: ODR-0011 dependency and consumer graph
+    accDescr: Flowchart showing ODR-0011 depending on ODR-0004, implementing ODR-0003 and ODR-0017, and being consumed by ODR-0006 through ODR-0013.
+
+    ODR4["ODR-0004<br/>Foundation<br/>(URI / provenance / graphs)"]:::process
+    ODR3["ODR-0003<br/>Programme anchor"]:::process
+    ODR17["ODR-0017<br/>(implements)"]:::process
+
+    ODR11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::warning
+
+    ODR6["ODR-0006<br/>Agents &amp; Roles<br/>(role; participantStatus)"]:::success
+    ODR7["ODR-0007<br/>Transactions &amp; Lifecycle<br/>(sellersCapacity)"]:::success
+    ODR8["ODR-0008<br/>Property Descriptive<br/>(Quale-in-Region schemes)"]:::success
+    ODR9["ODR-0009<br/>Claims &amp; Evidence<br/>(assuranceLevel; verificationMethod)"]:::success
+    ODR12["ODR-0012<br/>Data Governance<br/>(PII retention; DPV co-annotations)"]:::success
+    ODR13["ODR-0013<br/>SHACL Validation<br/>(sh:in + deprecation rule)"]:::success
+
+    ODR4 -->|"depends-on"| ODR11
+    ODR3 -->|"implements"| ODR11
+    ODR17 -->|"implements"| ODR11
+    ODR11 -->|"consumed by"| ODR6
+    ODR11 -->|"consumed by"| ODR7
+    ODR11 -->|"consumed by"| ODR8
+    ODR11 -->|"consumed by"| ODR9
+    ODR11 -->|"consumed by"| ODR12
+    ODR11 -->|"consumed by"| ODR13
 ```
 
 ## Rules
@@ -266,88 +334,3 @@ flowchart LR
     DEP -->|"no successor"| D3
 ```
 
-## Alternatives
-
-- **Bare string constraints** — leave each enum as `xsd:string` with `sh:in` literals. Fatal flaw: values have no URIs, no governable labels, no definitions, no provenance; identical literals across distinct enums (`Freehold` in `ownershipType`, `marketingTenure`, `tenure`) carry no statement of co-reference.
-- **OWL enumerated classes (`owl:oneOf` / subclassing)** — model each enum as an OWL class with closed `owl:NamedIndividual` extension, or as a subclass tree. Fatal flaw: conscripts a reasoner to police membership of a hand-curated list — machinery without a purpose — and misclassifies vocabulary terms (`Detached`) as either individuals or classes (Baker/Knublauch, Q5).
-
-## Consequences
-
-**Added by [Session 011](./council/session-011-enumeration-vocabularies.md) — Gandon DA full withdrawal (2 withdrawn / 5 conceded); B3 pilot third site EXPAND threshold reached.**
-
-- **Namespace ratified; record `accepted`.** The inherited ODR-0004 namespace block is lifted (the `opda:` string was ratified 2026-05-27 — greenfield; no WG), so ODR-0011 is `accepted`. Generator output for `opda:<scheme>Scheme` declarations may still carry `dct:status "draft"` as a publication-grade marker, independent of record ratification.
-- **A9 pressure-test passes (third `kind: pattern` ODR).** §Operational specifications 1a/2a/4a/5a/7a/8a discharge A9 (a) UFO/DOLCE meta-category at scheme level + (b) IC over named hard cases (closed-vs-open, three-case lifecycle, cardinality bands) + (c) artefact realisation via SHACL shapes + SHACL-AF deprecation rule + generator emission.
-- **B3 pilot third-site verdict: EXPAND threshold satisfied.** Two-artefact discipline (narrative + structured tally) confirmed at three pilot sites (S005 Full Council + S015 Reduced Council + S011 Full Council substrate-mode). **Two-artefact discipline becomes the DEFAULT across remaining sessions** (S006, S007, S009, S010, S012, S013). Session-level pilot labels (`hive-mind/byzantine` for B2, `hive-mind/typed-output` for B3) retired; the underlying discipline (two-artefact + per-question structured tally + DA scorecard mechanical-check) is the operational practice. **ODR-0001 amendment flagged for follow-up author-only session** recording the EXPAND verdict + §Format tiers update.
-- **`pattern`-extraction spawn-rule fires (fourth citing site reached).** The SHACL-AF non-blocking-data-quality-rules pattern appears in: ODR-0005 §6a (UPRN succession `sh:Info`); ODR-0009 (PROV-O Claims/Evidence, S001 Q6 Moreau); ODR-0015 §4a (INSPIRE/AddressBase succession `sh:Info`); ODR-0011 §5a (concept deprecation chain `sh:Info`/`sh:Warning`). Per ODR-0001 A9 §Artefact identity test fourth-citing-site threshold, **spawn a shared `pattern` ODR** (suggested: `opda-shacl-af-quality-rules`). The four citing sites become `implements:` of the extracted pattern. **Flagged for Queen action in next session.**
-
-**Original consequences (carry forward):**
-
-- Adopt SKOS as the mechanism for every enum register; do not model enums as OWL classes or bare string constraints.
-- Source `skos:prefLabel`/`skos:definition` from the business glossary verbatim where the term exists; cite `dct:source` on every concept (+ verbatim-citation discipline for regulator-governed concepts per §4a above).
-- Author one scheme per enum (no floor); reuse external schemes via `skos:exactMatch`/`skos:closeMatch` where a governed register exists.
-- Flag each scheme as closed or open-ended during drafting; closed schemes flow into a SHACL `sh:in` per [ODR-0013](./ODR-0013-shacl-validation-and-severity.md), open-ended schemes do not.
-- Reconciling cross-overlay synonymy (recurring `Freehold`/`Commonhold`; `Attached`/`To follow`/`Not applicable` across dozens of leaves) is a per-scheme drafting concern.
-
-**Downstream ODR inheritance (deliberative level):**
-
-- **ODR-0006 (Agents & Roles).** Consumes the `role` SKOS scheme (Role label); `participantStatus` (Phase label); + ODR-0011 §8a per-scheme UFO category framework for any additional Agent-related vocabularies.
-- **ODR-0007 (Transactions & Lifecycle).** Consumes Method/plan codes (`sellersCapacity`); lifecycle phase tagging discipline.
-- **ODR-0008 (Property descriptive attributes).** Consumes Quale-in-Region schemes (`councilTaxBand`, `currentEnergyRating`, `builtForm`, `ownershipType`); Substance Kind label scheme (`tenureKind`).
-- **ODR-0009 (Claims, Evidence & Provenance).** Authors `opda:assuranceLevel` (Quality Region) under the framework here; consumes `verificationMethod` (Method/plan code).
-- **ODR-0012 (Data-Governance Layer).** Inherits **governance-sensitivity column** alongside UFO category column (Baker+Pandit Q8 amendment); class-level DPV co-annotations per scheme; PII-history retention discipline per §5a Pandit amendment.
-- **ODR-0013 (SHACL Validation & Severity).** Inherits the `sh:Info`/`sh:Warning` severity tier for the Cagle deprecation rule + the `sh:in` regeneration discipline.
-
-**Phase-3.5 audit session flagged (Q3 deferral):** SSSOM re-open trigger (S002 Q11) + cross-vocabulary mapping with FIBO/INSPIRE/Land-Registry-RDF external vocabularies route to a Phase-3.5 audit session after S006/S007/S008 ratify. The audit refines Q1 against real usage and adjudicates SSSOM admission.
-
-**Re-open triggers (recorded for future sessions):**
-
-- SSSOM admission per S002 Q11 named trigger; Phase-3.5 audit owns the deliberation.
-- Eighth UFO category candidate: if a Phase-3.5 module session surfaces a scheme that fits none of the seven categories (Role label / Phase label / Quale-in-Region / Method/plan code / Quality Region / Substance Kind label / Quality Value), an Author-only amendment to ODR-0011 adds the category with explicit `dct:source` to UFO/DOLCE + ODR-0011.
-
-### ODR dependency and consumer graph
-
-ODR-0011 depends on ODR-0004 and is consumed by six downstream ODRs that author or inherit scheme content.
-
-```mermaid
-flowchart LR
-    accTitle: ODR-0011 dependency and consumer graph
-    accDescr: Flowchart showing ODR-0011 depending on ODR-0004, implementing ODR-0003 and ODR-0017, and being consumed by ODR-0006 through ODR-0013.
-
-    ODR4["ODR-0004<br/>Foundation<br/>(URI / provenance / graphs)"]:::process
-    ODR3["ODR-0003<br/>Programme anchor"]:::process
-    ODR17["ODR-0017<br/>(implements)"]:::process
-
-    ODR11["ODR-0011<br/>Enumeration<br/>Vocabularies"]:::warning
-
-    ODR6["ODR-0006<br/>Agents &amp; Roles<br/>(role; participantStatus)"]:::success
-    ODR7["ODR-0007<br/>Transactions &amp; Lifecycle<br/>(sellersCapacity)"]:::success
-    ODR8["ODR-0008<br/>Property Descriptive<br/>(Quale-in-Region schemes)"]:::success
-    ODR9["ODR-0009<br/>Claims &amp; Evidence<br/>(assuranceLevel; verificationMethod)"]:::success
-    ODR12["ODR-0012<br/>Data Governance<br/>(PII retention; DPV co-annotations)"]:::success
-    ODR13["ODR-0013<br/>SHACL Validation<br/>(sh:in + deprecation rule)"]:::success
-
-    ODR4 -->|"depends-on"| ODR11
-    ODR3 -->|"implements"| ODR11
-    ODR17 -->|"implements"| ODR11
-    ODR11 -->|"consumed by"| ODR6
-    ODR11 -->|"consumed by"| ODR7
-    ODR11 -->|"consumed by"| ODR8
-    ODR11 -->|"consumed by"| ODR9
-    ODR11 -->|"consumed by"| ODR12
-    ODR11 -->|"consumed by"| ODR13
-```
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2 + SHACL-AF (`sh:rule`, `sh:sparql`), per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: SKOS (concept schemes, labels, notations, semantic relations) per W3C SKOS Reference 2009 (Miles & Bechhofer eds.) §§1.4, S14, S15, §3, §4, §S26-29, §S37-46; Core (`dct:source`/`dct:isReplacedBy`/`dct:modified`) per ODR-0004 §7a; PROV-O Recommendation (Moreau & Missier 2013) for derivation/lineage succession; OWL 2 (`owl:deprecated`, `owl:versionIRI`); ISO 25964-1:2011 §8 (thesaurus maintenance discipline).
-- **Foundational ontology**: Guizzardi 2005 *Ontological Foundations for Conceptual Modeling*, Ch. 4 (UFO Substance Kind / Role / Phase / Relator / Mode / Quale taxonomy); Guizzardi 2015 (UFO 2007/2011/2015 lineage); Masolo et al. 2003 *WonderWeb D18* §4.3 (DOLCE Quality / Quality Region / Quale); Guizzardi & Wagner 2010 (action-modelling / method-codes).
-- **Inputs**: data dictionary `enum` columns (`data-dictionary.md` / `data-dictionary-canonical.json`); business glossary (`source/00-deliverables/semantic-models/business-glossary.md`).
-- **External authority sources** (cited via `dct:source` with version pin per ODR-0004 §7a): HMLR Practice Guides (PG 1 First Registration; PG 16 Cancellation; PG 40 Plans) for `restrictionTypeCode` / `classOfTitleCode` / `subRegisterCode` definitions; VOA published council-tax band definitions; UK MEES regulation for EPC bands; FCA Handbook glossary for regulated-profession `role` values; ICO published taxonomies for PII categories; ISO 3166-1:2020 for `countryCode`.
-- **Related ODRs**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) (URI/term-sourcing/three-graph/exemplar inheritance); methodology [ODR-0001 §What an ODR records (per-kind discipline)](./ODR-0001-linked-data-council-methodology.md) (A9 — ODR-0011 is the **third** `kind: pattern` ODR to discharge under it). Upstream `pattern`-ODR precedents: [ODR-0005 §2a](./ODR-0005-property-land-identity-crux.md) (UFO Substance Kind discipline) + §6a (SHACL-AF rule pattern); [ODR-0015 §2a](./ODR-0015-address-and-geography.md) (UFO Quality particularising Substance Kind precedent for `addressVariant` Quality Value category). Downstream consumers: [ODR-0006](./ODR-0006-agents-and-roles.md) (role + participantStatus); [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (sellersCapacity + lifecycle phases); [ODR-0008](./ODR-0008-property-descriptive-attributes.md) (Quale-in-Region descriptive schemes); [ODR-0009](./ODR-0009-claims-evidence-provenance.md) (authors `opda:assuranceLevel` Quality Region; consumes verificationMethod); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles may filter schemes by UFO category); [ODR-0012](./ODR-0012-data-governance-layer.md) (governance-sensitivity column; PII history retention; DPV class-level co-annotations); [ODR-0013](./ODR-0013-shacl-validation-and-severity.md) (SHACL severity tier for Cagle deprecation rule).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (vocabulary admission); [scope-check-1-programme](./council/scope-check-1-programme.md) Q3 (Guizzardi UFO-per-scheme sub-finding adopted as A5, 8-1); **[session-011 — Enumeration Vocabularies](./council/session-011-enumeration-vocabularies.md)** (2026-05-27; Full Council, substrate mode; B3 pilot `consensus-mode: hive-mind/typed-output` for Q8; two-artefact discipline session-wide; Queen Isaac/Miles extended; DA Gandon — 2 withdrawn / 5 conceded, full DA withdrawal). 7 questions (Q3 deferred to Phase-3.5 audit). Q1-Q7 4-0 votes with Gandon DA Q5 mild attack converted into three-case discipline; Q8 4-0 typed-output verdict with seven-category framework + dual `dct:source` (upstream UFO/DOLCE + ODR-0011 Council-authored SKOS-binding). **B3 pilot third site EXPAND threshold reached** — two-artefact discipline becomes default across remaining sessions. **Pattern-extraction spawn-rule fires** for SHACL-AF non-blocking-data-quality-rules (fourth citing site). Per-expert working notes under [`council/session-011-enumeration-vocabularies/`](./council/session-011-enumeration-vocabularies/).
-- **Ratification provenance**: [session-011](./council/session-011-enumeration-vocabularies.md) (2026-05-27). Phase 2.5 substrate gate cleared substantively; formal `status: accepted` awaits WG namespace ratification (inherited from ODR-0004).
-- **Deliverables (when fleshed out)**: one TTL per scheme (or a consolidated `vocabularies.ttl`); the closed/open-ended register; the cross-overlay concept-deduplication map; cross-links to modules and SHACL/DASH consumers.
-- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); consumers — Agents & Roles [ODR-0006](./ODR-0006-agents-and-roles.md), Property & Land [ODR-0005](./ODR-0005-property-land-identity-crux.md), descriptive attributes [ODR-0008](./ODR-0008-property-descriptive-attributes.md), Claims & Evidence [ODR-0009](./ODR-0009-claims-evidence-provenance.md), Governance [ODR-0012](./ODR-0012-data-governance-layer.md); SHACL `sh:in`/DASH consumer [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); catalogue [ODR-0002](./ODR-0002-ontology-language-adoption.md) as amended by [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q5 (overlays/enums; Baker/Knublauch/Pandit). Q2 Dublin Core as commons substrate (Baker, carried) and Q2 SSSOM deferred (Cagle dissent in [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)) bear on this register.
-- **SKOS reviewers**: Antoine Isaac and Alistair Miles (SKOS Reference editors) inform the broader/narrower and integrity-constraint conventions.

@@ -12,15 +12,76 @@ implements: [ODR-0003, ODR-0017]
 
 # SHACL Validation & Severity
 
-## Context
+## Context and Problem Statement
 
 The PDTF v3 schemas are a constraint language: `required`, `enum`, `type`/`format`, `minimum`/`maximum`, and `oneOf` across 8,458 property-path entries — 935 base-schema leaves carry semantic annotation. Re-expressing the ontology as OWL alone discards this: OWL is open-world and cannot say which properties a conforming document *must* carry or what datatype a value *must* have. The closed-world contract is SHACL's job, and Council Session 001 (Q3) was emphatic that the shapes graph is kept **separate** from the OWL class graph — `owl:minCardinality` and `sh:minCount` are not the same statement.
 
 Three further problems sit on top of the mapping. Not every violation is equal: a `Property` with no resolvable identity key is catastrophic; an absent optional attribute is routine. Flat pass/fail buries the loudest error under noise. The schemas also drive forms — the shapes that validate should generate the BASPI/TA6 form that collects (Q5). And Cagle's preference for inline `opda:aiHint` annotations clashed with Knublauch/Gandon's refusal of any invented term a strict SHACL processor might misread as a constraint — Q5 resolved this by exiling advisory annotations to a third **annotation graph** (class ⊥ shapes ⊥ annotation).
 
-## Decision
+## Considered Options
 
-Adopt **severity-tiered SHACL in a separate shapes graph, with DASH rendering and a separate annotation graph**: the only option that actually validates the closed-world contract (OWL cannot), surfaces the rarest and most damaging error loudest (flat severity cannot), and keeps form-hints and advisory annotations in their proper graphs without letting any invented term masquerade as a constraint.
+* **Option A (chosen) — Severity-tiered SHACL in a separate shapes graph, with DASH rendering and a separate annotation graph.** The only option that actually validates the closed-world contract, surfaces the rarest and most damaging error loudest, and keeps form-hints and advisory annotations in their proper graphs.
+* **Option B — OWL cardinality only, no SHACL.** Rejected: OWL is open-world, so a missing required property is not a contradiction and nothing is actually *validated*; also collapses the class/shapes separation Q3 mandated.
+* **Option C — Flat SHACL with default severity.** Rejected: validates correctly but buries the catastrophic identity-loss error among trivial optional-gap reports, defeating the regulator's need to see the catastrophic error first.
+
+## Decision Outcome
+
+Chosen option: "Severity-tiered SHACL in a separate shapes graph, with DASH rendering and a separate annotation graph", because it is the only option that actually validates the closed-world contract (OWL cannot), surfaces the rarest and most damaging error loudest (flat severity cannot), and keeps form-hints and advisory annotations in their proper graphs without letting any invented term masquerade as a constraint.
+
+Adopt **severity-tiered SHACL in a separate shapes graph, with DASH rendering and a separate annotation graph**.
+
+### Consequences
+
+* Generate shapes from the data dictionary's recorded types, requiredness, and bounds — do not hand-author what is derivable (Allemang's generator-first policy, [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md)).
+* Maintain a standing drift check between class graph and shapes graph; the open-world/closed-world guard imposes this as ongoing cost.
+* Author every `sh:Violation` shape against the identity-contract or unprovenanced-claim rubric; reviewers reject `sh:Violation` on optional-attribute gaps.
+* Keep advisory annotations out of the shapes graph; route `opda:aiHint`-style triples to the annotation graph keyed to shape IRIs. Cagle's inline-hint preference is recorded as dissent (≈7-2), not adopted.
+* Round-trip the BASPI5 vertical slice (Q7 MVP) end-to-end as the canonical proof: JSON → profile → rendered form + validated document with full provenance.
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: SHACL (`sh:minCount`/`sh:maxCount`/`sh:datatype`/`sh:in`/`sh:xone`/`sh:qualifiedValueShape`/severity); DASH (`dash:propertyRole`/`viewer`/`editor`/`uniqueValueForClass`/`EnumSelectEditor`); SKOS (for `sh:in` over the [ODR-0011](./ODR-0011-enumeration-vocabularies.md) schemes).
+- **Data dictionary as input**: the 935 annotated base-schema leaves in `data-dictionary.md` / `data-dictionary-canonical.json` — recorded leaf types drive `sh:datatype`/`sh:nodeKind`; requiredness drives `sh:minCount`; array bounds drive `sh:minCount`/`sh:maxCount`; `enum` columns drive `sh:in` over the corresponding [ODR-0011](./ODR-0011-enumeration-vocabularies.md) scheme.
+- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); identity-key source [ODR-0005](./ODR-0005-property-land-identity-crux.md); `sh:in` scheme source [ODR-0011](./ODR-0011-enumeration-vocabularies.md); sensitivity-gate source [ODR-0012](./ODR-0012-data-governance-layer.md); overlay profiles + annotation-graph + ValidationContext [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); unprovenanced-claim violation [ODR-0009](./ODR-0009-claims-evidence-provenance.md).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q4 (identity-key mechanism), Q5 (overlays → SHACL, severity, aiHint resolution; Knublauch/Gandon/Guizzardi).
+
+### ODR dependency graph
+
+This record depends on a chain of foundation decisions and in turn is implemented by downstream records.
+
+```mermaid
+flowchart TD
+    accTitle: ODR-0013 dependency graph
+    accDescr: ODR-0013 depends on ODR-0003 through ODR-0012 and ODR-0015 plus ODR-0017 and ODR-0018, as recorded in its frontmatter.
+
+    O3["ODR-0003<br/>Programme"]:::process
+    O4["ODR-0004<br/>Foundation"]:::process
+    O5["ODR-0005<br/>Identity key"]:::process
+    O6["ODR-0006"]:::process
+    O7["ODR-0007"]:::process
+    O9["ODR-0009<br/>Claims &amp; provenance"]:::process
+    O10["ODR-0010<br/>Overlay profiles"]:::process
+    O11["ODR-0011<br/>Enumerations"]:::process
+    O12["ODR-0012<br/>Data governance"]:::process
+    O15["ODR-0015"]:::process
+    O17["ODR-0017<br/>(implements + dep)"]:::process
+    O18["ODR-0018"]:::process
+    THIS["ODR-0013<br/>SHACL Validation<br/>&amp; Severity"]:::info
+
+    O3 --> THIS
+    O4 --> THIS
+    O5 --> THIS
+    O6 --> THIS
+    O7 --> THIS
+    O9 --> THIS
+    O10 --> THIS
+    O11 --> THIS
+    O12 --> THIS
+    O15 --> THIS
+    O17 --> THIS
+    O18 --> THIS
+```
 
 ### Validation flow
 
@@ -115,60 +176,3 @@ flowchart LR
 
 **Validation confirmation** — shapes are validated with a SHACL processor (pySHACL or TopBraid) against the diagnostic exemplars ([ODR-0005](./ODR-0005-property-land-identity-crux.md)): a registered freehold house, an unregistered house pre-first-registration, and a flat whose UPRN was split must each produce the expected report — including a `sh:Violation` for the identity-key breach on the unregistered/split cases. The BASPI5 vertical slice (Q7 MVP) must round-trip: its profile shapes validate a transaction *and* generate the BASPI form with `dct:source` traceability.
 
-## Alternatives
-
-- **OWL cardinality only, no SHACL** — rejected: OWL is open-world, so a missing required property is not a contradiction and nothing is actually *validated*; also collapses the class/shapes separation Q3 mandated.
-- **Flat SHACL with default severity** — rejected: validates correctly but buries the catastrophic identity-loss error among trivial optional-gap reports, defeating the regulator's need to see the catastrophic error first.
-
-## Consequences
-
-- Generate shapes from the data dictionary's recorded types, requiredness, and bounds — do not hand-author what is derivable (Allemang's generator-first policy, [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md)).
-- Maintain a standing drift check between class graph and shapes graph; the open-world/closed-world guard imposes this as ongoing cost.
-- Author every `sh:Violation` shape against the identity-contract or unprovenanced-claim rubric; reviewers reject `sh:Violation` on optional-attribute gaps.
-- Keep advisory annotations out of the shapes graph; route `opda:aiHint`-style triples to the annotation graph keyed to shape IRIs. Cagle's inline-hint preference is recorded as dissent (≈7-2), not adopted.
-- Round-trip the BASPI5 vertical slice (Q7 MVP) end-to-end as the canonical proof: JSON → profile → rendered form + validated document with full provenance.
-
-### ODR dependency graph
-
-This record depends on a chain of foundation decisions and in turn is implemented by downstream records.
-
-```mermaid
-flowchart TD
-    accTitle: ODR-0013 dependency graph
-    accDescr: ODR-0013 depends on ODR-0003 through ODR-0012 and ODR-0015 plus ODR-0017 and ODR-0018, as recorded in its frontmatter.
-
-    O3["ODR-0003<br/>Programme"]:::process
-    O4["ODR-0004<br/>Foundation"]:::process
-    O5["ODR-0005<br/>Identity key"]:::process
-    O6["ODR-0006"]:::process
-    O7["ODR-0007"]:::process
-    O9["ODR-0009<br/>Claims &amp; provenance"]:::process
-    O10["ODR-0010<br/>Overlay profiles"]:::process
-    O11["ODR-0011<br/>Enumerations"]:::process
-    O12["ODR-0012<br/>Data governance"]:::process
-    O15["ODR-0015"]:::process
-    O17["ODR-0017<br/>(implements + dep)"]:::process
-    O18["ODR-0018"]:::process
-    THIS["ODR-0013<br/>SHACL Validation<br/>&amp; Severity"]:::info
-
-    O3 --> THIS
-    O4 --> THIS
-    O5 --> THIS
-    O6 --> THIS
-    O7 --> THIS
-    O9 --> THIS
-    O10 --> THIS
-    O11 --> THIS
-    O12 --> THIS
-    O15 --> THIS
-    O17 --> THIS
-    O18 --> THIS
-```
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: SHACL (`sh:minCount`/`sh:maxCount`/`sh:datatype`/`sh:in`/`sh:xone`/`sh:qualifiedValueShape`/severity); DASH (`dash:propertyRole`/`viewer`/`editor`/`uniqueValueForClass`/`EnumSelectEditor`); SKOS (for `sh:in` over the [ODR-0011](./ODR-0011-enumeration-vocabularies.md) schemes).
-- **Data dictionary as input**: the 935 annotated base-schema leaves in `data-dictionary.md` / `data-dictionary-canonical.json` — recorded leaf types drive `sh:datatype`/`sh:nodeKind`; requiredness drives `sh:minCount`; array bounds drive `sh:minCount`/`sh:maxCount`; `enum` columns drive `sh:in` over the corresponding [ODR-0011](./ODR-0011-enumeration-vocabularies.md) scheme.
-- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); identity-key source [ODR-0005](./ODR-0005-property-land-identity-crux.md); `sh:in` scheme source [ODR-0011](./ODR-0011-enumeration-vocabularies.md); sensitivity-gate source [ODR-0012](./ODR-0012-data-governance-layer.md); overlay profiles + annotation-graph + ValidationContext [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); unprovenanced-claim violation [ODR-0009](./ODR-0009-claims-evidence-provenance.md).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q4 (identity-key mechanism), Q5 (overlays → SHACL, severity, aiHint resolution; Knublauch/Gandon/Guizzardi).

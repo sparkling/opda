@@ -11,7 +11,7 @@ implements: []
 
 # Linked Data Council: Review Methodology
 
-## Context
+## Context and Problem Statement
 
 Ontology mapping and ontology modelling projects — programmes that translate source data (JSON Schema, relational schemas, XSD, RDF, glossaries, data dictionaries) into a linked-data ontology with namespace strategy, vocabulary selection (SKOS / OWL / SHACL / DCAT / DPV / PROV-O / FIBO), bounded-context boundaries, mapping conventions to external ontologies, classification facets, and validation severity — require balancing formal correctness, pragmatic tooling constraints, industry precedent, and the domain-specific realities of the source data they translate. No single perspective covers all of them: an OWL purist may overlook tooling gaps; a pragmatist may miss formal pitfalls; a standards expert may not account for the domain's existing data shape; an enterprise-architecture expert may not weigh open-data and public-sector linked-data conventions.
 
@@ -21,9 +21,40 @@ This methodology was developed in two ontology-modelling programmes — the H&M 
 
 **Pattern lineage.** This methodology codifies the **Council Hive** pattern — a dialectic review of a proposition by N named experts citing their published methodology, with one Devil's Advocate, producing a verdict with structured transcript. The Council Hive is one of four canonical hive-mind patterns; three siblings (Consensus Decision Hive — propose-vote-resolve with no dialectic; Implementation Hive — coordinated development with consensus checkpoints; Review Hive — multi-perspective code/design review with severity vote) are **out of scope for this methodology**. They share substrate primitives (see §Config options) but follow different protocols and produce different outputs. Practitioners reaching for "use the Council methodology" for a non-dialectic decision are misapplying it; the methodology is the Council Hive specifically.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Linked Data Council.** A simulated panel of named linked-data and ontology authorities whose published positions, W3C specifications, books, and deployment experience are used to evaluate ontology-modelling design decisions from multiple perspectives.
+* **Option B — Ad hoc single-perspective review.** Rejected: one viewpoint per decision; misses cross-cutting concerns no single expertise covers.
+* **Option C — Open call to real-world experts.** Rejected: slow, expensive, non-reproducible; real experts are reserved for the adopting project's standing working groups and governance bodies, not per-decision deliberation.
+* **Option D — Generic "best practice" appeals.** Rejected: produces vague rationale future maintainers cannot interrogate.
+* **Option E — Per-project bespoke methodology.** Rejected: every adopting project reinvents the panel, the protocol, the document conventions; cross-project comparability lost; learning from one project's experience does not transfer.
+
+## Decision Outcome
+
+Chosen option: "Option A — Linked Data Council", because it is the only option that simultaneously delivers multi-perspective coverage, authority-grounded rationale, reproducibility, and an auditable record at a cost proportionate to the significance of the decision.
 
 Adopt the **Linked Data Council** — a simulated panel of named linked-data and ontology authorities whose published positions, W3C specifications, books, and deployment experience are used to evaluate ontology-modelling design decisions from multiple perspectives — because it is the only option that simultaneously delivers multi-perspective coverage, authority-grounded rationale, reproducibility, and an auditable record at a cost proportionate to the significance of the decision. A Council verdict shapes a *proposal*; adoption remains the role of the adopting project's real-world governance (the project declares its governance body via §Adoption).
+
+### Consequences
+
+* Significant linked-data decisions MUST be routed through a Council session per the when-to-use criteria; ad hoc single-perspective decisions on those topics are out of order.
+* Routine work MUST NOT trigger a session; padding the agenda dilutes the methodology and risks Council theatre.
+* Every Council session produces a transcript at the project's council-directory path, cited from the resulting record's `council:` frontmatter field. Drafters bear the cost of named-expert attribution and citation grounding; positions that cannot be grounded in published methodology meeting §Citation grounding standards do not count.
+* The Devil's-Advocate role and recorded dissent are mandatory guards against rubber-stamping; if they consistently fail to produce dissent or withdrawal records, the methodology is being misapplied and must be reviewed.
+* Council verdicts are inputs to proposals, not adoption decisions. Adoption flows through the adopting project's real-world governance (declared via §Real-world Governance Handoff); records MUST NOT treat a Council verdict as ratification.
+* The panel reflects a Semantic Web / linked-data perspective. For the rare decision predominantly about relational schemas or document stores in a non-linked-data context, the methodology does not apply and a different forum must be used.
+* Newcomers can learn the design idiom from session transcripts; transcripts double as training material and MUST be preserved when records supersede each other.
+* The methodology is portable across ontology mapping and ontology modelling projects. Adopting projects supply their context via §Adoption hooks; the methodology body itself is not edited per project.
+* The methodology is self-amending — substantive changes flow through its own Council protocol per §Self-amendment process. This is a design feature, not a circular dependency: applying the methodology to itself is the strongest test of its coherence.
+
+## More Information
+
+- **Source methodology**: this methodology is a direct adaptation of the H&M Expert Hive (the source programme is recorded externally as ONT-0021, which lives outside this repository). Panel composition is carried over substantially unchanged because the experts' published positions are domain-agnostic with respect to which ontology-modelling project adopts them.
+- **W3C process precedent**: meeting minutes with named-voter resolutions (the consensus-by-deliberation pattern this methodology generalises) — see W3C Process Document §"Decision-making".
+- **FIBO/OMG precedent**: Modelling Team review → Editorial Review → Public Review → OMG technology process — the multi-stage ratification pattern this methodology adapts for individual ontology-modelling decisions.
+- **DCMI precedent**: vocabulary governance with single-record change logs (the in-place amendment pattern this methodology adopts for catalogue records and for self-amendment).
+- **Adopting projects**: each adopting project maintains a sibling adoption record (`<project>/<council-directory>/adoption.md` or analogous) declaring the §Adoption slots. The methodology body itself is not edited per project.
+- **Substrate primitives**: the swarm and hive-mind config tables in §Rules name the ruflo MCP tool surface canonically. Alternative implementations of the same primitives MAY substitute equivalent tools provided the option surface is preserved.
 
 ## Rules
 
@@ -598,30 +629,3 @@ flowchart LR
     SC2 -->|"B2 pilot verdict"| ODR0005
 ```
 
-## Alternatives
-
-- **Ad hoc single-perspective review** — one viewpoint per decision; misses cross-cutting concerns no single expertise covers.
-- **Open call to real-world experts** — slow, expensive, non-reproducible; real experts are reserved for the adopting project's standing working groups and governance bodies, not per-decision deliberation.
-- **Generic "best practice" appeals** — produces vague rationale future maintainers cannot interrogate.
-- **Per-project bespoke methodology** — every adopting project reinvents the panel, the protocol, the document conventions; cross-project comparability lost; learning from one project's experience does not transfer.
-
-## Consequences
-
-- Significant linked-data decisions MUST be routed through a Council session per the when-to-use criteria; ad hoc single-perspective decisions on those topics are out of order.
-- Routine work MUST NOT trigger a session; padding the agenda dilutes the methodology and risks Council theatre.
-- Every Council session produces a transcript at the project's council-directory path, cited from the resulting record's `council:` frontmatter field. Drafters bear the cost of named-expert attribution and citation grounding; positions that cannot be grounded in published methodology meeting §Citation grounding standards do not count.
-- The Devil's-Advocate role and recorded dissent are mandatory guards against rubber-stamping; if they consistently fail to produce dissent or withdrawal records, the methodology is being misapplied and must be reviewed.
-- Council verdicts are inputs to proposals, not adoption decisions. Adoption flows through the adopting project's real-world governance (declared via §Real-world Governance Handoff); records MUST NOT treat a Council verdict as ratification.
-- The panel reflects a Semantic Web / linked-data perspective. For the rare decision predominantly about relational schemas or document stores in a non-linked-data context, the methodology does not apply and a different forum must be used.
-- Newcomers can learn the design idiom from session transcripts; transcripts double as training material and MUST be preserved when records supersede each other.
-- The methodology is portable across ontology mapping and ontology modelling projects. Adopting projects supply their context via §Adoption hooks; the methodology body itself is not edited per project.
-- The methodology is self-amending — substantive changes flow through its own Council protocol per §Self-amendment process. This is a design feature, not a circular dependency: applying the methodology to itself is the strongest test of its coherence.
-
-## References
-
-- **Source methodology**: this methodology is a direct adaptation of the H&M Expert Hive (the source programme is recorded externally as ONT-0021, which lives outside this repository). Panel composition is carried over substantially unchanged because the experts' published positions are domain-agnostic with respect to which ontology-modelling project adopts them.
-- **W3C process precedent**: meeting minutes with named-voter resolutions (the consensus-by-deliberation pattern this methodology generalises) — see W3C Process Document §"Decision-making".
-- **FIBO/OMG precedent**: Modelling Team review → Editorial Review → Public Review → OMG technology process — the multi-stage ratification pattern this methodology adapts for individual ontology-modelling decisions.
-- **DCMI precedent**: vocabulary governance with single-record change logs (the in-place amendment pattern this methodology adopts for catalogue records and for self-amendment).
-- **Adopting projects**: each adopting project maintains a sibling adoption record (`<project>/<council-directory>/adoption.md` or analogous) declaring the §Adoption slots. The methodology body itself is not edited per project.
-- **Substrate primitives**: the swarm and hive-mind config tables in §Rules name the ruflo MCP tool surface canonically. Alternative implementations of the same primitives MAY substitute equivalent tools provided the option surface is preserved.

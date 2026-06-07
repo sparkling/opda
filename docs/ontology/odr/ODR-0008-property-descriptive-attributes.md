@@ -12,7 +12,7 @@ implements: [ODR-0003, ODR-0007, ODR-0011, ODR-0017, ODR-0018]
 
 # Property Descriptive Attributes
 
-## Context
+## Context and Problem Statement
 
 The descriptive layer is where PDTF v3 volume lives: of 1,556 unique leaves in `pdtf-transaction.json` (935 annotated), the great majority describe a property (built form, condition, valuation, EPC/energy, utilities, searches, encumbrances, completion). All hang off a deeply nested `propertyPack` mega-tree, and the same descriptive families recur across every form overlay (baspi5 318, rds 196, piq 184, ta6 178, nts2 160, lpe1 136, …).
 
@@ -20,9 +20,43 @@ Two defects bite. First, **attachment**: in the schema these facts dangle off `p
 
 Council Session 001 (Q3) resolved to partition by **ontological concern**. This ODR is the **Property descriptive attributes** module under that partition — a Phase-1 module gated by ODR-0005's identity crux, which MAY later split into sub-modules (built-form / energy / searches / encumbrances) once volume is understood.
 
-## Decision
+## Considered Options
 
-Adopt **Declare-once-reconcile-overlays**: flatten the `propertyPack` tree; declare each descriptive property **once** as an `opda:` datatype property on the Property/Title class, sourced from the canonical data-dictionary leaf with `dct:source` + `rdfs:comment`; reconcile spanning leaves so all overlay occurrences map to that single property; push per-form required/enum variation onto the SHACL overlay profiles (ODR-0010). Chosen because it is the only option that attaches descriptive facts to real classes, collapses each spanning leaf to one term, and keeps per-form variation in the profile layer where Q3 and Q5 placed it.
+* **Option A (chosen) — Declare-once-reconcile-overlays.** Flatten the `propertyPack` tree; declare each descriptive property once as an `opda:` datatype property on the Property/Title class, sourced from the canonical data-dictionary leaf with `dct:source` + `rdfs:comment`; reconcile spanning leaves so all overlay occurrences map to that single property; push per-form required/enum variation onto the SHACL overlay profiles (ODR-0010).
+* **Option B — Mirror the JSON tree (per-form duplicate properties).** Rejected: reproduces the `propertyPack` form-ergonomics nesting as ontology and fractures spanning concepts into per-form synonyms — the exact defect Q3 rejected.
+
+## Decision Outcome
+
+Chosen option: "Declare-once-reconcile-overlays", because it is the only option that attaches descriptive facts to real classes, collapses each spanning leaf to one term, and keeps per-form variation in the profile layer where Q3 and Q5 placed it.
+
+Adopt **Declare-once-reconcile-overlays**: flatten the `propertyPack` tree; declare each descriptive property **once** as an `opda:` datatype property on the Property/Title class, sourced from the canonical data-dictionary leaf with `dct:source` + `rdfs:comment`; reconcile spanning leaves so all overlay occurrences map to that single property; push per-form required/enum variation onto the SHACL overlay profiles (ODR-0010).
+
+### Consequences
+
+* Descriptive facts attach to `opda:Property`/legal-estate classes from ODR-0005; the `propertyPack`-blank-node defect is eliminated.
+* Each spanning leaf collapses to a single ontology property; the ontology gets one term per concept instead of per-form synonyms.
+* Every property carries `dct:source` + `rdfs:comment` from the dictionary, supporting the BASPI round-trip (loaded profile validates data *and* regenerates the form).
+* The mechanical leaf-to-property mapping is generated from the dictionary; scarce deliberation is reserved for ambiguous reconciliations.
+* Reconciling ~935 annotated base leaves (plus overlay-specific leaves) is high-volume work; spanning-leaf detection is now mechanical (SHACL shape-target convergence per Q1a) — adjudication fires only on consumer-query trigger, recorded in the reconciliation register.
+* Module gates ✅ CLEARED — S005 3-class ratified; S003b namespace ratified; full upstream TBox (S006/S007/S009/S010/S011/S012/S013/S015) ratified.
+* Per-form required/enum variation MUST be authored as SHACL profile shapes (ODR-0010) per Q7a three boundary clauses; descriptive enumerations follow Q5a binding table — §8a-named schemes as SKOS per ODR-0011; non-§8a one-shot enums as `xsd:string + sh:in`.
+* The mechanical 935-leaf walk now begins as implementation work: generator (ADR-0007) emits per-leaf binding table + class promotions per Q4a + reconciliation register per Q1a.
+* ODR-0008 is the seventh `kind: pattern` ODR to discharge under A9 — methodology pressure-test passes 7-of-7 clean.
+* Implementation depends on ADR-0007 generator + foundation.ttl emission; subsequent BASPI5 round-trip MVP gate (per ODR-0010 §Q7) exercises ODR-0008's mapping discipline against real overlay data.
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: Core (OWL/RDFS/XSD); SHACL for numeric ranges and format patterns (→ ODR-0013); SKOS for the descriptive enumerations (→ ODR-0011); DASH for form-rendering UI (→ ODR-0013); PROV-O for authority-retrieval provenance (EPC Register, HMLR, search providers → ODR-0009).
+- **Out of scope** (deferred per ODR-0002): QUDT for units (kWh, m², W·m⁻²·K⁻¹) — carry `xsd:decimal` + SKOS-typed units; GeoSPARQL geometry (title plans, search polygons, `titleExtents`/`chargeExtent` stringified GeoJSON) — deferred.
+- **Data dictionary**: `source/00-deliverables/semantic-models/data-dictionary.md` — `pdtf-transaction.json` base (1,556 unique leaves, 935 annotated) plus per-form overlays (baspi5 318, rds 196, piq 184, ta6 178, nts2 160, lpe1 136, …). The cross-context table is the authority for which leaves span overlays.
+- **Open questions**: whether to split into sub-module ODRs (built-form / energy / searches / encumbrances) once volume is understood — deferred to drafting; the defect/condition taxonomy (RICS classification) and EWS1 / Building Safety Act modelling — UK-specific, deferred to a future council when the PDTF schema adds the structure (greenfield; no WG).
+- **Deliverables**: `property-attributes.ttl` (likely multiple files under one module namespace); the descriptive SKOS schemes (→ ODR-0011); authority-provenance patterns (→ ODR-0009); the generated leaf → datatype-property mapping with `dct:source`/`rdfs:comment` from the data dictionary.
+- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents & roles [ODR-0006](./ODR-0006-agents-and-roles.md); transactions & lifecycle [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); overlay profiles [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); data-governance [ODR-0012](./ODR-0012-data-governance-layer.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); address & geography [ODR-0015](./ODR-0015-address-and-geography.md); SHACL-AF pattern [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md); DPV co-annotation pattern [ODR-0018](./ODR-0018-dpv-class-level-coannotation-pattern.md).
+- **Three-rule interface contract** (Scope-Check 1 Q6 / Cagle): ODR-0008 §Operational specifications Q7a cross-cite ODR-0010 + ODR-0013 on (i) `sh:in` semantics merged at build-time applied to closed schemes; (ii) `sh:Violation` floor; (iii) no-identity-override gate.
+- **Cross-corpus ADR dependency:** [ADR-0007 — Ontology generator specification](../../adr/ADR-0007-ontology-generator-specification.md) — implementation of ODR-0008 §Operational specifications depends on the generator's deterministic emission discipline.
+- **Council**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q3 (partition by concern; flatten `propertyPack`); [session-008](./council/session-008-property-descriptive-attributes.md) Full Council ratification (Allemang Queen; Cagle DA — 6 WITHDRAWN/CONCEDED + 1 HELD + 1 VIGILANCE; ten voices across five teammates). Status `proposed → accepted`. Seventh `kind: pattern` ODR to discharge under A9 — methodology 7-of-7 clean.
+- **Implementation-planning follow-on**: [session-021 — Bounded-Context Implementation Plan](./council/session-021-bounded-context-implementation-plan.md) (2026-05-30) found the mechanical 935-leaf walk **ready for execution now** (~90 % generator-mechanical from the data dictionary; `xsd:string`-default range, flat per §Q6a, Q4a class-promotion pass), reclassifying it from ADR-0005 §G11's "demand-deferred" remainder to **scheduled mechanical emission** (proposed **ADR-0028**). The same-day convention review **[session-022](./council/session-022-form-shacl-profile-convention.md)** corrected the home/context layer: the walk emits **`rdfs:isDefinedBy` → owning module** (concern) + the already-present `dct:source`; **`opda:definedInContext` is retired** and per-leaf `opda:requires` is **dropped as redundant** (shapes enumerate required terms). The 935-leaf walk itself is unaffected. **Decided on directing authority (greenfield — no WG gate; ADR-0006).**
 
 ## Rules
 
@@ -227,33 +261,3 @@ flowchart LR
     ODR0018 --> ODR0008
 ```
 
-## Alternatives
-
-- **Mirror the JSON tree (per-form duplicate properties)** — emit a separate property for each form's copy of a spanning leaf. Fatal flaw: reproduces the `propertyPack` form-ergonomics nesting as ontology and fractures spanning concepts into per-form synonyms — the exact defect Q3 rejected.
-
-## Consequences
-
-- Descriptive facts attach to `opda:Property`/legal-estate classes from ODR-0005; the `propertyPack`-blank-node defect is eliminated.
-- Each spanning leaf collapses to a single ontology property; the ontology gets one term per concept instead of per-form synonyms.
-- Every property carries `dct:source` + `rdfs:comment` from the dictionary, supporting the BASPI round-trip (loaded profile validates data *and* regenerates the form).
-- The mechanical leaf-to-property mapping is generated from the dictionary; scarce deliberation is reserved for ambiguous reconciliations.
-- Reconciling ~935 annotated base leaves (plus overlay-specific leaves) is high-volume work; spanning-leaf detection is now mechanical (SHACL shape-target convergence per Q1a) — adjudication fires only on consumer-query trigger, recorded in the reconciliation register.
-- Module gates ✅ CLEARED — S005 3-class ratified; S003b namespace ratified; full upstream TBox (S006/S007/S009/S010/S011/S012/S013/S015) ratified.
-- Per-form required/enum variation MUST be authored as SHACL profile shapes (ODR-0010) per Q7a three boundary clauses; descriptive enumerations follow Q5a binding table — §8a-named schemes as SKOS per ODR-0011; non-§8a one-shot enums as `xsd:string + sh:in`.
-- The mechanical 935-leaf walk now begins as implementation work: generator (ADR-0007) emits per-leaf binding table + class promotions per Q4a + reconciliation register per Q1a.
-- ODR-0008 is the seventh `kind: pattern` ODR to discharge under A9 — methodology pressure-test passes 7-of-7 clean.
-- Implementation depends on ADR-0007 generator + foundation.ttl emission; subsequent BASPI5 round-trip MVP gate (per ODR-0010 §Q7) exercises ODR-0008's mapping discipline against real overlay data.
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: Core (OWL/RDFS/XSD); SHACL for numeric ranges and format patterns (→ ODR-0013); SKOS for the descriptive enumerations (→ ODR-0011); DASH for form-rendering UI (→ ODR-0013); PROV-O for authority-retrieval provenance (EPC Register, HMLR, search providers → ODR-0009).
-- **Out of scope** (deferred per ODR-0002): QUDT for units (kWh, m², W·m⁻²·K⁻¹) — carry `xsd:decimal` + SKOS-typed units; GeoSPARQL geometry (title plans, search polygons, `titleExtents`/`chargeExtent` stringified GeoJSON) — deferred.
-- **Data dictionary**: `source/00-deliverables/semantic-models/data-dictionary.md` — `pdtf-transaction.json` base (1,556 unique leaves, 935 annotated) plus per-form overlays (baspi5 318, rds 196, piq 184, ta6 178, nts2 160, lpe1 136, …). The cross-context table is the authority for which leaves span overlays.
-- **Open questions**: whether to split into sub-module ODRs (built-form / energy / searches / encumbrances) once volume is understood — deferred to drafting; the defect/condition taxonomy (RICS classification) and EWS1 / Building Safety Act modelling — UK-specific, deferred to a future council when the PDTF schema adds the structure (greenfield; no WG).
-- **Deliverables**: `property-attributes.ttl` (likely multiple files under one module namespace); the descriptive SKOS schemes (→ ODR-0011); authority-provenance patterns (→ ODR-0009); the generated leaf → datatype-property mapping with `dct:source`/`rdfs:comment` from the data dictionary.
-- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents & roles [ODR-0006](./ODR-0006-agents-and-roles.md); transactions & lifecycle [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); overlay profiles [ODR-0010](./ODR-0010-overlay-profile-mechanism.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); data-governance [ODR-0012](./ODR-0012-data-governance-layer.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); address & geography [ODR-0015](./ODR-0015-address-and-geography.md); SHACL-AF pattern [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md); DPV co-annotation pattern [ODR-0018](./ODR-0018-dpv-class-level-coannotation-pattern.md).
-- **Three-rule interface contract** (Scope-Check 1 Q6 / Cagle): ODR-0008 §Operational specifications Q7a cross-cite ODR-0010 + ODR-0013 on (i) `sh:in` semantics merged at build-time applied to closed schemes; (ii) `sh:Violation` floor; (iii) no-identity-override gate.
-- **Cross-corpus ADR dependency:** [ADR-0007 — Ontology generator specification](../../adr/ADR-0007-ontology-generator-specification.md) — implementation of ODR-0008 §Operational specifications depends on the generator's deterministic emission discipline.
-- **Council**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q3 (partition by concern; flatten `propertyPack`); [session-008](./council/session-008-property-descriptive-attributes.md) Full Council ratification (Allemang Queen; Cagle DA — 6 WITHDRAWN/CONCEDED + 1 HELD + 1 VIGILANCE; ten voices across five teammates). Status `proposed → accepted`. Seventh `kind: pattern` ODR to discharge under A9 — methodology 7-of-7 clean.
-- **Implementation-planning follow-on**: [session-021 — Bounded-Context Implementation Plan](./council/session-021-bounded-context-implementation-plan.md) (2026-05-30) found the mechanical 935-leaf walk **ready for execution now** (~90 % generator-mechanical from the data dictionary; `xsd:string`-default range, flat per §Q6a, Q4a class-promotion pass), reclassifying it from ADR-0005 §G11's "demand-deferred" remainder to **scheduled mechanical emission** (proposed **ADR-0028**). The same-day convention review **[session-022](./council/session-022-form-shacl-profile-convention.md)** corrected the home/context layer: the walk emits **`rdfs:isDefinedBy` → owning module** (concern) + the already-present `dct:source`; **`opda:definedInContext` is retired** and per-leaf `opda:requires` is **dropped as redundant** (shapes enumerate required terms). The 935-leaf walk itself is unaffected. **Decided on directing authority (greenfield — no WG gate; ADR-0006).**

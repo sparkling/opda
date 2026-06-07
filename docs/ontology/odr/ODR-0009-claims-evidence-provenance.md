@@ -16,15 +16,42 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 
 # Claims, Evidence & Provenance
 
-## Context
+## Context and Problem Statement
 
 PDTF carries its assurance story in a separate envelope: `pdtf-verified-claims.json`, an OIDC4IDA / eIDAS-shaped structure layered over the base transaction. A `verification` block (`trust_framework: "uk_pdtf"`, a single `time`, an `evidence[]` array) sits beside a `claims` object keyed by JSON-pointer paths back into the transaction. Each evidence entry is discriminated by `evidence.type` (`document` / `electronic_record` / `vouch`) with type-specific sub-objects, plus cross-cutting envelope fields: `validation_method`, `verification_method`, cryptographic `digest`, assurance level, and a verifier `txn` reference.
 
 This is the seam where PDTF stops being a property-data form and becomes a *Trust* Framework. It is the interface to the W3C VC / DID / ToIP ecosystem the business glossary already names (Claim, Issuer, Holder, Verifier, Trust Framework), and a `verifiedClaims` structure expressed as opaque JSON cannot participate in that ecosystem. The verifiedClaims structure is *mostly* a provenance graph — but not entirely, and the residue is exactly the part a trust framework cannot afford to lose.
 
-## Decision
+## Considered Options
 
-Adopt a **PROV-O backbone plus a separate assurance layer**: PROV-O carries the who/what-process/from-what-evidence skeleton (≈80% of the envelope, native), and the residual eIDAS envelope (trust framework, validation-vs-verification, cryptographic digest, assurance level, txn) is modelled *around* PROV in a dedicated layer built from `dct:`, SKOS and narrow local `opda:` terms. Chosen because it is the only option that places the derivation graph on a shared, dereferenceable standard while keeping the regulated assurance judgement in vocabularies that can actually express it.
+* **Option A (chosen) — PROV-O backbone plus a separate assurance layer.** PROV-O carries the who/what-process/from-what-evidence skeleton (≈80% of the envelope, native); the residual eIDAS envelope elements are modelled around PROV in a dedicated layer built from `dct:`, SKOS, and narrow local `opda:` terms.
+* **Option B — PROV-O only.** Rejected: flattens evidential weight into a causal trace and requires inventing `prov:` extensions for signatures and assurance tiers that PROV-DM deliberately does not model.
+* **Option C — Bespoke `opda:` claims model.** Rejected: discards the interoperability that is the entire point of going to linked data, isolating OPDA from the VC/wallet ecosystem it exists to join.
+
+## Decision Outcome
+
+Chosen option: "PROV-O backbone plus a separate assurance layer", because it is the only option that places the derivation graph on a shared, dereferenceable standard while keeping the regulated assurance judgement in vocabularies that can actually express it.
+
+Adopt a **PROV-O backbone plus a separate assurance layer**: PROV-O carries the who/what-process/from-what-evidence skeleton (≈80% of the envelope, native), and the residual eIDAS envelope (trust framework, validation-vs-verification, cryptographic digest, assurance level, txn) is modelled *around* PROV in a dedicated layer built from `dct:`, SKOS and narrow local `opda:` terms.
+
+### Consequences
+
+* Publish `claims-provenance.ttl` defining the PROV-O subclasses (`opda:Claim`, `opda:Verification`, `opda:Verifier`, the three evidence subclasses) and the assurance-layer terms (`opda:assuranceLevel`, `opda:digestAlg`, `opda:digestValue`).
+* Land SHACL shapes (ODR-0013) validating the PROV structure and reproducing the `evidence.type` conditional schema as `sh:xone`.
+* Mint method, evidence-type and assurance-level SKOS schemes (ODR-0011) with `dct:source` back to the verifiedClaims schema leaves.
+* Apply DPV co-annotations (ODR-0012) on evidence and voucher entities — special-category gates fire on AML/conviction-adjacent evidence.
+* Maintain the ~80%/five-exceptions boundary as a standing review obligation: re-test the line whenever the upstream `verifiedClaims` schema changes; envelope fields must not silently regress into the wrong layer.
+* Ship worked Turtle examples (document, electronic-record, vouch, chained identity → AML → source-of-funds) alongside the JSON before downstream overlays consume the layer.
+* Accept that `opda:digestAlg`/`opda:digestValue` are bespoke local terms with no external counterpart — PROV-DM models no signature notion and forcing one in would violate the reuse driver.
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: PROV-O (mandatory in this layer); Core `dct:` (`dct:conformsTo`, `dct:identifier`, and descriptive metadata on PROV entities/agents — `title`/`issued`/`creator`/`format` on evidence documents); SKOS for method and assurance-level schemes (→ ODR-0011); SHACL to validate the PROV shape (→ ODR-0013); DPV for PII co-annotation (→ ODR-0012); OWL-Time where a claim-validity *interval* (not just `prov:endedAtTime`'s instant) is needed (→ ODR-0014).
+- **Glossary & external standards**: business-glossary VC/DID/ToIP terms — **Claim** (W3C VCDM 2.0), **Subject**, **Issuer**, **Holder**, **Verifier**, **Verifiable Credential**, **Trust Framework** (ToIP). The `opda:Verifier`/`prov:Agent` and `opda:Claim`/`prov:Entity` terms align to these; SKOS method and assurance concepts carry `dct:source` to the glossary row or verifiedClaims schema leaf. See [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) for the general term-sourcing convention.
+- **Source schema**: `source/03-standards/schemas/src/schemas/verifiedClaims/pdtf-verified-claims.json` (the OIDC4IDA/eIDAS envelope).
+- **Related ODRs**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents and the asserted/evidenced-authority hook [ODR-0006](./ODR-0006-agents-and-roles.md); transactions and milestones [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); governance/DPV [ODR-0012](./ODR-0012-data-governance-layer.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); catalogue [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q6 (owned by Moreau), with the detailed mapping in [`working/provenance-trio.md`](./council/working/provenance-trio.md).
 
 ## Rules
 
@@ -232,26 +259,3 @@ No collapse; the subclasses stand as structure-bearers. Codified generally in OD
 
 **Status: IMPLEMENTED (2026-06-01).** The emitter re-model landed: `claim.py` retired the three `…Evidence` subclasses (`opda:Evidence` is now `owl:Class, opda:RoleMixin` only; `opda:AttachedDocument` stays the Kind); `opda:evidenceType` is the coded classifier; `opda:attestedBy` re-homed `rdfs:domain opda:Evidence` (a role-borne facet); `shapes.py` dropped the `*CoherenceShape` family (no subclasses to cohere), enforcement value-keyed on `opda:EvidenceTypeValueShape` + `opda:EvidenceFacetShape`; `annotations.py` re-pointed the 3 DPV refinements to `opda:Evidence` + `opda:evidenceType` `variantValue`; the 3 exemplars re-typed to `a opda:Evidence`. All 7 CI gates + 337 pytest + 27 round-trip green; byte-identity re-pinned.
 
-## Alternatives
-
-- **PROV-O only** — flattens evidential weight into a causal trace and requires inventing `prov:` extensions for signatures and assurance tiers that PROV-DM deliberately does not model.
-- **Bespoke `opda:` claims model** — discards the interoperability that is the entire point of going to linked data, isolating OPDA from the VC/wallet ecosystem it exists to join.
-
-## Consequences
-
-- Publish `claims-provenance.ttl` defining the PROV-O subclasses (`opda:Claim`, `opda:Verification`, `opda:Verifier`, the three evidence subclasses) and the assurance-layer terms (`opda:assuranceLevel`, `opda:digestAlg`, `opda:digestValue`).
-- Land SHACL shapes (ODR-0013) validating the PROV structure and reproducing the `evidence.type` conditional schema as `sh:xone`.
-- Mint method, evidence-type and assurance-level SKOS schemes (ODR-0011) with `dct:source` back to the verifiedClaims schema leaves.
-- Apply DPV co-annotations (ODR-0012) on evidence and voucher entities — special-category gates fire on AML/conviction-adjacent evidence.
-- Maintain the ~80%/five-exceptions boundary as a standing review obligation: re-test the line whenever the upstream `verifiedClaims` schema changes; envelope fields must not silently regress into the wrong layer.
-- Ship worked Turtle examples (document, electronic-record, vouch, chained identity → AML → source-of-funds) alongside the JSON before downstream overlays consume the layer.
-- Accept that `opda:digestAlg`/`opda:digestValue` are bespoke local terms with no external counterpart — PROV-DM models no signature notion and forcing one in would violate the reuse driver.
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: PROV-O (mandatory in this layer); Core `dct:` (`dct:conformsTo`, `dct:identifier`, and descriptive metadata on PROV entities/agents — `title`/`issued`/`creator`/`format` on evidence documents); SKOS for method and assurance-level schemes (→ ODR-0011); SHACL to validate the PROV shape (→ ODR-0013); DPV for PII co-annotation (→ ODR-0012); OWL-Time where a claim-validity *interval* (not just `prov:endedAtTime`'s instant) is needed (→ ODR-0014).
-- **Glossary & external standards**: business-glossary VC/DID/ToIP terms — **Claim** (W3C VCDM 2.0), **Subject**, **Issuer**, **Holder**, **Verifier**, **Verifiable Credential**, **Trust Framework** (ToIP). The `opda:Verifier`/`prov:Agent` and `opda:Claim`/`prov:Entity` terms align to these; SKOS method and assurance concepts carry `dct:source` to the glossary row or verifiedClaims schema leaf. See [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) for the general term-sourcing convention.
-- **Source schema**: `source/03-standards/schemas/src/schemas/verifiedClaims/pdtf-verified-claims.json` (the OIDC4IDA/eIDAS envelope).
-- **Related ODRs**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); agents and the asserted/evidenced-authority hook [ODR-0006](./ODR-0006-agents-and-roles.md); transactions and milestones [ODR-0007](./ODR-0007-transactions-and-lifecycle.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); governance/DPV [ODR-0012](./ODR-0012-data-governance-layer.md); validation [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); catalogue [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q6 (owned by Moreau), with the detailed mapping in [`working/provenance-trio.md`](./council/working/provenance-trio.md).

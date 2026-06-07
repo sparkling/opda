@@ -11,15 +11,40 @@ implements: [ODR-0003]
 
 # Classification, Roles, Inheritance, and SKOS — opda Modelling Doctrine (hm-aligned)
 
-## Context
+## Context and Problem Statement
 
 opda's classification practice had drifted into imprecise vocabulary and an inconsistent mechanism. Council session-036 codified an OntoClean "load-bearing cascade" in ODR-0011 §8a but (a) used "facet" loosely to mean "a coded-value classification," conflating two distinct ideas, and (b) concluded that the evidence sub-types should stay `rdfs:subClassOf opda:Evidence` even though opda's own model calls evidence "a role a document plays." The directing authority directed opda to **adopt the modelling doctrine of the sibling `~/source/hm/semantic-modelling` project wholesale** and to record it completely — facets, roles, inheritance, SKOS, and the boundaries between them.
 
 The hm corpus settles this with a set of ratified, mutually-reinforcing ODRs: **hm ODR-0010** (multi-faceted classification — classification axes are SKOS-backed coded annotations, and it *fixed 13 `rdfs:subClassOf` hierarchies that incorrectly modelled Roles as Kinds*); **hm ODR-0014** (domain/range are documentation, never evaluated; SHACL enforces); **hm ODR-0016 / ODR-0023** (every enumeration is a SKOS concept scheme, never an OWL subclass enumeration); **hm ODR-0025** (roles via a `roleOf` relation, not subclassing); **hm ODR-0026** (a role-specific property is *borne by* the role, not the Kind; roles use `roleOf`, never `rdfs:subClassOf`); **hm ODR-0092** (UFO Role/Phase stereotypes are SKOS concept schemes — "encode as OWL classes with subclass relationships" was rejected). This ODR is opda's adoption record and single doctrinal home for the distinctions.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Adopt the hm classification-over-inheritance doctrine wholesale.** Classification by coded set-membership by default; `rdfs:subClassOf` only for genuine Kinds; Roles never subclassing; every enumeration a `skos:ConceptScheme`.
+* **Option B — Keep the session-036 dual layer (subclasses + coded facet) for evidence.** Rejected by directing authority: it retains `isA` for a Role, contradicting the hm doctrine being adopted (hm ODR-0010/0026; "evidence is a role").
+* **Option C — Mint one OWL subclass per evidence kind (status quo ante).** Rejected: subclass-per-coded-value is the hm ODR-0010 13-error anti-pattern; the kind is an `isMemberOf` axis.
+* **Option D — A "facet" property that also asserts the type.** Rejected: conflates classification with attribute-bearing (R2); the type is `isMemberOf`, the attributes are the facet.
+* **Option E — Mirror hm's seven separate ODRs (one per concern).** Rejected: opda records the doctrine once here, cross-referencing the existing per-concern ODRs rather than forking seven parallel records.
+
+## Decision Outcome
+
+Chosen option: "Option A — Adopt the hm classification-over-inheritance doctrine wholesale", because it is the ratified, decade-stable practice of the sibling corpus (hm ODR-0010/0014/0016/0023/0025/0026/0092), grounded in ISO 25964 faceted classification, W3C SKOS, FIBO, and OntoClean/UFO.
 
 opda adopts the hm classification-over-inheritance doctrine: **classification (what type a thing is) is done by coded set-membership (`isMemberOf` a SKOS concept scheme) by default, and by inheritance (`isA` / `rdfs:subClassOf`) only for genuine Kinds that carry their own identity criterion; Roles are anti-rigid and are NEVER `rdfs:subClassOf` a Kind; a *facet* is the type-specific attributes an entity of a given type bears (it presupposes the type, it does not assign it); and every controlled vocabulary / enumeration / classification axis is a `skos:ConceptScheme` coded value, never a subclass tree** — justified because it is the ratified, decade-stable practice of the sibling corpus (hm ODR-0010/0014/0016/0023/0025/0026/0092), grounded in ISO 25964 faceted classification, W3C SKOS, FIBO, and OntoClean/UFO.
+
+### Consequences
+
+* **Amend ODR-0011 §8a** to state R1–R5 as the governing doctrine (the cascade is the `isA`-admission test); cross-reference this ODR as the doctrinal home.
+* **Re-model the evidence domain (ODR-0009 + the emitter, ADR-0011/0012):** retire the three `…Evidence rdfs:subClassOf opda:Evidence` axioms; keep `opda:AttachedDocument` as the genuine Kind; make `opda:evidenceType` the `isMemberOf` classifier; re-home kind-specific attributes as role-borne facets; re-key all SHACL value-keyed; re-type the exemplars; re-point the DPV records onto `opda:evidenceType`. Reverses session-036's keep-the-subclasses disposition (R6).
+* **Audit the corpus** for any remaining Role/Phase/enumeration modelled as `rdfs:subClassOf` (hm ODR-0010's 13-error audit applied to opda): Seller/Buyer/Proprietor already correct; the evidence tree is the known case; record any others found.
+* Genuine Kinds keep `isA`: `opda:Property`, `opda:LegalEstate`, `opda:RegisteredTitle`, `opda:AttachedDocument`, `opda:Organisation`/`Person`, `opda:Address`, the activity/relator/interval types — all unaffected.
+* Update the session-036 record + adoption.md to note the directing-authority adoption + the R6 reversal. Status `accepted` (directing-authority ratified; greenfield — no WG gate, ODR-0003 programme retired).
+
+## More Information
+
+- Adopted prior art (hm `~/source/hm/semantic-modelling/docs/ontology/odr/`): ODR-0010 (multi-faceted classification; the 13 Role-as-subclass fixes), ODR-0014 (domain/range as documentation), ODR-0016 (SKOS for enumerations), ODR-0023 (enumeration modelling pattern), ODR-0025 (role-view modelling), ODR-0026 (property distribution / role-borne properties), ODR-0092 (UFO stereotypes as SKOS schemes).
+- opda records governed/amended: [ODR-0011](ODR-0011-enumeration-vocabularies.md) §8a (the cascade — the `isA`-admission test), [ODR-0009](ODR-0009-claims-evidence-provenance.md) (evidence re-model), [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md)/[ODR-0026](ODR-0026-owl-rl-safe-ruleset-adoption-and-unevaluated-modelling-axioms.md) (domain/range unevaluated; value-keyed), [ODR-0005](ODR-0005-property-land-identity-crux.md) (identity criteria; no `owl:sameAs`), [ODR-0006](ODR-0006-agents-and-roles.md) (RoleMixin/Role precedent), [ODR-0008](ODR-0008-property-descriptive-attributes.md) §Q5a (coded value-spaces).
+- Council [session-036](council/session-036-classification-over-inheritance.md) — the cascade + value-keyed enforcement (stand); its keep-the-`…Evidence`-subclasses disposition is superseded here (R6).
+- Foundational: Guarino & Welty 2009 (OntoClean); Guizzardi 2005 (UFO); ISO 25964 / W3C SKOS (faceted classification); FIBO (SKOS schemes alongside OWL classes).
 
 ## Rules
 
@@ -61,24 +86,3 @@ Council session-036 concluded `opda:DocumentEvidence`/`ElectronicRecordEvidence`
 
 session-036's *value-keyed enforcement* finding and the ODR-0011 §8a cascade stand and are reinforced; only its keep-the-`…Evidence`-subclasses disposition is reversed.
 
-## Alternatives
-
-* **Keep the session-036 dual layer (subclasses + coded facet) for evidence** — rejected by directing authority: it retains `isA` for a Role, contradicting the hm doctrine being adopted (hm ODR-0010/0026; "evidence is a role").
-* **Mint one OWL subclass per evidence kind (status quo ante)** — rejected: subclass-per-coded-value is the hm ODR-0010 13-error anti-pattern; the kind is an `isMemberOf` axis.
-* **A "facet" property that also asserts the type** — rejected: conflates classification with attribute-bearing (R2); the type is `isMemberOf`, the attributes are the facet.
-* **Mirror hm's seven separate ODRs (one per concern)** — rejected: opda records the doctrine once here, cross-referencing the existing per-concern ODRs (ODR-0011 §8a cascade, ODR-0025/0026 entailment, ODR-0005/0006 identity/roles) rather than forking seven parallel records.
-
-## Consequences
-
-- **Amend ODR-0011 §8a** to state R1–R5 as the governing doctrine (the cascade is the `isA`-admission test); cross-reference this ODR as the doctrinal home.
-- **Re-model the evidence domain (ODR-0009 + the emitter, ADR-0011/0012):** retire the three `…Evidence rdfs:subClassOf opda:Evidence` axioms; keep `opda:AttachedDocument` as the genuine Kind; make `opda:evidenceType` the `isMemberOf` classifier; re-home kind-specific attributes as role-borne facets; re-key all SHACL value-keyed; re-type the exemplars; re-point the DPV records onto `opda:evidenceType`. Reverses session-036's keep-the-subclasses disposition (R6).
-- **Audit the corpus** for any remaining Role/Phase/enumeration modelled as `rdfs:subClassOf` (hm ODR-0010's 13-error audit applied to opda): Seller/Buyer/Proprietor already correct; the evidence tree is the known case; record any others found.
-- Genuine Kinds keep `isA`: `opda:Property`, `opda:LegalEstate`, `opda:RegisteredTitle`, `opda:AttachedDocument`, `opda:Organisation`/`Person`, `opda:Address`, the activity/relator/interval types — all unaffected.
-- Update the session-036 record + adoption.md to note the directing-authority adoption + the R6 reversal. Status `accepted` (directing-authority ratified; greenfield — no WG gate, ODR-0003 programme retired).
-
-## References
-
-- Adopted prior art (hm `~/source/hm/semantic-modelling/docs/ontology/odr/`): ODR-0010 (multi-faceted classification; the 13 Role-as-subclass fixes), ODR-0014 (domain/range as documentation), ODR-0016 (SKOS for enumerations), ODR-0023 (enumeration modelling pattern), ODR-0025 (role-view modelling), ODR-0026 (property distribution / role-borne properties), ODR-0092 (UFO stereotypes as SKOS schemes).
-- opda records governed/amended: [ODR-0011](ODR-0011-enumeration-vocabularies.md) §8a (the cascade — the `isA`-admission test), [ODR-0009](ODR-0009-claims-evidence-provenance.md) (evidence re-model), [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md)/[ODR-0026](ODR-0026-owl-rl-safe-ruleset-adoption-and-unevaluated-modelling-axioms.md) (domain/range unevaluated; value-keyed), [ODR-0005](ODR-0005-property-land-identity-crux.md) (identity criteria; no `owl:sameAs`), [ODR-0006](ODR-0006-agents-and-roles.md) (RoleMixin/Role precedent), [ODR-0008](ODR-0008-property-descriptive-attributes.md) §Q5a (coded value-spaces).
-- Council [session-036](council/session-036-classification-over-inheritance.md) — the cascade + value-keyed enforcement (stand); its keep-the-`…Evidence`-subclasses disposition is superseded here (R6).
-- Foundational: Guarino & Welty 2009 (OntoClean); Guizzardi 2005 (UFO); ISO 25964 / W3C SKOS (faceted classification); FIBO (SKOS schemes alongside OWL classes).

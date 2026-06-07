@@ -12,6 +12,55 @@ implements: [ODR-0003]
 
 # PDTF Ontology Foundation
 
+## Context and Problem Statement
+
+The PDTF v3 base schema (`pdtf-transaction.json`, 37,224 lines; 1,556 unique base leaves, 935 annotated) plus its overlay family (BASPI5, TA6/7/10, NTS/NTS2, CON29R/DW, LLC1, LPE1, FME1, RDS, PIQ, OC1) is a requirements artefact, not a translation target. JSON Schema has slot-names scoped to their enclosing object — no global identifiers, no identity criteria, no fixed model theory for the open-world class semantics an RDF consumer needs. Before any module ODR (Agents & Roles, Property & Land, Transactions, descriptive attributes, claims) can be drafted, the conversion needs the shared substrate every record depends on: where URIs live, how the ontology header is expressed, how the open-world class graph and closed-world shapes graph are kept separate, and where the human-readable meaning of each minted term comes from.
+
+Council Session 001 framed this as the **first deliverable**. Hendler's Q1 point — "the deliberation is about *which things get URIs*" — became a design rule: URI policy is the first deliverable. Q7 confirmed the sequence: URI/namespace policy is Round 0, the identity crux (ODR-0005) gates everything downstream, and the programme is *spike-then-scale*. This ODR is the **Foundation spike** under that sequence — a gate record fixing policies under which every domain class will be minted, so the modules are mechanically constrained rather than free to re-litigate naming, graph separation, and term-sourcing per file.
+
+## Considered Options
+
+* **Option A (chosen) — Single `opda:` HASH namespace with layer-segregated naming, three-graph separation, generator-first, and normative term-sourcing convention.** Fixes cross-cutting policies once so module ODRs inherit a constrained substrate rather than re-deciding naming, graph separation, and term-sourcing per file.
+* **Option B — Per-form / per-overlay namespaces (`baspi:`, `ta6:`, `nts:`).** Rejected: overlays are *views*, not vocabularies; per-form prefixes re-import the documentation accident and scatter one concept across many namespaces.
+* **Option C — One flat `opda:` namespace with no naming discipline.** Rejected: conceals the Kind/Role distinction the ontology exists to make (Guizzardi's withdrawal condition) and invites role-as-Kind conflation.
+* **Option D — Slash URIs with content negotiation now.** Deferred: speculative this round (no consumer needs it); a small TBox is the textbook whole-document hash case (Cagle).
+
+## Decision Outcome
+
+Chosen option: "Option A — single `opda:` HASH namespace with layer-segregated naming and three-graph separation", because it is the only option that fixes the cross-cutting policies once so module ODRs inherit a constrained substrate rather than re-deciding naming, graph separation, and term-sourcing per file.
+
+Adopt a **single `opda:` HASH namespace with layer-segregated naming, three-graph separation (OWL classes ⊥ SHACL shapes ⊥ annotations), a `vann:`-headed ontology, generator-first plus diagnostic-exemplar policies, and a normative term-sourcing-and-provenance convention** drawing on the business glossary and data dictionary, because it is the only option that fixes the cross-cutting policies once — so module ODRs inherit a constrained substrate rather than re-deciding naming, graph separation, and term-sourcing per file.
+
+### Consequences
+
+* Module ODRs inherit a constrained substrate: they cannot quietly produce three URI shapes, leak closed-world cardinality into the class model, or invent unsourced labels.
+* The single hash namespace with layer-segregated naming satisfies dereferenceability trivially for a small TBox and keeps the Kind/Role rigidity contract legible from the URI alone.
+* Every minted term gets a traceable, authoritative human-readable origin (`dct:source` to glossary row or canonical leaf path), aligned to the trust framework's ubiquitous language.
+* The namespace string `https://w3id.org/opda/#` is now ratified (2026-05-27 by the directing authority / Linked Data Council — greenfield; no WG — [Session 003b](./council/session-003b-namespace-wg-decision.md); engineering realisation [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). Resolution depends on the W3C PICG redirect to `https://openpropdata.org.uk/ontology/`; the OPDA web team commits to keeping the redirect target serving the canonical TTL artefacts.
+* Versioning scheme (calendar vs semantic mirroring schema 3.4.0) remains a directing-authority / council decision (greenfield; no WG): `owl:versionIRI` is not frozen until that ruling — re-open when the PDTF schema's own versioning forces the choice.
+* SHACL and DASH are *declared* here; their shapes are authored in ODR-0010 / ODR-0013. The Foundation graph holds the class skeleton and header, not the constraints.
+* ODR-0005 must discharge its identity-criterion gate against the canonical exemplar set.
+
+**Added by [Session 004](./council/session-004-pdtf-ontology-foundation.md) — Knublauch DA primary withdrawal demand; resolved by [Session 003b](./council/session-003b-namespace-wg-decision.md) (2026-05-27):**
+
+* ~~**Namespace string is a blocker on `status: accepted`.**~~ **RESOLVED.** WG ratified `https://w3id.org/opda/#` on 2026-05-27 via [Session 003b](./council/session-003b-namespace-wg-decision.md). The 13 downstream ODRs in the `depends-on:[ODR-0004]` chain moved `proposed → accepted` in the same commit. Engineering realisation: [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md). Generator output now carries the ratified prefix; `dct:status "draft"` placeholder retired. DPV precedent honoured (the costly-to-fix problem averted pre-publication).
+* ~~**`https://w3id.org/opda/` is named as the operationally-strongest alternative.**~~ **ADOPTED.** Knublauch DA primary demand met; the W3C PICG persistence guarantee carried the WG decision per the DPV-precedent argument (Pandit's principal-author choice). Redirect target: `https://openpropdata.org.uk/ontology/`. PR to [`perma-id/w3id.org`](https://github.com/perma-id/w3id.org) is the engineering follow-up tracked in ADR-0006's confirmation gate.
+* **Reopening trigger for hash-vs-slash.** ODR-0004's hash decision is reversible only at high cost (DPV 6-ecosystem-month precedent). The WG SHOULD record a concrete reopening trigger when the threshold becomes operationally relevant. Suggested criterion (carried from S004): any single ontology file exceeds 1,000 terms in active dereference traffic OR a named consumer requests per-term content negotiation.
+* **`odr-review` lint update** flagged for the next skill release (consistent with the ODR-0001 A9 amendment's deferred Lint 4 update). Lint reads `## Rules` from every `kind: pattern` ODR, extracts (UFO category, class URI) pairs, and verifies the URI's CamelCase form vs the layer convention (Sortal/Kind = CamelCase noun; Role = `<Kind>Role` or noun-ending-in-`-er`; Phase = `<Kind>In<State>`; Relator = relator-noun like `Ownership`, `Tenancy`).
+* **Open `pattern`-extraction candidates:** `opda:ValidationContext` reification (Session 001 Q5 carry; re-instantiable across SHACL profile artefacts) is a candidate `pattern` ODR for ODR-0010 / ODR-0013 to extract per ODR-0001 A9 §Artefact identity test.
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: Core only this round — RDF/RDFS/OWL/XSD, Dublin Core (per ODR-0002), VANN (header), SKOS (for glossary-sourced labels). SHACL + DASH declared; shapes authored in [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) / [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
+- **Glossary & data dictionary**: `source/00-deliverables/semantic-models/business-glossary.{md,ttl}` + `glossary-merged.json` (54 trust-framework terms plus schema-annotation and external-standard terms; "most authoritative wins: W3C > OPDA Glossary > PDTF schema text"); `source/00-deliverables/semantic-models/data-dictionary.{md,json}` + `data-dictionary-canonical.json` (1,557 unique leaves; 935 annotated; 16 canonical schemas).
+- **Open questions (directing-authority / council-owned; greenfield, no WG)**: ~~exact base namespace URI~~ **RESOLVED** (`https://w3id.org/opda/#` per [Session 003b](./council/session-003b-namespace-wg-decision.md) + [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)); versioning scheme (calendar vs semantic mirroring schema 3.4.0) — still open; TTL repository location confirmed as `source/03-standards/ontology/` (peer to `schemas/`; exemplar harness already lives there per §8a).
+- **Deliverables (when fleshed out)**: `foundation.ttl` skeleton + ontology-header template; namespace/URI policy note; diagnostic-exemplar harness location; generator spec for the mechanical slot→property half with its glossary/data-dictionary sourcing rules.
+- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); adopts catalogue and `vann:` header pattern from [ODR-0002](./ODR-0002-ontology-language-adoption.md); identity-criterion gate first discharged by [ODR-0005](./ODR-0005-property-land-identity-crux.md); downstream consumers of the term-sourcing convention: [ODR-0008](./ODR-0008-property-descriptive-attributes.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); cross-cutting graph-separation feeds [ODR-0010](./ODR-0010-overlay-profile-mechanism.md).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) — Q1 (genuine modelling; generator-first; exemplars admitted 11-0-1, Guarino amendment), Q3 (partition by ontological concern; OWL class graph separated from SHACL shapes graph; flat published namespace), Q5 (advisory annotations exiled to a separate annotation graph keyed to shape IRIs; Knublauch/Gandon prevail, Cagle dissent ~7-2), Q7 (single `opda:` hash namespace 9-0; `sh:prefixes` for SHACL-SPARQL; spike-then-scale).
+- **Ratification provenance — [session-004](./council/session-004-pdtf-ontology-foundation.md)** (2026-05-27; Queen Gandon; DA Knublauch — withdrew on all four primary attacks). 7 questions × 9-0 votes. Operational subsections 3a/6a/7a/8a added; namespace-as-blocker + `w3id.org/opda/` alternative recorded in Consequences. Phase 1 Council gate cleared.
+- **WG namespace ratification — [session-003b](./council/session-003b-namespace-wg-decision.md)** (2026-05-27; Author-only; Henrik acting for OPDA WG). Records WG selection of `https://w3id.org/opda/#` per Knublauch S004 DA primary demand + DPV precedent. Triggers status sweep on the 13 ODRs in the `depends-on:[ODR-0004]` chain. Engineering realisation: [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md).
+
 ### ODR relationship graph
 
 The diagram below shows how ODR-0004 relates to the ODRs it depends on, implements, and gates downstream.
@@ -38,16 +87,6 @@ flowchart LR
     ODR0004 -->|"term-sourcing feeds"| ODR0011
     ODR0004 -->|"graph-separation feeds"| ODR0013
 ```
-
-## Context
-
-The PDTF v3 base schema (`pdtf-transaction.json`, 37,224 lines; 1,556 unique base leaves, 935 annotated) plus its overlay family (BASPI5, TA6/7/10, NTS/NTS2, CON29R/DW, LLC1, LPE1, FME1, RDS, PIQ, OC1) is a requirements artefact, not a translation target. JSON Schema has slot-names scoped to their enclosing object — no global identifiers, no identity criteria, no fixed model theory for the open-world class semantics an RDF consumer needs. Before any module ODR (Agents & Roles, Property & Land, Transactions, descriptive attributes, claims) can be drafted, the conversion needs the shared substrate every record depends on: where URIs live, how the ontology header is expressed, how the open-world class graph and closed-world shapes graph are kept separate, and where the human-readable meaning of each minted term comes from.
-
-Council Session 001 framed this as the **first deliverable**. Hendler's Q1 point — "the deliberation is about *which things get URIs*" — became a design rule: URI policy is the first deliverable. Q7 confirmed the sequence: URI/namespace policy is Round 0, the identity crux (ODR-0005) gates everything downstream, and the programme is *spike-then-scale*. This ODR is the **Foundation spike** under that sequence — a gate record fixing policies under which every domain class will be minted, so the modules are mechanically constrained rather than free to re-litigate naming, graph separation, and term-sourcing per file.
-
-## Decision
-
-Adopt a **single `opda:` HASH namespace with layer-segregated naming, three-graph separation (OWL classes ⊥ SHACL shapes ⊥ annotations), a `vann:`-headed ontology, generator-first plus diagnostic-exemplar policies, and a normative term-sourcing-and-provenance convention** drawing on the business glossary and data dictionary, because it is the only option that fixes the cross-cutting policies once — so module ODRs inherit a constrained substrate rather than re-deciding naming, graph separation, and term-sourcing per file.
 
 ## Rules
 
@@ -251,38 +290,3 @@ flowchart TD
     D --> DD -->|"yes"| ADOPTED
 ```
 
-## Alternatives
-
-- **Per-form / per-overlay namespaces** (`baspi:`, `ta6:`, `nts:`) — rejected: overlays are *views*, not vocabularies; per-form prefixes re-import the documentation accident and scatter one concept across many namespaces.
-- **One flat `opda:` namespace with no naming discipline** — rejected: conceals the Kind/Role distinction the ontology exists to make (Guizzardi's withdrawal condition) and invites role-as-Kind conflation.
-- **Slash URIs with content negotiation now** — deferred: speculative this round (no consumer needs it); a small TBox is the textbook whole-document hash case (Cagle).
-
-## Consequences
-
-- Module ODRs inherit a constrained substrate: they cannot quietly produce three URI shapes, leak closed-world cardinality into the class model, or invent unsourced labels.
-- The single hash namespace with layer-segregated naming satisfies dereferenceability trivially for a small TBox and keeps the Kind/Role rigidity contract legible from the URI alone.
-- Every minted term gets a traceable, authoritative human-readable origin (`dct:source` to glossary row or canonical leaf path), aligned to the trust framework's ubiquitous language.
-- The namespace string `https://w3id.org/opda/#` is now ratified (2026-05-27 by the directing authority / Linked Data Council — greenfield; no WG — [Session 003b](./council/session-003b-namespace-wg-decision.md); engineering realisation [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). Resolution depends on the W3C PICG redirect to `https://openpropdata.org.uk/ontology/`; the OPDA web team commits to keeping the redirect target serving the canonical TTL artefacts.
-- Versioning scheme (calendar vs semantic mirroring schema 3.4.0) remains a directing-authority / council decision (greenfield; no WG): `owl:versionIRI` is not frozen until that ruling — re-open when the PDTF schema's own versioning forces the choice.
-- SHACL and DASH are *declared* here; their shapes are authored in ODR-0010 / ODR-0013. The Foundation graph holds the class skeleton and header, not the constraints.
-- ODR-0005 must discharge its identity-criterion gate against the canonical exemplar set.
-
-**Added by [Session 004](./council/session-004-pdtf-ontology-foundation.md) — Knublauch DA primary withdrawal demand; resolved by [Session 003b](./council/session-003b-namespace-wg-decision.md) (2026-05-27):**
-
-- ~~**Namespace string is a blocker on `status: accepted`.**~~ **RESOLVED.** WG ratified `https://w3id.org/opda/#` on 2026-05-27 via [Session 003b](./council/session-003b-namespace-wg-decision.md). The 13 downstream ODRs in the `depends-on:[ODR-0004]` chain moved `proposed → accepted` in the same commit. Engineering realisation: [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md). Generator output now carries the ratified prefix; `dct:status "draft"` placeholder retired. DPV precedent honoured (the costly-to-fix problem averted pre-publication).
-- ~~**`https://w3id.org/opda/` is named as the operationally-strongest alternative.**~~ **ADOPTED.** Knublauch DA primary demand met; the W3C PICG persistence guarantee carried the WG decision per the DPV-precedent argument (Pandit's principal-author choice). Redirect target: `https://openpropdata.org.uk/ontology/`. PR to [`perma-id/w3id.org`](https://github.com/perma-id/w3id.org) is the engineering follow-up tracked in ADR-0006's confirmation gate.
-- **Reopening trigger for hash-vs-slash.** ODR-0004's hash decision is reversible only at high cost (DPV 6-ecosystem-month precedent). The WG SHOULD record a concrete reopening trigger when the threshold becomes operationally relevant. Suggested criterion (carried from S004): any single ontology file exceeds 1,000 terms in active dereference traffic OR a named consumer requests per-term content negotiation.
-- **`odr-review` lint update** flagged for the next skill release (consistent with the ODR-0001 A9 amendment's deferred Lint 4 update). Lint reads `## Rules` from every `kind: pattern` ODR, extracts (UFO category, class URI) pairs, and verifies the URI's CamelCase form vs the layer convention (Sortal/Kind = CamelCase noun; Role = `<Kind>Role` or noun-ending-in-`-er`; Phase = `<Kind>In<State>`; Relator = relator-noun like `Ownership`, `Tenancy`).
-- **Open `pattern`-extraction candidates:** `opda:ValidationContext` reification (Session 001 Q5 carry; re-instantiable across SHACL profile artefacts) is a candidate `pattern` ODR for ODR-0010 / ODR-0013 to extract per ODR-0001 A9 §Artefact identity test.
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: Core only this round — RDF/RDFS/OWL/XSD, Dublin Core (per ODR-0002), VANN (header), SKOS (for glossary-sourced labels). SHACL + DASH declared; shapes authored in [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) / [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
-- **Glossary & data dictionary**: `source/00-deliverables/semantic-models/business-glossary.{md,ttl}` + `glossary-merged.json` (54 trust-framework terms plus schema-annotation and external-standard terms; "most authoritative wins: W3C > OPDA Glossary > PDTF schema text"); `source/00-deliverables/semantic-models/data-dictionary.{md,json}` + `data-dictionary-canonical.json` (1,557 unique leaves; 935 annotated; 16 canonical schemas).
-- **Open questions (directing-authority / council-owned; greenfield, no WG)**: ~~exact base namespace URI~~ **RESOLVED** (`https://w3id.org/opda/#` per [Session 003b](./council/session-003b-namespace-wg-decision.md) + [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md)); versioning scheme (calendar vs semantic mirroring schema 3.4.0) — still open; TTL repository location confirmed as `source/03-standards/ontology/` (peer to `schemas/`; exemplar harness already lives there per §8a).
-- **Deliverables (when fleshed out)**: `foundation.ttl` skeleton + ontology-header template; namespace/URI policy note; diagnostic-exemplar harness location; generator spec for the mechanical slot→property half with its glossary/data-dictionary sourcing rules.
-- **Related**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); adopts catalogue and `vann:` header pattern from [ODR-0002](./ODR-0002-ontology-language-adoption.md); identity-criterion gate first discharged by [ODR-0005](./ODR-0005-property-land-identity-crux.md); downstream consumers of the term-sourcing convention: [ODR-0008](./ODR-0008-property-descriptive-attributes.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md); cross-cutting graph-separation feeds [ODR-0010](./ODR-0010-overlay-profile-mechanism.md).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) — Q1 (genuine modelling; generator-first; exemplars admitted 11-0-1, Guarino amendment), Q3 (partition by ontological concern; OWL class graph separated from SHACL shapes graph; flat published namespace), Q5 (advisory annotations exiled to a separate annotation graph keyed to shape IRIs; Knublauch/Gandon prevail, Cagle dissent ~7-2), Q7 (single `opda:` hash namespace 9-0; `sh:prefixes` for SHACL-SPARQL; spike-then-scale).
-- **Ratification provenance — [session-004](./council/session-004-pdtf-ontology-foundation.md)** (2026-05-27; Queen Gandon; DA Knublauch — withdrew on all four primary attacks). 7 questions × 9-0 votes. Operational subsections 3a/6a/7a/8a added; namespace-as-blocker + `w3id.org/opda/` alternative recorded in Consequences. Phase 1 Council gate cleared.
-- **WG namespace ratification — [session-003b](./council/session-003b-namespace-wg-decision.md)** (2026-05-27; Author-only; Henrik acting for OPDA WG). Records WG selection of `https://w3id.org/opda/#` per Knublauch S004 DA primary demand + DPV precedent. Triggers status sweep on the 13 ODRs in the `depends-on:[ODR-0004]` chain. Engineering realisation: [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md).

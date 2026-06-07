@@ -12,7 +12,7 @@ implements: [ODR-0003]
 
 # Bounded-Context Scheme and Term→Context Mapping
 
-## Context
+## Context and Problem Statement
 
 [ODR-0019](./ODR-0019-bounded-context-representation.md) ratified the *representation pattern* — one `opda:` namespace, bounded contexts as a SKOS `skos:ConceptScheme`, membership via `opda:servesContext` (derived) + `opda:definedInContext`, gated by Rule 8 — but explicitly handed the concrete `skos:Concept` shapes and the mapping mechanism to a follow-on. This ODR is that follow-on: *which* concepts populate the scheme, what each carries, and how domain terms map into it. Nothing of this is emitted today — no `opda:BoundedContextScheme`, no context concepts, no `opda:servesContext`/`opda:definedInContext`. The only context predicate in the graph, `opda:overlaysContext`, is mis-targeted: `profiles.py:250` hardcodes the **profile-layer** IRI `<https://w3id.org/opda/profiles/foundation>` (verified), and only the `baspi5` profile is emitted at all — the other five form-profiles are not yet generated.
 
@@ -20,10 +20,42 @@ The 13 candidate contexts (`/modelling/bounded-contexts`) are not one kind of th
 
 Deliberated as a Linked Data Council ([session-020](./council/session-020-bounded-context-scheme-and-mapping.md); Queen Kendall; DA Davis; panel Evans & Vernon, Gandon, Hendler, Baker, Cagle, Guizzardi). Unlike the ODR-0019 rounds, this one split (6 vs 11 vs 13 concepts); the Queen resolved the forks *against the headcount* on the verified operational and ontological facts.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — One flat `skos:ConceptScheme` of six industry contexts; upstream authorities as `opda:Organisation`; spanning concerns as derived edge-multiplicity.** Ratified by Council Session 020.
+* **Option B — One scheme of 13 (industry + upstream + spanning), tiered by `skos:Collection` or `opda:contextTier`.** Rejected: co-types a perspective, an agent, and an aspect under one membership predicate; upstream/spanning have zero overlay edges so their membership is non-derivable hand-maintenance.
+* **Option C — Eleven concepts (industry + upstream as marked Conformist peers).** Rejected: the DDD Conformist *relationship* is real but is satisfied by `opda:consumesFrom` → an Organisation; making the authority a context concept commits the agent/perspective category error and is still non-derivable.
+* **Option D — A separate `opda:CrossCuttingConcernScheme` for the two spanning concerns.** Rejected: double-models what ODR-0006/0007 already own; "spanning" is cheaper and truer as the multiplicity of derived edges.
+* **Option E — Blanket-tag shared-kernel classes `servesContext` all six (or a `SharedKernel` sentinel).** Rejected: "all" is a fiction that drifts on the seventh profile; absence-of-tag already signals kernel.
+* **Option F — Hand-author `servesContext` membership.** Rejected: reintroduces the drift-prone second source of truth ODR-0019 outlawed; derive from the profiles instead.
+
+## Decision Outcome
+
+Chosen option: "One flat `skos:ConceptScheme` of six industry contexts only", because only the six industry contexts are perspectival communities that own overlays to derive from, while modelling upstream-as-context (an agent, not a perspective) or spanning-as-context (already homed in ODR-0006/0007) would assert structure no overlay or consumer backs and would require hand-maintenance ODR-0019 outlawed.
 
 Model **one flat `skos:ConceptScheme` (`opda:BoundedContextScheme`) populated by the six industry contexts only**; keep upstream authorities OUT as `opda:Organisation`/`prov:Agent` reached by `opda:consumesFrom` (never `opda:servesContext`), and keep spanning concerns OUT as the ODR-0006/0007 structures they already are (their "spanning" surfaces as multiple derived `opda:servesContext` edges, not a declared concept); derive every term→context tag mechanically from the (corrected) `opda:overlaysContext` + `opda:requires` edges and leave scaffolding untagged — chosen because only the six industry contexts are perspectival communities that own overlays to derive from, while modelling upstream-as-context (an agent, not a perspective) or spanning-as-context (already homed) would assert structure no overlay or consumer backs and would require the hand-maintenance ODR-0019 outlawed.
 
+### Consequences
+
+* **Emit (ADR work).** A new generator module emits `opda:BoundedContextScheme` + the six concepts to `opda-contexts.ttl`. Tracked by the follow-on **ADR-0026**.
+* **Fix the bug + build the profiles.** `profiles.py:250` re-points `opda:overlaysContext` at the industry context concept; the five not-yet-emitted form-profiles (ta6/7/10, lpe1, fme1, piq, rds, oc1, llc1, con29…) wire to their contexts as they are written — a real backlog this ODR surfaces.
+* **Derivation ships dormant.** The SHACL-AF CONSTRUCT rule (Rule 5) is authored under ODR-0017 and shipped dormant behind ODR-0019 Rule 8; it switches on at the first named term-grain consumer.
+* **Upstream + spanning need no new ontology now.** Upstream reuse `opda:Organisation`/`prov:Agent` + `opda:consumesFrom`; spanning reuse ODR-0006/0007.
+* **No version surface added.** The scheme rides `foundation.ttl`'s `owl:versionIRI`; per-concept lifecycle uses the ODR-0011 §5a deprecation pattern. `skos:exactMatch` to steward vocabularies is DEFERRED (cross-vocab gate).
+* **`odr-review`/CI guards.** Flag any `skos:inScheme opda:BoundedContextScheme` on a non-`skos:Concept`; flag any upstream authority typed `skos:Concept`; flag any hand-authored `opda:servesContext`.
+
+## More Information
+
+- **Methodology**: [ODR-0001](./ODR-0001-linked-data-council-methodology.md) (A9 per-kind discipline).
+- **Council provenance**: [session-020 — Bounded-Context Scheme and Mapping](./council/session-020-bounded-context-scheme-and-mapping.md) (Queen Kendall; DA Davis; forks resolved against headcount on verified facts).
+- **Implementation-planning follow-on, then convention correction**: [session-021](./council/session-021-bounded-context-implementation-plan.md) proposed an authored `opda:definedInContext` ownership layer + D1/D2 + firewall-to-CI. **[session-022 — Form↔SHACL Profile Convention](./council/session-022-form-shacl-profile-convention.md)** (2026-05-30; Queen Baker; DA Davis; 6–0) **reversed the bespoke parts**: `definedInContext` **retired** (→ `rdfs:isDefinedBy` + `dct:source` + gated `dct:subject`); `opda:requires` + `opda:overlaysContext` **dropped** (the SHACL overlay's `sh:targetClass`/shapes already give base + required terms — ODR-0010, **no wrapper/PROF layer added**); form↔community = a standard `dct:subject`/`dct:publisher` triple on the form graph; `opda:servesContext` = a derived query (run on demand, not stored); F2/F3 + total-cover-CI dropped (F1 kept). **Governance directive (2026-05-30): no profile-object/PROF layer — the SHACL overlay IS the form.** Verdict: **no new ODR** — amend in place (Rules 4–6, above). **Amendments council-ratified — greenfield, no WG.**
+- **Parent**: [ODR-0019](./ODR-0019-bounded-context-representation.md) (the representation pattern — single namespace, SKOS contexts, `opda:servesContext`/`opda:definedInContext`, Rule 8 gate this record refines).
+- **Foundations cited**: [ODR-0006](./ODR-0006-agents-and-roles.md) (`opda:Organisation` Kind + RoleMixin family — home of upstream and the participants concern); [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (the lifecycle phase-space — home of the transaction concern); [ODR-0009](./ODR-0009-claims-evidence-provenance.md) (`prov:wasAttributedTo`/`dct:source` for `opda:consumesFrom`); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles — the `opda:overlaysContext`/`opda:requires` substrate the mapping derives from); [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (SHACL-AF rule pattern — the derivation's home); [ODR-0011](./ODR-0011-enumeration-vocabularies.md) (SKOS scheme + steward house style); [ODR-0002](./ODR-0002-ontology-language-adoption.md) (vocabulary catalogue — where the scheme registers).
+- **Implementation**: ADR-0026 (bounded-context scheme generator + `overlaysContext` correction + dormant derivation rule).
+- **Industry context map**: `/modelling/bounded-contexts`.
+- **W3C / spec**: SKOS Reference (Miles & Bechhofer 2009) — `skos:ConceptScheme`, `skos:topConceptOf`; PROV-O (Moreau & Missier 2013) — `prov:Agent`, `prov:wasAttributedTo`; DCMI Terms — `dct:source`.
+- **DDD / UFO**: Evans 2003 (Conformist, Published Language, Context Map); Guizzardi 2005 Ch. 4 (Kind vs Role vs Phase vs Relator); OntoClean (Guarino & Welty).
+- **Related**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).
 ## Rules
 
 ### 1. Scheme population — six industry contexts, flat
@@ -125,33 +157,3 @@ flowchart TD
 - **Never** give a domain term `skos:inScheme opda:BoundedContextScheme` (Rule 5 firewall).
 - **Never** blanket-tag kernel terms "serves all six"; **never** hand-author `servesContext` (Rule 4).
 - **Never** leave `opda:overlaysContext` pointing at the profile-layer IRI (Rule 6).
-
-## Alternatives
-
-- **One scheme of 13 (industry + upstream + spanning), tiered by `skos:Collection` or `opda:contextTier`.** Rejected: co-types a perspective, an agent, and an aspect under one membership predicate; upstream/spanning have zero overlay edges so their membership is non-derivable hand-maintenance. The tiering is forward-compatible (admissible later behind the firewall) but unwarranted now.
-- **Eleven concepts (industry + upstream as marked Conformist peers).** Rejected: the DDD Conformist *relationship* is real but is satisfied by `opda:consumesFrom` → an Organisation; making the authority a context concept commits the agent/perspective category error and is still non-derivable.
-- **A separate `opda:CrossCuttingConcernScheme` for the two spanning concerns.** Rejected: double-models what ODR-0006/0007 already own; "spanning" is cheaper and truer as the multiplicity of derived edges.
-- **Blanket-tag shared-kernel classes `servesContext` all six (or a `SharedKernel` sentinel).** Rejected: "all" is a fiction that drifts on the seventh profile; absence-of-tag already signals kernel.
-- **Hand-author `servesContext` membership.** Rejected: reintroduces the drift-prone second source of truth ODR-0019 outlawed; derive from the profiles instead.
-
-## Consequences
-
-- **Emit (ADR work).** A new generator module emits `opda:BoundedContextScheme` + the six concepts to `opda-contexts.ttl`. Tracked by the follow-on **ADR-0026**.
-- **Fix the bug + build the profiles.** `profiles.py:250` re-points `opda:overlaysContext` at the industry context concept; the five not-yet-emitted form-profiles (ta6/7/10, lpe1, fme1, piq, rds, oc1, llc1, con29…) wire to their contexts as they are written — a real backlog this ODR surfaces.
-- **Derivation ships dormant.** The SHACL-AF CONSTRUCT rule (Rule 5) is authored under ODR-0017 and shipped dormant behind [ODR-0019](./ODR-0019-bounded-context-representation.md) Rule 8; it switches on at the first named term-grain consumer.
-- **Upstream + spanning need no new ontology now.** Upstream reuse `opda:Organisation`/`prov:Agent` + `opda:consumesFrom`; spanning reuse ODR-0006/0007.
-- **No version surface added.** The scheme rides `foundation.ttl`'s `owl:versionIRI`; per-concept lifecycle uses the ODR-0011 §5a deprecation pattern. `skos:exactMatch` to steward vocabularies is DEFERRED (cross-vocab gate).
-- **`odr-review`/CI guards.** Flag any `skos:inScheme opda:BoundedContextScheme` on a non-`skos:Concept`; flag any upstream authority typed `skos:Concept`; flag any hand-authored `opda:servesContext`.
-
-## References
-
-- **Methodology**: [ODR-0001](./ODR-0001-linked-data-council-methodology.md) (A9 per-kind discipline).
-- **Council provenance**: [session-020 — Bounded-Context Scheme and Mapping](./council/session-020-bounded-context-scheme-and-mapping.md) (Queen Kendall; DA Davis; forks resolved against headcount on verified facts).
-- **Implementation-planning follow-on, then convention correction**: [session-021](./council/session-021-bounded-context-implementation-plan.md) proposed an authored `opda:definedInContext` ownership layer + D1/D2 + firewall-to-CI. **[session-022 — Form↔SHACL Profile Convention](./council/session-022-form-shacl-profile-convention.md)** (2026-05-30; Queen Baker; DA Davis; 6–0) **reversed the bespoke parts**: `definedInContext` **retired** (→ `rdfs:isDefinedBy` + `dct:source` + gated `dct:subject`); `opda:requires` + `opda:overlaysContext` **dropped** (the SHACL overlay's `sh:targetClass`/shapes already give base + required terms — ODR-0010, **no wrapper/PROF layer added**); form↔community = a standard `dct:subject`/`dct:publisher` triple on the form graph; `opda:servesContext` = a derived query (run on demand, not stored); F2/F3 + total-cover-CI dropped (F1 kept). **Governance directive (2026-05-30): no profile-object/PROF layer — the SHACL overlay IS the form.** Verdict: **no new ODR** — amend in place (Rules 4–6, above). **Amendments council-ratified — greenfield, no WG.**
-- **Parent**: [ODR-0019](./ODR-0019-bounded-context-representation.md) (the representation pattern — single namespace, SKOS contexts, `opda:servesContext`/`opda:definedInContext`, Rule 8 gate this record refines).
-- **Foundations cited**: [ODR-0006](./ODR-0006-agents-and-roles.md) (`opda:Organisation` Kind + RoleMixin family — home of upstream and the participants concern); [ODR-0007](./ODR-0007-transactions-and-lifecycle.md) (the lifecycle phase-space — home of the transaction concern); [ODR-0009](./ODR-0009-claims-evidence-provenance.md) (`prov:wasAttributedTo`/`dct:source` for `opda:consumesFrom`); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles — the `opda:overlaysContext`/`opda:requires` substrate the mapping derives from); [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (SHACL-AF rule pattern — the derivation's home); [ODR-0011](./ODR-0011-enumeration-vocabularies.md) (SKOS scheme + steward house style); [ODR-0002](./ODR-0002-ontology-language-adoption.md) (vocabulary catalogue — where the scheme registers).
-- **Implementation**: ADR-0026 (bounded-context scheme generator + `overlaysContext` correction + dormant derivation rule).
-- **Industry context map**: `/modelling/bounded-contexts`.
-- **W3C / spec**: SKOS Reference (Miles & Bechhofer 2009) — `skos:ConceptScheme`, `skos:topConceptOf`; PROV-O (Moreau & Missier 2013) — `prov:Agent`, `prov:wasAttributedTo`; DCMI Terms — `dct:source`.
-- **DDD / UFO**: Evans 2003 (Conformist, Published Language, Context Map); Guizzardi 2005 Ch. 4 (Kind vs Role vs Phase vs Relator); OntoClean (Guarino & Welty).
-- **Related**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).

@@ -12,7 +12,7 @@ implements: []
 
 # Ontology Languages and Vocabularies Adopted
 
-## Context
+## Context and Problem Statement
 
 OPDA's linked-data work needs a declared, bounded set of ontology languages and vocabularies. Without a published list, modellers will reach for whatever they know — producing redundant terms, unprincipled mixing of W3C Recommendations with community drafts, and an unreviewable surface area.
 
@@ -20,7 +20,16 @@ The H&M semantic-modelling programme has spent two years pressure-testing this q
 
 The question this ODR answers: what closed, tiered catalogue should bound OPDA's vocabulary surface, and on what adoption discipline?
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Three-tier survey-grounded catalogue (Core / Conditional / Defer).** Ports the H&M `src/` survey and rescopes for OPDA; the only option that bounds the vocabulary surface to a reviewable, authority-grounded set while documenting non-adoption as durably as adoption.
+* **Option B — "Use whatever vocabulary fits the modeller's preference".** Rejected: produces redundant terms and unreviewable surface area within a year.
+* **Option C — Adopt every vocabulary in active linked-data community use.** Rejected: surface area becomes a multi-person-year mapping problem with no business return.
+* **Option D — Reinvent the necessary terms under an `opda:` namespace.** Rejected: discards two decades of W3C linked-data work and isolates OPDA outputs from external consumers.
+
+## Decision Outcome
+
+Chosen option: "Option A — three-tier survey-grounded catalogue", because it is the only option that bounds the vocabulary surface to a reviewable, authority-grounded set while documenting non-adoption as durably as adoption.
 
 Adopt a three-tier survey-grounded catalogue — **Core / Conditional / Defer** — porting the H&M `src/` survey and rescoping for OPDA. It is the only option that bounds the vocabulary surface to a reviewable, authority-grounded set while documenting non-adoption as durably as adoption.
 
@@ -78,6 +87,42 @@ flowchart LR
     DEFER -.-> NOTE2
     COND -.-> NOTE3
 ```
+
+### Consequences
+
+* Reference the published catalogue when introducing any external vocabulary; do not debate the choice per file.
+* Use canonical, dereferenceable URIs throughout — external consumers depend on them resolving.
+* When a recurring "why don't we use schema.org / FOAF?" question is raised, point at the Defer column; do not relitigate without a triggering use case.
+* Write SHACL gates for Conditional-tier scope as soon as the H&M ADR-0147 R12 pattern is portable; until then, conditional-tier compliance is honour-system and reviewers MUST check it manually.
+* Pin versions explicitly in ODRs only where currently declared (RDF 1.2, SHACL 1.2). When DPV / DCAT 3 / DASH undergo a *breaking* version change, raise a follow-up ODR.
+* Keep the catalogue alive: when a vocabulary good for OPDA but absent from H&M is proposed, do not reject on "no precedent" alone — amend the catalogue.
+* Treat ArchiMate and BBO as candidates for demotion to Defer at the first Council review if no process- or capability-modelling use case has materialised.
+
+## More Information
+
+- **Catalogue change log** lives in `## Rules` above. Sessions amending the catalogue: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (multi-row amendment); [Scope-Check 1](./council/scope-check-1-programme.md) Q4 (governance-pattern: retire ODR-0014 — fold here) and Q7c (admit `cred:`, `did:`).
+- **Superseded artefact**: [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md) — formerly carried the Session 001 amendments as a partial-supersession record; retired 2026-05-26 per Scope-Check 1 Q4 (vote 7-1-1; Hendler dissent preserved). ODR-0014 retained as historical anchor for Council Session 001 provenance; its content is folded into `### Change log` above.
+- **FOAF — ruled out.** Session 001 Q2 briefly reopened the Defer-tier FOAF entry (because `prov:Agent` is deliberately thin — no person/organisation distinction, no structured name), but FOAF has since been ruled out. The Kind layer uses the W3C Org ontology or a bespoke `opda:` model, with `prov:Agent` for the provenance role only. Settled in [ODR-0006](./ODR-0006-agents-and-roles.md); recorded in the change log above.
+- **W3C VC / DID Compatibility Layer**: `cred:` and `did:` admitted to Defer per Scope-Check 1 Q7c; activation deferred to [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md).
+
+### ODR relationship graph
+
+This record's position in the ODR dependency chain, as declared in the frontmatter.
+
+```mermaid
+flowchart TD
+    accTitle: ODR-0002 dependency and supersession relationships
+    accDescr: Shows that ODR-0002 depends on ODR-0001 for methodology and supersedes ODR-0014 which formerly carried vocabulary catalogue amendments.
+
+    ODR0001["ODR-0001<br/>Linked-Data Council<br/>Methodology"]:::process
+    ODR0002["ODR-0002<br/>Ontology Languages and<br/>Vocabularies Adopted<br/>(this record)"]:::success
+    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments<br/>(retired 2026-05-26)"]:::error
+
+    ODR0001 -->|"depends-on<br/>council procedure + voting rules"| ODR0002
+    ODR0002 -->|"supersedes<br/>amendment log folded in here"| ODR0014
+```
+- **Provenance**: catalogue ported from a survey of the H&M `src/` ontology `@prefix` declarations. The adoption pattern (canonical URIs + local SHACL + no `owl:imports`) is inherited from H&M ONT-0071c/i/j and ONT-0086.
+- **Related**: Council methodology [ODR-0001](./ODR-0001-linked-data-council-methodology.md); programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md). Relates contextually to ADR-0001 (DCAM/DMBOK adoption); not a typed dependency.
 
 ## Rules
 
@@ -225,44 +270,3 @@ This catalogue is governed in place: amendments to tiering or rationale are reco
 - The Defer tier is reviewable on a schedule (annual, or whenever a triggering use case arises). Promotion/demotion is recorded in `### Change log` above, attributed to the Council session that authored the change.
 - The amendment-ODR pattern is retired: changes to this catalogue land as new rows in `### Change log`, not in a parallel record.
 
-## Alternatives
-
-- **"Use whatever vocabulary fits the modeller's preference"** — produces redundant terms and unreviewable surface area within a year.
-- **"Adopt every vocabulary in active linked-data community use"** — surface area becomes a multi-person-year mapping problem with no business return.
-- **"Reinvent the necessary terms under an `opda:` namespace"** — discards two decades of W3C linked-data work and isolates OPDA outputs from external consumers.
-
-## Consequences
-
-- Reference the published catalogue when introducing any external vocabulary; do not debate the choice per file.
-- Use canonical, dereferenceable URIs throughout — external consumers depend on them resolving.
-- When a recurring "why don't we use schema.org / FOAF?" question is raised, point at the Defer column; do not relitigate without a triggering use case.
-- Write SHACL gates for Conditional-tier scope as soon as the H&M ADR-0147 R12 pattern is portable; until then, conditional-tier compliance is honour-system and reviewers MUST check it manually.
-- Pin versions explicitly in ODRs only where currently declared (RDF 1.2, SHACL 1.2). When DPV / DCAT 3 / DASH undergo a *breaking* version change, raise a follow-up ODR.
-- Keep the catalogue alive: when a vocabulary good for OPDA but absent from H&M is proposed, do not reject on "no precedent" alone — amend the catalogue.
-- Treat ArchiMate and BBO as candidates for demotion to Defer at the first Council review if no process- or capability-modelling use case has materialised.
-
-### ODR relationship graph
-
-This record's position in the ODR dependency chain, as declared in the frontmatter.
-
-```mermaid
-flowchart TD
-    accTitle: ODR-0002 dependency and supersession relationships
-    accDescr: Shows that ODR-0002 depends on ODR-0001 for methodology and supersedes ODR-0014 which formerly carried vocabulary catalogue amendments.
-
-    ODR0001["ODR-0001<br/>Linked-Data Council<br/>Methodology"]:::process
-    ODR0002["ODR-0002<br/>Ontology Languages and<br/>Vocabularies Adopted<br/>(this record)"]:::success
-    ODR0014["ODR-0014<br/>Vocabulary Catalogue<br/>Amendments<br/>(retired 2026-05-26)"]:::error
-
-    ODR0001 -->|"depends-on<br/>council procedure + voting rules"| ODR0002
-    ODR0002 -->|"supersedes<br/>amendment log folded in here"| ODR0014
-```
-
-## References
-
-- **Catalogue change log** lives in `## Rules` above. Sessions amending the catalogue: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (multi-row amendment); [Scope-Check 1](./council/scope-check-1-programme.md) Q4 (governance-pattern: retire ODR-0014 — fold here) and Q7c (admit `cred:`, `did:`).
-- **Superseded artefact**: [ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md) — formerly carried the Session 001 amendments as a partial-supersession record; retired 2026-05-26 per Scope-Check 1 Q4 (vote 7-1-1; Hendler dissent preserved). ODR-0014 retained as historical anchor for Council Session 001 provenance; its content is folded into `### Change log` above.
-- **FOAF — ruled out.** Session 001 Q2 briefly reopened the Defer-tier FOAF entry (because `prov:Agent` is deliberately thin — no person/organisation distinction, no structured name), but FOAF has since been ruled out. The Kind layer uses the W3C Org ontology or a bespoke `opda:` model, with `prov:Agent` for the provenance role only. Settled in [ODR-0006](./ODR-0006-agents-and-roles.md); recorded in the change log above.
-- **W3C VC / DID Compatibility Layer**: `cred:` and `did:` admitted to Defer per Scope-Check 1 Q7c; activation deferred to [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md).
-- **Provenance**: catalogue ported from a survey of the H&M `src/` ontology `@prefix` declarations. The adoption pattern (canonical URIs + local SHACL + no `owl:imports`) is inherited from H&M ONT-0071c/i/j and ONT-0086.
-- **Related**: Council methodology [ODR-0001](./ODR-0001-linked-data-council-methodology.md); programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md). Relates contextually to ADR-0001 (DCAM/DMBOK adoption); not a typed dependency.

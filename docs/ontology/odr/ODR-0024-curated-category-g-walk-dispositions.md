@@ -12,15 +12,43 @@ implements: [ODR-0022]
 
 # Curated Category-G Walk — Leaf Dispositions and Modelling Rules
 
-## Context
+## Context and Problem Statement
 
 The [ADR-0031](../../adr/ADR-0031-category-g-curated-walk-execution-plan.md) curated walk emitted or dispositioned the 188 [ODR-0022](./ODR-0022-descriptive-layer-import-strategy.md) candidate Category-G descriptive leaves (156 minted as flat properties, 29 collapsed onto shared/existing properties, 3 deferred), via the [ADR-0030](../../adr/ADR-0030-category-based-descriptive-emission-pipeline-and-import-gates.md) generator. The per-leaf modelling decisions were made directly (greenfield first cut, no WG gate) and then put to the Linked Data Council — [session-028](./council/session-028-category-g-walk-review.md) — a full panel (Queen Allemang; Guizzardi/Kendall/Cagle; DA Hendler) for ratification.
 
 This ODR records the **rules and dispositions** the council settled; the deliberation transcript and per-question verdict tally live in the session record. The council ratified the walk's mechanical spine but returned two corrections that are normative here: the headline monetary leaves had been wrongly collapsed onto the Category-D fixtures `opda:price`, and the nearby-facilities bearer classes had been minted under a citation (§Q4a) that does not license them. Both are corrected below.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Adopt per-family disposition rules with two council corrections.** Flat datatype properties on the nearest bearer Kind, two ratified collapse conventions, monetary leaves deferred to a MonetaryAmount-based walk, and `opda:NearbyFacility` re-warranted as a UFO Substance-Kind bearer.
+* **Option B — Collapse all amenity leaves to the bare genus / domain-less.** Rejected: loses the precise bearer (a transport node has no `pupils`); the genus + SHACL-per-band keeps the bearer honest without the held Subkind cost.
+* **Option C — Mint one price property per monetary leaf.** Rejected: ODR-0022 §4 forbids per-item price proliferation; the value type is shared, the bearer is not.
+* **Option D — Reuse the fixtures `opda:price` for headline amounts.** Rejected: conflates Category-D and Category-G (ODR-0022 §1/G1) and erases incompatible value semantics (one-shot vs recurring vs refundable) under one bare decimal.
+* **Option E — Mint `School`/`HealthCareFacility` subkinds now.** Rejected for the first cut: no consumer query forces the split; held-as-live (Guizzardi dissent preserved).
+* **Option F — Reuse `opda:DocumentEvidence` for attached registry documents.** Rejected: the `owl:equivalentClass` binding entails eIDAS-Substantial evidence on every attached document.
+* **Option G — Keep the 7-name C-vs-G allow-list.** Rejected: it silently drops every future enum-bearing Quale whose tail is not listed.
+
+## Decision Outcome
+
+Chosen option: "Option A — Adopt per-family disposition rules with two council corrections", because the value-space distinctions either already exist in the emitted TTL or are byte-identically recoverable, and honest coverage accounting (179/239 with the 60 uncovered reported as a follow-on, not silent omissions) is sounder than false coverage by collapsing leaves onto semantically incompatible properties.
 
 Adopt the per-family disposition rules in §Rules for the descriptive Category-G leaves: flat datatype properties on the nearest bearer Kind by [ODR-0008](./ODR-0008-property-descriptive-attributes.md) §Q5a/§Q6a, two ratified collapse conventions (free-text → `opda:disclosureDetail`, identity → existing join predicates), monetary leaves **deferred** to a `MonetaryAmount`-based monetary walk rather than collapsed onto the fixtures price, and `opda:NearbyFacility` re-warranted as a UFO Substance-Kind bearer; because the value-space distinctions either already exist in the emitted TTL or are byte-identically recoverable, the walk ships as a greenfield first cut at **honest 179/239 coverage** — R5's structural C-vs-G rule grew the candidate-G set 188→239 by surfacing enum-bearing attributes the old allow-list mis-binned to C, and the 60 uncovered (18 deferred monetary + 3 held `opda:Room` + ~39 newly-surfaced enum attributes) are a reported follow-on, not silent omissions.
+
+### Consequences
+
+* Remediation before this leaves `proposed` — **blocking** (DA blockers): re-warrant `opda:NearbyFacility` + collapse subkinds + `schoolType`→SKOS (R4); withdraw the 18 monetary collapses → defer + fix the `opda:price` comment (R3), honest coverage 185 → 179/239 (R5 grows the denominator 188→239).
+* **Should-fix follow-ups**: `titleNumber`→`RegisteredTitle` (R8); mint `opda:AttachedDocument` + break the `Document`≡`DocumentEvidence` conflation (R7); structural C-vs-G rule + re-run + regression test (R5); mint ~5 SKOS schemes + re-range (R6); SHACL `mediaUrl`/`url` + `hasSubAssessment` acyclicity (R11).
+* The Category-G **monetary walk** (with `opda:MonetaryAmount`) is the next deferred chunk and owns the ODR-0008d item-3 deferral.
+* All emitter changes regenerate through ADR-0030; `ci-byte-identity`, `ci-dup-declaration`, and `ci-category-g-coverage` continue to gate.
+* No byte-identity re-pin is forced by R5.
+
+## More Information
+
+* [ODR-0008](./ODR-0008-property-descriptive-attributes.md) §Q4a/§Q5a/§Q6a/§Q3a — the descriptive-attribute binding rules this walk applies.
+* [ODR-0008d](./ODR-0008d-authority-retrieved-artefacts.md) item-3 — the deferred `opda:MonetaryAmount` value-type question (R3 answers it).
+* [ODR-0022](./ODR-0022-descriptive-layer-import-strategy.md) §1/§3/§4/§Rules.1/.6 — Category-G curation strategy + the C↔D↔G boundary this ODR implements.
+* [ADR-0030](../../adr/ADR-0030-category-based-descriptive-emission-pipeline-and-import-gates.md) — the emission generator + gates. [ADR-0031](../../adr/ADR-0031-category-g-curated-walk-execution-plan.md) — the walk execution plan.
+* [Council session-028](./council/session-028-category-g-walk-review.md) — the deliberation, per-question verdicts, and DA scorecard behind these rules.
 
 ## Rules
 
@@ -48,23 +76,3 @@ Adopt the per-family disposition rules in §Rules for the descriptive Category-G
 
 **R12 — Coverage accounting.** After remediation, honest coverage is **164 minted + 15 collapsed = 179/239** — R5's structural C-vs-G rule grew the candidate-G set 188→239 by surfacing enum-bearing attributes the old 7-name allow-list mis-binned to C. The **60 uncovered** are the 18 deferred monetary leaves + the 3 held `opda:Room` leaves + ~39 newly-surfaced enum attributes (a reported follow-on walk, not silent omissions). `ci-category-g-coverage` is the local-only tracker (the data dictionary is gitignored); collapsing the 18 monetary leaves onto `opda:price` was false coverage and is withdrawn from the register.
 
-## Alternatives
-
-* **Collapse all amenity leaves to the bare genus / domain-less** — rejected: loses the precise bearer (a transport node has no `pupils`); the genus + SHACL-per-band keeps the bearer honest without the held Subkind cost.
-* **Mint one price property per monetary leaf** — rejected: ODR-0022 §4 forbids per-item price proliferation; the value type is shared, the bearer is not.
-* **Reuse the fixtures `opda:price` for headline amounts** — rejected: conflates Category-D and Category-G (ODR-0022 §1/G1) and erases incompatible value semantics (one-shot vs recurring vs refundable) under one bare decimal.
-* **Mint `School`/`HealthCareFacility` subkinds now** — rejected for the first cut: no consumer query forces the split; held-as-live (Guizzardi dissent preserved).
-* **Reuse `opda:DocumentEvidence` for attached registry documents** — rejected: the `owl:equivalentClass` binding entails eIDAS-Substantial evidence on every attached document.
-* **Keep the 7-name C-vs-G allow-list** — rejected: it silently drops every future enum-bearing Quale whose tail is not listed.
-
-## Consequences
-
-Remediation before this leaves `proposed` — **blocking** (DA blockers): re-warrant `opda:NearbyFacility` + collapse subkinds + `schoolType`→SKOS (R4); withdraw the 18 monetary collapses → defer + fix the `opda:price` comment (R3), honest coverage 185 → 179/239 (R5 grows the denominator 188→239). **Should-fix follow-ups**: `titleNumber`→`RegisteredTitle` (R8); mint `opda:AttachedDocument` + break the `Document`≡`DocumentEvidence` conflation (R7); structural C-vs-G rule + re-run + regression test (R5); mint ~5 SKOS schemes + re-range (R6); SHACL `mediaUrl`/`url` + `hasSubAssessment` acyclicity (R11). The Category-G **monetary walk** (with `opda:MonetaryAmount`) is the next deferred chunk and owns the ODR-0008d item-3 deferral. All emitter changes regenerate through ADR-0030; `ci-byte-identity`, `ci-dup-declaration`, and `ci-category-g-coverage` continue to gate. No byte-identity re-pin is forced by R5.
-
-## References
-
-* [ODR-0008](./ODR-0008-property-descriptive-attributes.md) §Q4a/§Q5a/§Q6a/§Q3a — the descriptive-attribute binding rules this walk applies.
-* [ODR-0008d](./ODR-0008d-authority-retrieved-artefacts.md) item-3 — the deferred `opda:MonetaryAmount` value-type question (R3 answers it).
-* [ODR-0022](./ODR-0022-descriptive-layer-import-strategy.md) §1/§3/§4/§Rules.1/.6 — Category-G curation strategy + the C↔D↔G boundary this ODR implements.
-* [ADR-0030](../../adr/ADR-0030-category-based-descriptive-emission-pipeline-and-import-gates.md) — the emission generator + gates. [ADR-0031](../../adr/ADR-0031-category-g-curated-walk-execution-plan.md) — the walk execution plan.
-* [Council session-028](./council/session-028-category-g-walk-review.md) — the deliberation, per-question verdicts, and DA scorecard behind these rules.

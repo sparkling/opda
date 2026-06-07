@@ -12,7 +12,7 @@ implements: []
 
 # PDTF to Ontology: Programme and Work Breakdown (Anchor)
 
-## Context
+## Context and Problem Statement
 
 This is the anchor record for converting the Property Data Trust Framework v3 JSON Schema into a linked-data ontology. It records the programme-level decisions from Council Session 001, sequences the work, and links every work-package ODR. It is planning only — each linked ODR is a stub to be fleshed out in its own follow-up session.
 
@@ -22,9 +22,66 @@ Inputs converted: **`pdtf-transaction.json`** (37,224 lines, JSON Schema Draft-0
 
 Convening constraints for Session 001: data model only (TBox; no instance-data deliverable, later amended to admit diagnostic exemplars); vocabulary floor of Core + DASH + PROV-O + the data-governance family; BBO and other non-relevant Conditional vocabularies excluded; output a set of work-partitioning ODRs plus this anchor.
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Partition by ontological concern (FIBO-module × UFO-layer), spike-then-scale.** FIBO-style modules reconciled with Guizzardi's UFO Kind/Role/Relator layering; sequence spike-then-scale with the Property identity criterion as gating crux.
+* **Option B — Partition by aggregate page.** Rejected: encodes form ergonomics, not ontological cohesion; duplicates reused entities (Address, Name, Person, Organisation) across modules; treats Evidence and VerifiedClaims as siloed pages when they are cross-cutting relations.
+* **Option C — Partition by UFO meta-category alone.** Rejected as a sole cut: too coarse to map onto FIBO-style concern modules; subsumed into the chosen option as its layering axis.
+* **Option D — Drive the whole 15-ODR programme up front (no spike).** Rejected: the identity-criterion question is too contested to draft module ODRs against; spike-then-scale front-loads the hard constructs into one proven vertical slice.
+
+The diagram below summarises the three rejected partition strategies and why the chosen option was preferred.
+
+```mermaid
+flowchart LR
+    accTitle: Partition Strategy Decision
+    accDescr: Three alternative partitioning strategies considered and rejected, leading to the chosen ontological-concern partition with spike-then-scale sequencing.
+
+    A["Partition by<br/>aggregate page"]:::process --> RA["Encodes form ergonomics;<br/>duplicates reused entities<br/>across modules"]:::warning
+    RA --> REJ1["REJECTED"]:::error
+
+    B["Partition by<br/>UFO meta-category alone"]:::process --> RB["Too coarse for<br/>FIBO-style concern modules;<br/>subsumed into chosen option"]:::warning
+    RB --> REJ2["REJECTED"]:::error
+
+    C["Full 15-ODR programme<br/>up front (no spike)"]:::process --> RC["Identity criterion<br/>too contested to draft<br/>module ODRs against"]:::warning
+    RC --> REJ3["REJECTED"]:::error
+
+    CHOSEN["CHOSEN:<br/>Partition by ontological concern<br/>FIBO-module × UFO-layer,<br/>spike-then-scale"]:::success
+    REJ1 & REJ2 & REJ3 -.->|"by elimination"| CHOSEN
+```
+
+## Decision Outcome
+
+Chosen option: "Option A — partition by ontological concern, spike-then-scale", because mirroring the JSON tree encodes form ergonomics rather than ontological cohesion, and spike-then-scale front-loads the genuinely hard constructs before the largely-mechanical overlay scale-out.
 
 Partition the PDTF→ontology programme **by ontological concern** (FIBO-style modules reconciled with Guizzardi's UFO Kind/Role/Relator layering), not by aggregate page, because mirroring the JSON tree encodes form ergonomics rather than ontological cohesion; sequence the work **spike-then-scale** with the Property identity criterion as the gating crux, prove the pipeline end-to-end on one BASPI5 vertical slice, then scale the remaining overlays and modules. This supersedes the by-aggregate-page breakdown of the earlier placeholder stubs.
+
+### Consequences
+
+* Declare reused entities (Address, Name, Person, Organisation) once, not per aggregate page, and isolate open-world class semantics from closed-world shape validation.
+* Promote Evidence/Claims/Enumerations/Governance/Validation to cross-cutting status; model them as the relations they are rather than forcing them into module silos.
+* Keep the published namespace flat; module structure is editorial, so re-grouping concepts later does not break dereferenceable URIs.
+* Front-load the genuinely hard constructs (identity criteria, `sh:xone`, capacity, DASH editors, `dct:source`) into a single proven vertical slice before the largely-mechanical overlay scale-out.
+* Treat the identity crux ([ODR-0005](./ODR-0005-property-land-identity-crux.md)) as a hard single-point gate early in the programme: module ODRs (0006–0008) are not drafted in anger until it clears.
+* Re-cut any work already premised on the superseded by-aggregate-page placeholder stubs to the concern partition.
+* Update this anchor as ODRs progress; do not duplicate per-ODR analysis here.
+
+## More Information
+
+- Council methodology: [ODR-0001](./ODR-0001-linked-data-council-methodology.md).
+- Vocabulary catalogue: [ODR-0002](./ODR-0002-ontology-language-adoption.md) (amendments folded inline; ODR-0014 retired per Scope-Check 1 Q4).
+- Phase 0 spikes: [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md), [ODR-0005](./ODR-0005-property-land-identity-crux.md).
+- **Phase 2.6 gate**: [ODR-0015](./ODR-0015-address-and-geography.md) — Address & Geography (added per Scope-Check 1 Q7a).
+- Phase 1 modules: [ODR-0006](./ODR-0006-agents-and-roles.md), [ODR-0007](./ODR-0007-transactions-and-lifecycle.md), [ODR-0008](./ODR-0008-property-descriptive-attributes.md).
+- Cross-cutting: [ODR-0009](./ODR-0009-claims-evidence-provenance.md), [ODR-0010](./ODR-0010-overlay-profile-mechanism.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0012](./ODR-0012-data-governance-layer.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
+- **Phase 7 deferred**: [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md) — W3C VC / DID Compatibility Layer (named per Scope-Check 1 Q7c; activation triggered).
+- **Retired**: ~~[ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)~~ — folded into ODR-0002 per Scope-Check 1 Q4.
+- Deliberation provenance — Session 001: [session-001-pdtf-schema-to-ontology](./council/session-001-pdtf-schema-to-ontology.md). Full per-question positions, vote tallies, recorded dissents (including Guarino's Devil's-Advocate scorecard and DA withdrawals) live there; this anchor records sequencing and cross-links only.
+- Ratification provenance — Session 003 (Author-only; 2026-05-27; Queen Kendall): [session-003-pdtf-ontology-programme](./council/session-003-pdtf-ontology-programme.md). Records phase ordering (plan §5), default-vs-fast-path option (plan §5.1), identity-crux gate check, module count, programme retirement criterion, status-discipline bidirectional-update protocol, and shared-question routing (plan §4.1) into the `## Rules` above. No fresh deliberation claimed; every item plan- or precedent-sourced.
+- Programme-level scope review: [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 8-1 APPROVE the cut with nine named amendments; spawned ODR-0015, named ODR-0016, retired ODR-0014, moved DPV co-annotation authoring to 0012, added Cagle's three-rule interface contract between 0010 and 0013, recorded Guizzardi's UFO-per-scheme sub-finding for 0011, surfaced Gandon-vs-Guizzardi methodology gap (routed to ODR-0001 amendment queue).
+- Methodology-tooling review: [Scope-Check 2 — Hive-mind vs Agent fan-out](./council/scope-check-2-hive-vs-swarm.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 5-1 SELECTIVE; Agent fan-out stays default. Two pilot sessions named for ruflo hive-mind consensus: **S005 (Identity crux) with `consensus-mode: hive-mind/byzantine`** (tests cross-conditional voting hypothesis), and **S011 Q8 (UFO meta-category per scheme) with `consensus-mode: hive-mind/typed-output`** (tests typed downstream consumption hypothesis). Scope-Check 2 B1 (consensus-mode framework) landed in ODR-0001 via direct amendment 2026-05-27 (Author-only self-amendment); pilots unblocked. A9 (Scope-Check 1 — Gandon-Guizzardi methodology gap) still pending but not strictly blocking — recommended before S005. Pilots are an evaluation budget, not an adoption commitment — retire-or-extend decision at session close.
+- Project adoption context: [OPDA Council adoption record](./council/adoption.md) — declares OPDA's project-specific instantiation of the methodology (panel weighting, pre-elected extended panel, governance handoff, track record, when-to-use additions, council directory path). Per ODR-0001's portable methodology design, project specifics live in the adoption record, not in the methodology body.
+- Follow-up programme execution: [Council follow-up sessions](../../plan/council-followup-sessions.md) — operationalises the work-breakdown above by attaching one Council session to each linked stub, with dependency-ordered phasing and explicit gates at ODR-0004 (Foundation), ODR-0005 (Identity crux), and ODR-0015 (Address).
+- Source inputs: `pdtf-transaction.json`; web-app schema section (`src/pages/schema/*.astro`, `source/_content/schema/*.md`); PDTF business glossary (`source/00-deliverables/semantic-models/business-glossary.md`); PDTF data dictionary (`source/00-deliverables/semantic-models/data-dictionary.md`).
 
 ## Rules
 
@@ -219,56 +276,3 @@ Pilot sessions (S005, S011 Q8) carry an additional artefact per plan §8: a one-
 
 Individual ODRs own their own analysis; this file owns the sequencing and the cross-links.
 
-## Alternatives
-
-The diagram below summarises the three rejected partition strategies and why the chosen option was preferred.
-
-```mermaid
-flowchart LR
-    accTitle: Partition Strategy Decision
-    accDescr: Three alternative partitioning strategies considered and rejected, leading to the chosen ontological-concern partition with spike-then-scale sequencing.
-
-    A["Partition by<br/>aggregate page"]:::process --> RA["Encodes form ergonomics;<br/>duplicates reused entities<br/>across modules"]:::warning
-    RA --> REJ1["REJECTED"]:::error
-
-    B["Partition by<br/>UFO meta-category alone"]:::process --> RB["Too coarse for<br/>FIBO-style concern modules;<br/>subsumed into chosen option"]:::warning
-    RB --> REJ2["REJECTED"]:::error
-
-    C["Full 15-ODR programme<br/>up front (no spike)"]:::process --> RC["Identity criterion<br/>too contested to draft<br/>module ODRs against"]:::warning
-    RC --> REJ3["REJECTED"]:::error
-
-    CHOSEN["CHOSEN:<br/>Partition by ontological concern<br/>FIBO-module × UFO-layer,<br/>spike-then-scale"]:::success
-    REJ1 & REJ2 & REJ3 -.->|"by elimination"| CHOSEN
-```
-
-- **Partition by aggregate page** — mirror the JSON tree and the web-app's 11 schema pages, one module per aggregate. Rejected: encodes form ergonomics, not ontological cohesion; duplicates reused entities (Address, Name, Person, Organisation) across modules; treats Evidence and VerifiedClaims as siloed pages when they are cross-cutting relations.
-- **Partition by UFO meta-category alone** — Substance Kinds / Roles & Phases / Relators & Claims. Rejected as a sole cut: too coarse to map onto FIBO-style concern modules; subsumed into the chosen option as its layering axis.
-- **Drive the whole 15-ODR programme up front (no spike)** — Rejected: the identity-criterion question is too contested to draft module ODRs against; spike-then-scale front-loads the hard constructs into one proven vertical slice.
-
-## Consequences
-
-- Declare reused entities (Address, Name, Person, Organisation) once, not per aggregate page, and isolate open-world class semantics from closed-world shape validation.
-- Promote Evidence/Claims/Enumerations/Governance/Validation to cross-cutting status; model them as the relations they are rather than forcing them into module silos.
-- Keep the published namespace flat; module structure is editorial, so re-grouping concepts later does not break dereferenceable URIs.
-- Front-load the genuinely hard constructs (identity criteria, `sh:xone`, capacity, DASH editors, `dct:source`) into a single proven vertical slice before the largely-mechanical overlay scale-out.
-- Treat the identity crux ([ODR-0005](./ODR-0005-property-land-identity-crux.md)) as a hard single-point gate early in the programme: module ODRs (0006–0008) are not drafted in anger until it clears.
-- Re-cut any work already premised on the superseded by-aggregate-page placeholder stubs to the concern partition.
-- Update this anchor as ODRs progress; do not duplicate per-ODR analysis here.
-
-## References
-
-- Council methodology: [ODR-0001](./ODR-0001-linked-data-council-methodology.md).
-- Vocabulary catalogue: [ODR-0002](./ODR-0002-ontology-language-adoption.md) (amendments folded inline; ODR-0014 retired per Scope-Check 1 Q4).
-- Phase 0 spikes: [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md), [ODR-0005](./ODR-0005-property-land-identity-crux.md).
-- **Phase 2.6 gate**: [ODR-0015](./ODR-0015-address-and-geography.md) — Address & Geography (added per Scope-Check 1 Q7a).
-- Phase 1 modules: [ODR-0006](./ODR-0006-agents-and-roles.md), [ODR-0007](./ODR-0007-transactions-and-lifecycle.md), [ODR-0008](./ODR-0008-property-descriptive-attributes.md).
-- Cross-cutting: [ODR-0009](./ODR-0009-claims-evidence-provenance.md), [ODR-0010](./ODR-0010-overlay-profile-mechanism.md), [ODR-0011](./ODR-0011-enumeration-vocabularies.md), [ODR-0012](./ODR-0012-data-governance-layer.md), [ODR-0013](./ODR-0013-shacl-validation-and-severity.md).
-- **Phase 7 deferred**: [ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md) — W3C VC / DID Compatibility Layer (named per Scope-Check 1 Q7c; activation triggered).
-- **Retired**: ~~[ODR-0014](./ODR-0014-vocabulary-catalogue-amendments.md)~~ — folded into ODR-0002 per Scope-Check 1 Q4.
-- Deliberation provenance — Session 001: [session-001-pdtf-schema-to-ontology](./council/session-001-pdtf-schema-to-ontology.md). Full per-question positions, vote tallies, recorded dissents (including Guarino's Devil's-Advocate scorecard and DA withdrawals) live there; this anchor records sequencing and cross-links only.
-- Ratification provenance — Session 003 (Author-only; 2026-05-27; Queen Kendall): [session-003-pdtf-ontology-programme](./council/session-003-pdtf-ontology-programme.md). Records phase ordering (plan §5), default-vs-fast-path option (plan §5.1), identity-crux gate check, module count, programme retirement criterion, status-discipline bidirectional-update protocol, and shared-question routing (plan §4.1) into the `## Rules` above. No fresh deliberation claimed; every item plan- or precedent-sourced.
-- Programme-level scope review: [Scope-Check 1 — Programme cut](./council/scope-check-1-programme.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 8-1 APPROVE the cut with nine named amendments; spawned ODR-0015, named ODR-0016, retired ODR-0014, moved DPV co-annotation authoring to 0012, added Cagle's three-rule interface contract between 0010 and 0013, recorded Guizzardi's UFO-per-scheme sub-finding for 0011, surfaced Gandon-vs-Guizzardi methodology gap (routed to ODR-0001 amendment queue).
-- Methodology-tooling review: [Scope-Check 2 — Hive-mind vs Agent fan-out](./council/scope-check-2-hive-vs-swarm.md) (2026-05-26, Queen Kendall, DA Davis). Verdict 5-1 SELECTIVE; Agent fan-out stays default. Two pilot sessions named for ruflo hive-mind consensus: **S005 (Identity crux) with `consensus-mode: hive-mind/byzantine`** (tests cross-conditional voting hypothesis), and **S011 Q8 (UFO meta-category per scheme) with `consensus-mode: hive-mind/typed-output`** (tests typed downstream consumption hypothesis). Scope-Check 2 B1 (consensus-mode framework) landed in ODR-0001 via direct amendment 2026-05-27 (Author-only self-amendment); pilots unblocked. A9 (Scope-Check 1 — Gandon-Guizzardi methodology gap) still pending but not strictly blocking — recommended before S005. Pilots are an evaluation budget, not an adoption commitment — retire-or-extend decision at session close.
-- Project adoption context: [OPDA Council adoption record](./council/adoption.md) — declares OPDA's project-specific instantiation of the methodology (panel weighting, pre-elected extended panel, governance handoff, track record, when-to-use additions, council directory path). Per ODR-0001's portable methodology design, project specifics live in the adoption record, not in the methodology body.
-- Follow-up programme execution: [Council follow-up sessions](../../plan/council-followup-sessions.md) — operationalises the work-breakdown above by attaching one Council session to each linked stub, with dependency-ordered phasing and explicit gates at ODR-0004 (Foundation), ODR-0005 (Identity crux), and ODR-0015 (Address).
-- Source inputs: `pdtf-transaction.json`; web-app schema section (`src/pages/schema/*.astro`, `source/_content/schema/*.md`); PDTF business glossary (`source/00-deliverables/semantic-models/business-glossary.md`); PDTF data dictionary (`source/00-deliverables/semantic-models/data-dictionary.md`).

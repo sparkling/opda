@@ -12,7 +12,7 @@ implements: [ODR-0003]
 
 # Bounded-Context Representation
 
-## Context
+## Context and Problem Statement
 
 The UK property transaction is modelled as Domain-Driven Design **bounded contexts** — six primary industry contexts (Estate Agency, Conveyancing, Mortgage Lending, Surveying, Property Data Services, Property Technology), five upstream contexts (HMLR, Local Authority, MHCLG Material Information, Identity & Verification, Trust & Verifiable Claims) and two spanning concerns (Transaction lifecycle; Participants & roles). PDTF is their **Published Language** (`/modelling/bounded-contexts`). Two representation questions were open: (1) how to denote a term's bounded-context membership in the ontology — a separate namespace per context, SKOS, or both; and (2) how to disambiguate a term whose label carries **different meanings** in different contexts ("how do I say *this property as defined in Context A* vs *in Context B*?").
 
@@ -20,10 +20,90 @@ The answer is constrained by ratified foundations. The single `opda:` namespace 
 
 This ODR was deliberated as a two-round Linked Data Council ([session-019](./council/session-019-bounded-context-representation.md); Queen: Kendall (FIBO); Devil's Advocate: Davis; panel: Evans & Vernon, Gandon, Hendler, Baker, Cagle, Guizzardi). Both rounds returned **7–0**: round 1 rejected per-context namespaces and "both"; round 2 confirmed that homonyms are disambiguated by **local name, not namespace**. It is `kind: pattern` per [ODR-0001](./ODR-0001-linked-data-council-methodology.md) A9 — UFO meta-category (bounded context = a perspectival *community of practice*, a SKOS-classifiable non-rigid facet), identity criterion over named hard cases (`charge`, `valuation`), and an artefact realisation (the SKOS scheme + `opda:definedInContext` triple shape + the derivation rule).
 
-## Decision
+## Considered Options
+
+* **Option A (chosen) — Single namespace + SKOS-context-scheme + profile-derived membership + local-name homonym disambiguation.** The chosen approach, ratified by Council Session 019 (two rounds, both 7–0).
+* **Option B — A separate namespace per bounded context.** Rejected 7–0: an entity belongs to many contexts, so per-context namespaces force duplicated terms or `owl:sameAs` (forbidden, ODR-0005); re-confirms the S001 Q7 / ODR-0004 namespace decision.
+* **Option C — Both (namespaces and SKOS).** Rejected 7–0: inherits Option B's defect for nil benefit; the namespace half is the part that breaks.
+* **Option D — Hand-authored SKOS membership tags.** Rejected as the primary mechanism: re-encodes the overlay→term facts the profiles already carry and drifts the moment an overlay moves context.
+* **Option E — Per-context namespace "to disambiguate" a homonym.** Rejected: an IRI is opaque (RFC 3986) and disambiguates on its whole string — a distinct **local name** gives a fully distinct identifier already; the namespace adds zero disambiguating power and re-imports the multi-membership break for the non-homonym majority.
+* **Option F — Build per-context `skos:scopeNote` / SKOS-XL polysemy machinery now.** Rejected as YAGNI: ~0 genuine homonyms are attested; the pattern is ratified but gated (Rule 8).
+
+The diagram maps each rejected option to its fatal flaw.
+
+```mermaid
+flowchart TD
+    accTitle: Alternatives considered and chosen outcome
+    accDescr: Maps four rejected alternatives to their disqualifying drivers, leading to the chosen single-namespace plus SKOS context scheme plus profile-derived membership.
+
+    A1["Alt: namespace per bounded context"]:::error
+    A2["Alt: both (namespaces + SKOS)"]:::error
+    A3["Alt: hand-authored SKOS membership tags"]:::error
+    A4["Alt: per-context namespace to disambiguate homonyms"]:::error
+
+    A1 -->|"Rejected: multi-membership →<br/>duplication or owl:sameAs (ODR-0005)"| X{"Driver check"}:::warning
+    A2 -->|"Rejected: inherits the<br/>namespace defect of A1"| X
+    A3 -->|"Rejected: drift; re-encodes<br/>profile data (ODR-0008 declare-once)"| X
+    A4 -->|"Rejected: local name already<br/>disambiguates; namespace adds nil"| X
+    X --> C["Chosen: one opda: namespace +<br/>SKOS context scheme +<br/>profile-derived membership +<br/>local-name homonym disambiguation"]:::success
+```
+
+## Decision Outcome
+
+Chosen option: "Single namespace + SKOS-context-scheme + profile-derived membership", because a bounded context is a perspective on shared terms (not a minting authority), context-of-use is many-to-many (multi-membership is the rule), and per-context namespaces would require the forbidden `owl:sameAs` to re-link the shared majority of terms.
 
 Adopt a **single-namespace + SKOS-context-scheme + profile-derived-membership** representation: keep the one `opda:` minting namespace; model the bounded contexts as a `skos:ConceptScheme` of `skos:Concept`s in `opda:`; derive each term's context membership from the existing SHACL overlay profiles (single source of truth) rather than hand-authoring it; and disambiguate a term that genuinely means different things in different contexts by minting **distinct local names in the one namespace** (governed by the Identity-Criterion test below), never by a distinct namespace — chosen because a bounded context is a perspective on shared terms, not a minting authority, so context-of-use is a many-to-many classification (multi-membership is the rule) while a namespace can only encode a single definition-home, and per-context namespaces would require the forbidden `owl:sameAs` to re-link the shared majority of terms.
 
+### Consequences
+
+* **Build now.** Emit `opda:PDTFBoundedContextScheme` and the 13 context concepts as SKOS reference data in `opda:`, reusing `opda:hasSteward` (Rule 2). Mint `opda:definedInContext` and `opda:servesContext` as `owl:AnnotationProperty` (membership, not logical typing).
+* **Derive, gated.** Author the profile→context SHACL-AF derivation rule (`implements: ODR-0017`); it ships **dormant**, switched on only when Rule 8's gate clears. Re-point `opda:overlaysContext` (currently a profile-layer IRI) onto the new `…Context` concepts so derivation has a real target.
+* **Homonyms.** Apply the Rule 4 decision table whenever a same-label/two-meaning candidate appears; build no polysemy scaffolding below the gate. `opda:Valuation` stays one class until a consumer proves distinct ICs.
+* **Hand-off.** The exact `skos:Concept` shapes, labels, definitions and steward assignments for the 13 contexts go to ODR-0011's SKOS steward (concept-shape discipline); the derivation rule follows ODR-0017.
+* **`odr-review` lint extension.** Flag any `opda:` term whose IRI encodes a context prefix; flag any `rdfs:subClassOf`/`rdf:type` whose object is a context concept; flag any `owl:sameAs` between homonym siblings.
+* **Namespace block.** Generator output for this ODR's `opda:` declarations may carry `dct:status "draft"` as a publication-grade marker (the namespace string is ratified — greenfield, no WG; inherited ODR-0004 block lifted); the record itself is `accepted` because the namespace question it answers is already settled by ODR-0004.
+
+## More Information
+
+- **Methodology**: [ODR-0001](./ODR-0001-linked-data-council-methodology.md) §What an ODR records (per-kind discipline; A9 `kind: pattern`).
+- **Council deliberation provenance**: [session-019 — Bounded-Context Representation](./council/session-019-bounded-context-representation.md) (two rounds; Queen Kendall; DA Davis; panel Evans & Vernon, Gandon, Hendler, Baker, Cagle, Guizzardi; both rounds 7–0).
+- **Implementation-planning follow-on**: [session-021 — Bounded-Context Implementation Plan](./council/session-021-bounded-context-implementation-plan.md) (2026-05-30; Queen Kendall; DA Davis) proposed splitting Rule 8 to un-gate a generated `opda:definedInContext` home. **This was reversed the same day** by **[session-022 — Form↔SHACL Profile Convention](./council/session-022-form-shacl-profile-convention.md)** (Queen Baker; DA Davis; 6–0), which found `definedInContext` reinvents `rdfs:isDefinedBy` + `dct:source` + `dct:subject` and **retired it** (Rules 5 + 8, above). S022 governs; the home is the three standard predicates, community-ownership authored-or-absent under the gate. **Amendments council-ratified — greenfield, no WG.**
+- **Foundations**: [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) (single `opda:` namespace — S001 Q7 9-0; the home this pattern refuses to multiply); [ODR-0005](./ODR-0005-property-land-identity-crux.md) Rule 5 (no `owl:sameAs` — the reason per-context namespaces fail); [ODR-0008](./ODR-0008-property-descriptive-attributes.md) (declare-once-reconcile-overlays — constraint divergence is not term divergence); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles — where context constraints live and the source of derived membership); [ODR-0011](./ODR-0011-enumeration-vocabularies.md) (SKOS scheme + steward discipline); [ODR-0006](./ODR-0006-agents-and-roles.md) (roles/phases stay one Kind — the boundary that keeps homonym-splitting from swallowing role-modelling); [ODR-0002](./ODR-0002-ontology-language-adoption.md) (vocabulary catalogue — the new scheme is catalogued there); [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (the derivation rule's pattern).
+- **Industry context map**: `/modelling/bounded-contexts` (the 6 + 5 + 2 contexts and the overlay→context table).
+- **W3C / spec**: SKOS Reference (Miles & Bechhofer 2009) — `skos:Concept`, `skos:ConceptScheme`, mapping relations; DCMI Terms — `dct:subject`, `dct:source`; RFC 3986 (IRI opacity — meaning is fixed by triples, not by the `#`/`/` split).
+- **DDD**: Evans 2003 *Domain-Driven Design* (Bounded Context; Published Language; Context Map; Anti-Corruption Layer); FIBO modular methodology (namespace-by-module-of-definition; homonym co-residence — `MarketValue`/`LiquidationValue`).
+- **Foundational ontology**: Guizzardi 2005 *Ontological Foundations* Ch. 4 (Kinds, Roles, anti-rigidity); OntoClean (Guarino & Welty) — identity-criterion test for counting Kinds.
+- **Related ODRs**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).
+
+The graph shows ODR-0019's declared dependency and implementing relationships.
+
+```mermaid
+flowchart TD
+    accTitle: ODR-0019 depends-on and implements graph
+    accDescr: Shows ODR-0019 depending on ODR-0001, 0002, 0004, 0005, 0006, 0008, 0010, 0011 and implementing the ODR-0003 programme.
+
+    ODR19["ODR-0019<br/>Bounded-Context Representation"]:::user
+
+    ODR01["ODR-0001 Methodology"]:::process
+    ODR02["ODR-0002 Vocabulary Catalogue"]:::process
+    ODR04["ODR-0004 Foundation / Namespace"]:::process
+    ODR05["ODR-0005 Identity / no owl:sameAs"]:::process
+    ODR06["ODR-0006 Agents & Roles"]:::process
+    ODR08["ODR-0008 Descriptive / declare-once"]:::process
+    ODR10["ODR-0010 Overlay Profiles"]:::process
+    ODR11["ODR-0011 SKOS Schemes"]:::process
+    ODR03["ODR-0003 Programme"]:::process
+
+    ODR19 -->|"depends-on"| ODR01
+    ODR19 -->|"depends-on"| ODR02
+    ODR19 -->|"depends-on"| ODR04
+    ODR19 -->|"depends-on"| ODR05
+    ODR19 -->|"depends-on"| ODR06
+    ODR19 -->|"depends-on"| ODR08
+    ODR19 -->|"depends-on"| ODR10
+    ODR19 -->|"depends-on"| ODR11
+    ODR19 -->|"implements"| ODR03
+```
 ## Rules
 
 These rules are normative for all bounded-context representation in the OPDA ontology.
@@ -136,81 +216,3 @@ flowchart TD
 - **Never** `owl:sameAs` between homonym siblings or across contexts (Rule 6).
 - **Never** hand-maintain term→context membership that a profile already implies (Rule 3).
 - **Never** build polysemy machinery below the activation gate (Rule 8).
-
-## Alternatives
-
-The diagram maps each rejected option to its fatal flaw.
-
-```mermaid
-flowchart TD
-    accTitle: Alternatives considered and chosen outcome
-    accDescr: Maps four rejected alternatives to their disqualifying drivers, leading to the chosen single-namespace plus SKOS context scheme plus profile-derived membership.
-
-    A1["Alt: namespace per bounded context"]:::error
-    A2["Alt: both (namespaces + SKOS)"]:::error
-    A3["Alt: hand-authored SKOS membership tags"]:::error
-    A4["Alt: per-context namespace to disambiguate homonyms"]:::error
-
-    A1 -->|"Rejected: multi-membership →<br/>duplication or owl:sameAs (ODR-0005)"| X{"Driver check"}:::warning
-    A2 -->|"Rejected: inherits the<br/>namespace defect of A1"| X
-    A3 -->|"Rejected: drift; re-encodes<br/>profile data (ODR-0008 declare-once)"| X
-    A4 -->|"Rejected: local name already<br/>disambiguates; namespace adds nil"| X
-    X --> C["Chosen: one opda: namespace +<br/>SKOS context scheme +<br/>profile-derived membership +<br/>local-name homonym disambiguation"]:::success
-```
-
-- **A separate namespace per bounded context.** Rejected 7–0: an entity belongs to many contexts, so per-context namespaces force duplicated terms or `owl:sameAs` (forbidden, [ODR-0005](./ODR-0005-property-land-identity-crux.md)); re-confirms the S001 Q7 / [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) namespace decision. FIBO's per-module namespaces track module-of-definition (one home), never context-of-use, so they argue *for* the by-concern TTL modules and *against* per-context prefixes.
-- **Both (namespaces *and* SKOS).** Rejected 7–0: inherits A1's defect for nil benefit; the namespace half is the part that breaks.
-- **Hand-authored SKOS membership tags.** Rejected as the primary mechanism: re-encodes the overlay→term facts the profiles already carry and drifts the moment an overlay moves context. Membership is **derived** (Rule 3); hand-tagging survives only as the profile-invisible exception.
-- **Per-context namespace "to disambiguate" a homonym.** Rejected: an IRI is opaque (RFC 3986) and disambiguates on its whole string — a distinct **local name** gives a fully distinct identifier already; the namespace adds zero disambiguating power and re-imports the multi-membership break for the non-homonym majority.
-- **Build per-context `skos:scopeNote` / SKOS-XL polysemy machinery now.** Rejected as YAGNI: ~0 genuine homonyms are attested; the pattern is ratified but gated (Rule 8).
-
-## Consequences
-
-- **Build now.** Emit `opda:PDTFBoundedContextScheme` and the 13 context concepts as SKOS reference data in `opda:`, reusing `opda:hasSteward` (Rule 2). Mint `opda:definedInContext` and `opda:servesContext` as `owl:AnnotationProperty` (membership, not logical typing).
-- **Derive, gated.** Author the profile→context SHACL-AF derivation rule (`implements: ODR-0017`); it ships **dormant**, switched on only when Rule 8's gate clears. Re-point `opda:overlaysContext` (currently a profile-layer IRI) onto the new `…Context` concepts so derivation has a real target.
-- **Homonyms.** Apply the Rule 4 decision table whenever a same-label/two-meaning candidate appears; build no polysemy scaffolding below the gate. `opda:Valuation` stays one class until a consumer proves distinct ICs.
-- **Hand-off.** The exact `skos:Concept` shapes, labels, definitions and steward assignments for the 13 contexts go to [ODR-0011](./ODR-0011-enumeration-vocabularies.md)'s SKOS steward (concept-shape discipline); the derivation rule follows [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md).
-- **`odr-review` lint extension.** Flag any `opda:` term whose IRI encodes a context prefix; flag any `rdfs:subClassOf`/`rdf:type` whose object is a context concept; flag any `owl:sameAs` between homonym siblings.
-- **Namespace block.** Generator output for this ODR's `opda:` declarations may carry `dct:status "draft"` as a publication-grade marker (the namespace string is ratified — greenfield, no WG; inherited [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) block lifted); the record itself is `accepted` because the namespace question it answers is already settled by ODR-0004.
-
-## References
-
-- **Methodology**: [ODR-0001](./ODR-0001-linked-data-council-methodology.md) §What an ODR records (per-kind discipline; A9 `kind: pattern`).
-- **Council deliberation provenance**: [session-019 — Bounded-Context Representation](./council/session-019-bounded-context-representation.md) (two rounds; Queen Kendall; DA Davis; panel Evans & Vernon, Gandon, Hendler, Baker, Cagle, Guizzardi; both rounds 7–0).
-- **Implementation-planning follow-on**: [session-021 — Bounded-Context Implementation Plan](./council/session-021-bounded-context-implementation-plan.md) (2026-05-30; Queen Kendall; DA Davis) proposed splitting Rule 8 to un-gate a generated `opda:definedInContext` home. **This was reversed the same day** by **[session-022 — Form↔SHACL Profile Convention](./council/session-022-form-shacl-profile-convention.md)** (Queen Baker; DA Davis; 6–0), which found `definedInContext` reinvents `rdfs:isDefinedBy` + `dct:source` + `dct:subject` and **retired it** (Rules 5 + 8, above). S022 governs; the home is the three standard predicates, community-ownership authored-or-absent under the gate. **Amendments council-ratified — greenfield, no WG.**
-- **Foundations**: [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) (single `opda:` namespace — S001 Q7 9-0; the home this pattern refuses to multiply); [ODR-0005](./ODR-0005-property-land-identity-crux.md) Rule 5 (no `owl:sameAs` — the reason per-context namespaces fail); [ODR-0008](./ODR-0008-property-descriptive-attributes.md) (declare-once-reconcile-overlays — constraint divergence is not term divergence); [ODR-0010](./ODR-0010-overlay-profile-mechanism.md) (overlay profiles — where context constraints live and the source of derived membership); [ODR-0011](./ODR-0011-enumeration-vocabularies.md) (SKOS scheme + steward discipline); [ODR-0006](./ODR-0006-agents-and-roles.md) (roles/phases stay one Kind — the boundary that keeps homonym-splitting from swallowing role-modelling); [ODR-0002](./ODR-0002-ontology-language-adoption.md) (vocabulary catalogue — the new scheme is catalogued there); [ODR-0017](./ODR-0017-shacl-af-quality-rules-pattern.md) (the derivation rule's pattern).
-- **Industry context map**: `/modelling/bounded-contexts` (the 6 + 5 + 2 contexts and the overlay→context table).
-- **W3C / spec**: SKOS Reference (Miles & Bechhofer 2009) — `skos:Concept`, `skos:ConceptScheme`, mapping relations; DCMI Terms — `dct:subject`, `dct:source`; RFC 3986 (IRI opacity — meaning is fixed by triples, not by the `#`/`/` split).
-- **DDD**: Evans 2003 *Domain-Driven Design* (Bounded Context; Published Language; Context Map; Anti-Corruption Layer); FIBO modular methodology (namespace-by-module-of-definition; homonym co-residence — `MarketValue`/`LiquidationValue`).
-- **Foundational ontology**: Guizzardi 2005 *Ontological Foundations* Ch. 4 (Kinds, Roles, anti-rigidity); OntoClean (Guarino & Welty) — identity-criterion test for counting Kinds.
-- **Related ODRs**: programme anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md).
-
-The graph shows ODR-0019's declared dependency and implementing relationships.
-
-```mermaid
-flowchart TD
-    accTitle: ODR-0019 depends-on and implements graph
-    accDescr: Shows ODR-0019 depending on ODR-0001, 0002, 0004, 0005, 0006, 0008, 0010, 0011 and implementing the ODR-0003 programme.
-
-    ODR19["ODR-0019<br/>Bounded-Context Representation"]:::user
-
-    ODR01["ODR-0001 Methodology"]:::process
-    ODR02["ODR-0002 Vocabulary Catalogue"]:::process
-    ODR04["ODR-0004 Foundation / Namespace"]:::process
-    ODR05["ODR-0005 Identity / no owl:sameAs"]:::process
-    ODR06["ODR-0006 Agents & Roles"]:::process
-    ODR08["ODR-0008 Descriptive / declare-once"]:::process
-    ODR10["ODR-0010 Overlay Profiles"]:::process
-    ODR11["ODR-0011 SKOS Schemes"]:::process
-    ODR03["ODR-0003 Programme"]:::process
-
-    ODR19 -->|"depends-on"| ODR01
-    ODR19 -->|"depends-on"| ODR02
-    ODR19 -->|"depends-on"| ODR04
-    ODR19 -->|"depends-on"| ODR05
-    ODR19 -->|"depends-on"| ODR06
-    ODR19 -->|"depends-on"| ODR08
-    ODR19 -->|"depends-on"| ODR10
-    ODR19 -->|"depends-on"| ODR11
-    ODR19 -->|"implements"| ODR03
-```

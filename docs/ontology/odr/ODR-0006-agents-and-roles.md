@@ -21,6 +21,42 @@ implements: [ODR-0003, ODR-0017, ODR-0018]
 
 # Agents & Roles
 
+## Context and Problem Statement
+
+PDTF v3 models everyone attached to a transaction as a flat `participants[]` array discriminated by a `role` enum, with `name`, `address`, `organisation`, `dateOfBirth` and `email` hanging off each entry, and distinguishes `privateIndividual` from `organization` only as enum values. This is the participant analogue of the implicit-Property defect (ODR-0005): identity-supplying things (a person, an organisation) are conflated with anti-rigid, externally founded things (being a *seller*, *buyer*, *conveyancer*). Capacity is a casualty — `sellersCapacity` and the gap between *asserted* capacity and *evidenced* authority (probate, power of attorney) collapse a founding legal grant into a free-text enum.
+
+Council Session 001 (Q3) resolved to partition the ontology by **ontological concern**, reconciling Kendall's FIBO modules with Guizzardi's UFO Kind/Role/Relator layering. This ODR is the **Agents & Roles** module under that partition. It is gated by the identity crux (ODR-0005): Person/Organisation identity criteria and the `Address` class are shared with the Property work.
+
+## Considered Options
+
+* **Option A (chosen) — W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMixin/Role layering.** Places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded; leaves a clean seam to the provenance layer via `prov:Agent`.
+* **Option B — Keep the schema shape (one `opda:Participant` class with a `role` datatype property).** Rejected: reproduces the exact defect — no identity criterion, bearer conflated with role.
+* **Option C — `prov:Agent`-only agent layer.** Rejected: `prov:Agent` is deliberately thin and cannot carry the Kind layer (no Person/Organisation distinction, no structured Name).
+* **Option D — FOAF for the Kind layer.** Rejected: overlaps the W3C Org ontology and `dct:` confusingly, absent from the comparable H&M `src/` survey, already deferred by ODR-0002.
+
+## Decision Outcome
+
+Chosen option: "Option A — W3C Org / bespoke `opda:` Kind layer with UFO Kind/RoleMixin/Role layering", because it places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded, and rules out FOAF.
+
+Adopt a **W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMixin/Role layering**, ruling out FOAF, because it places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded, and leaves a clean seam to the provenance layer via `prov:Agent`.
+
+### Consequences
+
+* Downstream modules MUST consume `opda:Address` and `opda:Name` from this module rather than redeclaring them.
+* The evidence layer (ODR-0009) MUST attach to the `opda:evidencedAuthority` slot when a regulated capacity is asserted.
+* The role/capacity SKOS schemes (ODR-0011) MUST source their members from the data dictionary's `role` enum and labels from the business glossary.
+* The TBox remains unfrozen until the W3C-Org-vs-bespoke `opda:` Kind-layer choice is resolved in a follow-up council session.
+* Schema-to-ontology mapping work for `participants[]` is blocked on this module reaching freeze.
+
+## More Information
+
+- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
+- **Vocabularies**: Core (OWL/RDFS/XSD); SKOS for role/capacity schemes (→ ODR-0011); PROV-O for the verification cross-link (→ ODR-0009); DPV for PII annotation on Person/contact leaves (→ ODR-0012); OWL-Time if role-tenure intervals are modelled here. Candidate Kind-layer vocabularies (FOAF ruled out): W3C Org ontology or a bespoke `opda:` Kind layer.
+- **Glossary & data dictionary inputs**: the role concept scheme (ODR-0011) draws enumerated members from `baspi5.json` (Buyer, Seller's Conveyancer, Prospective Buyer, Buyer's Conveyancer, Estate Agent, Buyer's Agent…) and `skos:definition`/`skos:prefLabel` from the business glossary (`Participant`, `Role`, `Scheme Operator`, `Data Provider`, `Data Recipient`, `TPP`). Each concept carries `dct:source` to its glossary row or schema leaf path. See [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) for the term-sourcing convention.
+- **Deliverables**: `agents-roles.ttl`; Role/Capacity/Status SKOS schemes (→ ODR-0011); DPV PII annotations (→ ODR-0012); SHACL role-play and capacity-evidence shapes (→ ODR-0013).
+- **Related ODRs**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); governance [ODR-0012](./ODR-0012-data-governance-layer.md).
+- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (Kind-layer agent vocabulary), Q3 (partition), Q4 (shared Address/identity).
+
 ### ODR dependency graph
 
 The diagram below shows how this ODR relates to its declared `depends-on` and `implements` links.
@@ -47,16 +83,6 @@ flowchart LR
     ODR0006 -->|"implements"| ODR0017
     ODR0006 -->|"implements"| ODR0018
 ```
-
-## Context
-
-PDTF v3 models everyone attached to a transaction as a flat `participants[]` array discriminated by a `role` enum, with `name`, `address`, `organisation`, `dateOfBirth` and `email` hanging off each entry, and distinguishes `privateIndividual` from `organization` only as enum values. This is the participant analogue of the implicit-Property defect (ODR-0005): identity-supplying things (a person, an organisation) are conflated with anti-rigid, externally founded things (being a *seller*, *buyer*, *conveyancer*). Capacity is a casualty — `sellersCapacity` and the gap between *asserted* capacity and *evidenced* authority (probate, power of attorney) collapse a founding legal grant into a free-text enum.
-
-Council Session 001 (Q3) resolved to partition the ontology by **ontological concern**, reconciling Kendall's FIBO modules with Guizzardi's UFO Kind/Role/Relator layering. This ODR is the **Agents & Roles** module under that partition. It is gated by the identity crux (ODR-0005): Person/Organisation identity criteria and the `Address` class are shared with the Property work.
-
-## Decision
-
-Adopt a **W3C Org ontology (or bespoke `opda:`) Kind layer with UFO Kind/RoleMixin/Role layering**, ruling out FOAF, because it places identity where identity actually lives (the person/organisation) while keeping role-play anti-rigid and externally founded, and leaves a clean seam to the provenance layer via `prov:Agent`.
 
 ## Rules
 
@@ -229,25 +255,3 @@ flowchart TD
     D4 -->|"yes"| CH["CHOSEN<br/>W3C Org + UFO layering<br/>(Kind-layer choice<br/>pending freeze gate)"]:::success
 ```
 
-## Alternatives
-
-- **Keep the schema shape** — one `opda:Participant` class with a `role` datatype property. Reproduces the exact defect: no identity criterion, bearer conflated with role.
-- **`prov:Agent`-only agent layer** — `prov:Agent` is deliberately thin and cannot carry the Kind layer (no Person/Organisation distinction, no structured Name).
-- **FOAF for the Kind layer** — overlaps the W3C Org ontology and `dct:` confusingly, absent from the comparable H&M `src/` survey, already deferred by ODR-0002. **Ruled out.**
-
-## Consequences
-
-- Downstream modules MUST consume `opda:Address` and `opda:Name` from this module rather than redeclaring them.
-- The evidence layer (ODR-0009) MUST attach to the `opda:evidencedAuthority` slot when a regulated capacity is asserted.
-- The role/capacity SKOS schemes (ODR-0011) MUST source their members from the data dictionary's `role` enum and labels from the business glossary.
-- The TBox remains unfrozen until the W3C-Org-vs-bespoke `opda:` Kind-layer choice is resolved in a follow-up council session.
-- Schema-to-ontology mapping work for `participants[]` is blocked on this module reaching freeze.
-
-## References
-
-- **Target versions**: RDF 1.2 and SHACL 1.2, per the Core-tier pin in [ODR-0002](./ODR-0002-ontology-language-adoption.md).
-- **Vocabularies**: Core (OWL/RDFS/XSD); SKOS for role/capacity schemes (→ ODR-0011); PROV-O for the verification cross-link (→ ODR-0009); DPV for PII annotation on Person/contact leaves (→ ODR-0012); OWL-Time if role-tenure intervals are modelled here. Candidate Kind-layer vocabularies (FOAF ruled out): W3C Org ontology or a bespoke `opda:` Kind layer.
-- **Glossary & data dictionary inputs**: the role concept scheme (ODR-0011) draws enumerated members from `baspi5.json` (Buyer, Seller's Conveyancer, Prospective Buyer, Buyer's Conveyancer, Estate Agent, Buyer's Agent…) and `skos:definition`/`skos:prefLabel` from the business glossary (`Participant`, `Role`, `Scheme Operator`, `Data Provider`, `Data Recipient`, `TPP`). Each concept carries `dct:source` to its glossary row or schema leaf path. See [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md) for the term-sourcing convention.
-- **Deliverables**: `agents-roles.ttl`; Role/Capacity/Status SKOS schemes (→ ODR-0011); DPV PII annotations (→ ODR-0012); SHACL role-play and capacity-evidence shapes (→ ODR-0013).
-- **Related ODRs**: anchor [ODR-0003](./ODR-0003-pdtf-ontology-programme.md); foundation [ODR-0004](./ODR-0004-pdtf-ontology-foundation.md); gating crux [ODR-0005](./ODR-0005-property-land-identity-crux.md); provenance [ODR-0009](./ODR-0009-claims-evidence-provenance.md); enumerations [ODR-0011](./ODR-0011-enumeration-vocabularies.md); governance [ODR-0012](./ODR-0012-data-governance-layer.md).
-- **Council deliberation**: [session-001](./council/session-001-pdtf-schema-to-ontology.md) Q2 (Kind-layer agent vocabulary), Q3 (partition), Q4 (shared Address/identity).
