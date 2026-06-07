@@ -21,7 +21,7 @@ ODRs cover ontology-modelling decisions. Schema-encoding decisions (how to expre
 
 - **Filename**: `ODR-NNNN-<slug>.md` — 4-digit zero-padded number, lowercase kebab-case slug. Sub-letter suffixes (`ODR-0071a`) are permitted for child records.
 - **H1**: `# <Title>` — title only, no `ODR-NNNN:` prefix.
-- **Order**: YAML frontmatter, then H1, then the six required H2 sections in declared order.
+- **Order**: YAML frontmatter, then H1, then an optional single status/supersession admonition blockquote (e.g. `> **SUPERSEDED …**`), then the H2 sections in the declared order (see §Sections). The admonition blockquote is the only content permitted between the H1 and the first H2.
 
 ## Frontmatter
 
