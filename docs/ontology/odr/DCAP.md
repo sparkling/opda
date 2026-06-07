@@ -62,16 +62,23 @@ YAML between leading `---` fences before the H1. Keys MUST be a subset of the de
 
 ## Sections
 
-Section headings MUST be exactly the six declared below, MUST appear in declared order, and each appears exactly once. No other H2 headings are permitted. H3s within sections are free-form (the indexer does not parse them).
+The body follows the **canonical MADR 4.x spine plus named extensions** — unified with semantic-modelling and with both projects' ADR corpora (see "Cross-project unification"). Required sections MUST be present; optional sections MAY be omitted; H2 headings MUST be a subset of the declared set below, in declared order, each at most once. No undeclared H2 headings. (Pre-unification ODRs used a six-section `## Context / ## Decision / ## Rules / ## Alternatives / ## Consequences / ## References` spine — migrate those to the spine below.)
 
-| # | Heading | Purpose |
-|---|---|---|
-| 1 | `## Context` | Why the decision was needed. 1–3 paragraphs. Not a tutorial — link out for source-schema documentation |
-| 2 | `## Decision` | One paragraph: what was chosen and the one-sentence justification |
-| 3 | `## Rules` | The load-bearing slot. Normative content: tables, Turtle, SHACL stubs, SKOS scheme links, naming conventions, anti-patterns. As long as needed. Inline enforcement notes where applicable |
-| 4 | `## Alternatives` | Options considered and rejected. One bullet per option, naming the fatal flaw in one sentence. Not a deliberation log — if you need more, expand `## Context` |
-| 5 | `## Consequences` | Operational impact. What downstream changes. What breaks. What teams must do. Imperative voice |
-| 6 | `## References` | Links: source-schema clauses, related ODRs/ADRs, external citations. If `council:` is set, the session transcript belongs here too |
+| # | Heading | Required | Purpose |
+|---|---|---|---|
+| 1 | `## Context and Problem Statement` | yes | Why the decision was needed; the problem, not the chosen option. 1–3 paragraphs. Link out for source-schema docs |
+| 2 | `## Decision Drivers` | no | Bulleted forces (constraints, qualities, stakeholder concerns) |
+| 3 | `## Considered Options` | yes | All options evaluated, **including the chosen one alongside rejected alternatives** — never only the losers |
+| 4 | `## Decision Outcome` | yes | `Chosen option: "X", because Y.` then prose. Holds the H3s below |
+| 4.1 | `### Consequences` | yes (under §4) | Flat bullet list (`* Good, because… / * Bad, because… / * Neutral, because…`); NO Good/Bad/Neutral subheadings |
+| 4.2 | `### Confirmation` | no | How compliance with the decision is verified |
+| 4.3 | `### Supersession scope:` | no | When partial supersession applies — what of the prior survives |
+| 5 | `## Pros and Cons of the Options` | no | Per-option detail; one `### <Option>` each |
+| 6 | `## More Information` | no | Links: source-schema clauses, related ODRs/ADRs; council transcript when `council:` set |
+| 7 | `## Rules` (named extension) | no | The load-bearing normative slot: tables, Turtle, SHACL stubs, SKOS scheme links, naming conventions, anti-patterns. As long as needed |
+| 8 | `## Vote and Dissent` (named extension) | no | Compact council-verdict summary (full transcript in the `council/` sibling) |
+| 9 | `## Amendments` (named extension) | no | Running list of post-acceptance amendments |
+| 10 | `## Mapping` (named extension) | no | Absorbed companion matrices / mapping-target tables |
 
 ## Supersession
 
@@ -90,6 +97,10 @@ Every new ODR MUST be created via the `odr-create` skill (or follow its steps ma
 **Hand-authored ODRs that skip the AgentDB registration are non-conforming** and will be flagged by `odr-index` when it next runs. The remedy is to run `odr-index` (which back-fills the registration) or to delete and recreate via `odr-create`.
 
 **No `README.md` or `INDEX.md` under `docs/ontology/odr/`.** The directory's entry point is the alphabetised `ODR-NNNN-*.md` filenames themselves; programmatic discovery goes through `mcp__ruflo__agentdb_hierarchical-store` queries against the `odr/*` namespace.
+
+## Cross-project unification (opda ↔ semantic-modelling)
+
+This profile is the opda copy of the **shared ODR format** used by both opda and semantic-modelling. Both projects' ODR and ADR corpora use the canonical MADR 4.x body spine declared in §Sections. The projects differ only in the optional frontmatter keys: opda **requires** `kind` and `scope` (PDTF source-data traceability) and uses `council` as a frontmatter key; semantic-modelling **omits** all three (classifies via `tags`, records council provenance in `## Vote and Dissent`). The shared `~/.claude/skills/odr-{create,index,review}` treat `kind`/`scope`/`council` as optional so both corpora validate; opda's `odr-review` additionally requires `kind`/`scope` per the §Frontmatter table above (local policy). Index policy also differs: opda forbids `README.md` (Lint 7); semantic-modelling keeps one — a per-repo choice, not part of the record format.
 
 ## Lints enforced by `odr-review`
 
