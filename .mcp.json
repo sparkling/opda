@@ -1,21 +1,5 @@
 {
   "mcpServers": {
-    "ruflo": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@sparkleideas/ruflo@latest",
-        "mcp",
-        "start"
-      ],
-      "env": {
-        "npm_config_update_notifier": "false",
-        "CLAUDE_FLOW_MAX_AGENTS": "15",
-        "CLAUDE_FLOW_SWARM_TOPOLOGY": "hierarchical-mesh",
-        "CLAUDE_FLOW_MEMORY_TYPE": "hybrid"
-      },
-      "autoStart": true
-    },
     "ruv-swarm": {
       "command": "npx",
       "args": [
