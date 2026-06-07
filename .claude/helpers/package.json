@@ -1,0 +1,4 @@
+{
+  "//": "The ruflo-init helpers (router.js, session.js, memory.js) are CommonJS, but the project root package.json declares type:module, which makes Node treat their .js extensions as ESM and breaks hook-handler.mjs's safeRequire ('module is not defined in ES module scope'). This file scopes this directory back to CommonJS. The .mjs/.cjs helpers are unaffected (extension-explicit).",
+  "type": "commonjs"
+}
