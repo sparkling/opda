@@ -195,7 +195,7 @@ Per ODR-0001 §Pre-flight scope check. Outcome: **ratify-as-is**.
 
 - **Allemang+Hendler+Gandon+Guizzardi+Cagle+Baker+Pandit+Kendall+Davis:** Storage at `source/03-standards/ontology/exemplars/`; descriptive kebab-case filenames; not in TBox build; cited from ODR-0005 `## Rules` by path.
 - **Pandit amendment:** Citation carries path AND one-line description of the named hard case.
-- **Knublauch (DA — [knublauch-da.md Q6](./session-004-pdtf-ontology-foundation/knublauch-da.md)):** Two operational additions — (a) exemplar storage path explicitly in the parent OPDA repo, **not** the nested `schemas/` git sub-repo (per the [OPDA memory note](../../../../../.claude/projects/-Users-henrik-source-opda/memory/opda-schemas-nested-repo.md) on nested sub-repos); (b) each exemplar TTL paired with `expected-report.ttl` (a `sh:ValidationReport` the exemplar should produce) so the exemplar is a CI regression test, not just documentation.
+- **Knublauch (DA — [knublauch-da.md Q6](./session-004-pdtf-ontology-foundation/knublauch-da.md)):** Two operational additions — (a) exemplar storage path explicitly in the parent OPDA repo, **not** the nested `schemas/` git sub-repo (per the OPDA memory note on nested sub-repos); (b) each exemplar TTL paired with `expected-report.ttl` (a `sh:ValidationReport` the exemplar should produce) so the exemplar is a CI regression test, not just documentation.
 - **Kendall:** FIBO test-suite filename-as-documentation discipline. **Davis:** small files (under 50 lines) read like worked examples.
 
 **Verdict: 9-0 ADOPT three-exemplar set** with the operational additions (storage in parent OPDA repo, not nested schemas sub-repo; paired with `expected-report.ttl` for CI regression; filename-as-documentation; small self-contained files).

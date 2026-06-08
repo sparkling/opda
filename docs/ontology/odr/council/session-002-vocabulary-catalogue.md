@@ -322,7 +322,7 @@ Both positions cited verbatim in the ODR-0005 follow-up session's input document
 
 **Change Log row text** (proposed for ODR-0002 amendment):
 
-> | 2026-05-27 | [Session 002](./council/session-002-vocabulary-catalogue.md) Q12 | FOAF | Rule-out reason recorded. **(1) Superseded by composition**: `prov:Agent` (PROV-O Rec 2013) + W3C Org Ontology (Reynolds 2014, W3C Rec) + `dct:` (Core tier) + `opda:Person`/`opda:Organisation` (ODR-0006) covers the FOAF surface OPDA needs with UFO category commitments and ICs FOAF does not provide. **(2) Shape-of-the-Web era + Kind-level category mismatch**: FOAF's "Friend of a Friend" social-Web semantics (Brickley & Miller 2014, FOAF 0.99 spec) is a category mismatch for property-data trust framework (regulated conveyancers, lenders, AML-checked participants — not a social acquaintance network). Defer-row negative on FOAF stands; reason now cited in catalogue. |
+> | 2026-05-27 | [Session 002](session-002-vocabulary-catalogue.md) Q12 | FOAF | Rule-out reason recorded. **(1) Superseded by composition**: `prov:Agent` (PROV-O Rec 2013) + W3C Org Ontology (Reynolds 2014, W3C Rec) + `dct:` (Core tier) + `opda:Person`/`opda:Organisation` (ODR-0006) covers the FOAF surface OPDA needs with UFO category commitments and ICs FOAF does not provide. **(2) Shape-of-the-Web era + Kind-level category mismatch**: FOAF's "Friend of a Friend" social-Web semantics (Brickley & Miller 2014, FOAF 0.99 spec) is a category mismatch for property-data trust framework (regulated conveyancers, lenders, AML-checked participants — not a social acquaintance network). Defer-row negative on FOAF stands; reason now cited in catalogue. |
 
 **Vote: 9-0 ADOPT two-reason rule-out.**
 

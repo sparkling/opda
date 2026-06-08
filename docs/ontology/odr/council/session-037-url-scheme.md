@@ -1,7 +1,7 @@
 # Council Session 037 — The opda/pdtf URL scheme (Full Council)
 
 - **Date:** 2026-06-01
-- **Records:** Amends [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md) (namespace scheme); cross-refs [ODR-0004](../ODR-0004-pdtf-ontology-foundation.md) §Rules.1 (hash override), [ODR-0027](../ODR-0027-classification-roles-inheritance-skos-doctrine.md) (classification-over-inheritance, invoked on Q5).
+- **Records:** Amends [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) (namespace scheme); cross-refs [ODR-0004](../ODR-0004-pdtf-ontology-foundation.md) §Rules.1 (hash override), [ODR-0027](../ODR-0027-classification-roles-inheritance-skos-doctrine.md) (classification-over-inheritance, invoked on Q5).
 - **Queen:** Elisa Kendall (OMG/EDM Council; enterprise vocabulary publishing precedent).
 - **Devil's Advocate:** Ian Davis (*Linked Data Patterns*, Dodds & Davis; publish-first / scope-discipline — genuinely opposed to the multi-namespace partition).
 - **Panel:** Tom Baker (DCMI — namespace/URI policy, SKOS governance); Fabien Gandon (W3C/Inria — web architecture, hash-vs-slash, httpRange-14); Dean Allemang (*Working Ontologist* — pragmatic simplicity); Holger Knublauch (TopQuadrant — SHACL, decisive on Q7/Q8); Harshvardhan Pandit (DPV — the cited precedent / live counter-evidence).

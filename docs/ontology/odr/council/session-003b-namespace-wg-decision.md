@@ -106,7 +106,7 @@ ODR-0004 §Consequences names the hash-vs-slash reopening criterion as WG-owned.
 
 ODR-0004 §Rules.1 amendment lands:
 
-> **1. Single hash namespace.** All foundational TBox terms are minted under one `opda:` HASH namespace. No per-form / per-overlay namespaces. Overlays are SHACL profiles (ODR-0010), not vocabularies. **The literal base URI is `https://w3id.org/opda/#` (W3C PICG-redirected to `https://openpropdata.org.uk/ontology/`; engineering realisation in [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md))**. WG-ratified 2026-05-27 ([Session 003b](./council/session-003b-namespace-wg-decision.md)) per Knublauch S004 DA primary demand + DPV precedent. Versioning scheme (calendar vs semantic) remains a WG-owned open question.
+> **1. Single hash namespace.** All foundational TBox terms are minted under one `opda:` HASH namespace. No per-form / per-overlay namespaces. Overlays are SHACL profiles (ODR-0010), not vocabularies. **The literal base URI is `https://w3id.org/opda/#` (W3C PICG-redirected to `https://openpropdata.org.uk/ontology/`; engineering realisation in [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md))**. WG-ratified 2026-05-27 ([Session 003b](session-003b-namespace-wg-decision.md)) per Knublauch S004 DA primary demand + DPV precedent. Versioning scheme (calendar vs semantic) remains a WG-owned open question.
 
 ODR-0004 `status` moves `proposed → accepted` with `council: session-004; wg-decision: session-003b` recorded.
 

@@ -1,7 +1,7 @@
 # Council Session 028 — Category-G Curated Walk: Outstanding Questions + Mappings (Full panel)
 
 - **Date:** 2026-05-31
-- **Records:** Reviews the [ADR-0031](../../adr/ADR-0031-category-g-curated-walk-execution-plan.md) curated Category-G walk dispositions (185/188 emitted-or-collapsed, committed `ce7de50`) against [ODR-0008](../ODR-0008-property-descriptive-attributes.md) §Q4a/§Q5a/§Q6a, [ODR-0008d](../ODR-0008d-authority-retrieved-artefacts.md) item-3, and [ODR-0022](../ODR-0022-descriptive-layer-import-strategy.md) §1/§3/§4. **No new ODR** — a review session producing verdicts + a remediation list. Routes follow-ups to ODR-0008/0022 + the categoriser.
+- **Records:** Reviews the [ADR-0031](../../../adr/ADR-0031-category-g-curated-walk-execution-plan.md) curated Category-G walk dispositions (185/188 emitted-or-collapsed, committed `ce7de50`) against [ODR-0008](../ODR-0008-property-descriptive-attributes.md) §Q4a/§Q5a/§Q6a, [ODR-0008d](../ODR-0008d-authority-retrieved-artefacts.md) item-3, and [ODR-0022](../ODR-0022-descriptive-layer-import-strategy.md) §1/§3/§4. **No new ODR** — a review session producing verdicts + a remediation list. Routes follow-ups to ODR-0008/0022 + the categoriser.
 - **Queen:** Dean Allemang. **DA:** Jim Hendler. **Panel:** Giancarlo Guizzardi (UFO), Elisa Kendall (FIBO), Kurt Cagle (SHACL/SKOS). **`consensus-mode`:** majority + Queen synthesis (held dissent recorded). **Format:** full panel (greenfield first-cut review, no WG gate — the council is the ratifying body).
 - **Convened as:** agent fan-out (named-persona `Agent` teammates spawned in one message), per the project cost preference — not hive-mind.
 
