@@ -44,7 +44,7 @@ opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verb
 - Safe-set anchors: [ODR-0005](ODR-0005-property-land-identity-crux.md) §R5, [ODR-0017](ODR-0017-shacl-af-quality-rules-pattern.md) §R6 (no `owl:sameAs`).
 - Mechanism: ADR-0035 (`config/opda-owl-rl-safe.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
 - Alias origin: ADR-0011 (within-engineering short-name aliases for the diagnostic exemplar set).
-- Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, ODR-0036 (SHACL rules & OWL inferencing), ODR-0014 (domain/range as documentation), council sessions 103–105.
+- Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, hm ODR-0036 (SHACL rules & OWL inferencing), hm ODR-0014 (domain/range as documentation), council sessions 103–105.
 
 ## Rules
 

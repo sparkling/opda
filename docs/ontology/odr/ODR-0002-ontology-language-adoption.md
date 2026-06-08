@@ -93,7 +93,7 @@ flowchart LR
 * Reference the published catalogue when introducing any external vocabulary; do not debate the choice per file.
 * Use canonical, dereferenceable URIs throughout — external consumers depend on them resolving.
 * When a recurring "why don't we use schema.org / FOAF?" question is raised, point at the Defer column; do not relitigate without a triggering use case.
-* Write SHACL gates for Conditional-tier scope as soon as the H&M ADR-0147 R12 pattern is portable; until then, conditional-tier compliance is honour-system and reviewers MUST check it manually.
+* Write SHACL gates for Conditional-tier scope as soon as the hm ADR-0147 R12 pattern is portable; until then, conditional-tier compliance is honour-system and reviewers MUST check it manually.
 * Pin versions explicitly in ODRs only where currently declared (RDF 1.2, SHACL 1.2). When DPV / DCAT 3 / DASH undergo a *breaking* version change, raise a follow-up ODR.
 * Keep the catalogue alive: when a vocabulary good for OPDA but absent from H&M is proposed, do not reject on "no precedent" alone — amend the catalogue.
 * Treat ArchiMate and BBO as candidates for demotion to Defer at the first Council review if no process- or capability-modelling use case has materialised.
@@ -143,7 +143,7 @@ The RDF stack and the small set of vocabularies every OPDA linked-data file is e
 
 ### Conditional — adopt where the use case is present
 
-Admitted only in the layers/files where the corresponding modelling concern arises. Outside those layers they are not used (SHACL gates will be added to enforce this — see H&M ADR-0147 R12 for the pattern).
+Admitted only in the layers/files where the corresponding modelling concern arises. Outside those layers they are not used (SHACL gates will be added to enforce this — see hm ADR-0147 R12 for the pattern).
 
 | Vocabulary | Prefix | Canonical URI | Adopt for | Notes |
 |---|---|---|---|---|
@@ -180,7 +180,7 @@ Listed explicitly so future modellers know the question has been asked and the a
 
 1. **Named consumer.** At least one OPDA module ODR cites the vocabulary in its `## Rules`, with the vocabulary's terms appearing in published Turtle (not just plan-stage prose).
 2. **Layer count.** Used in ≥3 independent OPDA modules / layers.
-3. **SHACL gate.** A SHACL gate enforcing the Conditional-layer scope has been published (per H&M ADR-0147 R12 pattern referenced in `### Enforcement`).
+3. **SHACL gate.** A SHACL gate enforcing the Conditional-layer scope has been published (per hm ADR-0147 R12 pattern referenced in `### Enforcement`).
 4. **Failure-mode test.** A diagnostic exemplar (per Session 001 Q1 amendment lineage) where *removing* the vocabulary causes a specific named test to fail, demonstrating load-bearing work rather than decorative annotation.
 
 **Demotion is asymmetric** (Allemang+Hendler joint position; Hendler's preserved Scope-Check 1 Q4 audit-trail concern):

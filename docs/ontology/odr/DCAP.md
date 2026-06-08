@@ -102,6 +102,13 @@ Every new ODR MUST be created via the `odr-create` skill (or follow its steps ma
 
 This profile is the opda copy of the **shared ODR format** used by both opda and semantic-modelling. Both projects' ODR and ADR corpora use the canonical MADR 4.x body spine declared in §Sections. The projects differ only in the optional frontmatter keys: opda **requires** `kind` and `scope` (PDTF source-data traceability) and uses `council` as a frontmatter key; semantic-modelling **omits** all three (classifies via `tags`, records council provenance in `## Vote and Dissent`). The shared `~/.claude/skills/odr-{create,index,review}` treat `kind`/`scope`/`council` as optional so both corpora validate; opda's `odr-review` additionally requires `kind`/`scope` per the §Frontmatter table above (local policy). Index policy also differs: opda forbids `README.md` (Lint 7); semantic-modelling keeps one — a per-repo choice, not part of the record format.
 
+### Cross-project & intentional-notation references
+
+opda's referential integrity (Lint 2) is INTRA-project. Two reference classes are intentional and are NOT violations:
+
+- **Cross-project prior-art** — citations of the semantic-modelling ("hm") project use the form `hm ODR-NNNN` / `hm ADR-NNNN`. They cite a different project's corpus (independently numbered) as prior art; they are not opda records and are not resolved by opda's referential-integrity check. Symmetric with semantic-modelling's cross-repo `semantic-(app|learn) ADR-NNNN (formerly …)` form.
+- **Intentional non-resolving record tokens** — a bare `ODR-NNNN[letter]` token for a record the surrounding prose documents as not-spawned / struck / deferred (e.g. a spawn-rule adjudicated not to fire), and family/range notation (`ODR-0008a/b/c`, `ODR-0008a-c`), are deliberate references to records that do not (yet) exist. Symmetric with semantic-modelling's "planned, never created" annotation and `ODR-0071x` wildcard conventions.
+
 ## Lints enforced by `odr-review`
 
 1. **Cross-corpus modifying-relations** — `supersedes` must be intra-ODR; `implements` may reference ODRs intra-corpus and external schema URIs; `depends-on` may cross corpora.

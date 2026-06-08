@@ -54,7 +54,7 @@ opda adopts a **bounded entailment regime**: RDFS plus a curated **OWL 2 RL-*saf
 - Validation contract: [ODR-0013](ODR-0013-shacl-validation-and-severity.md), [ODR-0010](ODR-0010-overlay-profile-mechanism.md) (overlay mechanism; pyshacl capability floor; "loaded ≠ entailed").
 - Perturbs baseline: [ODR-0008](ODR-0008-property-descriptive-attributes.md) §Q6a (reasoner-independence test).
 - Realised by: ADR-0035 (load-time inference materialisation), ADR-0036 (SHACL 1.2 via Jena).
-- Prior art (replicated): `~/source/hm/semantic-modelling` — ODR-0036 (SHACL rules & OWL inferencing), ODR-0014 (domain/range as documentation), council sessions 103/104/105 (Jena entailment architecture); `config/hm-owl-rl-safe.rules`; ADR-0022 (entailed-graph export), ADR-0147 (Jena SHACL 1.2).
+- Prior art (replicated): `~/source/hm/semantic-modelling` — hm ODR-0036 (SHACL rules & OWL inferencing), hm ODR-0014 (domain/range as documentation), council sessions 103/104/105 (Jena entailment architecture); `config/hm-owl-rl-safe.rules`; hm ADR-0022 (entailed-graph export), hm ADR-0147 (Jena SHACL 1.2).
 - Implementation context: `scripts/fuseki-load.mjs`, `docs/manual/physical-database/derived-profiles/opda-inference.md`.
 
 ## Rules
