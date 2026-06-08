@@ -1,6 +1,6 @@
 # Session 024 (R1) — Moreau — Authority-Retrieved Artefacts as the paradigm PROV case
 
-**Author:** Luc Moreau (PROV-O co-editor; Queen of ODR-0009, S009). **Round:** R1. **Lens:** the authority-retrieved artefact family is the textbook `prov:Entity` ← `prov:Activity` ← `prov:Agent` triangle. **Cites:** S024-EVIDENCE; W3C PROV-O Recommendation (Lebo, Sahoo, McGuinness eds., 2013); [ODR-0009](../../ODR-0009-claims-evidence-provenance.md) (PROV-O backbone); [ODR-0008 §Q4a](../../ODR-0008-property-descriptive-attributes.md); [ODR-0017](../../ODR-0017-shacl-af-quality-rules-pattern.md) (succession materialisation).
+**Author:** Luc Moreau (PROV-O co-editor; Queen of ODR-0009, S009). **Round:** R1. **Lens:** the authority-retrieved artefact family is the textbook `prov:Entity` ← `prov:Activity` ← `prov:Agent` triangle. **Cites:** S024-EVIDENCE; W3C PROV-O Recommendation (Lebo, Sahoo, McGuinness eds., 2013); [ODR-0009](../../../ODR-0009-claims-evidence-provenance.md) (PROV-O backbone); [ODR-0008 §Q4a](../../../ODR-0008-property-descriptive-attributes.md); [ODR-0017](../../../ODR-0017-shacl-af-quality-rules-pattern.md) (succession materialisation).
 
 ---
 

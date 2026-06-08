@@ -86,7 +86,7 @@ A record with `supersedes: [ODR-NNNN]` marks ODR-NNNN's status as `superseded`. 
 
 ## Authoring discipline
 
-Every new ODR MUST be created via the `odr-create` skill (or follow its steps manually — see [`/Users/henrik/.claude/skills/odr-create/SKILL.md`](../../../.claude/skills/odr-create/SKILL.md)). The skill produces all three artefacts atomically:
+Every new ODR MUST be created via the `odr-create` skill (or follow its steps manually — see `~/.claude/skills/odr-create/SKILL.md`). The skill produces all three artefacts atomically:
 
 1. The conforming markdown file at `docs/ontology/odr/ODR-NNNN-<slug>.md`.
 2. The AgentDB hierarchical-store registration at `odr/ODR-NNNN` (via `mcp__ruflo__agentdb_hierarchical-store`, tier `semantic`).

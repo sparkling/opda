@@ -82,7 +82,7 @@ Scope-Check 1 Q5 refinement (2026-05-26) settled that DPV co-annotation **author
 
 > **Proposed text for ODR-0009 §Rules:**
 >
-> > Evidence subclasses bearing PII (`opda:DocumentEvidence` with proprietor names + issuer details; `opda:ElectronicRecordEvidence` with HMRC API responses + NI numbers; `opda:VouchEvidence` with voucher solicitor names + voucher-licence-numbers) inherit the DPV class-level co-annotation pattern from [ODR-0012 §pending](./ODR-0012-data-governance-layer.md). The handoff is mechanical: ODR-0012's DPV authoring consumes ODR-0009's Evidence subclass list + ODR-0006 §pending Person/Organisation PII-bearing-predicates list. The Q3 lawful-basis-trigger flag on `opda:assuranceLevel` is similarly consumed by ODR-0012 for Art. 6 / Art. 9 lawful-basis decisions.
+> > Evidence subclasses bearing PII (`opda:DocumentEvidence` with proprietor names + issuer details; `opda:ElectronicRecordEvidence` with HMRC API responses + NI numbers; `opda:VouchEvidence` with voucher solicitor names + voucher-licence-numbers) inherit the DPV class-level co-annotation pattern from [ODR-0012 §pending](../../ODR-0012-data-governance-layer.md). The handoff is mechanical: ODR-0012's DPV authoring consumes ODR-0009's Evidence subclass list + ODR-0006 §pending Person/Organisation PII-bearing-predicates list. The Q3 lawful-basis-trigger flag on `opda:assuranceLevel` is similarly consumed by ODR-0012 for Art. 6 / Art. 9 lawful-basis decisions.
 
 **Mechanical handoff (named):**
 
