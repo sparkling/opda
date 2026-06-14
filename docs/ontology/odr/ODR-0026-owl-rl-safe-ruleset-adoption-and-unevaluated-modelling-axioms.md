@@ -32,7 +32,7 @@ opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verb
 
 ### Consequences
 
-* Author `config/opda-owl-rl-safe.rules` verbatim from hm's (ADR-0035), with the three opda deltas only.
+* Author `config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) verbatim from hm's (ADR-0035), with the three opda deltas only.
 * Keep `rdfs:domain`/`range` and `owl:equivalentClass` in the emitted ontology — they are documentation/identity, not inference inputs; no authored axiom is removed.
 * SHACL shapes MUST NOT assume `equivalentClass` (or `domain`/`range`) entailment — target the actual asserted types. Audit any shape that targets a canonical evidence class while expecting short-name instances to match (R3).
 * The closure correctness test (ADR-0035 §Confirmation) asserts NO `equivalentClass`/`domain`/`range`-derived triple appears in the inferred graph.
@@ -42,7 +42,7 @@ opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verb
 
 - Refines: [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1/§R2 (ratifies wholesale adoption; clarifies the §R2 exclusion as non-evaluation) and §R7 (the EPCCertificate `domain` case).
 - Safe-set anchors: [ODR-0005](ODR-0005-property-land-identity-crux.md) §R5, [ODR-0017](ODR-0017-shacl-af-quality-rules-pattern.md) §R6 (no `owl:sameAs`).
-- Mechanism: ADR-0035 (`config/opda-owl-rl-safe.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
+- Mechanism: ADR-0035 (`config/opda-rdfs-plus.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
 - Alias origin: ADR-0011 (within-engineering short-name aliases for the diagnostic exemplar set).
 - Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, hm ODR-0036 (SHACL rules & OWL inferencing), hm ODR-0014 (domain/range as documentation), council sessions 103–105.
 
@@ -50,7 +50,7 @@ opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verb
 
 ### R1 — Wholesale adoption of the safe ruleset
 
-`config/opda-owl-rl-safe.rules` is `hm-owl-rl-safe.rules` adopted verbatim: the seven enabled rules — `rdfs:subClassOf` transitivity + type propagation, `rdfs:subPropertyOf` transitivity + value propagation, `owl:inverseOf` (both directions), `owl:TransitiveProperty`, `owl:SymmetricProperty`. The rule bodies cite only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — no opda or hm IRI appears — so they transfer without semantic change. The only opda-specific deltas are: provenance comments (→ ODR-0025/0026), the entailment-graph IRI (`https://opda.org.uk/pdtf/graph/inferred/entailment`), and the consistency-gate subject-namespace filter (`https://opda.org.uk/pdtf/`). The mechanism (SPARQL-`INSERT` materialisation + consistency gate) is ADR-0035; disjointness remains a validation check, not an entailment.
+`config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) is `hm-owl-rl-safe.rules` adopted verbatim: the seven enabled rules — `rdfs:subClassOf` transitivity + type propagation, `rdfs:subPropertyOf` transitivity + value propagation, `owl:inverseOf` (both directions), `owl:TransitiveProperty`, `owl:SymmetricProperty`. The rule bodies cite only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — no opda or hm IRI appears — so they transfer without semantic change. The only opda-specific deltas are: provenance comments (→ ODR-0025/0026), the entailment-graph IRI (`https://opda.org.uk/pdtf/graph/inferred/entailment`), and the consistency-gate subject-namespace filter (`https://opda.org.uk/pdtf/`). The mechanism (SPARQL-`INSERT` materialisation + consistency gate) is ADR-0035; disjointness remains a validation check, not an entailment.
 
 ### R2 — Model-but-don't-evaluate (clarifies ODR-0025 §R2)
 

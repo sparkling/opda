@@ -39,7 +39,7 @@ opda adopts a **bounded entailment regime**: RDFS plus a curated **OWL 2 RL-*saf
 * `scripts/fuseki-load.mjs` gains a load-time materialisation step (ADR-0035); the `opda` dataset then holds asserted + entailed triples in separate graphs.
 * opda's RDF toolchain standardises on Apache Jena — `riot` for parse/serialise, `jena-shacl` for validation (ADR-0036); `rdflib`/pyshacl are **retired** from the parse/validate path (not retained as a crutch), with the cut-over gated on demonstrated parity against the ODR-0010 capability floor.
 * Statement-level annotation may use RDF 1.2 triple-term syntax going forward; the BASPI5 round-trip harness (ADR-0014) and any `rdflib` use in `opda-gen` migrate to Jena. opda does not downgrade the data model to remain `rdflib`-parseable — the anti-pattern documented for the sibling in `docs/hm-handoff-rdf-1.2-triple-term-jena-fix.md`.
-* A new rule-contract artefact `config/opda-owl-rl-safe.rules` becomes a governed file.
+* A new rule-contract artefact `config/opda-rdfs-plus.rules` (originally authored as `opda-owl-rl-safe.rules`; renamed per ODR-0029 R5) becomes a governed file.
 * **ODR-0004 §3a requires amendment** to reflect R6 (the `opda-inference.ttl` re-scope) — a directing-authority edit (greenfield: no WG ratification gate), not a blocker on this ODR.
 * The BASPI5 round-trip (ADR-0014) must validate against the R1 closure rather than ad-hoc full RDFS (R7); the EPCCertificate emitter mismatch should be fixed at source.
 * ODR-0008 §Q6a's "reasoner-independence test" baseline (written for entailment-off endpoints) must be re-read against a defined closure: hierarchy-admission queries now have a declared entailment to test against.
@@ -59,9 +59,9 @@ opda adopts a **bounded entailment regime**: RDFS plus a curated **OWL 2 RL-*saf
 
 ## Rules
 
-### R1 — The enabled set: RDFS + OWL 2 RL-safe
+### R1 — The enabled set: a sound, RL-incomplete RDFS-Plus application fragment
 
-The load-time closure materialises exactly these constructs (the "Safe Group"). Each is monotonic and polynomial; together they are a strict subset of OWL 2 RL.
+The load-time closure materialises exactly these constructs (the "Safe Group"). Each is monotonic and polynomial; together they are a strict subset of OWL 2 RL — a **sound, RL-incomplete RDFS-Plus application fragment**, NOT an OWL 2 RL reasoner (ODR-0029 R5). Removing rules from a sound rule set reduces *completeness*, never soundness; consumers MUST NOT assume the omitted `domain`/`range`, equality, or equivalence entailments hold (those are validated as SHACL, ODR-0029 R1/R3).
 
 | # | Construct | Entailment |
 |---|---|---|
@@ -73,7 +73,7 @@ The load-time closure materialises exactly these constructs (the "Safe Group"). 
 | 6 | `owl:TransitiveProperty` | `(?p a TransitiveProperty), (?x ?p ?y), (?y ?p ?z)` → `(?x ?p ?z)` |
 | 7 | `owl:SymmetricProperty` | `(?p a SymmetricProperty), (?x ?p ?y)` → `(?y ?p ?x)` |
 
-The canonical rule contract lives at `config/opda-owl-rl-safe.rules` (ADR-0035), expressed in Jena `GenericRuleReasoner` syntax even though the load step hand-translates it to SPARQL `INSERT`. The rules file is the source of truth for *which* rules are safe. A disjointness consistency *check* (`owl:disjointWith` violation detection) is permitted but is a validation gate, not an entailment — it produces no domain triples (see ADR-0035).
+The canonical rule contract lives at `config/opda-rdfs-plus.rules` (ADR-0035), expressed in Jena `GenericRuleReasoner` syntax even though the load step hand-translates it to SPARQL `INSERT`. The rules file is the source of truth for *which* rules are safe. A disjointness consistency *check* (`owl:disjointWith` violation detection) is permitted but is a validation gate, not an entailment — it produces no domain triples (see ADR-0035).
 
 ### R2 — The excluded set (this is the definition of "not full OWL")
 

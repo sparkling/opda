@@ -20,6 +20,7 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -81,6 +82,2190 @@
     sh:sparql _:b4c20cfb30e26 ;
     sh:targetClass sh:NodeShape ;
     opda:metaShapeJustification "ODR-0010 three-rule interface contract Rule 2: no overlay shape may set sh:severity to sh:Warning or sh:Info on a property where the base shape declared sh:Violation."@en .
+
+<https://opda.org.uk/pdtf/shape/abilityToResideAtPropertyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:abilityToResideAtProperty is used off its declared rdfs:domain: every subject of opda:abilityToResideAtProperty MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:abilityToResideAtProperty .
+
+<https://opda.org.uk/pdtf/shape/accessibilityAndAdaptationsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:accessibilityAndAdaptations is used off its declared rdfs:domain: every subject of opda:accessibilityAndAdaptations MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:accessibilityAndAdaptations .
+
+<https://opda.org.uk/pdtf/shape/accountNameDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:accountName is used off its declared rdfs:domain: every subject of opda:accountName MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:accountName .
+
+<https://opda.org.uk/pdtf/shape/accountNumberDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:accountNumber is used off its declared rdfs:domain: every subject of opda:accountNumber MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:accountNumber .
+
+<https://opda.org.uk/pdtf/shape/actionAlertRatingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:actionAlertRating is used off its declared rdfs:domain: every subject of opda:actionAlertRating MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:actionAlertRating .
+
+<https://opda.org.uk/pdtf/shape/adHocExpensesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:adHocExpenses is used off its declared rdfs:domain: every subject of opda:adHocExpenses MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:adHocExpenses .
+
+<https://opda.org.uk/pdtf/shape/addressVariantDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:addressVariant is used off its declared rdfs:domain: every subject of opda:addressVariant MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:addressVariant .
+
+<https://opda.org.uk/pdtf/shape/ageRangeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:ageRange is used off its declared rdfs:domain: every subject of opda:ageRange MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:ageRange .
+
+<https://opda.org.uk/pdtf/shape/aged17OrOverNamesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Seller ;
+    sh:message "opda:aged17OrOverNames is used off its declared rdfs:domain: every subject of opda:aged17OrOverNames MUST be an instance of Seller (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:aged17OrOverNames .
+
+<https://opda.org.uk/pdtf/shape/amountDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:amount is used off its declared rdfs:domain: every subject of opda:amount MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:amount .
+
+<https://opda.org.uk/pdtf/shape/annualCostOfPermitDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:annualCostOfPermit is used off its declared rdfs:domain: every subject of opda:annualCostOfPermit MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:annualCostOfPermit .
+
+<https://opda.org.uk/pdtf/shape/annualCostOfPermitRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:annualCostOfPermit has an object outside its declared rdfs:range: every object of opda:annualCostOfPermit MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:annualCostOfPermit .
+
+<https://opda.org.uk/pdtf/shape/annualGroundRentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:annualGroundRent is used off its declared rdfs:domain: every subject of opda:annualGroundRent MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:annualGroundRent .
+
+<https://opda.org.uk/pdtf/shape/annualGroundRentRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:annualGroundRent has an object outside its declared rdfs:range: every object of opda:annualGroundRent MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:annualGroundRent .
+
+<https://opda.org.uk/pdtf/shape/annualServiceChargeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:annualServiceCharge is used off its declared rdfs:domain: every subject of opda:annualServiceCharge MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:annualServiceCharge .
+
+<https://opda.org.uk/pdtf/shape/annualServiceChargeRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:annualServiceCharge has an object outside its declared rdfs:range: every object of opda:annualServiceCharge MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:annualServiceCharge .
+
+<https://opda.org.uk/pdtf/shape/applicationDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:applicationDate is used off its declared rdfs:domain: every subject of opda:applicationDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:applicationDate .
+
+<https://opda.org.uk/pdtf/shape/applicationTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:applicationType is used off its declared rdfs:domain: every subject of opda:applicationType MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:applicationType .
+
+<https://opda.org.uk/pdtf/shape/areBoundariesUniformDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:areBoundariesUniform is used off its declared rdfs:domain: every subject of opda:areBoundariesUniform MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:areBoundariesUniform .
+
+<https://opda.org.uk/pdtf/shape/areaDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:area is used off its declared rdfs:domain: every subject of opda:area MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:area .
+
+<https://opda.org.uk/pdtf/shape/attestedByDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Evidence ;
+    sh:message "opda:attestedBy is used off its declared rdfs:domain: every subject of opda:attestedBy MUST be an instance of Evidence (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:attestedBy .
+
+<https://opda.org.uk/pdtf/shape/attestedByRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class prov:Agent ;
+    sh:message "opda:attestedBy has an object outside its declared rdfs:range: every object of opda:attestedBy MUST be an instance of Agent (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:attestedBy .
+
+<https://opda.org.uk/pdtf/shape/authorisationToShareDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:authorisationToShare is used off its declared rdfs:domain: every subject of opda:authorisationToShare MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:authorisationToShare .
+
+<https://opda.org.uk/pdtf/shape/authorisedToActOnBehalfOfAllSellersDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:authorisedToActOnBehalfOfAllSellers is used off its declared rdfs:domain: every subject of opda:authorisedToActOnBehalfOfAllSellers MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:authorisedToActOnBehalfOfAllSellers .
+
+<https://opda.org.uk/pdtf/shape/baselineCategoryDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:DPVMappingRecord ;
+    sh:message "opda:baselineCategory is used off its declared rdfs:domain: every subject of opda:baselineCategory MUST be an instance of DPVMappingRecord (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:baselineCategory .
+
+<https://opda.org.uk/pdtf/shape/bathroomsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:bathrooms is used off its declared rdfs:domain: every subject of opda:bathrooms MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:bathrooms .
+
+<https://opda.org.uk/pdtf/shape/bedroomsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:bedrooms is used off its declared rdfs:domain: every subject of opda:bedrooms MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:bedrooms .
+
+<https://opda.org.uk/pdtf/shape/buildingControlStartDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:buildingControlStartDate is used off its declared rdfs:domain: every subject of opda:buildingControlStartDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:buildingControlStartDate .
+
+<https://opda.org.uk/pdtf/shape/buildingsReinstatementCostAssessmentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:buildingsReinstatementCostAssessment is used off its declared rdfs:domain: every subject of opda:buildingsReinstatementCostAssessment MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:buildingsReinstatementCostAssessment .
+
+<https://opda.org.uk/pdtf/shape/builtFormDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:builtForm is used off its declared rdfs:domain: every subject of opda:builtForm MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:builtForm .
+
+<https://opda.org.uk/pdtf/shape/centralHeatingFuelTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:centralHeatingFuelType is used off its declared rdfs:domain: every subject of opda:centralHeatingFuelType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:centralHeatingFuelType .
+
+<https://opda.org.uk/pdtf/shape/centralHeatingInstalledDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:centralHeatingInstalled is used off its declared rdfs:domain: every subject of opda:centralHeatingInstalled MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:centralHeatingInstalled .
+
+<https://opda.org.uk/pdtf/shape/certificateOfComplianceFeeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:certificateOfComplianceFee is used off its declared rdfs:domain: every subject of opda:certificateOfComplianceFee MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:certificateOfComplianceFee .
+
+<https://opda.org.uk/pdtf/shape/certificateOfComplianceFeeRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:certificateOfComplianceFee has an object outside its declared rdfs:range: every object of opda:certificateOfComplianceFee MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:certificateOfComplianceFee .
+
+<https://opda.org.uk/pdtf/shape/confirmInformationIsAccurateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:confirmInformationIsAccurate is used off its declared rdfs:domain: every subject of opda:confirmInformationIsAccurate MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:confirmInformationIsAccurate .
+
+<https://opda.org.uk/pdtf/shape/confirmWillProvideAdditionalDocumentationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:confirmWillProvideAdditionalDocumentation is used off its declared rdfs:domain: every subject of opda:confirmWillProvideAdditionalDocumentation MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:confirmWillProvideAdditionalDocumentation .
+
+<https://opda.org.uk/pdtf/shape/confirmationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:confirmation is used off its declared rdfs:domain: every subject of opda:confirmation MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:confirmation .
+
+<https://opda.org.uk/pdtf/shape/consentsObtainedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:consentsObtained is used off its declared rdfs:domain: every subject of opda:consentsObtained MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:consentsObtained .
+
+<https://opda.org.uk/pdtf/shape/consequentialChargingBasisDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:consequentialChargingBasis is used off its declared rdfs:domain: every subject of opda:consequentialChargingBasis MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:consequentialChargingBasis .
+
+<https://opda.org.uk/pdtf/shape/constructionTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:constructionType is used off its declared rdfs:domain: every subject of opda:constructionType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:constructionType .
+
+<https://opda.org.uk/pdtf/shape/consumerProtectionRegulationsResponseDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:consumerProtectionRegulationsResponse is used off its declared rdfs:domain: every subject of opda:consumerProtectionRegulationsResponse MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:consumerProtectionRegulationsResponse .
+
+<https://opda.org.uk/pdtf/shape/contributionIncludedInServiceChargeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:contributionIncludedInServiceCharge is used off its declared rdfs:domain: every subject of opda:contributionIncludedInServiceCharge MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:contributionIncludedInServiceCharge .
+
+<https://opda.org.uk/pdtf/shape/costsApplicableToTheDeedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:costsApplicableToTheDeed is used off its declared rdfs:domain: every subject of opda:costsApplicableToTheDeed MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:costsApplicableToTheDeed .
+
+<https://opda.org.uk/pdtf/shape/costsApplicableToTheDeedRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:costsApplicableToTheDeed has an object outside its declared rdfs:range: every object of opda:costsApplicableToTheDeed MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:costsApplicableToTheDeed .
+
+<https://opda.org.uk/pdtf/shape/councilSearchTurnaroundTimeInWorkingDaysDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:councilSearchTurnaroundTimeInWorkingDays is used off its declared rdfs:domain: every subject of opda:councilSearchTurnaroundTimeInWorkingDays MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:councilSearchTurnaroundTimeInWorkingDays .
+
+<https://opda.org.uk/pdtf/shape/councilTaxAnnualChargeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:councilTaxAnnualCharge is used off its declared rdfs:domain: every subject of opda:councilTaxAnnualCharge MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:councilTaxAnnualCharge .
+
+<https://opda.org.uk/pdtf/shape/councilTaxAnnualChargeRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:councilTaxAnnualCharge has an object outside its declared rdfs:range: every object of opda:councilTaxAnnualCharge MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:councilTaxAnnualCharge .
+
+<https://opda.org.uk/pdtf/shape/councilTaxBandDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:councilTaxBand is used off its declared rdfs:domain: every subject of opda:councilTaxBand MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:councilTaxBand .
+
+<https://opda.org.uk/pdtf/shape/countyCouncilDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:countyCouncil is used off its declared rdfs:domain: every subject of opda:countyCouncil MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:countyCouncil .
+
+<https://opda.org.uk/pdtf/shape/credibilitySourcesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:credibilitySources is used off its declared rdfs:domain: every subject of opda:credibilitySources MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:credibilitySources .
+
+<https://opda.org.uk/pdtf/shape/currencyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:currency is used off its declared rdfs:domain: every subject of opda:currency MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:currency .
+
+<https://opda.org.uk/pdtf/shape/currencyRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class skos:Concept ;
+    sh:message "opda:currency has an object outside its declared rdfs:range: every object of opda:currency MUST be an instance of Concept (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:currency .
+
+<https://opda.org.uk/pdtf/shape/currentChargingBasisDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:currentChargingBasis is used off its declared rdfs:domain: every subject of opda:currentChargingBasis MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:currentChargingBasis .
+
+<https://opda.org.uk/pdtf/shape/currentEnergyRatingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:currentEnergyRating is used off its declared rdfs:domain: every subject of opda:currentEnergyRating MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:currentEnergyRating .
+
+<https://opda.org.uk/pdtf/shape/dangerousCladdingOrDefectsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:dangerousCladdingOrDefects is used off its declared rdfs:domain: every subject of opda:dangerousCladdingOrDefects MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dangerousCladdingOrDefects .
+
+<https://opda.org.uk/pdtf/shape/dateInstalledDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dateInstalled is used off its declared rdfs:domain: every subject of opda:dateInstalled MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateInstalled .
+
+<https://opda.org.uk/pdtf/shape/dateLastEmptiedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dateLastEmptied is used off its declared rdfs:domain: every subject of opda:dateLastEmptied MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateLastEmptied .
+
+<https://opda.org.uk/pdtf/shape/dateLastServicedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dateLastServiced is used off its declared rdfs:domain: every subject of opda:dateLastServiced MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateLastServiced .
+
+<https://opda.org.uk/pdtf/shape/dateOfBirthDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Person ;
+    sh:message "opda:dateOfBirth is used off its declared rdfs:domain: every subject of opda:dateOfBirth MUST be an instance of Person (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateOfBirth .
+
+<https://opda.org.uk/pdtf/shape/dateRemedialActionRequiredDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:dateRemedialActionRequired is used off its declared rdfs:domain: every subject of opda:dateRemedialActionRequired MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateRemedialActionRequired .
+
+<https://opda.org.uk/pdtf/shape/dateReplacedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dateReplaced is used off its declared rdfs:domain: every subject of opda:dateReplaced MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateReplaced .
+
+<https://opda.org.uk/pdtf/shape/dateToBeConnectedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dateToBeConnected is used off its declared rdfs:domain: every subject of opda:dateToBeConnected MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dateToBeConnected .
+
+<https://opda.org.uk/pdtf/shape/dealsWithDayToDayMaintenanceOfManagedAreaDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:dealsWithDayToDayMaintenanceOfManagedArea is used off its declared rdfs:domain: every subject of opda:dealsWithDayToDayMaintenanceOfManagedArea MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dealsWithDayToDayMaintenanceOfManagedArea .
+
+<https://opda.org.uk/pdtf/shape/decisionDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:decisionDate is used off its declared rdfs:domain: every subject of opda:decisionDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:decisionDate .
+
+<https://opda.org.uk/pdtf/shape/decisionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:decision is used off its declared rdfs:domain: every subject of opda:decision MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:decision .
+
+<https://opda.org.uk/pdtf/shape/designationTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:designationType is used off its declared rdfs:domain: every subject of opda:designationType MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:designationType .
+
+<https://opda.org.uk/pdtf/shape/diningAreasDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:diningAreas is used off its declared rdfs:domain: every subject of opda:diningAreas MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:diningAreas .
+
+<https://opda.org.uk/pdtf/shape/dischargeCompliesWithGBRDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:dischargeCompliesWithGBR is used off its declared rdfs:domain: every subject of opda:dischargeCompliesWithGBR MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:dischargeCompliesWithGBR .
+
+<https://opda.org.uk/pdtf/shape/distanceInMilesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:distanceInMiles is used off its declared rdfs:domain: every subject of opda:distanceInMiles MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:distanceInMiles .
+
+<https://opda.org.uk/pdtf/shape/distanceToNearestSewerageTreatmentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:distanceToNearestSewerageTreatment is used off its declared rdfs:domain: every subject of opda:distanceToNearestSewerageTreatment MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:distanceToNearestSewerageTreatment .
+
+<https://opda.org.uk/pdtf/shape/districtCouncilDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:districtCouncil is used off its declared rdfs:domain: every subject of opda:districtCouncil MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:districtCouncil .
+
+<https://opda.org.uk/pdtf/shape/documentDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:AttachedDocument ;
+    sh:message "opda:documentDate is used off its declared rdfs:domain: every subject of opda:documentDate MUST be an instance of AttachedDocument (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:documentDate .
+
+<https://opda.org.uk/pdtf/shape/documentTypeCodeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:AttachedDocument ;
+    sh:message "opda:documentTypeCode is used off its declared rdfs:domain: every subject of opda:documentTypeCode MUST be an instance of AttachedDocument (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:documentTypeCode .
+
+<https://opda.org.uk/pdtf/shape/entranceFloorDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:entranceFloor is used off its declared rdfs:domain: every subject of opda:entranceFloor MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:entranceFloor .
+
+<https://opda.org.uk/pdtf/shape/estimatedAmountDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:estimatedAmount is used off its declared rdfs:domain: every subject of opda:estimatedAmount MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:estimatedAmount .
+
+<https://opda.org.uk/pdtf/shape/estimatedAmountRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:estimatedAmount has an object outside its declared rdfs:range: every object of opda:estimatedAmount MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:estimatedAmount .
+
+<https://opda.org.uk/pdtf/shape/estimatedPriceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:estimatedPrice is used off its declared rdfs:domain: every subject of opda:estimatedPrice MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:estimatedPrice .
+
+<https://opda.org.uk/pdtf/shape/estimatedPriceRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:estimatedPrice has an object outside its declared rdfs:range: every object of opda:estimatedPrice MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:estimatedPrice .
+
+<https://opda.org.uk/pdtf/shape/evidenceTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Evidence ;
+    sh:message "opda:evidenceType is used off its declared rdfs:domain: every subject of opda:evidenceType MUST be an instance of Evidence (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:evidenceType .
+
+<https://opda.org.uk/pdtf/shape/expectedDeliveryDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:expectedDeliveryDate is used off its declared rdfs:domain: every subject of opda:expectedDeliveryDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:expectedDeliveryDate .
+
+<https://opda.org.uk/pdtf/shape/feeIncludingVATDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:feeIncludingVAT is used off its declared rdfs:domain: every subject of opda:feeIncludingVAT MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:feeIncludingVAT .
+
+<https://opda.org.uk/pdtf/shape/feeIncludingVATRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:feeIncludingVAT has an object outside its declared rdfs:range: every object of opda:feeIncludingVAT MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:feeIncludingVAT .
+
+<https://opda.org.uk/pdtf/shape/filedUnderDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:AttachedDocument ;
+    sh:message "opda:filedUnder is used off its declared rdfs:domain: every subject of opda:filedUnder MUST be an instance of AttachedDocument (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:filedUnder .
+
+<https://opda.org.uk/pdtf/shape/forTheManagedAreasDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:forTheManagedAreas is used off its declared rdfs:domain: every subject of opda:forTheManagedAreas MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:forTheManagedAreas .
+
+<https://opda.org.uk/pdtf/shape/freeholdOwnerDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:freeholdOwner is used off its declared rdfs:domain: every subject of opda:freeholdOwner MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:freeholdOwner .
+
+<https://opda.org.uk/pdtf/shape/fromDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:from is used off its declared rdfs:domain: every subject of opda:from MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:from .
+
+<https://opda.org.uk/pdtf/shape/fromTheOwnersDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:fromTheOwners is used off its declared rdfs:domain: every subject of opda:fromTheOwners MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:fromTheOwners .
+
+<https://opda.org.uk/pdtf/shape/groundRentFrequencyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:groundRentFrequency is used off its declared rdfs:domain: every subject of opda:groundRentFrequency MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:groundRentFrequency .
+
+<https://opda.org.uk/pdtf/shape/handoverOnCompletionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:handoverOnCompletion is used off its declared rdfs:domain: every subject of opda:handoverOnCompletion MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:handoverOnCompletion .
+
+<https://opda.org.uk/pdtf/shape/hasAddressDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasAddress is used off its declared rdfs:domain: every subject of opda:hasAddress MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasAddress .
+
+<https://opda.org.uk/pdtf/shape/hasAddressRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:hasAddress has an object outside its declared rdfs:range: every object of opda:hasAddress MUST be an instance of Address (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasAddress .
+
+<https://opda.org.uk/pdtf/shape/hasAssertedCapacityDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Seller ;
+    sh:message "opda:hasAssertedCapacity is used off its declared rdfs:domain: every subject of opda:hasAssertedCapacity MUST be an instance of Seller (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasAssertedCapacity .
+
+<https://opda.org.uk/pdtf/shape/hasBeenFloodedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasBeenFlooded is used off its declared rdfs:domain: every subject of opda:hasBeenFlooded MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasBeenFlooded .
+
+<https://opda.org.uk/pdtf/shape/hasChainPositionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:hasChainPosition is used off its declared rdfs:domain: every subject of opda:hasChainPosition MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasChainPosition .
+
+<https://opda.org.uk/pdtf/shape/hasChainPositionRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:TransactionChain ;
+    sh:message "opda:hasChainPosition has an object outside its declared rdfs:range: every object of opda:hasChainPosition MUST be an instance of TransactionChain (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasChainPosition .
+
+<https://opda.org.uk/pdtf/shape/hasEPCCertificateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasEPCCertificate is used off its declared rdfs:domain: every subject of opda:hasEPCCertificate MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasEPCCertificate .
+
+<https://opda.org.uk/pdtf/shape/hasEPCCertificateRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:EPCCertificate ;
+    sh:message "opda:hasEPCCertificate has an object outside its declared rdfs:range: every object of opda:hasEPCCertificate MUST be an instance of EPCCertificate (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasEPCCertificate .
+
+<https://opda.org.uk/pdtf/shape/hasEvidencedAuthorityDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Seller ;
+    sh:message "opda:hasEvidencedAuthority is used off its declared rdfs:domain: every subject of opda:hasEvidencedAuthority MUST be an instance of Seller (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasEvidencedAuthority .
+
+<https://opda.org.uk/pdtf/shape/hasEvidencedAuthorityRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Claim ;
+    sh:message "opda:hasEvidencedAuthority has an object outside its declared rdfs:range: every object of opda:hasEvidencedAuthority MUST be an instance of Claim (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasEvidencedAuthority .
+
+<https://opda.org.uk/pdtf/shape/hasFixedRentchargeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:hasFixedRentcharge is used off its declared rdfs:domain: every subject of opda:hasFixedRentcharge MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasFixedRentcharge .
+
+<https://opda.org.uk/pdtf/shape/hasFloodDefencesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasFloodDefences is used off its declared rdfs:domain: every subject of opda:hasFloodDefences MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasFloodDefences .
+
+<https://opda.org.uk/pdtf/shape/hasFloorplanDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasFloorplan is used off its declared rdfs:domain: every subject of opda:hasFloorplan MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasFloorplan .
+
+<https://opda.org.uk/pdtf/shape/hasHelpToBuyEquityLoanDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasHelpToBuyEquityLoan is used off its declared rdfs:domain: every subject of opda:hasHelpToBuyEquityLoan MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasHelpToBuyEquityLoan .
+
+<https://opda.org.uk/pdtf/shape/hasLiftDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasLift is used off its declared rdfs:domain: every subject of opda:hasLift MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasLift .
+
+<https://opda.org.uk/pdtf/shape/hasOthersAged17OrOverDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Seller ;
+    sh:message "opda:hasOthersAged17OrOver is used off its declared rdfs:domain: every subject of opda:hasOthersAged17OrOver MUST be an instance of Seller (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasOthersAged17OrOver .
+
+<https://opda.org.uk/pdtf/shape/hasRoomDimensionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasRoomDimension is used off its declared rdfs:domain: every subject of opda:hasRoomDimension MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasRoomDimension .
+
+<https://opda.org.uk/pdtf/shape/hasRoomDimensionRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RoomDimension ;
+    sh:message "opda:hasRoomDimension has an object outside its declared rdfs:range: every object of opda:hasRoomDimension MUST be an instance of RoomDimension (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasRoomDimension .
+
+<https://opda.org.uk/pdtf/shape/hasSmartHomeSystemsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasSmartHomeSystems is used off its declared rdfs:domain: every subject of opda:hasSmartHomeSystems MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasSmartHomeSystems .
+
+<https://opda.org.uk/pdtf/shape/hasSprayFoamInstalledDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasSprayFoamInstalled is used off its declared rdfs:domain: every subject of opda:hasSprayFoamInstalled MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasSprayFoamInstalled .
+
+<https://opda.org.uk/pdtf/shape/hasSubAssessmentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:hasSubAssessment is used off its declared rdfs:domain: every subject of opda:hasSubAssessment MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasSubAssessment .
+
+<https://opda.org.uk/pdtf/shape/hasSubAssessmentRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:hasSubAssessment has an object outside its declared rdfs:range: every object of opda:hasSubAssessment MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:hasSubAssessment .
+
+<https://opda.org.uk/pdtf/shape/hasTenantCompanyDissolvedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:hasTenantCompanyDissolved is used off its declared rdfs:domain: every subject of opda:hasTenantCompanyDissolved MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasTenantCompanyDissolved .
+
+<https://opda.org.uk/pdtf/shape/hasUPRNDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasUPRN is used off its declared rdfs:domain: every subject of opda:hasUPRN MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasUPRN .
+
+<https://opda.org.uk/pdtf/shape/hasValidGuaranteesOrWarrantiesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:hasValidGuaranteesOrWarranties is used off its declared rdfs:domain: every subject of opda:hasValidGuaranteesOrWarranties MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:hasValidGuaranteesOrWarranties .
+
+<https://opda.org.uk/pdtf/shape/headLeaseholderControlledDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:headLeaseholderControlled is used off its declared rdfs:domain: every subject of opda:headLeaseholderControlled MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:headLeaseholderControlled .
+
+<https://opda.org.uk/pdtf/shape/headingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:heading is used off its declared rdfs:domain: every subject of opda:heading MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:heading .
+
+<https://opda.org.uk/pdtf/shape/heatingLastServicedDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:heatingLastServicedDate is used off its declared rdfs:domain: every subject of opda:heatingLastServicedDate MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:heatingLastServicedDate .
+
+<https://opda.org.uk/pdtf/shape/heatingTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:heatingType is used off its declared rdfs:domain: every subject of opda:heatingType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:heatingType .
+
+<https://opda.org.uk/pdtf/shape/holdingDepositDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:holdingDeposit is used off its declared rdfs:domain: every subject of opda:holdingDeposit MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:holdingDeposit .
+
+<https://opda.org.uk/pdtf/shape/holdingDepositRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:holdingDeposit has an object outside its declared rdfs:range: every object of opda:holdingDeposit MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:holdingDeposit .
+
+<https://opda.org.uk/pdtf/shape/identifiesSamePropertyRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:identifiesSameProperty has an object outside its declared rdfs:range: every object of opda:identifiesSameProperty MUST be an instance of Property (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:identifiesSameProperty .
+
+<https://opda.org.uk/pdtf/shape/isConnectedToNationalGridDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isConnectedToNationalGrid is used off its declared rdfs:domain: every subject of opda:isConnectedToNationalGrid MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isConnectedToNationalGrid .
+
+<https://opda.org.uk/pdtf/shape/isFirstRegistrationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isFirstRegistration is used off its declared rdfs:domain: every subject of opda:isFirstRegistration MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isFirstRegistration .
+
+<https://opda.org.uk/pdtf/shape/isGroundRentPayableDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:isGroundRentPayable is used off its declared rdfs:domain: every subject of opda:isGroundRentPayable MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isGroundRentPayable .
+
+<https://opda.org.uk/pdtf/shape/isHMODomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isHMO is used off its declared rdfs:domain: every subject of opda:isHMO MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isHMO .
+
+<https://opda.org.uk/pdtf/shape/isInsuredDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isInsured is used off its declared rdfs:domain: every subject of opda:isInsured MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isInsured .
+
+<https://opda.org.uk/pdtf/shape/isLeaseQualifyingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:isLeaseQualifying is used off its declared rdfs:domain: every subject of opda:isLeaseQualifying MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isLeaseQualifying .
+
+<https://opda.org.uk/pdtf/shape/isLimitedCompanySaleDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isLimitedCompanySale is used off its declared rdfs:domain: every subject of opda:isLimitedCompanySale MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isLimitedCompanySale .
+
+<https://opda.org.uk/pdtf/shape/isLocatedOverCommercialPremisesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isLocatedOverCommercialPremises is used off its declared rdfs:domain: every subject of opda:isLocatedOverCommercialPremises MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isLocatedOverCommercialPremises .
+
+<https://opda.org.uk/pdtf/shape/isManagingAgentEmployedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:isManagingAgentEmployed is used off its declared rdfs:domain: every subject of opda:isManagingAgentEmployed MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isManagingAgentEmployed .
+
+<https://opda.org.uk/pdtf/shape/isSharedOwnershipDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:isSharedOwnership is used off its declared rdfs:domain: every subject of opda:isSharedOwnership MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isSharedOwnership .
+
+<https://opda.org.uk/pdtf/shape/isStudentAccommodationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isStudentAccommodation is used off its declared rdfs:domain: every subject of opda:isStudentAccommodation MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isStudentAccommodation .
+
+<https://opda.org.uk/pdtf/shape/isSupplyMeteredDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:isSupplyMetered is used off its declared rdfs:domain: every subject of opda:isSupplyMetered MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:isSupplyMetered .
+
+<https://opda.org.uk/pdtf/shape/kitchensDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:kitchens is used off its declared rdfs:domain: every subject of opda:kitchens MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:kitchens .
+
+<https://opda.org.uk/pdtf/shape/landlordInsuresIfFlatDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:landlordInsuresIfFlat is used off its declared rdfs:domain: every subject of opda:landlordInsuresIfFlat MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:landlordInsuresIfFlat .
+
+<https://opda.org.uk/pdtf/shape/landlordNotifiedOfSaleDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:landlordNotifiedOfSale is used off its declared rdfs:domain: every subject of opda:landlordNotifiedOfSale MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:landlordNotifiedOfSale .
+
+<https://opda.org.uk/pdtf/shape/lastMaintainedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:lastMaintained is used off its declared rdfs:domain: every subject of opda:lastMaintained MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:lastMaintained .
+
+<https://opda.org.uk/pdtf/shape/leaveKeysDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:leaveKeys is used off its declared rdfs:domain: every subject of opda:leaveKeys MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:leaveKeys .
+
+<https://opda.org.uk/pdtf/shape/lengthDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RoomDimension ;
+    sh:message "opda:length is used off its declared rdfs:domain: every subject of opda:length MUST be an instance of RoomDimension (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:length .
+
+<https://opda.org.uk/pdtf/shape/lengthOfLeaseInYearsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:lengthOfLeaseInYears is used off its declared rdfs:domain: every subject of opda:lengthOfLeaseInYears MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:lengthOfLeaseInYears .
+
+<https://opda.org.uk/pdtf/shape/listPriceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:listPrice is used off its declared rdfs:domain: every subject of opda:listPrice MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:listPrice .
+
+<https://opda.org.uk/pdtf/shape/listPriceRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:listPrice has an object outside its declared rdfs:range: every object of opda:listPrice MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:listPrice .
+
+<https://opda.org.uk/pdtf/shape/listedDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:listedDate is used off its declared rdfs:domain: every subject of opda:listedDate MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:listedDate .
+
+<https://opda.org.uk/pdtf/shape/localAuthorityNameDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:localAuthorityName is used off its declared rdfs:domain: every subject of opda:localAuthorityName MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:localAuthorityName .
+
+<https://opda.org.uk/pdtf/shape/localAuthorityReferenceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:localAuthorityReference is used off its declared rdfs:domain: every subject of opda:localAuthorityReference MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:localAuthorityReference .
+
+<https://opda.org.uk/pdtf/shape/locationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:location is used off its declared rdfs:domain: every subject of opda:location MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:location .
+
+<https://opda.org.uk/pdtf/shape/loftBoardedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:loftBoarded is used off its declared rdfs:domain: every subject of opda:loftBoarded MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:loftBoarded .
+
+<https://opda.org.uk/pdtf/shape/loftInsulatedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:loftInsulated is used off its declared rdfs:domain: every subject of opda:loftInsulated MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:loftInsulated .
+
+<https://opda.org.uk/pdtf/shape/logbookProviderDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:logbookProvider is used off its declared rdfs:domain: every subject of opda:logbookProvider MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:logbookProvider .
+
+<https://opda.org.uk/pdtf/shape/managementPlanInPlaceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:managementPlanInPlace is used off its declared rdfs:domain: every subject of opda:managementPlanInPlace MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:managementPlanInPlace .
+
+<https://opda.org.uk/pdtf/shape/marketingTenureDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:marketingTenure is used off its declared rdfs:domain: every subject of opda:marketingTenure MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:marketingTenure .
+
+<https://opda.org.uk/pdtf/shape/middleNamesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Person ;
+    sh:message "opda:middleNames is used off its declared rdfs:domain: every subject of opda:middleNames MUST be an instance of Person (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:middleNames .
+
+<https://opda.org.uk/pdtf/shape/mpanDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:mpan is used off its declared rdfs:domain: every subject of opda:mpan MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:mpan .
+
+<https://opda.org.uk/pdtf/shape/mprnDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:mprn is used off its declared rdfs:domain: every subject of opda:mprn MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:mprn .
+
+<https://opda.org.uk/pdtf/shape/numberOfFloorsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:numberOfFloors is used off its declared rdfs:domain: every subject of opda:numberOfFloors MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:numberOfFloors .
+
+<https://opda.org.uk/pdtf/shape/numberOfNonUkResidentSellersDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Proprietorship ;
+    sh:message "opda:numberOfNonUkResidentSellers is used off its declared rdfs:domain: every subject of opda:numberOfNonUkResidentSellers MUST be an instance of Proprietorship (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:numberOfNonUkResidentSellers .
+
+<https://opda.org.uk/pdtf/shape/numberOfPropertiesSharingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:numberOfPropertiesSharing is used off its declared rdfs:domain: every subject of opda:numberOfPropertiesSharing MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:numberOfPropertiesSharing .
+
+<https://opda.org.uk/pdtf/shape/numberOfSellersDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Proprietorship ;
+    sh:message "opda:numberOfSellers is used off its declared rdfs:domain: every subject of opda:numberOfSellers MUST be an instance of Proprietorship (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:numberOfSellers .
+
+<https://opda.org.uk/pdtf/shape/offMainsDrainageSystemTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:offMainsDrainageSystemType is used off its declared rdfs:domain: every subject of opda:offMainsDrainageSystemType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:offMainsDrainageSystemType .
+
+<https://opda.org.uk/pdtf/shape/ofstedRatingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:ofstedRating is used off its declared rdfs:domain: every subject of opda:ofstedRating MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:ofstedRating .
+
+<https://opda.org.uk/pdtf/shape/orderDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:orderDate is used off its declared rdfs:domain: every subject of opda:orderDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:orderDate .
+
+<https://opda.org.uk/pdtf/shape/organisationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:organisation is used off its declared rdfs:domain: every subject of opda:organisation MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:organisation .
+
+<https://opda.org.uk/pdtf/shape/organisationNameDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:organisationName is used off its declared rdfs:domain: every subject of opda:organisationName MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:organisationName .
+
+<https://opda.org.uk/pdtf/shape/organisationReferenceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:organisationReference is used off its declared rdfs:domain: every subject of opda:organisationReference MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:organisationReference .
+
+<https://opda.org.uk/pdtf/shape/organisesBuildingInsuranceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:organisesBuildingInsurance is used off its declared rdfs:domain: every subject of opda:organisesBuildingInsurance MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:organisesBuildingInsurance .
+
+<https://opda.org.uk/pdtf/shape/otherCentralHeatingFuelTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:otherCentralHeatingFuelType is used off its declared rdfs:domain: every subject of opda:otherCentralHeatingFuelType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherCentralHeatingFuelType .
+
+<https://opda.org.uk/pdtf/shape/otherHeatingFeaturesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:otherHeatingFeatures is used off its declared rdfs:domain: every subject of opda:otherHeatingFeatures MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherHeatingFeatures .
+
+<https://opda.org.uk/pdtf/shape/otherOwnershipDetailsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:otherOwnershipDetails is used off its declared rdfs:domain: every subject of opda:otherOwnershipDetails MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherOwnershipDetails .
+
+<https://opda.org.uk/pdtf/shape/otherPropertiesInManagedAreaDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:otherPropertiesInManagedArea is used off its declared rdfs:domain: every subject of opda:otherPropertiesInManagedArea MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherPropertiesInManagedArea .
+
+<https://opda.org.uk/pdtf/shape/otherRatingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:otherRating is used off its declared rdfs:domain: every subject of opda:otherRating MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherRating .
+
+<https://opda.org.uk/pdtf/shape/otherTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:otherType is used off its declared rdfs:domain: every subject of opda:otherType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:otherType .
+
+<https://opda.org.uk/pdtf/shape/outsideAreasDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:outsideAreas is used off its declared rdfs:domain: every subject of opda:outsideAreas MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:outsideAreas .
+
+<https://opda.org.uk/pdtf/shape/outstandingEnforcementActionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:outstandingEnforcementAction is used off its declared rdfs:domain: every subject of opda:outstandingEnforcementAction MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:outstandingEnforcementAction .
+
+<https://opda.org.uk/pdtf/shape/ownerTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Proprietor ;
+    sh:message "opda:ownerType is used off its declared rdfs:domain: every subject of opda:ownerType MUST be an instance of Proprietor (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:ownerType .
+
+<https://opda.org.uk/pdtf/shape/ownershipTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:ownershipType is used off its declared rdfs:domain: every subject of opda:ownershipType MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:ownershipType .
+
+<https://opda.org.uk/pdtf/shape/parkingArrangementsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:parkingArrangements is used off its declared rdfs:domain: every subject of opda:parkingArrangements MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:parkingArrangements .
+
+<https://opda.org.uk/pdtf/shape/perilDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:peril is used off its declared rdfs:domain: every subject of opda:peril MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:peril .
+
+<https://opda.org.uk/pdtf/shape/perilRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class skos:Concept ;
+    sh:message "opda:peril has an object outside its declared rdfs:range: every object of opda:peril MUST be an instance of Concept (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:peril .
+
+<https://opda.org.uk/pdtf/shape/personWhoDealsWithTheDeedOfCovenantDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:personWhoDealsWithTheDeedOfCovenant is used off its declared rdfs:domain: every subject of opda:personWhoDealsWithTheDeedOfCovenant MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:personWhoDealsWithTheDeedOfCovenant .
+
+<https://opda.org.uk/pdtf/shape/pitchDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:pitch is used off its declared rdfs:domain: every subject of opda:pitch MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:pitch .
+
+<https://opda.org.uk/pdtf/shape/plannedAtTimeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class prov:Plan ;
+    sh:message "opda:plannedAtTime is used off its declared rdfs:domain: every subject of opda:plannedAtTime MUST be an instance of Plan (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:plannedAtTime .
+
+<https://opda.org.uk/pdtf/shape/planningStartDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:planningStartDate is used off its declared rdfs:domain: every subject of opda:planningStartDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:planningStartDate .
+
+<https://opda.org.uk/pdtf/shape/potentialCostDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:potentialCost is used off its declared rdfs:domain: every subject of opda:potentialCost MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:potentialCost .
+
+<https://opda.org.uk/pdtf/shape/potentialCostRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:potentialCost has an object outside its declared rdfs:range: every object of opda:potentialCost MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:potentialCost .
+
+<https://opda.org.uk/pdtf/shape/priceQualifierDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:priceQualifier is used off its declared rdfs:domain: every subject of opda:priceQualifier MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:priceQualifier .
+
+<https://opda.org.uk/pdtf/shape/pricingMethodologyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:pricingMethodology is used off its declared rdfs:domain: every subject of opda:pricingMethodology MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:pricingMethodology .
+
+<https://opda.org.uk/pdtf/shape/procedureForObtainingCertificateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:procedureForObtainingCertificate is used off its declared rdfs:domain: every subject of opda:procedureForObtainingCertificate MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:procedureForObtainingCertificate .
+
+<https://opda.org.uk/pdtf/shape/productCodeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:productCode is used off its declared rdfs:domain: every subject of opda:productCode MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:productCode .
+
+<https://opda.org.uk/pdtf/shape/propertiesContributingToMaintenanceOfManagedAreaDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:propertiesContributingToMaintenanceOfManagedArea is used off its declared rdfs:domain: every subject of opda:propertiesContributingToMaintenanceOfManagedArea MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:propertiesContributingToMaintenanceOfManagedArea .
+
+<https://opda.org.uk/pdtf/shape/propertyTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:propertyType is used off its declared rdfs:domain: every subject of opda:propertyType MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:propertyType .
+
+<https://opda.org.uk/pdtf/shape/providerNameDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:providerName is used off its declared rdfs:domain: every subject of opda:providerName MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:providerName .
+
+<https://opda.org.uk/pdtf/shape/providerReferenceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:providerReference is used off its declared rdfs:domain: every subject of opda:providerReference MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:providerReference .
+
+<https://opda.org.uk/pdtf/shape/publicSewerMapAttachedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:publicSewerMapAttached is used off its declared rdfs:domain: every subject of opda:publicSewerMapAttached MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:publicSewerMapAttached .
+
+<https://opda.org.uk/pdtf/shape/pupilsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:pupils is used off its declared rdfs:domain: every subject of opda:pupils MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:pupils .
+
+<https://opda.org.uk/pdtf/shape/receptionsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:receptions is used off its declared rdfs:domain: every subject of opda:receptions MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:receptions .
+
+<https://opda.org.uk/pdtf/shape/recordsEstateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RegisteredTitle ;
+    sh:message "opda:recordsEstate is used off its declared rdfs:domain: every subject of opda:recordsEstate MUST be an instance of RegisteredTitle (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:recordsEstate .
+
+<https://opda.org.uk/pdtf/shape/recordsEstateRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:recordsEstate has an object outside its declared rdfs:range: every object of opda:recordsEstate MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:recordsEstate .
+
+<https://opda.org.uk/pdtf/shape/refNumberDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:refNumber is used off its declared rdfs:domain: every subject of opda:refNumber MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:refNumber .
+
+<https://opda.org.uk/pdtf/shape/referenceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:reference is used off its declared rdfs:domain: every subject of opda:reference MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:reference .
+
+<https://opda.org.uk/pdtf/shape/regulatedSearchTurnaroundTimeInWorkingDaysDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:regulatedSearchTurnaroundTimeInWorkingDays is used off its declared rdfs:domain: every subject of opda:regulatedSearchTurnaroundTimeInWorkingDays MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:regulatedSearchTurnaroundTimeInWorkingDays .
+
+<https://opda.org.uk/pdtf/shape/religiousCharacterDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:religiousCharacter is used off its declared rdfs:domain: every subject of opda:religiousCharacter MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:religiousCharacter .
+
+<https://opda.org.uk/pdtf/shape/removeRubbishDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:removeRubbish is used off its declared rdfs:domain: every subject of opda:removeRubbish MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:removeRubbish .
+
+<https://opda.org.uk/pdtf/shape/rentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:rent is used off its declared rdfs:domain: every subject of opda:rent MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:rent .
+
+<https://opda.org.uk/pdtf/shape/rentIncreaseCalculatedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:rentIncreaseCalculated is used off its declared rdfs:domain: every subject of opda:rentIncreaseCalculated MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:rentIncreaseCalculated .
+
+<https://opda.org.uk/pdtf/shape/rentRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:rent has an object outside its declared rdfs:range: every object of opda:rent MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:rent .
+
+<https://opda.org.uk/pdtf/shape/rentReviewFrequencyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:rentReviewFrequency is used off its declared rdfs:domain: every subject of opda:rentReviewFrequency MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:rentReviewFrequency .
+
+<https://opda.org.uk/pdtf/shape/replaceLightFittingsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:replaceLightFittings is used off its declared rdfs:domain: every subject of opda:replaceLightFittings MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:replaceLightFittings .
+
+<https://opda.org.uk/pdtf/shape/reportDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:reportDate is used off its declared rdfs:domain: every subject of opda:reportDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:reportDate .
+
+<https://opda.org.uk/pdtf/shape/requirementsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:requirements is used off its declared rdfs:domain: every subject of opda:requirements MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:requirements .
+
+<https://opda.org.uk/pdtf/shape/responseDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:response is used off its declared rdfs:domain: every subject of opda:response MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:response .
+
+<https://opda.org.uk/pdtf/shape/retrievedOnDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:AttachedDocument ;
+    sh:message "opda:retrievedOn is used off its declared rdfs:domain: every subject of opda:retrievedOn MUST be an instance of AttachedDocument (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:retrievedOn .
+
+<https://opda.org.uk/pdtf/shape/riskIndicatorDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:riskIndicator is used off its declared rdfs:domain: every subject of opda:riskIndicator MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:riskIndicator .
+
+<https://opda.org.uk/pdtf/shape/roleDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RoleMixin ;
+    sh:message "opda:role is used off its declared rdfs:domain: every subject of opda:role MUST be an instance of RoleMixin (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:role .
+
+<https://opda.org.uk/pdtf/shape/roomNameDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RoomDimension ;
+    sh:message "opda:roomName is used off its declared rdfs:domain: every subject of opda:roomName MUST be an instance of RoomDimension (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:roomName .
+
+<https://opda.org.uk/pdtf/shape/saleAtUndervalueDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:saleAtUndervalue is used off its declared rdfs:domain: every subject of opda:saleAtUndervalue MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:saleAtUndervalue .
+
+<https://opda.org.uk/pdtf/shape/schoolTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:schoolType is used off its declared rdfs:domain: every subject of opda:schoolType MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:schoolType .
+
+<https://opda.org.uk/pdtf/shape/securityDepositDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:securityDeposit is used off its declared rdfs:domain: every subject of opda:securityDeposit MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:securityDeposit .
+
+<https://opda.org.uk/pdtf/shape/securityDepositRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:securityDeposit has an object outside its declared rdfs:range: every object of opda:securityDeposit MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:securityDeposit .
+
+<https://opda.org.uk/pdtf/shape/sellerCompletedDeedOfCertificateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:sellerCompletedDeedOfCertificate is used off its declared rdfs:domain: every subject of opda:sellerCompletedDeedOfCertificate MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sellerCompletedDeedOfCertificate .
+
+<https://opda.org.uk/pdtf/shape/sellerContributesToServiceChargeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:sellerContributesToServiceCharge is used off its declared rdfs:domain: every subject of opda:sellerContributesToServiceCharge MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sellerContributesToServiceCharge .
+
+<https://opda.org.uk/pdtf/shape/sellerOwnedPropertyDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:sellerOwnedProperty is used off its declared rdfs:domain: every subject of opda:sellerOwnedProperty MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sellerOwnedProperty .
+
+<https://opda.org.uk/pdtf/shape/sellersCapacityDetailsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Seller ;
+    sh:message "opda:sellersCapacityDetails is used off its declared rdfs:domain: every subject of opda:sellersCapacityDetails MUST be an instance of Seller (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sellersCapacityDetails .
+
+<https://opda.org.uk/pdtf/shape/sellingAgentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:sellingAgent is used off its declared rdfs:domain: every subject of opda:sellingAgent MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sellingAgent .
+
+<https://opda.org.uk/pdtf/shape/sewerageBillsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:sewerageBills is used off its declared rdfs:domain: every subject of opda:sewerageBills MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sewerageBills .
+
+<https://opda.org.uk/pdtf/shape/sewerageProviderDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:sewerageProvider is used off its declared rdfs:domain: every subject of opda:sewerageProvider MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sewerageProvider .
+
+<https://opda.org.uk/pdtf/shape/sharedOwnershipPercentageDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:sharedOwnershipPercentage is used off its declared rdfs:domain: every subject of opda:sharedOwnershipPercentage MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sharedOwnershipPercentage .
+
+<https://opda.org.uk/pdtf/shape/sharedOwnershipRentDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:sharedOwnershipRent is used off its declared rdfs:domain: every subject of opda:sharedOwnershipRent MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sharedOwnershipRent .
+
+<https://opda.org.uk/pdtf/shape/sharedOwnershipRentRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:sharedOwnershipRent has an object outside its declared rdfs:range: every object of opda:sharedOwnershipRent MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:sharedOwnershipRent .
+
+<https://opda.org.uk/pdtf/shape/signedOnDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:signedOn is used off its declared rdfs:domain: every subject of opda:signedOn MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:signedOn .
+
+<https://opda.org.uk/pdtf/shape/soldDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:soldDate is used off its declared rdfs:domain: every subject of opda:soldDate MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:soldDate .
+
+<https://opda.org.uk/pdtf/shape/soldPriceDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:soldPrice is used off its declared rdfs:domain: every subject of opda:soldPrice MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:soldPrice .
+
+<https://opda.org.uk/pdtf/shape/soldPriceRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:MonetaryAmount ;
+    sh:message "opda:soldPrice has an object outside its declared rdfs:range: every object of opda:soldPrice MUST be an instance of MonetaryAmount (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:soldPrice .
+
+<https://opda.org.uk/pdtf/shape/soldWithVacantPossessionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:soldWithVacantPossession is used off its declared rdfs:domain: every subject of opda:soldWithVacantPossession MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:soldWithVacantPossession .
+
+<https://opda.org.uk/pdtf/shape/sortCodeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Organisation ;
+    sh:message "opda:sortCode is used off its declared rdfs:domain: every subject of opda:sortCode MUST be an instance of Organisation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:sortCode .
+
+<https://opda.org.uk/pdtf/shape/specialtiesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:specialties is used off its declared rdfs:domain: every subject of opda:specialties MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:specialties .
+
+<https://opda.org.uk/pdtf/shape/startYearOfLeaseDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:startYearOfLease is used off its declared rdfs:domain: every subject of opda:startYearOfLease MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:startYearOfLease .
+
+<https://opda.org.uk/pdtf/shape/statusDateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:statusDate is used off its declared rdfs:domain: every subject of opda:statusDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:statusDate .
+
+<https://opda.org.uk/pdtf/shape/statusDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:status is used off its declared rdfs:domain: every subject of opda:status MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:status .
+
+<https://opda.org.uk/pdtf/shape/subCategoryDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RiskAssessment ;
+    sh:message "opda:subCategory is used off its declared rdfs:domain: every subject of opda:subCategory MUST be an instance of RiskAssessment (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:subCategory .
+
+<https://opda.org.uk/pdtf/shape/supplierDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:supplier is used off its declared rdfs:domain: every subject of opda:supplier MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:supplier .
+
+<https://opda.org.uk/pdtf/shape/supplyClassificationDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:supplyClassification is used off its declared rdfs:domain: every subject of opda:supplyClassification MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:supplyClassification .
+
+<https://opda.org.uk/pdtf/shape/supportedByDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Claim ;
+    sh:message "opda:supportedBy is used off its declared rdfs:domain: every subject of opda:supportedBy MUST be an instance of Claim (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:supportedBy .
+
+<https://opda.org.uk/pdtf/shape/supportedByRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Evidence ;
+    sh:message "opda:supportedBy has an object outside its declared rdfs:range: every object of opda:supportedBy MUST be an instance of Evidence (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:supportedBy .
+
+<https://opda.org.uk/pdtf/shape/takeReasonableCareDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:takeReasonableCare is used off its declared rdfs:domain: every subject of opda:takeReasonableCare MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:takeReasonableCare .
+
+<https://opda.org.uk/pdtf/shape/targetsKindDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:DPVMappingRecord ;
+    sh:message "opda:targetsKind is used off its declared rdfs:domain: every subject of opda:targetsKind MUST be an instance of DPVMappingRecord (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:targetsKind .
+
+<https://opda.org.uk/pdtf/shape/targetsKindRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class owl:Class ;
+    sh:message "opda:targetsKind has an object outside its declared rdfs:range: every object of opda:targetsKind MUST be an instance of Class (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:targetsKind .
+
+<https://opda.org.uk/pdtf/shape/tenureKindDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:tenureKind is used off its declared rdfs:domain: every subject of opda:tenureKind MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:tenureKind .
+
+<https://opda.org.uk/pdtf/shape/titleExtentsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:titleExtents is used off its declared rdfs:domain: every subject of opda:titleExtents MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:titleExtents .
+
+<https://opda.org.uk/pdtf/shape/titleNumberDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RegisteredTitle ;
+    sh:message "opda:titleNumber is used off its declared rdfs:domain: every subject of opda:titleNumber MUST be an instance of RegisteredTitle (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:titleNumber .
+
+<https://opda.org.uk/pdtf/shape/titlePropertyDescriptionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:titlePropertyDescription is used off its declared rdfs:domain: every subject of opda:titlePropertyDescription MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:titlePropertyDescription .
+
+<https://opda.org.uk/pdtf/shape/toDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:to is used off its declared rdfs:domain: every subject of opda:to MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:to .
+
+<https://opda.org.uk/pdtf/shape/transactionIdDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:transactionId is used off its declared rdfs:domain: every subject of opda:transactionId MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:transactionId .
+
+<https://opda.org.uk/pdtf/shape/transportTypeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:transportType is used off its declared rdfs:domain: every subject of opda:transportType MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:transportType .
+
+<https://opda.org.uk/pdtf/shape/typeOfConnectionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:typeOfConnection is used off its declared rdfs:domain: every subject of opda:typeOfConnection MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:typeOfConnection .
+
+<https://opda.org.uk/pdtf/shape/typeOfFloodingDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:typeOfFlooding is used off its declared rdfs:domain: every subject of opda:typeOfFlooding MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:typeOfFlooding .
+
+<https://opda.org.uk/pdtf/shape/typeOfHealthCareDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:NearbyFacility ;
+    sh:message "opda:typeOfHealthCare is used off its declared rdfs:domain: every subject of opda:typeOfHealthCare MUST be an instance of NearbyFacility (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:typeOfHealthCare .
+
+<https://opda.org.uk/pdtf/shape/unitaryAuthorityDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Search ;
+    sh:message "opda:unitaryAuthority is used off its declared rdfs:domain: every subject of opda:unitaryAuthority MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:unitaryAuthority .
+
+<https://opda.org.uk/pdtf/shape/urgentWorksCarriedOutDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:urgentWorksCarriedOut is used off its declared rdfs:domain: every subject of opda:urgentWorksCarriedOut MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:urgentWorksCarriedOut .
+
+<https://opda.org.uk/pdtf/shape/urgentWorksRecommendedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:urgentWorksRecommended is used off its declared rdfs:domain: every subject of opda:urgentWorksRecommended MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:urgentWorksRecommended .
+
+<https://opda.org.uk/pdtf/shape/waterBillsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:waterBills is used off its declared rdfs:domain: every subject of opda:waterBills MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:waterBills .
+
+<https://opda.org.uk/pdtf/shape/waterProviderDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:waterProvider is used off its declared rdfs:domain: every subject of opda:waterProvider MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:waterProvider .
+
+<https://opda.org.uk/pdtf/shape/waterworksMapAttachedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:waterworksMapAttached is used off its declared rdfs:domain: every subject of opda:waterworksMapAttached MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:waterworksMapAttached .
+
+<https://opda.org.uk/pdtf/shape/widthDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:RoomDimension ;
+    sh:message "opda:width is used off its declared rdfs:domain: every subject of opda:width MUST be an instance of RoomDimension (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:width .
+
+<https://opda.org.uk/pdtf/shape/willHandoverLogbookDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:willHandoverLogbook is used off its declared rdfs:domain: every subject of opda:willHandoverLogbook MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:willHandoverLogbook .
+
+<https://opda.org.uk/pdtf/shape/willingToInsureDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:willingToInsure is used off its declared rdfs:domain: every subject of opda:willingToInsure MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:willingToInsure .
+
+<https://opda.org.uk/pdtf/shape/yearCompletedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:yearCompleted is used off its declared rdfs:domain: every subject of opda:yearCompleted MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yearCompleted .
+
+<https://opda.org.uk/pdtf/shape/yearDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:LegalEstate ;
+    sh:message "opda:year is used off its declared rdfs:domain: every subject of opda:year MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:year .
+
+<https://opda.org.uk/pdtf/shape/yearInstalledDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:yearInstalled is used off its declared rdfs:domain: every subject of opda:yearInstalled MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yearInstalled .
+
+<https://opda.org.uk/pdtf/shape/yearOfBuildDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:yearOfBuild is used off its declared rdfs:domain: every subject of opda:yearOfBuild MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yearOfBuild .
+
+<https://opda.org.uk/pdtf/shape/yearTestedDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:yearTested is used off its declared rdfs:domain: every subject of opda:yearTested MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yearTested .
+
+<https://opda.org.uk/pdtf/shape/yearWorkCarriedOutDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:yearWorkCarriedOut is used off its declared rdfs:domain: every subject of opda:yearWorkCarriedOut MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yearWorkCarriedOut .
+
+<https://opda.org.uk/pdtf/shape/yieldDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Valuation ;
+    sh:message "opda:yield is used off its declared rdfs:domain: every subject of opda:yield MUST be an instance of Valuation (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:yield .
+
+<https://opda.org.uk/pdtf/shape/zoomDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Property ;
+    sh:message "opda:zoom is used off its declared rdfs:domain: every subject of opda:zoom MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:zoom .
 
 _:b3e0164ae9605
     rdf:type sh:SPARQLRule ;

@@ -69,13 +69,15 @@ For the descriptive layer, a green `ci-category-g-coverage` + `ci-profile-contra
 
 A profile binding zero or few `sh:path` shapes is **not** evidence of incomplete work. Per session-034 / ODR-0022 §Rules.1, only Category-G substantive attributes bind as per-leaf profile shapes; A/B/C/D/E/F leaves are carried by `dct:subject` + JSON-pointer `dct:source` and are GAP-registered, never fabricated. `oc1`/`llc1` stay thin until their ODR-0008d re-open trigger fires (a named consumer issues a worked SPARQL query against a register leaf).
 
-### R3 — Tracked known-issue: EPC-certificate inference cross-trip (OPEN)
+### R3 — Tracked known-issue: EPC-certificate inference cross-trip (corrected; disposed by ODR-0029 R4)
 
-`Baspi5_EPCCertificateShape` binds `opda:currentEnergyRating` (whose `rdfs:domain` is `opda:Property`) onto `opda:EPCCertificate`. Under the RDFS inference the round-trip mandates (ODR-0025 / ODR-0026), an `EPCCertificate` carrying that rating is inferred to **also** be an `opda:Property` and trips the Property `sh:minCount` shapes. The ADR-0014 JSON→RDF translator carries the same latent issue. This is a **modelling defect, not a coverage gap** — the walk is complete; this is a domain/shape-scoping error.
+> **Wording correction (2026-06-14, Council session-039 / ODR-0029 R4c).** The original R3 text asserted that `Baspi5_EPCCertificateShape` *binds* `opda:currentEnergyRating` onto `opda:EPCCertificate`. Verified against the emitted corpus, that is **not** what the SHACL does: `Baspi5_EPCCertificateShape` is a **bare, empty `sh:targetClass opda:EPCCertificate`** node shape with **no `sh:property`**; the rating (`opda:currentEnergyRating`) and the `opda:hasEPCCertificate` join are both bound on `Baspi5_PropertyShape`, whose `sh:targetClass` matches their `rdfs:domain opda:Property`. The model and the emitted SHACL are therefore **correct**. The text below is the corrected account.
 
-* **Disposition:** OPEN, tracked. Fix is in the emitter — either give `opda:EPCCertificate` its own rating predicate, or scope `Baspi5_EPCCertificateShape` so the rating does not place an EPC certificate in `opda:Property`'s domain.
-* **Workaround in place:** the B2 conformant exemplar models the rating on the `opda:Property` (where the domain places it) and documents the defect in its header.
-* **Surfaced by:** Council session-034 (handover note #8, 2026-06-01).
+The real exposure is **not** in the emitted shapes but in two edges: **(a)** the ADR-0014 round-trip validates the merged graph under a full `inference="rdfs"`-style closure (TBox-merge), *wider* than OPDA's own materialised Safe-Group closure — which excludes `rdfs:domain`/`range` (ODR-0025 §R2/§R7); under that broad RDFS, an `EPCCertificate` reached through the join could be mis-typed; **(b)** the **dangling** `Baspi5_EPCCertificateShape` (a `sh:targetClass` with no constraints) earns its keep nowhere. OPDA's own load-time closure does **not** produce the cross-trip (the Safe Group never entails `EPCCertificate ⊑ Property` — `ci-inference-closure` clause 3b guards exactly this).
+
+* **Disposition:** SUPERSEDED by [ODR-0029](ODR-0029-inference-validation-boundary-and-entailment-regime-disposition.md) R4. The model is correct; do **not** re-home the rating onto the certificate and do **not** add a `recordsRating`. The fixes are: point the ADR-0014 round-trip at the materialised Safe-Group closure (not full RDFS); resolve the dangling `Baspi5_EPCCertificateShape` (drop it, or populate it with certificate-intrinsic constraints only — never the Property rating); and add the `domain`/`range`-as-SHACL-constraint layer (ODR-0029 R3) so any genuine off-domain use is *validated*.
+* **Workaround in place:** the B2 conformant exemplar models the rating on the `opda:Property` (where the domain places it) and documents the context in its header.
+* **Surfaced by:** Council session-034 (handover note #8, 2026-06-01); re-located and disposed by Council session-039 (ODR-0029).
 
 ## More Information
 

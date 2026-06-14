@@ -1,14 +1,29 @@
 # =============================================================================
-# OPDA Custom OWL 2 RL "Safe Group" Entailment Ruleset
+# OPDA RDFS-Plus Materialisation Fragment
+# SOUND, but INTENTIONALLY INCOMPLETE w.r.t. OWL 2 RL — this is NOT an OWL 2 RL
+# reasoner and its output is NOT the OWL 2 RL closure.
 # =============================================================================
+# This ruleset enables 7 of the OWL 2 RL rules — RDFS subclass/subproperty
+# closure + propagation, owl:inverseOf (both directions), owl:TransitiveProperty,
+# owl:SymmetricProperty — and OMITS the rest, notably rdfs:domain / rdfs:range
+# (type entailment), owl:sameAs / owl:FunctionalProperty / owl:InverseFunctional-
+# Property (equality), and owl:equivalentClass / owl:equivalentProperty
+# (equivalence). Removing rules from a sound set reduces COMPLETENESS, never
+# soundness: every triple this fragment materialises is a correct entailment;
+# it simply declines to compute the omitted ones (ODR-0029 R5; "RDFS-Plus" per
+# Allemang & Hendler, Council session-039 Q2). A consumer MUST NOT assume the
+# domain/range, equality, or equivalence entailments hold — those constraints
+# live on the SHACL validation side (ODR-0029 R1/R3), not here.
+#
 # Source of truth: ODR-0025 (Entailment Regime) §R1/§R2 + ODR-0026 (wholesale
-# adoption + model-but-don't-evaluate). Replicated verbatim from
+# adoption + model-but-don't-evaluate) + ODR-0029 (honest naming; frozen rule
+# logic). Replicated verbatim from
 # ~/source/hm/semantic-modelling/config/hm-owl-rl-safe.rules (hm ODR-0036);
 # the rule bodies cite only rdf:/rdfs:/owl: vocabulary, so they transfer
 # unchanged — only this header, the entailment-graph IRI, and the consistency-
 # gate namespace differ (ADR-0035 §Rules).
 #
-# Safe Group: 7 constructs with inferencing ENABLED.
+# Enabled fragment: 7 constructs with inferencing ENABLED.
 # Excluded (ODR-0025 §R2): rdfs:domain, rdfs:range, owl:FunctionalProperty,
 # owl:InverseFunctionalProperty, owl:equivalentClass, owl:equivalentProperty —
 # AUTHORED as documentation/identity (ODR-0026 §R2 model-but-don't-evaluate)
@@ -22,7 +37,7 @@
 # contract of WHICH rules are safe (ADR-0035 Option A). It also drives the
 # documented fallback (ADR-0035 Option B) — a live Jena assembler:
 #   ja:reasoner [ ja:reasonerURL <urn:x-hp-direct-predicate> ;
-#                 ja:rules <file:config/opda-owl-rl-safe.rules> ] .
+#                 ja:rules <file:config/opda-rdfs-plus.rules> ] .
 # =============================================================================
 
 # --- RDFS subclass entailment (ENABLED) ---

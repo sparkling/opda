@@ -203,16 +203,58 @@ def _rdf_list(g: Graph, head: object) -> list:
     return out
 
 
+def _safe_group_closure(merged: Graph) -> Graph:
+    """Materialise OPDA's bounded Safe-Group closure over ``merged`` in place.
+
+    ODR-0029 R4(a) / §Confirmation: the ADR-0014 round-trip validates against
+    OPDA's own *materialised Safe-Group closure* — NOT a broad `inference=
+    "rdfs"` (full domain/range) closure. We reuse the FROZEN seven rule bodies
+    from `inference_closure_test` (`_SAFE_RULES` / `_PFX`) so the rule logic
+    lives in exactly one place and `ci-inference-closure` byte-identity remains
+    the guard that none of it changed. Critically the Safe Group EXCLUDES
+    `rdfs:domain`/`range` (ODR-0025 §R2/§R7), so an `opda:EPCCertificate`
+    reached via `opda:hasEPCCertificate` is never mis-typed as `opda:Property`
+    — the EPC false positive cannot arise. Subclass type-propagation (rule 4)
+    still fires, so `sh:targetClass` resolution over subclassed instances holds.
+    """
+    from rdflib import Dataset, URIRef
+
+    from opda_gen.ci.inference_closure_test import (
+        ENTAILMENT_GRAPH,
+        _PFX,
+        _SAFE_RULES,
+    )
+
+    ds = Dataset()
+    src = ds.graph(URIRef("urn:opda:roundtrip:merged"))
+    for triple in merged:
+        src.add(triple)
+    inferred = ds.graph(URIRef(ENTAILMENT_GRAPH))
+    ds.update(f"DROP SILENT GRAPH <{ENTAILMENT_GRAPH}>")
+    for _pass in range(10):
+        before = len(inferred)
+        for rule in _SAFE_RULES:
+            ds.update(_PFX + rule)
+        if len(inferred) == before:
+            break
+    for triple in inferred:
+        merged.add(triple)
+    return merged
+
+
 def _validate(data_ttl: Path, shapes: Graph, tbox: Graph):
     from opda_gen.jena_shacl import validate
 
     # Jena's `shacl` CLI does no RDFS pre-inference, so merge the TBox into the
-    # data graph (it carries the class hierarchy + explicit types) before
-    # validating — the ADR-0036/0037 Jena equivalent of pyshacl's ont_graph.
+    # data graph (it carries the class hierarchy + explicit types), then run
+    # OPDA's bounded Safe-Group closure (ODR-0029 R4a) before validating —
+    # the materialised Safe-Group closure, NOT a broad full-RDFS (domain/range)
+    # closure. domain/range stay on the SHACL validation side (ODR-0029 R3).
     merged = Graph()
     merged.parse(data_ttl, format="turtle")
     for triple in tbox:
         merged.add(triple)
+    _safe_group_closure(merged)
     return validate(shapes, merged)
 
 

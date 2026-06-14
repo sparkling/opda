@@ -546,10 +546,17 @@ def build_shapes_graph() -> Graph:
       materialising the deprecation chain for any SKOS Concept marked
       `owl:deprecated true`.
 
+    Per ODR-0029 R3: the domain/range-as-SHACL-constraint layer — a
+    `sh:targetSubjectsOf <pred> ; sh:class C` node shape for every
+    `rdfs:domain C` and the `sh:targetObjectsOf` dual for every class-valued
+    `rdfs:range C`. This VALIDATES (closed-world) the domain/range the
+    Safe-Group entailment deliberately does NOT infer (ODR-0025 §R2/§R7) — the
+    inference/validation boundary.
+
     The cross-module shapes (per-Kind identity / IC breach / etc.)
     land in the per-module `opda-<module>-shapes.ttl` files via
-    `opda_gen.emitters.shapes`. This foundation file holds only the
-    cross-cutting meta-shapes.
+    `opda_gen.emitters.shapes`. This foundation file holds the
+    cross-cutting meta-shapes + the ODR-0029 R3 domain/range layer.
     """
     g = Graph()
     _bind_common(g)
@@ -562,9 +569,15 @@ def build_shapes_graph() -> Graph:
 
     # Lazy import to keep the foundation builder dependency-free at
     # import time (the shapes builder lives in a sibling module).
-    from opda_gen.emitters.shapes import build_foundation_meta_shapes
+    from opda_gen.emitters.shapes import (
+        build_domain_range_constraint_shapes,
+        build_foundation_meta_shapes,
+    )
 
     build_foundation_meta_shapes(g)
+    # ODR-0029 R3: the domain/range-as-SHACL-constraint layer (validates the
+    # rdfs:domain/range the Safe-Group closure deliberately does NOT infer).
+    build_domain_range_constraint_shapes(g)
     return g
 
 

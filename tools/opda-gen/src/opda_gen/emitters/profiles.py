@@ -791,7 +791,10 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         * Baspi5_LegalEstateShape — ownership type / tenure / shared-
                                      ownership / ground rent.
         * Baspi5_SellerShape      — name/email/role; sellersCapacity oneOf.
-        * Baspi5_EPCCertificateShape — currentEnergyRating required.
+        * Baspi5_EPCCertificateShape — DROPPED (ODR-0029 R4b): was a bare
+                                     dangling sh:targetClass; the certificate
+                                     IC tuple is validated by the base
+                                     opda-descriptive-shapes.ttl, not here.
     - sh:PropertyGroup instances for the major DASH groups.
     - sh:xone shape for the BASPI5 sellersCapacity oneOf discriminator.
     """
@@ -1196,22 +1199,25 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         form_question_anchor="B1",
     )
 
-    # --- Baspi5_EPCCertificateShape (BASPI5 A1.8.3.1) -----------------
-    epc_shape = OPDA_SHAPE.Baspi5_EPCCertificateShape
-    g.add((epc_shape, RDF.type, SH.NodeShape))
-    g.add((epc_shape, SH.targetClass, OPDA.EPCCertificate))
-    g.add((epc_shape, DCTERMS.source, _baspi5_question("A1.8.3.1")))
-    # Node-shape-only target marker — NO sh:property. The EPC predicates are
-    # Property attributes (opda:currentEnergyRating, rdfs:domain opda:Property)
-    # or the Property → EPCCertificate join (opda:hasEPCCertificate); both are
-    # bound on Baspi5_PropertyShape, the shape whose target matches their
-    # domain. Binding currentEnergyRating here (on an EPCCertificate target)
-    # reused a Property-domain predicate on a non-Property subject; under rdfs
-    # domain entailment a conformant EPC node would be mis-typed a Property and
-    # trip the Property minCounts (handover 2026-06-01 §8 / ODR-0025 §R7 /
-    # ADR-0035 §"EPCCertificate emitter fix"). The certificate-container leaf
-    # A1.8.3.1 and rating leaf A1.8.3.1.1 round-trip via Baspi5_PropertyShape
-    # (ODR-0022 §2 G3).
+    # --- Baspi5_EPCCertificateShape — DROPPED (ODR-0029 R4b) ----------
+    # The shape was a bare, dangling `sh:targetClass opda:EPCCertificate` with
+    # NO sh:property — it earned its keep nowhere. ODR-0029 R4(b) disposes it:
+    # drop it OR populate with certificate-intrinsic constraints ONLY (issue
+    # date / authority reference / the ODR-0008d IC tuple), NEVER the Property
+    # rating. We DROP it here, because (1) the certificate-intrinsic IC tuple
+    # ⟨issuing authority, authority reference, issue date⟩ is ALREADY validated
+    # by the base EPCCertificateInternalStructureShape + EPCCertificateIdentity-
+    # KeyShape in opda-descriptive-shapes.ttl (ODR-0008d Rule 3) — duplicating
+    # it in the profile would be redundant; and (2) those intrinsics are DESNZ-
+    # register fields, not BASPI5 form questions, so they have no baspi5Ref to
+    # anchor a profile property-shape `dct:source` and carry sh:Info — both of
+    # which collide with the BASPI5 profile's own invariants (the sh:Violation
+    # severity-floor and the one-ref→one-sh:path G3 gate, ODR-0022 §2 G3). The
+    # rating (opda:currentEnergyRating, rdfs:domain opda:Property) and the
+    # Property → EPCCertificate join (opda:hasEPCCertificate) remain bound on
+    # Baspi5_PropertyShape, whose target matches their domain; the certificate-
+    # container leaf A1.8.3.1 and rating leaf A1.8.3.1.1 round-trip via
+    # Baspi5_PropertyShape.
 
 
 # --- Generator-comment header --------------------------------------------

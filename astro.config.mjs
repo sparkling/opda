@@ -164,7 +164,7 @@ export default defineConfig({
   // pre-existing site pages also triggered this. ADR-0016.
   image: { service: passthroughImageService() },
   // ADR-0018: unwrap <details>-wrapped mermaid blocks → <div class="mermaid">,
-  // rewrite relative .md cross-links to /manual/ routes, and extract OPDA
+  // rewrite relative .md cross-links to /model/ routes, and extract OPDA
   // entity URIs from markdown body into frontmatter.
   markdown: {
     remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks, remarkMermaidFence],
@@ -179,6 +179,22 @@ export default defineConfig({
     format: 'directory',
   },
   trailingSlash: 'never',
+  // ADR-0042: the `/manual` section was renamed to `/model` (URL-only). Keep old
+  // external `/manual/*` links alive by redirecting them to their `/model/*` route.
+  // Astro requires each redirect destination to match an existing route pattern,
+  // so the per-tier dynamic routes are redirected individually (there is no single
+  // `/model/[...slug]` route — the section is split into per-tier `[...slug]` routes).
+  redirects: {
+    '/manual': '/model',
+    '/manual/validation-report': '/model/validation-report',
+    '/manual/information-architecture': '/model/information-architecture',
+    '/manual/information-architecture/[spec]': '/model/information-architecture/[spec]',
+    '/manual/concept/[...slug]': '/model/concept/[...slug]',
+    '/manual/logical/[...slug]': '/model/logical/[...slug]',
+    '/manual/physical-database/[...slug]': '/model/physical-database/[...slug]',
+    '/manual/physical-ontology/[...slug]': '/model/physical-ontology/[...slug]',
+    '/manual/physical-relational/[...slug]': '/model/physical-relational/[...slug]',
+  },
   server: {
     // 4321 conflicts with other tools on this machine — use 4330 instead.
     // dev.sh probes 4330-4339 and picks the first free one if 4330 is busy too.

@@ -2,9 +2,9 @@
  * Realises ADR-0021: per-entity cross-tier URL scheme.
  *
  * URL scheme (from ADR-0021 §"Implementation sketch"):
- *   concept/logical  → /manual/<tier>/<module>/<localName-lowercase>
- *   physical-ontology → /manual/physical-ontology/<module>/classes#<localName>
- *   physical-database → /manual/physical-database/modules/<module>#<localName>
+ *   concept/logical  → /model/<tier>/<module>/<localName-lowercase>
+ *   physical-ontology → /model/physical-ontology/<module>/classes#<localName>
+ *   physical-database → /model/physical-database/modules/<module>#<localName>
  *
  * The canonical key is the opda:<LocalName> URI (camel-case local name).
  * URL slugs use lowercase to match the existing manual collection convention.
@@ -30,16 +30,16 @@ export function buildCrossTierUrls(
 
   return {
     concept: has('concept')
-      ? `/manual/concept/${module}/${slug}`
+      ? `/model/concept/${module}/${slug}`
       : null,
     logical: has('logical')
-      ? `/manual/logical/${module}/${slug}`
+      ? `/model/logical/${module}/${slug}`
       : null,
     physicalDatabase: has('physical-database')
-      ? `/manual/physical-database/modules/${module}#${localName}`
+      ? `/model/physical-database/modules/${module}#${localName}`
       : null,
     physicalOntology: has('physical-ontology')
-      ? `/manual/physical-ontology/${module}/classes#${localName}`
+      ? `/model/physical-ontology/${module}/classes#${localName}`
       : null,
   };
 }

@@ -36,7 +36,7 @@ export function buildDiagramLinks(ids: string[]): Record<string, string> {
     if (!tier) continue;
 
     const slug = deriveSlug(id, tier);
-    const route = slug ? `/manual/${tier}/${slug}` : `/manual/${tier}`;
+    const route = slug ? `/model/${tier}/${slug}` : `/model/${tier}`;
 
     // Normalised stem (last segment of the slug, or the slug itself)
     const stem = slug.split('/').pop() ?? slug;

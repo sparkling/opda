@@ -38,11 +38,6 @@
     sh:property _:bdc8662a2e1ab ;
     sh:targetClass opda:Buyer .
 
-<https://opda.org.uk/pdtf/shape/Baspi5_EPCCertificateShape>
-    rdf:type sh:NodeShape ;
-    dct:source <https://www.basp.uk/forms/baspi5#A1.8.3.1> ;
-    sh:targetClass opda:EPCCertificate .
-
 <https://opda.org.uk/pdtf/shape/Baspi5_LegalEstateShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.3> ;

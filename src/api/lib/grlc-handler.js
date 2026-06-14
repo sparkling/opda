@@ -287,9 +287,9 @@ function buildCrossTierLinks(localName, module) {
   const slug = pascalToKebab(localName);
   const mod = module.toLowerCase();
   return {
-    concept:          `/manual/concept/${mod}/${slug}`,
-    logical:          `/manual/logical/${mod}/${slug}`,
-    physicalOntology: `/manual/physical-ontology/${mod}/classes#${localName}`,
+    concept:          `/model/concept/${mod}/${slug}`,
+    logical:          `/model/logical/${mod}/${slug}`,
+    physicalOntology: `/model/physical-ontology/${mod}/classes#${localName}`,
     physicalDatabase: null,
   };
 }

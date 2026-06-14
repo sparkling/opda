@@ -33,32 +33,32 @@ function rewrite(md, sourceRel) {
 
 test('rewrites a sibling entity link', () => {
   const urls = rewrite('[Address](./address.md)', 'concept/property/property.md');
-  assert.deepEqual(urls, ['/manual/concept/property/address']);
+  assert.deepEqual(urls, ['/model/concept/property/address']);
 });
 
 test('rewrites a cross-tier link', () => {
   const urls = rewrite('[Logical](../../logical/property/property.md)', 'concept/property/property.md');
-  assert.deepEqual(urls, ['/manual/logical/property/property']);
+  assert.deepEqual(urls, ['/model/logical/property/property']);
 });
 
 test('rewrites a cross-module link', () => {
   const urls = rewrite('[Txn](../transaction/transaction.md)', 'concept/property/property.md');
-  assert.deepEqual(urls, ['/manual/concept/transaction/transaction']);
+  assert.deepEqual(urls, ['/model/concept/transaction/transaction']);
 });
 
 test('collapses module README link to its directory route', () => {
   const urls = rewrite('[Property module](./README.md)', 'concept/property/README.md');
-  assert.deepEqual(urls, ['/manual/concept/property']);
+  assert.deepEqual(urls, ['/model/concept/property']);
 });
 
 test('collapses tier README link to its directory route', () => {
   const urls = rewrite('[Concept tier](../README.md)', 'concept/property/property.md');
-  assert.deepEqual(urls, ['/manual/concept']);
+  assert.deepEqual(urls, ['/model/concept']);
 });
 
 test('preserves #anchors', () => {
   const urls = rewrite('[IC](./property.md#identity-criterion)', 'concept/property/address.md');
-  assert.deepEqual(urls, ['/manual/concept/property/property#identity-criterion']);
+  assert.deepEqual(urls, ['/model/concept/property/property#identity-criterion']);
 });
 
 test('leaves out-of-manual .md links unchanged (ODR corpus)', () => {
@@ -68,16 +68,16 @@ test('leaves out-of-manual .md links unchanged (ODR corpus)', () => {
 });
 
 test('leaves external + absolute + non-.md links unchanged', () => {
-  const md = '[ext](https://example.com/x.md) [abs](/manual/concept) [png](diagrams/x.png)';
+  const md = '[ext](https://example.com/x.md) [abs](/model/concept) [png](diagrams/x.png)';
   const urls = rewrite(md, 'concept/property/property.md');
-  assert.deepEqual(urls, ['https://example.com/x.md', '/manual/concept', 'diagrams/x.png']);
+  assert.deepEqual(urls, ['https://example.com/x.md', '/model/concept', 'diagrams/x.png']);
 });
 
 test('toManualRoute maps tier/module/entity and umbrella README', () => {
   const root = path.resolve('docs/manual');
-  assert.equal(toManualRoute(path.join(root, 'README.md')), '/manual');
-  assert.equal(toManualRoute(path.join(root, 'concept/README.md')), '/manual/concept');
+  assert.equal(toManualRoute(path.join(root, 'README.md')), '/model');
+  assert.equal(toManualRoute(path.join(root, 'concept/README.md')), '/model/concept');
   assert.equal(toManualRoute(path.join(root, 'logical/agent/enumerations/role-scheme.md')),
-    '/manual/logical/agent/enumerations/role-scheme');
+    '/model/logical/agent/enumerations/role-scheme');
   assert.equal(toManualRoute('/some/other/tree/file.md'), null);
 });

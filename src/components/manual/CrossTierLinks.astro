@@ -24,10 +24,10 @@ const { entityUri, tier, module: mod, entityName } = Astro.props;
 if (!entityUri && !mod) return;
 
 const tiers = [
-  { key: 'concept', label: 'Concept', path: '/manual/concept' },
-  { key: 'logical', label: 'Logical', path: '/manual/logical' },
-  { key: 'physical-database', label: 'Physical — deployment', path: '/manual/physical-database' },
-  { key: 'physical-ontology', label: 'Physical — ontology', path: '/manual/physical-ontology' },
+  { key: 'concept', label: 'Concept', path: '/model/concept' },
+  { key: 'logical', label: 'Logical', path: '/model/logical' },
+  { key: 'physical-database', label: 'Physical — deployment', path: '/model/physical-database' },
+  { key: 'physical-ontology', label: 'Physical — ontology', path: '/model/physical-ontology' },
 ] as const;
 
 // Build tier links using module + entityName as best-effort path when entityUri absent.

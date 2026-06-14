@@ -18,7 +18,7 @@ import Layout from '@/layouts/Layout.astro';
   <p>
     This manual is generated from the 24 emitted TTL files at{' '}
     <code>source/03-standards/ontology/</code> per the
-    <a href="/manual/information-architecture">information-architecture blueprint</a>.
+    <a href="/model/information-architecture">information-architecture blueprint</a>.
   </p>
 
   <h2 id="tier-index">Tier index</h2>
@@ -33,7 +33,7 @@ import Layout from '@/layouts/Layout.astro';
     </thead>
     <tbody>
       <tr>
-        <td><a href="/manual/concept"><strong>Concept</strong></a></td>
+        <td><a href="/model/concept"><strong>Concept</strong></a></td>
         <td>Property-industry SMEs — surveyors, conveyancers, lenders, government data leads</td>
         <td>
           <em>"What does an OPDA Property mean, and why does Identity Criterion matter?"</em>
@@ -41,7 +41,7 @@ import Layout from '@/layouts/Layout.astro';
         </td>
       </tr>
       <tr>
-        <td><a href="/manual/logical"><strong>Logical</strong></a></td>
+        <td><a href="/model/logical"><strong>Logical</strong></a></td>
         <td>Data engineers, solution architects, integration architects</td>
         <td>
           <em>"What typed attributes does Property have, and how does it relate to Address, LegalEstate, Transaction?"</em>
@@ -49,7 +49,7 @@ import Layout from '@/layouts/Layout.astro';
         </td>
       </tr>
       <tr>
-        <td><a href="/manual/physical-database"><strong>Physical — deployment</strong></a></td>
+        <td><a href="/model/physical-database"><strong>Physical — deployment</strong></a></td>
         <td>Triplestore operators, SPARQL consumers, devops</td>
         <td>
           <em>"Which named graph holds <code>opda:Property</code>, and how do I fetch it from <code>w3id.org/opda/Property</code>?"</em>
@@ -57,7 +57,7 @@ import Layout from '@/layouts/Layout.astro';
         </td>
       </tr>
       <tr>
-        <td><a href="/manual/physical-ontology"><strong>Physical — ontology</strong></a></td>
+        <td><a href="/model/physical-ontology"><strong>Physical — ontology</strong></a></td>
         <td>Ontology engineers, SHACL implementers, regulators</td>
         <td>
           <em>"Which Turtle file emits <code>opda:Property</code>, what SHACL shapes constrain it?"</em>
@@ -85,7 +85,7 @@ import Layout from '@/layouts/Layout.astro';
   </ul>
 
   <p>
-    See also: <a href="/manual/validation-report">Validation report</a> ·
-    <a href="/manual/information-architecture">Information architecture</a>
+    See also: <a href="/model/validation-report">Validation report</a> ·
+    <a href="/model/information-architecture">Information architecture</a>
   </p>
 </Layout>

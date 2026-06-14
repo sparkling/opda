@@ -460,3 +460,76 @@ def test_special_category_shape_binds_core_dpv_for_lawful_basis(
         "Cat 4 shape SPARQL must still query dpv:hasLegalBasis "
         "(only the prefix binding changed)"
     )
+
+
+# --- ODR-0029 R3: domain/range-as-SHACL-constraint layer -----------------
+def test_domain_range_layer_emitted_in_foundation_shapes() -> None:
+    """ODR-0029 R3: the foundation shapes graph carries a domain shape
+    (`sh:targetSubjectsOf <pred> ; sh:class C ; sh:severity sh:Violation`) for
+    every `rdfs:domain` and a range dual for every class-valued `rdfs:range`.
+
+    Spot-checks the EPC case the disposition names: opda:currentEnergyRating
+    (rdfs:domain opda:Property) gets a targetSubjectsOf/sh:class opda:Property
+    Violation shape; opda:hasEPCCertificate (rdfs:range opda:EPCCertificate)
+    gets a targetObjectsOf/sh:class opda:EPCCertificate dual."""
+    from opda_gen.emitters.foundation import build_shapes_graph
+
+    g = build_shapes_graph()
+
+    dom_shape = OPDA_SHAPE.currentEnergyRatingDomainShape
+    assert (dom_shape, RDF.type, SH.NodeShape) in g
+    assert (dom_shape, SH.targetSubjectsOf, OPDA.currentEnergyRating) in g
+    assert (dom_shape, SH["class"], OPDA.Property) in g
+    assert (dom_shape, SH.severity, SH.Violation) in g
+
+    rng_shape = OPDA_SHAPE.hasEPCCertificateRangeShape
+    assert (rng_shape, RDF.type, SH.NodeShape) in g
+    assert (rng_shape, SH.targetObjectsOf, OPDA.hasEPCCertificate) in g
+    assert (rng_shape, SH["class"], OPDA.EPCCertificate) in g
+    assert (rng_shape, SH.severity, SH.Violation) in g
+
+    # The layer is substantial — every rdfs:domain becomes a domain shape.
+    domain_shapes = [
+        s for s in g.subjects(SH.targetSubjectsOf, None)
+        if str(s).endswith("DomainShape")
+    ]
+    assert len(domain_shapes) >= 200, (
+        f"expected the full domain layer (>=200 shapes); got {len(domain_shapes)}"
+    )
+
+
+def test_planted_off_domain_triple_raises_violation() -> None:
+    """ODR-0029 R3 §Confirmation: a predicate used off its declared domain is
+    flagged as a SHACL violation. Plant `opda:currentEnergyRating` on a node
+    typed `opda:EPCCertificate` (NOT `opda:Property`) — the EPC mismatch the
+    disposition guards — and assert the Jena SHACL report flags it, citing
+    `currentEnergyRatingDomainShape`. (Domain/range are VALIDATED here, never
+    inferred — the Safe-Group closure excludes them, ODR-0025 §R2/§R7.)"""
+    from opda_gen.emitters.foundation import build_shapes_graph
+    from opda_gen.jena_shacl import validate
+
+    shapes = build_shapes_graph()
+
+    # An EPCCertificate node carrying a Property-domain predicate — the exact
+    # off-domain misuse ODR-0029 R3 must catch.
+    data = Graph()
+    bad = URIRef("urn:test:epc-1")
+    data.add((bad, RDF.type, OPDA.EPCCertificate))
+    data.add((bad, OPDA.currentEnergyRating, Literal("C")))
+
+    conforms, report = validate(shapes, data)
+    assert not conforms, (
+        "planted off-domain triple (currentEnergyRating on an EPCCertificate, "
+        "not a Property) MUST NOT conform — ODR-0029 R3 domain validation"
+    )
+    # The violation traces to the currentEnergyRating domain shape.
+    source_shapes = {str(o) for o in report.objects(None, SH.sourceShape)}
+    assert str(OPDA_SHAPE.currentEnergyRatingDomainShape) in source_shapes, (
+        "the violation must cite currentEnergyRatingDomainShape; got "
+        f"{source_shapes}"
+    )
+    # And it is Violation-severity (ODR-0013 §Q1 — a type error, not a gap).
+    severities = {str(o) for o in report.objects(None, SH.resultSeverity)}
+    assert str(SH.Violation) in severities, (
+        f"off-domain breach must be sh:Violation; got {severities}"
+    )

@@ -1,0 +1,349 @@
+---
+/**
+ * ADR-0041 — the `/ontology` section: the published, authoritative reference of
+ * the OPDA PDTF ontology, and the operator-review surface for the multi-tool
+ * bake-off (§Amendments rev 1–4; M6 rubric + per-layer pick).
+ *
+ * This page is the FINAL COMPOSITION the operator reviews: it catalogues every
+ * bake-off tool, embeds the renderings, carries the M6 rubric scorecard, lists
+ * everything generated (with LIVE counts read from source/03-standards/ontology/),
+ * links the downloadable artefacts, and carries the hand-authored conceptual /
+ * governance / known-issues layer per the session-038 agreed outline.
+ *
+ * Counts are computed at build time (read-only) from the committed TTL corpus.
+ * Tool renderings + artefacts are produced separately under public/ontology/.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+
+/** Read a TTL file, returning '' if missing (corpus is edited concurrently). */
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+/** Count regex matches across a set of module TTLs. */
+function countAcross(files: string[], re: RegExp): number {
+  let n = 0;
+  for (const f of files) { const m = ttl(f).match(re); if (m) n += m.length; }
+  return n;
+}
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+function countDir(rel: string, suffix: string, exclude?: string): number {
+  try {
+    return fs.readdirSync(path.join(ONT, rel))
+      .filter((f) => f.endsWith(suffix) && (!exclude || !f.includes(exclude))).length;
+  } catch { return 0; }
+}
+
+const MODULES = ['opda-classes.ttl', 'opda-property.ttl', 'opda-agent.ttl',
+  'opda-transaction.ttl', 'opda-claim.ttl', 'opda-governance.ttl',
+  'opda-descriptive.ttl', 'foundation.ttl'];
+const SHAPES = ['opda-shapes.ttl', 'opda-property-shapes.ttl', 'opda-agent-shapes.ttl',
+  'opda-transaction-shapes.ttl', 'opda-claim-shapes.ttl', 'opda-governance-shapes.ttl',
+  'opda-descriptive-shapes.ttl'];
+
+// LIVE counts from the committed corpus (rdf:type form).
+const counts = {
+  classes:    countAcross(MODULES, /rdf:type owl:Class/g),
+  objectProps: countAcross(MODULES, /rdf:type owl:ObjectProperty/g),
+  dataProps:  countAcross(MODULES, /rdf:type owl:DatatypeProperty/g),
+  schemes:    countAcross(['opda-vocabularies.ttl'], /rdf:type skos:ConceptScheme/g),
+  concepts:   countAcross(['opda-vocabularies.ttl'], /rdf:type skos:Concept\b/g),
+  shapes:     countAcross(SHAPES, /sh:NodeShape/g),
+  profiles:   countDir('profiles', '.ttl'),
+  exemplars:  countDir('exemplars', '.ttl', 'expected-report'),
+};
+
+// Bake-off tool catalogue (ADR-0041 §Amendments — the all-tools mandate).
+// `href` resolves only once the sibling generation step has produced output.
+const TOOLS = [
+  { id: 'pylode',   name: 'pyLODE',         layer: 'OWL term reference',                 note: 'Python CLI; best single-file OWL ref; weak SHACL.',           href: '/ontology/tools/pylode/',                live: exists('tools/pylode/index.html'),        embed: true },
+  { id: 'widoco',   name: 'WIDOCO',         layer: 'OWL + metadata + VOWL diagrams',     note: 'Java jar (headless); richest publishable shell; weak SHACL.', href: '/ontology/tools/widoco/doc/index-en.html', live: exists('tools/widoco/doc/index-en.html'), embed: true },
+  { id: 'shaclplay',name: 'SHACL Play!',    layer: 'SHACL shapes / profiles → HTML',     note: 'Sparna; the only tool that documents SHACL.',                 href: '/ontology/tools/shaclplay/',             live: exists('tools/shaclplay/index.html'),     embed: false },
+  { id: 'skosmos',  name: 'Skosmos',        layer: 'SKOS schemes (browser)',             note: 'NatLibFi; PHP app over Fuseki — localhost only (B2).',        href: 'http://localhost:9090/',                 live: false, localhost: true,                  embed: false },
+  { id: 'ontospy',  name: 'Ontospy',        layer: 'OWL + visualisations (multi-page)',  note: 'Python CLI; needs a Python ≤3.11 interpreter.',               href: '/ontology/tools/ontospy/',               live: exists('tools/ontospy/index.html'),       embed: false },
+  { id: 'lode',     name: 'LODE',           layer: 'OWL term reference (baseline)',      note: "Dated XSLT/web-service; the DA's own tool — comparison baseline.", href: '/ontology/tools/lode/',              live: exists('tools/lode/index.html'),          embed: false },
+  { id: 'custom',   name: 'custom opda-gen + LLM', layer: 'profiles · exemplars · three-graph · governance · known-issues', note: 'The only approach covering the OPDA-specific layers no off-the-shelf tool touches.', href: '/ontology/tools/custom/', live: exists('tools/custom/index.html'), embed: false },
+];
+
+// M6 rubric scorecard. If public/ontology/tools/COMPARISON.md exists, the
+// operator's scoring is staged there; otherwise render the empty rubric.
+const comparisonStaged = exists('tools/COMPARISON.md');
+const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Exemplars',
+  'Three-graph', 'Governance / lineage', 'Known-issues', 'Fidelity', 'Integration cost'];
+
+// Everything-generated: the artefact downloads.
+const artefacts = {
+  merged:       exists('artefacts/opda-merged.ttl'),
+  shapesMerged: exists('artefacts/opda-shapes-merged.ttl'),
+  source:       exists('artefacts/source'),
+};
+---
+<Layout
+  title="Ontology"
+  description="The published, authoritative reference of the OPDA PDTF ontology — the bake-off comparison and the adopted composed reference, generated from the committed TTL corpus."
+>
+<PageMeta category="Section overview" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Ontology — the authoritative reference</h1>
+
+  <p class="lead">
+    The published, generated reference of the OPDA PDTF ontology itself — the canonical
+    specification to link people to. Everything here is generated from the committed TTL
+    corpus at <code>source/03-standards/ontology/</code> and guarded by the doc-drift CI
+    gate, so it cannot silently diverge from the model. This page is also the operator's
+    review surface for the multi-tool <strong>bake-off</strong> (ADR-0041 §Amendments):
+    every tool renders the full ontology, the renderings are scored per layer, and the best
+    method is adopted per layer into one woven reference.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">Status — draft, under review</p>
+    <p>
+      Programme <strong>RETIRED 2026-06-14</strong> (historical anchor; modelling continues
+      under fresh ODRs). This reference carries <code>status: draft</code> until the doc-drift
+      CI gate is green and the operator settles the per-layer pick (ADR-0041 M6); it is the
+      artefact the operator reviews. Tool renderings and downloads below resolve as the
+      generation step populates <code>public/ontology/</code>.
+    </p>
+  </div>
+
+  <!-- ─────────────────────────  PART 1 — BAKE-OFF TOOLS  ───────────────────────── -->
+  <h2 id="bakeoff">1 · The bake-off — all tools</h2>
+  <p>
+    Per ADR-0041 (rev-3 M2, operator direction), the bake-off <strong>installs and runs every
+    tool</strong> so each rendering can be inspected personally before settling the composition.
+    No single off-the-shelf tool covers the whole corpus — the OWL generators skip SHACL and
+    treat SKOS unevenly — so the adopted artefact combines tool renderings where they win,
+    custom <code>opda-gen</code> scripts for the OPDA-specific layers, and LLM-authored prose
+    for the conceptual layer.
+  </p>
+
+  <table>
+    <thead><tr><th>Tool</th><th>Layer it renders</th><th>Rendering</th><th>Note</th></tr></thead>
+    <tbody>
+      {TOOLS.map((t) => (
+        <tr>
+          <td><strong>{t.name}</strong></td>
+          <td>{t.layer}</td>
+          <td>
+            {t.localhost ? (
+              <span><code>{t.href}</code> · localhost only</span>
+            ) : t.live ? (
+              <a href={t.href}>View rendering ↗</a>
+            ) : (
+              <span class="pill pill--warn">Pending generation</span>
+            )}
+          </td>
+          <td>{t.note}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <p>
+    <strong>Skosmos</strong> needs a live SPARQL runtime, so it is not embedded in the static
+    build (B2 resolved): run it from localhost alongside the existing build-time Fuseki (the
+    <code>make serve-data</code> pattern) and browse it at the link above; the contract is the
+    same as <code>make serve-data</code> today — the link resolves only with the local stack running.
+  </p>
+
+  {TOOLS.filter((t) => t.embed && t.live).map((t) => (
+    <details>
+      <summary><strong>Embedded — {t.name}</strong> ({t.layer})</summary>
+      <iframe src={t.href} title={`${t.name} rendering`} loading="lazy"
+        style="width:100%; height:70vh; border:1px solid var(--color-border, #ccc); border-radius:8px; margin-top:0.75rem;"></iframe>
+    </details>
+  ))}
+
+  <h3 id="rubric">M6 rubric scorecard</h3>
+  <p>
+    The decider is the operator, on inspection (ADR-0041 rev-3 M2 / rev-4 M6); the rubric
+    structures the inspection and the per-layer pick. Each tool is scored
+    <strong>Full / Partial / None</strong> per coverage-matrix layer, plus fidelity (does it
+    misrepresent — raw blank nodes, asserted-as-entailed, SHACL ignored) and integration cost
+    (effort to theme + wire into <code>opda-gen</code> + the gate). Tie-break toward the tool
+    needing least custom post-processing for fidelity.
+  </p>
+  {comparisonStaged ? (
+    <p class="callout callout--note">
+      <span class="callout__label">Scoring staged</span>
+      The operator's per-layer scoring is recorded at
+      <code>public/ontology/tools/COMPARISON.md</code> — see that document for the filled rubric.
+    </p>
+  ) : (
+    <p><em>Empty rubric — to be filled on inspection (cells: Full / Partial / None).</em></p>
+  )}
+  <table>
+    <thead>
+      <tr><th>Tool</th>{RUBRIC_COLS.map((c) => (<th>{c}</th>))}</tr>
+    </thead>
+    <tbody>
+      {TOOLS.map((t) => (
+        <tr><td><strong>{t.name}</strong></td>{RUBRIC_COLS.map(() => (<td>—</td>))}</tr>
+      ))}
+    </tbody>
+  </table>
+
+  <!-- ─────────────────────────  PART 2 — EVERYTHING GENERATED  ───────────────────────── -->
+  <h2 id="generated">2 · Everything generated</h2>
+  <p>
+    Live counts read at build time from the committed TTL corpus. Each layer links its
+    downloadable artefact under <code>/ontology/artefacts/</code> where staged.
+  </p>
+
+  <table>
+    <thead><tr><th>Layer</th><th>Live count</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>OWL classes</td><td>{counts.classes}</td><td>module TTLs (asserted <code>owl:Class</code>)</td></tr>
+      <tr><td>Object properties</td><td>{counts.objectProps}</td><td><code>owl:ObjectProperty</code></td></tr>
+      <tr><td>Datatype properties</td><td>{counts.dataProps}</td><td><code>owl:DatatypeProperty</code></td></tr>
+      <tr><td>SKOS concept schemes</td><td>{counts.schemes}</td><td><code>opda-vocabularies.ttl</code></td></tr>
+      <tr><td>SKOS concepts</td><td>{counts.concepts}</td><td><code>opda-vocabularies.ttl</code></td></tr>
+      <tr><td>SHACL base node-shapes</td><td>{counts.shapes}</td><td><code>*-shapes.ttl</code></td></tr>
+      <tr><td>Overlay profiles</td><td>{counts.profiles}</td><td><code>profiles/*.ttl</code></td></tr>
+      <tr><td>Round-trip exemplars</td><td>{counts.exemplars}</td><td><code>exemplars/*.ttl</code> (scenario inputs)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="artefacts">Downloadable artefacts</h3>
+  <ul>
+    {artefacts.merged && (<li><a href="/ontology/artefacts/opda-merged.ttl">opda-merged.ttl</a> — merged TBox (OWL + SKOS), the bake-off input graph.</li>)}
+    {artefacts.shapesMerged && (<li><a href="/ontology/artefacts/opda-shapes-merged.ttl">opda-shapes-merged.ttl</a> — merged SHACL shapes graph.</li>)}
+    {artefacts.source && (<li><a href="/ontology/artefacts/source/">source/</a> — per-module TTLs (classes, properties, shapes, annotations, vocabularies, contexts).</li>)}
+    {!artefacts.merged && !artefacts.shapesMerged && (<li><span class="pill pill--warn">Pending generation</span> — merged TTL bundles stage under <code>/ontology/artefacts/</code>.</li>)}
+  </ul>
+
+  <h4>Overlay profiles — thin vs bound + gap register</h4>
+  <p>
+    "A form IS its SHACL overlay" (ADR-0029 / session-022). All {counts.profiles} profiles are
+    indexed; most are <strong>thin by design</strong> (session-034): profiles bind Category-G
+    leaves only, so unbound leaves are GAPped deliberately, not by omission (224 bound / 1095
+    GAPped at session-034). <code>baspi5</code> is the most-bound profile; <code>oc1</code> /
+    <code>llc1</code> are thin. The gap register is part of the custom <code>opda-gen</code> layer.
+  </p>
+
+  <!-- ─────────────────────────  PART 3 — AUTHORED LAYER  ───────────────────────── -->
+  <h2 id="authored">3 · Conceptual, governance &amp; known-issues</h2>
+  <p>
+    The layer a generator cannot emit — <em>why</em> the model is shaped as it is. Hand-authored
+    per the session-038 agreed outline; the must-fix soundness conditions (Guizzardi, Knublauch)
+    are binding here: Roles are never shown in a subclass tree, asserted is never rendered as
+    entailed, and every shape states its target graph plus the SHACL-AF caveat.
+  </p>
+
+  <h3 id="ufo">UFO meta-category legend (leads the reference)</h3>
+  <p>
+    Every class maps to a UFO stereotype with OntoClean meta-properties — this frame leads the
+    document, before any term table.
+  </p>
+  <table>
+    <thead><tr><th>Stereotype</th><th>OntoClean</th><th>OPDA examples</th></tr></thead>
+    <tbody>
+      <tr><td>Substance Kind</td><td>rigid, carries an identity criterion</td><td><code>opda:Property</code>, <code>opda:Agent</code></td></tr>
+      <tr><td>Role</td><td>anti-rigid, relationally dependent — <em>never</em> a subclass of a Kind</td><td><code>opda:Seller</code>, <code>opda:Buyer</code></td></tr>
+      <tr><td>RoleMixin</td><td>anti-rigid, multiple-kind-spanning</td><td><code>opda:Evidence</code> (+ <code>evidenceType</code> facet)</td></tr>
+      <tr><td>Relator</td><td>founding the roles it connects</td><td><code>opda:Transaction</code>, <code>opda:Claim</code></td></tr>
+      <tr><td>Mode / Quality</td><td>existentially dependent</td><td>UPRN as a contingent Quality of a Property</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="identity">Identity criteria &amp; the implicit-Property crux (ODR-0005)</h3>
+  <p>
+    The crux: PDTF JSON has no first-class "property" object, yet the ontology needs a rigid
+    identity-bearing <code>opda:Property</code>. The split is <code>Property</code> (the physical
+    thing) / <code>LegalEstate</code> (the interest) / <code>RegisteredTitle</code> (the HMLR
+    record) — three Kinds, three identity criteria, not one conflated entity. Each IC is exercised
+    over its five named hard cases.
+    <strong>UPRN is a contingent Quality of a Property, never the identity criterion, and never
+    asserted with <code>owl:sameAs</code></strong> — a property can change UPRN, and two records
+    sharing a UPRN are not thereby the same legal estate.
+  </p>
+
+  <h3 id="classification">Classification doctrine — facets, not subclass trees (ODR-0027)</h3>
+  <ul>
+    <li><code>isMemberOf</code> a coded SKOS scheme is the <strong>default</strong> classification mechanism.</li>
+    <li><code>isA</code> (subclass) is used <strong>only</strong> for genuine rigid Kinds.</li>
+    <li>Roles are anti-rigid and <strong>never subclass a Kind</strong> (§R6) — they are keyed by their founding Relator.</li>
+    <li>Evidence is re-modelled as a <strong>RoleMixin + <code>evidenceType</code> facet</strong>; the old evidence subclass tree is retired.</li>
+    <li>Enforcement is value-keyed (SHACL <code>sh:in</code> via <code>sh:targetSubjectsOf</code>), not class-keyed.</li>
+  </ul>
+
+  <h3 id="governance">Governance &amp; decision-provenance</h3>
+  <p>
+    Every term carries a <code>dct:source</code> resolving to its schema-leaf path (ODR-0004).
+    The ODR/ADR/council lineage governs each layer: foundation (ODR-0004), identity crux
+    (ODR-0005), classification (ODR-0027), claims/evidence/provenance (ODR-0009), governance
+    (ODR-0012), SHACL severity (ODR-0013), overlay mechanism (ODR-0010), SHACL-AF (ODR-0017),
+    inference regime (ODR-0025/0026/0029). Governance is PROV-O backed (<code>Claim ⊑ prov:Entity</code>,
+    qualified attribution; three truth-makers: derivation / signature / assurance) with DPV
+    <strong>referenced-not-imported</strong> (<code>dct:references</code>, no <code>owl:imports</code>).
+    <strong>Held-as-live dissents with re-open triggers</strong> are recorded (Davis on ODR-0009;
+    Allemang on ODR-0012), as is the programme retirement (ODR-0003 retired, ODR-0016 waived,
+    ODR-0028 reconciliation).
+  </p>
+
+  <h3 id="known-issues">Known-issues register (dated, machine-cross-referenced)</h3>
+  <p>A completeness claim that conceals deferred work or defects is a provenance lie — these are surfaced, not hidden.</p>
+  <table>
+    <thead><tr><th>#</th><th>Issue</th><th>Governing</th><th>Status</th><th>Dated</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>i</td>
+        <td>
+          <strong>EPC-certificate inference cross-trip.</strong> A naive full-RDFS consumer
+          mis-infers <code>EPCCertificate ⊑ Property</code>; <strong>OPDA's own Safe-Group
+          OWL-RL closure does NOT</strong> (domain/range rules are deliberately excluded, ODR-0025
+          §R7). This is a <em>consumer-side</em> trap and a modelling smell — <strong>not a defect
+          in OPDA's materialised graph</strong>, and it does not block <code>draft → accepted</code>.
+        </td>
+        <td>ODR-0028 R3 / ODR-0029</td>
+        <td>Downgraded (consumer-side caveat)</td>
+        <td>2026-06-14</td>
+      </tr>
+      <tr>
+        <td>ii</td>
+        <td><strong>SHACL-Core vacuous <code>sh:xone</code>.</strong> The committed non-conformant exemplar reads <code>conforms true</code> under SHACL-Core; validation requires pyshacl <code>advanced=True</code>.</td>
+        <td>ODR-0017</td>
+        <td>Open (documented caveat)</td>
+        <td>2026-06-14</td>
+      </tr>
+      <tr>
+        <td>iii</td>
+        <td><strong>1095 GAPped leaves / 16 thin profiles</strong> — by design (profiles bind Category-G only).</td>
+        <td>session-034</td>
+        <td>By design</td>
+        <td>2026-06-14</td>
+      </tr>
+      <tr>
+        <td>iv</td>
+        <td><strong>Category-C binning report miscount</strong> — a report-side over-count in <code>descriptive-category-binning.json</code>; the emitted TTL is already correct G-grade.</td>
+        <td>ODR-0028</td>
+        <td>Report-only</td>
+        <td>2026-06-14</td>
+      </tr>
+      <tr>
+        <td>v</td>
+        <td><strong>ODR-0004 namespace prose drift</strong> — the prose still cites <code>w3id.org/opda/#</code>; the emitted TTL correctly uses <code>opda.org.uk/pdtf/</code> (ADR-0006 as-built).</td>
+        <td>ODR-0004 / ADR-0006</td>
+        <td>Open (prose cleanup)</td>
+        <td>2026-06-14</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="related">Related sections</h2>
+  <p>
+    Redundancy with neighbouring sections is intended and fine (ADR-0041 rev-3, M1) — this
+    section is designed standalone. For how the model was built see <a href="/modelling">Modelling</a>;
+    for the DAMA four-tier presentation for different reader tiers see <a href="/model">Model</a>.
+    The decision record is <a href="/modelling/odr">ADR-0041</a> (Ontology Reference Document —
+    Generation Model and Section Structure).
+  </p>
+</Layout>

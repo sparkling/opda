@@ -75,7 +75,7 @@ _TBOX_TTLS = (
     "opda-descriptive.ttl",
 )
 
-# The seven Safe-Group rules (ODR-0025 §R1; config/opda-owl-rl-safe.rules),
+# The seven Safe-Group rules (ODR-0025 §R1; config/opda-rdfs-plus.rules),
 # byte-for-byte the same semantics as fuseki-load.mjs::SAFE_RULES, with the
 # Jena `urn:x-arq:UnionGraph` read rewritten as the portable `GRAPH ?g`
 # pattern. Each is an idempotent INSERT … FILTER NOT EXISTS into the inferred

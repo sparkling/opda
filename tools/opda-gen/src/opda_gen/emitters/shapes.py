@@ -166,6 +166,9 @@ _ODR_0013_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0013/section-Q1"
 _ODR_0015_S4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a")
 _ODR_0017_S1A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-1a")
 _ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a")
+# ODR-0029 R3 — domain/range-as-SHACL-constraint layer (the inference/validation
+# boundary: rdfs:domain / rdfs:range are VALIDATED closed-world, never inferred).
+_ODR_0029_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3")
 
 
 # --- Common helpers -------------------------------------------------------
@@ -319,6 +322,107 @@ def _add_sparql_rule_shape(
     g.add((shape_iri, RDFS.comment, Literal(rdfs_comment, lang="en")))
     g.add((rule_node, RDF.type, SH.SPARQLRule))
     g.add((rule_node, SH.construct, Literal(sparql_construct)))
+
+
+# --- ODR-0029 R3: domain/range-as-SHACL-constraint layer -----------------
+def _domain_range_pairs() -> tuple[list[tuple[URIRef, URIRef]], list[tuple[URIRef, URIRef]]]:
+    """Collect (predicate, class) pairs for every `rdfs:domain` and every
+    *class-valued* `rdfs:range` across the six module TBoxes.
+
+    Built in-memory from the module `build_graph()` builders (no disk read —
+    deterministic, byte-identity-safe). `rdfs:range` pairs are filtered to
+    CLASS objects only: `xsd:*` / `rdfs:Literal` datatype ranges are constrained
+    by `sh:datatype` elsewhere, not by this `sh:class` layer (ODR-0029 R3 names
+    the `sh:class C` dual — for a class C, not a datatype). Returns
+    `(domain_pairs, range_pairs)`, each sorted by (predicate, class) for
+    deterministic emission.
+    """
+    from opda_gen.emitters.modules import MODULE_REGISTRY
+
+    merged = Graph()
+    for _name, mod in sorted(MODULE_REGISTRY.items()):
+        merged += mod.build_graph()
+
+    xsd_ns = str(XSD)
+    rdfs_literal = str(RDFS.Literal)
+
+    domain_pairs: list[tuple[URIRef, URIRef]] = []
+    for pred, cls in merged.subject_objects(RDFS.domain):
+        if isinstance(pred, URIRef) and isinstance(cls, URIRef):
+            domain_pairs.append((pred, cls))
+
+    range_pairs: list[tuple[URIRef, URIRef]] = []
+    for pred, cls in merged.subject_objects(RDFS.range):
+        if not (isinstance(pred, URIRef) and isinstance(cls, URIRef)):
+            continue
+        c = str(cls)
+        if c.startswith(xsd_ns) or c == rdfs_literal:
+            continue  # datatype range — constrained by sh:datatype, not sh:class
+        range_pairs.append((pred, cls))
+
+    domain_pairs.sort(key=lambda pc: (str(pc[0]), str(pc[1])))
+    range_pairs.sort(key=lambda pc: (str(pc[0]), str(pc[1])))
+    return domain_pairs, range_pairs
+
+
+def build_domain_range_constraint_shapes(g: Graph) -> None:
+    """Extend `g` in place with the ODR-0029 R3 domain/range-as-SHACL layer.
+
+    The inference/validation boundary (ODR-0029 R1): `rdfs:domain`/`rdfs:range`
+    are **validated** closed-world ("are the subjects/objects of this predicate
+    instances of C?"), never **inferred** (the Safe-Group closure excludes them,
+    ODR-0025 §R2/§R7 — inferring them would mis-type multi-domain subjects and
+    re-introduce the EPCCertificate false positive). This closes that blind spot
+    without unsound entailment:
+
+    - for every `<pred> rdfs:domain C`:
+        `<pred>DomainShape a sh:NodeShape ; sh:targetSubjectsOf <pred> ;
+         sh:class C ; sh:severity sh:Violation`
+    - for every class-valued `<pred> rdfs:range C`:
+        `<pred>RangeShape a sh:NodeShape ; sh:targetObjectsOf <pred> ;
+         sh:class C ; sh:severity sh:Violation`
+
+    Severity `sh:Violation` per ODR-0013 §Q1 (a predicate used off its declared
+    domain/range is a structural type error, not an optional-attribute gap) and
+    ODR-0029 R3 §Confirmation ("flag a predicate used off-domain as a
+    violation"). `dct:source` → ODR-0029 R3. Deterministic: pairs sorted by
+    (predicate, class).
+    """
+    _bind_common(g)
+    domain_pairs, range_pairs = _domain_range_pairs()
+
+    def _local(iri: URIRef) -> str:
+        return str(iri).rsplit("#", 1)[-1].rsplit("/", 1)[-1]
+
+    for pred, cls in domain_pairs:
+        shape_iri = OPDA_SHAPE[f"{_local(pred)}DomainShape"]
+        g.add((shape_iri, RDF.type, SH.NodeShape))
+        g.add((shape_iri, SH.targetSubjectsOf, pred))
+        g.add((shape_iri, SH["class"], cls))
+        g.add((shape_iri, SH.severity, SH.Violation))
+        g.add((shape_iri, DCTERMS.source, _ODR_0029_R3))
+        g.add((shape_iri, SH.message, Literal(
+            f"opda:{_local(pred)} is used off its declared rdfs:domain: every "
+            f"subject of opda:{_local(pred)} MUST be an instance of "
+            f"{_local(cls)} (ODR-0029 R3 — rdfs:domain validated closed-world, "
+            "not inferred).",
+            lang="en",
+        )))
+
+    for pred, cls in range_pairs:
+        shape_iri = OPDA_SHAPE[f"{_local(pred)}RangeShape"]
+        g.add((shape_iri, RDF.type, SH.NodeShape))
+        g.add((shape_iri, SH.targetObjectsOf, pred))
+        g.add((shape_iri, SH["class"], cls))
+        g.add((shape_iri, SH.severity, SH.Violation))
+        g.add((shape_iri, DCTERMS.source, _ODR_0029_R3))
+        g.add((shape_iri, SH.message, Literal(
+            f"opda:{_local(pred)} has an object outside its declared "
+            f"rdfs:range: every object of opda:{_local(pred)} MUST be an "
+            f"instance of {_local(cls)} (ODR-0029 R3 — rdfs:range validated "
+            "closed-world, not inferred).",
+            lang="en",
+        )))
 
 
 # --- Foundation meta-shapes (called by foundation.build_shapes_graph) ----

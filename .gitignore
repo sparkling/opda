@@ -72,6 +72,16 @@ __pycache__/
 docs/manual/**/export/
 docs/manual/_export/
 
+# Ontology bake-off renders (ADR-0041 — regenerable tool output; heavy, esp. Ontospy ~87MB).
+# The composition pages (src/pages/ontology/), the M6 COMPARISON.md, and the lightweight
+# tool READMEs / skosmos schemes list ARE tracked; the generated HTML render trees + the
+# copied TTL artefacts are regenerated on demand and not committed.
+public/ontology/tools/ontospy/
+public/ontology/tools/widoco/
+public/ontology/tools/pylode/
+public/ontology/tools/shaclplay/
+public/ontology/artefacts/
+
 # Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
 # .claude/ is tracked — curated config + ruflo-init resources (agents, commands,
 # helpers, scripts). Agent memory (memory.db*) and machine-local overrides are ignored.

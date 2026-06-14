@@ -148,7 +148,7 @@ const PFX =
   'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n' +
   'PREFIX owl: <http://www.w3.org/2002/07/owl#>\n';
 
-// The 7 Safe-Group rules (ODR-0025 §R1 / config/opda-owl-rl-safe.rules), each
+// The 7 Safe-Group rules (ODR-0025 §R1 / config/opda-rdfs-plus.rules), each
 // as an idempotent INSERT … FILTER NOT EXISTS, in dependency order: schema
 // closure first, then propagation, then data rules.
 const SAFE_RULES = [

@@ -160,8 +160,14 @@ def test_baspi5_form_question_iris_use_canonical_pattern(
 # --- ADR-0013 §Per-class shapes -----------------------------------------
 def test_baspi5_per_class_shapes_exist(emitted_baspi5: Graph) -> None:
     """The profile emits Baspi5_*Shape NodeShapes for the core BASPI5
-    classes: Property, Address, LegalEstate, Seller, Buyer, EPCCertificate
-    + the SellersCapacityShape (sh:xone discriminator)."""
+    classes: Property, Address, LegalEstate, Seller, Buyer + the
+    SellersCapacityShape (sh:xone discriminator).
+
+    Baspi5_EPCCertificateShape is NO LONGER emitted (ODR-0029 R4b): it was a
+    bare dangling sh:targetClass with no constraints; the certificate IC tuple
+    is validated by the base opda-descriptive-shapes.ttl, and the EPC rating
+    (rdfs:domain opda:Property) + the hasEPCCertificate join are bound on
+    Baspi5_PropertyShape."""
     node_shapes = set(emitted_baspi5.subjects(RDF.type, SH.NodeShape))
     for shape in (
         OPDA_SHAPE.Baspi5_PropertyShape,
@@ -169,22 +175,25 @@ def test_baspi5_per_class_shapes_exist(emitted_baspi5: Graph) -> None:
         OPDA_SHAPE.Baspi5_LegalEstateShape,
         OPDA_SHAPE.Baspi5_SellerShape,
         OPDA_SHAPE.Baspi5_BuyerShape,
-        OPDA_SHAPE.Baspi5_EPCCertificateShape,
         OPDA_SHAPE.Baspi5_SellersCapacityShape,
     ):
         assert shape in node_shapes, f"profile missing {shape}"
+    # ODR-0029 R4b: the dangling EPC certificate shape is dropped.
+    assert OPDA_SHAPE.Baspi5_EPCCertificateShape not in node_shapes, (
+        "Baspi5_EPCCertificateShape was a dangling bare sh:targetClass and is "
+        "dropped per ODR-0029 R4b — it must NOT be re-emitted"
+    )
 
 
 def test_baspi5_shapes_target_correct_classes(emitted_baspi5: Graph) -> None:
     """Each Baspi5_*Shape NodeShape carries sh:targetClass matching its
-    canonical OPDA class."""
+    canonical OPDA class. (Baspi5_EPCCertificateShape dropped — ODR-0029 R4b.)"""
     expected: dict[URIRef, URIRef] = {
         OPDA_SHAPE.Baspi5_PropertyShape: OPDA.Property,
         OPDA_SHAPE.Baspi5_AddressShape: OPDA.Address,
         OPDA_SHAPE.Baspi5_LegalEstateShape: OPDA.LegalEstate,
         OPDA_SHAPE.Baspi5_SellerShape: OPDA.Seller,
         OPDA_SHAPE.Baspi5_BuyerShape: OPDA.Buyer,
-        OPDA_SHAPE.Baspi5_EPCCertificateShape: OPDA.EPCCertificate,
         OPDA_SHAPE.Baspi5_SellersCapacityShape: OPDA.Seller,
     }
     for shape, cls in expected.items():
