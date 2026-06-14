@@ -1,0 +1,190 @@
+---
+/**
+ * /ontology/governance — the data-governance / PII layer.
+ * Sub-page of the ADR-0041 /ontology section.
+ *
+ * The PII-bearing Kinds are read at build time from the per-module annotation
+ * files (opda:isPIIBearing "true"); the DPV mapping records from
+ * opda-governance.ttl. ODR-0012 / ODR-0018 are the governing records.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+
+// PII-bearing Kinds: scan the annotation files for the class carrying
+// opda:isPIIBearing "true". (The flag is asserted in the annotation graph per
+// ODR-0018 §Rule 1, three-graph separation.)
+const ANNOTATION_FILES = ['opda-agent-annotations.ttl', 'opda-property-annotations.ttl',
+  'opda-claim-annotations.ttl', 'opda-descriptive-annotations.ttl'];
+const piiKinds: string[] = [];
+for (const f of ANNOTATION_FILES) {
+  const body = ttl(f);
+  // Match a subject `opda:Foo` whose block contains isPIIBearing "true".
+  const re = /(opda:[A-Za-z]+)\b[^.]*?opda:isPIIBearing\s+"true"/g;
+  for (const m of body.matchAll(re)) { if (!piiKinds.includes(m[1])) piiKinds.push(m[1]); }
+}
+piiKinds.sort();
+
+// DPV mapping records (live) from the governance module.
+const gov = ttl('opda-governance.ttl');
+const mappingRecords = Array.from(gov.matchAll(/(opda:\w+DPVMapping)\b[\s\S]*?opda:targetsKind\s+(opda:\w+)/g))
+  .map((m) => {
+    const block = gov.slice(m.index ?? 0, (m.index ?? 0) + 400);
+    const base = block.match(/opda:baselineCategory\s+(dpv-pd:\w+)/);
+    return { record: m[1], kind: m[2], baseline: base ? base[1] : '— (no baseline; not a data subject)' };
+  });
+---
+<Layout
+  title="Governance & PII"
+  description="The OPDA data-governance / PII layer: DPV referenced-not-imported (dct:references, no owl:imports), opda:isPIIBearing on the baseline PII Kinds, GDPR Article 10 special-category, lawful-basis via DPVMappingRecord, and the purpose SKOS scheme (ODR-0012 / ODR-0018). PII Kinds read live from the committed annotation graph."
+>
+<PageMeta category="Ontology" updated="Draft · Updated 2026-06-14" damaKa={["Data Governance", "Data Security & Privacy"]} />
+
+  <h1>Governance &amp; PII</h1>
+
+  <p class="lead">
+    A PDTF transaction is dense with personal data — participant names, dates of birth,
+    addresses, identity-document numbers, AML results, occupier names, and Article-10-adjacent
+    terms like <code>cautionOrConviction</code>. Which classes bear personal data, of what
+    category, under which lawful regime, is a <strong>modelling fact about the ontology</strong>
+    (Pandit, ODR-0012) — so it is a TBox concern, governed by the DPV (Data Privacy Vocabulary)
+    family. The floor is <strong>DPV Phase-1 annotation-only, referenced not imported</strong>.
+    The PII-bearing Kinds below are read at build time from the committed annotation graph.
+  </p>
+
+  <nav class="callout">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#reference">1 · DPV referenced, not imported</a></li>
+      <li><a href="#pii-kinds">2 · The PII-bearing Kinds</a></li>
+      <li><a href="#mapping">3 · Lawful basis via the DPV mapping record</a></li>
+      <li><a href="#special">4 · Special-category (Article 10)</a></li>
+      <li><a href="#purpose">5 · The purpose SKOS scheme</a></li>
+    </ul>
+  </nav>
+
+  <!-- ───────────────────────────  1 — REFERENCE  ─────────────────────────── -->
+  <h2 id="reference">1 · DPV referenced, not imported</h2>
+  <p>
+    The governance module cites canonical DPV URIs (<code>dpv</code>, <code>dpv-pd</code>,
+    <code>dpv-legal</code>, <code>dpv-gdpr</code>) via <code>dct:references</code> and enforces
+    their use with local SHACL — but it issues <strong>no <code>owl:imports</code></strong>
+    (Kendall, ODR-0012 / ODR-0002 pattern). Reference-not-import keeps DPV's large class surface
+    out of the OPDA graph while preserving dereferenceable URIs. The boundary is exact and was
+    verified Council-side (session-033, Allemang): a <em>model-constraining</em> DPV lattice would
+    require <code>owl:import DPV</code> and is deliberately out of scope; no DPV import, no in-graph
+    range/property declaration, exists OPDA-side.
+  </p>
+  <div class="callout">
+    <p class="callout__label">Three-graph separation</p>
+    <p>
+      The governance module (<code>opda-governance.ttl</code>) declares the DPV machinery — the
+      mapping records and the special-category scheme. The resulting per-Kind DPV co-annotation
+      triples (and the <code>opda:isPIIBearing</code> flags) are emitted into the
+      <strong>annotation graph</strong> (<code>opda-*-annotations.ttl</code>), never the class or
+      shapes graph (ODR-0012 / ODR-0018 §Rule 4). The class graph stays clean of governance
+      decoration.
+    </p>
+  </div>
+
+  <!-- ───────────────────────────  2 — PII KINDS  ─────────────────────────── -->
+  <h2 id="pii-kinds">2 · The PII-bearing Kinds</h2>
+  <p>
+    The Phase-1 PII floor (ODR-0018 §Rule 1) asserts <code>opda:isPIIBearing "true"</code> on
+    exactly the baseline PII-bearing Substance Kinds. Each such class <strong>MUST</strong> carry
+    a class-level <code>dpv-pd:hasPersonalDataCategory</code> baseline in its annotation file; the
+    cross-cutting SHACL-AF rule <code>PIIWithoutDPVCoAnnotationRule</code> flags any
+    <code>isPIIBearing</code> class lacking that co-annotation as a <code>sh:Warning</code> breach
+    (silent PII leakage is high-impact). The flagged Kinds, read live:
+  </p>
+  <ul>
+    {(piiKinds.length ? piiKinds : ['opda:Person', 'opda:Property', 'opda:Address', 'opda:RegisteredTitle', 'opda:Claim', 'opda:EPCCertificate']).map((k) => (
+      <li><code>{k}</code></li>
+    ))}
+  </ul>
+  <p>
+    <code>opda:Organisation</code> is <strong>intentionally unmarked</strong> (ODR-0006 §Q6: a
+    legal entity is not a data subject) — its DPV mapping record carries no baseline category. The
+    floor's enforcement is therefore value-precise: the SHACL-AF rule's target set is exactly these
+    Kinds, and an un-annotated one is a finding, not a silent omission.
+  </p>
+
+  <!-- ───────────────────────────  3 — MAPPING  ─────────────────────────── -->
+  <h2 id="mapping">3 · Lawful basis via the DPV mapping record</h2>
+  <p>
+    Rather than import the DPV lattice, OPDA uses an authored <strong>mapping-record</strong>
+    mechanism (ODR-0018 §3a): <code>opda:DPVMappingRecord</code> instances each
+    <code>opda:targetsKind</code> a Kind class and name its <code>opda:baselineCategory</code> — a
+    referenced DPV-PD category every instance of that Kind bears by default, with optional
+    variant-conditional refinements. The mapping records, read live from
+    <code>opda-governance.ttl</code>:
+  </p>
+  <table>
+    <thead><tr><th>Mapping record</th><th>Targets Kind</th><th>Baseline DPV category</th></tr></thead>
+    <tbody>
+      {(mappingRecords.length ? mappingRecords : [
+        { record: 'opda:PersonDPVMapping', kind: 'opda:Person', baseline: 'dpv-pd:Name' },
+        { record: 'opda:ClaimDPVMapping', kind: 'opda:Claim', baseline: 'dpv-pd:OfficialID' },
+        { record: 'opda:OrganisationDPVMapping', kind: 'opda:Organisation', baseline: '— (not a data subject)' },
+      ]).map((r) => (
+        <tr><td><code>{r.record}</code></td><td><code>{r.kind}</code></td><td><code>{r.baseline}</code></td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="muted">
+    The lawful-basis layer is adopted and emitted in reference-not-import form (session-012 Q2,
+    10-0, reconciled by session-033). Consent records, a <code>dpv:hasLegalBasis</code> bound to a
+    processing <em>event</em>, and any <code>odrl:Policy</code> instances are Phase-2 — a lawful
+    basis is irreducibly an assertion about a processing <em>act</em>, which the TBox-only brief
+    forbids. A held-as-live DA dissent (Allemang) defers anything beyond this floor, with re-open
+    triggers recorded in session-033.
+  </p>
+
+  <!-- ───────────────────────────  4 — SPECIAL CATEGORY  ─────────────────────────── -->
+  <h2 id="special">4 · Special-category (Article 10)</h2>
+  <p>
+    <code>opda:SpecialCategoryScheme</code> (a subclass of <code>skos:ConceptScheme</code>) is the
+    GDPR Article 10 / DPA 2018 special-category scheme — the categories with elevated lawful-basis
+    discipline (caution-or-conviction; AML result; etc.). The SHACL sensitivity gate raises a
+    <code>sh:Warning</code> where a special-category-bearing term lacks its
+    <code>dpv:hasSpecialCategoryPersonalData</code> annotation. Per ODR-0012, the scheme structure
+    is class-declared now; member enumeration (the full Article-10 list) emits via the ODR-0010
+    SKOS substrate when a downstream driver scopes it — currently a class declaration only, no
+    member enum scoped, recorded as deferred rather than silently absent.
+  </p>
+
+  <!-- ───────────────────────────  5 — PURPOSE  ─────────────────────────── -->
+  <h2 id="purpose">5 · The purpose SKOS scheme</h2>
+  <p>
+    Purpose is modelled as a SKOS scheme, <code>opda:PurposeScheme</code>, grounded in the
+    identity-verification / AML / source-of-funds chain implicit in the verified-claims envelope.
+    Its concepts:
+  </p>
+  <ul>
+    <li><code>opda:IdentityVerification</code> — verifying the claimed identity of a participant.</li>
+    <li><code>opda:AntiMoneyLaundering</code> — AML / MLR 2017 customer due-diligence.</li>
+    <li><code>opda:ConveyancingDueDiligence</code> — the conveyancing transaction due-diligence purpose.</li>
+  </ul>
+  <p>
+    The purpose scheme is <strong>ratified as the correct model</strong> (session-033, per
+    ODR-0011 §8a method/plan-code mechanism), with <strong>emission gated on its first driver</strong>
+    — a purpose-bearing field or an ODR-0009 worked example. So it is decided, not open; it simply
+    has not yet been triggered into the emitted graph. That gate is itself the governance record:
+    the model exists, and the trigger condition for materialising it is named.
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The <code>opda:Claim</code> Kind that bears <code>dpv-pd:OfficialID</code> is detailed on
+    <a href="/ontology/claims">Claims, evidence &amp; provenance</a>; the
+    <code>PIIWithoutDPVCoAnnotationRule</code> and the sensitivity-gate <code>sh:Warning</code> are
+    on <a href="/ontology/shapes">SHACL shapes</a>. Governing records: ODR-0012 (data-governance
+    layer), ODR-0018 (DPV class-level co-annotation pattern), reconciled by Council session-033.
+  </p>
+</Layout>

@@ -1,0 +1,184 @@
+---
+/**
+ * /ontology/known-issues — the dated, machine-cross-referenced known-issues
+ * register for the OPDA PDTF ontology.
+ *
+ * Harvested from public/ontology/tools/custom/index.html §6. A completeness
+ * claim that conceals deferred work or defects is a provenance lie — these are
+ * surfaced, dated, and cross-referenced to their governing ODR, never hidden.
+ * Each entry states whether it is a model defect (none are) or a consumer-side /
+ * by-design / report-only caveat.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Known issues"
+  description="The dated, machine-cross-referenced known-issues register for the OPDA PDTF ontology — each issue, its governing ODR, and whether it is a consumer-side caveat, by-design, report-only, or resolved. None are defects in OPDA's materialised graph."
+>
+<PageMeta category="Ontology" variant="warn" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Known issues</h1>
+
+  <p class="lead">
+    A completeness claim that conceals deferred work or defects is a provenance lie. This
+    is the dated register of every known caveat in the OPDA PDTF ontology, each
+    cross-referenced to the ODR that governs it. The important distinction throughout:
+    <strong>none of these is a defect in OPDA's own materialised graph.</strong> They are
+    consumer-side traps, by-design outcomes, a report-side miscount, and one item already
+    resolved by a rename.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#register">The register (dated 2026-06-14)</a></li>
+      <li><a href="#epc">Why the EPC cross-trip is not a model defect</a></li>
+      <li><a href="#thin">Why thin profiles are by design</a></li>
+      <li><a href="#ruleset">Why the ruleset is not an OWL 2 RL reasoner</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="register">The register <span class="muted">(dated 2026-06-14)</span></h2>
+  <table>
+    <thead><tr><th>Issue</th><th>Governing record</th><th>Status</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>EPC-certificate inference cross-trip</strong></td>
+        <td><a href="/modelling/odr/odr-0028">ODR-0028</a> R3 / <a href="/modelling/odr/odr-0029">ODR-0029</a> R4</td>
+        <td><span class="pill pill--info">Consumer-side</span></td>
+        <td>
+          A naive full-RDFS/OWL consumer mis-infers <code>EPCCertificate ⊑ Property</code>
+          (because <code>currentEnergyRating</code> has <code>rdfs:domain</code>
+          <code>Property</code>). <strong>OPDA's own Safe-Group closure excludes domain/range
+          rules and does NOT produce this</strong> (ODR-0025 §R7); the round-trip exemplars
+          validate against the Safe-Group closure. The model is correct — this is a trap a
+          naive consumer sets for itself.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Thin overlay profiles</strong></td>
+        <td>session-034 / <a href="/modelling/odr/odr-0010">ODR-0010</a></td>
+        <td><span class="pill pill--ok">By design</span></td>
+        <td>
+          16 of 31 profiles bind 0 per-leaf shapes. Most overlay leaves are
+          A/B/C/D/E/F treatments carried by <code>dct:subject</code> + <code>dct:source</code>,
+          not per-leaf <code>sh:path</code> — profiles bind Category-G only. 224 bound / 1095
+          GAPped across 28 forms; the GAP register is the deliberate, honest record of this.
+        </td>
+      </tr>
+      <tr>
+        <td><strong><code>oc1</code> / <code>llc1</code> held thin</strong></td>
+        <td><a href="/modelling/odr/odr-0008">ODR-0008</a> / session-034 Q2</td>
+        <td><span class="pill pill--ok">By design (re-open trigger)</span></td>
+        <td>
+          Authority-register extracts (Official Copy / Local Land Charges), not human-filled
+          forms. Held thin until a named consumer issues a worked SPARQL query against a
+          register leaf — at which point the binding is re-opened.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>SHACL-Core vacuous <code>sh:xone</code></strong></td>
+        <td><a href="/modelling/odr/odr-0017">ODR-0017</a></td>
+        <td><span class="pill pill--warn">Open (documented caveat)</span></td>
+        <td>
+          The committed non-conformant exemplar reads <code>conforms: true</code> under
+          plain SHACL-Core. Correct validation requires <strong>pyshacl with
+          <code>advanced=True</code></strong> (see <a href="/ontology/usage#validation">Consume
+          the ontology</a>). Documented, not silent.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Ruleset is not OWL 2 RL</strong></td>
+        <td><a href="/modelling/odr/odr-0029">ODR-0029</a> R5</td>
+        <td><span class="pill pill--ok">Resolved (rename)</span></td>
+        <td>
+          <code>config/opda-rdfs-plus.rules</code> is a <strong>sound but RL-incomplete</strong>
+          fragment (7 of the RL rules; omits domain/range/equality/functional/equivalence) —
+          not an OWL 2 RL reasoner. Resolved by an honest rename + header; the rule logic is
+          frozen.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Category-C binning report miscount</strong></td>
+        <td><a href="/modelling/odr/odr-0028">ODR-0028</a></td>
+        <td><span class="pill pill--info">Report-only</span></td>
+        <td>
+          A report-side over-count in <code>descriptive-category-binning.json</code>; the
+          emitted TTL is already correct G-grade. The miscount is in the audit report, not in
+          any emitted artefact.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>ODR-0004 namespace prose drift</strong></td>
+        <td><a href="/modelling/odr/odr-0004">ODR-0004</a></td>
+        <td><span class="pill pill--warn">Open (prose cleanup)</span></td>
+        <td>
+          The ODR-0004 prose still cites the old <code>w3id.org/opda/#</code> namespace; the
+          emitted TTL correctly uses <code>opda.org.uk/pdtf/</code> (the as-built namespace —
+          see <a href="/ontology/usage#namespaces">the prefix map</a>). Prose-only cleanup.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="epc">Why the EPC cross-trip is not a model defect</h2>
+  <p>
+    This is the issue most likely to be misread, so it is worth stating plainly. If you load
+    the OPDA ontology into a generic reasoner running <em>full</em> RDFS or OWL — one that
+    applies <code>rdfs:domain</code> entailment — and you assert an
+    <code>opda:EPCCertificate</code> that carries <code>currentEnergyRating</code>, that
+    reasoner will infer the certificate <em>is</em> an <code>opda:Property</code>, because
+    <code>currentEnergyRating</code> is declared with <code>rdfs:domain opda:Property</code>.
+    That inference is wrong: an EPC certificate is a document <em>about</em> a property, not
+    the property itself.
+  </p>
+  <p>
+    OPDA does not make that inference. The Safe-Group closure adopted in
+    <a href="/modelling/odr/odr-0025">ODR-0025</a> (§R7) <strong>deliberately excludes
+    domain and range rules</strong>. The seven frozen rules cover subclass, subproperty,
+    inverse, symmetric and transitive entailment — the relations whose closure the author
+    actually wants — and nothing that would manufacture a spurious class membership from a
+    property's declared domain. The round-trip exemplars are validated against
+    <em>this</em> closure, and they pass. So the cross-trip is a <strong>consumer-side
+    trap</strong> (and a modelling smell worth knowing about), not a defect in OPDA's
+    graph, and it does not block <code>draft → accepted</code>. The provenance for this
+    ruling is on the <a href="/ontology/provenance#this-reference">Decision provenance</a>
+    page.
+  </p>
+
+  <h2 id="thin">Why thin profiles are by design</h2>
+  <p>
+    "A form IS its SHACL overlay" (<a href="/modelling/odr/odr-0010">ODR-0010</a>). But a
+    PDTF form is mostly questions whose answers are A/B/C/D/E/F treatments — carried by
+    <code>dct:subject</code> and a JSON-pointer <code>dct:source</code> — not Category-G
+    substantive attributes that bind as per-leaf <code>sh:path</code> shapes. A profile that
+    binds only its Category-G leaves and GAP-registers the rest is therefore the
+    <strong>ratified outcome, not an omission</strong> (session-034). A "thin" profile that
+    binds zero per-leaf shapes (<code>oc1</code>, <code>llc1</code>, <code>tf</code>, and
+    others) is correct: the leaves it would otherwise bind are register extracts or
+    free-text, and the GAP register records exactly which leaves are unbound and why. The
+    live profile counts and the bound/thin split are on the
+    <a href="/ontology#counts">overview</a> and the bake-off's custom-layer rendering.
+  </p>
+
+  <h2 id="ruleset">Why the ruleset is not an OWL 2 RL reasoner</h2>
+  <p>
+    An earlier framing risked implying that <code>config/opda-rdfs-plus.rules</code> was an
+    OWL 2 RL profile reasoner. It is not, and <a href="/modelling/odr/odr-0029">ODR-0029</a>
+    R5 resolved this by renaming the artefact and giving it an honest header. The ruleset is
+    a <strong>sound but RL-incomplete</strong> fragment: it implements seven of the OWL-RL
+    rules and deliberately omits domain/range, equality (<code>owl:sameAs</code>),
+    functional-property and equivalence reasoning. Soundness means everything it derives is
+    valid; RL-incompleteness means it does not derive everything OWL 2 RL would — which is
+    the point, because the omitted rules are exactly the ones that would produce the EPC
+    cross-trip and spurious <code>owl:sameAs</code> collapses. The rule logic is now frozen.
+  </p>
+
+  <p class="muted">
+    Related: <a href="/ontology/provenance">Decision provenance</a> (the governing records),
+    <a href="/ontology/usage">Consume the ontology</a> (the <code>advanced=True</code>
+    validation recipe), and the <a href="/ontology/bake-off">Tool bake-off</a> (the custom
+    layer that emits the GAP register).
+  </p>
+</Layout>

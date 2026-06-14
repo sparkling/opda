@@ -1,0 +1,181 @@
+---
+/**
+ * /ontology/provenance — Decision provenance for the OPDA PDTF ontology.
+ *
+ * How the ontology was built and ratified: the term-level dct:source contract
+ * (ODR-0004), the ODR/ADR/council lineage that governs each layer, the
+ * programme-retirement and reconciliation record, and the records that govern
+ * this reference itself (ADR-0041 — generation model; ODR-0029 — inference /
+ * validation boundary; ADR-0042 — the /manual → /model rename).
+ *
+ * Hand/LLM-authored conceptual layer (ADR-0041 §authored). ODR records resolve
+ * under /modelling/odr; ADRs are tracked in the same ODR corpus landing.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Decision provenance"
+  description="How the OPDA PDTF ontology was built and ratified — the term-level dct:source contract, the ODR/ADR/council lineage that governs each layer, programme retirement and reconciliation, and the records governing this reference itself."
+>
+<PageMeta category="Ontology" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Decision provenance</h1>
+
+  <p class="lead">
+    Every term in the OPDA PDTF ontology traces back to a source, and every modelling
+    decision traces back to a ratified record. This page is the audit trail: how the
+    ontology was built from the PDTF schemas, how each layer was decided through the
+    Linked Data Council, and which records govern this reference document itself. A
+    completeness claim that hides where a term came from is a provenance lie — so the
+    chain is laid out explicitly here.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#term-provenance">Term-level provenance — the <code>dct:source</code> contract</a></li>
+      <li><a href="#lineage">The ODR / ADR / council lineage</a></li>
+      <li><a href="#retirement">Programme retirement &amp; reconciliation</a></li>
+      <li><a href="#this-reference">Records governing this reference</a></li>
+      <li><a href="#dissents">Held-as-live dissents</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="term-provenance">Term-level provenance — the <code>dct:source</code> contract</h2>
+  <p>
+    The foundational rule (<a href="/modelling/odr/odr-0004">ODR-0004</a>, PDTF Ontology
+    Foundation) is that <strong>every term carries a <code>dct:source</code></strong> that
+    resolves to where it came from — a PDTF schema leaf path (a JSON pointer into the
+    overlay schemas) or a business-glossary row. No term is invented free-floating; if it
+    exists in the ontology, it can be walked back to a PDTF artefact or a curated OPDA
+    glossary entry. This is what lets the reference claim it is <em>generated from</em> the
+    schemas rather than hand-waved alongside them.
+  </p>
+  <p>
+    The same contract underpins the overlay profiles: a form's profile binds Category-G
+    leaves as per-leaf <code>sh:path</code> shapes, and every other leaf is carried by
+    <code>dct:subject</code> plus a JSON-pointer <code>dct:source</code> and entered in the
+    gap register — never silently dropped, never fabricated. Provenance is therefore not a
+    decorative annotation; it is the mechanism by which the gap register stays honest (see
+    <a href="/ontology/known-issues">Known issues</a> for the thin-profile consequence).
+  </p>
+
+  <h2 id="lineage">The ODR / ADR / council lineage</h2>
+  <p>
+    The ontology was not designed in one pass. Each layer was decided as an Ontology
+    Decision Record (ODR), most of them adjudicated by the Linked Data Council (the
+    dialectic expert panel, methodology in <a href="/modelling/odr/odr-0001">ODR-0001</a>).
+    The records below are the governing decisions, layer by layer; each links to its live
+    record in the <a href="/modelling/odr">ODR corpus</a>.
+  </p>
+
+  <table>
+    <thead><tr><th>Layer</th><th>Governing record</th><th>What it decided</th></tr></thead>
+    <tbody>
+      <tr><td>Languages &amp; vocabularies</td><td><a href="/modelling/odr/odr-0002">ODR-0002</a></td><td>OWL 2 + SHACL + SKOS + PROV-O + DPV; the adopted stack.</td></tr>
+      <tr><td>Foundation</td><td><a href="/modelling/odr/odr-0004">ODR-0004</a></td><td>Three-graph separation, the <code>dct:source</code> contract, namespace policy.</td></tr>
+      <tr><td>Identity crux</td><td><a href="/modelling/odr/odr-0005">ODR-0005</a></td><td>Property / LegalEstate / RegisteredTitle split; UPRN as a Quality, never the identity criterion.</td></tr>
+      <tr><td>Agents &amp; roles</td><td><a href="/modelling/odr/odr-0006">ODR-0006</a></td><td>Roles are anti-rigid, keyed by their founding Relator, never a subclass of a Kind.</td></tr>
+      <tr><td>Transactions &amp; lifecycle</td><td><a href="/modelling/odr/odr-0007">ODR-0007</a></td><td>Transaction as a Relator founding Seller/Buyer roles.</td></tr>
+      <tr><td>Claims, evidence &amp; provenance</td><td><a href="/modelling/odr/odr-0009">ODR-0009</a></td><td>PROV-O backing; three truth-makers — derivation, signature, assurance.</td></tr>
+      <tr><td>Overlay-profile mechanism</td><td><a href="/modelling/odr/odr-0010">ODR-0010</a></td><td>"A form IS its SHACL overlay" — the per-leaf binding pattern.</td></tr>
+      <tr><td>Enumeration vocabularies</td><td><a href="/modelling/odr/odr-0011">ODR-0011</a></td><td>Coded values as SKOS concept schemes.</td></tr>
+      <tr><td>Data-governance layer</td><td><a href="/modelling/odr/odr-0012">ODR-0012</a></td><td>DPV referenced-not-imported; class-level co-annotation.</td></tr>
+      <tr><td>SHACL validation &amp; severity</td><td><a href="/modelling/odr/odr-0013">ODR-0013</a></td><td>Severity tiers; profile-emission rules.</td></tr>
+      <tr><td>SHACL-AF data-quality rules</td><td><a href="/modelling/odr/odr-0017">ODR-0017</a></td><td>Non-blocking advanced rules; requires <code>advanced=True</code> validation.</td></tr>
+      <tr><td>DPV co-annotation pattern</td><td><a href="/modelling/odr/odr-0018">ODR-0018</a></td><td>Personal-data categories annotated, not asserted as subclasses.</td></tr>
+      <tr><td>Entailment regime</td><td><a href="/modelling/odr/odr-0025">ODR-0025</a></td><td>Inference semantics; domain/range rules deliberately excluded from the safe closure.</td></tr>
+      <tr><td>Safe ruleset adoption</td><td><a href="/modelling/odr/odr-0026">ODR-0026</a></td><td>The OWL-RL-safe ruleset; unevaluated modelling axioms held as a boundary.</td></tr>
+      <tr><td>Classification doctrine</td><td><a href="/modelling/odr/odr-0027">ODR-0027</a></td><td>Facets via SKOS over subclass trees; <code>isMemberOf</code> as the default.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="retirement">Programme retirement &amp; reconciliation</h2>
+  <p>
+    The PDTF-to-ontology build was run as a time-boxed programme, and that programme is
+    now closed. The retirement is itself recorded, so the reference is honest about being a
+    historical anchor rather than an open work item:
+  </p>
+  <ul>
+    <li>
+      <strong>Programme RETIRED 2026-06-14.</strong> The work-breakdown programme record
+      (<a href="/modelling/odr/odr-0003">ODR-0003</a>, PDTF to Ontology: Programme and Work
+      Breakdown) is retired. Modelling continues under fresh ODRs, but the original
+      programme structure no longer governs new work.
+    </li>
+    <li>
+      <strong>Descriptive layer reconciled complete</strong> (<a href="/modelling/odr/odr-0028">ODR-0028</a>,
+      Descriptive-Layer Completeness Reconciliation). The descriptive attribute binning was
+      reconciled against the schemas; the emitted TTL is correct G-grade (a residual
+      Category-C over-count is a report-side miscount, not an emitted defect).
+    </li>
+    <li>
+      <strong>VC / DID compatibility waived.</strong> The Verifiable Credentials / DID
+      compatibility layer (<a href="/modelling/odr/odr-0016">ODR-0016</a>) is held as
+      proposed and waived for this cut — claims provenance is delivered through PROV-O
+      (ODR-0009), not a VC envelope, in the current reference.
+    </li>
+  </ul>
+
+  <h2 id="this-reference">Records governing this reference</h2>
+  <p>
+    This <code>/ontology</code> section is itself the product of decisions, taken in two
+    later Council sessions and a rename ADR:
+  </p>
+  <ul>
+    <li>
+      <strong>ADR-0041 (session-038) — this reference is the generation model.</strong>
+      The Ontology Reference Document decision: <code>/ontology</code> is the published,
+      authoritative reference, generated from the committed TTL corpus and guarded by the
+      doc-drift CI gate, with the multi-tool bake-off scored per layer and the best method
+      adopted into one woven reference. The decision record is in the
+      <a href="/modelling/odr">ODR / ADR corpus</a>; the bake-off itself lives on the
+      <a href="/ontology/bake-off">Tool bake-off</a> page.
+    </li>
+    <li>
+      <strong>ODR-0029 (session-039) — the inference / validation boundary.</strong>
+      <a href="/modelling/odr/odr-0029">ODR-0029</a> disposes of the entailment regime: infer
+      the relations whose closure the author wants (the seven frozen rules — subclass,
+      subproperty, inverse, symmetric, transitive and their kin); validate the constraints
+      the author wants checked (domain, range, cardinality, identity) as SHACL. On the OPDA
+      schema the safe closure adds <strong>0 triples</strong> over the flat asserted graph,
+      so a single rendering per tool is correct (entailed ≡ asserted here).
+    </li>
+    <li>
+      <strong>ADR-0042 — the rename.</strong> The <code>/manual</code> section was renamed
+      to <code>/model</code> (the DAMA four-tier reader presentation). This reference links
+      out to <a href="/model">/model</a> for the tiered reader view; the rename is recorded
+      so old <code>/manual</code> references resolve to the decision.
+    </li>
+  </ul>
+
+  <h2 id="dissents">Held-as-live dissents</h2>
+  <p>
+    Where the Council split, the dissent is recorded as live with a named re-open trigger
+    rather than papered over — a decision that conceals its own contested points is not
+    sound provenance. Two are carried on the record:
+  </p>
+  <ul>
+    <li>
+      <strong>Davis on <a href="/modelling/odr/odr-0009">ODR-0009</a></strong> (claims /
+      evidence / provenance) — held as live; re-opens if a named consumer needs a VC-envelope
+      truth-maker the PROV-O backing does not carry.
+    </li>
+    <li>
+      <strong>Allemang on <a href="/modelling/odr/odr-0012">ODR-0012</a></strong> (the
+      data-governance layer) — held as live on the referenced-not-imported DPV treatment.
+    </li>
+    <li>
+      <strong><code>oc1</code> / <code>llc1</code> held thin</strong> — re-opens when a named
+      consumer issues a worked SPARQL query against an authority-register leaf (see
+      <a href="/ontology/known-issues">Known issues</a>).
+    </li>
+  </ul>
+
+  <p class="muted">
+    Related: <a href="/ontology/known-issues">Known issues</a> (the dated defect/caveat
+    register), <a href="/ontology/usage">Consume the ontology</a> (machine access), and the
+    full <a href="/modelling/odr">ODR / ADR corpus</a>.
+  </p>
+</Layout>

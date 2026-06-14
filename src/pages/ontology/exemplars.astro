@@ -1,0 +1,199 @@
+---
+/**
+ * /ontology/exemplars — the round-trip diagnostic exemplars.
+ * Sub-page of the ADR-0041 /ontology section.
+ *
+ * The 17 exemplars are read at build time from
+ * source/03-standards/ontology/exemplars/*.ttl (excluding *-expected-report.ttl
+ * and README.md); each is paired with its expected SHACL validation report
+ * (presence checked live). The per-exemplar hard-case descriptions come from the
+ * exemplars README (the ODR-0004 §8a citation discipline). Per-exemplar TTLs are
+ * not individually web-served; the round-trip artefacts live under the artefacts
+ * index and the SHACL Play! rendering.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const EX = path.resolve(process.cwd(), 'source/03-standards/ontology/exemplars');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+// Hard-case one-liners + the consuming ODR session, from the exemplars README
+// (ODR-0004 §8a citation discipline: each exemplar named by its hard case).
+const META: Record<string, { group: string; hard: string }> = {
+  'registered-freehold-house':                 { group: 'S005 — Property identity', hard: 'Baseline easy case: UPRN present, title registered, single proprietor — the differentiator for the harder cases.' },
+  'unregistered-pre-first-registration-house': { group: 'S005 — Property identity', hard: 'Legal layer + UPRN both absent: the identity criterion must still work with no legal anchor (Guarino) and degrade gracefully (Cagle).' },
+  'flat-with-split-uprn':                       { group: 'S005 — Property identity', hard: 'UPRN succession via re-numbering: physical identity persists across administrative re-issue (Rule 6 — UPRN contingent, not the IC).' },
+  'flat-no-uprn-newly-converted':               { group: 'S015 — Address & geography', hard: 'Address exists without a UPRN; a subdivision created two new Properties whose UPRN issuance lags AddressBase.' },
+  'listed-building-divergent-addresses':        { group: 'S015 — Address & geography', hard: 'Three divergent address surfaces (title / marketing / INSPIRE) on one Property — the co-reference SHACL shape across presentations.' },
+  'rural-plot-inspire-no-uprn':                 { group: 'S015 — Address & geography', hard: 'Undeveloped land with an INSPIRE Identifier but no UPRN and no postal address — GeoSPARQL-deferral and a different PII regime.' },
+  'person-with-name-change':                    { group: 'S006 — Agents & roles', hard: 'Person identity over a deed-poll name change: same individual (PROV-O captured), not two.' },
+  'organisation-with-merger':                   { group: 'S006 — Agents & roles', hard: 'Organisation identity over a merger: two predecessors dissolve; the successor is a new individual with prov:wasDerivedFrom chains.' },
+  'proprietorship-relator-multi-proprietor':    { group: 'S006 — Agents & roles', hard: 'Proprietorship as a UFO Relator with multiple Proprietor Role instances — the joint-tenancy multi-proprietor case (RoleMixin vs Role).' },
+  'claim-with-document-evidence':               { group: 'S009 — Claims & evidence', hard: 'PR claim supported by a grant of probate: 80%-PROV-O coverage + qualified attribution; eIDAS Substantial for a court-issued instrument.' },
+  'claim-with-electronic-record-evidence':      { group: 'S009 — Claims & evidence', hard: 'Identity claim supported by an HMRC API tax-record: electronic-record evidence at eIDAS Substantial; sh:xone evidence-type discrimination.' },
+  'claim-with-vouch-evidence':                  { group: 'S009 — Claims & evidence', hard: 'Residency claim supported by an SRA-solicitor vouch: vouch evidence caps at eIDAS Low (corroborative, not authoritative) regardless of voucher quality.' },
+  'simple-transaction-with-milestones':         { group: 'S007 — Transactions', hard: 'Single freehold sale with five canonical milestones (instruction / offer / exchange / completion / registration) — Transaction-as-Relator + expected-vs-actual times.' },
+  'chain-of-transactions':                      { group: 'S007 — Transactions', hard: 'Three-link chain via buyer-also-seller participants — recursive Relator predicate and a first-class TransactionChain resource side-by-side.' },
+  'lease-extension-transaction':                { group: 'S007 — Transactions', hard: 'Statutory lease extension (LRHUDA 1993, 99→189 years): LegalEstate persists; RegisteredTitle records the lifecycle event; lease term as a time:ProperInterval.' },
+  'baspi5-transaction-conformant':              { group: 'BASPI5 round-trip', hard: 'A fully conformant BASPI5 transaction — the positive arm of the ci-baspi5-roundtrip gate; also guards the SHACL-Core vacuous-xone-pass direction.' },
+  'baspi5-transaction-nonconformant':           { group: 'BASPI5 round-trip', hard: 'A Seller acting "Under Power of Attorney" with NO opda:hasEvidencedAuthority — MUST trip Baspi5_SellersCapacityShape, tracing via dct:source to BASPI form-question B1.3.2.' },
+};
+
+let exemplars: { slug: string; group: string; hard: string; report: boolean }[] = [];
+try {
+  exemplars = fs.readdirSync(EX)
+    .filter((f) => f.endsWith('.ttl') && !f.endsWith('-expected-report.ttl'))
+    .map((f) => f.replace('.ttl', ''))
+    .map((slug) => ({
+      slug,
+      group: META[slug]?.group ?? '—',
+      hard: META[slug]?.hard ?? '',
+      report: fs.existsSync(path.join(EX, `${slug}-expected-report.ttl`)),
+    }))
+    .sort((a, b) => a.group.localeCompare(b.group) || a.slug.localeCompare(b.slug));
+} catch { exemplars = []; }
+
+// Render grouped by consuming session, preserving the README order of groups.
+const GROUP_ORDER = ['S005 — Property identity', 'S015 — Address & geography',
+  'S006 — Agents & roles', 'S009 — Claims & evidence', 'S007 — Transactions',
+  'BASPI5 round-trip', '—'];
+const grouped = GROUP_ORDER
+  .map((g) => ({ group: g, items: exemplars.filter((e) => e.group === g) }))
+  .filter((g) => g.items.length > 0);
+
+const total = exemplars.length;
+const paired = exemplars.filter((e) => e.report).length;
+const sourceIdx = exists('artefacts/source/index.html');
+const customRendering = exists('tools/custom/index.html');
+---
+<Layout
+  title="Exemplars"
+  description="The 17 round-trip diagnostic exemplars of the OPDA PDTF ontology — each a worked instance graph paired with its expected SHACL validation report. The round-trip data contract: conformant + non-conformant cases (e.g. the BASPI5 B1.3.2 Seller-as-Attorney violation). Read live from the committed exemplar corpus."
+>
+<PageMeta category="Ontology" updated="Draft · Updated 2026-06-14" damaKa={["Data Quality", "Metadata"]} />
+
+  <h1>Exemplars</h1>
+
+  <p class="lead">
+    The {total} round-trip diagnostic exemplars — the data contract no OWL documentation tool
+    renders. Each is a worked instance graph (an ABox) that pressure-tests one named hard case,
+    paired with the <code>sh:ValidationReport</code> it must produce against the ratified shapes
+    graph ({paired} of {total} carry their expected-report companion). The pairing turns each
+    exemplar into a CI regression test, not just documentation (ODR-0004 §8a). The set is read at
+    build time from <code>source/03-standards/ontology/exemplars/</code>.
+  </p>
+
+  <nav class="callout">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#contract">1 · The round-trip data contract</a></li>
+      <li><a href="#nonconformant">2 · The non-conformant case — BASPI5 B1.3.2</a></li>
+      <li><a href="#catalogue">3 · The {total} exemplars</a></li>
+    </ul>
+  </nav>
+
+  <!-- ───────────────────────────  1 — CONTRACT  ─────────────────────────── -->
+  <h2 id="contract">1 · The round-trip data contract</h2>
+  <p>
+    An exemplar is <strong>IC-only</strong>: the smallest TTL that exposes the identity-bearing
+    surfaces of one hard case — no decorative metadata. The TBox/ABox boundary is the
+    <em>deliverable</em> boundary; the exemplars are the <em>thinking</em> boundary, the place
+    each identity criterion and rigidity claim is exercised before it is committed. The round-trip
+    is: <strong>JSON → profile → rendered form + validated transaction → expected report</strong>.
+    Both arms of the contract are committed:
+  </p>
+  <ul>
+    <li><strong>Conformant exemplars</strong> must validate clean against the base shapes + the
+      loaded overlay profile + the class TBox (with the frozen RDFS-plus closure).</li>
+    <li><strong>Non-conformant exemplars</strong> must report the specific violation expected, and
+      no other — the failure is localised to the one hard case under test (e.g. the BASPI5
+      capacity case below), so a passing report would itself be a regression.</li>
+  </ul>
+  <p>
+    Comparison is semantic-equivalence on <code>focusNode</code> / <code>resultPath</code> /
+    <code>severity</code> / <code>constraint</code> / <code>message</code> (not byte-identity),
+    so the report companion is a stable contract across processor formatting.
+  </p>
+
+  <!-- ───────────────────────────  2 — NONCONFORMANT  ─────────────────────────── -->
+  <h2 id="nonconformant">2 · The non-conformant case — BASPI5 B1.3.2</h2>
+  <p>
+    The canonical non-conformant exemplar, <code>baspi5-transaction-nonconformant</code>, is
+    identical to its conformant twin except that the <code>opda:Seller</code> asserts capacity
+    <code>"Under Power of Attorney"</code> (branch (b) of the <code>sellersCapacity</code>
+    <code>sh:xone</code>) with <strong>no <code>opda:hasEvidencedAuthority</code></strong>. A
+    Seller acting as Attorney or Personal Representative without evidenced authority MUST trip
+    <code>opda:Baspi5_SellersCapacityShape</code> (an <code>sh:xone</code>,
+    <code>sh:Violation</code>), and the violation traces via <code>sh:sourceShape</code> →
+    <code>dct:source</code> back to the BASPI form-question
+    <code>basp.uk/forms/baspi5#B1.3.2</code>. Everything else in the transaction is conformant, so
+    the capacity <code>xone</code> is the only failure.
+  </p>
+  <div class="callout callout--warn">
+    <p class="callout__label">Validator-capability caveat (known-issue ii)</p>
+    <p>
+      The <code>sellersCapacity</code> <code>sh:xone</code> is a SHACL Advanced Feature: under a
+      <strong>SHACL-Core-only</strong> processor the <code>xone</code>-of-property-shapes passes
+      <em>vacuously</em> — the committed expected-report for this exemplar in fact reads
+      <code>sh:conforms true</code> at SHACL-Core. The B1.3.2 violation is only produced under a
+      SHACL-AF-capable validator (pyshacl <code>advanced=True</code>), which is what the
+      <code>ci-baspi5-roundtrip</code> gate runs. The conformant exemplar guards the vacuous-pass
+      direction. See the <a href="/ontology/shapes#asserted-entailed">SHACL-AF note</a> and
+      known-issue ii on the <a href="/ontology#known-issues">section reference</a>.
+    </p>
+  </div>
+
+  <!-- ───────────────────────────  3 — CATALOGUE  ─────────────────────────── -->
+  <h2 id="catalogue">3 · The {total} exemplars</h2>
+  <p>
+    Grouped by the Council session that consumed them as its identity-criterion gate. Each row
+    names the hard case the exemplar isolates and whether its expected SHACL report is committed.
+  </p>
+  {grouped.map((g) => (
+    <>
+      <h3>{g.group}</h3>
+      <table>
+        <thead><tr><th>Exemplar</th><th>Hard case it isolates</th><th>Expected report</th></tr></thead>
+        <tbody>
+          {g.items.map((e) => (
+            <tr>
+              <td><code>{e.slug}</code></td>
+              <td>{e.hard}</td>
+              <td>{e.report
+                ? (<span class="pill pill--success">paired</span>)
+                : (<span class="pill pill--info">ABox only</span>)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  ))}
+  <p class="muted">
+    {total} exemplars · {paired} paired with an expected <code>sh:ValidationReport</code>. The
+    two BASPI5 transactions are instance-data round-trip fixtures (they change no emitted TBox)
+    rather than IC diagnostics; their report companion reflects the SHACL-Core vacuous-pass caveat
+    above (the committed non-conformant report reads <code>sh:conforms true</code> at SHACL-Core,
+    with the B1.3.2 violation produced only under <code>advanced=True</code>). The exemplar and
+    report TTLs live in-repo at <code>source/03-standards/ontology/exemplars/</code>; the shapes they
+    validate against are resolved in the
+    {exists('tools/shaclplay/index.html') ? (<a href="/ontology/tools/shaclplay/index.html">SHACL Play! rendering ↗</a>) : (<span>SHACL Play! rendering</span>)}
+    and the merged TTL bundles are linked from the
+    {sourceIdx ? (<a href="/ontology/artefacts/source/index.html">artefacts index ↗</a>) : (<span>artefacts index</span>)}.
+    {customRendering ? (<> The custom <a href="/ontology/tools/custom/index.html">reference rendering ↗</a> lists the full set.</>) : null}
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The shapes the exemplars validate against are on <a href="/ontology/shapes">SHACL shapes</a>;
+    the overlay profiles they load are on <a href="/ontology/profiles">Overlay profiles &amp;
+    gaps</a>; the claims/evidence exemplars exercise the model on
+    <a href="/ontology/claims">Claims, evidence &amp; provenance</a>. Governing record: ODR-0004
+    §8a (diagnostic exemplar policy + expected-report pairing); the BASPI5 round-trip is ODR-0010
+    §Q7 + ADR-0014.
+  </p>
+</Layout>

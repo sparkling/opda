@@ -1,0 +1,167 @@
+---
+/**
+ * /ontology/properties — native index of object + datatype properties.
+ *
+ * Reads owl:ObjectProperty and owl:DatatypeProperty declarations live from the
+ * module TTLs at build time, with rdfs:domain / rdfs:range where readable.
+ * Object properties are listed in full (there are ~30); datatype properties
+ * are counted per module (there are ~226) and the per-property detail is
+ * deferred to the pyLODE / WIDOCO renderings (combination principle, ADR-0041).
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+const MODULES = [
+  { file: 'opda-classes.ttl',     label: 'Foundation' },
+  { file: 'opda-property.ttl',    label: 'Property & land' },
+  { file: 'opda-agent.ttl',       label: 'Agents & roles' },
+  { file: 'opda-transaction.ttl', label: 'Transaction & lifecycle' },
+  { file: 'opda-claim.ttl',       label: 'Claims, evidence & provenance' },
+  { file: 'opda-governance.ttl',  label: 'Governance' },
+  { file: 'opda-descriptive.ttl', label: 'Descriptive attributes' },
+  { file: 'opda-contexts.ttl',    label: 'Bounded contexts' },
+];
+
+type Prop = { name: string; domain: string; range: string; module: string };
+function localOf(iri: string): string {
+  return iri.replace(/^opda:/, '').replace(/^.*[#/]/, '').replace(/^[a-z0-9-]+:/i, '');
+}
+function parseProps(file: string, rdfType: string, moduleLabel: string): Prop[] {
+  const txt = ttl(file);
+  const out: Prop[] = [];
+  for (const block of txt.split(/\n(?=opda:[A-Za-z0-9]+\s)/)) {
+    const m = block.match(/^(opda:[A-Za-z0-9]+)/);
+    if (!m) continue;
+    if (!new RegExp(`rdf:type\\s+${rdfType}\\b`).test(block)) continue;
+    const d = block.match(/rdfs:domain\s+([^\s;]+)/);
+    const r = block.match(/rdfs:range\s+([^\s;]+)/);
+    out.push({
+      name: m[1].slice(5),
+      domain: d ? localOf(d[1]) : '',
+      range: r ? localOf(r[1]) : '',
+      module: moduleLabel,
+    });
+  }
+  return out;
+}
+
+// Object properties — listed in full (the relational backbone).
+const objectProps: Prop[] = MODULES.flatMap((m) => parseProps(m.file, 'owl:ObjectProperty', m.label));
+// Datatype properties — counted per module; detail deferred to the renderings.
+const dataByModule = MODULES.map((m) => ({
+  label: m.label,
+  count: parseProps(m.file, 'owl:DatatypeProperty', m.label).length,
+})).filter((x) => x.count > 0);
+const dataTotal = dataByModule.reduce((n, x) => n + x.count, 0);
+
+const PYLODE = { href: '/ontology/tools/pylode/index.html', live: exists('tools/pylode/index.html') };
+const WIDOCO = { href: '/ontology/tools/widoco/doc/index-en.html', live: exists('tools/widoco/doc/index-en.html') };
+---
+<Layout
+  title="Properties"
+  description="Native index of the OPDA object and datatype properties: the ~30 object properties listed in full with domain/range, and the ~226 datatype properties counted per module, all read live from the committed TTL corpus. Links the pyLODE/WIDOCO renderings for the full per-property detail."
+>
+<PageMeta category="Browse the terms" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Properties</h1>
+
+  <p class="lead">
+    The OPDA ontology declares <strong>{objectProps.length} object properties</strong> (the relational
+    backbone — what links to what) and <strong>{dataTotal} datatype properties</strong> (the literal-valued
+    attributes), read live at build time from <code>source/03-standards/ontology/</code>. Object properties
+    are listed in full below with their <code>rdfs:domain</code> / <code>rdfs:range</code>; the datatype
+    properties are counted per module, with the full per-property detail in the generated renderings.
+  </p>
+
+  <div class="callout callout--note">
+    <p class="callout__label">domain / range are informative, not enforced</p>
+    <p>
+      Under the inference / validation boundary (<a href="/ontology/foundation#boundary">ODR-0029</a>),
+      <code>rdfs:domain</code> and <code>rdfs:range</code> are <strong>documentation</strong> — a multi-domain
+      property reads as a union and is <em>never</em> used to entail types. The actual enforcement is
+      value-keyed SHACL (<a href="/ontology/shapes">SHACL shapes</a>). The domain/range shown below is the
+      declared documentary intent.
+    </p>
+  </div>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#reference">Per-property reference</a> — pyLODE &amp; WIDOCO renderings</li>
+      <li><a href="#object">Object properties</a> — {objectProps.length}, listed in full</li>
+      <li><a href="#datatype">Datatype properties</a> — {dataTotal}, counted per module</li>
+    </ul>
+  </nav>
+
+  <h2 id="reference">Per-property reference</h2>
+  <p>
+    The exhaustive per-property detail — every characteristic, the full domain/range, sub-property chains —
+    is rendered by the bake-off's adopted OWL tools. This page is the native, live-counted index.
+  </p>
+  <ul>
+    <li><strong>pyLODE</strong> — {PYLODE.live ? <a href={PYLODE.href}>View pyLODE ↗</a> : <span class="pill pill--warn">Pending generation</span>} (best single-file term reference)</li>
+    <li><strong>WIDOCO</strong> — {WIDOCO.live ? <a href={WIDOCO.href}>View WIDOCO ↗</a> : <span class="pill pill--warn">Pending generation</span>} (richest publishable shell + VOWL property diagrams)</li>
+  </ul>
+  {PYLODE.live && (
+    <details>
+      <summary><strong>Embedded — pyLODE (jump to the Properties section)</strong></summary>
+      <iframe src={PYLODE.href} title="pyLODE rendering of the OPDA ontology" loading="lazy"
+        style="width:100%; height:70vh; border:1px solid var(--color-border, #ccc); border-radius:8px; margin-top:0.75rem;"></iframe>
+    </details>
+  )}
+
+  <h2 id="object">Object properties <span class="muted">· {objectProps.length}</span></h2>
+  <p>
+    The relational predicates. Note that several "monetary" predicates in the descriptive module
+    (<code>rent</code>, <code>listPrice</code>, <code>currency</code> …) are declared object properties because
+    their range is a value-structure or coded scheme rather than a literal.
+  </p>
+  <table>
+    <thead><tr><th>Property</th><th>Domain</th><th>Range</th><th>Module</th></tr></thead>
+    <tbody>
+      {objectProps.map((p) => (
+        <tr>
+          <td><code>opda:{p.name}</code></td>
+          <td>{p.domain ? <code>{p.domain}</code> : <span class="muted">—</span>}</td>
+          <td>{p.range ? <code>{p.range}</code> : <span class="muted">—</span>}</td>
+          <td>{p.module}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="datatype">Datatype properties <span class="muted">· {dataTotal}</span></h2>
+  <p>
+    The literal-valued attributes — the bulk of the vocabulary, the great majority sourced from PDTF schema
+    leaves via <code>dct:source</code>. Counted per module here; open a rendering above for the full list with
+    ranges.
+  </p>
+  <table>
+    <thead><tr><th>Module</th><th>Datatype properties</th></tr></thead>
+    <tbody>
+      {dataByModule.map((m) => (
+        <tr><td>{m.label}</td><td>{m.count}</td></tr>
+      ))}
+      <tr><td><strong>Total</strong></td><td><strong>{dataTotal}</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="related">Related</h2>
+  <p>
+    See <a href="/ontology/classes">Classes</a> for the subjects these properties attach to,
+    <a href="/ontology/vocabularies">Vocabularies (SKOS)</a> for the coded value-spaces many ranges point at,
+    and <a href="/ontology/shapes">SHACL shapes</a> for the constraints that actually enforce them.
+    Full index: <a href="/ontology">Ontology section overview</a>.
+  </p>
+</Layout>

@@ -1,0 +1,175 @@
+---
+/**
+ * /ontology/profiles — the overlay-profile layer + the gap register.
+ * Sub-page of the ADR-0041 /ontology section.
+ *
+ * Per-profile binding (thin vs bound) is read at build time from
+ * source/03-standards/ontology/profiles/*.ttl: a profile's `sh:property` count
+ * is its bound-leaf count; dct:title carries the form name; the per-profile
+ * source instrument is the form-question authority the bound shapes cite.
+ * Gap-register figures (224 bound / 1095 GAPped across 28 forms) are the
+ * session-034 ruling, surfaced here.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const PROFILES = path.resolve(process.cwd(), 'source/03-standards/ontology/profiles');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+type Row = { slug: string; title: string; bound: number };
+let rows: Row[] = [];
+try {
+  rows = fs.readdirSync(PROFILES)
+    .filter((f) => f.endsWith('.ttl'))
+    .map((f) => {
+      const body = fs.readFileSync(path.join(PROFILES, f), 'utf8');
+      const bound = (body.match(/sh:property/g) || []).length;
+      const tm = body.match(/dct:title\s+"([^"]+)"/);
+      const title = tm ? tm[1].replace(/\s+overlay profile$/i, '') : f.replace('.ttl', '');
+      return { slug: f.replace('.ttl', ''), title, bound };
+    })
+    .sort((a, b) => (b.bound - a.bound) || a.slug.localeCompare(b.slug));
+} catch { rows = []; }
+
+const total = rows.length;
+const boundCount = rows.filter((r) => r.bound > 0).length;
+const thinCount = total - boundCount;
+const boundLeaves = rows.reduce((n, r) => n + r.bound, 0);
+
+const customRendering = exists('tools/custom/index.html');
+const shaclPlay = exists('tools/shaclplay/index.html');
+---
+<Layout
+  title="Overlay profiles & gaps"
+  description="The 31 OPDA overlay profiles — form name, bound vs thin binding, source instrument — and the gap register (224 bound / 1095 GAPped across 28 forms). 'A form IS its SHACL overlay' (ADR-0029 / session-034). Per-profile binding read live from the committed profile corpus."
+>
+<PageMeta category="Ontology" updated="Draft · Updated 2026-06-14" damaKa={["Data Quality", "Reference & Master Data"]} />
+
+  <h1>Overlay profiles &amp; gaps</h1>
+
+  <p class="lead">
+    A PDTF form <em>is</em> its SHACL overlay (ODR-0010 / ADR-0029). The {total} overlay
+    profiles each constrain — never declare — over one fixed class TBox. Most are
+    <strong>thin by design</strong> (session-034): a profile binds per-leaf shapes only for the
+    Category-G substantive attributes; the A/B/C/D/E/F leaves are carried by
+    <code>dct:subject</code> + a JSON-pointer <code>dct:source</code> and registered in the gap
+    register, never fabricated. A thin profile is the ratified outcome, not a defect. Per-profile
+    binding below is read at build time from
+    <code>source/03-standards/ontology/profiles/*.ttl</code>.
+  </p>
+
+  <nav class="callout">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#doctrine">1 · "A form IS its SHACL overlay"</a></li>
+      <li><a href="#gap">2 · The gap register</a></li>
+      <li><a href="#held-thin">3 · oc1 / llc1 — held thin (ODR-0008d)</a></li>
+      <li><a href="#table">4 · All {total} profiles</a></li>
+    </ul>
+  </nav>
+
+  <!-- ───────────────────────────  1 — DOCTRINE  ─────────────────────────── -->
+  <h2 id="doctrine">1 · "A form IS its SHACL overlay"</h2>
+  <p>
+    A class per overlay (<code>baspi:PropertyPack</code>, <code>ta6:PropertyPack</code>) was
+    rejected unanimously (ODR-0010 / session-001 Q3): that nesting is form ergonomics, not
+    ontology, and would let overlays <em>declare</em> rather than <em>constrain</em>, inviting
+    identity drift across near-duplicate classes. Instead each overlay is a named, dereferenceable
+    <strong>SHACL profile graph over the fixed TBox</strong>; composition is a documented
+    build-step graph-union. Three interface rules bind every profile against the base shapes
+    (ODR-0010 ↔ ODR-0013):
+  </p>
+  <ol>
+    <li><strong><code>sh:in</code> semantics</strong> — enum members are <em>merged</em> (set-union of base + overlay), at build time, never by entailment.</li>
+    <li><strong>Severity floor</strong> — no overlay shape may relax a property the base shape declared <code>sh:Violation</code> down to <code>sh:Warning</code> / <code>sh:Info</code> (enforced by a meta-shape carrying <code>opda:metaShapeJustification</code>).</li>
+    <li><strong>No identity override</strong> — a profile may add presence and vocabulary constraints; it may never restate or alter a Kind's identity criterion or key (ODR-0005). Identity belongs to the rigid Kind, not to a form context.</li>
+  </ol>
+
+  <!-- ───────────────────────────  2 — GAP REGISTER  ─────────────────────────── -->
+  <h2 id="gap">2 · The gap register</h2>
+  <p>
+    The gap register is the honest accounting that turns "thin" from a smell into a ratified
+    state. Per session-034, across <strong>28 forms</strong> the binding split is
+    <strong>224 bound / 1095 GAPped</strong> leaves: only Category-G substantive attributes bind
+    as per-leaf <code>sh:path</code> shapes; the rest are carried by <code>dct:subject</code> +
+    <code>dct:source</code> and GAP-registered so the omission is <em>recorded</em>, not silent.
+    A completeness claim that concealed those 1095 leaves would be a provenance lie — so the
+    register surfaces them.
+  </p>
+  <table>
+    <thead><tr><th>Measure</th><th>Value</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Overlay profiles emitted</td><td>{total}</td><td><code>profiles/*.ttl</code> (live)</td></tr>
+      <tr><td>— bound (≥ 1 per-leaf shape)</td><td>{boundCount}</td><td>live <code>sh:property</code> count &gt; 0</td></tr>
+      <tr><td>— thin (0 per-leaf shapes, by design)</td><td>{thinCount}</td><td>live <code>sh:property</code> count = 0</td></tr>
+      <tr><td>Bound per-leaf shapes (this corpus)</td><td>{boundLeaves}</td><td>sum of live <code>sh:property</code> counts</td></tr>
+      <tr><td>Gap register — bound leaves</td><td>224</td><td>session-034 ruling (28 forms)</td></tr>
+      <tr><td>Gap register — GAPped leaves</td><td>1095</td><td>session-034 ruling (28 forms)</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    The {boundLeaves} figure is the per-leaf shapes carried <em>inside</em> the {total} emitted
+    profile graphs (each profile's <code>sh:property</code> blocks); the 224 / 1095 figures are
+    the session-034 leaf-level accounting across the 28 forms the register tracks. They count at
+    different granularities and are both reported deliberately. The gap register itself is part of
+    the custom <code>opda-gen</code> layer{customRendering ? (<> — see the
+    <a href="/ontology/tools/custom/index.html">custom reference rendering ↗</a></>) : null}.
+  </p>
+
+  <!-- ───────────────────────────  3 — HELD THIN  ─────────────────────────── -->
+  <h2 id="held-thin">3 · oc1 / llc1 — held thin (ODR-0008d)</h2>
+  <p>
+    <code>oc1</code> (Official Copy of Register and Title Plan) and <code>llc1</code> (Local Land
+    Charges Search) are held thin under a recorded re-open trigger (ODR-0008d / session-034 Q2):
+    they are <strong>authority-register extracts, not human-filled forms</strong>. Binding their
+    leaves as per-leaf shapes would assert a closed-world obligation on data whose shape the
+    register — not the OPDA model — owns. They stay thin until a named consumer issues a worked
+    SPARQL query against a register leaf; that worked query is the trigger that re-opens the
+    binding decision. The trigger is recorded so the thinness is governed, not forgotten.
+  </p>
+
+  <!-- ───────────────────────────  4 — TABLE  ─────────────────────────── -->
+  <h2 id="table">4 · All {total} profiles</h2>
+  <p>
+    Every emitted profile, ordered by binding (most-bound first). <code>baspi5</code> is the
+    most-bound profile (the ODR-0010 round-trip MVP); the NTS2 specialist-issue extensions
+    (<code>as</code>, <code>dr</code>, <code>hs</code>, …) are thin single-disclosure overlays.
+    Binding and form name are read live; the source instrument is the form-question / ADR
+    authority the profile's bound shapes cite via <code>dct:source</code>.
+  </p>
+  <table>
+    <thead><tr><th>Profile</th><th>Form</th><th>Binding</th></tr></thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <td><code>{r.slug}</code></td>
+          <td>{r.title}</td>
+          <td>{r.bound > 0
+            ? (<span class="pill pill--success">{r.bound} bound</span>)
+            : (<span class="pill pill--warn">thin</span>)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="muted">
+    {total} profiles · {boundCount} bound · {thinCount} thin. The bound profiles cite their
+    form-question anchors (e.g. <code>baspi5</code> → <code>basp.uk/forms/baspi5#B1.3.2</code>);
+    the NTS2-family extensions cite ADR-0029 (overlay-emitter rollout). The shapes the profiles
+    carry are resolved per-shape in the
+    {shaclPlay ? (<a href="/ontology/tools/shaclplay/index.html">SHACL Play! rendering ↗</a>) : (<span>SHACL Play! rendering</span>)}.
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The base shapes these profiles compose over are on <a href="/ontology/shapes">SHACL shapes</a>;
+    the round-trip exemplars that exercise a loaded profile (conformant + non-conformant) are on
+    <a href="/ontology/exemplars">Exemplars</a>. Governing records: ODR-0010 (overlay mechanism),
+    ADR-0029 (emitter generalisation + rollout), session-034 (gap register + thin ruling),
+    ODR-0008d (oc1 / llc1 held thin).
+  </p>
+</Layout>

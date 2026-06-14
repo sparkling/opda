@@ -1,0 +1,202 @@
+---
+/**
+ * /ontology/claims — the claims / evidence / provenance layer.
+ * Sub-page of the ADR-0041 /ontology section.
+ *
+ * The PROV-O subclass backbone is read at build time from opda-claim.ttl
+ * (rdfs:subClassOf prov:* assertions); the assurance-level and evidence-method
+ * SKOS members from opda-vocabularies.ttl. ODR-0009 / ODR-0027 are the governing
+ * records.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+const claim = ttl('opda-claim.ttl');
+const vocab = ttl('opda-vocabularies.ttl');
+
+// Assurance-level scheme members (skos:notation), in eIDAS order + the OPDA intermediate.
+const ASSURANCE_ORDER = ['Low', 'PDTF-Standard', 'Substantial', 'High'];
+const assuranceMembers = Array.from(vocab.matchAll(/scheme\/assuranceLevel\/[^>]+>[\s\S]*?skos:notation\s+"([^"]+)"/g))
+  .map((m) => m[1]);
+const assurance = ASSURANCE_ORDER.filter((a) => assuranceMembers.includes(a));
+
+// Evidence-method scheme members (Document / Electronic-Record / Vouch).
+const evidenceMembers = Array.from(vocab.matchAll(/scheme\/evidenceMethod\/[^>]+>[\s\S]*?skos:notation\s+"([^"]+)"/g))
+  .map((m) => m[1]);
+
+// PROV-O backbone: which opda: classes subclass which prov: class (live).
+const PROV_BACKBONE = [
+  { cls: 'opda:Claim',              prov: 'prov:Entity',   gloss: 'A verifiable claim entity; the verified claim (claim + verification bundle) is a derived entity.' },
+  { cls: 'opda:Evidence',           prov: 'prov:Entity',   gloss: 'A RoleMixin — a bearer is evidence only qua a VerificationActivity using it; kind is the opda:evidenceType facet, not a subclass.' },
+  { cls: 'opda:AttachedDocument',   prov: 'prov:Entity',   gloss: 'The one neutral document Kind; it BECOMES evidence by playing the evidence role, not by sub-classing.' },
+  { cls: 'opda:VerificationActivity', prov: 'prov:Activity', gloss: 'Records production of a verified claim from evidence; OIDC4IDA `time` → prov:endedAtTime.' },
+];
+const backbonePresent = PROV_BACKBONE.filter((b) => {
+  const re = new RegExp(b.cls.replace(':', ':') + '[\\s\\S]*?rdfs:subClassOf\\s+' + b.prov.replace(':', ':'));
+  return re.test(claim);
+});
+---
+<Layout
+  title="Claims, evidence & provenance"
+  description="The OPDA claims/evidence/provenance layer: a PROV-O backbone (opda:Claim ⊑ prov:Entity, VerificationActivity ⊑ prov:Activity, qualified attribution), the three truth-makers (derivation / signature / assurance), the eIDAS assurance levels, and the Evidence RoleMixin + evidenceType facet model (ODR-0009 / ODR-0027)."
+>
+<PageMeta category="Ontology" updated="Draft · Updated 2026-06-14" damaKa={["Data Quality", "Metadata"]} />
+
+  <h1>Claims, evidence &amp; provenance</h1>
+
+  <p class="lead">
+    PDTF carries its assurance story in a separate OIDC4IDA / eIDAS-shaped envelope
+    (<code>pdtf-verified-claims.json</code>). OPDA re-expresses it as a <strong>PROV-O backbone
+    plus a separate assurance layer</strong> (ODR-0009): PROV-O carries the
+    who / what-process / from-what-evidence skeleton (≈80% of the envelope, native), and the
+    residual eIDAS elements PROV deliberately does not model — signatures, trust framework,
+    assurance tier — are modelled <em>around</em> PROV with <code>dct:</code>, SKOS and a few
+    narrow <code>opda:</code> terms. The backbone classes below are read live from
+    <code>opda-claim.ttl</code>.
+  </p>
+
+  <nav class="callout">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#backbone">1 · The PROV-O backbone</a></li>
+      <li><a href="#truth-makers">2 · The three truth-makers</a></li>
+      <li><a href="#assurance">3 · Assurance levels</a></li>
+      <li><a href="#evidence">4 · Evidence as a RoleMixin + evidenceType facet</a></li>
+    </ul>
+  </nav>
+
+  <!-- ───────────────────────────  1 — BACKBONE  ─────────────────────────── -->
+  <h2 id="backbone">1 · The PROV-O backbone</h2>
+  <p>
+    PROV-O was chosen over a PROV-O-only model (which flattens evidential weight into a causal
+    trace) and over a bespoke model (which abandons a dereferenceable standard). The core mapping:
+  </p>
+  <table>
+    <thead><tr><th>OPDA class</th><th>⊑ PROV-O</th><th>Role</th></tr></thead>
+    <tbody>
+      {(backbonePresent.length ? backbonePresent : PROV_BACKBONE).map((b) => (
+        <tr><td><code>{b.cls}</code></td><td><code>{b.prov}</code></td><td>{b.gloss}</td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    <strong>Qualified attribution.</strong> The verifier is a <code>prov:Agent</code>
+    (<code>verifier.organization</code> a <code>prov:Organization</code>, a human voucher a
+    <code>prov:Person</code>). OPDA uses the <em>qualified</em> form —
+    <code>prov:qualifiedAttribution</code> → <code>prov:Attribution</code> with
+    <code>prov:hadRole</code> — so <code>validation_method</code> / <code>verification_method</code>
+    are not discarded by the binary <code>prov:wasAttributedTo</code> shortcut. A named procedure
+    (UK AML / MLR 2017 CDD; an identity-assurance profile) is a <code>prov:Plan</code> reached via
+    <code>prov:hadPlan</code>. The convenience predicate <code>opda:supportedBy</code> mirrors the
+    canonical <code>Claim prov:wasDerivedFrom Evidence</code> chain so consumers can query from
+    either end.
+  </p>
+
+  <!-- ───────────────────────────  2 — TRUTH-MAKERS  ─────────────────────────── -->
+  <h2 id="truth-makers">2 · The three truth-makers</h2>
+  <p>
+    What makes a claim <em>trustworthy</em> decomposes into three orthogonal truth-makers — each
+    homed in the vocabulary that can actually express it, because PROV-O carries only the first:
+  </p>
+  <table>
+    <thead><tr><th>Truth-maker</th><th>What it asserts</th><th>Carried by</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Derivation</strong></td>
+        <td>That the claim was <em>derived from</em> evidence by a verification activity — the causal skeleton.</td>
+        <td>PROV-O native: <code>prov:wasDerivedFrom</code>, <code>opda:VerificationActivity</code>, <code>prov:qualifiedAttribution</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Signature</strong></td>
+        <td>That the claim or evidence is cryptographically fixed (algorithm + value, e.g. <code>sha256:e3b0…</code>) — PROV has no notion of a signature or hash.</td>
+        <td>Local term <code>opda:digest</code>; algorithm validated against <code>opda:DigestAlgorithmScheme</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Assurance</strong></td>
+        <td>The quality judgement on the verification — a graded confidence level, not a PROV concept.</td>
+        <td>SKOS-coded <code>opda:AssuranceLevel</code> over <code>opda:AssuranceLevelScheme</code> (§3).</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    <code>opda:digest</code> and <code>opda:AssuranceLevel</code> are among the only bespoke
+    <code>opda:</code> terms in this layer (the eIDAS "5-residue" per ODR-0009); everything else
+    reuses PROV-O, <code>dct:</code> or SKOS.
+  </p>
+
+  <!-- ───────────────────────────  3 — ASSURANCE  ─────────────────────────── -->
+  <h2 id="assurance">3 · Assurance levels</h2>
+  <p>
+    <code>opda:AssuranceLevelScheme</code> is a SKOS scheme (UFO Quality Value) whose members
+    inherit verbatim from <strong>eIDAS Regulation (EU) 910/2014 Article 8</strong>, plus one
+    OPDA-specific intermediate level ratified by ODR-0009 §Q3. Members read live from
+    <code>opda-vocabularies.ttl</code>:
+  </p>
+  <table>
+    <thead><tr><th>Level</th><th>Source</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td><code>Low</code></td><td>eIDAS Art. 8(2)(a)</td><td>Limited confidence. A vouch-only evidence chain caps here, regardless of voucher quality.</td></tr>
+      <tr><td><code>PDTF-Standard</code></td><td>ODR-0009 §Q3</td><td>OPDA-specific intermediate level, for PDTF transactions where a direct eIDAS LoA mapping is not available.</td></tr>
+      <tr><td><code>Substantial</code></td><td>eIDAS Art. 8(2)(b)</td><td>Substantial confidence — e.g. a court-issued instrument or an authoritative electronic record.</td></tr>
+      <tr><td><code>High</code></td><td>eIDAS Art. 8(2)(c)</td><td>High confidence in the claimed identity.</td></tr>
+    </tbody>
+  </table>
+  {assurance.length > 0 && (
+    <p class="muted">Live scheme members: {assurance.map((a) => (<><code>{a}</code>{' '}</>))}
+      ({assurance.length} of 4 present in the committed vocabulary).</p>
+  )}
+
+  <!-- ───────────────────────────  4 — EVIDENCE  ─────────────────────────── -->
+  <h2 id="evidence">4 · Evidence as a RoleMixin + <code>evidenceType</code> facet</h2>
+  <p>
+    Evidence is the sharpest application of the classification doctrine (ODR-0027). It is
+    <strong>not</strong> a subclass tree. <code>opda:Evidence</code> is a UFO
+    <strong>RoleMixin</strong> (anti-rigid, cross-categorial): a bearer is evidence only
+    <em>qua</em> a <code>VerificationActivity</code> using it — "evidence is a role a document
+    plays", and a Role is never <code>rdfs:subClassOf</code> a Kind. The former
+    <code>DocumentEvidence</code> / <code>ElectronicRecordEvidence</code> / <code>VouchEvidence</code>
+    subclasses are <strong>retired</strong>.
+  </p>
+  <p>
+    The evidence kind is instead a coded <code>isMemberOf</code> classifier:
+    <code>opda:evidenceType</code> over <code>opda:EvidenceMethodScheme</code> — the OIDC4IDA
+    <code>evidence.type</code> value-space, carried as a value, not a class:
+  </p>
+  <table>
+    <thead><tr><th>evidenceType value</th><th>Kind</th><th>Facet borne by the role</th></tr></thead>
+    <tbody>
+      <tr><td><code>Document</code></td><td>A document playing the evidence role (e.g. a grant of probate).</td><td>Document/filing specifics; the neutral <code>opda:AttachedDocument</code> is the bearer.</td></tr>
+      <tr><td><code>Electronic-Record</code></td><td>An authoritative electronic record (e.g. an HMRC API tax-record).</td><td><code>record.source</code> specifics.</td></tr>
+      <tr><td><code>Vouch</code></td><td>An attestation by an agent (e.g. an SRA-solicitor vouch).</td><td><code>opda:attestedBy</code> → the voucher <code>prov:Agent</code>; the voucher's role via qualified attribution.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The three kinds are <strong>not collapsed</strong> (they remain distinct scheme concepts), and
+    per-kind obligations are validated <strong>value-keyed</strong> — <code>opda:EvidenceFacetShape</code>
+    targets subjects of <code>opda:evidenceType</code> and uses <code>sh:or</code> material
+    implication (e.g. <code>attestedBy</code> is required only when
+    <code>evidenceType = "Vouch"</code>), never by a class-keyed shape that would require a
+    reasoner to first entail a subtype. <code>rdfs:domain</code>/<code>range</code> on these
+    properties are documentary (ODR-0026 §R2); the real constraint is the SHACL.
+  </p>
+  {evidenceMembers.length > 0 && (
+    <p class="muted">Live <code>opda:EvidenceMethodScheme</code> members:
+      {evidenceMembers.map((e) => (<><code>{e}</code>{' '}</>))}.</p>
+  )}
+
+  <h2 id="related">Related</h2>
+  <p>
+    The claims/evidence exemplars (document / electronic-record / vouch) are on
+    <a href="/ontology/exemplars">Exemplars</a>; the <code>sh:Violation</code> on an unprovenanced
+    Claim and the <code>EvidenceFacetShape</code> are on <a href="/ontology/shapes">SHACL shapes</a>;
+    PII on the <code>opda:Claim</code> Kind is on <a href="/ontology/governance">Governance &amp;
+    PII</a>. Governing records: ODR-0009 (claims/evidence/provenance), ODR-0027
+    (RoleMixin + facet, retiring the evidence subclass tree).
+  </p>
+</Layout>

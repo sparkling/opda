@@ -1,0 +1,271 @@
+---
+/**
+ * /ontology/shapes — native index of the SHACL shapes layer of the OPDA PDTF
+ * ontology. Sub-page of the ADR-0041 /ontology section.
+ *
+ * Counts are read at build time (read-only) from the committed shapes TTLs in
+ * source/03-standards/ontology/ so the page cannot silently diverge from the
+ * model. The SHACL Play! rendering (the only bake-off tool that documents SHACL
+ * and resolves the blank nodes) is the authoritative term-by-term surface and is
+ * linked + embedded here.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+function count(s: string, re: RegExp): number { const m = s.match(re); return m ? m.length : 0; }
+
+// The shapes graph: the cross-cutting opda-shapes.ttl carries the bulk (the
+// per-leaf Cat-1/2 shapes + the SHACL-AF rules); each module ships its small
+// resource-shape set.
+const SHAPE_FILES: { file: string; module: string }[] = [
+  { file: 'opda-shapes.ttl',             module: 'cross-cutting (per-leaf + SHACL-AF rules)' },
+  { file: 'opda-property-shapes.ttl',    module: 'Property / Address / Title' },
+  { file: 'opda-agent-shapes.ttl',       module: 'Agent / Person / Organisation / Roles' },
+  { file: 'opda-transaction-shapes.ttl', module: 'Transaction / Milestone / LeaseTerm' },
+  { file: 'opda-claim-shapes.ttl',       module: 'Claim / Evidence / Verification' },
+  { file: 'opda-governance-shapes.ttl',  module: 'DPV governance / PII floor' },
+  { file: 'opda-descriptive-shapes.ttl', module: 'Descriptive (EPC, risk, comparables)' },
+];
+const perFile = SHAPE_FILES.map((s) => {
+  const body = ttl(s.file);
+  return { ...s, shapes: count(body, /sh:NodeShape/g) };
+});
+const allShapes = SHAPE_FILES.map((s) => ttl(s.file)).join('\n');
+
+const totals = {
+  nodeShapes:    count(allShapes, /sh:NodeShape/g),
+  violation:     count(allShapes, /sh:severity\s+sh:Violation/g),
+  warning:       count(allShapes, /sh:severity\s+sh:Warning/g),
+  info:          count(allShapes, /sh:severity\s+sh:Info/g),
+  targetSubj:    count(allShapes, /sh:targetSubjectsOf/g),
+  targetObj:     count(allShapes, /sh:targetObjectsOf/g),
+  afRules:       count(allShapes, /sh:rule\b/g),
+  afSparql:      count(allShapes, /sh:sparql\b/g),
+};
+const drShapes = totals.targetSubj + totals.targetObj;
+
+const shaclPlay = exists('tools/shaclplay/index.html');
+const sourceIdx = exists('artefacts/source/index.html');
+---
+<Layout
+  title="SHACL shapes"
+  description="Native index of the OPDA PDTF SHACL shapes graph — node-shape inventory, the regulatory-weight severity scheme (ODR-0013), the domain/range-as-constraint shapes (ODR-0029), and the asserted-vs-entailed / SHACL-AF boundary. Counts read live from the committed shapes corpus."
+>
+<PageMeta category="Ontology" updated="Draft · Updated 2026-06-14" damaKa={["Data Quality", "Metadata"]} />
+
+  <h1>SHACL shapes</h1>
+
+  <p class="lead">
+    The closed-world contract over the open-world OWL class graph. OWL says what
+    <em>can</em> be inferred; SHACL says what a conforming document <strong>must</strong>
+    carry. This page indexes the {totals.nodeShapes} node shapes natively, explains the
+    regulatory-weight severity scheme, the {drShapes} domain/range-as-constraint shapes, and
+    the asserted-vs-entailed / SHACL-AF boundary. Every count is read at build time from the
+    committed shapes TTLs (<code>source/03-standards/ontology/opda-*-shapes.ttl</code>), so it
+    cannot drift from the model. The term-by-term reference — the only one that resolves the
+    blank nodes — is the embedded <a href="#shaclplay">SHACL Play! rendering</a>.
+  </p>
+
+  <nav class="callout">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#inventory">1 · Node-shape inventory</a></li>
+      <li><a href="#severity">2 · The severity scheme — regulatory weight (ODR-0013)</a></li>
+      <li><a href="#domain-range">3 · Domain/range as constraint (ODR-0029 R3)</a></li>
+      <li><a href="#asserted-entailed">4 · Asserted vs entailed &amp; SHACL-AF</a></li>
+      <li><a href="#shaclplay">5 · SHACL Play! — the SHACL reference rendering</a></li>
+    </ul>
+  </nav>
+
+  <!-- ───────────────────────────  1 — INVENTORY  ─────────────────────────── -->
+  <h2 id="inventory">1 · Node-shape inventory</h2>
+  <p>
+    The shapes graph is one cross-cutting file (<code>opda-shapes.ttl</code>) plus a small
+    resource-shape set per module. <code>opda-shapes.ttl</code> carries the per-leaf
+    Category-1/2 constraint shapes and the cross-cutting SHACL-AF rules; the module shape files
+    carry the per-Kind resource shapes that compose with the overlay profiles. Shapes
+    <strong>target</strong> classes via <code>sh:targetClass</code> / <code>sh:targetNode</code>
+    / <code>sh:targetSubjectsOf</code> — they never <code>owl:imports</code> the class graph
+    (ODR-0004 §3a three-graph separation; ODR-0010 §Q3).
+  </p>
+  <table>
+    <thead><tr><th>Shapes file</th><th>Module / scope</th><th>Node shapes</th></tr></thead>
+    <tbody>
+      {perFile.map((s) => (
+        <tr>
+          <td><code>{s.file}</code></td>
+          <td>{s.module}</td>
+          <td>{s.shapes}</td>
+        </tr>
+      ))}
+      <tr>
+        <td colspan="2"><strong>Total node shapes</strong></td>
+        <td><strong>{totals.nodeShapes}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    Live count from <code>sh:NodeShape</code> declarations across the seven committed shapes
+    files. SHACL property shapes (<code>sh:property</code> blocks) are blank nodes nested inside
+    these node shapes and are resolved in the SHACL Play! rendering below.
+  </p>
+
+  <!-- ───────────────────────────  2 — SEVERITY  ─────────────────────────── -->
+  <h2 id="severity">2 · The severity scheme — regulatory weight (ODR-0013)</h2>
+  <p>
+    Flat pass/fail buries the loudest error under noise. ODR-0013 (Guizzardi) ties the three
+    SHACL severities to <strong>regulatory weight, not schema nesting</strong>: the rarest, most
+    damaging error (identity loss) must be the loudest; the routine omission must be the
+    quietest. Enforcement is a review rule — every <code>sh:Violation</code> shape must guard a
+    Kind's identity contract or an unprovenanced claim; no optional-attribute gap may carry
+    <code>sh:Violation</code>.
+  </p>
+  <table>
+    <thead><tr><th>Severity</th><th>What it marks</th><th>Examples</th><th>Live count</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>sh:Violation</code></td>
+        <td>Breach of a Kind's identity contract, or an unprovenanced Claim</td>
+        <td>A <code>Property</code> with no resolvable UPRN-or-equivalent key; a
+          <code>RegisteredTitle</code> with no title number; a Role with no founding Relator
+          (a <code>Seller</code> with no <code>Transaction</code>); an <code>opda:Claim</code>
+          with no <code>prov:wasDerivedFrom</code> and no explicit "unverified" marker
+          (Moreau, ODR-0009).</td>
+        <td>{totals.violation}</td>
+      </tr>
+      <tr>
+        <td><code>sh:Warning</code></td>
+        <td>Missing profile / disclosure constraint, or a sensitivity-marker gap</td>
+        <td>An overlay-profile gap; a special-category or personal-data marker absent on a
+          PII-bearing class (Pandit, ODR-0012 sensitivity gate — e.g. the
+          <code>PIIWithoutDPVCoAnnotationRule</code>).</td>
+        <td>{totals.warning}</td>
+      </tr>
+      <tr>
+        <td><code>sh:Info</code></td>
+        <td>Absent optional attribute</td>
+        <td>A non-blocking quality rule's status materialisation (e.g. the UPRN- / lease-term- /
+          milestone-variance succession rules, held at <code>sh:Info</code> per ODR-0017 §1a).</td>
+        <td>{totals.info}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    Counts are <code>sh:severity</code> assignments across the committed shapes graph. The
+    dominance of <code>sh:Violation</code> reflects the {drShapes} identity-and-typing shapes in
+    §3; <code>sh:Info</code>/<code>sh:Warning</code> are the quality and sensitivity layers.
+  </p>
+
+  <!-- ───────────────────────────  3 — DOMAIN/RANGE  ─────────────────────────── -->
+  <h2 id="domain-range">3 · Domain/range as constraint — {drShapes} shapes (ODR-0029 R3)</h2>
+  <p>
+    ODR-0029 R3 drew the inference/validation boundary sharply: <code>rdfs:domain</code> /
+    <code>rdfs:range</code> on the OWL properties are <strong>documentary</strong>, never
+    materialised by OPDA's Safe-Group closure (which deliberately excludes the domain/range
+    rules — ODR-0025 §R7, so a naive consumer's <code>EPCCertificate ⊑ Property</code> mis-inference
+    is a consumer-side trap, not a fact in OPDA's graph). The <em>enforceable</em> typing is
+    carried instead as SHACL: <code>sh:targetSubjectsOf</code> a property →
+    <code>sh:class</code> on the subject (domain-as-constraint), and
+    <code>sh:targetObjectsOf</code> → <code>sh:class</code> on the object (range-as-constraint).
+  </p>
+  <table>
+    <thead><tr><th>Constraint role</th><th>Mechanism</th><th>Live count</th></tr></thead>
+    <tbody>
+      <tr><td>Domain as constraint</td><td><code>sh:targetSubjectsOf</code> → <code>sh:class</code></td><td>{totals.targetSubj}</td></tr>
+      <tr><td>Range as constraint</td><td><code>sh:targetObjectsOf</code> → <code>sh:class</code></td><td>{totals.targetObj}</td></tr>
+      <tr><td><strong>Total domain/range shapes</strong></td><td>—</td><td><strong>{drShapes}</strong></td></tr>
+    </tbody>
+  </table>
+  <p>
+    This is the same value-keyed enforcement doctrine the classification layer uses (ODR-0027):
+    constraints are keyed to the <em>property in use</em>, not to a class membership a reasoner
+    must first entail. It keeps the closure at zero added triples over the flat schema while the
+    SHACL graph carries every real obligation. ODR-0029 R3 records 273 such shapes; the live
+    count above re-reads them from the committed corpus on every build.
+  </p>
+
+  <!-- ───────────────────────────  4 — ASSERTED/ENTAILED + SHACL-AF  ─────────────────────────── -->
+  <h2 id="asserted-entailed">4 · Asserted vs entailed &amp; SHACL-AF</h2>
+  <p>
+    A soundness condition binds this layer (Knublauch): <strong>asserted is never rendered as
+    entailed</strong>, and every shape states the graph it targets plus its validator-capability
+    caveat. Two distinct things must not be confused:
+  </p>
+  <ul>
+    <li>
+      <strong>Validation (SHACL, closed-world).</strong> What the author wants <em>checked</em> —
+      cardinality, datatype, identity-key presence, value-set membership, the
+      domain/range shapes of §3. <code>sh:minCount 1</code> is <em>not</em>
+      <code>owl:minCardinality 1</code>: the first is a closed-world obligation, the second an
+      open-world entailment licence.
+    </li>
+    <li>
+      <strong>Inference (the frozen rule fragment, open-world).</strong> What the author wants
+      in the <em>closure</em> — subclass / subproperty / inverse / symmetric / transitive (the 7
+      sound-but-RL-incomplete rules of <code>config/opda-rdfs-plus.rules</code>; <strong>not</strong>
+      an OWL 2 RL reasoner, ODR-0029 R5). It materialises into a separate
+      <em>derived</em> graph and adds 0 triples over the flat schema today.
+    </li>
+  </ul>
+  <div class="callout callout--warn">
+    <p class="callout__label">SHACL-AF (advanced=True) — required for the full contract</p>
+    <p>
+      {totals.afRules} <code>sh:rule</code> and {totals.afSparql} <code>sh:sparql</code>
+      constructs in the shapes graph are <strong>SHACL Advanced Features</strong>: the
+      non-blocking quality-rule status materialisations (UPRN / lease-term / milestone-variance /
+      capacity-authority / identifier succession, ODR-0017), the PII-without-DPV-co-annotation
+      meta-rule, and — critically — the <code>sellersCapacity</code> <code>sh:xone</code>
+      discrimination (ODR-0010 Rule 3). A <strong>SHACL-Core-only</strong> processor passes the
+      <code>sh:xone</code>-of-property-shapes <em>vacuously</em> (it reads
+      <code>conforms true</code>); the BASPI5 non-conformant exemplar only trips its
+      B1.3.2 violation under a SHACL-AF-capable validator — pyshacl with
+      <code>advanced=True</code> (known-issue ii on the
+      <a href="/ontology#known-issues">section reference</a>; a conformant-Legal-Owner exemplar
+      guards the vacuous-pass direction).
+    </p>
+  </div>
+
+  <!-- ───────────────────────────  5 — SHACL PLAY!  ─────────────────────────── -->
+  <h2 id="shaclplay">5 · SHACL Play! — the SHACL reference rendering</h2>
+  <p>
+    Of the bake-off tools (ADR-0041), the OWL generators (pyLODE, WIDOCO, Ontospy) all score
+    <strong>None</strong> on SHACL — they document the class graph and skip the shapes. Sparna's
+    <strong>SHACL Play!</strong> is the only one that documents SHACL: it resolves all the blank
+    nodes (the nested <code>sh:property</code> shapes that the inventory above counts but cannot
+    name) into a readable per-shape reference. It is the authoritative term-by-term surface for
+    this layer.
+  </p>
+  {shaclPlay ? (
+    <>
+      <p><a href="/ontology/tools/shaclplay/index.html">Open the SHACL Play! rendering ↗</a></p>
+      <iframe src="/ontology/tools/shaclplay/index.html" title="SHACL Play! rendering of the OPDA shapes graph"
+        loading="lazy"
+        style="width:100%; height:75vh; border:1px solid var(--color-border, #ccc); border-radius:8px; margin-top:0.75rem;"></iframe>
+    </>
+  ) : (
+    <p class="callout callout--warn"><span class="callout__label">Pending generation</span>
+      The SHACL Play! rendering stages under <code>/ontology/tools/shaclplay/</code>.</p>
+  )}
+
+  <h2 id="related">Related</h2>
+  <p>
+    The shapes that overlays add are catalogued on <a href="/ontology/profiles">Overlay profiles
+    &amp; gaps</a>; the worked instance graphs each shape is exercised against are on
+    <a href="/ontology/exemplars">Exemplars</a>. The merged shapes graph download and the 24
+    per-module TTLs are linked from the
+    {sourceIdx ? (<a href="/ontology/artefacts/source/index.html">artefacts index</a>) : (<span>artefacts index</span>)}
+    on the <a href="/ontology">section overview</a>. Governing records: ODR-0013 (severity),
+    ODR-0029 (domain/range-as-constraint + inference boundary), ODR-0017 (SHACL-AF quality rules),
+    ODR-0010 (overlay <code>sh:xone</code>).
+  </p>
+</Layout>

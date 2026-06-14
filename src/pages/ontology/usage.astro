@@ -1,0 +1,220 @@
+---
+/**
+ * /ontology/usage — Consume the ontology (the machine / consumer section).
+ *
+ * ADR-0041 §13 (previously MISSING). The practical guide for a machine
+ * consumer: the prefix / namespace map (with the ADR-0006 kind-split IRI
+ * paths), runnable SPARQL, a dereferenceability / content-negotiation note,
+ * the SHACL-validation recipe (pyshacl advanced=True REQUIRED), and the TTL
+ * downloads.
+ *
+ * Prefixes verified against public/ontology/artefacts/opda-merged.ttl and
+ * opda-shapes-merged.ttl. IRI paths follow ADR-0006 (kind-split namespaces).
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Consume the ontology"
+  description="The machine / consumer guide to the OPDA PDTF ontology — the prefix and namespace map (with the ADR-0006 kind-split IRI paths), runnable SPARQL, content-negotiation notes, the pyshacl advanced=True validation recipe, and the TTL downloads."
+>
+<PageMeta category="Ontology" variant="info" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Consume the ontology</h1>
+
+  <p class="lead">
+    The practical guide for a machine consumer of the OPDA PDTF ontology: which prefixes and
+    namespaces to bind, how to query the graph, how the IRIs dereference, how to validate
+    your own data against the shapes, and where to download the Turtle. Everything here is
+    against the committed corpus — the same TTLs the published reference is generated from.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#namespaces">Prefix &amp; namespace map</a></li>
+      <li><a href="#sparql">Runnable SPARQL</a></li>
+      <li><a href="#deref">Dereferenceability &amp; content negotiation</a></li>
+      <li><a href="#validation">SHACL-validation recipe</a></li>
+      <li><a href="#downloads">TTL downloads</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="namespaces">Prefix &amp; namespace map</h2>
+  <p>
+    Bind these prefixes to read or query the ontology. The OPDA terms split across four
+    <strong>kind-keyed</strong> namespaces (ADR-0006, as-built): terms, schemes, shapes, and
+    the named graphs each live under their own path beneath <code>opda.org.uk/pdtf/</code>.
+    The remaining prefixes are the standard external vocabularies the model reuses
+    (referenced, not imported — see <a href="/ontology/provenance#lineage">Decision
+    provenance</a>).
+  </p>
+
+  <table>
+    <thead><tr><th>Prefix</th><th>Namespace IRI</th><th>What it holds</th></tr></thead>
+    <tbody>
+      <tr><td><code>opda:</code></td><td><code>https://opda.org.uk/pdtf/</code></td><td>OWL classes &amp; properties (the term namespace).</td></tr>
+      <tr><td><code>opda-v:</code></td><td><code>https://opda.org.uk/pdtf/scheme/</code></td><td>SKOS concept schemes &amp; coded values (the vocabulary namespace).</td></tr>
+      <tr><td><em>(shapes)</em></td><td><code>https://opda.org.uk/pdtf/shape/</code></td><td>SHACL node / property shapes &amp; overlay profiles.</td></tr>
+      <tr><td><em>(graphs)</em></td><td><code>https://opda.org.uk/pdtf/graph/</code></td><td>The named graphs — class, shapes, annotation, and the derived <code>inferred/entailment</code> graph.</td></tr>
+      <tr><td><em>(harness)</em></td><td><code>https://opda.org.uk/pdtf/harness/</code></td><td>Governance / decision records (ODR &amp; ADR IRIs).</td></tr>
+      <tr><td><code>sh:</code></td><td><code>http://www.w3.org/ns/shacl#</code></td><td>SHACL constraint vocabulary.</td></tr>
+      <tr><td><code>dash:</code></td><td><code>http://datashapes.org/dash#</code></td><td>DASH SHACL extensions (UI / suggestion hints).</td></tr>
+      <tr><td><code>dct:</code></td><td><code>http://purl.org/dc/terms/</code></td><td>Dublin Core — the <code>dct:source</code> provenance contract.</td></tr>
+      <tr><td><code>prov:</code></td><td><code>http://www.w3.org/ns/prov#</code></td><td>PROV-O — claims / evidence / derivation backing.</td></tr>
+      <tr><td><code>skos:</code></td><td><code>http://www.w3.org/2004/02/skos/core#</code></td><td>SKOS — concept schemes &amp; labels.</td></tr>
+      <tr><td><code>dpv:</code></td><td><code>https://w3id.org/dpv#</code></td><td>Data Privacy Vocabulary — class-level co-annotation (referenced, not imported).</td></tr>
+      <tr><td><code>dpv-pd:</code></td><td><code>https://w3id.org/dpv/pd#</code></td><td>DPV personal-data taxonomy — PII category annotations.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="muted tiny">
+    The kind-split (separate <code>/</code>, <code>/scheme/</code>, <code>/shape/</code>,
+    <code>/graph/</code>, <code>/harness/</code> paths) is the ADR-0006 as-built decision; it
+    is what keeps a class IRI, the SKOS scheme that types its values, and the SHACL shape that
+    constrains it from colliding in one flat namespace.
+  </p>
+
+  <h2 id="sparql">Runnable SPARQL</h2>
+  <p>
+    Run these against a triplestore loaded with <code>opda-merged.ttl</code> (the GRLC API
+    over Fuseki via <code>make serve-data</code> exposes the same graph at
+    <code>http://localhost:3031/opda/sparql</code>). Both queries use real terms from the
+    corpus.
+  </p>
+
+  <p><strong>1 — list every OWL class with its label and source provenance:</strong></p>
+  <pre><code>PREFIX opda: &lt;https://opda.org.uk/pdtf/&gt;
+PREFIX owl:  &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX dct:  &lt;http://purl.org/dc/terms/&gt;
+
+SELECT ?class ?label ?source WHERE {'{'}
+  ?class a owl:Class .
+  OPTIONAL {'{'} ?class rdfs:label ?label {'}'}
+  OPTIONAL {'{'} ?class dct:source ?source {'}'}
+{'}'}
+ORDER BY ?class</code></pre>
+
+  <p>
+    <strong>2 — find the substantive (Category-G) leaves a form's overlay profile binds</strong>
+    — here the BASPI5 profile, walking from each property shape to its constrained path:
+  </p>
+  <pre><code>PREFIX sh:   &lt;http://www.w3.org/ns/shacl#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?shape ?targetClass ?path ?datatype WHERE {'{'}
+  ?shape a sh:NodeShape ;
+         sh:targetClass ?targetClass ;
+         sh:property ?p .
+  ?p sh:path ?path .
+  OPTIONAL {'{'} ?p sh:datatype ?datatype {'}'}
+{'}'}
+ORDER BY ?targetClass ?path</code></pre>
+
+  <p class="muted tiny">
+    The second query reads the <em>shapes</em> graph (<code>opda-shapes-merged.ttl</code>);
+    SHACL Play! renders the same constraints as readable tables on the
+    <a href="/ontology/bake-off">bake-off</a> page.
+  </p>
+
+  <h2 id="deref">Dereferenceability &amp; content negotiation</h2>
+  <p>
+    OPDA term IRIs are <strong>HTTPS, under a single registered authority</strong>
+    (<code>opda.org.uk/pdtf/…</code>), so they are designed to be dereferenceable: a term IRI
+    is a real, resolvable web address rather than an opaque identifier. The intended contract
+    is standard linked-data content negotiation —
+  </p>
+  <ul>
+    <li><code>Accept: text/turtle</code> (or <code>application/rdf+xml</code>,
+      <code>application/ld+json</code>) returns the machine description of the term;</li>
+    <li><code>Accept: text/html</code> returns the human-readable reference page.</li>
+  </ul>
+  <p>
+    Until the production endpoint serves negotiated representations, the authoritative
+    machine artefacts are the committed Turtle bundles linked under
+    <a href="#downloads">TTL downloads</a> below — load those into your own store and the
+    IRIs resolve locally. Note the one open caveat: the ODR-0004 <em>prose</em> still cites
+    the old <code>w3id.org/opda/#</code> namespace, but the <strong>emitted TTL uses
+    <code>opda.org.uk/pdtf/</code></strong> (the as-built namespace in the map above) — see
+    <a href="/ontology/known-issues">Known issues</a>.
+  </p>
+
+  <h2 id="validation">SHACL-validation recipe</h2>
+  <p>
+    To validate your own PDTF instance data against the OPDA shapes, load three graphs into
+    the validator and run <strong>pyshacl with <code>advanced=True</code></strong>:
+  </p>
+  <ol>
+    <li>the <strong>class graph</strong> (<code>opda-merged.ttl</code> — the OWL + SKOS TBox, so shape→class labels resolve);</li>
+    <li>the <strong>shapes graph</strong> (<code>opda-shapes-merged.ttl</code> — the node / property shapes);</li>
+    <li>the relevant <strong>overlay-profile graph</strong> (e.g. <code>profiles/baspi5.ttl</code> — the per-form Category-G bindings).</li>
+  </ol>
+
+  <pre><code>pip install pyshacl
+
+pyshacl \
+  --shacl opda-shapes-merged.ttl \
+  --ont-graph opda-merged.ttl \
+  --advanced \
+  --format human \
+  my-instance-data.ttl</code></pre>
+
+  <p>
+    Or in Python — note <code>advanced=True</code> is <strong>required</strong>, not optional:
+  </p>
+  <pre><code>from pyshacl import validate
+
+conforms, report_graph, report_text = validate(
+    data_graph="my-instance-data.ttl",
+    shacl_graph="opda-shapes-merged.ttl",
+    ont_graph="opda-merged.ttl",
+    advanced=True,          # REQUIRED — see below
+    inference="none",
+)
+print(conforms)
+print(report_text)         # read the sh:ValidationReport</code></pre>
+
+  <div class="callout callout--warn">
+    <div class="callout__label">Why <code>advanced=True</code> is mandatory</div>
+    <p>
+      Some OPDA constraints (notably the <code>sh:xone</code> "exactly one of" rules and the
+      SHACL-AF data-quality rules, <a href="/modelling/odr/odr-0017">ODR-0017</a>) rely on
+      SHACL Advanced Features. Under plain <strong>SHACL-Core</strong> a known-bad exemplar
+      can vacuously report <code>conforms: true</code> — the constraint simply is not
+      evaluated. With <code>advanced=True</code> the validator evaluates those rules and the
+      report is correct. Always read the returned <code>sh:ValidationReport</code> (its
+      <code>sh:conforms</code> flag and each <code>sh:result</code>) rather than trusting a
+      bare boolean. This is tracked in <a href="/ontology/known-issues#register">Known
+      issues</a>.
+    </p>
+  </div>
+
+  <h2 id="downloads">TTL downloads</h2>
+  <p>The authoritative machine artefacts, generated from the committed corpus:</p>
+  <ul>
+    <li>
+      <a href="/ontology/artefacts/opda-merged.ttl">opda-merged.ttl</a> — the merged TBox
+      (OWL classes &amp; properties + SKOS concept schemes). Load this as the
+      <code>--ont-graph</code> for validation and as the data graph for the class queries above.
+    </li>
+    <li>
+      <a href="/ontology/artefacts/opda-shapes-merged.ttl">opda-shapes-merged.ttl</a> — the
+      merged SHACL shapes graph (node / property shapes + overlay profiles). This is the
+      <code>--shacl</code> graph.
+    </li>
+    <li>
+      <a href="/ontology/artefacts/source/index.html">source/ — the per-module TTLs</a> — the
+      25 source files (classes, properties, shapes, annotations, vocabularies, contexts, the
+      foundation graph) before merge, for consumers who want a single layer rather than the
+      bundle.
+    </li>
+  </ul>
+
+  <p class="muted">
+    Related: <a href="/ontology/provenance">Decision provenance</a> (why the namespaces split
+    the way they do), <a href="/ontology/known-issues">Known issues</a> (the validation and
+    namespace caveats), and the <a href="/ontology/bake-off">Tool bake-off</a> (SHACL Play!
+    renders the shapes graph as tables).
+  </p>
+</Layout>

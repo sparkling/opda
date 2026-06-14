@@ -93,8 +93,12 @@ ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile,
 	$(MAKE) verify-ontology
 	@echo "✓ all ontology CI gates passed"
 
+.PHONY: ci-ontology-doc
+ci-ontology-doc:	## Doc-drift gate (ADR-0041): the custom /ontology reference must match the committed corpus
+	node scripts/ci-ontology-doc-drift.mjs
+
 .PHONY: ci
-ci: test ci-ontology	## Everything CI runs that is checkable locally (JS + ontology gates)
+ci: test ci-ontology ci-ontology-doc	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy

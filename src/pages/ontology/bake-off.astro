@@ -1,0 +1,199 @@
+---
+/**
+ * /ontology/bake-off — Tool bake-off & scorecard (ADR-0041 §Amendments rev 1–4).
+ *
+ * The operator-review surface for the multi-tool bake-off: the full tools
+ * catalogue, the embedded renderings, and the M6 rubric scorecard. Moved here
+ * from /ontology/index.astro to keep the landing lean — this is the bake-off
+ * home. Per ADR-0041 (rev-3 M2) every tool renders the full ontology so each
+ * rendering can be inspected personally before settling the per-layer pick.
+ *
+ * `href` resolves only once the sibling generation step has produced output
+ * under public/ontology/tools/. Hrefs point at explicit index.html files (the
+ * Astro dev server does NOT resolve directory → index.html; only a static host
+ * does — explicit files work on both). The filled M6 scoring is staged in
+ * public/ontology/tools/COMPARISON.md.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+// Bake-off tool catalogue (ADR-0041 §Amendments — the all-tools mandate).
+const TOOLS = [
+  { id: 'pylode',   name: 'pyLODE',         layer: 'OWL term reference',                 note: 'Python CLI; best single-file OWL ref; weak SHACL.',           href: '/ontology/tools/pylode/index.html',        live: exists('tools/pylode/index.html'),        embed: true },
+  { id: 'widoco',   name: 'WIDOCO',         layer: 'OWL + metadata + VOWL diagrams',     note: 'Java jar (headless); richest publishable shell; weak SHACL.', href: '/ontology/tools/widoco/doc/index-en.html', live: exists('tools/widoco/doc/index-en.html'), embed: true },
+  { id: 'shaclplay',name: 'SHACL Play!',    layer: 'SHACL shapes / profiles → HTML',     note: 'Sparna; the only tool that documents SHACL — resolves all blank nodes.', href: '/ontology/tools/shaclplay/index.html', live: exists('tools/shaclplay/index.html'),  embed: true },
+  { id: 'skosmos',  name: 'Skosmos',        layer: 'SKOS schemes (browser)',             note: 'NatLibFi; live PHP app over Fuseki (B2 — localhost). The static schemes list is linked here; the full browser runs via make serve-data.', href: '/ontology/tools/skosmos/schemes.html', live: exists('tools/skosmos/schemes.html'), localhost: true, embed: false },
+  { id: 'ontospy',  name: 'Ontospy',        layer: 'OWL + visualisations (multi-page)',  note: 'Python CLI (3.11); OWL + browsable SKOS; heavy (~87 MB).',     href: '/ontology/tools/ontospy/index.html',     live: exists('tools/ontospy/index.html'),       embed: false },
+  { id: 'lode',     name: 'LODE',           layer: 'OWL term reference (baseline)',      note: "Dated; represented via Widoco's embedded LODE — see README.", href: '/ontology/tools/lode/README.md',         live: exists('tools/lode/README.md'),           embed: false },
+  { id: 'custom',   name: 'custom opda-gen + LLM', layer: 'profiles · exemplars · three-graph · governance · known-issues', note: 'The OPDA-specific layers no off-the-shelf tool covers — our script + LLM prose. This is the adopted composition.', href: '/ontology/tools/custom/index.html', live: exists('tools/custom/index.html'), embed: true },
+];
+
+// M6 rubric scorecard. If public/ontology/tools/COMPARISON.md exists, the
+// operator's scoring is staged there; otherwise render the empty rubric.
+const comparisonStaged = exists('tools/COMPARISON.md');
+const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Exemplars',
+  'Three-graph', 'Governance / lineage', 'Known-issues', 'Fidelity', 'Integration cost'];
+---
+<Layout
+  title="Tool bake-off & scorecard"
+  description="The operator-review surface for the OPDA ontology-documentation bake-off — every off-the-shelf tool renders the full corpus, the renderings are embedded, and each is scored per layer against the M6 rubric to settle the per-layer pick."
+>
+<PageMeta category="Ontology" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Tool bake-off &amp; scorecard</h1>
+
+  <p class="lead">
+    No single off-the-shelf tool documents the whole OPDA ontology — the OWL generators skip
+    SHACL and treat SKOS unevenly, and none of them render the OPDA-specific layers at all.
+    So the bake-off (ADR-0041 §Amendments) <strong>installs and runs every tool</strong>, embeds
+    each rendering for personal inspection, scores them per layer against the M6 rubric, and
+    adopts the best method per layer into one woven reference. This page is the bake-off home;
+    the adopted composition is the <a href="/ontology">/ontology</a> section itself.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#tools">The bake-off — all tools</a></li>
+      <li><a href="#embeds">Embedded renderings</a></li>
+      <li><a href="#rubric">M6 rubric scorecard</a></li>
+      <li><a href="#bottom-line">Bottom line — the per-layer pick</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="tools">The bake-off — all tools</h2>
+  <p>
+    Per ADR-0041 (rev-3 M2, operator direction), the bake-off installs and runs every tool so
+    each rendering can be inspected personally before settling the composition. The adopted
+    artefact combines tool renderings where they win, custom <code>opda-gen</code> scripts for
+    the OPDA-specific layers, and LLM-authored prose for the conceptual layer.
+  </p>
+
+  <table>
+    <thead><tr><th>Tool</th><th>Layer it renders</th><th>Rendering</th><th>Note</th></tr></thead>
+    <tbody>
+      {TOOLS.map((t) => (
+        <tr>
+          <td><strong>{t.name}</strong></td>
+          <td>{t.layer}</td>
+          <td>
+            {t.live ? (
+              <a href={t.href}>View rendering ↗</a>
+            ) : (
+              <span class="pill pill--warn">Pending generation</span>
+            )}
+            {t.localhost && (<span> · live browser via <code>make serve-data</code></span>)}
+          </td>
+          <td>{t.note}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <p>
+    <strong>Skosmos</strong> needs a live SPARQL runtime, so it is not embedded in the static
+    build (B2 resolved): run it from localhost alongside the build-time Fuseki (the
+    <code>make serve-data</code> pattern) and browse it at the link above; the contract is the
+    same as <code>make serve-data</code> today — the link resolves only with the local stack running.
+  </p>
+
+  <h2 id="embeds">Embedded renderings</h2>
+  <p>
+    Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel
+    to load its iframe). Panels resolve as the generation step populates
+    <code>public/ontology/tools/</code>.
+  </p>
+  {TOOLS.filter((t) => t.embed).some((t) => t.live) ? (
+    TOOLS.filter((t) => t.embed && t.live).map((t) => (
+      <details>
+        <summary><strong>Embedded — {t.name}</strong> ({t.layer})</summary>
+        <iframe src={t.href} title={`${t.name} rendering`} loading="lazy"
+          style="width:100%; height:70vh; border:1px solid var(--color-border, #ccc); border-radius:8px; margin-top:0.75rem;"></iframe>
+      </details>
+    ))
+  ) : (
+    <p class="callout callout--note">
+      <span class="callout__label">Pending generation</span>
+      The embeddable renderings stage under <code>public/ontology/tools/</code> as the
+      generation step runs; until then the catalogue above carries the per-tool notes.
+    </p>
+  )}
+
+  <h2 id="rubric">M6 rubric scorecard</h2>
+  <p>
+    The decider is the operator, on inspection (ADR-0041 rev-3 M2 / rev-4 M6); the rubric
+    structures the inspection and the per-layer pick. Each tool is scored
+    <strong>Full / Partial / None</strong> per coverage-matrix layer, plus fidelity (does it
+    misrepresent — raw blank nodes, asserted-as-entailed, SHACL ignored) and integration cost
+    (effort to theme + wire into <code>opda-gen</code> + the gate). Tie-break: toward the tool
+    needing least custom post-processing for fidelity.
+  </p>
+  {comparisonStaged ? (
+    <p class="callout callout--note">
+      <span class="callout__label">Scoring staged</span>
+      The bake-off's per-layer scoring is recorded in
+      <a href="/ontology/tools/COMPARISON.md">COMPARISON.md ↗</a> — the filled M6 rubric for inspection.
+    </p>
+  ) : (
+    <p><em>Empty rubric — to be filled on inspection (cells: Full / Partial / None).</em></p>
+  )}
+  <table>
+    <thead>
+      <tr><th>Tool</th>{RUBRIC_COLS.map((c) => (<th>{c}</th>))}</tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>pyLODE</strong></td><td>Full</td><td>Partial</td><td>None</td><td>None</td><td>None</td><td>None</td><td>Partial</td><td>None</td><td>High</td><td>Low</td></tr>
+      <tr><td><strong>WIDOCO</strong></td><td>Full</td><td>Partial</td><td>None</td><td>None</td><td>None</td><td>None</td><td>Partial</td><td>None</td><td>High</td><td>Medium</td></tr>
+      <tr><td><strong>SHACL Play!</strong></td><td>Partial</td><td>None</td><td>Full</td><td>Partial</td><td>None</td><td>None</td><td>Partial</td><td>None</td><td>Highest (0 blank nodes)</td><td>Low–medium</td></tr>
+      <tr><td><strong>Ontospy</strong></td><td>Full</td><td>Full</td><td>None</td><td>None</td><td>None</td><td>None</td><td>Partial</td><td>None</td><td>High</td><td>Medium–high (3.11 pin)</td></tr>
+      <tr><td><strong>LODE</strong> (≡ Widoco-embedded)</td><td>Full</td><td>Partial</td><td>None</td><td>None</td><td>None</td><td>None</td><td>Partial</td><td>None</td><td>High</td><td>High for nil gain</td></tr>
+      <tr><td><strong>Skosmos</strong></td><td>None</td><td>Full</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td><td>n/a (live)</td><td>Highest (live server)</td></tr>
+      <tr><td><strong>custom <code>opda-gen</code> + LLM</strong></td><td>(reuses)</td><td>(reuses)</td><td>(reuses)</td><td>Full</td><td>Full</td><td>Full</td><td>Full</td><td>Full</td><td>High</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="muted tiny">
+    "Partial" governance for the OWL/SHACL tools = they render <code>dct:source</code> /
+    <code>rdfs:comment</code> provenance <em>values</em> present on terms, but none render the
+    ODR/ADR/council <em>lineage</em> as a structured layer. The profiles / exemplars /
+    three-graph / known-issues columns are <strong>None</strong> for every off-the-shelf tool —
+    the empirical basis for the custom layer.
+  </p>
+
+  <h2 id="bottom-line">Bottom line — the per-layer pick</h2>
+  <p>
+    The full scoring detail and per-tool fidelity / integration notes are in
+    <a href="/ontology/tools/COMPARISON.md">COMPARISON.md</a>. The shape of the result:
+  </p>
+  <table>
+    <thead><tr><th>Layer</th><th>Strongest tool(s)</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>OWL term reference</td><td><strong>pyLODE</strong> (single-file) or <strong>WIDOCO</strong> (publishable shell + WebVOWL + provenance)</td><td>both Full, 0 blank nodes, deterministic, low cost.</td></tr>
+      <tr><td>SKOS schemes</td><td><strong>Skosmos</strong> (live, Full) → <strong>Ontospy</strong> (static, Full, browsable) → pyLODE/WIDOCO (Partial)</td><td>Skosmos best when the local stack runs; Ontospy is the best <em>static</em> SKOS.</td></tr>
+      <tr><td>SHACL shapes / profiles</td><td><strong>SHACL Play!</strong> (only option; Full; 0 blank nodes)</td><td>the sole tool that documents SHACL at all.</td></tr>
+      <tr><td>Profiles + gap · exemplars · three-graph · lineage · known-issues</td><td><strong>custom <code>opda-gen</code> + LLM</strong> (only option)</td><td>every off-the-shelf tool is None here.</td></tr>
+      <tr><td>Diagram / visual</td><td><strong>WIDOCO</strong> (embedded WebVOWL)</td><td>the only embedded interactive visualisation.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    <strong>No off-the-shelf tool covers the OPDA-specific layers</strong> — confirmed by
+    inspection. The composed reference (off-the-shelf where they win + custom
+    <code>opda-gen</code> + LLM prose), guarded by the two-tier doc-drift gate, is the
+    configuration the matrix points to; the final per-layer adoption is the operator's call on
+    inspection (M6). The custom layer's output — the GAP register, the 17 round-trip exemplars,
+    the three-graph separation, the lineage and the dated known-issues register — is woven into
+    the rest of the <a href="/ontology">/ontology</a> section.
+  </p>
+
+  <p class="muted">
+    Related: the adopted composition is the <a href="/ontology">Ontology overview</a>; the
+    decision record is in the <a href="/modelling/odr">ODR / ADR corpus</a> (ADR-0041).
+  </p>
+</Layout>

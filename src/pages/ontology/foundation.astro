@@ -1,0 +1,270 @@
+---
+/**
+ * /ontology/foundation — Foundations & architecture.
+ *
+ * The authored conceptual layer of the OPDA PDTF ontology reference: the UFO
+ * meta-category legend mapped to OPDA classes, the three-graph separation
+ * (ODR-0004 §3a), the six bounded contexts (opda-contexts.ttl), and the
+ * inference/validation boundary (ODR-0029 / ODR-0025).
+ *
+ * Counts are read at build time from the committed TTL corpus, the same
+ * fs-read pattern as src/pages/ontology/index.astro. Sources harvested:
+ * ODR-0004, ODR-0025, ODR-0029, opda-classes.ttl, opda-contexts.ttl.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+function countAcross(files: string[], re: RegExp): number {
+  let n = 0;
+  for (const f of files) { const m = ttl(f).match(re); if (m) n += m.length; }
+  return n;
+}
+
+const MODULES = ['opda-classes.ttl', 'opda-property.ttl', 'opda-agent.ttl',
+  'opda-transaction.ttl', 'opda-claim.ttl', 'opda-governance.ttl',
+  'opda-descriptive.ttl', 'foundation.ttl'];
+
+const counts = {
+  classes:  countAcross(MODULES, /rdf:type owl:Class/g),
+  contexts: countAcross(['opda-contexts.ttl'], /rdf:type skos:Concept\b/g),
+};
+
+// The six bounded contexts, read live from opda-contexts.ttl (skos:prefLabel +
+// skos:definition + opda:hasSteward on each skos:Concept in the scheme).
+type Ctx = { label: string; def: string; steward: string };
+function parseContexts(): Ctx[] {
+  const txt = ttl('opda-contexts.ttl');
+  const out: Ctx[] = [];
+  for (const block of txt.split(/\n(?=opda:[A-Za-z0-9]+\s)/)) {
+    if (!/rdf:type skos:Concept\b/.test(block)) continue;
+    const label = block.match(/skos:prefLabel\s+"([^"]+)"/)?.[1] ?? '';
+    const def = block.match(/skos:definition\s+"([^"]+)"/)?.[1] ?? '';
+    const steward = block.match(/opda:hasSteward\s+"([^"]+)"/)?.[1] ?? '';
+    if (label) out.push({ label, def, steward });
+  }
+  return out;
+}
+const contexts = parseContexts();
+
+// The 7 frozen RDFS-Plus rules (the "Safe Group"), ODR-0025 §R1.
+const SAFE_RULES = [
+  ['rdfs:subClassOf', 'type propagation up the class hierarchy'],
+  ['rdfs:subClassOf', 'transitive subclass closure'],
+  ['rdfs:subPropertyOf', 'property-value propagation to the superproperty'],
+  ['rdfs:subPropertyOf', 'transitive subproperty closure'],
+  ['owl:inverseOf', 'both directions — (x p y) ⇒ (y q x)'],
+  ['owl:TransitiveProperty', '(x p y),(y p z) ⇒ (x p z)'],
+  ['owl:SymmetricProperty', '(x p y) ⇒ (y p x)'],
+];
+// The constructs deliberately EXCLUDED from the closure (ODR-0025 §R3-R4).
+const EXCLUDED = [
+  ['owl:sameAs materialisation', 'irreversible identity propagation — catastrophic in master data (ODR-0005 §R5)'],
+  ['owl:FunctionalProperty / owl:InverseFunctionalProperty', 'trigger owl:sameAs identity-merge'],
+  ['owl:equivalentClass / owl:equivalentProperty', 'uncontrolled bidirectional propagation + transitive explosion'],
+  ['rdfs:domain / rdfs:range type entailment', 'a property with N declared domains mis-types each subject as all N classes at once — validated as SHACL instead, never inferred'],
+];
+---
+<Layout
+  title="Foundations & architecture"
+  description="The conceptual layer of the OPDA PDTF ontology: the UFO meta-category legend mapped to OPDA classes, the three-graph separation (ODR-0004), the six bounded contexts, and the inference/validation boundary (ODR-0029)."
+>
+<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Foundations &amp; architecture</h1>
+
+  <p class="lead">
+    The layer a generator cannot emit — <em>why</em> the model is shaped as it is. Four
+    foundational frames govern every term in the ontology: the <strong>UFO meta-category</strong>
+    each class commits to, the <strong>three-graph separation</strong> that keeps meaning, validation,
+    and advice apart, the <strong>six bounded contexts</strong> the standard partitions the industry
+    into, and the <strong>inference / validation boundary</strong> that fixes what is entailed versus
+    what is merely checked. Counts below are read at build time from the committed TTL corpus at
+    <code>source/03-standards/ontology/</code>.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#ufo">UFO meta-category legend</a> — the stereotype each class commits to</li>
+      <li><a href="#three-graph">Three-graph separation</a> — classes ⊥ shapes ⊥ annotations (ODR-0004 §3a)</li>
+      <li><a href="#contexts">Six bounded contexts</a> — how the industry is partitioned</li>
+      <li><a href="#boundary">Inference / validation boundary</a> — the 7 frozen rules (ODR-0029)</li>
+    </ul>
+  </nav>
+
+  <h2 id="ufo">UFO meta-category legend</h2>
+  <p>
+    Every OPDA class commits to a <strong>Unified Foundational Ontology (UFO)</strong> stereotype with
+    OntoClean meta-properties (rigidity, identity, dependence). This frame <em>leads</em> the reference —
+    before any term table — because the stereotype determines how a thing may be classified, whether it
+    may bear an identity criterion, and whether it may ever appear in a subclass tree. The crucial contract:
+    <strong>a Role is anti-rigid and is never a subclass of a Kind</strong> (it borrows identity from its
+    bearer); a Kind is rigid and carries its own identity criterion.
+  </p>
+  <table>
+    <thead><tr><th>UFO stereotype</th><th>OntoClean meta-properties</th><th>OPDA classes</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Substance Kind</strong></td>
+        <td>rigid; carries an identity criterion; individuates its instances</td>
+        <td><code>opda:Property</code>, <code>opda:LegalEstate</code>, <code>opda:RegisteredTitle</code>, <code>opda:Person</code>, <code>opda:Organisation</code>, <code>opda:Address</code></td>
+      </tr>
+      <tr>
+        <td><strong>Role</strong></td>
+        <td>anti-rigid; sortal — borne by a single Kind; <em>never</em> subclasses that Kind</td>
+        <td><code>opda:Proprietor</code> (borne by Person, founded by a Proprietorship Relator)</td>
+      </tr>
+      <tr>
+        <td><strong>RoleMixin</strong></td>
+        <td>anti-rigid; cross-sortal — borne by more than one Kind</td>
+        <td><code>opda:Seller</code>, <code>opda:Buyer</code> (Person OR Organisation), <code>opda:Evidence</code> (+ <code>opda:evidenceType</code> facet)</td>
+      </tr>
+      <tr>
+        <td><strong>Relator</strong></td>
+        <td>relational endurant; founded by an event; mediates two or more bearers; founds the roles it connects</td>
+        <td><code>opda:Transaction</code> (founds Seller / Buyer), <code>opda:Proprietorship</code> (binds Proprietor Roles to a RegisteredTitle)</td>
+      </tr>
+      <tr>
+        <td><strong>Mode / Quality</strong></td>
+        <td>existentially dependent on its bearer</td>
+        <td>UPRN as a contingent <em>Quality</em> of a <code>opda:Property</code> (never the identity criterion)</td>
+      </tr>
+      <tr>
+        <td><strong>Quale / value structure</strong></td>
+        <td>a value in a quality region; a magnitude-plus-unit composite with no independent identity</td>
+        <td><code>opda:MonetaryAmount</code> (amount + currency), <code>opda:RoomDimension</code> (length + width); coded SKOS values (Quale-in-Region) drive the rest</td>
+      </tr>
+      <tr>
+        <td><strong>Information Object</strong></td>
+        <td>an information artefact existentially dependent on a generating activity — <em>not</em> a Substance Kind</td>
+        <td><code>opda:EPCCertificate</code>, <code>opda:Survey</code>, <code>opda:Valuation</code>, <code>opda:Search</code>, <code>opda:Claim</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    Source: <code>opda-classes.ttl</code> (the UFO meta-classes <code>opda:Role</code>, <code>opda:RoleMixin</code>,
+    <code>opda:Relator</code>) and each module's <code>rdfs:comment</code> / <code>skos:scopeNote</code>, which
+    record the Guizzardi 2005 and DOLCE (Masolo et al. 2003) provenance per class.
+  </p>
+
+  <h2 id="three-graph">Three-graph separation (ODR-0004 §3a)</h2>
+  <p>
+    The ontology keeps three artefacts <strong>strictly orthogonal</strong> —
+    <strong>OWL classes ⊥ SHACL shapes ⊥ annotations</strong> — and the separation is CI-enforced.
+    This is the single most load-bearing architectural decision (<a href="/modelling/odr/ODR-0004">ODR-0004</a>,
+    Council session-004): it prevents open-world class semantics from being contaminated by closed-world
+    cardinality, and keeps advisory hints out of the normative model.
+  </p>
+  <table>
+    <thead><tr><th>Graph</th><th>Holds</th><th>Must NOT contain</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Class graph</strong><br/><code>opda-classes.ttl</code> + module TBox</td>
+        <td><code>owl:Class</code>, <code>rdfs:subClassOf</code>, object/datatype properties, <code>rdfs:domain</code>/<code>range</code> (informative), labels &amp; definitions</td>
+        <td>no <code>sh:</code> triples</td>
+      </tr>
+      <tr>
+        <td><strong>Shapes graph</strong><br/><code>opda-*-shapes.ttl</code></td>
+        <td>SHACL node/property shapes that <code>sh:targetClass</code> the classes; cardinality, datatype, <code>sh:in</code> value constraints</td>
+        <td>never <code>owl:imports</code> the class graph; no advisory annotations</td>
+      </tr>
+      <tr>
+        <td><strong>Annotation graph</strong><br/><code>opda-*-annotations.ttl</code></td>
+        <td>DPV personal-data co-annotations, AI hints (<code>opda:aiHint</code>), keyed to class/shape IRIs</td>
+        <td>no <code>sh:</code> triples</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Shapes <strong>target</strong> classes via <code>sh:targetClass</code>; they never <code>owl:imports</code>
+    them. No property carries an OWL cardinality restriction and a SHACL count constraint as if the two were
+    equivalent. Inference materialises into a <em>fourth, derived</em> graph
+    (<code>…/pdtf/graph/inferred/entailment</code>) and never pollutes the canonical three. The CI gate asserts,
+    among others, that an <code>ASK</code> over the annotation graph for any <code>sh:</code>-prefixed predicate
+    returns <code>false</code> — no SHACL triples may leak into the annotation graph.
+  </p>
+
+  <h2 id="contexts">Six bounded contexts</h2>
+  <p>
+    The standard partitions the UK property industry into <strong>{contexts.length} primary bounded contexts</strong>
+    (DDD), each a <code>skos:Concept</code> in <code>opda:BoundedContextScheme</code> and each owning a SHACL overlay
+    profile (<a href="/modelling/odr/ODR-0020">ODR-0020</a>). PDTF is the <em>Published Language</em> between them.
+    Domain-term membership in a context is a <strong>derived, on-demand query</strong>, never materialised — and
+    upstream conformist authorities (HMLR, MHCLG, DSIT) own no overlay, so they are linked by
+    <code>opda:consumesFrom</code> and are <em>not</em> members of the scheme.
+  </p>
+  <table>
+    <thead><tr><th>Context</th><th>Definition (with overlays)</th><th>Steward</th></tr></thead>
+    <tbody>
+      {contexts.map((c) => (
+        <tr>
+          <td><strong>{c.label}</strong></td>
+          <td>{c.def}</td>
+          <td>{c.steward}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="muted">Read live from <code>opda-contexts.ttl</code> ({counts.contexts} concepts in the scheme).</p>
+
+  <h2 id="boundary">Inference / validation boundary (ODR-0029)</h2>
+  <p>
+    The governing principle (<a href="/modelling/odr/ODR-0029">ODR-0029</a>, Council session-039):
+    <strong>infer the relations whose closure the author wants materialised</strong> (subclass / subproperty
+    hierarchy, inverse, symmetric, transitive) — and <strong>validate the constraints the author wants
+    checked</strong> (<code>domain</code>, <code>range</code>, cardinality, datatype, identity keys) as SHACL.
+    <code>domain</code> / <code>range</code> sit on the <em>validation</em> side; RDFS only ever put them on the
+    wrong side.
+  </p>
+  <p>
+    The entailment regime is understood as <strong>minimal / dormant</strong>: only
+    <code>rdfs:subClassOf</code> type-propagation currently fires (0 triples on the schema, ~30 trivially
+    recoverable on instance data); the other six rules are dormant carriers that activate when a real construct
+    lands. The closure adds <strong>0 triples</strong> over the flat schema — it is kept not for current output
+    but as a governed boundary and <strong>negative consistency gate</strong> (no <code>owl:sameAs</code>, no
+    spurious <code>EPCCertificate ⊑ Property</code>). The rule logic is <strong>frozen</strong>; the ruleset is a
+    <em>sound but RL-incomplete RDFS-Plus fragment</em> (<code>config/opda-rdfs-plus.rules</code>), explicitly
+    <strong>not</strong> an OWL 2 RL reasoner.
+  </p>
+
+  <h3>The 7 frozen rules — the "Safe Group" (ODR-0025 §R1)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Construct</th><th>Entailment</th></tr></thead>
+    <tbody>
+      {SAFE_RULES.map(([c, e], i) => (
+        <tr><td>{i + 1}</td><td><code>{c}</code></td><td>{e}</td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h3>Deliberately excluded (validated as SHACL, never inferred)</h3>
+  <table>
+    <thead><tr><th>Excluded construct</th><th>Why</th></tr></thead>
+    <tbody>
+      {EXCLUDED.map(([c, w]) => (
+        <tr><td><code>{c}</code></td><td>{w}</td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    This is what makes the regime <em>RL-safe</em> rather than RL or DL: no identity merging, no equivalence,
+    no domain/range classification, no restriction reasoning. The corresponding <strong>domain / range
+    constraints are validated</strong> by the ~273 <code>sh:targetSubjectsOf → sh:class</code> SHACL shapes
+    (ODR-0029 R3) — see <a href="/ontology/shapes">SHACL shapes</a>.
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The implicit-Property crux and the classification doctrine are on
+    <a href="/ontology/identity">Identity &amp; classification</a>. Browse the terms these frames govern:
+    <a href="/ontology/classes">Classes</a>, <a href="/ontology/properties">Properties</a>,
+    <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>. The full reference index is the
+    <a href="/ontology">Ontology section overview</a>.
+  </p>
+</Layout>

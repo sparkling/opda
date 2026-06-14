@@ -1,0 +1,162 @@
+---
+/**
+ * /ontology/vocabularies — native index of the SKOS concept schemes.
+ *
+ * Reads every skos:ConceptScheme local-name (opda-v: prefix → /pdtf/scheme/)
+ * with its concept count, prefLabel, definition and opda:ufoCategory live from
+ * opda-vocabularies.ttl at build time, explains the /pdtf/scheme/ kind-split
+ * (ADR-0006), and links the Skosmos schemes list + Ontospy SKOS pages for the
+ * browsable per-concept detail (combination principle, ADR-0041).
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+type Scheme = { name: string; label: string; def: string; ufo: string; count: number };
+function parseSchemes(): Scheme[] {
+  const txt = ttl('opda-vocabularies.ttl');
+  // count concepts per scheme via skos:inScheme opda-v:X
+  const counts = new Map<string, number>();
+  for (const m of txt.matchAll(/skos:inScheme\s+(opda-v:[A-Za-z0-9]+)/g)) {
+    counts.set(m[1], (counts.get(m[1]) ?? 0) + 1);
+  }
+  const out: Scheme[] = [];
+  for (const block of txt.split(/\n(?=opda-v:[A-Za-z0-9]+\s)/)) {
+    const m = block.match(/^(opda-v:[A-Za-z0-9]+)/);
+    if (!m) continue;
+    if (!/rdf:type\s+skos:ConceptScheme/.test(block)) continue;
+    const label = block.match(/skos:prefLabel\s+"([^"]+)"/)?.[1] ?? m[1].slice(7);
+    const def = block.match(/skos:definition\s+"([^"]+)"/)?.[1] ?? '';
+    const ufo = block.match(/opda:ufoCategory\s+"([^"]+)"/)?.[1] ?? '';
+    out.push({ name: m[1].slice(7), label, def, ufo, count: counts.get(m[1]) ?? 0 });
+  }
+  return out;
+}
+const schemes = parseSchemes();
+const totalConcepts = schemes.reduce((n, s) => n + s.count, 0);
+
+// UFO-category roll-up (the seven-category framework, ODR-0011 §8a).
+const byUfo = new Map<string, number>();
+for (const s of schemes) byUfo.set(s.ufo || '(unlabelled)', (byUfo.get(s.ufo || '(unlabelled)') ?? 0) + 1);
+const ufoRows = [...byUfo.entries()].sort((a, b) => b[1] - a[1]);
+
+const SKOSMOS = { href: '/ontology/tools/skosmos/schemes.html', live: exists('tools/skosmos/schemes.html') };
+const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tools/ontospy/index.html') };
+---
+<Layout
+  title="Vocabularies (SKOS)"
+  description="Native index of the OPDA SKOS concept schemes: every scheme local-name with its concept count and UFO category, read live from opda-vocabularies.ttl, plus the /pdtf/scheme/ kind-split (ADR-0006). Links the Skosmos schemes list and Ontospy SKOS pages."
+>
+<PageMeta category="Browse the terms" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Vocabularies (SKOS)</h1>
+
+  <p class="lead">
+    The <strong>{schemes.length} SKOS concept schemes</strong> ({totalConcepts} concepts in total) that carry
+    every coded value-space in the ontology — read live at build time from
+    <code>opda-vocabularies.ttl</code>. Under the <a href="/ontology/identity#doctrine">classification
+    doctrine</a> (ODR-0027), these schemes do the work that subclass trees do in lesser models: every
+    enumeration, status set, and kind-discriminator is a <code>skos:ConceptScheme</code> referenced by a coded
+    value — <em>never</em> an <code>owl:oneOf</code> bag and never a subclass enumeration.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#kind-split">The <code>/pdtf/scheme/</code> kind-split</a> — why schemes live in their own namespace (ADR-0006)</li>
+      <li><a href="#ufo">UFO-category roll-up</a> — the seven-category framework</li>
+      <li><a href="#browse">Browse per-concept</a> — Skosmos &amp; Ontospy</li>
+      <li><a href="#index">Scheme index</a> — all {schemes.length}, with concept counts</li>
+    </ul>
+  </nav>
+
+  <h2 id="kind-split">The <code>/pdtf/scheme/</code> kind-split (ADR-0006)</h2>
+  <p>
+    The concept schemes deliberately live under a <strong>separate namespace segment</strong>,
+    <code>https://opda.org.uk/pdtf/scheme/</code> (prefix <code>opda-v:</code>), distinct from the flat term
+    namespace <code>https://opda.org.uk/pdtf/</code> (prefix <code>opda:</code>). The reason
+    (<a href="/governance">ADR-0006</a>, directing-authority ruling 2026-06-02) is collision-avoidance: a
+    property such as <code>opda:role</code> at <code>…/pdtf/role</code> must not collide with the
+    <em>Participant Role</em> scheme — so the scheme resolves at <code>…/pdtf/scheme/role</code> and its members
+    at <code>…/pdtf/scheme/role/Buyer</code>.
+  </p>
+  <p>
+    The split applies <strong>only to <code>skos:ConceptScheme</code> instances</strong>. The handful of
+    <code>owl:Class</code>-typed <code>*Scheme</code> entities — <code>opda:SpecialCategoryScheme</code> and
+    <code>opda:BoundedContextScheme</code> — stay in the flat term namespace, because they are OWL classes, not
+    SKOS schemes. That is why they appear on <a href="/ontology/classes">Classes</a>, not here.
+  </p>
+
+  <h2 id="ufo">UFO-category roll-up</h2>
+  <p>
+    Each scheme is tagged <code>opda:ufoCategory</code> under the seven-category UFO framework
+    (<a href="/modelling/odr/ODR-0011">ODR-0011</a> §8a). The great majority are
+    <strong>Quale-in-Region</strong> (ordinal/nominal quality regions — ratings, statuses, types); a few are
+    <strong>Substance Kind labels</strong> (e.g. fixture items, property types) where the coded value names a
+    kind without minting an OWL subclass.
+  </p>
+  <table>
+    <thead><tr><th>UFO category</th><th>Schemes</th></tr></thead>
+    <tbody>
+      {ufoRows.map(([cat, n]) => (
+        <tr><td>{cat}</td><td>{n}</td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="browse">Browse per-concept</h2>
+  <p>
+    For the browsable per-concept detail — every <code>skos:Concept</code>, its notation, <code>prefLabel</code>,
+    and scheme membership — the bake-off (<a href="/ontology/bake-off">ADR-0041</a>) renders the schemes with
+    two tools:
+  </p>
+  <table>
+    <thead><tr><th>Rendering</th><th>What it gives</th><th>Open</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Skosmos</strong></td>
+        <td>The dedicated SKOS browser — schemes list, concept hierarchies, search. The static schemes list is linked here; the live browser runs over Fuseki via <code>make serve-data</code>.</td>
+        <td>{SKOSMOS.live ? <a href={SKOSMOS.href}>Skosmos schemes list ↗</a> : <span class="pill pill--warn">Pending generation</span>}</td>
+      </tr>
+      <tr>
+        <td><strong>Ontospy</strong></td>
+        <td>Multi-page browser with a per-scheme / per-concept page set (e.g. <code>class-skosconceptscheme.html</code>).</td>
+        <td>{ONTOSPY.live ? <a href={ONTOSPY.href}>Ontospy SKOS pages ↗</a> : <span class="pill pill--warn">Pending generation</span>}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="index">Scheme index <span class="muted">· {schemes.length} schemes · {totalConcepts} concepts</span></h2>
+  <table>
+    <thead><tr><th>Scheme</th><th>Concepts</th><th>UFO category</th><th>Definition</th></tr></thead>
+    <tbody>
+      {schemes.map((s) => (
+        <tr>
+          <td><code>opda-v:{s.name}</code><br/><span class="muted">{s.label}</span></td>
+          <td>{s.count}</td>
+          <td>{s.ufo || <span class="muted">—</span>}</td>
+          <td>{s.def || <span class="muted">—</span>}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="related">Related</h2>
+  <p>
+    Why coded schemes carry the classification: <a href="/ontology/identity#doctrine">the classification
+    doctrine (ODR-0027)</a>. The OWL classes these values attach to are on
+    <a href="/ontology/classes">Classes</a>; the properties that reference them are on
+    <a href="/ontology/properties">Properties</a>. Full index:
+    <a href="/ontology">Ontology section overview</a>.
+  </p>
+</Layout>

@@ -1,0 +1,173 @@
+---
+/**
+ * /ontology/identity — Identity & classification.
+ *
+ * The authored conceptual layer: the implicit-Property crux (ODR-0005 — the
+ * three-class Property/LegalEstate/RegisteredTitle split, UPRN as a contingent
+ * Quality, the named hard cases) and the classification doctrine (ODR-0027 —
+ * facets / coded SKOS over subclass trees; Roles never subclass a Kind;
+ * evidence as RoleMixin + evidenceType facet).
+ *
+ * No build-time corpus counts are needed here; the page is prose harvested
+ * from ODR-0005 and ODR-0027. Same Layout/PageMeta shape as the section.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+
+// ODR-0005 §3a — the five named hard cases the opda:Property IC is exercised over.
+const HARD_CASES = [
+  ['Demolition', 'The physical thing ceases; the LegalEstate and RegisteredTitle may persist (a cleared plot is still an estate).'],
+  ['Subdivision', 'One Property becomes many — new UPRNs issue; identity does not survive a split into distinct material continua.'],
+  ['Merger', 'Many Properties become one; identity of the constituents ends.'],
+  ['Replacement (rebuild on the same plot)', 'A new Property iff the legal record asserts discontinuity (title closure + re-registration, or a new UPRN with no prov:wasDerivedFrom chain). Routine knock-down-rebuild without registry discontinuity PRESERVES identity — matching conveyancer practice. Listed-building heritage exception via a SHACL profile.'],
+  ['Boundary modification', 'A boundary change without registry discontinuity preserves identity; a transfer of land that re-registers does not.'],
+];
+
+// ODR-0027 — the classification doctrine rules (R1, R2, R3, R4, R5, R6).
+const DOCTRINE = [
+  ['R1 — isMemberOf is the default; isA is the exception',
+   'Classification (what type a thing is) is done by coded set-membership — isMemberOf a skos:ConceptScheme — by default. Mint an OWL subclass (isA / rdfs:subClassOf) ONLY for a genuine Kind that carries its own identity criterion (and/or a distinct relational structure SHACL must enforce per-type). One class, a value that varies, is the rule; a subclass per coded value is the anti-pattern.'],
+  ['R2 — a facet is NOT a classification',
+   'A facet is the set of type-specific attributes an entity of a given type bears — it presupposes the type and says nothing about what the type is. opda:attestedBy and opda:documentReference are facets. opda:evidenceType is NOT a facet — it is an isMemberOf classifier (it states the kind). (opda overloads "facet" to mean type-borne attributes, not an ISO-25964 classification axis.)'],
+  ['R3 — Roles are anti-rigid → NEVER rdfs:subClassOf a Kind',
+   'A Role is borne via a roleOf / playedBy relation (founded by the relevant Relator/Activity), with a coded isMemberOf classifier where the role sub-divides — never rdfs:subClassOf the bearer Kind. opda already does this for opda:Seller / opda:Buyer (RoleMixin) and opda:Proprietor (Role); the doctrine generalises it.'],
+  ['R4 — every enumeration is a SKOS scheme',
+   'Every closed value-space, status set, kind-discriminator, and UFO-stereotype axis is a skos:ConceptScheme of skos:Concepts, referenced by a coded value — never an owl:oneOf bag and never an rdfs:subClassOf enumeration. A scheme member binds to an OWL Kind by skos:exactMatch only where that Kind independently earns isA — never owl:sameAs.'],
+  ['R5 — enforcement is value-keyed, not class-keyed',
+   'rdfs:domain / rdfs:range are informative, never evaluated. SHACL is the enforcement layer, and per-type obligations are value-keyed on the isMemberOf classifier (sh:targetSubjectsOf + a value-guarded material implication in SHACL-Core), not keyed on a subclass sh:targetClass (which is entailment-relative and silently passes a value-recorded instance). Class-targeting is correct in exactly one place: a type↔value coherence shape.'],
+  ['R6 — evidence is a Role, not a Kind tree',
+   'opda:Evidence is the role target (a RoleMixin); evidence-kind is an isMemberOf coded classification (opda:evidenceType → opda:EvidenceMethodScheme), not a subclass tree. The three …Evidence rdfs:subClassOf opda:Evidence axioms are retired; kind-specific attributes become facets borne by the role. (This reverses session-036\'s keep-the-subclasses disposition; its value-keyed-enforcement finding stands.)'],
+];
+---
+<Layout
+  title="Identity & classification"
+  description="The implicit-Property identity crux (ODR-0005 — the three-class Property/LegalEstate/RegisteredTitle split, UPRN as a contingent Quality, the named hard cases) and the classification doctrine (ODR-0027 — facets and coded SKOS over subclass trees)."
+>
+<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Identity &amp; classification</h1>
+
+  <p class="lead">
+    Two decisions carry more weight than any other in the model. The <strong>identity crux</strong>
+    (<a href="/modelling/odr/ODR-0005">ODR-0005</a>) answers the question PDTF JSON cannot:
+    <em>what is the rigid, identity-bearing "property"</em> when the source schema has no first-class
+    property object at all? The <strong>classification doctrine</strong>
+    (<a href="/modelling/odr/ODR-0027">ODR-0027</a>) answers how every <em>type</em> in the model is
+    assigned: by coded set-membership, not by a subclass tree.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#crux">The implicit-Property crux</a> — the three-class split (ODR-0005)</li>
+      <li><a href="#uprn">UPRN is a contingent Quality</a> — never the IC, never owl:sameAs</li>
+      <li><a href="#hard-cases">The named hard cases</a> — how Property identity behaves</li>
+      <li><a href="#doctrine">Classification doctrine</a> — facets, not subclass trees (ODR-0027)</li>
+    </ul>
+  </nav>
+
+  <h2 id="crux">The implicit-Property crux (ODR-0005)</h2>
+  <p>
+    PDTF JSON has no first-class "property" object, yet an RDF consumer needs a rigid, identity-bearing
+    subject to attach everything to. ODR-0005 (Council session-005; Queen Guarino) splits the conflated
+    notion into <strong>three UFO Substance Kinds</strong>, each committed to a DOLCE Endurant, each with
+    its <em>own</em> identity criterion — not one conflated entity:
+  </p>
+  <table>
+    <thead><tr><th>Class</th><th>UFO / DOLCE</th><th>Identity criterion</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>opda:Property</code></td>
+        <td>Substance Kind / PhysicalObject</td>
+        <td>spatial-material continuity, with a legal-record discontinuity override</td>
+      </tr>
+      <tr>
+        <td><code>opda:LegalEstate</code></td>
+        <td>Substance Kind / NonPhysicalEndurant</td>
+        <td>rights-bundle persistence (survives transfer, charges, easements) — <strong>may be unregistered</strong> at common law</td>
+      </tr>
+      <tr>
+        <td><code>opda:RegisteredTitle</code></td>
+        <td>Substance Kind (informational) / NonPhysicalEndurant</td>
+        <td>title-number lineage + registry-event history; carries a distinct published-personal-data PII regime under the HMLR open register</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    The split is what gives the <strong>unregistered-house-before-first-registration</strong> case a coherent
+    answer (a <code>LegalEstate</code> with no <code>RegisteredTitle</code>), and gives <code>RegisteredTitle</code>
+    instances a class-level discriminator for ICO Subject Access processing. The three are joined by co-reference —
+    the controlled <code>opda:identifiesSameProperty</code> predicate and SHACL key-matching —
+    <strong>never <code>owl:sameAs</code></strong>.
+  </p>
+
+  <h2 id="uprn">UPRN is a contingent Quality — never the IC, never <code>owl:sameAs</code></h2>
+  <p>
+    <strong>UPRN is a contingent <em>Quality</em> of a <code>opda:Property</code>, never the identity
+    criterion, and never asserted with <code>owl:sameAs</code></strong> (the <code>owl:sameAs</code>-across-UPRN
+    option was rejected <em>unanimously</em> at session-005). A property can change UPRN — administrative
+    re-numbering is captured by a reified <code>opda:UPRNSuccessionEvent</code> under
+    <code>prov:wasDerivedFrom</code>, materialised into the validation report by a SHACL-AF rule at
+    <code>sh:Info</code> severity, and the Property's identity <em>persists</em> through it. Two records sharing
+    a UPRN are <strong>not</strong> thereby the same legal estate. Forbidden anti-patterns:
+  </p>
+  <ul>
+    <li><code>owl:sameAs</code> between any two UPRN-bearing nodes — propagates every context's properties onto every other, irreversibly under inference.</li>
+    <li>Treating UPRN <em>or</em> address as the identity criterion — both are administratively contingent (UPRN) or a mode of presentation (address).</li>
+    <li>Keying a Role — a Role borrows identity from its bearer and never supplies its own (ODR-0005 anti-pattern §3).</li>
+  </ul>
+  <p class="muted">
+    Worked exemplars exercise exactly these surfaces: <code>flat-with-split-uprn</code>,
+    <code>flat-no-uprn-newly-converted</code>, <code>rural-plot-inspire-no-uprn</code>,
+    <code>unregistered-pre-first-registration-house</code> — see <a href="/ontology/exemplars">Exemplars</a>.
+  </p>
+
+  <h2 id="hard-cases">The named hard cases (how <code>opda:Property</code> identity behaves)</h2>
+  <p>
+    Per ODR-0001's per-<code>kind:&nbsp;pattern</code> discipline, each identity criterion is exercised over
+    <strong>five named hard cases</strong> rather than asserted abstractly. For <code>opda:Property</code>:
+  </p>
+  <table>
+    <thead><tr><th>Hard case</th><th>Disposition</th></tr></thead>
+    <tbody>
+      {HARD_CASES.map(([c, d]) => (
+        <tr><td><strong>{c}</strong></td><td>{d}</td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    The unifying rule: <strong>physical-material continuity governs, with a legal-record discontinuity
+    override</strong>. <code>opda:LegalEstate</code> and <code>opda:RegisteredTitle</code> each carry their own
+    five-hard-case walk in ODR-0005 §3b/§3c.
+  </p>
+
+  <h2 id="doctrine">Classification doctrine — facets, not subclass trees (ODR-0027)</h2>
+  <p>
+    ODR-0027 adopts wholesale the sibling corpus's decade-stable
+    <strong>classification-over-inheritance</strong> doctrine, grounded in ISO 25964 faceted classification,
+    W3C SKOS, FIBO, and OntoClean/UFO. The doctrine is six rules:
+  </p>
+  <table>
+    <thead><tr><th>Rule</th><th>What it says</th></tr></thead>
+    <tbody>
+      {DOCTRINE.map(([r, d]) => (
+        <tr><td><strong>{r}</strong></td><td>{d}</td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    The OntoClean cascade behind R1 (ODR-0011 §8a): <em>anti-rigid → never a subclass</em>;
+    <em>+R∧−I → classify (coded)</em>; <em>+R∧+I∧+D → Relator</em>; <em>+R∧+I∧−D → subclass</em>. The net effect:
+    the ~{40} OWL classes are kept deliberately few and rigid, while the <strong>47 SKOS concept schemes</strong>
+    carry all the varying classification — see <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>.
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The UFO legend, three-graph separation, bounded contexts, and inference boundary are on
+    <a href="/ontology/foundation">Foundations &amp; architecture</a>. Browse the terms:
+    <a href="/ontology/classes">Classes</a>, <a href="/ontology/properties">Properties</a>,
+    <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>. Full index:
+    <a href="/ontology">Ontology section overview</a>.
+  </p>
+</Layout>

@@ -264,6 +264,30 @@ export const SECTIONS: Record<string, Section> = {
       { heading: 'Overview', items: [
         { url: '/ontology', title: 'Section overview' },
       ]},
+      { heading: 'Understand the model', items: [
+        { url: '/ontology/foundation', title: 'Foundations & architecture' },
+        { url: '/ontology/identity',   title: 'Identity & classification' },
+      ]},
+      { heading: 'Browse the model', items: [
+        { url: '/ontology/classes',      title: 'Classes' },
+        { url: '/ontology/properties',   title: 'Properties' },
+        { url: '/ontology/vocabularies', title: 'Vocabularies (SKOS)' },
+        { url: '/ontology/shapes',       title: 'SHACL shapes' },
+        { url: '/ontology/profiles',     title: 'Overlay profiles & gaps' },
+        { url: '/ontology/exemplars',    title: 'Exemplars' },
+      ]},
+      { heading: 'Trust & governance', items: [
+        { url: '/ontology/claims',       title: 'Claims, evidence & provenance' },
+        { url: '/ontology/governance',   title: 'Governance & PII' },
+      ]},
+      { heading: 'About this reference', items: [
+        { url: '/ontology/provenance',   title: 'Decision provenance' },
+        { url: '/ontology/known-issues', title: 'Known issues' },
+      ]},
+      { heading: 'Use & compare', items: [
+        { url: '/ontology/usage',    title: 'Consume the ontology' },
+        { url: '/ontology/bake-off', title: 'Tool bake-off & scorecard' },
+      ]},
     ],
   },
 
