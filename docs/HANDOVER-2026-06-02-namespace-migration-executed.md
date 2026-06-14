@@ -59,8 +59,10 @@ The frozen ADR-0006 scheme is **live**: every opda IRI moved `https://w3id.org/o
 
 ## What's left (outstanding ENGINEERING — no gates)
 
-1. **The Category-G curated walk** (ADR-0031 work-item 2) — the ~188 descriptive-concept permanent IRIs are still **held/not-emitted**; per-form profiles stay thin. `ci-descriptive-roundtrip` *passes* (not blocking), but full descriptive-layer fidelity isn't there. **This is the clear next ontology build.** Execute directly (greenfield).
-2. **Held monetary walk** — no `opda:MonetaryAmount` value type yet; `opda:price` is a single shared property; `category_g_curation.py` defers price-like leaves to it.
+> **⚠ CORRECTION 2026-06-14:** Items 1 and 2 below were **stale when written** — carried over from the ADR-0031 *plan* state and never updated. Both walks had in fact already **completed** before this handover (commits `ce7de50`→`37fef4a`→`12a4bb4`→`6e5f6d1`, all on `main`). `ci-category-g-coverage` reports **239/239** (224 minted, 15 collapsed, 0 uncovered) — PASS — and `opda:MonetaryAmount` exists as a value-type class with its own SHACL shape. The corrected items are struck through below; only item 3 (ADR-0005 register) remains genuinely open. The real next descriptive thread is **per-form profile binding** (ODR-0021), not more leaf modelling.
+
+1. ~~**The Category-G curated walk** (ADR-0031 work-item 2) — the ~188 descriptive-concept permanent IRIs are still **held/not-emitted**; per-form profiles stay thin. `ci-descriptive-roundtrip` *passes* (not blocking), but full descriptive-layer fidelity isn't there. **This is the clear next ontology build.** Execute directly (greenfield).~~ **DONE** — walk complete at 239/239 (`ci-category-g-coverage` PASS); see commits `ce7de50`/`37fef4a`/`12a4bb4`/`6e5f6d1` and [ODR-0024](ontology/odr/ODR-0024-curated-category-g-walk-dispositions.md).
+2. ~~**Held monetary walk** — no `opda:MonetaryAmount` value type yet; `opda:price` is a single shared property; `category_g_curation.py` defers price-like leaves to it.~~ **DONE** — `opda:MonetaryAmount` value type minted (G22, commit `12a4bb4`); price-like leaves emit as object properties ranging on it.
 3. **ADR-0005 register (trigger/readiness-based, not migration):** accreditation directory build C1–C4 (waiting on member-firm VC readiness); **E1** visual smoke test (Henrik); **E2** external-materials audit (old `/pages/NN-*.html` + `openpropdata.org.uk` refs — relevant now the namespace moved); D1–D5 / B1–B2 / F3–F4 governance-policy + DAMA docs (opportunistic).
 
 ---
@@ -79,4 +81,4 @@ Reinforced [[opda-greenfield-no-wg-gate]] (recurring slip — never defer to WG)
 
 ## State
 
-15 commits on `main` (`4b30995`…`666aae4`), pushed, deployed green. Working tree clean. Namespace migration complete + byte-identity CI green + docs de-WG-gated. Next engineering: the Category-G curated walk.
+15 commits on `main` (`4b30995`…`666aae4`), pushed, deployed green. Working tree clean. Namespace migration complete + byte-identity CI green + docs de-WG-gated. ~~Next engineering: the Category-G curated walk.~~ **(2026-06-14 correction: the G-walk was already complete at 239/239 — see corrected "What's left" above; next descriptive thread is per-form profile binding, ODR-0021.)**

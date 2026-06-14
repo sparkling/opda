@@ -12,6 +12,8 @@ implements: []
 
 # PDTF to Ontology: Programme and Work Breakdown (Anchor)
 
+> **RETIRED 2026-06-14 — both retirement conditions met.** (i) MVP round-trip closed (termination signal 1, `ci-baspi5-roundtrip`); (ii) every active linked ODR is `accepted` (ODR-0014 superseded historical anchor; **ODR-0016 reviewed and waived at the gate — no trigger fired**). This record is now a historical anchor; subsequent linked-data work produces fresh ODRs (see `## Amendments`). The `status: accepted` frontmatter is retained — the decisions in this record still hold; only the programme they sequenced has completed.
+
 ## Context and Problem Statement
 
 This is the anchor record for converting the Property Data Trust Framework v3 JSON Schema into a linked-data ontology. It records the programme-level decisions from Council Session 001, sequences the work, and links every work-package ODR. It is planning only — each linked ODR is a stub to be fleshed out in its own follow-up session.
@@ -275,4 +277,19 @@ This anchor is the single place to see programme state. The queen of the session
 Pilot sessions (S005, S011 Q8) carry an additional artefact per plan §8: a one-page **retire-or-extend evaluation** in the transcript; the outcome (RETIRE / EXTEND CAUTIOUSLY / EXPAND) is recorded in the track-record row's verdict column.
 
 Individual ODRs own their own analysis; this file owns the sequencing and the cross-links.
+
+## Amendments
+
+### 2026-06-14 — Programme retired (both conditions met; ODR-0016 waived at the gate)
+
+The programme-retirement criterion (above) is discharged. Recorded as an author-level gate decision (no council; pragmatist path).
+
+- **Condition (i) — MET.** The MVP BASPI5 round-trip (termination signal 1) is demonstrated by the `ci-baspi5-roundtrip` gate (ADR-0014).
+- **Condition (ii) — MET.** Every active linked ODR is `accepted`, including the descriptive-layer work attested complete in [ODR-0028](./ODR-0028-descriptive-layer-completeness-reconciliation.md). `ODR-0014` is the expected `superseded` historical anchor (folded into ODR-0002). The sole non-accepted active record is **[ODR-0016](./ODR-0016-w3c-vc-did-compatibility.md)** (`proposed`), which the criterion counts *only if a trigger has fired*.
+- **ODR-0016 gate review — WAIVED (no trigger fired).** Adjudication of the three named activation triggers (ODR-0016 §Rules):
+  1. *Session 009 Q8 forces a VC binding* — **not fired**: ODR-0009 is `accepted` and Q8 deferred cleanly into ODR-0016 with no leak into the PROV-O backbone.
+  2. *ODR-0012 Phase-2 consent-receipt vocab lands* — **not fired**: ODR-0012 (session-033) settled the lawful-basis layer *by reference* but explicitly holds consent-records / `odrl:Policy` instances — the consent-receipt-shaped part — at Phase-2.
+  3. *A real wallet/DID/VC consumer enters scope* — **not fired in the sense ODR-0016 governs**: ODR-0016 governs the *core ontology* VC/DID binding (`opda:Claim ⊑ cred:VerifiableCredential`, issuer/holder/verifier role bindings, signature suites, status lists). ADR-0004's accreditation-directory `did:web` + VCDM 2.0 commitment is *harness-level governance apparatus* (June-2 namespace decision: "not a term, not a new standard"), is **not yet operational** (accreditation build C1–C4 waits on member-firm VC readiness), and the emitted core ontology contains **zero `cred:`/`did:` terms**. It routed around the core binding rather than activating it.
+- **Forward pointer.** ODR-0016's activation triggers remain live as forward pointers; per the retirement rule above, any trigger firing post-retirement spawns a **fresh ODR** rather than reactivating this programme. ODR-0016 stays `proposed` as a deferred-named stub (consistent with its own §Rules: "if no activation trigger fires through MVP, this ODR stays `proposed` and is reviewed at programme retirement").
+- **Effect.** ODR-0003 is now a historical anchor. Future OPDA linked-data modelling produces fresh ODRs without revisiting this programme's sequencing.
 

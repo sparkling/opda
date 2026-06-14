@@ -202,3 +202,15 @@ flowchart TD
 
     S016 --> RULES["Ratify substantive ## Rules:<br/>Claim binding · DID method ·<br/>Signature suites · Status lists ·<br/>JSON-LD context · Truth-makers ·<br/>Consent receipts · eIDAS mapping"]:::success
 ```
+
+## Amendments
+
+### 2026-06-14 — Reviewed at the programme-retirement gate; WAIVED (no trigger fired)
+
+[ODR-0003](./ODR-0003-pdtf-ontology-programme.md) retired this date. Per its retirement criterion, ODR-0016 counts toward the gate *only if an activation trigger has fired*. Author-level review (no council; pragmatist path) adjudicated all three triggers **not fired**:
+
+1. **Session 009 Q8 forces a VC binding** — not fired. ODR-0009 is `accepted`; Q8 deferred cleanly into this ODR with no leak into the PROV-O backbone.
+2. **ODR-0012 Phase-2 consent-receipt vocab lands** — not fired. ODR-0012 (session-033) settled the lawful-basis layer *by reference* but explicitly holds consent-records / `odrl:Policy` instances (the consent-receipt-shaped Phase-2 work) deferred.
+3. **A real wallet/DID/VC consumer enters scope** — not fired *in the sense this ODR governs*. This ODR governs the **core ontology** VC/DID binding (Claim ⊑ `cred:VerifiableCredential`, Issuer/Holder/Verifier role bindings, signature suites, status lists, JSON-LD context). ADR-0004's accreditation-directory `did:web` + VCDM 2.0 commitment is **harness-level governance apparatus** (June-2 namespace decision: "not a term, not a new standard"), is **not yet operational** (accreditation build C1–C4 awaits member-firm VC readiness), and the emitted core ontology carries **zero `cred:`/`did:` terms** — it routed around the core binding rather than activating it.
+
+**Disposition.** WAIVED at the gate; **status stays `proposed`** (consistent with §Decision Outcome: "if no activation trigger fires through MVP, this ODR stays `proposed` and is reviewed at programme retirement"). The activation triggers above survive as **forward pointers**: should any fire after retirement, it spawns a **fresh ODR** (per ODR-0003 §retirement), not a reactivation of this stub. The `cred:`/`did:` catalogue admission (ODR-0002 Defer tier) and the ODR-0009 Q8 deferral remain valid.
