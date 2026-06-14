@@ -1,0 +1,45 @@
+# Skosmos configuration for the OPDA PDTF vocabularies (ADR-0041 §Hosting B2 —
+# localhost-link). One umbrella vocabulary over the whole /opda dataset; the
+# dataset is union-default-graph (ADR-0035), so omitting skosmos:sparqlGraph
+# surfaces all 48 concept schemes / 314 concepts (47 in graph/vocabularies + the
+# BoundedContextScheme in graph/contexts).
+#
+# Run:  make serve-data   (Fuseki on :3031/opda)  then  make skosmos
+# Browse: http://localhost:9090/
+@prefix skosmos: <http://purl.org/net/skosmos#> .
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix dc:      <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix :        <#> .
+
+# ── Global configuration ────────────────────────────────────────────────────
+:config a skosmos:Configuration ;
+    dc:title "OPDA PDTF — SKOS browser" ;
+    skosmos:sparqlEndpoint <http://host.docker.internal:3031/opda/sparql> ;
+    skosmos:sparqlDialect "Generic" ;
+    skosmos:languages ( "en" ) ;
+    skosmos:uiLanguages ( "en" ) ;
+    skosmos:customCss "resource/css/stylesheet.css" ;
+    skosmos:feedbackAddress "" ;
+    skosmos:logBrowserConsole true ;
+    skosmos:uiSearchCharacterLimit 1 ;
+    skosmos:globalPlugins () .
+
+# ── Vocabulary: the whole OPDA scheme space ─────────────────────────────────
+:opda a skosmos:Vocabulary, void:Dataset ;
+    dc:title "OPDA PDTF Vocabularies"@en ;
+    skosmos:shortName "OPDA" ;
+    dc:subject :cat_opda ;
+    void:uriSpace "https://opda.org.uk/pdtf/" ;
+    skosmos:language "en" ;
+    skosmos:defaultLanguage "en" ;
+    skosmos:showTopConcepts true ;
+    skosmos:sparqlEndpoint <http://host.docker.internal:3031/opda/sparql> ;
+    skosmos:groupClass skos:Collection .
+
+# ── Front-page category (Skosmos groups vocabularies under dc:subject) ───────
+:cat_opda a skos:Concept ;
+    rdfs:label "OPDA"@en ;
+    skos:prefLabel "OPDA PDTF"@en .
