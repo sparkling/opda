@@ -62,14 +62,16 @@ const counts = {
 
 // Bake-off tool catalogue (ADR-0041 §Amendments — the all-tools mandate).
 // `href` resolves only once the sibling generation step has produced output.
+// Hrefs point at explicit index.html files (the Astro dev server does NOT resolve
+// directory paths → index.html; only a static host does — explicit files work on both).
 const TOOLS = [
-  { id: 'pylode',   name: 'pyLODE',         layer: 'OWL term reference',                 note: 'Python CLI; best single-file OWL ref; weak SHACL.',           href: '/ontology/tools/pylode/',                live: exists('tools/pylode/index.html'),        embed: true },
+  { id: 'pylode',   name: 'pyLODE',         layer: 'OWL term reference',                 note: 'Python CLI; best single-file OWL ref; weak SHACL.',           href: '/ontology/tools/pylode/index.html',        live: exists('tools/pylode/index.html'),        embed: true },
   { id: 'widoco',   name: 'WIDOCO',         layer: 'OWL + metadata + VOWL diagrams',     note: 'Java jar (headless); richest publishable shell; weak SHACL.', href: '/ontology/tools/widoco/doc/index-en.html', live: exists('tools/widoco/doc/index-en.html'), embed: true },
-  { id: 'shaclplay',name: 'SHACL Play!',    layer: 'SHACL shapes / profiles → HTML',     note: 'Sparna; the only tool that documents SHACL.',                 href: '/ontology/tools/shaclplay/',             live: exists('tools/shaclplay/index.html'),     embed: false },
-  { id: 'skosmos',  name: 'Skosmos',        layer: 'SKOS schemes (browser)',             note: 'NatLibFi; PHP app over Fuseki — localhost only (B2).',        href: 'http://localhost:9090/',                 live: false, localhost: true,                  embed: false },
-  { id: 'ontospy',  name: 'Ontospy',        layer: 'OWL + visualisations (multi-page)',  note: 'Python CLI; needs a Python ≤3.11 interpreter.',               href: '/ontology/tools/ontospy/',               live: exists('tools/ontospy/index.html'),       embed: false },
-  { id: 'lode',     name: 'LODE',           layer: 'OWL term reference (baseline)',      note: "Dated XSLT/web-service; the DA's own tool — comparison baseline.", href: '/ontology/tools/lode/',              live: exists('tools/lode/index.html'),          embed: false },
-  { id: 'custom',   name: 'custom opda-gen + LLM', layer: 'profiles · exemplars · three-graph · governance · known-issues', note: 'The only approach covering the OPDA-specific layers no off-the-shelf tool touches.', href: '/ontology/tools/custom/', live: exists('tools/custom/index.html'), embed: false },
+  { id: 'shaclplay',name: 'SHACL Play!',    layer: 'SHACL shapes / profiles → HTML',     note: 'Sparna; the only tool that documents SHACL — resolves all blank nodes.', href: '/ontology/tools/shaclplay/index.html', live: exists('tools/shaclplay/index.html'),  embed: true },
+  { id: 'skosmos',  name: 'Skosmos',        layer: 'SKOS schemes (browser)',             note: 'NatLibFi; live PHP app over Fuseki (B2 — localhost). The static schemes list is linked here; the full browser runs via make serve-data.', href: '/ontology/tools/skosmos/schemes.html', live: exists('tools/skosmos/schemes.html'), localhost: true, embed: false },
+  { id: 'ontospy',  name: 'Ontospy',        layer: 'OWL + visualisations (multi-page)',  note: 'Python CLI (3.11); OWL + browsable SKOS; heavy (~87 MB).',     href: '/ontology/tools/ontospy/index.html',     live: exists('tools/ontospy/index.html'),       embed: false },
+  { id: 'lode',     name: 'LODE',           layer: 'OWL term reference (baseline)',      note: "Dated; represented via Widoco's embedded LODE — see README.", href: '/ontology/tools/lode/README.md',         live: exists('tools/lode/README.md'),           embed: false },
+  { id: 'custom',   name: 'custom opda-gen + LLM', layer: 'profiles · exemplars · three-graph · governance · known-issues', note: 'The OPDA-specific layers no off-the-shelf tool covers — our script + LLM prose. This is the adopted composition.', href: '/ontology/tools/custom/index.html', live: exists('tools/custom/index.html'), embed: true },
 ];
 
 // M6 rubric scorecard. If public/ontology/tools/COMPARISON.md exists, the
@@ -133,13 +135,12 @@ const artefacts = {
           <td><strong>{t.name}</strong></td>
           <td>{t.layer}</td>
           <td>
-            {t.localhost ? (
-              <span><code>{t.href}</code> · localhost only</span>
-            ) : t.live ? (
+            {t.live ? (
               <a href={t.href}>View rendering ↗</a>
             ) : (
               <span class="pill pill--warn">Pending generation</span>
             )}
+            {t.localhost && (<span> · live browser via <code>make serve-data</code></span>)}
           </td>
           <td>{t.note}</td>
         </tr>
@@ -174,8 +175,8 @@ const artefacts = {
   {comparisonStaged ? (
     <p class="callout callout--note">
       <span class="callout__label">Scoring staged</span>
-      The operator's per-layer scoring is recorded at
-      <code>public/ontology/tools/COMPARISON.md</code> — see that document for the filled rubric.
+      The bake-off's per-layer scoring is recorded in
+      <a href="/ontology/tools/COMPARISON.md">COMPARISON.md ↗</a> — the filled M6 rubric for your inspection.
     </p>
   ) : (
     <p><em>Empty rubric — to be filled on inspection (cells: Full / Partial / None).</em></p>
@@ -216,7 +217,7 @@ const artefacts = {
   <ul>
     {artefacts.merged && (<li><a href="/ontology/artefacts/opda-merged.ttl">opda-merged.ttl</a> — merged TBox (OWL + SKOS), the bake-off input graph.</li>)}
     {artefacts.shapesMerged && (<li><a href="/ontology/artefacts/opda-shapes-merged.ttl">opda-shapes-merged.ttl</a> — merged SHACL shapes graph.</li>)}
-    {artefacts.source && (<li><a href="/ontology/artefacts/source/">source/</a> — per-module TTLs (classes, properties, shapes, annotations, vocabularies, contexts).</li>)}
+    {artefacts.source && (<li><a href="/ontology/artefacts/source/index.html">source/ (24 module TTLs)</a> — per-module TTLs (classes, properties, shapes, annotations, vocabularies, contexts).</li>)}
     {!artefacts.merged && !artefacts.shapesMerged && (<li><span class="pill pill--warn">Pending generation</span> — merged TTL bundles stage under <code>/ontology/artefacts/</code>.</li>)}
   </ul>
 
