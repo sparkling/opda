@@ -1,0 +1,120 @@
+---
+/**
+ * /ontology/glossary — the full alphabetical index & glossary (ADR-0041 §16).
+ *
+ * A single A–Z of every addressable OPDA term — OWL classes, object/datatype
+ * properties, and SKOS concepts — with its definition (rdfs:comment /
+ * skos:definition), read live at build time from the committed TTL corpus (the
+ * fs-read pattern shared with the other /ontology pages, so it cannot drift).
+ * Each entry links to its native browse page; the per-term axiom detail lives in
+ * the pyLODE / WIDOCO renderings (combination principle, ADR-0041).
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+function exists(rel: string): boolean {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+}
+
+type Term = { name: string; kind: string; def: string; href: string };
+
+const MODULES = ['opda-classes.ttl', 'opda-property.ttl', 'opda-agent.ttl',
+  'opda-transaction.ttl', 'opda-claim.ttl', 'opda-governance.ttl',
+  'opda-descriptive.ttl', 'foundation.ttl'];
+
+const KIND = [
+  { re: /rdf:type\s+owl:Class/,            label: 'Class',     href: '/ontology/classes' },
+  { re: /rdf:type\s+owl:ObjectProperty/,   label: 'Object property',   href: '/ontology/properties' },
+  { re: /rdf:type\s+owl:DatatypeProperty/, label: 'Datatype property', href: '/ontology/properties' },
+];
+
+/** Parse opda: subjects (classes + properties) from the module TTLs. */
+function parseTerms(): Term[] {
+  const out: Term[] = [];
+  for (const file of MODULES) {
+    for (const block of ttl(file).split(/\n(?=opda:[A-Za-z0-9]+\s)/)) {
+      const m = block.match(/^(opda:[A-Za-z0-9]+)/);
+      if (!m) continue;
+      const kind = KIND.find((k) => k.re.test(block));
+      if (!kind) continue;
+      const c = block.match(/rdfs:comment\s+"([^"]+)"/);
+      out.push({ name: m[1].slice(5), kind: kind.label, def: c ? c[1] : '', href: kind.href });
+    }
+  }
+  return out;
+}
+
+/** Parse skos:Concept subjects + skos:definition from the vocabulary TTL. */
+function parseConcepts(): Term[] {
+  const out: Term[] = [];
+  for (const block of ttl('opda-vocabularies.ttl').split(/\n(?=opda:[A-Za-z0-9]+\s)/)) {
+    const m = block.match(/^(opda:[A-Za-z0-9]+)/);
+    if (!m) continue;
+    if (!/\ba\s+skos:Concept\b|rdf:type\s+skos:Concept\b/.test(block)) continue;
+    const d = block.match(/skos:definition\s+"([^"]+)"/) || block.match(/skos:prefLabel\s+"([^"]+)"/);
+    out.push({ name: m[1].slice(5), kind: 'SKOS concept', def: d ? d[1] : '', href: '/ontology/vocabularies' });
+  }
+  return out;
+}
+
+// Build the A–Z. Dedup by name+kind; sort case-insensitively.
+const seen = new Set<string>();
+const terms = [...parseTerms(), ...parseConcepts()]
+  .filter((t) => { const k = t.name + '|' + t.kind; if (seen.has(k)) return false; seen.add(k); return true; })
+  .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const byLetter = (L: string) => terms.filter((t) => t.name[0].toUpperCase() === L);
+const liveLetters = LETTERS.filter((L) => byLetter(L).length > 0);
+
+const PYLODE = { href: '/ontology/tools/pylode/index.html', live: exists('tools/pylode/index.html') };
+const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s);
+---
+<Layout
+  title="Index & glossary"
+  description="The full alphabetical A–Z index and glossary of every OPDA PDTF term — classes, object and datatype properties, and SKOS concepts — with definitions read live from the committed TTL corpus."
+>
+<PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Index &amp; glossary</h1>
+
+  <p class="lead">
+    Every addressable term in the OPDA PDTF ontology — <strong>{terms.length}</strong> entries
+    (classes, object and datatype properties, and SKOS concepts) in one A–Z, each with its
+    definition read live at build time from <code>source/03-standards/ontology/</code>. Use this as
+    the alphabetical entry point; for the full axioms, domains/ranges and cross-references of any
+    term, open the {PYLODE.live ? <a href={PYLODE.href}>pyLODE rendering ↗</a> : <span>pyLODE rendering</span>}.
+  </p>
+
+  <nav class="callout callout--note" aria-label="Jump to letter">
+    <p class="callout__label">Jump to</p>
+    <p style="margin:0; line-height:2;">
+      {liveLetters.map((L) => (<><a href={`#letter-${L}`}>{L}</a>{' · '}</>))}
+    </p>
+  </nav>
+
+  {liveLetters.map((L) => (
+    <section>
+      <h2 id={`letter-${L}`}>{L}</h2>
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Definition</th></tr></thead>
+        <tbody>
+          {byLetter(L).map((t) => (
+            <tr id={`term-${t.name}`}>
+              <td><a href={`${t.href}#${t.name}`}><code>opda:{t.name}</code></a></td>
+              <td><span class="pill">{t.kind}</span></td>
+              <td>{t.def ? trunc(t.def) : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+</Layout>

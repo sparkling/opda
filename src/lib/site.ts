@@ -275,6 +275,7 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/ontology/shapes',       title: 'SHACL shapes' },
         { url: '/ontology/profiles',     title: 'Overlay profiles & gaps' },
         { url: '/ontology/exemplars',    title: 'Exemplars' },
+        { url: '/ontology/glossary',     title: 'Index & glossary (A–Z)' },
       ]},
       { heading: 'Trust & governance', items: [
         { url: '/ontology/claims',       title: 'Claims, evidence & provenance' },
