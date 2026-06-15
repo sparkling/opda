@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-14
 tags: [ontology, visualization, graph-diagram, tooling, cytoscape, mermaid, rdf2dot, bake-off, ci-gate, astro]
 supersedes: []
@@ -115,3 +115,7 @@ Final adoption is the operator's call on inspection (consistent with the ADR-004
 - Runner-up / alternatives — G6 https://g6.antv.antgroup.com/en · force-graph https://github.com/vasturiano/force-graph · vis-network https://visjs.github.io/vis-network/ · D3 https://d3js.org
 
 **Next step (if adopted):** add `scripts/ontology-graph.mjs` (N3.js/Comunica → committed `elements.json`, CI-diffed) and a Cytoscape client island on `/ontology/graph` (themed from the CSS tokens; `dagre`/`elk` for the class tree, `fcose` for the whole graph); keep Mermaid for authored subgraphs; optionally wire the rdf2dot/Graphviz static path and SKOS Play!.
+
+## Amendments
+
+- **2026-06-15 — RATIFIED `proposed` → `accepted` (operator, this session).** The Confirmation condition is now met: the build-time extractor (`scripts/ontology-graph.mjs`) lands a committed, deterministic `public/data/ontology-graph-elements.json` derived **from the committed SPARQL model** (`src/data/ontology-model.json`) — not N3.js/Comunica as the §"Next step" speculated; the model already carries the OWL+SKOS+SHACL data, so the extractor is a pure, Fuseki-free transform — and the data-layer anti-drift gate is green (`make ci-ontology-graph` → `node scripts/ontology-graph.mjs --check`, wired into `make ci`). The Cytoscape island ships at `/ontology/graph` (`src/pages/ontology/graph.astro` + `public/ui/ontology-graph.js`): the engine + `fcose` lazy-load from the jsdelivr CDN client-side (the Mermaid pattern), themed from the CSS dark-mode tokens, with the OWL class backbone shown by default and the SKOS layer (49 schemes + 323 concepts) one toggle away; class colour encodes the `opda:ufoCategory` facet (Okabe–Ito CVD-safe). **Deviation recorded:** `cytoscape-dagre` was dropped (dagre@0.8.5's `/+esm` build is broken — `graphlib.Graph` undefined); the hierarchy layout uses Cytoscape's built-in `breadthfirst`, and `fcose` degrades to the built-in `cose` if its CDN module fails. Mermaid stays for authored subgraphs (composition unchanged); the rdf2dot/Graphviz static path + SKOS Play! remain optional, unadopted complements. Browser-validated render + theme + SKOS toggle + force layout; no console errors.

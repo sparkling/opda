@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-14
 tags: [ontology, information-architecture, ssg, sparql, dereferenceability, linked-data, detail-pages, shacl, skos, bounded-context, doc-drift-gate]
 supersedes: []
@@ -167,3 +167,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 * **(a) Canonical URL — the IRI *is* the page.** Each resource's canonical page is served at its own IRI path, `/pdtf/{LocalName}` (pure SSG, `build.format: 'file'` so the bare IRI resolves with no trailing-slash bounce; `.ttl` alternate alongside). The typed `/ontology/{type}/{slug}` lists are navigation that links in — not the canonical address. *(Truest Linked-Data dereferenceability.)*
 * **(b) Build data — start the triplestore each build.** The model is extracted from the **live build-time Fuseki + GRLC API** (`npm run build:data`), reusing the ADR-0021 stack — not pre-parsed from files via Comunica. Consequence: **`build:data` is required** to generate these pages; plain `make build` (no triplestore) will not produce them, and `astro dev` without the stack degrades to the existing markdown fallback (entity-api.ts). The query result is still materialised to a committed `ontology-model.json` so the doc-drift gate and the ADR-0043 graph share one artefact.
 * **(c) Turtle download depth — CBD + one hop.** Each resource's `.ttl` carries its Concise Bounded Description **plus one hop** (a little about its immediate neighbours) — richer for offline exploration, accepting larger files and some repetition across pages.
+
+## Amendments
+
+- **2026-06-15 — RATIFIED `proposed` → `accepted` (operator).** All eight phased-plan items are shipped and verified; operator decisions (a)/(b)/(c) are recorded above; the Phase-5c `opda:ufoCategory` breach was caught and cured (ODR-0031/ADR-0045) before ratification, and the model doc-drift gate is green. The **Phase-8 deferred sub-item — live external-URL 200-checking — is now also shipped** (`scripts/check-external-links.mjs`, `make check-links-external`; report-only/opt-in, not a deploy blocker). The complementary interactive-graph dependency (ADR-0043) landed in the same session (`/ontology/graph`). Ratified on the proven as-built surface.

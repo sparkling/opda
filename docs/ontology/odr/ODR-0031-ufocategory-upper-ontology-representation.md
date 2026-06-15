@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-15
 tags: [ufo, ufocategory, gufo, ontoclean, dolce, annotation-property, three-graph-quarantine, skos, dereferenceability, honesty, standards-alignment]
 supersedes: []
@@ -91,7 +91,9 @@ Council **session-041** (Full Council; `agent-fan-out` with live `SendMessage` c
 
 **Q4 — OntoClean meta-property markup (was a held 3–3) — RESOLVED by [session-042](council/session-042-ontoclean-meta-property-markup.md).** The Reduced Council (Queen Kendall; DA Baker — **WITHDRAWN** on the gate condition; Guarino FOR; Allemang FOR-iff-gated) converged on **conditional adoption**: mark up iff the canonical-check CI gate ships **atomically** with the (scoped **±R/±I**, never ±U) tags. Decisive finding: the per-category OntoClean signature *already ships* in ADR-0045's `UFOCategoryScheme` `skos:definition`s, so the question reduced to "also per-*type*, for a machine" — answered "yes, iff a machine reads it." Engineering → [ADR-0046](../../adr/ADR-0046-ontoclean-meta-property-markup.md); if the gate is declined, **REJECT-for-now** with the re-open trigger: *a named consumer needs the per-type vector as queryable data.*
 
-## More Information
+## Amendments
+
+- **2026-06-15 — RATIFIED `proposed` → `accepted` (operator).** The operator ratifies adoption of R1–R6. Basis: the engineering realisation is shipped and green — `opda:ufoCategory` is `owl:AnnotationProperty`, the tags are relocated to `opda-annotations.ttl`, the `opda:UFOCategoryScheme` + DOLCE disclosure are emitted, and the sixth three-graph CI gate (now seven checks) guards the quarantine (ADR-0045); session-044 separately re-confirmed the binding prior ODR-0030 sound/unchanged. **R7 open calls** (the `gufo:` direct-reference vs local-mint residual, and the predicate-range string-vs-concept choice) are recorded as still-open operator residuals, not blockers. **Q4 / ADR-0046 (OntoClean per-*type* markup) is NOT carried by this ratification** — it remains a separate conditional operator decision (ship the atomic CI gate, against DA Baker's live REJECT-if-ungated dissent) and stays `proposed`.
 
 * **Engineering realisation:** [ADR-0045](../../adr/ADR-0045-ufocategory-quarantine-restoration-gufo-scheme-sixth-gate.md) — the emitter relocation + retype, the sixth three-graph CI gate, the `opda:UFOCategoryScheme` emission, the DOLCE disclosure, and the byte-identity re-pin that realise this ODR (and correct ADR-0044 Phase 5c).
 * **Council transcript:** [session-041 — Representing `opda:ufoCategory` and the upper-ontology layer](council/session-041-ufocategory-upper-ontology-representation.md) (full per-question dialectic, the verified breach finding, the post-positions convergence, tally + DA scorecard).

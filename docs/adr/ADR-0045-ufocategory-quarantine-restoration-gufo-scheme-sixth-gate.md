@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-15
 tags: [ontology, ufo, ufocategory, gufo, ontoclean, annotation-property, three-graph-quarantine, ci-gate, skos, emitter, byte-identity, dolce]
 supersedes: []
@@ -96,3 +96,7 @@ The [session-044](../ontology/odr/council/session-044-foundational-ontology-vali
 ## Vote and Dissent
 
 This ADR inherits the [session-041](../ontology/odr/council/session-041-ufocategory-upper-ontology-representation.md) verdict (per-question tally Q1 4–2–0 → converged · Q2 5–1–0 → 6–0 on the landing · Q3 5–0–1 · Q4 4–2–0). The engineering change-set above realises the Q1–Q3 dispositions + the Q4 markup triage. **Held / out of scope:** the OntoClean meta-property markup (3–3, routed to a follow-up Reduced Council); the predicate-range residual (operator); Cagle's standing Option-D revert if the quarantine restoration (changes 1–4) is *not* shipped before any enrichment. Status `proposed`; operator ratifies adoption.
+
+## Amendments
+
+- **2026-06-15 — RATIFIED `proposed` → `accepted` (operator).** All four quarantine-restoration changes plus the sixth/seventh three-graph CI checks are shipped, byte-identity re-pinned, and `make ci-ontology` is green; Cagle's standing Option-D revert condition (restoration must ship before any enrichment) is satisfied — the restoration *is* shipped. Ratified jointly with ODR-0031 (its ratifying ODR) and ODR-0030 (re-confirmed by session-044). **The held OntoClean meta-property markup (→ ADR-0046) is NOT carried by this ratification** — it stays a separate conditional operator decision, `proposed`. The predicate-range residual likewise remains an open operator call.

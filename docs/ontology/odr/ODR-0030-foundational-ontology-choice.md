@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-15
 tags: [foundational-ontology, ufo, gufo, ontoclean, dolce, bfo, relator, standards-alignment, honesty]
 supersedes: []
@@ -96,6 +96,10 @@ A validation council (session-044; Queen Allemang, DA Cagle + Baker, Guizzardi, 
 5. **Overclaim clarified (aptness, not uniqueness).** "Only UFO+UFO-L unifies the reification primitive with Hohfeldian correlativity" is read as *aptness among the practical options* (the reification substrate is already UFO's Relator), **not** metaphysical uniqueness — LegalRuleML and plain Hohfeld-in-SHACL also formalise correlativity. The page wording was softened.
 
 **Engineering follow-ups routed** (regression-hardening; → ADR-0045, not blocking): (a) widen the sixth three-graph CI gate to the full ODR-0029 reasoned union — it scans 8 of 10 graphs, omitting `opda-vocabularies.ttl` + `opda-contexts.ttl` (one of which the original breach reached); (b) add a TBox-only test that the `opda:ufoCategory` `sh:in` meta-shape never acquires a domain-class target. **Process note:** external citations need web-verification, not persona judgment — session-040's pre-flight "citations grounded ✓" covered corpus facts but not the external bibliography; split the two gates.
+
+### 2026-06-15 — RATIFIED `proposed` → `accepted` (operator)
+
+The operator ratifies adoption. Basis: the session-044 validation pass above found the decision **sound / complete / consistent and unchanged**, the corrections were page/provenance-only (no normative change), and the two regression follow-ups it surfaced are themselves shipped + green (ADR-0045 §Follow-ups; the three-graph gate is now seven checks). Ratified jointly with its enforcing/realising records ODR-0031 + ADR-0045. The council shapes the proposal; this records its adoption.
 
 ## More Information
 
