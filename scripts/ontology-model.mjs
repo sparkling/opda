@@ -175,9 +175,11 @@ async function main() {
       OPTIONAL { GRAPH ?bg { ?c skos:broader ?broader } }
     }`);
   const schemeRows = await select(`
-    SELECT ?s ?g ?pref ?top WHERE {
+    SELECT ?s ?g ?pref ?def ?ufo ?top WHERE {
       ${GRAPH('?s a skos:ConceptScheme')}
       OPTIONAL { GRAPH ?pg { ?s skos:prefLabel ?pref } }
+      OPTIONAL { GRAPH ?dg { ?s skos:definition ?def } }
+      OPTIONAL { GRAPH ?ug { ?s opda:ufoCategory ?ufo } }
       OPTIONAL { GRAPH ?tg { ?s skos:hasTopConcept ?top } }
     }`);
 
@@ -227,8 +229,9 @@ async function main() {
   });
   const schemes = index(schemeRows, (r) => r.s, {
     init: (r) => ({ uri: r.s, id: id(r.s), localName: local(r.s),
-      prefLabel: r.pref || local(r.s), module: moduleOf(r.g), topConcepts: new Set(), concepts: new Set() }),
-    add: (o, r) => { if (r.top) o.topConcepts.add(r.top); },
+      prefLabel: r.pref || local(r.s), definition: r.def || '', ufoCategory: r.ufo || '',
+      module: moduleOf(r.g), topConcepts: new Set(), concepts: new Set() }),
+    add: (o, r) => { if (r.top) o.topConcepts.add(r.top); if (r.def) o.definition = r.def; if (r.ufo) o.ufoCategory = r.ufo; },
   });
   // narrower = inverse of broader; scheme membership rollup.
   for (const c of concepts.values()) {
@@ -359,7 +362,7 @@ async function main() {
       schemes: setToRefs(c.schemes), broader: setToRefs(c.broader), narrower: setToRefs(c.narrower),
       dctSource: srcOf(c.uri) })),
     schemes: objFrom(schemes, (s) => ({ uri: s.uri, id: s.id, localName: s.localName,
-      prefLabel: s.prefLabel, module: s.module,
+      prefLabel: s.prefLabel, definition: s.definition || '', ufoCategory: s.ufoCategory || '', module: s.module,
       topConcepts: setToRefs(s.topConcepts), concepts: setToRefs(s.concepts) })),
     contexts: objFrom(contexts, (c) => ({ ...c,
       classes: c.classes.sort((a, b) => a.id.localeCompare(b.id)),

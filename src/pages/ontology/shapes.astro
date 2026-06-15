@@ -11,6 +11,7 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import { model } from '@/lib/ontology-model';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -56,6 +57,17 @@ const drShapes = totals.targetSubj + totals.targetObj;
 
 const shaclPlay = exists('tools/shaclplay/index.html');
 const sourceIdx = exists('artefacts/source/index.html');
+
+// ADR-0044 Phase 4 — model-driven linked index of every node shape, grouped by
+// bounded-context module (cross-cutting shapes last), each linking to its
+// dereferenceable /pdtf/shape page (blank-node-resolved constraints).
+const CTX_ORDER = ['foundation', 'property', 'agent', 'transaction', 'claim', 'governance', 'descriptive'];
+const allShapeEntries = Object.values(model.shapes);
+const shapesByCtx = [
+  ...CTX_ORDER.map((ctx) => ({ heading: ctx, shapes: allShapeEntries.filter((s) => s.module === ctx).sort((a, b) => a.localName.localeCompare(b.localName)) })),
+  { heading: 'cross-cutting', shapes: allShapeEntries.filter((s) => !CTX_ORDER.includes(s.module || '')).sort((a, b) => a.localName.localeCompare(b.localName)) },
+].filter((g) => g.shapes.length > 0);
+const totalShapePages = allShapeEntries.length;
 ---
 <Layout
   title="SHACL shapes"
@@ -80,6 +92,7 @@ const sourceIdx = exists('artefacts/source/index.html');
     <p class="callout__label">On this page</p>
     <ul>
       <li><a href="#inventory">1 · Node-shape inventory</a></li>
+      <li><a href="#shape-index">Shape index — every shape, linked</a></li>
       <li><a href="#severity">2 · The severity scheme — regulatory weight (ODR-0013)</a></li>
       <li><a href="#domain-range">3 · Domain/range as constraint (ODR-0029 R3)</a></li>
       <li><a href="#asserted-entailed">4 · Asserted vs entailed &amp; SHACL-AF</a></li>
@@ -117,8 +130,26 @@ const sourceIdx = exists('artefacts/source/index.html');
   <p class="muted">
     Live count from <code>sh:NodeShape</code> declarations across the seven committed shapes
     files. SHACL property shapes (<code>sh:property</code> blocks) are blank nodes nested inside
-    these node shapes and are resolved in the SHACL Play! rendering below.
+    these node shapes and are resolved in the SHACL Play! rendering below — and natively on each
+    shape's own page (the shape index that follows).
   </p>
+
+  <h2 id="shape-index">Shape index <span class="muted">· {totalShapePages} shapes, linked</span></h2>
+  <p>
+    Every node shape now has its own dereferenceable page at <code>/pdtf/shape/{'{'}Name{'}'}</code> — with its
+    target and its constraints <strong>resolved with no blank nodes</strong> (path, datatype/class, cardinality,
+    severity, message), the path linked to the property it constrains. Grouped by bounded-context module:
+  </p>
+  {shapesByCtx.map((g) => (
+    <details>
+      <summary><strong>{g.heading}</strong> <span class="muted">· {g.shapes.length}</span></summary>
+      <ul style="list-style:none;padding:0.5rem 0 0;margin:0;column-width:20rem;column-gap:1.5rem;">
+        {g.shapes.map((s) => (
+          <li style="break-inside:avoid;padding:0.12rem 0;"><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>
+        ))}
+      </ul>
+    </details>
+  ))}
 
   <!-- ───────────────────────────  2 — SEVERITY  ─────────────────────────── -->
   <h2 id="severity">2 · The severity scheme — regulatory weight (ODR-0013)</h2>

@@ -135,6 +135,8 @@ export interface SchemeEntry {
   id: string;
   localName: string;
   prefLabel: string;
+  definition: string;
+  ufoCategory: string;
   module: string | null;
   topConcepts: Ref[];
   concepts: Ref[];
