@@ -1,54 +1,40 @@
 ---
 /**
- * /ontology/classes — native index of the OWL classes.
+ * /ontology/classes — typed index of the OWL classes (ADR-0044 Phase 4).
  *
- * Reads every owl:Class local-name + rdfs:comment live from the module TTLs at
- * build time (the fs-read pattern from src/pages/ontology/index.astro), groups
- * them by bounded-context module, and links/embeds the pyLODE + WIDOCO
- * renderings as the term-by-term reference (combination principle, ADR-0041:
- * don't rebuild what the tools already render).
+ * Reads the committed src/data/ontology-model.json (SPARQL-derived, ADR-0044
+ * Phase 1 — no brittle regex), groups the classes by bounded-context module, and
+ * links each to its canonical dereferenceable page at /pdtf/{LocalName}. The
+ * pyLODE/WIDOCO/Ontospy renderings remain linked as comparison extras
+ * (ADR-0044 §Supersession; the native /pdtf pages are now the per-term reference).
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import { model } from '@/lib/ontology-model';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
 const PUB = path.resolve(process.cwd(), 'public/ontology');
-function ttl(name: string): string {
-  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
-}
 function exists(rel: string): boolean {
   try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
 }
 
-type Cls = { name: string; comment: string };
-/** Parse owl:Class subjects + their rdfs:comment from one module TTL. */
-function parseClasses(file: string): Cls[] {
-  const txt = ttl(file);
-  const out: Cls[] = [];
-  for (const block of txt.split(/\n(?=opda:[A-Za-z0-9]+\s)/)) {
-    const m = block.match(/^(opda:[A-Za-z0-9]+)/);
-    if (!m) continue;
-    if (!/rdf:type\s+owl:Class/.test(block)) continue;
-    const c = block.match(/rdfs:comment\s+"([^"]+)"/);
-    out.push({ name: m[1].slice(5), comment: c ? c[1] : '' });
-  }
-  return out;
-}
-
-// Module → bounded-context grouping (ODR-0011 per-module emission).
+// Bounded-context grouping (ADR-0044 Phase-1 canonical 7); notes per ODR.
 const GROUPS = [
-  { file: 'opda-classes.ttl',     heading: 'Foundation', note: 'UFO meta-classes + provenance/validation units shared across modules (ODR-0004 / ODR-0009 / ODR-0011).' },
-  { file: 'opda-property.ttl',    heading: 'Property & land', note: 'The identity crux — three Substance Kinds plus succession events and address (ODR-0005 / ODR-0015).' },
-  { file: 'opda-agent.ttl',       heading: 'Agents & roles', note: 'Person / Organisation Kinds and the Seller / Buyer / Proprietor roles founded by Relators (ODR-0006).' },
-  { file: 'opda-transaction.ttl', heading: 'Transaction & lifecycle', note: 'The Transaction Relator, milestones, and chains (ODR-0007).' },
-  { file: 'opda-claim.ttl',       heading: 'Claims, evidence & provenance', note: 'PROV-O-backed Claim / Evidence (RoleMixin) / verification structures (ODR-0009).' },
-  { file: 'opda-governance.ttl',  heading: 'Governance', note: 'DPV mapping records and the special-category PII scheme (ODR-0012).' },
-  { file: 'opda-descriptive.ttl', heading: 'Descriptive attributes', note: 'Authority-retrieved Information Objects and value structures — EPC, survey, valuation, search (ODR-0008).' },
+  { ctx: 'foundation',  heading: 'Foundation', note: 'UFO meta-classes + provenance/validation units shared across modules (ODR-0004 / ODR-0009 / ODR-0011).' },
+  { ctx: 'property',    heading: 'Property & land', note: 'The identity crux — three Substance Kinds plus succession events and address (ODR-0005 / ODR-0015).' },
+  { ctx: 'agent',       heading: 'Agents & roles', note: 'Person / Organisation Kinds and the Seller / Buyer / Proprietor roles founded by Relators (ODR-0006).' },
+  { ctx: 'transaction', heading: 'Transaction & lifecycle', note: 'The Transaction Relator, milestones, and chains (ODR-0007).' },
+  { ctx: 'claim',       heading: 'Claims, evidence & provenance', note: 'PROV-O-backed Claim / Evidence (RoleMixin) / verification structures (ODR-0009).' },
+  { ctx: 'governance',  heading: 'Governance', note: 'DPV mapping records and the special-category PII scheme (ODR-0012).' },
+  { ctx: 'descriptive', heading: 'Descriptive attributes', note: 'Authority-retrieved Information Objects and value structures — EPC, survey, valuation, search (ODR-0008).' },
 ];
-const data = GROUPS.map((g) => ({ ...g, classes: parseClasses(g.file) }));
-const total = data.reduce((n, g) => n + g.classes.length, 0);
+const allClasses = Object.values(model.classes);
+const data = GROUPS.map((g) => ({
+  ...g,
+  classes: allClasses.filter((c) => c.context === g.ctx).sort((a, b) => a.localName.localeCompare(b.localName)),
+})).filter((g) => g.classes.length > 0);
+const total = allClasses.length;
 
 const PYLODE = { href: '/ontology/tools/pylode/index.html', live: exists('tools/pylode/index.html') };
 const WIDOCO = { href: '/ontology/tools/widoco/doc/index-en.html', live: exists('tools/widoco/doc/index-en.html') };
@@ -56,36 +42,55 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
 ---
 <Layout
   title="Classes"
-  description="Native index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read live from the committed TTL corpus. Links the pyLODE and WIDOCO renderings for the full term-by-term reference."
+  description="Typed index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read from the SPARQL-derived ontology model. Each class links to its canonical dereferenceable /pdtf page."
 >
-<PageMeta category="Browse the terms" variant="brand" updated="Draft · Updated 2026-06-14" />
+<PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
   <h1>Classes</h1>
 
   <p class="lead">
     The <strong>{total} OWL classes</strong> of the OPDA PDTF ontology, grouped by bounded-context module and
-    listed with each class's <code>rdfs:comment</code> — read live at build time from
-    <code>source/03-standards/ontology/</code>. The classes are kept deliberately few and rigid (every type
-    that merely <em>varies</em> is a coded SKOS value, not a subclass — see
-    <a href="/ontology/identity#doctrine">the classification doctrine</a>). For the full term-by-term reference
-    — every axiom, domain/range, and cross-reference — use the generated renderings linked below.
+    listed with each class's <code>rdfs:comment</code> — sourced from the SPARQL-extracted
+    <a href="/ontology/provenance">ontology model</a> (ADR-0044). The classes are kept deliberately few and
+    rigid (every type that merely <em>varies</em> is a coded SKOS value, not a subclass — see
+    <a href="/ontology/identity#doctrine">the classification doctrine</a>). <strong>Each class links to its own
+    page</strong> at <code>/pdtf/{'{'}LocalName{'}'}</code> — the canonical, dereferenceable reference with its
+    incoming and outgoing connections, attributes, governing shapes and provenance.
   </p>
 
   <nav class="callout callout--note" aria-label="On this page">
     <p class="callout__label">On this page</p>
     <ul>
-      <li><a href="#reference">Term-by-term reference</a> — pyLODE &amp; WIDOCO renderings</li>
       {data.map((g) => (
-        <li><a href={`#${g.file.replace('.ttl', '')}`}>{g.heading}</a> — {g.classes.length} classes</li>
+        <li><a href={`#${g.ctx}`}>{g.heading}</a> — {g.classes.length} classes</li>
       ))}
+      <li><a href="#reference">Comparison renderings</a> — pyLODE &amp; WIDOCO</li>
     </ul>
   </nav>
 
-  <h2 id="reference">Term-by-term reference</h2>
+  {data.map((g) => (
+    <section>
+      <h2 id={g.ctx}><a href={`/ontology/context/${g.ctx}`}>{g.heading}</a> <span class="muted">· {g.classes.length} classes</span></h2>
+      <p>{g.note}</p>
+      <table>
+        <thead><tr><th>Class</th><th>Definition (<code>rdfs:comment</code>)</th></tr></thead>
+        <tbody>
+          {g.classes.map((c) => (
+            <tr>
+              <td><a href={`/pdtf/${c.id}`}><code>opda:{c.localName}</code></a></td>
+              <td>{c.comment || <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+
+  <h2 id="reference">Comparison renderings</h2>
   <p>
-    The bake-off (<a href="/ontology/bake-off">ADR-0041</a>) adopted <strong>pyLODE</strong> as the best
-    single-file OWL term reference and <strong>WIDOCO</strong> as the richest publishable shell (with VOWL
-    diagrams). This page provides the native, live-counted index; those tools render the exhaustive detail.
+    The native per-class pages above are the authoritative reference (ADR-0044). The bake-off
+    (<a href="/ontology/bake-off">ADR-0041</a>) OWL tools remain available as comparison extras — pyLODE as the
+    best single-file term reference, WIDOCO as the richest publishable shell with VOWL diagrams.
   </p>
   <table>
     <thead><tr><th>Rendering</th><th>What it gives</th><th>Open</th></tr></thead>
@@ -107,37 +112,12 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
       </tr>
     </tbody>
   </table>
-  {PYLODE.live && (
-    <details>
-      <summary><strong>Embedded — pyLODE term reference</strong></summary>
-      <iframe src={PYLODE.href} title="pyLODE rendering of the OPDA ontology" loading="lazy"
-        style="width:100%; height:70vh; border:1px solid var(--color-border, #ccc); border-radius:8px; margin-top:0.75rem;"></iframe>
-    </details>
-  )}
-
-  {data.map((g) => (
-    <section>
-      <h2 id={g.file.replace('.ttl', '')}>{g.heading} <span class="muted">· {g.classes.length} classes</span></h2>
-      <p>{g.note}</p>
-      <table>
-        <thead><tr><th>Class</th><th>Definition (<code>rdfs:comment</code>)</th></tr></thead>
-        <tbody>
-          {g.classes.map((c) => (
-            <tr>
-              <td><code>opda:{c.name}</code></td>
-              <td>{c.comment || <span class="muted">—</span>}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
-  ))}
 
   <h2 id="related">Related</h2>
   <p>
     Why the classes are shaped this way: <a href="/ontology/foundation#ufo">the UFO meta-category legend</a>
     and <a href="/ontology/identity">Identity &amp; classification</a>. See also
     <a href="/ontology/properties">Properties</a> and <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>.
-    Full index: <a href="/ontology">Ontology section overview</a>.
+    Full index: <a href="/ontology/glossary">Index &amp; glossary</a>.
   </p>
 </Layout>
