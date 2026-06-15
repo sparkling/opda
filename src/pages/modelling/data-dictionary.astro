@@ -180,12 +180,12 @@ SKOS · 554 concepts`"]:::data
 
       <p>
         Every data element carries a <strong>suggested RDF URI</strong> using the
-        <code>https://w3id.org/opda/pdtf/</code> base namespace — not yet registered or
+        <code>https://opda.org.uk/pdtf/</code> base namespace — not yet registered or
         dereferenced, but stable enough to use in draft ontology work.
       </p>
       <ul>
-        <li>Entities (objects / classes): <code>https://w3id.org/opda/pdtf/class/<em>ClassName</em></code></li>
-        <li>Properties (scalar attributes): <code>https://w3id.org/opda/pdtf/vocab/<em>propertyName</em></code></li>
+        <li>Entities (objects / classes): <code>https://opda.org.uk/pdtf/<em>ClassName</em></code> (flat — no <code>/class/</code> segment)</li>
+        <li>Properties (scalar attributes): <code>https://opda.org.uk/pdtf/<em>propertyName</em></code> (flat — no <code>/vocab/</code> segment)</li>
       </ul>
       <p>
         These will be refined when the upper ontology is defined (see step 2 under
@@ -245,7 +245,7 @@ SKOS · 554 concepts`"]:::data
         <li>
           <strong>Define the upper ontology</strong> — pick the core classes (Transaction,
           Property, Participant, Claim, Document, Form, Search) and align with W3C VC.
-          Register the <code>https://w3id.org/opda/pdtf/</code> namespace and replace the
+          Register the <code>https://opda.org.uk/pdtf/</code> namespace and replace the
           suggested URIs with resolvable ones.
         </li>
         <li>
@@ -365,7 +365,7 @@ SKOS · 554 concepts`"]:::data
         { key: 'uri', label: 'Suggested URI', sortable: false, width: '15%',
           render: function (v) {
             if (!v) return '<span class="muted tiny">—</span>';
-            var short = v.replace('https://w3id.org/opda/pdtf/', 'pdtf:');
+            var short = v.replace('https://opda.org.uk/pdtf/', 'pdtf:');
             return '<code title="' + esc(v) + '">' + esc(short) + '</code>';
           }
         },
