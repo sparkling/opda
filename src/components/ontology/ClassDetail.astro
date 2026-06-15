@@ -1,0 +1,162 @@
+---
+/**
+ * ADR-0044 Phase 2 — Class detail body (canonical /pdtf/{LocalName}).
+ * Shows datatype attributes, OUTGOING object-property connections, INCOMING
+ * connections (the new capability — what points at this class), governing SHACL
+ * shapes, SKOS schemes used by coded ranges, and dct:source provenance.
+ */
+import type { ClassEntry } from '@/lib/ontology-model';
+import { iri } from '@/lib/ontology-model';
+import TermHeader from './TermHeader.astro';
+import RefLink from './RefLink.astro';
+
+interface Props { cls: ClassEntry; }
+const { cls } = Astro.props;
+---
+<TermHeader
+  kind="Class"
+  label={cls.label}
+  localName={cls.localName}
+  iri={iri(cls.id)}
+  comment={cls.comment}
+  context={cls.context}
+  indexUrl="/ontology/classes"
+  indexLabel="Classes"
+/>
+
+{cls.scopeNote && (
+  <section class="term-section">
+    <h2>Classification</h2>
+    <p class="term-scope">{cls.scopeNote}</p>
+  </section>
+)}
+
+{cls.attributes.length > 0 && (
+  <section class="term-section">
+    <h2>Datatype attributes <span class="muted">· {cls.attributes.length}</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          {cls.attributes.map((a) => (
+            <tr>
+              <td><a href={`/pdtf/${a.id}`}><code>{a.localName}</code></a></td>
+              <td>{a.type ? <code>{a.type}</code> : <span class="muted">—</span>}</td>
+              <td>{a.description || <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+{cls.outgoing.length > 0 && (
+  <section class="term-section">
+    <h2>Outgoing connections <span class="muted">· {cls.outgoing.length}</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Predicate</th><th>Target</th><th>Inverse</th></tr></thead>
+        <tbody>
+          {cls.outgoing.map((e) => (
+            <tr>
+              <td><a href={`/pdtf/${e.predicate}`}><code>{e.predicateLocal}</code></a></td>
+              <td>
+                {e.targets.length === 0 ? <span class="muted">—</span> : e.targets.map((t, i) => (
+                  <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={t.id} localName={t.localName} kind={t.kind} /></Fragment>
+                ))}
+              </td>
+              <td>{e.inverse ? <a href={`/pdtf/${e.inverse}`}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+{cls.incoming.length > 0 && (
+  <section class="term-section">
+    <h2>Incoming connections <span class="muted">· {cls.incoming.length}</span></h2>
+    <p class="term-hint">Object properties whose range is this class — what points at it.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Predicate</th><th>From (domain)</th><th>Inverse</th></tr></thead>
+        <tbody>
+          {cls.incoming.map((e) => (
+            <tr>
+              <td><a href={`/pdtf/${e.predicate}`}><code>{e.predicateLocal}</code></a></td>
+              <td>
+                {e.sources.length === 0 ? <span class="muted">any (unconstrained domain)</span> : e.sources.map((s, i) => (
+                  <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={s.id} localName={s.localName} kind="class" /></Fragment>
+                ))}
+              </td>
+              <td>{e.inverse ? <a href={`/pdtf/${e.inverse}`}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+{cls.shapes.length > 0 && (
+  <section class="term-section">
+    <h2>Governing SHACL shapes <span class="muted">· {cls.shapes.length}</span></h2>
+    <ul class="chip-list">
+      {cls.shapes.map((s) => <li><code>{s.localName}</code></li>)}
+    </ul>
+  </section>
+)}
+
+{cls.usesSchemes.length > 0 && (
+  <section class="term-section">
+    <h2>SKOS schemes used <span class="muted">· {cls.usesSchemes.length}</span></h2>
+    <ul class="chip-list">
+      {cls.usesSchemes.map((s) => <li><code>{s.localName}</code></li>)}
+    </ul>
+  </section>
+)}
+
+{cls.dctSource.length > 0 && (
+  <section class="term-section">
+    <h2>Provenance <span class="muted">· dct:source</span></h2>
+    <ul class="chip-list">
+      {cls.dctSource.map((src) => <li><code>{src}</code></li>)}
+    </ul>
+  </section>
+)}
+
+<style>
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .term-hint { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0 0 var(--space-3); }
+  .term-scope {
+    font: 400 var(--text-sm) / var(--leading-relaxed) var(--font-sans);
+    color: var(--color-text-muted);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-tint);
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 0;
+  }
+  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .muted { color: var(--color-text-muted); }
+  .chip-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+  }
+  .chip-list code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint);
+    padding: 0.25em var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+  }
+</style>

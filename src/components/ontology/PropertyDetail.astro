@@ -1,0 +1,112 @@
+---
+/**
+ * ADR-0044 Phase 2 — Property detail body (canonical /pdtf/{localName}),
+ * for both object and datatype properties. Shows subjects (domain classes),
+ * objects (range class/scheme, or datatype), the inverse (linked), the
+ * constraining SHACL shapes (resolved — no blank nodes), and dct:source.
+ */
+import type { PropertyEntry } from '@/lib/ontology-model';
+import { iri } from '@/lib/ontology-model';
+import TermHeader from './TermHeader.astro';
+import RefLink from './RefLink.astro';
+
+interface Props { prop: PropertyEntry; }
+const { prop } = Astro.props;
+const kindLabel = prop.kind === 'object' ? 'Object property' : 'Datatype property';
+const card = (min: string | null, max: string | null) =>
+  (min || max) ? `${min ?? '0'}..${max ?? '*'}` : '—';
+---
+<TermHeader
+  kind={kindLabel}
+  label={prop.label}
+  localName={prop.localName}
+  iri={iri(prop.id)}
+  comment={prop.comment}
+  context={prop.module}
+  indexUrl="/ontology/properties"
+  indexLabel="Properties"
+/>
+
+<section class="term-section">
+  <h2>Domain &amp; range</h2>
+  <dl class="term-dl">
+    <dt>Subjects (domain)</dt>
+    <dd>
+      {prop.subjects.length === 0 ? <span class="muted">unconstrained</span> : prop.subjects.map((s, i) => (
+        <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={s.id} localName={s.localName} kind={s.kind} /></Fragment>
+      ))}
+    </dd>
+    <dt>{prop.kind === 'object' ? 'Objects (range)' : 'Datatype'}</dt>
+    <dd>
+      {prop.objects.length === 0 ? <span class="muted">—</span> : prop.objects.map((o, i) => (
+        <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={o.id} localName={o.localName} kind={o.kind} /></Fragment>
+      ))}
+    </dd>
+    {prop.inverse && (
+      <Fragment>
+        <dt>Inverse</dt>
+        <dd><a href={`/pdtf/${prop.inverse.id}`}><code>{prop.inverse.localName}</code></a></dd>
+      </Fragment>
+    )}
+  </dl>
+</section>
+
+{prop.constraints.length > 0 && (
+  <section class="term-section">
+    <h2>Constraining SHACL shapes <span class="muted">· {prop.constraints.length}</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Shape</th><th>Type</th><th>Card.</th><th>Severity</th><th>Message</th></tr></thead>
+        <tbody>
+          {prop.constraints.map((c) => (
+            <tr>
+              <td><code>{c.shape.replace(/^shape\//, '')}</code></td>
+              <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{c.class}</code> : <span class="muted">—</span>}</td>
+              <td>{card(c.minCount, c.maxCount)}</td>
+              <td>{c.severity ?? <span class="muted">—</span>}</td>
+              <td>{c.message || <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+{prop.dctSource.length > 0 && (
+  <section class="term-section">
+    <h2>Provenance <span class="muted">· dct:source</span></h2>
+    <ul class="chip-list">
+      {prop.dctSource.map((src) => <li><code>{src}</code></li>)}
+    </ul>
+  </section>
+)}
+
+<style>
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .term-dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-4); margin: 0; }
+  .term-dl dt {
+    font: 600 var(--text-xs) / 1.4 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .term-dl dd { margin: 0; color: var(--color-text); }
+  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .muted { color: var(--color-text-muted); }
+  .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip-list code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint);
+    padding: 0.25em var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+  }
+</style>

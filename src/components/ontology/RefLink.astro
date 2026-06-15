@@ -1,0 +1,22 @@
+---
+/**
+ * ADR-0044 — render a cross-reference to another ontology resource.
+ * Links to the resource's canonical `/pdtf/{id}` page when that page exists.
+ * Phase 2 builds only class + property pages, so only `kind: 'class'` refs link;
+ * schemes/datatypes/externals render as plain code until their pages land
+ * (Phase 3). Predicates link directly (always a built property page).
+ */
+interface Props {
+  id: string;
+  localName: string;
+  kind?: string | null;
+}
+const { id, localName, kind } = Astro.props;
+const linkable = kind === 'class';
+---
+{linkable
+  ? <a href={`/pdtf/${id}`}><code>{localName}</code></a>
+  : <code class="ref-plain">{localName}</code>}
+<style>
+  .ref-plain { color: var(--color-text-muted); }
+</style>
