@@ -3,7 +3,7 @@
   "counts": {
     "classes": 40,
     "objectProperties": 30,
-    "datatypeProperties": 225,
+    "datatypeProperties": 226,
     "shapes": 324,
     "concepts": 314,
     "schemes": 48,
@@ -10314,6 +10314,28 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare"
+      ]
+    },
+    "ufoCategory": {
+      "uri": "https://opda.org.uk/pdtf/ufoCategory",
+      "id": "ufoCategory",
+      "localName": "ufoCategory",
+      "label": "UFO category",
+      "comment": "The UFO foundational meta-category of an ontology term — borne by owl:Class instances (Substance Kind / Relator / Role / RoleMixin / Event / Information Object / Quality / Quality Value / Collective) and by skos:ConceptScheme instances (the Quale-in-Region / Quality-Value / Substance-Kind-label axis, ODR-0011 §8a). A documentary annotation: it records the foundational-ontology commitment without entailing logical axioms (the classification doctrine keeps kinds as facets, not subclass trees — ODR-0027). Domain-unconstrained (cross-cutting); range xsd:string.",
+      "kind": "datatype",
+      "module": "foundation",
+      "subjects": [],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0011/section-8a"
       ]
     },
     "unitaryAuthority": {
@@ -23133,6 +23155,10 @@
         {
           "id": "isPIIBearing",
           "localName": "isPIIBearing"
+        },
+        {
+          "id": "ufoCategory",
+          "localName": "ufoCategory"
         }
       ],
       "shapes": [],

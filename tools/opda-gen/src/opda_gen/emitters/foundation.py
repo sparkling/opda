@@ -514,6 +514,35 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.isPIIBearing, DCTERMS.source, _ODR_0018_SECTION_RULE1))
 
+    # --- ADR-0044 — opda:ufoCategory declaration (a dereferenceable term) -----
+    # The predicate carrying every class's + scheme's structured UFO meta-category
+    # (Phase 5c) is declared here so it is itself a first-class, dereferenceable
+    # opda: term (/pdtf/ufoCategory), not an undeclared annotation. Domain-less
+    # (borne by owl:Class AND skos:ConceptScheme); range xsd:string. Mirrors the
+    # opda:isPIIBearing term-annotation pattern.
+    g.add((OPDA.ufoCategory, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.ufoCategory, RDFS.range, XSD.string))
+    g.add((OPDA.ufoCategory, RDFS.label, Literal("UFO category", lang="en")))
+    g.add((OPDA.ufoCategory, RDFS.comment, Literal(
+        "The UFO foundational meta-category of an ontology term — borne by "
+        "owl:Class instances (Substance Kind / Relator / Role / RoleMixin / "
+        "Event / Information Object / Quality / Quality Value / Collective) and "
+        "by skos:ConceptScheme instances (the Quale-in-Region / Quality-Value / "
+        "Substance-Kind-label axis, ODR-0011 §8a). A documentary annotation: it "
+        "records the foundational-ontology commitment without entailing logical "
+        "axioms (the classification doctrine keeps kinds as facets, not subclass "
+        "trees — ODR-0027). Domain-unconstrained (cross-cutting); range xsd:string.",
+        lang="en",
+    )))
+    g.add((OPDA.ufoCategory, SKOS.scopeNote, Literal(
+        "Promotes the UFO meta-category from documentary scopeNote free-text to "
+        "a structured, queryable facet (ADR-0044 Phase 5c). Drives the "
+        "/ontology/category pages and the per-term UFO badge.",
+        lang="en",
+    )))
+    g.add((OPDA.ufoCategory, DCTERMS.source,
+           URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a")))
+
     # ADR-0044 Phase 5c — structured opda:ufoCategory facet on the foundation
     # classes (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator,
     # ValidationContext); DatatypeProperties are untouched (owl:Class only).

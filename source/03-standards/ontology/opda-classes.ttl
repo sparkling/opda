@@ -86,3 +86,11 @@ opda:isPIIBearing
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> ;
     rdfs:range xsd:boolean ;
     skos:scopeNote "Phase-1 PII-floor target predicate — the SHACL-AF rule PIIWithoutDPVCoAnnotationRule (opda-shapes.ttl) checks for opda:isPIIBearing true classes without a dpv-pd:hasPersonalDataCategory co-annotation. Asserted in the annotation graph (ODR-0018 §Rule 1) on the baseline PII Kinds so the rule's target set is non-empty and the floor is enforced."@en .
+
+opda:ufoCategory
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "UFO category"@en ;
+    rdfs:comment "The UFO foundational meta-category of an ontology term — borne by owl:Class instances (Substance Kind / Relator / Role / RoleMixin / Event / Information Object / Quality / Quality Value / Collective) and by skos:ConceptScheme instances (the Quale-in-Region / Quality-Value / Substance-Kind-label axis, ODR-0011 §8a). A documentary annotation: it records the foundational-ontology commitment without entailing logical axioms (the classification doctrine keeps kinds as facets, not subclass trees — ODR-0027). Domain-unconstrained (cross-cutting); range xsd:string."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a> ;
+    rdfs:range xsd:string ;
+    skos:scopeNote "Promotes the UFO meta-category from documentary scopeNote free-text to a structured, queryable facet (ADR-0044 Phase 5c). Drives the /ontology/category pages and the per-term UFO badge."@en .
