@@ -164,19 +164,11 @@ opda:numberOfSellers
     rdfs:domain opda:Proprietorship ;
     rdfs:range xsd:integer .
 
-opda:organisation
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "organisation"@en ;
-    rdfs:comment "Name of the Organisation a participant is acting for / belongs to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].organisation> ;
-    rdfs:domain opda:Organisation ;
-    rdfs:range xsd:string .
-
 opda:organisationName
     rdf:type owl:DatatypeProperty ;
     rdfs:label "organisation name"@en ;
-    rdfs:comment "Registered/trading name of an Organisation legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.legalOwners.namesOfLegalOwners[].organisationName> ;
+    rdfs:comment "Name of an Organisation — a legal owner's registered/trading name, or the organisation a participant is acting for / belongs to. ONE shared property: the same opda:organisationName serves both leaves (Linked-Data shared-property pattern; supersedes the former opda:organisation, renamed-by-merge per ADR-0044 to remove the case-clash with the opda:Organisation class). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].organisation>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.legalOwners.namesOfLegalOwners[].organisationName> ;
     rdfs:domain opda:Organisation ;
     rdfs:range xsd:string .
 
@@ -191,7 +183,7 @@ opda:organisationReference
 opda:ownerType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "owner type"@en ;
-    rdfs:comment "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:role (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."@en ;
+    rdfs:comment "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Proprietor ;
     rdfs:range xsd:string .
@@ -204,14 +196,14 @@ opda:reference
     rdfs:domain opda:Organisation ;
     rdfs:range xsd:string .
 
-opda:role
+opda:roleNotation
     rdf:type owl:DatatypeProperty ;
-    rdfs:label "role"@en ;
-    rdfs:comment "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience."@en ;
+    rdfs:label "role notation"@en ;
+    rdfs:comment "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
     rdfs:domain opda:RoleMixin ;
     rdfs:range xsd:string ;
-    skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:role \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .
+    skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:roleNotation \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .
 
 opda:sellersCapacityDetails
     rdf:type owl:DatatypeProperty ;

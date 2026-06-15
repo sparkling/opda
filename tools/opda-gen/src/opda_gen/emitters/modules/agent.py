@@ -76,12 +76,11 @@ DATATYPE_PROPERTIES = (
     OPDA.name,
     OPDA.numberOfNonUkResidentSellers,
     OPDA.numberOfSellers,
-    OPDA.organisation,
     OPDA.organisationName,
     OPDA.organisationReference,
     OPDA.ownerType,
     OPDA.reference,
-    OPDA.role,
+    OPDA.roleNotation,
     OPDA.sellersCapacityDetails,
     OPDA.sortCode,
 )
@@ -306,7 +305,7 @@ def build_graph() -> Graph:
         "Substance Kind label discriminating Private individual "
         "(opda:Person) from Organisation (opda:Organisation) for a "
         "Proprietor (legal owner). Bound to opda:OwnerTypeScheme via "
-        "SHACL sh:in in the BASPI5 profile. Distinct from opda:role "
+        "SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation "
         "(transactional role) and opda:tenureKind (sub-Kind of "
         "LegalEstate).",
         lang="en",
@@ -329,23 +328,26 @@ def build_graph() -> Graph:
     g.add((OPDA.hasOthersAged17OrOver, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")))
 
-    # --- ADR-0014 G18 — opda:role DatatypeProperty (DASH ergonomics) -----
+    # --- ADR-0014 G18 — opda:roleNotation DatatypeProperty (DASH ergonomics) -
+    # Renamed from opda:role (ADR-0044) to remove the case-only clash with the
+    # opda:Role class on case-insensitive hosts; the name now also matches its
+    # "Notation value" semantics.
     # Domain: foundation opda:RoleMixin (cross-sortal role pattern).
     # Range: xsd:string (notation value; per-overlay shapes constrain
     # via sh:in over opda:RoleScheme members). The role-bearing PATTERN
     # remains encoded by opda:Seller/opda:Buyer/opda:Proprietor sub-typing
     # of opda:RoleMixin/opda:Role per ODR-0006 §Q2; this predicate
     # exposes the notation so DASH editors render the role enum and
-    # SPARQL queries can filter on `?seller opda:role "Seller"` without
-    # forcing a class-membership query. The TBox carries no
+    # SPARQL queries can filter on `?seller opda:roleNotation "Seller"`
+    # without forcing a class-membership query. The TBox carries no
     # `rdfs:domain` other than opda:RoleMixin so the predicate may
     # also be borne by Buyer / Proprietor / Conveyancer / etc. without
     # additional axioms.
-    g.add((OPDA.role, RDF.type, OWL.DatatypeProperty))
-    g.add((OPDA.role, RDFS.domain, OPDA.RoleMixin))
-    g.add((OPDA.role, RDFS.range, XSD.string))
-    g.add((OPDA.role, RDFS.label, Literal("role", lang="en")))
-    g.add((OPDA.role, RDFS.comment, Literal(
+    g.add((OPDA.roleNotation, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.roleNotation, RDFS.domain, OPDA.RoleMixin))
+    g.add((OPDA.roleNotation, RDFS.range, XSD.string))
+    g.add((OPDA.roleNotation, RDFS.label, Literal("role notation", lang="en")))
+    g.add((OPDA.roleNotation, RDFS.comment, Literal(
         "Notation value naming the transactional role borne by a "
         "Seller / Buyer / Proprietor / Conveyancer / etc. Constrained "
         "by per-overlay profile shapes via SHACL `sh:in` over the "
@@ -353,18 +355,19 @@ def build_graph() -> Graph:
         "pattern is encoded by `opda:Seller` / `opda:Buyer` / "
         "`opda:Proprietor` sub-classes of `opda:RoleMixin`; this "
         "predicate exposes the notation for DASH editor ergonomics "
-        "and SPARQL convenience.",
+        "and SPARQL convenience. Renamed from opda:role (ADR-0044) to "
+        "avoid the case-clash with the opda:Role class.",
         lang="en",
     )))
-    g.add((OPDA.role, SKOS.scopeNote, Literal(
+    g.add((OPDA.roleNotation, SKOS.scopeNote, Literal(
         "Notation companion to the class-membership role encoding. "
         "Both surfaces coexist: `?s a opda:Seller` AND "
-        "`?s opda:role \"Seller\"` are non-redundant — the typed "
+        "`?s opda:roleNotation \"Seller\"` are non-redundant — the typed "
         "encoding is the canonical IC; the predicate is the notation "
         "surface BASPI5 and other JSON-based overlays consume.",
         lang="en",
     )))
-    g.add((OPDA.role, DCTERMS.source, _ODR_0006_Q2))
+    g.add((OPDA.roleNotation, DCTERMS.source, _ODR_0006_Q2))
 
     # ==== Category-G curated walk — Family C: Agent attributes ===============
     # (ADR-0031 work-item 2). Person / Organisation / Seller / Proprietorship
@@ -408,15 +411,17 @@ def build_graph() -> Graph:
         (
             OPDA.organisationName, OPDA.Organisation, XSD.string,
             "organisation name",
-            "Registered/trading name of an Organisation legal owner. Plain "
-            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
-            ("propertyPack.legalOwners.namesOfLegalOwners[].organisationName",),
-        ),
-        (
-            OPDA.organisation, OPDA.Organisation, XSD.string, "organisation",
-            "Name of the Organisation a participant is acting for / belongs "
-            "to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
-            ("participants[].organisation",),
+            "Name of an Organisation — a legal owner's registered/trading "
+            "name, or the organisation a participant is acting for / belongs "
+            "to. ONE shared property: the same opda:organisationName serves "
+            "both leaves (Linked-Data shared-property pattern; supersedes the "
+            "former opda:organisation, renamed-by-merge per ADR-0044 to remove "
+            "the case-clash with the opda:Organisation class). Plain string "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            (
+                "propertyPack.legalOwners.namesOfLegalOwners[].organisationName",
+                "participants[].organisation",
+            ),
         ),
         (
             OPDA.organisationReference, OPDA.Organisation, XSD.string,

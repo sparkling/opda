@@ -3,8 +3,8 @@
   "counts": {
     "classes": 40,
     "objectProperties": 30,
-    "datatypeProperties": 226,
-    "shapes": 325,
+    "datatypeProperties": 225,
+    "shapes": 324,
     "concepts": 314,
     "schemes": 48,
     "contexts": 7
@@ -1279,18 +1279,11 @@
           "description": "Bank-account number of a contact organisation. xsd:string (a fixed-width numeric identifier — leading zeros significant, per the opda:hasUPRN convention, NOT xsd:integer). ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"
         },
         {
-          "localName": "organisation",
-          "id": "organisation",
-          "label": "organisation",
-          "type": "string",
-          "description": "Name of the Organisation a participant is acting for / belongs to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
-        },
-        {
           "localName": "organisationName",
           "id": "organisationName",
           "label": "organisation name",
           "type": "string",
-          "description": "Registered/trading name of an Organisation legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
+          "description": "Name of an Organisation — a legal owner's registered/trading name, or the organisation a participant is acting for / belongs to. ONE shared property: the same opda:organisationName serves both leaves (Linked-Data shared-property pattern; supersedes the former opda:organisation, renamed-by-merge per ADR-0044 to remove the case-clash with the opda:Organisation class). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
         },
         {
           "localName": "organisationReference",
@@ -2180,7 +2173,7 @@
           "id": "ownerType",
           "label": "owner type",
           "type": "string",
-          "description": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:role (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."
+          "description": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."
         }
       ],
       "outgoing": [],
@@ -2413,11 +2406,11 @@
       "context": "foundation",
       "attributes": [
         {
-          "localName": "role",
-          "id": "role",
-          "label": "role",
+          "localName": "roleNotation",
+          "id": "roleNotation",
+          "label": "role notation",
           "type": "string",
-          "description": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience."
+          "description": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."
         }
       ],
       "outgoing": [],
@@ -8018,40 +8011,12 @@
         "harness/data-dictionary/propertyPack.searches[].orderDate"
       ]
     },
-    "organisation": {
-      "uri": "https://opda.org.uk/pdtf/organisation",
-      "id": "organisation",
-      "localName": "organisation",
-      "label": "organisation",
-      "comment": "Name of the Organisation a participant is acting for / belongs to. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
-      "kind": "datatype",
-      "module": "agent",
-      "subjects": [
-        {
-          "id": "Organisation",
-          "localName": "Organisation",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/participants[].organisation"
-      ]
-    },
     "organisationName": {
       "uri": "https://opda.org.uk/pdtf/organisationName",
       "id": "organisationName",
       "localName": "organisationName",
       "label": "organisation name",
-      "comment": "Registered/trading name of an Organisation legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "comment": "Name of an Organisation — a legal owner's registered/trading name, or the organisation a participant is acting for / belongs to. ONE shared property: the same opda:organisationName serves both leaves (Linked-Data shared-property pattern; supersedes the former opda:organisation, renamed-by-merge per ADR-0044 to remove the case-clash with the opda:Organisation class). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -8071,6 +8036,7 @@
       "inverse": null,
       "constraints": [],
       "dctSource": [
+        "harness/data-dictionary/participants[].organisation",
         "harness/data-dictionary/propertyPack.legalOwners.namesOfLegalOwners[].organisationName"
       ]
     },
@@ -8387,7 +8353,7 @@
       "id": "ownerType",
       "localName": "ownerType",
       "label": "owner type",
-      "comment": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:role (transactional role) and opda:tenureKind (sub-Kind of LegalEstate).",
+      "comment": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate).",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9316,12 +9282,12 @@
         "harness/odr/ODR-0008d/section-Rule-4"
       ]
     },
-    "role": {
-      "uri": "https://opda.org.uk/pdtf/role",
-      "id": "role",
-      "localName": "role",
-      "label": "role",
-      "comment": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience.",
+    "roleNotation": {
+      "uri": "https://opda.org.uk/pdtf/roleNotation",
+      "id": "roleNotation",
+      "localName": "roleNotation",
+      "label": "role notation",
+      "comment": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -12899,15 +12865,6 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/orderDate",
       "constraints": []
     },
-    "shape/organisationDomainShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/organisationDomainShape",
-      "id": "shape/organisationDomainShape",
-      "localName": "organisationDomainShape",
-      "module": "shapes",
-      "target": null,
-      "targetSubjectsOf": "https://opda.org.uk/pdtf/organisation",
-      "constraints": []
-    },
     "shape/OrganisationIdentityKeyShape": {
       "uri": "https://opda.org.uk/pdtf/shape/OrganisationIdentityKeyShape",
       "id": "shape/OrganisationIdentityKeyShape",
@@ -13587,13 +13544,13 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/riskIndicator",
       "constraints": []
     },
-    "shape/roleDomainShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/roleDomainShape",
-      "id": "shape/roleDomainShape",
-      "localName": "roleDomainShape",
+    "shape/roleNotationDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/roleNotationDomainShape",
+      "id": "shape/roleNotationDomainShape",
+      "localName": "roleNotationDomainShape",
       "module": "shapes",
       "target": null,
-      "targetSubjectsOf": "https://opda.org.uk/pdtf/role",
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/roleNotation",
       "constraints": []
     },
     "shape/RoomDimensionShape": {
@@ -22408,10 +22365,6 @@
           "localName": "numberOfSellers"
         },
         {
-          "id": "organisation",
-          "localName": "organisation"
-        },
-        {
           "id": "organisationName",
           "localName": "organisationName"
         },
@@ -22428,8 +22381,8 @@
           "localName": "reference"
         },
         {
-          "id": "role",
-          "localName": "role"
+          "id": "roleNotation",
+          "localName": "roleNotation"
         },
         {
           "id": "sellersCapacityDetails",

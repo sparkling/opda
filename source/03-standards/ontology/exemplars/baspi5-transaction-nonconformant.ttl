@@ -42,14 +42,14 @@
     a opda:Person, opda:Seller ;
     vcard:fn "Pat Attorney" ;
     vcard:email "pat.attorney@example.org" ;
-    opda:role "Seller" ;
+    opda:roleNotation "Seller" ;
     opda:hasAssertedCapacity "Under Power of Attorney" .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/buyer>
     a opda:Person, opda:Buyer ;
     vcard:fn "Sam Purchaser" ;
     vcard:email "sam.purchaser@example.org" ;
-    opda:role "Buyer" .
+    opda:roleNotation "Buyer" .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/estate>
     a opda:LegalEstate ;

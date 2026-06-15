@@ -2,11 +2,11 @@
 Test g18 role predicate.
 
 Realises:
-- ADR-0014 G18 closure — `opda:role` is declared as an
+- ADR-0014 G18 closure — `opda:roleNotation` is declared as an
   `owl:DatatypeProperty` in `opda-agent.ttl` with domain
   `opda:RoleMixin` and range `xsd:string` so DASH editors and
   SPARQL queries have a real TBox surface for the BASPI5 profile's
-  `sh:path opda:role` constraints. The role-bearing pattern remains
+  `sh:path opda:roleNotation` constraints. The role-bearing pattern remains
   encoded by opda:Seller / opda:Buyer / opda:Proprietor sub-classes
   of opda:RoleMixin per ODR-0006 §Q2; this predicate exposes the
   notation without overriding the typed encoding.
@@ -26,7 +26,7 @@ from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, XSD
 from opda_gen.emitters.classes import emit_module
 
 
-OPDA_ROLE = URIRef("https://opda.org.uk/pdtf/role")
+OPDA_ROLE = URIRef("https://opda.org.uk/pdtf/roleNotation")
 OPDA_ROLE_MIXIN = URIRef("https://opda.org.uk/pdtf/RoleMixin")
 
 
@@ -41,7 +41,7 @@ def _agent_graph(tmp_path: Path) -> Graph:
 def test_opda_role_declared_as_datatype_property(tmp_path: Path) -> None:
     g = _agent_graph(tmp_path)
     assert (OPDA_ROLE, RDF.type, OWL.DatatypeProperty) in g, (
-        "opda:role missing owl:DatatypeProperty typing"
+        "opda:roleNotation missing owl:DatatypeProperty typing"
     )
 
 
@@ -49,7 +49,7 @@ def test_opda_role_domain_is_role_mixin(tmp_path: Path) -> None:
     g = _agent_graph(tmp_path)
     domains = list(g.objects(OPDA_ROLE, RDFS.domain))
     assert OPDA_ROLE_MIXIN in domains, (
-        f"opda:role rdfs:domain MUST include opda:RoleMixin; got {domains}"
+        f"opda:roleNotation rdfs:domain MUST include opda:RoleMixin; got {domains}"
     )
 
 
@@ -57,7 +57,7 @@ def test_opda_role_range_is_xsd_string(tmp_path: Path) -> None:
     g = _agent_graph(tmp_path)
     ranges = list(g.objects(OPDA_ROLE, RDFS.range))
     assert XSD.string in ranges, (
-        f"opda:role rdfs:range MUST include xsd:string; got {ranges}"
+        f"opda:roleNotation rdfs:range MUST include xsd:string; got {ranges}"
     )
 
 
@@ -75,7 +75,7 @@ def test_opda_role_dct_source_resolves_to_odr_0006(tmp_path: Path) -> None:
     """Per ADR-0007 §A9 + ODR-0006 §Q2 (Role layer)."""
     g = _agent_graph(tmp_path)
     sources = list(g.objects(OPDA_ROLE, DCTERMS.source))
-    assert sources, "opda:role missing dct:source"
+    assert sources, "opda:roleNotation missing dct:source"
     source_uris = {str(s) for s in sources}
     assert any("ODR-0006" in s for s in source_uris), (
         f"dct:source MUST resolve to ODR-0006 §Q2 (Role layer); "

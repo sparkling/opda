@@ -35,7 +35,7 @@
 <https://opda.org.uk/pdtf/shape/Baspi5_BuyerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:bdc8662a2e1ab ;
+    sh:property _:bb33b9b56ab3d ;
     sh:targetClass opda:Buyer .
 
 <https://opda.org.uk/pdtf/shape/Baspi5_LegalEstateShape>
@@ -53,7 +53,7 @@
 <https://opda.org.uk/pdtf/shape/Baspi5_SellerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:b06e37a19a68f, _:b41e58719da5d, _:b5b422a366a20 ;
+    sh:property _:b06e37a19a68f, _:b5b422a366a20, _:b5e7df1c80e0f ;
     sh:targetClass opda:Seller .
 
 <https://opda.org.uk/pdtf/shape/Baspi5_SellersCapacityShape>
@@ -271,16 +271,6 @@ _:b3b6d36307556
     sh:path opda:hasSmartHomeSystems ;
     sh:severity sh:Violation .
 
-_:b41e58719da5d
-    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b145accbf4a97 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:role ;
-    sh:severity sh:Violation .
-
 _:b4557d975a241
     dct:source <https://www.basp.uk/forms/baspi5#A1.3.0.2> ;
     dash:editor dash:EnumSelectEditor ;
@@ -356,6 +346,16 @@ _:b5c49c6a03e8f
 _:b5d5b8b18b5f8
     rdf:first "E" ;
     rdf:rest _:b8a9d6aa1a88e .
+
+_:b5e7df1c80e0f
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:b145accbf4a97 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:roleNotation ;
+    sh:severity sh:Violation .
 
 _:b5fbc40c2d060
     sh:property _:b189f46beb3d5, _:ba85b9aa0bb1e .
@@ -575,6 +575,16 @@ _:bb18d54c4d335
     sh:path opda:currentEnergyRating ;
     sh:severity sh:Violation .
 
+_:bb33b9b56ab3d
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:b0654af6bc0f5 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:roleNotation ;
+    sh:severity sh:Violation .
+
 _:bb66f0fd7be91
     rdf:first "Other" ;
     rdf:rest rdf:nil .
@@ -715,16 +725,6 @@ _:bca402a5be001
 _:bca44e8ce3601
     rdf:first "Tenant" ;
     rdf:rest rdf:nil .
-
-_:bdc8662a2e1ab
-    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b0654af6bc0f5 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:role ;
-    sh:severity sh:Violation .
 
 _:bdcddbc2d0d03
     rdf:first "Estate Agent" ;

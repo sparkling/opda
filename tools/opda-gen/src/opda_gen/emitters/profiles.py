@@ -1084,7 +1084,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     # (ODR-0022 §2 G3); the seller name retains the distinct `B1.1`.
     _add_property_shape(
         g, seller_shape,
-        path=OPDA.role,
+        path=OPDA.roleNotation,
         min_count=1, max_count=1,
         in_scheme_members=["Seller"],
         sh_order=1, sh_group=grp_participants,
@@ -1188,7 +1188,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     # sh:path. (Was `B1.1`, which collided with the seller-name path.)
     _add_property_shape(
         g, buyer_shape,
-        path=OPDA.role,
+        path=OPDA.roleNotation,
         min_count=1, max_count=1,
         in_scheme_members=[
             "Buyer", "Seller's Conveyancer", "Prospective Buyer",

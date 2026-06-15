@@ -53,14 +53,14 @@
     a opda:Person, opda:Seller ;
     vcard:fn "Alex Vendor" ;
     vcard:email "alex.vendor@example.org" ;
-    opda:role "Seller" ;
+    opda:roleNotation "Seller" ;
     opda:hasAssertedCapacity "Legal Owner" .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/buyer>
     a opda:Person, opda:Buyer ;
     vcard:fn "Sam Purchaser" ;
     vcard:email "sam.purchaser@example.org" ;
-    opda:role "Buyer" .
+    opda:roleNotation "Buyer" .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/estate>
     a opda:LegalEstate ;
