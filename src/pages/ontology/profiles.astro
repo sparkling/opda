@@ -147,7 +147,7 @@ const shaclPlay = exists('tools/shaclplay/index.html');
     <tbody>
       {rows.map((r) => (
         <tr>
-          <td><code>{r.slug}</code></td>
+          <td><a href={`/ontology/profile/${r.slug}`}><code>{r.slug}</code></a></td>
           <td>{r.title}</td>
           <td>{r.bound > 0
             ? (<span class="pill pill--success">{r.bound} bound</span>)

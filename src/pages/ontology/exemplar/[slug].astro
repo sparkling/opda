@@ -1,0 +1,100 @@
+---
+/**
+ * /ontology/exemplar/[slug] — per round-trip exemplar page (ADR-0044 Phase 5).
+ * Reads the worked instance graph (ABox) and its expected SHACL validation report
+ * from source/03-standards/ontology/exemplars/ at build time and renders both
+ * Turtle artefacts inline. The hard-case description comes from the exemplars
+ * README metadata (ODR-0004 §8a citation discipline).
+ *
+ * NB: getStaticPaths is hoisted above the frontmatter, so EX + META live INSIDE
+ * it (Astro gotcha: getStaticPaths sees only imports, not frontmatter consts).
+ */
+import Layout from '@/layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const EX = path.resolve(process.cwd(), 'source/03-standards/ontology/exemplars');
+  // Hard-case one-liners + consuming session (from the exemplars README).
+  const META: Record<string, { group: string; hard: string }> = {
+    'registered-freehold-house':                 { group: 'S005 — Property identity', hard: 'Baseline easy case: UPRN present, title registered, single proprietor — the differentiator for the harder cases.' },
+    'unregistered-pre-first-registration-house': { group: 'S005 — Property identity', hard: 'Legal layer + UPRN both absent: the identity criterion must still work with no legal anchor and degrade gracefully.' },
+    'flat-with-split-uprn':                       { group: 'S005 — Property identity', hard: 'UPRN succession via re-numbering: physical identity persists across administrative re-issue.' },
+    'flat-no-uprn-newly-converted':               { group: 'S015 — Address & geography', hard: 'Address exists without a UPRN; a subdivision created two new Properties whose UPRN issuance lags AddressBase.' },
+    'listed-building-divergent-addresses':        { group: 'S015 — Address & geography', hard: 'Three divergent address surfaces (title / marketing / INSPIRE) on one Property — the co-reference SHACL shape.' },
+    'rural-plot-inspire-no-uprn':                 { group: 'S015 — Address & geography', hard: 'Undeveloped land with an INSPIRE Identifier but no UPRN and no postal address.' },
+    'person-with-name-change':                    { group: 'S006 — Agents & roles', hard: 'Person identity over a deed-poll name change: same individual (PROV-O captured), not two.' },
+    'organisation-with-merger':                   { group: 'S006 — Agents & roles', hard: 'Organisation identity over a merger: two predecessors dissolve; the successor is a new individual.' },
+    'proprietorship-relator-multi-proprietor':    { group: 'S006 — Agents & roles', hard: 'Proprietorship as a UFO Relator with multiple Proprietor Role instances — the joint-tenancy case.' },
+    'claim-with-document-evidence':               { group: 'S009 — Claims & evidence', hard: 'PR claim supported by a grant of probate: PROV-O coverage + qualified attribution; eIDAS Substantial.' },
+    'claim-with-electronic-record-evidence':      { group: 'S009 — Claims & evidence', hard: 'Identity claim supported by an HMRC API tax-record: electronic-record evidence at eIDAS Substantial.' },
+    'claim-with-vouch-evidence':                  { group: 'S009 — Claims & evidence', hard: 'Residency claim supported by an SRA-solicitor vouch: vouch evidence caps at eIDAS Low.' },
+    'simple-transaction-with-milestones':         { group: 'S007 — Transactions', hard: 'Single freehold sale with five canonical milestones — Transaction-as-Relator + expected-vs-actual times.' },
+    'chain-of-transactions':                      { group: 'S007 — Transactions', hard: 'Three-link chain via buyer-also-seller participants — recursive Relator predicate + TransactionChain.' },
+    'lease-extension-transaction':                { group: 'S007 — Transactions', hard: 'Statutory lease extension (99→189 years): LegalEstate persists; lease term as a time:ProperInterval.' },
+    'baspi5-transaction-conformant':              { group: 'BASPI5 round-trip', hard: 'A fully conformant BASPI5 transaction — the positive arm of the ci-baspi5-roundtrip gate.' },
+    'baspi5-transaction-nonconformant':           { group: 'BASPI5 round-trip', hard: 'A Seller "Under Power of Attorney" with NO opda:hasEvidencedAuthority — MUST trip Baspi5_SellersCapacityShape (B1.3.2).' },
+  };
+  let files: string[] = [];
+  try {
+    files = fs.readdirSync(EX).filter((f) => f.endsWith('.ttl') && !f.endsWith('-expected-report.ttl'));
+  } catch { files = []; }
+  return files.map((f) => {
+    const slug = f.replace('.ttl', '');
+    const input = fs.readFileSync(path.join(EX, f), 'utf8');
+    const rp = path.join(EX, `${slug}-expected-report.ttl`);
+    const report = fs.existsSync(rp) ? fs.readFileSync(rp, 'utf8') : null;
+    return { params: { slug }, props: { slug, input, report, meta: META[slug] ?? null } };
+  });
+}
+
+const { slug, input, report, meta } = Astro.props;
+---
+<Layout title={`${slug} — exemplar`} description={`Round-trip diagnostic exemplar ${slug}${meta ? ': ' + meta.hard : ''}`} hideComments={true}>
+  <nav class="term-nav" aria-label="Breadcrumb">
+    <a href="/ontology">Ontology</a> <span class="sep" aria-hidden="true">›</span>
+    <a href="/ontology/exemplars">Exemplars</a> <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">{slug}</span>
+  </nav>
+
+  <header class="term-header">
+    <p class="term-kind">
+      <span class="pill pill--brand">Exemplar</span>
+      {meta && <span class="muted">{meta.group}</span>}
+      {report ? <span class="pill pill--success">paired report</span> : <span class="pill pill--info">ABox only</span>}
+    </p>
+    <h1><code>{slug}</code></h1>
+    {meta && <p class="term-comment">{meta.hard}</p>}
+  </header>
+
+  <section class="term-section">
+    <h2>Input instance (ABox)</h2>
+    <pre class="ttl"><code>{input}</code></pre>
+  </section>
+
+  {report && (
+    <section class="term-section">
+      <h2>Expected SHACL validation report</h2>
+      <pre class="ttl"><code>{report}</code></pre>
+    </section>
+  )}
+
+  <h2 id="related">Related</h2>
+  <p>
+    The full exemplar catalogue and round-trip contract: <a href="/ontology/exemplars">Exemplars</a>; the shapes
+    this graph validates against: <a href="/ontology/shapes">SHACL shapes</a>; the overlay profiles it loads:
+    <a href="/ontology/profiles">Overlay profiles</a>.
+  </p>
+
+  <style>
+    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .term-nav .sep { color: var(--color-border-strong); }
+    .term-header { margin: 0 0 var(--space-6); }
+    .term-kind { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: 0 0 var(--space-2); }
+    .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }
+    .term-section { margin: var(--space-6) 0; }
+    .term-section h2 { font: 600 var(--text-lg)/var(--leading-tight) var(--font-sans); color: var(--color-text-strong); margin: 0 0 var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .muted { color: var(--color-text-muted); }
+    .ttl { overflow-x: auto; background: var(--color-surface-tint); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); font: 400 var(--text-sm)/1.5 var(--font-mono); }
+  </style>
+</Layout>

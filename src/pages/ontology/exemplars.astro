@@ -162,7 +162,7 @@ const customRendering = exists('tools/custom/index.html');
         <tbody>
           {g.items.map((e) => (
             <tr>
-              <td><code>{e.slug}</code></td>
+              <td><a href={`/ontology/exemplar/${e.slug}`}><code>{e.slug}</code></a></td>
               <td>{e.hard}</td>
               <td>{e.report
                 ? (<span class="pill pill--success">paired</span>)

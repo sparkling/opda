@@ -1,0 +1,102 @@
+---
+/**
+ * /ontology/profile/[slug] — per overlay-profile page (ADR-0044 Phase 5).
+ * Reads source/03-standards/ontology/profiles/{slug}.ttl at build time: form
+ * title, the bound per-leaf shape paths (linked to /pdtf when they are known
+ * properties), and the form-question sources. Thin profiles (0 bound leaves) are
+ * the ratified session-034 outcome, surfaced as such.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { model } from '@/lib/ontology-model';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// getStaticPaths is hoisted above the frontmatter, so it can only see imports —
+// the project paths are declared INSIDE it (Astro gotcha).
+export function getStaticPaths() {
+  const PROFILES = path.resolve(process.cwd(), 'source/03-standards/ontology/profiles');
+  let files: string[] = [];
+  try { files = fs.readdirSync(PROFILES).filter((f) => f.endsWith('.ttl')); } catch { files = []; }
+  return files.map((f) => {
+    const slug = f.replace('.ttl', '');
+    const body = fs.readFileSync(path.join(PROFILES, f), 'utf8');
+    const tm = body.match(/dct:title\s+"([^"]+)"/);
+    const title = tm ? tm[1].replace(/\s+overlay profile$/i, '') : slug;
+    const paths = [...body.matchAll(/sh:path\s+([^\s;,\]]+)/g)].map((m) => m[1]);
+    const sources = [...body.matchAll(/dct:source\s+<([^>]+)>/g)].map((m) => m[1]);
+    return { params: { slug }, props: { slug, title, paths, sources } };
+  });
+}
+
+const { slug, title, paths, sources } = Astro.props;
+const localOf = (iri: string) => iri.replace(/^opda:/, '').replace(/^.*[#/]/, '');
+const leaves = [...new Set(paths.map(localOf))].sort();
+const isKnown = (ln: string) => !!(model.datatypeProperties[ln] || model.objectProperties[ln]);
+const uniqSources = [...new Set(sources)].sort();
+const heldThin = slug === 'oc1' || slug === 'llc1';
+---
+<Layout title={`${title} — overlay profile`} description={`The OPDA ${title} overlay profile: its bound per-leaf SHACL shapes and form-question sources, or its ratified thin state.`} hideComments={true}>
+  <nav class="term-nav" aria-label="Breadcrumb">
+    <a href="/ontology">Ontology</a> <span class="sep" aria-hidden="true">›</span>
+    <a href="/ontology/profiles">Overlay profiles</a> <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">{title}</span>
+  </nav>
+
+  <header class="term-header">
+    <p class="term-kind">
+      <span class="pill pill--brand">Overlay profile</span>
+      {leaves.length > 0 ? <span class="pill pill--success">{leaves.length} bound</span> : <span class="pill pill--warn">thin</span>}
+    </p>
+    <h1>{title}</h1>
+    <p class="term-iri"><code>profiles/{slug}.ttl</code></p>
+  </header>
+
+  {leaves.length > 0 ? (
+    <section class="term-section">
+      <h2>Bound leaves <span class="muted">· {leaves.length}</span></h2>
+      <p>The Category-G substantive attributes this profile binds as per-leaf <code>sh:path</code> shapes:</p>
+      <ul class="chip-list">
+        {leaves.map((ln) => (
+          <li>{isKnown(ln) ? <a href={`/pdtf/${ln}`}><code>{ln}</code></a> : <code>{ln}</code>}</li>
+        ))}
+      </ul>
+    </section>
+  ) : (
+    <section class="term-section">
+      <h2>Thin profile</h2>
+      <p>
+        This profile binds <strong>0 per-leaf shapes</strong> — the ratified session-034 outcome, not a defect.
+        Its leaves are carried by <code>dct:subject</code> + a <code>dct:source</code> JSON-pointer and recorded
+        in the <a href="/ontology/profiles#gap">gap register</a>, never fabricated.
+        {heldThin && ' It is additionally held thin under a recorded re-open trigger (ODR-0008d): an authority-register extract, not a human-filled form.'}
+      </p>
+    </section>
+  )}
+
+  {uniqSources.length > 0 && (
+    <section class="term-section">
+      <h2>Sources <span class="muted">· dct:source</span></h2>
+      <ul class="chip-list">{uniqSources.map((s) => <li><code>{s}</code></li>)}</ul>
+    </section>
+  )}
+
+  <h2 id="related">Related</h2>
+  <p>
+    The overlay mechanism and gap register: <a href="/ontology/profiles">Overlay profiles &amp; gaps</a>; the
+    base shapes this profile composes over: <a href="/ontology/shapes">SHACL shapes</a>; the round-trip
+    exemplars: <a href="/ontology/exemplars">Exemplars</a>.
+  </p>
+
+  <style>
+    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .term-nav .sep { color: var(--color-border-strong); }
+    .term-header { margin: 0 0 var(--space-6); }
+    .term-kind { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: 0 0 var(--space-2); }
+    .term-iri code { font: 400 var(--text-sm)/1.4 var(--font-mono); color: var(--color-text-muted); }
+    .term-section { margin: var(--space-6) 0; }
+    .term-section h2 { font: 600 var(--text-lg)/var(--leading-tight) var(--font-sans); color: var(--color-text-strong); margin: 0 0 var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .muted { color: var(--color-text-muted); }
+    .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .chip-list code { font: 400 var(--text-sm)/1 var(--font-mono); background: var(--color-surface-tint); padding: 0.25em var(--space-2); border-radius: var(--radius-sm); color: var(--color-text-muted); }
+  </style>
+</Layout>
