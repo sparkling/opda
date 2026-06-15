@@ -28,7 +28,8 @@ opda:Comparable
     rdfs:comment "Comparable-sale or comparable-rental record supporting a Valuation. UFO Information Object (a comparable record is an information artefact, NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. Class-promoted per S008 Q4 three-criterion test (Land Registry or VOA sourced provenance; supports prov:wasInformedBy chains from Valuation to its underlying market data)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Land Registry Price Paid Data + VOA records (regulator-cited per ODR-0011 §4a)."@en .
+    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Land Registry Price Paid Data + VOA records (regulator-cited per ODR-0011 §4a)."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:EPCCertificate
     rdf:type owl:Class ;
@@ -36,21 +37,24 @@ opda:EPCCertificate
     rdfs:comment "Energy Performance Certificate — DESNZ-governed authority-retrieved artefact. UFO Information Object (a certificate is an information artefact, NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. Class-promoted per S008 Q4 three-criterion test: authority-retrieved provenance (DESNZ register); distinct lifecycle (10-year validity; supersession on re-assessment); distinct PII regime per ODR-0018 (address + owner-identifiable)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a)."@en .
+    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a)."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:MonetaryAmount
     rdf:type owl:Class ;
     rdfs:label "Monetary Amount"@en ;
     rdfs:comment "A monetary amount as a value structure: a magnitude (opda:amount, xsd:decimal) in a currency (opda:currency, an opda:CurrencyScheme ISO-4217 concept). UFO: a quality value / abstract value structure — NOT an endurant with independent existence and NOT a Quality of any bearer. IC (by-value): two opda:MonetaryAmount nodes denote the same amount iff equal magnitude AND equal currency. Reused as the rdfs:range across the distinct per-economic-kind monetary properties (annualGroundRent / annualServiceCharge / rent / holdingDeposit / securityDeposit / fees / estimatedPrice / soldPrice / listPrice / …), each bound to its OWN bearer — reuse the value type, NEVER the bearer (session-028 Q3 / ODR-0024 R3, Guizzardi-required). Distinct from the Category-D fixtures opda:price (a single-currency interim decimal scoped to fixtures-and-fittings only, ODR-0022 §4/§1/G1). Follows the FIBO / schema.org MonetaryAmount pattern (amount + currency)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3> ;
-    skos:scopeNote "UFO: quality value / abstract individual (Guizzardi 2005 — a value in a quality structure, not an endurant). DOLCE: Abstract / Quality-Region (Masolo et al. 2003 D18). Value identity is structural (magnitude + currency); the currency value-space is governed by ISO 4217 (opda:CurrencyScheme)."@en .
+    skos:scopeNote "UFO: quality value / abstract individual (Guizzardi 2005 — a value in a quality structure, not an endurant). DOLCE: Abstract / Quality-Region (Masolo et al. 2003 D18). Value identity is structural (magnitude + currency); the currency value-space is governed by ISO 4217 (opda:CurrencyScheme)."@en ;
+    opda:ufoCategory "Quality Value" .
 
 opda:NearbyFacility
     rdf:type owl:Class ;
     rdfs:label "Nearby Facility"@en ;
     rdfs:comment "A point-of-interest near the Property — a school, health-care facility, or transport node listed in propertyPack.nearbyFacilities for amenity context. UFO Substance Kind: a mind-independent social-physical endurant with its own identity criterion (a real-world facility persists through renaming, re-rating, and change of operator), distinct from the Property being transacted — NOT a Quality of opda:Property, since the same facility neighbours many properties (ODR-0024 R4 / session-028 Q1). Warranted on that UFO Substance-Kind basis, NOT ODR-0008 §Q4a (a provenance / lifecycle / PII test whose promotions are all Information Objects, which does not license a real-world facility). The genus bears all band attributes for the first cut (school / health-care / transport), band-scoped via SHACL in the overlay profiles; the per-band subkind split is held-as-live (Guizzardi dissent). Bears opda:distanceInMiles (proximity to the Property)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R4> ;
-    skos:scopeNote "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid social-physical endurant supplying its own IC). Warranted per ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-promotion test licenses Information Objects, not mind-independent facilities)."@en .
+    skos:scopeNote "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid social-physical endurant supplying its own IC). Warranted per ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-promotion test licenses Information Objects, not mind-independent facilities)."@en ;
+    opda:ufoCategory "Substance Kind" .
 
 opda:RiskAssessment
     rdf:type owl:Class ;
@@ -58,14 +62,16 @@ opda:RiskAssessment
     rdfs:comment "Per-peril authority-retrieved search / environmental result (the six-field block riskIndicator / actionAlertRating / result / summary / recommendations / datasetAttribution recurring across the environmental perils and CON29-style local searches). UFO Information Object (a report — an information artefact existentially dependent on its generating activity; NOT a Substance Kind and NOT a Quality of opda:Property, ODR-0008d Rule 1a); PROV-O Entity. IC (Rule 1b): individuated by the tuple ⟨generating activity (prov:wasGeneratedBy), source peril/dataset, subject property, generation time (prov:generatedAtTime)⟩ — identity grounded in the activity, not the result values. Hard cases: a re-run search is a DISTINCT RiskAssessment (new activity + generatedAtTime), prov:wasDerivedFrom the prior; two providers' assessments for one property are distinct (distinct prov:wasAttributedTo); a riskSubcategories[] entry is itself a leaf RiskAssessment (opda:hasSubAssessment); otherEnvironmental is a valid leaf with optional Qualities absent. One class instantiated per peril, NOT 12 subclasses and NOT 72 datatype properties."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-1> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom)."@en .
+    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom)."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:RoomDimension
     rdf:type owl:Class ;
     rdfs:label "Room Dimension"@en ;
     rdfs:comment "A room's dimensions as a value structure — a length + width (xsd:decimal, metres) and a non-rigid roomName, one per room in a Property's roomDimensions.rooms[] repeating group. An ANONYMOUS by-value structure (no identity criterion, no key — individuated by its values), NOT a Substance Kind: Council session-030 ruled neither opda:Room nor opda:Building earns a class (Room has no data-realisable identity — roomName non-rigid, no positional token; opda:Building's +O IC via the ODR-0005 §3a-4 Replacement witness is genuine but latent). Reuses the opda:MonetaryAmount by-value pattern (ODR-0024 R3); attached to opda:Property via opda:hasRoomDimension (characterisation, NOT parthood — no mereology, no transitivity). Re-homes losslessly onto a future opda:Room/opda:Building if an identity fact ever earns the Kind."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R10> ;
-    skos:scopeNote "UFO: a quality-value structure (a bundle of Quale-in-Region values), not an endurant (Guizzardi 2005); the dimensions are Qualities of a room-feature of the Property (DOLCE feature). Value identity is structural (by-value); no instance identity is claimed (session-030)."@en .
+    skos:scopeNote "UFO: a quality-value structure (a bundle of Quale-in-Region values), not an endurant (Guizzardi 2005); the dimensions are Qualities of a room-feature of the Property (DOLCE feature). Value identity is structural (by-value); no instance identity is claimed (session-030)."@en ;
+    opda:ufoCategory "Quality Value" .
 
 opda:Search
     rdf:type owl:Class ;
@@ -73,7 +79,8 @@ opda:Search
     rdfs:comment "Local-authority or environmental search result (CON29R, LLC1, etc.). UFO Information Object (a search result is an information artefact, NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. Class-promoted per S008 Q4 three-criterion test (local-authority issuance chain; distinct lifecycle: ordered / returned / superseded; not a flat datatype bag). A Search prov:wasGeneratedBy the activity that also generates the per-peril opda:RiskAssessments it carries (one search yields many assessments, ODR-0008d Rule 3)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per PDTF v3 propertyPack.localSearches."@en .
+    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per PDTF v3 propertyPack.localSearches."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:Survey
     rdf:type owl:Class ;
@@ -81,7 +88,8 @@ opda:Survey
     rdfs:comment "Authority-retrieved professional survey report. UFO Information Object (a report — an information artefact existentially dependent on its generating activity; NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. IC: distinct provenance chain per S008 Q4 three-criterion test (authority-retrieved provenance via prov:wasGeneratedBy chain to professional-issued activity; distinct lifecycle — issued / superseded / re-issued / withdrawn). Hard cases: re-survey; supersession; withdrawal."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact, corrected from \"Substance Kind\" per ODR-0008d Rule 3). DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). PROV-O: Entity (W3C PROV-O REC §3.2)."@en .
+    skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact, corrected from \"Substance Kind\" per ODR-0008d Rule 3). DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). PROV-O: Entity (W3C PROV-O REC §3.2)."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:Valuation
     rdf:type owl:Class ;
@@ -89,7 +97,8 @@ opda:Valuation
     rdfs:comment "Property valuation — RICS-regulated professional or automated-model output. UFO Information Object (a valuation report is an information artefact, NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. Class-promoted per S008 Q4 three-criterion test (RICS-regulated provenance chain; distinct lifecycle: instructed / delivered / superseded)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a> ;
     rdfs:subClassOf prov:Entity ;
-    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 §4a)."@en .
+    skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 §4a)."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:actionAlertRating
     rdf:type owl:DatatypeProperty ;

@@ -1,0 +1,75 @@
+---
+/**
+ * /ontology/category/[slug] — UFO meta-category pages (ADR-0044 Phase 5c).
+ * Groups the OWL classes by their structured opda:ufoCategory facet (Substance
+ * Kind / Relator / Role / RoleMixin / Event / Information Object / Quality /
+ * Quality Value / Collective), read from the SPARQL-derived model. Each class
+ * links to its canonical /pdtf page. Pure SSG.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { ufoCategories } from '@/lib/ontology-model';
+
+export function getStaticPaths() {
+  return ufoCategories().map((cat) => ({ params: { slug: cat.slug }, props: { cat } }));
+}
+
+const { cat } = Astro.props;
+---
+<Layout
+  title={`${cat.category} — UFO meta-category`}
+  description={`The OPDA ontology classes whose UFO foundational meta-category is ${cat.category}, grouped from the structured opda:ufoCategory facet. Each links to its dereferenceable /pdtf page.`}
+  hideComments={true}
+>
+  <nav class="term-nav" aria-label="Breadcrumb">
+    <a href="/ontology">Ontology</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <a href="/ontology/classes#by-category">UFO categories</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">{cat.category}</span>
+  </nav>
+
+  <header class="term-header">
+    <p class="term-kind"><span class="pill pill--brand">UFO meta-category</span></p>
+    <h1>{cat.category}</h1>
+    <p class="term-comment">
+      {cat.classes.length} {cat.classes.length === 1 ? 'class' : 'classes'} whose UFO foundational
+      meta-category is <strong>{cat.category}</strong> — from the structured <code>opda:ufoCategory</code>
+      facet (ODR-0011 §8a; the classification doctrine keeps kinds as facets, not subclass trees —
+      <a href="/ontology/identity#doctrine">ODR-0027</a>).
+    </p>
+  </header>
+
+  <section class="term-section">
+    <h2>Classes <span class="muted">· {cat.classes.length}</span></h2>
+    <table>
+      <thead><tr><th>Class</th><th>Definition (<code>rdfs:comment</code>)</th></tr></thead>
+      <tbody>
+        {cat.classes.map((c) => (
+          <tr>
+            <td><a href={`/pdtf/${c.id}`}><code>opda:{c.localName}</code></a></td>
+            <td>{c.comment || <span class="muted">—</span>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <h2 id="related">Related</h2>
+  <p>
+    All classes by module: <a href="/ontology/classes">Classes</a>; the UFO meta-category legend:
+    <a href="/ontology/foundation#ufo">Foundations</a>; the classification doctrine:
+    <a href="/ontology/identity#doctrine">Identity &amp; classification</a>. Full index:
+    <a href="/ontology/glossary">Index &amp; glossary</a>.
+  </p>
+
+  <style>
+    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .term-nav .sep { color: var(--color-border-strong); }
+    .term-header { margin: 0 0 var(--space-6); }
+    .term-kind { margin: 0 0 var(--space-2); }
+    .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }
+    .term-section { margin: var(--space-6) 0; }
+    .term-section h2 { font: 600 var(--text-lg)/var(--leading-tight) var(--font-sans); color: var(--color-text-strong); margin: 0 0 var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .muted { color: var(--color-text-muted); }
+  </style>
+</Layout>

@@ -121,12 +121,13 @@ async function main() {
 
   // 1. Classes -------------------------------------------------------------
   const classRows = await select(`
-    SELECT ?cls ?g ?label ?comment ?scope WHERE {
+    SELECT ?cls ?g ?label ?comment ?scope ?ufo WHERE {
       ${GRAPH('?cls a owl:Class')}
       FILTER(STRSTARTS(STR(?cls), "${BASE}"))
       OPTIONAL { GRAPH ?lg { ?cls rdfs:label ?label . FILTER(LANG(?label)="en"||LANG(?label)="") }}
       OPTIONAL { GRAPH ?cg { ?cls rdfs:comment ?comment } }
       OPTIONAL { GRAPH ?sg { ?cls skos:scopeNote ?scope } }
+      OPTIONAL { GRAPH ?ug { ?cls opda:ufoCategory ?ufo } }
     }`);
 
   // 2. Object + 3. datatype properties (domain/range/inverse) --------------
@@ -276,7 +277,7 @@ async function main() {
 
     classes.set(uri, {
       uri, id: id(uri), localName: local(uri), label: r.label || local(uri),
-      comment: r.comment || '', scopeNote: r.scope || '',
+      comment: r.comment || '', scopeNote: r.scope || '', ufoCategory: r.ufo || '',
       module: moduleOf(r.g), context: moduleOf(r.g),
       attributes: attributes.sort((a, b) => a.localName.localeCompare(b.localName)),
       outgoing: outgoing.sort((a, b) => a.predicate.localeCompare(b.predicate)),

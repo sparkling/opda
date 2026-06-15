@@ -514,6 +514,11 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.isPIIBearing, DCTERMS.source, _ODR_0018_SECTION_RULE1))
 
+    # ADR-0044 Phase 5c — structured opda:ufoCategory facet on the foundation
+    # classes (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator,
+    # ValidationContext); DatatypeProperties are untouched (owl:Class only).
+    from opda_gen.emitters.ufo_categories import annotate_ufo_categories
+    annotate_ufo_categories(g)
     return g
 
 

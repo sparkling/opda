@@ -6,7 +6,7 @@
  * shapes, SKOS schemes used by coded ranges, and dct:source provenance.
  */
 import type { ClassEntry } from '@/lib/ontology-model';
-import { iri } from '@/lib/ontology-model';
+import { iri, ufoSlug } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 import RefLink from './RefLink.astro';
 
@@ -24,10 +24,13 @@ const { cls } = Astro.props;
   indexLabel="Classes"
 />
 
-{cls.scopeNote && (
+{(cls.ufoCategory || cls.scopeNote) && (
   <section class="term-section">
     <h2>Classification</h2>
-    <p class="term-scope">{cls.scopeNote}</p>
+    {cls.ufoCategory && (
+      <p class="term-ufo">UFO meta-category: <a href={`/ontology/category/${ufoSlug(cls.ufoCategory)}`}><strong>{cls.ufoCategory}</strong></a></p>
+    )}
+    {cls.scopeNote && <p class="term-scope">{cls.scopeNote}</p>}
   </section>
 )}
 

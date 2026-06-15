@@ -28,42 +28,48 @@ opda:DiagnosticExemplar
     rdfs:label "Diagnostic Exemplar"@en ;
     rdfs:comment "Informational endurant. IC: the named hard case — minimal Turtle exposing one IC-bearing surface as input to a Council session's identity-criterion validation. Hard cases: registered freehold house; unregistered house pre-first-registration; flat with split UPRN."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-8a-diagnostic-exemplars> ;
-    skos:scopeNote "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational)."@en .
+    skos:scopeNote "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational)."@en ;
+    opda:ufoCategory "Substance Kind" .
 
 opda:GeneratorRun
     rdf:type owl:Class ;
     rdfs:label "Generator Run"@en ;
     rdfs:comment "Information particular. IC: a single execution of the opda-gen pipeline that produced a specific set of emitted TTL artefacts. Carries the generator version (opda-gen-<semver>), the source commit SHA, and the emission timestamp. Per ODR-0004 §6a, every emission is reproducible from the recorded (version, commit) pair."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-6a-generator-first> ;
-    skos:scopeNote "UFO: Information Particular. Provenance unit for byte-identity CI; instances are minted by the build pipeline, not by hand."@en .
+    skos:scopeNote "UFO: Information Particular. Provenance unit for byte-identity CI; instances are minted by the build pipeline, not by hand."@en ;
+    opda:ufoCategory "Information Object" .
 
 opda:Relator
     rdf:type owl:Class ;
     rdfs:label "Relator"@en ;
     rdfs:comment "UFO Relator — a relational endurant that mediates two or more bearers and is founded by an external event. The Relator carries its own identity (the (mediated-bearers, founding-event) tuple) and bears properties that don't belong to any single mediated Kind. OPDA Relators in scope: opda:Transaction (founds Seller / Buyer RoleMixins per ODR-0007 §Q1); opda:Proprietorship (binds Proprietor Roles to a RegisteredTitle per ODR-0006 §Q3)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
-    skos:scopeNote "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6)."@en .
+    skos:scopeNote "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6)."@en ;
+    opda:ufoCategory "Relator" .
 
 opda:Role
     rdf:type owl:Class ;
     rdfs:label "Role"@en ;
     rdfs:comment "UFO Role — anti-rigid, sortal role. An instance of a Role is borne by a bearer drawn from a single substantial Kind (e.g. Proprietor is borne by a Person — or by an Organisation under a named specialisation, but never simultaneously). A Role NEVER supplies its own identity; it borrows identity from its bearer (ODR-0005 Anti-pattern §3 — never key a Role). Per ODR-0006 §Q2."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    skos:scopeNote "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single Kind."@en .
+    skos:scopeNote "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single Kind."@en ;
+    opda:ufoCategory "Role" .
 
 opda:RoleMixin
     rdf:type owl:Class ;
     rdfs:label "Role Mixin"@en ;
     rdfs:comment "UFO RoleMixin — anti-rigid, cross-sortal role pattern. An instance of a RoleMixin is borne by a bearer drawn from more than one substantial Kind (e.g. Seller may be borne by Person OR Organisation). Distinguished from `opda:Role` (which is sortal — borne by a single Kind). Per ODR-0006 §Q2 Role layer."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). DOLCE: Role qua Universal without sortal commitment (Masolo et al. 2003 D18 §4.5)."@en .
+    skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). DOLCE: Role qua Universal without sortal commitment (Masolo et al. 2003 D18 §4.5)."@en ;
+    opda:ufoCategory "RoleMixin" .
 
 opda:ValidationContext
     rdf:type owl:Class ;
     rdfs:label "Validation Context"@en ;
     rdfs:comment "Reification of an overlay-profile validation context per ODR-0010 §Q1 (Guarino withdrawal condition). Each instance carries five properties: opda:profileURI, opda:requires, opda:overlaysContext, opda:sourcedFrom, opda:formVersion. Anchors per-profile cardinality/enum constraints in a named context — converting conditionality from 'required (depending)' to 'required relative to a named, dereferenceable context'. ADR-0013 emits per-profile instances under <https://opda.org.uk/pdtf/Baspi5ValidationContext> etc."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1> ;
-    skos:scopeNote "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject so its constraints have determinate model theory (Guarino's withdrawal condition discharged at S010)."@en .
+    skos:scopeNote "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject so its constraints have determinate model theory (Guarino's withdrawal condition discharged at S010)."@en ;
+    opda:ufoCategory "Substance Kind" .
 
 opda:hasSpecialCategoryData
     rdf:type owl:DatatypeProperty ;

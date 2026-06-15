@@ -57,6 +57,7 @@ export interface ClassEntry {
   label: string;
   comment: string;
   scopeNote: string;
+  ufoCategory: string;
   module: string | null;
   context: string | null;
   attributes: Attribute[];
@@ -213,6 +214,27 @@ export function allResources(): AnyResource[] {
     ...Object.values(model.concepts).map((c) => ({ entryKind: 'concept' as const, ...c })),
     ...Object.values(model.schemes).map((s) => ({ entryKind: 'scheme' as const, ...s })),
   ];
+}
+
+/** Slug for a UFO category label (e.g. "Substance Kind" → "substance-kind"). */
+export const ufoSlug = (cat: string): string =>
+  cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+/** The UFO meta-categories (ADR-0044 Phase 5c) → the classes bearing each. */
+export function ufoCategories(): { category: string; slug: string; classes: ClassEntry[] }[] {
+  const by = new Map<string, ClassEntry[]>();
+  for (const c of Object.values(model.classes)) {
+    if (!c.ufoCategory) continue;
+    if (!by.has(c.ufoCategory)) by.set(c.ufoCategory, []);
+    by.get(c.ufoCategory)!.push(c);
+  }
+  return [...by.entries()]
+    .map(([category, classes]) => ({
+      category,
+      slug: ufoSlug(category),
+      classes: classes.sort((a, b) => a.localName.localeCompare(b.localName)),
+    }))
+    .sort((a, b) => b.classes.length - a.classes.length || a.category.localeCompare(b.category));
 }
 
 // ── Turtle serialisation (ADR-0044 Phase 6 — CBD + one hop, from the model) ──
