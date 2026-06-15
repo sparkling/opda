@@ -1,0 +1,71 @@
+---
+/**
+ * /ontology/datatypes — the literal value-spaces (ADR-0044 Phase 5). Aggregated
+ * from the SPARQL-derived model: every datatype that a datatype property ranges
+ * on, with the properties that use it (each linked to its /pdtf page). A small
+ * reference; the coded value-spaces (SKOS) are on /ontology/vocabularies.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import { model } from '@/lib/ontology-model';
+
+type Row = { localName: string; uri: string; props: { id: string; localName: string }[] };
+const byType = new Map<string, Row>();
+for (const p of Object.values(model.datatypeProperties)) {
+  const dt = p.objects[0];
+  const key = dt ? dt.id : 'unspecified';
+  const localName = dt ? dt.localName : 'unspecified';
+  if (!byType.has(key)) byType.set(key, { localName, uri: key, props: [] });
+  byType.get(key)!.props.push({ id: p.id, localName: p.localName });
+}
+const rows = [...byType.values()]
+  .map((r) => ({ ...r, props: r.props.sort((a, b) => a.localName.localeCompare(b.localName)) }))
+  .sort((a, b) => b.props.length - a.props.length || a.localName.localeCompare(b.localName));
+const totalProps = Object.keys(model.datatypeProperties).length;
+const isXsd = (uri: string) => uri.startsWith('http://www.w3.org/2001/XMLSchema#');
+---
+<Layout
+  title="Datatypes"
+  description="The literal value-spaces of the OPDA PDTF ontology — every xsd (and custom) datatype the datatype properties range on, with the properties that use it, aggregated from the SPARQL-derived ontology model."
+>
+<PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
+
+  <h1>Datatypes</h1>
+
+  <p class="lead">
+    The literal value-spaces the ontology's <strong>{totalProps} datatype properties</strong> range on —
+    aggregated from the SPARQL-derived <a href="/ontology/provenance">ontology model</a>. Most are standard
+    <code>xsd:</code> datatypes; the coded value-spaces (status sets, ratings, enumerations) are
+    <em>not</em> here — they are <code>skos:ConceptScheme</code>s on
+    <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>, per the
+    <a href="/ontology/identity#doctrine">classification doctrine</a>.
+  </p>
+
+  <table>
+    <thead><tr><th>Datatype</th><th>Properties</th><th>Using</th></tr></thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <td>
+            <code>{isXsd(r.uri) ? `xsd:${r.localName}` : r.localName}</code>
+            <br/><span class="muted" style="word-break:break-all;">{r.uri}</span>
+          </td>
+          <td>{r.props.length}</td>
+          <td>
+            {r.props.map((p, i) => (
+              <Fragment>{i > 0 ? <span>, </span> : null}<a href={`/pdtf/${p.id}`}><code>{p.localName}</code></a></Fragment>
+            ))}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The properties that use these datatypes are on <a href="/ontology/properties">Properties</a>; the coded
+    SKOS value-spaces are on <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>; the namespace each term
+    is minted under is on <a href="/ontology/namespaces">Namespaces &amp; prefixes</a>. Full index:
+    <a href="/ontology/glossary">Index &amp; glossary</a>.
+  </p>
+</Layout>

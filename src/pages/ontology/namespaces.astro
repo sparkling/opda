@@ -1,0 +1,99 @@
+---
+/**
+ * /ontology/namespaces — the prefix map + ADR-0006 kind-split rationale
+ * (ADR-0044 Phase 5). A resolvable page for the namespace scheme that the rest
+ * of the reference links to. The base IRI is read from the SPARQL-derived model;
+ * the prefix table and rationale are authored from ADR-0006.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import { model } from '@/lib/ontology-model';
+
+const BASE = model.namespace; // https://opda.org.uk/pdtf/
+const c = model.counts;
+
+// The OPDA kind-split namespaces (ADR-0006 as-built; SoT namespaces.py).
+const OPDA_NS = [
+  { prefix: 'opda:',    ns: BASE,             holds: `OWL classes + object/datatype properties (the flat term namespace) — ${c.classes} classes, ${c.objectProperties + c.datatypeProperties} properties`, example: `${BASE}Property` },
+  { prefix: 'opda-v:',  ns: `${BASE}scheme/`, holds: `SKOS concept schemes and their concepts — ${c.schemes} schemes, ${c.concepts} concepts`, example: `${BASE}scheme/TenureScheme` },
+  { prefix: 'opda-sh:', ns: `${BASE}shape/`,  holds: `SHACL node shapes — ${c.shapes} shapes`, example: `${BASE}shape/PropertyIdentityKeyShape` },
+  { prefix: '(graphs)', ns: `${BASE}graph/`,  holds: 'Named graphs — one per module TTL, populated by the Fuseki loader', example: `${BASE}graph/property` },
+  { prefix: '(harness)',ns: `${BASE}harness/`,holds: 'Governance provenance — ODR/ADR sections and overlay-form leaves cited via dct:source', example: `${BASE}harness/odr/ODR-0005/section-2a` },
+];
+
+// Standard external vocabularies the ontology uses.
+const EXT_NS = [
+  { prefix: 'owl:',  ns: 'http://www.w3.org/2002/07/owl#' },
+  { prefix: 'rdf:',  ns: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#' },
+  { prefix: 'rdfs:', ns: 'http://www.w3.org/2000/01/rdf-schema#' },
+  { prefix: 'skos:', ns: 'http://www.w3.org/2004/02/skos/core#' },
+  { prefix: 'sh:',   ns: 'http://www.w3.org/ns/shacl#' },
+  { prefix: 'dct:',  ns: 'http://purl.org/dc/terms/' },
+  { prefix: 'xsd:',  ns: 'http://www.w3.org/2001/XMLSchema#' },
+  { prefix: 'prov:', ns: 'http://www.w3.org/ns/prov#' },
+  { prefix: 'dpv:',  ns: 'https://w3id.org/dpv#' },
+];
+---
+<Layout
+  title="Namespaces & prefixes"
+  description="The OPDA PDTF namespace scheme — the kind-split opda: / opda-v: / opda-sh: / graph / harness namespaces (ADR-0006) and the standard external vocabularies, with the collision-avoidance rationale. A resolvable prefix map."
+>
+<PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
+
+  <h1>Namespaces &amp; prefixes</h1>
+
+  <p class="lead">
+    The OPDA PDTF ontology is published under <code>{BASE}</code> with a deliberate
+    <strong>kind-split</strong> (<a href="/governance">ADR-0006</a>): each kind of resource — term, SKOS scheme,
+    SHACL shape, named graph, governance record — lives in its own namespace segment so local names cannot
+    collide. Every IRI below <strong>dereferences</strong> to a page (ADR-0044): <code>{BASE}Property</code>
+    resolves to <a href="/pdtf/Property">/pdtf/Property</a>.
+  </p>
+
+  <h2 id="opda">OPDA namespaces (the kind-split)</h2>
+  <table>
+    <thead><tr><th>Prefix</th><th>Namespace</th><th>Holds</th><th>Example</th></tr></thead>
+    <tbody>
+      {OPDA_NS.map((n) => (
+        <tr>
+          <td><code>{n.prefix}</code></td>
+          <td><code style="word-break:break-all;">{n.ns}</code></td>
+          <td>{n.holds}</td>
+          <td><code style="word-break:break-all;">{n.example}</code></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="rationale">Why the kind-split (ADR-0006)</h2>
+  <p>
+    The ruling (directing authority, 2026-06-02) is <strong>collision-avoidance under a flat term namespace</strong>.
+    A property such as <code>opda:role</code> at <code>{BASE}role</code> must not collide with the
+    <em>Participant Role</em> concept scheme — so schemes resolve under <code>{BASE}scheme/</code> and their
+    members under <code>{BASE}scheme/role/Buyer</code>; shapes under <code>{BASE}shape/</code>. The OWL term
+    namespace stays flat (classes PascalCase, properties camelCase), which keeps the dereferenceable
+    <code>/pdtf/{'{'}LocalName{'}'}</code> contract simple. The single source of truth is
+    <code>tools/opda-gen/src/opda_gen/namespaces.py</code>; the GRLC API and this site both resolve against it
+    (the pre-migration <code>w3id.org/opda/#</code> namespace is retired).
+  </p>
+
+  <h2 id="external">Standard external vocabularies</h2>
+  <p>The ontology reuses these W3C / community vocabularies rather than re-minting their terms:</p>
+  <table>
+    <thead><tr><th>Prefix</th><th>Namespace</th></tr></thead>
+    <tbody>
+      {EXT_NS.map((n) => (
+        <tr><td><code>{n.prefix}</code></td><td><code style="word-break:break-all;">{n.ns}</code></td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The <code>opda-v:</code> scheme split is explained in depth on
+    <a href="/ontology/vocabularies#kind-split">Vocabularies (SKOS)</a>; the literal datatypes are on
+    <a href="/ontology/datatypes">Datatypes</a>; consuming the ontology over content negotiation is on
+    <a href="/ontology/usage">Consume the ontology</a>. Full index:
+    <a href="/ontology/glossary">Index &amp; glossary</a>.
+  </p>
+</Layout>
