@@ -13,6 +13,20 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// The merged-corpus artefact bundle is build-generated under public/ontology/
+// (gitignored). Guard the download links so the page degrades to plain text
+// when the bundle is absent rather than emitting dangling links — the same
+// pattern exemplars.astro / shapes.astro use for the artefacts index.
+const PUB = path.resolve(process.cwd(), 'public/ontology');
+const exists = (rel: string): boolean => {
+  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
+};
+const mergedTtl = exists('artefacts/opda-merged.ttl');
+const shapesTtl = exists('artefacts/opda-shapes-merged.ttl');
+const sourceIdx = exists('artefacts/source/index.html');
 ---
 <Layout
   title="Consume the ontology"
@@ -194,17 +208,17 @@ print(report_text)         # read the sh:ValidationReport</code></pre>
   <p>The authoritative machine artefacts, generated from the committed corpus:</p>
   <ul>
     <li>
-      <a href="/ontology/artefacts/opda-merged.ttl">opda-merged.ttl</a> — the merged TBox
+      {mergedTtl ? (<a href="/ontology/artefacts/opda-merged.ttl">opda-merged.ttl</a>) : (<span>opda-merged.ttl</span>)} — the merged TBox
       (OWL classes &amp; properties + SKOS concept schemes). Load this as the
       <code>--ont-graph</code> for validation and as the data graph for the class queries above.
     </li>
     <li>
-      <a href="/ontology/artefacts/opda-shapes-merged.ttl">opda-shapes-merged.ttl</a> — the
+      {shapesTtl ? (<a href="/ontology/artefacts/opda-shapes-merged.ttl">opda-shapes-merged.ttl</a>) : (<span>opda-shapes-merged.ttl</span>)} — the
       merged SHACL shapes graph (node / property shapes + overlay profiles). This is the
       <code>--shacl</code> graph.
     </li>
     <li>
-      <a href="/ontology/artefacts/source/index.html">source/ — the per-module TTLs</a> — the
+      {sourceIdx ? (<a href="/ontology/artefacts/source/index.html">source/ — the per-module TTLs</a>) : (<span>source/ — the per-module TTLs</span>)} — the
       25 source files (classes, properties, shapes, annotations, vocabularies, contexts, the
       foundation graph) before merge, for consumers who want a single layer rather than the
       bundle.

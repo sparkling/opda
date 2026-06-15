@@ -77,6 +77,36 @@ def _build_merged_shapes_graph(ontology_dir: Path) -> Graph:
     return g
 
 
+def _tbox_graph(ontology_dir: Path) -> Graph:
+    """The class/vocabulary TBox as a standalone graph, unioned into each
+    exemplar's data graph before validation.
+
+    Jena's CLI does no RDFS inference and resolves ``sh:class`` against the
+    *data* graph's asserted ``rdf:type``/``rdfs:subClassOf*``. Without the
+    TBox in the data graph, ``sh:class`` cannot see asserted subclass
+    axioms, so a legitimately subclass-typed instance (e.g. an
+    ``opda:Seller`` — a subclass of ``opda:RoleMixin`` — bearing
+    ``opda:roleNotation``) is wrongly flagged off its declared domain.
+    Unioning the TBox lets ``sh:class`` walk the asserted hierarchy; this is
+    closed-world per ODR-0029 R3 (asserted subclass-walking is SHACL class
+    semantics, not RDFS inference).
+    """
+    g = Graph()
+    for rel in _CLASS_TTLS:
+        g.parse(ontology_dir / rel, format="turtle")
+    return g
+
+
+def _exemplar_data_with_tbox(exemplar_path: Path, tbox: Graph) -> Graph:
+    """Parse an exemplar and union the class/vocabulary TBox so Jena's
+    ``sh:class`` can resolve asserted ``rdfs:subClassOf`` (see
+    ``_tbox_graph``)."""
+    data = Graph()
+    data.parse(exemplar_path, format="turtle")
+    data += tbox
+    return data
+
+
 def _normalise_report(report_graph: Graph) -> Graph:
     """Strip the SHACL engine's blank-node IDs to make the report stable
     across runs. Each blank-node subject is replaced with a deterministic
@@ -220,10 +250,13 @@ def emit_exemplar_reports(
     ontology_dir = ontology_dir or _ontology_root()
     exemplars_dir = ontology_dir / "exemplars"
     shapes_graph = _build_merged_shapes_graph(ontology_dir)
+    tbox = _tbox_graph(ontology_dir)
 
     written: dict[Path, str] = {}
     for exemplar_path in _exemplar_files(exemplars_dir):
-        _conforms, report_graph = jena_validate(shapes_graph, exemplar_path)
+        _conforms, report_graph = jena_validate(
+            shapes_graph, _exemplar_data_with_tbox(exemplar_path, tbox),
+        )
 
         normalised = _normalise_report(report_graph)
 
@@ -266,7 +299,10 @@ def validate_exemplar(
         return False, f"no expected report at {expected_path}"
 
     shapes_graph = _build_merged_shapes_graph(ontology_dir)
-    _conforms, report_graph = jena_validate(shapes_graph, exemplar_path)
+    _conforms, report_graph = jena_validate(
+        shapes_graph,
+        _exemplar_data_with_tbox(exemplar_path, _tbox_graph(ontology_dir)),
+    )
     actual = _normalise_report(report_graph)
 
     expected = Graph()

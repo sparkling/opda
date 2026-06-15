@@ -157,7 +157,7 @@ const EXCLUDED = [
   <p>
     The ontology keeps three artefacts <strong>strictly orthogonal</strong> —
     <strong>OWL classes ⊥ SHACL shapes ⊥ annotations</strong> — and the separation is CI-enforced.
-    This is the single most load-bearing architectural decision (<a href="/modelling/odr/ODR-0004">ODR-0004</a>,
+    This is the single most load-bearing architectural decision (<a href="/modelling/odr/odr-0004">ODR-0004</a>,
     Council session-004): it prevents open-world class semantics from being contaminated by closed-world
     cardinality, and keeps advisory hints out of the normative model.
   </p>
@@ -194,7 +194,7 @@ const EXCLUDED = [
   <p>
     The standard partitions the UK property industry into <strong>{contexts.length} primary bounded contexts</strong>
     (DDD), each a <code>skos:Concept</code> in <code>opda:BoundedContextScheme</code> and each owning a SHACL overlay
-    profile (<a href="/modelling/odr/ODR-0020">ODR-0020</a>). PDTF is the <em>Published Language</em> between them.
+    profile (<a href="/modelling/odr/odr-0020">ODR-0020</a>). PDTF is the <em>Published Language</em> between them.
     Domain-term membership in a context is a <strong>derived, on-demand query</strong>, never materialised — and
     upstream conformist authorities (HMLR, MHCLG, DSIT) own no overlay, so they are linked by
     <code>opda:consumesFrom</code> and are <em>not</em> members of the scheme.
@@ -215,7 +215,7 @@ const EXCLUDED = [
 
   <h2 id="boundary">Inference / validation boundary (ODR-0029)</h2>
   <p>
-    The governing principle (<a href="/modelling/odr/ODR-0029">ODR-0029</a>, Council session-039):
+    The governing principle (<a href="/modelling/odr/odr-0029">ODR-0029</a>, Council session-039):
     <strong>infer the relations whose closure the author wants materialised</strong> (subclass / subproperty
     hierarchy, inverse, symmetric, transitive) — and <strong>validate the constraints the author wants
     checked</strong> (<code>domain</code>, <code>range</code>, cardinality, datatype, identity keys) as SHACL.

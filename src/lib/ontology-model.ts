@@ -216,6 +216,20 @@ export function allResources(): AnyResource[] {
   ];
 }
 
+/** Resource ids that have a dereferenceable `/pdtf/{id}` page. */
+const RESOURCE_IDS = new Set(allResources().map((r) => r.id));
+
+/**
+ * True when `id` resolves to an emitted `/pdtf/{id}` page. Guards links
+ * against terms that exist as predicates but are NOT emitted as pages — e.g.
+ * the inert annotation property `opda:ufoCategory`, quarantined to the
+ * annotation graph (ODR-0031) and so absent from the reasoned-graph resource
+ * set. Without this, a shape's `sh:path`/`sh:targetSubjectsOf` would link to a
+ * 404. (The predicate's own dereferenceable disclosure page — ODR-0030 R7b —
+ * is a separate annotation-graph surfacing, tracked for the model generator.)
+ */
+export const hasResource = (id: string): boolean => RESOURCE_IDS.has(id);
+
 /** Slug for a UFO category label (e.g. "Substance Kind" → "substance-kind"). */
 export const ufoSlug = (cat: string): string =>
   cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');

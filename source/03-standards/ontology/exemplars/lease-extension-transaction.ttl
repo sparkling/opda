@@ -66,7 +66,6 @@ opda-x:estate-leasehold opda:identifiesSameProperty opda-x:property .
 opda-x:extension-activity
     a prov:Activity , opda:LeaseExtensionEvent , opda:Transaction ;
     rdfs:label "Statutory lease extension (LRHUDA 1993; completed 2024-09-30)" ;
-    opda:status "completed" ;
     opda:legalBasis <https://www.legislation.gov.uk/ukpga/1993/28/contents> ;
     prov:atTime "2024-09-30T15:00:00Z"^^xsd:dateTime ;
     opda:appliesTo opda-x:estate-leasehold ;

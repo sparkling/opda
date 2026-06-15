@@ -43,20 +43,17 @@ opda-x:title-c opda:identifiesSameProperty opda-x:property-c .
 opda-x:transaction-a
     a opda:Transaction ;
     rdfs:label "T_A: Person W → Person X (sale of Property A)" ;
-    opda:status "active" ;
     opda:concerns opda-x:title-a .
 
 opda-x:transaction-b
     a opda:Transaction ;
     rdfs:label "T_B: Person X → Person Y (sale of Property B; depends on T_A)" ;
-    opda:status "active" ;
     opda:concerns opda-x:title-b ;
     opda:dependsOnTransaction opda-x:transaction-a .   # Q4 candidate (a) — recursive Relator predicate
 
 opda-x:transaction-c
     a opda:Transaction ;
     rdfs:label "T_C: Person Y → Person Z (sale of Property C; depends on T_B; cash buyer terminus)" ;
-    opda:status "active" ;
     opda:concerns opda-x:title-c ;
     opda:dependsOnTransaction opda-x:transaction-b .
 

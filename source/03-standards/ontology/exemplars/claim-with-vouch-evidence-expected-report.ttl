@@ -7,7 +7,6 @@
 
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix opda: <https://opda.org.uk/pdtf/> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -15,21 +14,4 @@
 <https://opda.org.uk/pdtf/harness/data/exemplar-reports/report>
     rdf:type sh:ValidationReport ;
     dct:source <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence> ;
-    sh:conforms "false"^^xsd:boolean ;
-    sh:result <https://opda.org.uk/pdtf/harness/data/exemplar-reports/result-0d46c37adbe9>, <https://opda.org.uk/pdtf/harness/data/exemplar-reports/result-198bb28cfffd> .
-
-<https://opda.org.uk/pdtf/harness/data/exemplar-reports/result-0d46c37adbe9>
-    rdf:type sh:ValidationResult ;
-    sh:focusNode <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence/claim> ;
-    sh:resultMessage "Claim MUST carry prov:wasDerivedFrom (or be explicitly marked unverified per Moreau S009 amendment). ODR-0013 §Severity tiering Cat 2: unprovenanced Claims are a Violation-tier IC breach."@en ;
-    sh:resultPath prov:wasDerivedFrom ;
-    sh:resultSeverity sh:Violation ;
-    sh:sourceConstraintComponent sh:MinCountConstraintComponent .
-
-<https://opda.org.uk/pdtf/harness/data/exemplar-reports/result-198bb28cfffd>
-    rdf:type sh:ValidationResult ;
-    sh:focusNode <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence/vouch-attestation> ;
-    sh:resultMessage "Evidence with opda:evidenceType 'Vouch' MUST carry opda:attestedBy a prov:Agent (a vouch is an Agent-founded attestation). Value-keyed, entailment-free (Council session-036)."@en ;
-    sh:resultSeverity sh:Violation ;
-    sh:sourceConstraintComponent sh:OrConstraintComponent ;
-    sh:value <https://opda.org.uk/pdtf/harness/data/exemplar/claim-with-vouch-evidence/vouch-attestation> .
+    sh:conforms "true"^^xsd:boolean .

@@ -63,7 +63,6 @@ opda-x:buyer-role
 opda-x:transaction
     a opda:Transaction ;
     rdfs:label "Freehold sale of 88 Forest Drive (Foster → Khan, 2024)" ;
-    opda:status "completed" ;     # S011 Phase label scheme
     opda:mediates opda-x:seller-role , opda-x:buyer-role ;
     opda:concerns opda-x:estate .
 

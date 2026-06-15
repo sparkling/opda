@@ -6,7 +6,7 @@
  * message — each path linked to the property it constrains.
  */
 import type { ShapeEntry } from '@/lib/ontology-model';
-import { iri, idOf, isOpda } from '@/lib/ontology-model';
+import { iri, idOf, isOpda, hasResource } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 
 interface Props { shape: ShapeEntry; }
@@ -31,7 +31,7 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
     {shape.target && (<Fragment><dt>Target class</dt><dd>{shape.target.id.includes('://')
       ? <code>{shape.target.localName}</code>
       : <a href={`/pdtf/${shape.target.id}`}><code>{shape.target.localName}</code></a>}</dd></Fragment>)}
-    {tsofId && (<Fragment><dt>Target subjects of</dt><dd>{isOpda(shape.targetSubjectsOf || '') ? <a href={`/pdtf/${tsofId}`}><code>{tsofId}</code></a> : <code>{tsofId}</code>}</dd></Fragment>)}
+    {tsofId && (<Fragment><dt>Target subjects of</dt><dd>{isOpda(shape.targetSubjectsOf || '') && hasResource(tsofId) ? <a href={`/pdtf/${tsofId}`}><code>{tsofId}</code></a> : <code>{tsofId}</code>}</dd></Fragment>)}
     {!shape.target && !tsofId && (<Fragment><dt>Target</dt><dd><span class="muted">—</span></dd></Fragment>)}
   </dl>
 </section>
@@ -45,7 +45,7 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
         <tbody>
           {shape.constraints.map((c) => (
             <tr>
-              <td>{isOpda(c.path) ? <a href={`/pdtf/${idOf(c.path)}`}><code>{c.pathLocal}</code></a> : <code>{c.pathLocal}</code>}</td>
+              <td>{isOpda(c.path) && hasResource(idOf(c.path)) ? <a href={`/pdtf/${idOf(c.path)}`}><code>{c.pathLocal}</code></a> : <code>{c.pathLocal}</code>}</td>
               <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{localOf(c.class)}</code> : <span class="muted">—</span>}</td>
               <td>{card(c.minCount, c.maxCount)}</td>
               <td>{c.severity ?? <span class="muted">—</span>}</td>
