@@ -59,6 +59,10 @@ jena-load: node_modules	## Load the ontology TTLs into an already-running Fuseki
 api: node_modules	## Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031 — use `make serve-data`)
 	npm run api
 
+.PHONY: ontology-model
+ontology-model: node_modules	## Extract src/data/ontology-model.json from a running Fuseki (ADR-0044 Phase 1; needs `make serve-data`)
+	npm run ontology:model
+
 ##@ Ontology (opda-gen — Python, runs in tools/opda-gen)
 .PHONY: ontology-install
 ontology-install:	## Install the opda-gen toolchain (editable + dev extras)

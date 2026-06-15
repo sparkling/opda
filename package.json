@@ -13,6 +13,7 @@
     "serve:data": "node scripts/build-with-data.mjs --serve",
     "api": "FUSEKI_ENDPOINT=http://localhost:3031/opda/sparql node --watch src/api/server.js",
     "jena:load": "node scripts/fuseki-load.mjs --clear",
+    "ontology:model": "node scripts/ontology-model.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "css": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --minify",

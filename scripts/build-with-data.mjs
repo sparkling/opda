@@ -171,6 +171,14 @@ async function main() {
   });
   await waitForUrl(`${OPDA_API}/api/entities`, 'GRLC API /api/entities');
 
+  // 3.5 Extract the committed ontology model (ADR-0044 Phase 1) from live Fuseki
+  //     — the per-entity detail pages + the ADR-0043 graph read this JSON. Runs
+  //     in both --serve and build modes so the committed model stays fresh.
+  console.log('3.5 Extract ontology model → src/data/ontology-model.json');
+  await run('node', [path.join(ROOT, 'scripts', 'ontology-model.mjs')], {
+    env: { ...process.env, FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql` },
+  });
+
   if (SERVE) {
     console.log(
       `\nServices up — leave this running:\n` +
