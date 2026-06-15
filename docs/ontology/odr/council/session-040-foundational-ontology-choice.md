@@ -1,6 +1,6 @@
 # Council Session 040 — The foundational-ontology choice: retain UFO-as-lens, or deepen / switch / drop? (Full Council)
 
-- **Date:** 2026-06-14
+- **Date:** 2026-06-15
 - **Records:** Produces a new ODR — **[ODR-0030](../ODR-0030-foundational-ontology-choice.md)** — adjudicating OPDA's foundational-ontology choice (retain UFO as a lightweight design lens vs. deepen to OntoUML / switch to BFO / drop the foundational layer). Grounded in the `/ontology/foundational-ontology` reference page and its four-stream sourced research (UFO/OntoUML/gUFO/OntoClean critique · BFO + UFO-vs-BFO · DOLCE/SUMO/gist/GFO + lightweight · the data-standard meta-question).
 - **Queen / synthesis:** **Dean Allemang** (working-ontologist pragmatism; "model the minimum that lets the data do work" — *Semantic Web for the Working Ontologist*, 3rd ed. 2020).
 - **Devil's Advocate:** **Kurt Cagle** (genuinely opposed — *Do You Need An Upper Ontology?*, The Ontologist, 2026: "for almost every working interchange standard the honest answer is no; an upper ontology is a methodology in disguise").
@@ -10,6 +10,8 @@
 - **Format:** Full Council (6 runs + a multi-round live cross-examination).
 - **Input:** `src/pages/ontology/foundational-ontology.astro` + its sourced research; ODR-0011 §8a (the seven-category `opda:ufoCategory` framework), ADR-0034 (gated gUFO `rdf:type` typing), ODR-0029 (the inference/validation boundary), ODR-0027 (classification-over-inheritance), ODR-0010 §Q7a (annotation-graph home), ODR-0004 §3a (three-graph separation); `opda-vocabularies.ttl` (47 `ufoCategory` tags; 35 "Quale-in-Region"); `opda-descriptive-annotations.ttl` (`gufo:Quality` typing on 5 leaves); Almeida, Guizzardi, Sales & Fonseca, *gUFO* (2026); Bernabé et al. (2023); Merrill (2010).
 - **Outcome:** **AFFIRM (scoped).** Retain UFO as a **design-time lens scoped to the Relator/Role/RoleMixin spine** (Q1 AFFIRM 6-0); do **not** deepen to OntoUML/full-UFO (Q2 AFFIRM 6-0); **layer** the standards alignment — ADOPT-NOW an IAO information-artefact crosswalk, HOLD-IN-RESERVE the BFO continuant/occurrent spine + ISO-21838 credential (Q3 6-0); ship the **honesty dispositions** (Q4 AFFIRM 6-0). DA Cagle **WITHDREW** his REJECT push, recording three live re-open triggers.
+
+> **Validated 2026-06-15 — Council [session-044](session-044-foundational-ontology-validation.md).** Findings re-confirmed SOUND and corpus-grounded; the arc is CONSISTENT (ODR-0031 enforces, does not amend). The date was corrected (was 2026-06-14). The gUFO citation (arXiv:2603.20948), which the validation personas suspected fabricated, was **web-verified REAL** (submitted 2026-03-21) and stands. The "47 `ufoCategory` tags in `opda-vocabularies.ttl`" in the Input below is the *deliberation-time* state — the tags were since relocated to `opda-annotations.ttl` and the register axis split off per ODR-0031/ADR-0045 (implementing this session's Rule 2). Full disposition: [ODR-0030 §Amendments](../ODR-0030-foundational-ontology-choice.md#amendments).
 
 ## Context + the pre-flight finding
 

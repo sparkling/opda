@@ -10,7 +10,7 @@
  * transaction data-interchange standard specifically, and a balanced verdict.
  *
  * Sourced from a four-stream web-research pass (June 2026); the live UFO-category
- * distribution is read at build time from opda-vocabularies.ttl (the same fs-read
+ * distribution is read at build time from opda-annotations.ttl (the same fs-read
  * pattern as src/pages/ontology/foundation.astro) to surface the UFO+DOLCE-hybrid
  * fact. The Council deliberation subsection is wired below to the recorded session
  * + the ODR it routes to.
@@ -29,7 +29,7 @@ function ttl(name: string): string {
 // point: most ufoCategory tags are "Quale-in-Region" — a DOLCE construct — so the
 // "UFO layer" is really a UFO+DOLCE hybrid.
 function ufoCategoryCounts(): { label: string; n: number }[] {
-  const matches = ttl('opda-vocabularies.ttl').match(/opda:ufoCategory\s+"([^"]+)"/g) ?? [];
+  const matches = ttl('opda-annotations.ttl').match(/opda:ufoCategory\s+"([^"]+)"/g) ?? [];
   const counts = new Map<string, number>();
   for (const t of matches) {
     const v = t.match(/"([^"]+)"/)?.[1] ?? '';
@@ -39,12 +39,11 @@ function ufoCategoryCounts(): { label: string; n: number }[] {
 }
 const ufoCats = ufoCategoryCounts();
 const ufoTotal = ufoCats.reduce((s, c) => s + c.n, 0);
-const dolceShare = ufoCats.find((c) => c.label === 'Quale-in-Region')?.n ?? 0;
 const gufoEmitted = /gufo:/.test(ttl('opda-descriptive-annotations.ttl')) || /gufo:/.test(ttl('opda-descriptive.ttl'));
 
 // §2 — the UFO/OntoUML/gUFO/OntoClean critique, themed and honestly graded.
 const CRITIQUES = [
-  { theme: 'OWL is semantically lossy for UFO', strength: 'Strong', forOpda: 'Validates the design. Modality, anti-transitivity, weak supplementation and design-time constraint checking do not survive into OWL 2 DL — the gUFO authors count 12,288 possible OWL approximations of UFO-B alone. Their own conclusion: push constraints into SHACL. That is exactly what OPDA does.' },
+  { theme: 'OWL is semantically lossy for UFO', strength: 'Strong', forOpda: 'Validates the design. Modality, anti-transitivity, weak supplementation and design-time constraint checking do not survive into OWL 2 DL — the gUFO authors show UFO-B admits many non-equivalent OWL renderings, so no single faithful projection exists — their conclusion: push constraints into SHACL. That is exactly what OPDA does.' },
   { theme: 'gUFO is a lossy projection, not UFO', strength: 'Strong', forOpda: 'Claim "UFO-informed", never "UFO-grounded with formal guarantees". gUFO drops the quality-space apparatus, replaces modal semantics with reified situations, and moves OntoClean enforcement to runtime SHACL. It is a labelling + pattern vocabulary, which is how OPDA uses it.' },
   { theme: 'Comprehension cost / steep learning curve', strength: 'Moderate', forOpda: 'Cuts in OPDA’s favour. The controlled evidence (Verdonck et al. 2020) shows the foundational layer imposes a measurable comprehension cost — but it targets heavyweight OntoUML modelling as a daily practice. PDTF consumers never read OntoUML; they read JSON/SHACL. The category tags + a targeted decision rule sidestep the burden.' },
   { theme: 'Meta-category proliferation (kind/role/phase/relator/mode/...)', strength: 'Weak–Moderate', forOpda: 'Widely felt (it drives gUFO and the anti-pattern catalogues) but no peer-reviewed paper has "too many stereotypes" as its thesis. Honest framing: an inference, not a citation. OPDA uses a 7-category subset as tags, not the full lattice.' },
@@ -80,7 +79,7 @@ const REALSTACKS = [
   title="Foundational ontology: critique & alternatives"
   description="An honest, sourced assessment of OPDA's foundational-ontology choice: critiques of UFO / OntoUML / gUFO / OntoClean, a comparison of the upper-ontology alternatives (BFO, DOLCE, SUMO, GFO, gist) and the lightweight options, the pros and cons for a property-transaction data-interchange standard, and a balanced verdict on the restrained UFO-as-lens posture."
 >
-<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-14" />
+<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
   <h1>Foundational ontology: critique &amp; alternatives</h1>
 
@@ -125,16 +124,21 @@ const REALSTACKS = [
       (the classification-over-inheritance doctrine, <a href="/modelling/odr/odr-0027">ODR-0027</a>).</li>
   </ul>
   <div class="callout callout--note">
-    <p class="callout__label">It is really a UFO+DOLCE hybrid</p>
+    <p class="callout__label">It was a UFO+DOLCE hybrid — and ODR-0031 acted on it</p>
     <p>
-      Of the <strong>{ufoTotal}</strong> <code>opda:ufoCategory</code> tags emitted across the vocabularies,
-      <strong>{dolceShare}</strong> are <code>Quale-in-Region</code> — which is a <strong>DOLCE</strong>
-      construct (Masolo et al., WonderWeb D18), not strictly UFO. The full live distribution:
+      At session-040 the facet was a UFO+DOLCE hybrid: <strong>35 of 47</strong> scheme-level
+      <code>opda:ufoCategory</code> tags read <code>Quale-in-Region</code> — a <strong>DOLCE</strong> construct
+      (Masolo et al., WonderWeb D18, 2003), not strictly UFO. That observation drove Rule 2 ("drop the UFO
+      byline on the register-deference axis"), which <a href="/modelling/odr/odr-0031">ODR-0031</a> then
+      <em>implemented</em>: the register axis was split off, and the predicate was relocated to the annotation
+      graph and retyped <code>owl:AnnotationProperty</code>. So <code>opda:ufoCategory</code> now carries only
+      the <strong>{ufoTotal}</strong> genuine UFO class-level categories (live distribution):
     </p>
     <ul>
       {ufoCats.map((c) => (<li><code>{c.label}</code> &times; {c.n}</li>))}
     </ul>
-    <p class="muted">Read at build time from <code>opda-vocabularies.ttl</code>.</p>
+    <p class="muted">Read at build time from <code>opda-annotations.ttl</code> (post-ODR-0031 relocation); the
+      "35 of 47 in <code>opda-vocabularies.ttl</code>" was the session-040 deliberation-time state.</p>
   </div>
   <p>
     UFO/gUFO is also just <em>one of ~seven</em> standards in the stack (RDF/OWL, SHACL, SKOS, PROV-O, DPV,
@@ -333,7 +337,7 @@ const REALSTACKS = [
     <em>relational placement</em> OntoClean's <em>monadic</em> meta-properties cannot derive. They co-signed the
     finding that the irreducible primitive is <strong>relational reification</strong> (UFO's Relator being
     OPDA's <em>chosen</em> apt expression — the corpus cites FIBO Arrangement as a co-precedent), and that UFO
-    earns its <em>specific</em> keep only because <strong>UFO+UFO-L uniquely unifies that reification with
+    earns its <em>specific</em> keep because <strong>UFO+UFO-L is the apt framework — among the practical options — that unifies that reification with
     Hohfeldian Claim-Right↔Duty correlativity</strong> — which is why the retention is
     <strong>necessary-and-bounded, not pervasive-and-grounding</strong>, and robust to "why UFO and not
     BFO/FIBO?" Both
@@ -380,7 +384,7 @@ const REALSTACKS = [
   <ul>
     <li>Smith et al., <em>The OBO Foundry</em>, <em>Nature Biotechnology</em> (2007) — <a href="https://www.nature.com/articles/nbt1346">link</a>; <a href="https://www.iso.org/standard/74572.html">ISO/IEC 21838-2:2021</a></li>
     <li>Merrill, <em>Ontological realism: Methodology or misdirection?</em>, <em>Applied Ontology</em> (2010) — <a href="https://journals.sagepub.com/doi/10.3233/AO-2010-0076">link</a></li>
-    <li>Bernabé et al., <em>The use of foundational ontologies in biomedical research</em>, <em>J. Biomedical Semantics</em> (2023) — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10712036/">PMC</a> (no measurable benefit found)</li>
+    <li>Bernabé et al., <em>The use of foundational ontologies in biomedical research</em>, <em>J. Biomedical Semantics</em> (2023) — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10712036/">PMC</a> (a near-absence of empirical evidence — only one surveyed study tested the claim, finding no significant effect)</li>
     <li>Griffo, Almeida &amp; Guizzardi, UFO-L legal relations (2016/2018) — <a href="https://nemo.inf.ufes.br/wp-content/papercite-data/pdf/conceptual_modeling_of_legal_relations_2018.pdf">PDF</a></li>
     <li>DeBellis, <em>Foundational Limits: Why BFO's Aristotelian Framework Cannot…</em> (KEOD 2025) — <a href="https://www.scitepress.org/Papers/2025/137712/137712.pdf">SciTePress</a></li>
   </ul>

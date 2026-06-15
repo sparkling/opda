@@ -1,6 +1,6 @@
 ---
 status: proposed
-date: 2026-06-14
+date: 2026-06-15
 tags: [foundational-ontology, ufo, gufo, ontoclean, dolce, bfo, relator, standards-alignment, honesty]
 supersedes: []
 depends-on: [ODR-0029, ODR-0011, ODR-0027, ODR-0010, ODR-0004, ADR-0034]
@@ -82,6 +82,20 @@ Council **session-040** (Full Council; `agent-fan-out` with live `SendMessage` c
 **Held-as-live dissent (Cagle, DA).** OntoClean is strictly separable from UFO, so the foundation *vocabulary* is droppable — the layer is **optional, not harmful**. He WITHDREW the REJECT push because net harm could not be shown at ~zero runtime cost; the dissent is recorded as live with three falsifiable **re-open triggers**: (i) the UFO/`ufoCategory` layer is ever made reasoned-over (moved out of the annotation-graph quarantine into a graph that drives inference or SHACL); (ii) the 35/47 DOLCE-under-a-UFO-label mismatch is shown to have caused a downstream modelling error or maintainer miscategorisation; (iii) maintaining the foundation mapping measurably delays or blocks a council decision. If any trigger fires, Option D (retire the UFO vocabulary; keep OntoClean-as-judgement + SHACL + SKOS) is revisited.
 
 **Knublauch's standing condition.** The AFFIRM is conditional on the gUFO quarantine remaining CI-enforced (three-graph separation + the ODR-0029 regime that excludes domain/range and cannot propagate the advisory types).
+
+## Amendments
+
+### 2026-06-15 — Validation pass (Council [session-044](council/session-044-foundational-ontology-validation.md))
+
+A validation council (session-044; Queen Allemang, DA Cagle + Baker, Guizzardi, Knublauch; `agent-fan-out`, with the convener **web-verifying the bibliography** as the decisive check) re-audited this record and session-040 for soundness, completeness, internal consistency, and citation integrity. **The decision is unchanged** — the keystone reasoning (UFO scoped to the Relator/Role spine; the relational-reification primitive; OntoClean separable; register-deference for the quality codes; "UFO-informed, not UFO-grounded") was re-confirmed sound and corpus-grounded at file:line (`numberOfSellers` → `opda:Proprietorship`; the `opda:Relator` comment + the `opda:Transaction` FIBO-Arrangement co-precedent). Corrections recorded:
+
+1. **Date corrected 2026-06-14 → 2026-06-15.** This record was committed 2026-06-15 (alongside ODR-0031 and sessions 041–042) and its own §More-Information cites a breach discovered 2026-06-15; the 06-14 stamp was an error inconsistent with the arc and with the record's own body.
+2. **Citation re-verification — the gUFO reference is REAL (the council was wrong to suspect it).** The validation personas, training-cutoff-limited, unanimously *suspected* "Almeida, Guizzardi, Sales & Fonseca, *gUFO: A Gentle Foundational Ontology for Semantic Web Knowledge Graphs* (2026), arXiv:2603.20948" was fabricated. **Web verification on 2026-06-15 refuted this**: the paper is genuine (arXiv:2603.20948, submitted 2026-03-21; indexed at arXiv + Univ. Twente) — a distinct, later work from the 2019 *gUFO: A Lightweight Implementation of UFO* (purl.org/nemo/gufo) that ADR-0034 cites. **No deletion** — the reference stands. All other external citations were web-confirmed real (Merrill, *Applied Ontology* 5(2), 2010; Bernabé et al., *J. Biomedical Semantics* 14:21, 2023, doi 10.1186/s13326-023-00300-z; Barcelos et al., ONTOBRAS 2013, CEUR Vol-1041; Masolo et al., WonderWeb D18, 2003). Two page-only paraphrase fixes: Bernabé's finding is a *near-absence of empirical evidence* (one surveyed study tested the claim, no significant effect), not "no measurable benefit"; and the unverifiable "12,288 OWL approximations" figure was softened to the qualitative claim (neither is in the gUFO abstract).
+3. **Stale corpus reference noted (text stands).** "35 of 47 `opda:ufoCategory` tags in `opda-vocabularies.ttl`" describes the session-040 deliberation-time state. ADR-0044 Phase 5c then promoted the facet onto classes, and **ODR-0031/ADR-0045 relocated all tags to `opda-annotations.ttl` (≈40), retyped `owl:AnnotationProperty`, and split the register-deference axis off the predicate** — implementing this record's Rule 2. `opda:ufoCategory` now carries only the genuine UFO class categories; "Quale-in-Region" is no longer one of its values. The normative text stands; this is a provenance pointer.
+4. **Held-dissent provenance — trigger (i) fired and was cured.** Cagle's re-open trigger (i) ("the `ufoCategory` layer ever made reasoned-over") **fired** via ADR-0044 Phase 5c (tags landed in reasoned-union graphs) and was **remediated** by ODR-0031/ADR-0045 (relocation + `owl:AnnotationProperty` + the sixth three-graph CI gate). The held dissent remains live on the optional-vs-load-bearing question.
+5. **Overclaim clarified (aptness, not uniqueness).** "Only UFO+UFO-L unifies the reification primitive with Hohfeldian correlativity" is read as *aptness among the practical options* (the reification substrate is already UFO's Relator), **not** metaphysical uniqueness — LegalRuleML and plain Hohfeld-in-SHACL also formalise correlativity. The page wording was softened.
+
+**Engineering follow-ups routed** (regression-hardening; → ADR-0045, not blocking): (a) widen the sixth three-graph CI gate to the full ODR-0029 reasoned union — it scans 8 of 10 graphs, omitting `opda-vocabularies.ttl` + `opda-contexts.ttl` (one of which the original breach reached); (b) add a TBox-only test that the `opda:ufoCategory` `sh:in` meta-shape never acquires a domain-class target. **Process note:** external citations need web-verification, not persona judgment — session-040's pre-flight "citations grounded ✓" covered corpus facts but not the external bibliography; split the two gates.
 
 ## More Information
 
