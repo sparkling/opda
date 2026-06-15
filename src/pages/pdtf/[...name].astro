@@ -4,28 +4,34 @@
  * per-resource page served at `/pdtf/{id}` (the path after the opda base), so
  * `https://opda.org.uk/pdtf/Property` resolves to a real web page.
  *
- * Phase 2: classes + object/datatype properties. Phase 3 extends getStaticPaths
- * with shapes/concepts/schemes/contexts; Phase 6 adds the `.ttl` alternate.
- * Pure SSG — getStaticPaths reads the committed model JSON; no runtime query.
+ * Serves every opda: resource: classes, object + datatype properties, SHACL
+ * shapes, SKOS concepts and schemes. (Bounded contexts live at
+ * /ontology/context.) Phase 6 adds the `.ttl` alternate. Pure SSG — getStaticPaths
+ * reads the committed model JSON; no runtime query.
  */
 import Layout from '@/layouts/Layout.astro';
 import ClassDetail from '@/components/ontology/ClassDetail.astro';
 import PropertyDetail from '@/components/ontology/PropertyDetail.astro';
-import { allTerms } from '@/lib/ontology-model';
+import ShapeDetail from '@/components/ontology/ShapeDetail.astro';
+import ConceptDetail from '@/components/ontology/ConceptDetail.astro';
+import SchemeDetail from '@/components/ontology/SchemeDetail.astro';
+import { allResources } from '@/lib/ontology-model';
 
 export function getStaticPaths() {
-  return allTerms().map((term) => ({
-    params: { name: term.id },
-    props: { term },
+  return allResources().map((r) => ({
+    params: { name: r.id },
+    props: { r },
   }));
 }
 
-const { term } = Astro.props;
-const title = term.label || term.localName;
-const description = (term.comment || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+const { r } = Astro.props;
+const title = (r.label ?? r.prefLabel ?? r.localName) as string;
+const description = ((r.comment ?? r.definition ?? '') as string).replace(/\s+/g, ' ').trim().slice(0, 160);
 ---
 <Layout title={title} description={description} hideComments={true}>
-  {term.entryKind === 'class'
-    ? <ClassDetail cls={term} />
-    : <PropertyDetail prop={term} />}
+  {r.entryKind === 'class' ? <ClassDetail cls={r} />
+    : r.entryKind === 'property' ? <PropertyDetail prop={r} />
+    : r.entryKind === 'shape' ? <ShapeDetail shape={r} />
+    : r.entryKind === 'concept' ? <ConceptDetail concept={r} />
+    : <SchemeDetail scheme={r} />}
 </Layout>

@@ -4,6 +4,7 @@
  * Back-nav into the /ontology section, a kind + bounded-context badge, the
  * label, the dereferenceable IRI (selectable), and the rdfs:comment.
  */
+import { contextUrl } from '@/lib/ontology-model';
 interface Props {
   kind: string;
   label: string;
@@ -15,6 +16,7 @@ interface Props {
   indexLabel: string;
 }
 const { kind, label, localName, iri, comment, context, indexUrl, indexLabel } = Astro.props;
+const ctxHref = contextUrl(context);
 ---
 <nav class="term-nav" aria-label="Breadcrumb">
   <a href="/ontology">Ontology</a>
@@ -27,7 +29,9 @@ const { kind, label, localName, iri, comment, context, indexUrl, indexLabel } = 
 <header class="term-header">
   <p class="term-kind">
     <span class="pill pill--brand">{kind}</span>
-    {context && <span class="term-context">{context} context</span>}
+    {context && (ctxHref
+      ? <a class="term-context" href={ctxHref}>{context} context</a>
+      : <span class="term-context">{context}</span>)}
   </p>
   <h1>{label}</h1>
   <p class="term-iri"><code>{iri}</code></p>

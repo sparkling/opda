@@ -1,0 +1,72 @@
+---
+/**
+ * ADR-0044 Phase 3 — SHACL shape detail (canonical /pdtf/shape/{Name}).
+ * Target (class or targetSubjectsOf property, linked), and the constraints
+ * resolved with NO blank nodes — path, datatype/class, cardinality, severity,
+ * message — each path linked to the property it constrains.
+ */
+import type { ShapeEntry } from '@/lib/ontology-model';
+import { iri, idOf, isOpda } from '@/lib/ontology-model';
+import TermHeader from './TermHeader.astro';
+
+interface Props { shape: ShapeEntry; }
+const { shape } = Astro.props;
+const card = (min: string | null, max: string | null) => (min || max) ? `${min ?? '0'}..${max ?? '*'}` : '—';
+const tsofId = shape.targetSubjectsOf ? idOf(shape.targetSubjectsOf) : null;
+const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
+---
+<TermHeader
+  kind="SHACL shape"
+  label={shape.localName}
+  localName={shape.localName}
+  iri={iri(shape.id)}
+  context={shape.module}
+  indexUrl="/ontology/shapes"
+  indexLabel="SHACL shapes"
+/>
+
+<section class="term-section">
+  <h2>Target</h2>
+  <dl class="term-dl">
+    {shape.target && (<Fragment><dt>Target class</dt><dd><a href={`/pdtf/${shape.target.id}`}><code>{shape.target.localName}</code></a></dd></Fragment>)}
+    {tsofId && (<Fragment><dt>Target subjects of</dt><dd>{isOpda(shape.targetSubjectsOf || '') ? <a href={`/pdtf/${tsofId}`}><code>{tsofId}</code></a> : <code>{tsofId}</code>}</dd></Fragment>)}
+    {!shape.target && !tsofId && (<Fragment><dt>Target</dt><dd><span class="muted">—</span></dd></Fragment>)}
+  </dl>
+</section>
+
+{shape.constraints.length > 0 && (
+  <section class="term-section">
+    <h2>Constraints <span class="muted">· {shape.constraints.length}</span></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Path</th><th>Type</th><th>Card.</th><th>Severity</th><th>Message</th></tr></thead>
+        <tbody>
+          {shape.constraints.map((c) => (
+            <tr>
+              <td>{isOpda(c.path) ? <a href={`/pdtf/${idOf(c.path)}`}><code>{c.pathLocal}</code></a> : <code>{c.pathLocal}</code>}</td>
+              <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{localOf(c.class)}</code> : <span class="muted">—</span>}</td>
+              <td>{card(c.minCount, c.maxCount)}</td>
+              <td>{c.severity ?? <span class="muted">—</span>}</td>
+              <td>{c.message || <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+<style>
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3); padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .term-dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-4); margin: 0; }
+  .term-dl dt { font: 600 var(--text-xs) / 1.4 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--color-text-muted); }
+  .term-dl dd { margin: 0; color: var(--color-text); }
+  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .muted { color: var(--color-text-muted); }
+</style>

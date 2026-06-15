@@ -1,0 +1,68 @@
+---
+/**
+ * ADR-0044 Phase 3 — SKOS concept detail (canonical /pdtf/{conceptId}).
+ * prefLabel + definition, scheme membership (linked), broader/narrower (linked,
+ * when present), and dct:source provenance.
+ */
+import type { ConceptEntry } from '@/lib/ontology-model';
+import { iri } from '@/lib/ontology-model';
+import TermHeader from './TermHeader.astro';
+
+interface Props { concept: ConceptEntry; }
+const { concept } = Astro.props;
+---
+<TermHeader
+  kind="SKOS concept"
+  label={concept.prefLabel}
+  localName={concept.localName}
+  iri={iri(concept.id)}
+  comment={concept.definition}
+  context={concept.module}
+  indexUrl="/ontology/vocabularies"
+  indexLabel="Vocabularies"
+/>
+
+{concept.schemes.length > 0 && (
+  <section class="term-section">
+    <h2>In scheme{concept.schemes.length > 1 ? 's' : ''}</h2>
+    <ul class="chip-list">{concept.schemes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}</ul>
+  </section>
+)}
+
+{concept.broader.length > 0 && (
+  <section class="term-section">
+    <h2>Broader</h2>
+    <ul class="chip-list">{concept.broader.map((b) => <li><a href={`/pdtf/${b.id}`}><code>{b.localName}</code></a></li>)}</ul>
+  </section>
+)}
+
+{concept.narrower.length > 0 && (
+  <section class="term-section">
+    <h2>Narrower <span class="muted">· {concept.narrower.length}</span></h2>
+    <ul class="chip-list">{concept.narrower.map((n) => <li><a href={`/pdtf/${n.id}`}><code>{n.localName}</code></a></li>)}</ul>
+  </section>
+)}
+
+{concept.dctSource.length > 0 && (
+  <section class="term-section">
+    <h2>Provenance <span class="muted">· dct:source</span></h2>
+    <ul class="chip-list">{concept.dctSource.map((src) => <li><code>{src}</code></li>)}</ul>
+  </section>
+)}
+
+<style>
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3); padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .muted { color: var(--color-text-muted); }
+  .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip-list code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint); padding: 0.25em var(--space-2);
+    border-radius: var(--radius-sm); color: var(--color-text-muted);
+  }
+</style>

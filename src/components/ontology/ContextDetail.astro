@@ -1,0 +1,62 @@
+---
+/**
+ * ADR-0044 Phase 3 — bounded-context detail body (/ontology/context/{id}).
+ * The 7 canonical DDD bounded contexts are graph-derived module groupings (not
+ * minted opda: term IRIs), so they live under /ontology/context, listing their
+ * member classes / properties / shapes / schemes, each linked to its /pdtf page.
+ */
+import type { ContextEntry } from '@/lib/ontology-model';
+
+interface Props { context: ContextEntry; }
+const { context } = Astro.props;
+const groups = [
+  { heading: 'Classes', items: context.classes },
+  { heading: 'Object properties', items: context.objectProperties },
+  { heading: 'Datatype properties', items: context.datatypeProperties },
+  { heading: 'SHACL shapes', items: context.shapes },
+  { heading: 'SKOS schemes', items: context.schemes },
+].filter((g) => g.items.length > 0);
+const total = groups.reduce((n, g) => n + g.items.length, 0);
+---
+<nav class="term-nav" aria-label="Breadcrumb">
+  <a href="/ontology">Ontology</a>
+  <span class="sep" aria-hidden="true">›</span>
+  <a href="/ontology/classes">Browse the model</a>
+  <span class="sep" aria-hidden="true">›</span>
+  <span aria-current="page">{context.localName} context</span>
+</nav>
+
+<header class="term-header">
+  <p class="term-kind"><span class="pill pill--brand">Bounded context</span></p>
+  <h1>{context.localName}</h1>
+  <p class="term-comment">{total} resources in the <code>{context.localName}</code> bounded context (DDD module), each dereferenceable at its own <code>/pdtf</code> page.</p>
+</header>
+
+{groups.map((g) => (
+  <section class="term-section">
+    <h2>{g.heading} <span class="muted">· {g.items.length}</span></h2>
+    <ul class="chip-list">{g.items.map((it) => <li><a href={`/pdtf/${it.id}`}><code>{it.localName}</code></a></li>)}</ul>
+  </section>
+))}
+
+<style>
+  .term-nav { font: 500 var(--text-sm) / 1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+  .term-nav .sep { color: var(--color-border-strong); }
+  .term-header { margin: 0 0 var(--space-6); }
+  .term-kind { margin: 0 0 var(--space-2); }
+  .term-comment { font: 400 var(--text-base) / var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3); padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .muted { color: var(--color-text-muted); }
+  .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip-list code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint); padding: 0.25em var(--space-2);
+    border-radius: var(--radius-sm); color: var(--color-text-muted);
+  }
+</style>

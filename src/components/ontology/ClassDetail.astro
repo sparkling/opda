@@ -104,7 +104,7 @@ const { cls } = Astro.props;
   <section class="term-section">
     <h2>Governing SHACL shapes <span class="muted">· {cls.shapes.length}</span></h2>
     <ul class="chip-list">
-      {cls.shapes.map((s) => <li><code>{s.localName}</code></li>)}
+      {cls.shapes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}
     </ul>
   </section>
 )}
@@ -113,7 +113,7 @@ const { cls } = Astro.props;
   <section class="term-section">
     <h2>SKOS schemes used <span class="muted">· {cls.usesSchemes.length}</span></h2>
     <ul class="chip-list">
-      {cls.usesSchemes.map((s) => <li><code>{s.localName}</code></li>)}
+      {cls.usesSchemes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}
     </ul>
   </section>
 )}

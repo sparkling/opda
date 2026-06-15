@@ -68,7 +68,8 @@ export interface ClassEntry {
 }
 
 export interface Constraint {
-  shape: string;
+  /** Set only when listed under a property (shapesByPath); absent on a shape's own constraints. */
+  shape?: string;
   path: string;
   pathLocal: string;
   datatype: string | null;
@@ -100,11 +101,53 @@ export interface OntologyModel {
   classes: Record<string, ClassEntry>;
   objectProperties: Record<string, PropertyEntry>;
   datatypeProperties: Record<string, PropertyEntry>;
-  // Phase 3 will give these proper interfaces; untyped for now.
-  shapes: Record<string, Record<string, unknown>>;
-  concepts: Record<string, Record<string, unknown>>;
-  schemes: Record<string, Record<string, unknown>>;
-  contexts: Record<string, Record<string, unknown>>;
+  shapes: Record<string, ShapeEntry>;
+  concepts: Record<string, ConceptEntry>;
+  schemes: Record<string, SchemeEntry>;
+  contexts: Record<string, ContextEntry>;
+}
+
+export interface ShapeEntry {
+  uri: string;
+  id: string;
+  localName: string;
+  module: string | null;
+  target: { id: string; localName: string } | null;
+  targetSubjectsOf: string | null;
+  constraints: Constraint[];
+}
+
+export interface ConceptEntry {
+  uri: string;
+  id: string;
+  localName: string;
+  prefLabel: string;
+  definition: string;
+  module: string | null;
+  schemes: Ref[];
+  broader: Ref[];
+  narrower: Ref[];
+  dctSource: string[];
+}
+
+export interface SchemeEntry {
+  uri: string;
+  id: string;
+  localName: string;
+  prefLabel: string;
+  module: string | null;
+  topConcepts: Ref[];
+  concepts: Ref[];
+}
+
+export interface ContextEntry {
+  id: string;
+  localName: string;
+  classes: Ref[];
+  objectProperties: Ref[];
+  datatypeProperties: Ref[];
+  shapes: Ref[];
+  schemes: Ref[];
 }
 
 export const model = modelJson as unknown as OntologyModel;
@@ -132,5 +175,40 @@ export function allTerms(): AnyTerm[] {
     ...Object.values(model.classes).map((c) => ({ entryKind: 'class' as const, ...c })),
     ...Object.values(model.objectProperties).map((p) => ({ entryKind: 'property' as const, ...p })),
     ...Object.values(model.datatypeProperties).map((p) => ({ entryKind: 'property' as const, ...p })),
+  ];
+}
+
+/** The id (path after the opda base) of a full opda IRI; the IRI unchanged otherwise. */
+export const idOf = (uri: string): string => (uri && uri.startsWith(NS) ? uri.slice(NS.length) : uri);
+/** Whether a URI is a dereferenceable opda resource (so it can link to /pdtf). */
+export const isOpda = (uri: string): boolean => !!uri && uri.startsWith(NS);
+
+/** The 7 canonical bounded-context module ids (ADR-0044 Phase-1 refinement). */
+export const CONTEXTS: string[] = Object.keys(model.contexts);
+export const isContext = (m: string | null | undefined): boolean => !!m && CONTEXTS.includes(m);
+/** The /ontology/context page URL for a module, or null if it isn't one of the 7. */
+export const contextUrl = (m: string | null | undefined): string | null =>
+  (isContext(m) ? `/ontology/context/${m}` : null);
+
+/**
+ * Every resource the /pdtf route serves: terms + shapes + concepts + schemes.
+ * (Bounded contexts are NOT here — they are graph-derived module groupings, not
+ * minted opda: term IRIs, so they live at /ontology/context/{id}.)
+ */
+export type AnyResource =
+  | ({ entryKind: 'class' } & ClassEntry)
+  | ({ entryKind: 'property' } & PropertyEntry)
+  | ({ entryKind: 'shape' } & ShapeEntry)
+  | ({ entryKind: 'concept' } & ConceptEntry)
+  | ({ entryKind: 'scheme' } & SchemeEntry);
+
+export function allResources(): AnyResource[] {
+  return [
+    ...Object.values(model.classes).map((c) => ({ entryKind: 'class' as const, ...c })),
+    ...Object.values(model.objectProperties).map((p) => ({ entryKind: 'property' as const, ...p })),
+    ...Object.values(model.datatypeProperties).map((p) => ({ entryKind: 'property' as const, ...p })),
+    ...Object.values(model.shapes).map((s) => ({ entryKind: 'shape' as const, ...s })),
+    ...Object.values(model.concepts).map((c) => ({ entryKind: 'concept' as const, ...c })),
+    ...Object.values(model.schemes).map((s) => ({ entryKind: 'scheme' as const, ...s })),
   ];
 }

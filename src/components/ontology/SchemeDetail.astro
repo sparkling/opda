@@ -1,0 +1,53 @@
+---
+/**
+ * ADR-0044 Phase 3 — SKOS concept-scheme detail (canonical /pdtf/{schemeId}).
+ * Top concepts (when declared) and the full concept membership, each linked to
+ * its own /pdtf concept page.
+ */
+import type { SchemeEntry } from '@/lib/ontology-model';
+import { iri } from '@/lib/ontology-model';
+import TermHeader from './TermHeader.astro';
+
+interface Props { scheme: SchemeEntry; }
+const { scheme } = Astro.props;
+---
+<TermHeader
+  kind="SKOS scheme"
+  label={scheme.prefLabel}
+  localName={scheme.localName}
+  iri={iri(scheme.id)}
+  context={scheme.module}
+  indexUrl="/ontology/vocabularies"
+  indexLabel="Vocabularies"
+/>
+
+{scheme.topConcepts.length > 0 && (
+  <section class="term-section">
+    <h2>Top concepts <span class="muted">· {scheme.topConcepts.length}</span></h2>
+    <ul class="chip-list">{scheme.topConcepts.map((c) => <li><a href={`/pdtf/${c.id}`}><code>{c.localName}</code></a></li>)}</ul>
+  </section>
+)}
+
+<section class="term-section">
+  <h2>Concepts <span class="muted">· {scheme.concepts.length}</span></h2>
+  {scheme.concepts.length === 0
+    ? <p class="muted">No concepts in this scheme.</p>
+    : <ul class="chip-list">{scheme.concepts.map((c) => <li><a href={`/pdtf/${c.id}`}><code>{c.localName}</code></a></li>)}</ul>}
+</section>
+
+<style>
+  .term-section { margin: var(--space-6) 0; }
+  .term-section h2 {
+    font: 600 var(--text-lg) / var(--leading-tight) var(--font-sans);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3); padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .muted { color: var(--color-text-muted); }
+  .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip-list code {
+    font: 400 var(--text-sm) / 1 var(--font-mono);
+    background: var(--color-surface-tint); padding: 0.25em var(--space-2);
+    border-radius: var(--radius-sm); color: var(--color-text-muted);
+  }
+</style>

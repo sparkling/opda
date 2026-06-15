@@ -1,0 +1,26 @@
+---
+/**
+ * ADR-0044 Phase 3 — per bounded-context page. The 7 canonical DDD modules
+ * (ADR-0044 Phase-1 refinement) listed with their member resources, linking
+ * into the /pdtf detail pages. Pure SSG over the committed model JSON.
+ */
+import Layout from '@/layouts/Layout.astro';
+import ContextDetail from '@/components/ontology/ContextDetail.astro';
+import { model } from '@/lib/ontology-model';
+
+export function getStaticPaths() {
+  return Object.values(model.contexts).map((context) => ({
+    params: { slug: context.id },
+    props: { context },
+  }));
+}
+
+const { context } = Astro.props;
+---
+<Layout
+  title={`${context.localName} — bounded context`}
+  description={`The OPDA ${context.localName} bounded context (DDD module): its classes, properties, SHACL shapes and SKOS schemes, each linked to its dereferenceable /pdtf page.`}
+  hideComments={true}
+>
+  <ContextDetail context={context} />
+</Layout>

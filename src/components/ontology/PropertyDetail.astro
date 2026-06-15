@@ -60,7 +60,7 @@ const card = (min: string | null, max: string | null) =>
         <tbody>
           {prop.constraints.map((c) => (
             <tr>
-              <td><code>{c.shape.replace(/^shape\//, '')}</code></td>
+              <td>{c.shape ? <a href={`/pdtf/${c.shape}`}><code>{c.shape.replace(/^shape\//, '')}</code></a> : <span class="muted">—</span>}</td>
               <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{c.class}</code> : <span class="muted">—</span>}</td>
               <td>{card(c.minCount, c.maxCount)}</td>
               <td>{c.severity ?? <span class="muted">—</span>}</td>
