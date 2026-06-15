@@ -105,6 +105,10 @@ ci-ontology-doc:	## Doc-drift gate (ADR-0041): the custom /ontology reference mu
 ci-ontology-model:	## Model doc-drift gate (ADR-0044): regen ontology-model.json from live Fuseki & diff (needs `make serve-data`)
 	node scripts/ci-ontology-model-drift.mjs
 
+.PHONY: check-links
+check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan links on /ontology + /pdtf (needs `make build-data` first)
+	node scripts/check-links.mjs
+
 .PHONY: ci
 ci: test ci-ontology ci-ontology-doc	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"

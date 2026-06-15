@@ -28,7 +28,9 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
 <section class="term-section">
   <h2>Target</h2>
   <dl class="term-dl">
-    {shape.target && (<Fragment><dt>Target class</dt><dd><a href={`/pdtf/${shape.target.id}`}><code>{shape.target.localName}</code></a></dd></Fragment>)}
+    {shape.target && (<Fragment><dt>Target class</dt><dd>{shape.target.id.includes('://')
+      ? <code>{shape.target.localName}</code>
+      : <a href={`/pdtf/${shape.target.id}`}><code>{shape.target.localName}</code></a>}</dd></Fragment>)}
     {tsofId && (<Fragment><dt>Target subjects of</dt><dd>{isOpda(shape.targetSubjectsOf || '') ? <a href={`/pdtf/${tsofId}`}><code>{tsofId}</code></a> : <code>{tsofId}</code>}</dd></Fragment>)}
     {!shape.target && !tsofId && (<Fragment><dt>Target</dt><dd><span class="muted">—</span></dd></Fragment>)}
   </dl>

@@ -231,8 +231,8 @@ const ttlLit = (s: string) => JSON.stringify(String(s ?? ''));
  *  JSON-pointer dct:source ids like harness/data-dictionary/...media[].mediaUrl. */
 const ttlEnc = (id: string) =>
   id.replace(/[^A-Za-z0-9\-._~!$&'()*+,;=:@/%]/g, (ch) => encodeURIComponent(ch));
-/** Full IRI ref for an opda resource id. */
-const ttlRef = (id: string) => `<${NS}${ttlEnc(id)}>`;
+/** Full IRI ref: an external URI as-is, else an opda resource id under the base. */
+const ttlRef = (id: string) => (id.includes('://') ? `<${id}>` : `<${NS}${ttlEnc(id)}>`);
 const ttlRange = (o: Ref) =>
   o.kind === 'datatype'
     ? (o.id.startsWith(XSD) ? `xsd:${o.localName}` : `<${o.id}>`)

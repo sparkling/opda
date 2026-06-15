@@ -84,6 +84,11 @@ jobs:
       - name: Ontology model doc-drift gate (ADR-0044)
         run: git diff --exit-code -- src/data/ontology-model.json
 
+      # ADR-0044 Phase 8 — link-validation sweep over the built site: no dangling
+      # internal links or orphan pages on the /ontology + /pdtf surface.
+      - name: Ontology link-validation sweep (ADR-0044)
+        run: node scripts/check-links.mjs
+
       - name: Assume deploy role (OIDC)
         uses: aws-actions/configure-aws-credentials@v6
         with:
