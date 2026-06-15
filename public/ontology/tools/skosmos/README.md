@@ -1,8 +1,9 @@
 # Skosmos — SKOS vocabulary browser
 
-**Status in this bake-off: NOT STOOD UP (Docker/Fuseki too heavy for this run);
-launch recipe + `make` proposal documented; static scheme list shipped as the
-fallback ([`schemes.html`](./schemes.html)).**
+**Status: STOOD UP (2026-06-14). `make skosmos` runs Skosmos 3.x
+(`quay.io/natlibfi/skosmos`) over the local Fuseki — browse at
+<http://localhost:9090/>. The static scheme list ([`schemes.html`](./schemes.html))
+remains the always-available fallback for the deployed site.**
 
 Skosmos (NatLibFi) is the best-in-class SKOS browser, but it is a **live PHP
 web application** that runs over a SPARQL endpoint — it is not a static
@@ -26,74 +27,69 @@ scheme inventory is visible even without the local stack running.
 - A Skosmos config (`config.ttl`) declaring each `skosmos:Vocabulary` and
   pointing it at the endpoint + the vocabulary's concept-scheme URI.
 
-## Exact localhost launch (official Docker image)
+## Exact localhost launch
 
-With the OPDA Fuseki already up (`make serve-data`) and the vocabularies
-loaded (`make jena-load`):
+The official image moved to **`quay.io/natlibfi/skosmos`** (the Docker Hub
+`natlibfi/skosmos` repo is retired). It is **amd64-only**, so on Apple silicon
+it runs under emulation (`--platform linux/amd64`) — fine for a localhost
+browse tool. `make skosmos` wraps the whole thing; the raw command is:
 
 ```bash
-# 1. Bring up the OPDA triplestore (separate terminal) — loads opda-vocabularies.ttl
+# 1. Bring up the OPDA triplestore (separate terminal) — loads the SKOS corpus
 make serve-data        # Fuseki at :3031, dataset /opda
 
-# 2. Run Skosmos against that endpoint.
-#    --network=host lets the container reach Fuseki on the host's :3031.
-#    Mount a config.ttl that declares the OPDA vocabularies and the sparqlEndpoint.
-docker run --rm -it \
-  --name opda-skosmos \
-  --network=host \
-  -e SKOSMOS_SPARQL_ENDPOINT=http://localhost:3031/opda/sparql \
+# 2. Run Skosmos against it (config.ttl hardcodes host.docker.internal:3031)
+docker run --rm --name opda-skosmos --platform linux/amd64 \
+  -p 9090:80 \
   -v "$PWD/config/skosmos-config.ttl:/var/www/html/config.ttl:ro" \
-  natlibfi/skosmos:latest
+  quay.io/natlibfi/skosmos:latest
 # → browse at http://localhost:9090/
 ```
 
-(On Docker Desktop for macOS, `--network=host` is limited; substitute
-`-p 9090:80` and set `SKOSMOS_SPARQL_ENDPOINT=http://host.docker.internal:3031/opda/sparql`.)
+`-p 9090:80` plus the config's `host.docker.internal:3031` endpoint reaches the
+host Fuseki on Docker Desktop / Rancher Desktop — no `--network=host` needed.
 
-A minimal `config/skosmos-config.ttl` registers one Skosmos vocabulary per
-scheme (or one umbrella vocabulary over the whole `/opda` graph), e.g.:
+The committed `config/skosmos-config.ttl` declares **one umbrella vocabulary**
+over the whole `/opda` graph (all 48 schemes; union-default-graph per ADR-0035,
+so no `skosmos:sparqlGraph` restriction). Two Skosmos-3.x schema points it must
+satisfy — both are **fatal** if wrong, which is why the first attempt 500'd:
 
-```turtle
-@prefix skosmos: <http://purl.org/net/skosmos#> .
-@prefix void:    <http://rdfs.org/ns/void#> .
-@prefix dc:      <http://purl.org/dc/terms/> .
+- `skosmos:languages` is a list of **resources**:
+  `( [ rdfs:label "en" ; rdf:value "en-GB" ] )` — **not** plain `( "en" )`
+  literals (those throw `Call to undefined method EasyRdf\Literal::getLiteral()`
+  in `GlobalConfig::getLanguages`).
+- the per-vocabulary endpoint key is **`void:sparqlEndpoint`** (the global one,
+  on `:config`, is `skosmos:sparqlEndpoint`).
 
-:opda a skosmos:Vocabulary, void:Dataset ;
-    dc:title "OPDA PDTF Vocabularies"@en ;
-    skosmos:sparqlEndpoint <http://localhost:3031/opda/sparql> ;
-    skosmos:sparqlGraph <https://opda.org.uk/pdtf/graph/vocabularies> ;
-    void:uriSpace "https://opda.org.uk/pdtf/" ;
-    skosmos:language "en" .
-```
+## The `make skosmos` target (ADR-0041 B2 localhost-link model)
 
-## Proposed `make` target (ADR-0041 B2 localhost-link model)
-
-Add alongside `serve-data` in the Makefile (wraps an npm script or runs Docker
-directly):
+Shipped in the Makefile alongside `serve-data`:
 
 ```makefile
 .PHONY: skosmos
-skosmos: ## Run Skosmos (SKOS browser) over the local Fuseki — needs `make serve-data` first
-	docker run --rm -it --name opda-skosmos \
+skosmos: ## Browse the SKOS vocabularies in Skosmos over the local Fuseki (needs `make serve-data`) → http://localhost:9090/
+	@docker rm -f opda-skosmos >/dev/null 2>&1 || true
+	@echo "Skosmos → http://localhost:9090/  (needs 'make serve-data' on :3031; Ctrl-C to stop)"
+	docker run --rm --name opda-skosmos --platform linux/amd64 \
 	  -p 9090:80 \
-	  -e SKOSMOS_SPARQL_ENDPOINT=http://host.docker.internal:3031/opda/sparql \
-	  -v "$(PWD)/config/skosmos-config.ttl:/var/www/html/config.ttl:ro" \
-	  natlibfi/skosmos:latest
-	# browse at http://localhost:9090/  (resolves only while this + `make serve-data` run)
+	  -v "$(CURDIR)/config/skosmos-config.ttl:/var/www/html/config.ttl:ro" \
+	  quay.io/natlibfi/skosmos:latest
 ```
 
-The `/ontology` webapp links to `http://localhost:9090/` with a note that the
-link resolves only when the local stack is running — the same contract as the
+The `/ontology/vocabularies` page links to `http://localhost:9090/` with a note
+that it resolves only when the local stack is running — the same contract as the
 existing `make serve-data` links.
 
-## Why not stood up in this run
+## How it was stood up (2026-06-14)
 
-The Docker pull (`natlibfi/skosmos` is a multi-hundred-MB PHP+Apache image) +
-authoring a complete per-scheme `config.ttl` + booting Fuseki and loading the
-corpus is heavier than this bake-off run warrants, and the output is a live
-server that cannot be captured into the static deploy anyway. The decision is
-recorded, the recipe is exact, and the static fallback below carries the
-inventory.
+Pulled `quay.io/natlibfi/skosmos:latest` (amd64, emulated on arm64), mounted the
+committed `config/skosmos-config.ttl`, and verified end-to-end against the live
+Fuseki: the REST API (`/rest/v1/search?query=energy*&vocab=opda`) returns real
+corpus concepts (e.g. `…/pdtf/scheme/peril/Energy`) and the HTML concept pages
+render. The only fix needed was aligning `config.ttl` to the Skosmos-3.x schema
+(the two points above). The live server still cannot be captured into the static
+deploy (B2), so the static `schemes.html` remains the deployed fallback and
+`make skosmos` is the localhost browser.
 
 ## Fallback: static scheme list
 

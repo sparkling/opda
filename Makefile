@@ -63,6 +63,15 @@ api: node_modules	## Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031
 ontology-model: node_modules	## Extract src/data/ontology-model.json from a running Fuseki (ADR-0044 Phase 1; needs `make serve-data`)
 	npm run ontology:model
 
+.PHONY: skosmos
+skosmos: ## Browse the SKOS vocabularies in Skosmos over the local Fuseki (needs `make serve-data`) → http://localhost:9090/
+	@docker rm -f opda-skosmos >/dev/null 2>&1 || true
+	@echo "Skosmos → http://localhost:9090/  (needs 'make serve-data' on :3031; Ctrl-C to stop)"
+	docker run --rm --name opda-skosmos --platform linux/amd64 \
+	  -p 9090:80 \
+	  -v "$(CURDIR)/config/skosmos-config.ttl:/var/www/html/config.ttl:ro" \
+	  quay.io/natlibfi/skosmos:latest
+
 ##@ Ontology (opda-gen — Python, runs in tools/opda-gen)
 .PHONY: ontology-install
 ontology-install:	## Install the opda-gen toolchain (editable + dev extras)

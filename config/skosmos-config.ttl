@@ -4,6 +4,13 @@
 # surfaces all 48 concept schemes / 314 concepts (47 in graph/vocabularies + the
 # BoundedContextScheme in graph/contexts).
 #
+# Schema targets Skosmos 3.x (quay.io/natlibfi/skosmos — the relocated official
+# image; Docker Hub natlibfi/skosmos is retired). Two things differ from the old
+# 2.x recipe and MUST stay: skosmos:languages is a list of
+# [ rdfs:label ; rdf:value ] resources (plain "en" literals fatal-error in
+# GlobalConfig::getLanguages), and the per-vocabulary endpoint is
+# void:sparqlEndpoint. Mirror config.ttl.dist inside the image when in doubt.
+#
 # Run:  make serve-data   (Fuseki on :3031/opda)  then  make skosmos
 # Browse: http://localhost:9090/
 @prefix skosmos: <http://purl.org/net/skosmos#> .
@@ -16,15 +23,20 @@
 
 # ── Global configuration ────────────────────────────────────────────────────
 :config a skosmos:Configuration ;
-    dc:title "OPDA PDTF — SKOS browser" ;
     skosmos:sparqlEndpoint <http://host.docker.internal:3031/opda/sparql> ;
     skosmos:sparqlDialect "Generic" ;
-    skosmos:languages ( "en" ) ;
-    skosmos:uiLanguages ( "en" ) ;
-    skosmos:customCss "resource/css/stylesheet.css" ;
-    skosmos:feedbackAddress "" ;
+    skosmos:sparqlTimeout 20 ;
+    skosmos:httpTimeout 5 ;
+    skosmos:serviceName "OPDA PDTF — SKOS browser" ;
+    skosmos:languages (
+        [ rdfs:label "en" ; rdf:value "en-GB" ]
+    ) ;
+    skosmos:searchResultsSize 20 ;
+    skosmos:transitiveLimit 1000 ;
+    skosmos:logCaughtExceptions false ;
     skosmos:logBrowserConsole true ;
-    skosmos:uiSearchCharacterLimit 1 ;
+    skosmos:templateCache "/tmp/skosmos-template-cache" ;
+    skosmos:feedbackAddress "" ;
     skosmos:globalPlugins () .
 
 # ── Vocabulary: the whole OPDA scheme space ─────────────────────────────────
@@ -35,11 +47,15 @@
     void:uriSpace "https://opda.org.uk/pdtf/" ;
     skosmos:language "en" ;
     skosmos:defaultLanguage "en" ;
-    skosmos:showTopConcepts true ;
-    skosmos:sparqlEndpoint <http://host.docker.internal:3031/opda/sparql> ;
-    skosmos:groupClass skos:Collection .
+    skosmos:showTopConcepts "true" ;
+    skosmos:groupClass skos:Collection ;
+    void:sparqlEndpoint <http://host.docker.internal:3031/opda/sparql> .
 
 # ── Front-page category (Skosmos groups vocabularies under dc:subject) ───────
+:categories a skos:ConceptScheme ;
+    skos:prefLabel "OPDA Vocabulary Categories"@en .
+
 :cat_opda a skos:Concept ;
-    rdfs:label "OPDA"@en ;
+    skos:topConceptOf :categories ;
+    skos:inScheme :categories ;
     skos:prefLabel "OPDA PDTF"@en .
