@@ -1,4 +1,4 @@
-# Claude Code Configuration
+# Codex Configuration
 
 ## Behavioral Rules (Always Enforced)
 
@@ -10,7 +10,7 @@
 - Never continuously check status after spawning a swarm — wait for results
 - ALWAYS read a file before editing it
 - NEVER commit secrets, credentials, or .env files
-- NEVER add a `Co-Authored-By` trailer to user commits unless this project's `.claude/settings.json` has `attribution.commit` set (#2078). The Claude Code Bash tool may suggest one in its default commit-message template — ignore it. `Co-Authored-By` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
+- NEVER add a `Co-Authored-By` trailer to user commits unless this project's `.Codex/settings.json` has `attribution.commit` set (#2078). The Codex Bash tool may suggest one in its default commit-message template — ignore it. `Co-Authored-By` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
 
 ## File Organization
 
@@ -92,7 +92,7 @@ Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run 
 |---|---|---|
 | Multi-file / fan-out work | `Agent` tool, `run_in_background:true`, all spawns in ONE message | Poll status; use CLI as substitute |
 | Reflexive coordination at task start | (skip) | `swarm_init` unless user asked or persistent state needed |
-| User explicitly asked for a claude-flow swarm | `swarm_init` (CLI auto-reuses matching) | `--new` flag unless parallel swarm genuinely needed |
+| User explicitly asked for a Codex-flow swarm | `swarm_init` (CLI auto-reuses matching) | `--new` flag unless parallel swarm genuinely needed |
 
 - DO NOT call `swarm_init` reflexively at task start (ADR-0098 — applies to flat-coordination swarms only).
 - After spawning agents: STOP and wait for results. Do not poll.
@@ -123,7 +123,7 @@ Install only when ALL hold:
 - User confirmed the install
 
 Discovery: `ruflo plugins --help`.
-Install: `/plugin install ruflo-<name>@sparkleideas` (after `/plugin marketplace add sparkling/ruflo`). NEVER `@ruflo` here — that is upstream's marketplace (ADR-0301); never change plugin enable/disable at user scope.
+Install: `/plugin install ruflo-<name>@ruflo` (after `/plugin marketplace add sparkling/ruflo`).
 Tell user to run `/reload-plugins` if commands don't appear post-install.
 
 ## MCP Tools (Deferred)
@@ -159,12 +159,20 @@ If `[INFO] Router not available` appears, proceed normally without routing.
 - Agent type catalog: `ruflo agent list`
 - CLI diagnostics: `ruflo doctor --fix`
 - Architecture decisions for this project: `docs/adr/`
-- Cross-session memory: `~/.claude/projects/<project>/memory/MEMORY.md`
+- Cross-session memory: `~/.Codex/projects/<project>/memory/MEMORY.md`
 - Full feature reference: https://github.com/ruvnet/ruflo/blob/main/docs/USERGUIDE.md
 
 ## Support
 
-One-time bootstrap (user runs once, AI never): `claude mcp add ruflo -- npx -y @sparkleideas/ruflo@latest`
+One-time bootstrap (user runs once, AI never): `Codex mcp add ruflo -- npx -y @sparkleideas/ruflo@latest`
 
 - Documentation: https://github.com/ruvnet/ruflo
 - Issues: https://github.com/ruvnet/ruflo/issues
+
+## Imported Claude Cowork project instructions
+
+I am creating a new linked data project for a new data standard for property data, backed by government, finance, banking, estate agents, surveyors, etc. They already have a JSON standard, first step will be to create the linked data model for these standards. First we need to create a plan, roadmap, and presentations for the approach. This also includes setting up DCAM based data governance, and engaging with stakeholders in activities such as semantic modelling: glossaries, taxonomies, dictionaries, data models, etc.
+
+There is a lot of information here. Follow all links and index them. Transcribe youtube videos and recordings, if not already done. Find all documentation in the github repos. Scan the entire company website. Index links to several levels. 
+
+Download all resources to the folder and organise it. Create a project README.

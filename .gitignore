@@ -92,3 +92,7 @@ public/ontology/artefacts/
 .claude-flow/
 .swarm/
 ruvector.db
+
+# Local scratch / probe outputs (bake-off renders, runtime probes, presentation
+# runs) — regenerable, ~275MB; never tracked.
+/outputs/
