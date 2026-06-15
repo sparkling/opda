@@ -564,7 +564,7 @@ def ci_three_graph(ontology_dir: Path | None) -> None:
         for v in violations:
             click.echo(f"THREE-GRAPH VIOLATION: {v}", err=True)
         sys.exit(1)
-    click.echo("three-graph CI: PASS (all 5 checks)")
+    click.echo("three-graph CI: PASS (all 7 checks)")
 
 
 @main.command(name="ci-dup-declaration")

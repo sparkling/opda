@@ -31,6 +31,8 @@ from opda_gen.ci.three_graph_test import (
     check_no_owl_imports_in_shapes,
     check_no_shacl_in_annotations,
     check_target_class_resolves,
+    check_ufocategory_not_instance_keyed,
+    run_all,
 )
 
 
@@ -96,6 +98,57 @@ def test_ufocategory_in_classes_fail() -> None:
     violations = check_no_advisory_in_classes(g)
     assert len(violations) == 1
     assert "ufoCategory" in violations[0]
+
+
+# Check 6 widened to the full ODR-0029 reasoned union (session-044) — a
+# ufoCategory tag in opda-vocabularies.ttl (a reasoned graph the gate did not
+# previously scan, and the file the ADR-0044 Phase-5c breach reached) must be
+# caught by run_all, not only when it sits in the class graph.
+def test_run_all_widens_check6_to_vocabularies(tmp_path: Path) -> None:
+    prefix = (
+        "@prefix opda: <https://opda.org.uk/pdtf/> .\n"
+        "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+        "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+    )
+    (tmp_path / "opda-classes.ttl").write_text(
+        prefix + "opda:Foo rdf:type owl:Class .\n"
+    )
+    (tmp_path / "opda-shapes.ttl").write_text(prefix)
+    (tmp_path / "opda-annotations.ttl").write_text(prefix)
+    (tmp_path / "opda-vocabularies.ttl").write_text(
+        prefix + 'opda:SomeScheme opda:ufoCategory "Substance Kind" .\n'
+    )
+    violations = run_all(tmp_path)
+    assert any(
+        "ufoCategory" in v and "reasoned-union" in v for v in violations
+    ), violations
+
+
+# Check 7 (session-044) — the opda:ufoCategory sh:in meta-shape must stay a
+# value-space guard (sh:targetSubjectsOf), never instance-keyed via a
+# domain-class target (ODR-0030 trigger (i); ODR-0031 R3).
+def test_ufocategory_metashape_value_guard_passes() -> None:
+    g = Graph()
+    shp = OPDA_SHAPE.UFOCategoryValue_MetaShape
+    ps = OPDA_SHAPE.UFOCategoryValue_PropShape
+    g.add((shp, RDF.type, SH.NodeShape))
+    g.add((shp, SH.targetSubjectsOf, OPDA.ufoCategory))
+    g.add((shp, SH.property, ps))
+    g.add((ps, SH.path, OPDA.ufoCategory))
+    assert check_ufocategory_not_instance_keyed(g) == []
+
+
+def test_ufocategory_metashape_instance_keyed_fails() -> None:
+    g = Graph()
+    shp = OPDA_SHAPE.UFOCategoryValue_MetaShape
+    ps = OPDA_SHAPE.UFOCategoryValue_PropShape
+    g.add((shp, RDF.type, SH.NodeShape))
+    g.add((shp, SH.targetClass, OPDA.Proprietorship))  # the forbidden regression
+    g.add((shp, SH.property, ps))
+    g.add((ps, SH.path, OPDA.ufoCategory))
+    violations = check_ufocategory_not_instance_keyed(g)
+    assert len(violations) == 1
+    assert "instance-keyed" in violations[0]
 
 
 def test_target_class_resolves_pass() -> None:

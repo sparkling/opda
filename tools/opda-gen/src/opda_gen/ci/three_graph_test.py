@@ -18,10 +18,13 @@ Each check is one function returning a list of violation strings. Empty list
 == PASS. The implementing functions document the exact ODR-0004 §3a clause
 they enforce in the docstring.
 
-The full corpus check (`run_all`) executes all five checks across a directory
+The full corpus check (`run_all`) executes all seven checks across a directory
 containing `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`,
-and (per check #5) optionally `derived/` artefacts whose git history is
-inspected for non-service-account commits.
+the 6 per-module TTLs, plus `opda-vocabularies.ttl` + `opda-contexts.ttl` (the
+ODR-0029 reasoned union, scanned by check 6), and (per check #5) optionally
+`derived/` artefacts whose git history is inspected for non-service-account
+commits. Checks 6-7 (ufoCategory quarantine + meta-shape guard) realise
+ODR-0030/0031 + the session-044 regression-hardening.
 """
 
 from __future__ import annotations
@@ -259,11 +262,16 @@ CLASSES_FORBIDDEN_PREDICATES: list[URIRef] = [
 
 
 def check_no_advisory_in_classes(class_graph: Graph) -> list[str]:
-    """Enforce ODR-0031 R2 / ADR-0045:
+    """Enforce ODR-0031 R2 / ADR-0045 across the FULL ODR-0029 reasoned union:
 
-      ASK { GRAPH opda:classes { ?s opda:ufoCategory ?o } } (and the rest of
-      the advisory-predicate family — opda:aiHint / uiHint / exampleValue)
-      MUST return false.
+      ASK { ?s opda:ufoCategory ?o } (and the rest of the advisory-predicate
+      family — opda:aiHint / uiHint / exampleValue) over every graph the
+      ODR-0029 entailment regime unions over MUST return false.
+
+    `run_all` passes the full reasoned union here — classes + 6 modules +
+    opda-vocabularies.ttl + opda-contexts.ttl (session-044 regression-hardening:
+    opda-vocabularies.ttl is a file the ADR-0044 Phase 5c breach actually
+    reached, and was previously outside this check's scan).
 
     Returns a list of violation strings (empty == PASS).
     """
@@ -271,9 +279,55 @@ def check_no_advisory_in_classes(class_graph: Graph) -> list[str]:
     for predicate in CLASSES_FORBIDDEN_PREDICATES:
         for s, _p, o in class_graph.triples((None, predicate, None)):
             violations.append(
-                f"classes graph contains advisory predicate {predicate} "
+                f"reasoned-union graph contains advisory predicate {predicate} "
                 f"on {s} = {o} (ODR-0030 Rule 1: annotation-graph-only)"
             )
+    return violations
+
+
+# ---------------------------------------------------------------------------
+# Check 7: the opda:ufoCategory sh:in meta-shape stays a value-space guard,
+# never instance-keyed (session-044 / ODR-0030 trigger (i) / ODR-0031 R3).
+# ---------------------------------------------------------------------------
+def check_ufocategory_not_instance_keyed(shapes_graph: Graph) -> list[str]:
+    """Enforce the session-044 regression guard (ODR-0030 re-open trigger (i)).
+
+    The opda:ufoCategory `sh:in` meta-shape governs the FACET'S OWN value-space
+    (`sh:targetSubjectsOf opda:ufoCategory` — the nine UFO categories). It MUST
+    NOT acquire a domain-class target (`sh:targetClass` / `sh:targetNode`): that
+    would key the ufoCategory constraint onto tagged *instances'* structure and
+    re-fire ODR-0030 trigger (i) into the SHACL instance-validation union (the
+    facet must stay an inert annotation on the wire — ODR-0031 R3). Check 4
+    (`check_target_class_resolves`) silently PASSES such a regression because the
+    domain class resolves — hence this dedicated guard.
+
+    A node shape "validates ufoCategory" if it `sh:targetSubjectsOf` /
+    `sh:targetObjectsOf opda:ufoCategory`, or owns (via `sh:property` / `sh:node`)
+    a shape whose `sh:path` is opda:ufoCategory. Such a shape carrying
+    `sh:targetClass` or `sh:targetNode` is a violation.
+
+    Returns a list of violation strings (empty == PASS).
+    """
+    concerned: set = set()
+    for pred in (SH.targetSubjectsOf, SH.targetObjectsOf):
+        for s, _p, _o in shapes_graph.triples((None, pred, OPDA.ufoCategory)):
+            concerned.add(s)
+    for ps, _p, _o in shapes_graph.triples((None, SH.path, OPDA.ufoCategory)):
+        concerned.add(ps)
+        for owner, _p2, _o2 in shapes_graph.triples((None, SH.property, ps)):
+            concerned.add(owner)
+        for owner, _p2, _o2 in shapes_graph.triples((None, SH.node, ps)):
+            concerned.add(owner)
+    violations: list[str] = []
+    for shp in concerned:
+        for forbidden in (SH.targetClass, SH.targetNode):
+            for _s, _p, o in shapes_graph.triples((shp, forbidden, None)):
+                violations.append(
+                    f"ufoCategory meta-shape {shp} carries {forbidden} {o} — the "
+                    "opda:ufoCategory sh:in guard MUST stay a value-space check "
+                    "(sh:targetSubjectsOf opda:ufoCategory), never instance-keyed "
+                    "via a domain-class target (ODR-0030 trigger (i); ODR-0031 R3)."
+                )
     return violations
 
 
@@ -281,9 +335,9 @@ def check_no_advisory_in_classes(class_graph: Graph) -> list[str]:
 # Orchestration.
 # ---------------------------------------------------------------------------
 def run_all(ontology_dir: Path) -> list[str]:
-    """Run all six checks against an emission directory.
+    """Run all seven checks against an emission directory.
 
-    Returns a flat list of violation strings across all six checks (empty
+    Returns a flat list of violation strings across all seven checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
 
@@ -343,10 +397,26 @@ def run_all(ontology_dir: Path) -> list[str]:
         if apath.exists():
             annotations_g.parse(str(apath), format="turtle")
 
+    # The ODR-0029 reasoned union (the entailment regime's _TBOX_TTLS) is
+    # classes + 6 modules PLUS opda-vocabularies.ttl + opda-contexts.ttl. The
+    # advisory-predicate quarantine (check 6) must cover that FULL union, not
+    # just the class graph — opda-vocabularies.ttl is a file the ADR-0044 Phase
+    # 5c breach actually reached (session-044 regression-hardening). classes_g
+    # stays classes+modules only so check 4 (target resolution) is unchanged;
+    # reasoned_g adds the two SKOS graphs for check 6.
+    reasoned_g = Graph()
+    for _t in classes_g:
+        reasoned_g.add(_t)
+    for _extra in ("opda-vocabularies.ttl", "opda-contexts.ttl"):
+        _epath = ontology_dir / _extra
+        if _epath.exists():
+            reasoned_g.parse(str(_epath), format="turtle")
+
     out.extend(check_no_shacl_in_annotations(annotations_g))
     out.extend(check_no_owl_imports_in_shapes(shapes_g))
     out.extend(check_no_advisory_in_shapes(shapes_g))
     out.extend(check_target_class_resolves(shapes_g, classes_g))
     out.extend(check_derived_provenance(ontology_dir / "derived"))
-    out.extend(check_no_advisory_in_classes(classes_g))
+    out.extend(check_no_advisory_in_classes(reasoned_g))
+    out.extend(check_ufocategory_not_instance_keyed(shapes_g))
     return out
