@@ -179,6 +179,12 @@ async function main() {
     env: { ...process.env, FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql` },
   });
 
+  // 3.6 Derive the Cytoscape graph elements (ADR-0043) from the committed model
+  //     — a pure transform (no Fuseki), kept fresh here so the deploy workflow's
+  //     post-build `git diff` catches any drift, same as the model JSON above.
+  console.log('3.6 Derive ontology graph elements → public/data/ontology-graph-elements.json');
+  await run('node', [path.join(ROOT, 'scripts', 'ontology-graph.mjs')]);
+
   if (SERVE) {
     console.log(
       `\nServices up — leave this running:\n` +

@@ -1,0 +1,176 @@
+---
+/**
+ * /ontology/graph — the interactive whole-ontology node-link graph (ADR-0043).
+ *
+ * A Cytoscape.js island (public/ui/ontology-graph.js) renders the committed,
+ * deterministic src/data/ontology-graph-elements.json (derived from the SPARQL
+ * model by scripts/ontology-graph.mjs). Server-less: the engine lazy-loads from
+ * the jsdelivr CDN client-side (the Mermaid pattern), so the page is pure SSG.
+ *
+ * Default view is the OWL class backbone (classes + object properties); the SKOS
+ * layer (concept schemes + concepts) is one toggle away — the ADR's answer to
+ * "the 300+ SKOS concepts must not be invisible, but the whole graph must not be
+ * a default hairball". Class colour encodes the opda:ufoCategory facet.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { model } from '@/lib/ontology-model';
+
+const counts = model.counts;
+
+// UFO meta-category legend — MUST mirror UFO_COLORS in public/ui/ontology-graph.js
+// (Okabe–Ito colour-blind-safe palette; one semantic colour encoding).
+const UFO_LEGEND: [string, string][] = [
+  ['Substance Kind', '#0072B2'],
+  ['Relator', '#D55E00'],
+  ['Role', '#009E73'],
+  ['RoleMixin', '#56B4E9'],
+  ['Event', '#CC79A7'],
+  ['Information Object', '#E69F00'],
+  ['Quality', '#B22222'],
+  ['Quality Value', '#8C5E2A'],
+  ['Collective', '#7F7F7F'],
+];
+const clientV = '1';
+---
+<Layout
+  title="Ontology graph — interactive"
+  description="The whole OPDA ontology as an interactive node-link graph: the OWL class backbone with the SKOS concept-scheme layer one toggle away. Zoom, filter by bounded context, and focus a term's neighbourhood. Rendered with Cytoscape.js from the committed SPARQL-derived model (ADR-0043)."
+  hideComments={true}
+>
+  <nav class="term-nav" aria-label="Breadcrumb">
+    <a href="/ontology">Ontology</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">Interactive graph</span>
+  </nav>
+
+  <header class="term-header">
+    <p class="term-kind"><span class="pill pill--brand">Interactive graph</span></p>
+    <h1>Ontology graph</h1>
+    <p class="term-comment">
+      The whole ontology as a node-link graph, rendered with
+      <a href="https://js.cytoscape.org" rel="external">Cytoscape.js</a> from the committed
+      SPARQL-derived model (<a href="/resource?path=docs/adr/ADR-0043-ontology-graph-diagram-tooling.md">ADR-0043</a>). The default view is the
+      <strong>OWL class backbone</strong> — the {counts.classes} classes coloured by their
+      <a href="/ontology/foundational-ontology"><code>opda:ufoCategory</code></a> facet, linked by the
+      {counts.objectProps} object properties. Flip <strong>Show SKOS layer</strong> to add the
+      {counts.schemes} concept schemes and {counts.concepts} coded concepts. Click any node to focus its
+      neighbourhood and open its dereferenceable <code>/pdtf</code> page.
+    </p>
+  </header>
+
+  <div id="og-root" class="og-root">
+    <div class="og-toolbar" role="group" aria-label="Graph controls">
+      <label class="og-ctl">Layout
+        <select id="og-layout">
+          <option value="fcose">Force (whole graph)</option>
+          <option value="breadthfirst">Hierarchy (tree)</option>
+          <option value="concentric">Concentric (by degree)</option>
+          <option value="circle">Circle</option>
+          <option value="grid">Grid</option>
+        </select>
+      </label>
+      <label class="og-ctl">Context
+        <select id="og-module"><option value="">All modules</option></select>
+      </label>
+      <label class="og-ctl og-ctl--check">
+        <input type="checkbox" id="og-skos" /> Show SKOS layer
+      </label>
+      <label class="og-ctl">Find
+        <input type="search" id="og-search" placeholder="class / concept name…" autocomplete="off" />
+      </label>
+      <button type="button" id="og-reset" class="og-btn">Reset</button>
+      <span id="og-status" class="og-status" aria-live="polite">Initialising…</span>
+    </div>
+
+    <div class="og-stage">
+      <div id="ontology-graph" class="og-canvas" role="img"
+           aria-label="Interactive node-link graph of the OPDA ontology. Requires JavaScript; the typed indexes under /ontology are the non-interactive equivalent."></div>
+      <aside class="og-side">
+        <div id="og-info" class="og-info"></div>
+        <div class="og-legend">
+          <h4>UFO meta-category</h4>
+          <ul>
+            {UFO_LEGEND.map(([name, color]) => (
+              <li><span class="og-swatch" style={`background:${color}`}></span>{name}</li>
+            ))}
+          </ul>
+          <h4>Node type</h4>
+          <ul class="og-legend--shapes">
+            <li><span class="og-swatch og-swatch--scheme"></span>Concept scheme (SKOS)</li>
+            <li><span class="og-swatch og-swatch--concept"></span>Concept (SKOS)</li>
+            <li><span class="og-swatch og-swatch--external"></span>External target</li>
+            <li><span class="og-swatch og-swatch--shape"></span>Has SHACL shape</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <noscript>
+      <p class="og-noscript">This interactive graph needs JavaScript. The same model is available as
+        the typed indexes under <a href="/ontology/classes">Classes</a>,
+        <a href="/ontology/vocabularies">Vocabularies</a> and
+        <a href="/ontology/shapes">Shapes</a>.</p>
+    </noscript>
+  </div>
+
+  <h2 id="related">Related</h2>
+  <p>
+    Per-term pages: <a href="/ontology/classes">Classes</a> ·
+    <a href="/ontology/vocabularies">Vocabularies (SKOS)</a> ·
+    <a href="/ontology/shapes">Shapes (SHACL)</a>. The classification doctrine behind the colours:
+    <a href="/ontology/identity#doctrine">Identity &amp; classification</a>. Tooling decision:
+    <a href="/resource?path=docs/adr/ADR-0043-ontology-graph-diagram-tooling.md">ADR-0043</a>.
+  </p>
+
+  <style>
+    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .term-nav .sep { color: var(--color-border-strong); }
+    .term-header { margin: 0 0 var(--space-5); }
+    .term-kind { margin: 0 0 var(--space-2); }
+    .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; max-width: 72ch; }
+
+    .og-root { margin: var(--space-5) 0; }
+    .og-toolbar { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: end; padding: var(--space-3); background: var(--color-surface-tint); border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px); margin: 0 0 var(--space-3); }
+    .og-ctl { display: flex; flex-direction: column; gap: var(--space-1); font: 600 var(--text-xs)/1.3 var(--font-sans); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .03em; }
+    .og-ctl--check { flex-direction: row; align-items: center; gap: var(--space-2); text-transform: none; letter-spacing: 0; font-size: var(--text-sm); color: var(--color-text); align-self: center; }
+    .og-ctl select, .og-ctl input[type="search"] { font: 400 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 6px; padding: var(--space-1) var(--space-2); min-width: 11rem; }
+    .og-btn { font: 600 var(--text-sm)/1 var(--font-sans); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 6px; padding: var(--space-2) var(--space-3); cursor: pointer; align-self: center; }
+    .og-btn:hover { border-color: var(--color-brand-500); }
+    .og-status { font: 400 var(--text-xs)/1.4 var(--font-sans); color: var(--color-text-muted); margin-left: auto; align-self: center; }
+
+    .og-stage { display: grid; grid-template-columns: 1fr 17rem; gap: var(--space-3); }
+    .og-canvas { height: 72vh; min-height: 30rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px); }
+    .og-side { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+    .og-info { padding: var(--space-3); background: var(--color-surface-tint); border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px); min-height: 6rem; }
+    .og-info h3 { font: 700 var(--text-base)/1.3 var(--font-mono, monospace); color: var(--color-text-strong); margin: 0 0 var(--space-2); word-break: break-word; }
+    .og-info .og-meta { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-2) 0 0; font-size: var(--text-xs); color: var(--color-text-muted); }
+    .og-info .og-pill { background: var(--color-surface-inset); border: 1px solid var(--color-border); border-radius: 999px; padding: 1px var(--space-2); }
+    .og-info .og-hint { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0; }
+    .og-legend { padding: var(--space-3); background: var(--color-surface-tint); border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px); }
+    .og-legend h4 { font: 600 var(--text-xs)/1.3 var(--font-sans); text-transform: uppercase; letter-spacing: .03em; color: var(--color-text-muted); margin: 0 0 var(--space-2); }
+    .og-legend h4:not(:first-child) { margin-top: var(--space-3); }
+    .og-legend ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+    .og-legend li { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); color: var(--color-text); }
+    .og-swatch { width: 14px; height: 14px; border-radius: 50%; flex: none; border: 1px solid var(--color-border-strong); }
+    .og-swatch--scheme { background: #6E56CF; border-radius: 3px; }
+    .og-swatch--concept { background: #9E8CFC; }
+    .og-swatch--external { background: #9E9E9E; transform: rotate(45deg); border-radius: 2px; }
+    .og-swatch--shape { background: transparent; border: 3px double var(--color-brand-500); }
+    .og-noscript, .og-info a { font-size: var(--text-sm); }
+    @media (max-width: 56rem) { .og-stage { grid-template-columns: 1fr; } .og-canvas { height: 60vh; } }
+  </style>
+
+  <script slot="scripts" is:inline data-astro-rerun src={`/ui/ontology-graph.js?v=${clientV}`}></script>
+  <script slot="scripts" is:inline data-astro-rerun>
+    // Mount is deferred to astro:page-load so ontology-graph.js (the src script
+    // above) has finished loading and set window.OPDA_GRAPH. The handler is
+    // stored on window so each re-run (data-astro-rerun) removes the previous
+    // listener, preventing multiple mounts across view-transition navigation.
+    if (window._opdaGraphMount) {
+      document.removeEventListener('astro:page-load', window._opdaGraphMount);
+    }
+    window._opdaGraphMount = function () {
+      if (window.OPDA_GRAPH && document.getElementById('og-root')) window.OPDA_GRAPH.mount();
+    };
+    document.addEventListener('astro:page-load', window._opdaGraphMount);
+  </script>
+</Layout>

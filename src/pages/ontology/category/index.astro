@@ -1,0 +1,69 @@
+---
+/**
+ * /ontology/category — the UFO meta-category index (ADR-0044 Phase 5c).
+ * Lists every UFO foundational meta-category borne by an OPDA class, read from
+ * the structured opda:ufoCategory facet, each linking to its /ontology/category/
+ * {slug} page. Pure SSG.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { ufoCategories } from '@/lib/ontology-model';
+
+const cats = ufoCategories();
+const totalClasses = cats.reduce((n, c) => n + c.classes.length, 0);
+---
+<Layout
+  title="UFO categories — index"
+  description="Every UFO foundational meta-category borne by an OPDA ontology class, from the structured opda:ufoCategory facet. Each category links to the classes classified under it."
+  hideComments={true}
+>
+  <nav class="term-nav" aria-label="Breadcrumb">
+    <a href="/ontology">Ontology</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">UFO categories</span>
+  </nav>
+
+  <header class="term-header">
+    <p class="term-kind"><span class="pill pill--brand">UFO meta-categories</span></p>
+    <h1>UFO categories</h1>
+    <p class="term-comment">
+      The {cats.length} UFO foundational meta-categories borne by the {totalClasses} OPDA classes — from the inert
+      <code>opda:ufoCategory</code> facet (an annotation-graph-only documentary annotation;
+      <a href="/ontology/foundational-ontology">UFO-informed, not UFO-grounded</a>). The classification doctrine
+      keeps kinds as facets, not subclass trees (<a href="/ontology/identity#doctrine">ODR-0027</a>).
+    </p>
+  </header>
+
+  <section class="term-section">
+    <h2>Categories <span class="muted">· {cats.length}</span></h2>
+    <table>
+      <thead><tr><th>UFO meta-category</th><th>Classes</th></tr></thead>
+      <tbody>
+        {cats.map((c) => (
+          <tr>
+            <td><a href={`/ontology/category/${c.slug}`}>{c.category}</a></td>
+            <td>{c.classes.length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <h2 id="related">Related</h2>
+  <p>
+    All classes by module: <a href="/ontology/classes">Classes</a>; the UFO meta-category legend:
+    <a href="/ontology/foundation#ufo">Foundations</a>; the classification doctrine:
+    <a href="/ontology/identity#doctrine">Identity &amp; classification</a>. Full index:
+    <a href="/ontology/glossary">Index &amp; glossary</a>.
+  </p>
+
+  <style>
+    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .term-nav .sep { color: var(--color-border-strong); }
+    .term-header { margin: 0 0 var(--space-6); }
+    .term-kind { margin: 0 0 var(--space-2); }
+    .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }
+    .term-section { margin: var(--space-6) 0; }
+    .term-section h2 { font: 600 var(--text-lg)/var(--leading-tight) var(--font-sans); color: var(--color-text-strong); margin: 0 0 var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .muted { color: var(--color-text-muted); }
+  </style>
+</Layout>
