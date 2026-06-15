@@ -10,7 +10,7 @@ PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX sh:   <http://www.w3.org/ns/shacl#>
-PREFIX opda: <https://w3id.org/opda/#>
+PREFIX opda: <https://opda.org.uk/pdtf/>
 
 SELECT DISTINCT
   ?uri
@@ -23,15 +23,15 @@ SELECT DISTINCT
 WHERE {
   # All data is in named graphs — use GRAPH * to search across all graphs
   GRAPH ?g { ?uri a owl:Class }
-  FILTER(STRSTARTS(STR(?uri), "https://w3id.org/opda/#"))
+  FILTER(STRSTARTS(STR(?uri), "https://opda.org.uk/pdtf/"))
 
   OPTIONAL { GRAPH ?lg { ?uri rdfs:label ?rawLabel . FILTER(LANG(?rawLabel) = "en") } }
   BIND(COALESCE(?rawLabel, REPLACE(STR(?uri), "^.*[/#]", "")) AS ?label)
 
   # Derive module from the named graph IRI
-  # Each TTL is loaded into https://w3id.org/opda/graph/{name} by fuseki-load.mjs.
+  # Each TTL is loaded into https://opda.org.uk/pdtf/graph/{name} by fuseki-load.mjs.
   # opda-property.ttl → graph/property; foundation.ttl → graph/foundation
-  BIND(REPLACE(STR(?g), "^https://w3id.org/opda/graph/", "") AS ?rawModule)
+  BIND(REPLACE(STR(?g), "^https://opda.org.uk/pdtf/graph/", "") AS ?rawModule)
   BIND(REPLACE(?rawModule, "-(shapes|annotations|annotation)s?$", "") AS ?module)
 
   # Detect SHACL shapes targeting this class (→ physical-ontology tier page exists)

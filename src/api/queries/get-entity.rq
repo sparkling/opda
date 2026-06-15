@@ -14,7 +14,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX sh:   <http://www.w3.org/ns/shacl#>
 PREFIX dct:  <http://purl.org/dc/terms/>
 PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
-PREFIX opda: <https://w3id.org/opda/#>
+PREFIX opda: <https://opda.org.uk/pdtf/>
 
 SELECT ?rowType ?uri ?localName ?label ?module ?summary ?scopeNote
        ?dctSourceUri
@@ -23,7 +23,7 @@ SELECT ?rowType ?uri ?localName ?label ?module ?summary ?scopeNote
        ?constraintMessage ?constraintSeverity ?shapeName
 WHERE {
   # Resolve localName to opda: IRI
-  BIND(IRI(CONCAT("https://w3id.org/opda/#", ?_localName_literal)) AS ?uri)
+  BIND(IRI(CONCAT("https://opda.org.uk/pdtf/", ?_localName_literal)) AS ?uri)
 
   # All data is in named graphs; confirm the class exists somewhere
   GRAPH ?classGraph { ?uri a owl:Class }
@@ -35,7 +35,7 @@ WHERE {
     BIND(COALESCE(?rawLabel, ?_localName_literal) AS ?label)
     BIND(?_localName_literal AS ?localName)
     # Derive module from named graph IRI (e.g. .../graph/property → property)
-    BIND(REPLACE(STR(?classGraph), "^https://w3id.org/opda/graph/", "") AS ?module)
+    BIND(REPLACE(STR(?classGraph), "^https://opda.org.uk/pdtf/graph/", "") AS ?module)
     OPTIONAL { GRAPH ?cg { ?uri rdfs:comment ?summary } }
     OPTIONAL { GRAPH ?sg { ?uri skos:scopeNote ?scopeNote } }
   }

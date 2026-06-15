@@ -65,14 +65,14 @@ export function bindGrlcParams(queryText, bindings, pagination) {
 
 function sendNotFound(res, detail, instance) {
   return res.status(404).set('Content-Type', 'application/problem+json').json({
-    type: 'https://w3id.org/opda/problems/not-found',
+    type: 'https://opda.org.uk/pdtf/problems/not-found',
     title: 'Resource Not Found', status: 404, detail, instance,
   });
 }
 
 function sendBadRequest(res, detail, instance) {
   return res.status(400).set('Content-Type', 'application/problem+json').json({
-    type: 'https://w3id.org/opda/problems/bad-request',
+    type: 'https://opda.org.uk/pdtf/problems/bad-request',
     title: 'Bad Request', status: 400, detail, instance,
   });
 }

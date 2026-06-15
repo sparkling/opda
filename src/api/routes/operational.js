@@ -45,7 +45,7 @@ router.get('/cache', (_req, res) => {
 // GET /namespaces
 router.get('/namespaces', (_req, res) => {
   const namespaces = getNamespaces();
-  const OPDA_ROOT = 'https://w3id.org/opda/';
+  const OPDA_ROOT = 'https://opda.org.uk/pdtf/';
   const items = Object.entries(namespaces).map(([prefix, iri]) => ({
     prefix, iri,
     source: iri.startsWith(OPDA_ROOT) ? 'internal' : 'external',
@@ -59,8 +59,8 @@ router.get('/namespaces', (_req, res) => {
 // SPARQL pass-through (read-only)
 router.get('/sparql', async (req, res, next) => {
   const { query } = req.query;
-  if (!query) return res.status(400).json({ type: 'https://w3id.org/opda/problems/bad-request', title: 'Bad Request', status: 400, detail: 'Missing query parameter', instance: '/sparql' });
-  if (FORBIDDEN_PATTERN.test(query)) return res.status(403).json({ type: 'https://w3id.org/opda/problems/forbidden', title: 'Forbidden', status: 403, detail: 'Only SELECT/CONSTRUCT allowed', instance: '/sparql' });
+  if (!query) return res.status(400).json({ type: 'https://opda.org.uk/pdtf/problems/bad-request', title: 'Bad Request', status: 400, detail: 'Missing query parameter', instance: '/sparql' });
+  if (FORBIDDEN_PATTERN.test(query)) return res.status(403).json({ type: 'https://opda.org.uk/pdtf/problems/forbidden', title: 'Forbidden', status: 403, detail: 'Only SELECT/CONSTRUCT allowed', instance: '/sparql' });
   try {
     const accept = req.get('Accept') || 'application/sparql-results+json';
     const { body, contentType } = await executeSparqlDirect(query, accept);

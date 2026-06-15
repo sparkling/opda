@@ -371,7 +371,7 @@ def resolve_term(
 # audit in both directions that ODR-0008 §Q3a requires. The IRI follows the
 # `…/forms/<overlay>#<leaf.path>` shape ratified for per-leaf provenance
 # (ADR-0029 §"ODR-0010 canonical mapping" Rule 4; ADR-0028 §"the walk"),
-# minted under the stable `w3id.org/opda` redirect (ODR-0004 §1 base).
+# minted under the stable `opda.org.uk/pdtf` base (ODR-0004 §1 / ADR-0006 as-built).
 _SCHEMA_LEAF_AUTHORITY = "https://opda.org.uk/pdtf/harness/forms"
 
 

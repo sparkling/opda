@@ -3,10 +3,10 @@
 #+ method: GET
 
 PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-PREFIX opda: <https://w3id.org/opda/#>
+PREFIX opda: <https://opda.org.uk/pdtf/>
 
 SELECT (COUNT(DISTINCT ?uri) AS ?total)
 WHERE {
   GRAPH ?g { ?uri a owl:Class }
-  FILTER(STRSTARTS(STR(?uri), "https://w3id.org/opda/#"))
+  FILTER(STRSTARTS(STR(?uri), "https://opda.org.uk/pdtf/"))
 }

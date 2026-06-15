@@ -106,7 +106,7 @@ try {
 // ---------------------------------------------------------------------------
 app.use((req, res) => {
   res.status(404).set('Content-Type', 'application/problem+json').json({
-    type: 'https://w3id.org/opda/problems/not-found',
+    type: 'https://opda.org.uk/pdtf/problems/not-found',
     title: 'Resource Not Found', status: 404,
     detail: `No route matches ${req.method} ${req.path}`,
     instance: req.path,
@@ -117,7 +117,7 @@ app.use((req, res) => {
 app.use((err, _req, res, _next) => {
   const status = err.status || 500;
   res.status(status).json({
-    type: `https://w3id.org/opda/problems/${err.code || 'internal-error'}`,
+    type: `https://opda.org.uk/pdtf/problems/${err.code || 'internal-error'}`,
     title: 'Internal Server Error', status,
     detail: err.message, instance: _req.path,
   });

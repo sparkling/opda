@@ -33,7 +33,7 @@ Returns all `owl:Class` entities across the opda namespace.
   "totalPages": 1,
   "items": [
     {
-      "uri": "https://w3id.org/opda/#Property",
+      "uri": "https://opda.org.uk/pdtf/Property",
       "localName": "Property",
       "label": "Property",
       "module": "property",
@@ -44,7 +44,7 @@ Returns all `owl:Class` entities across the opda namespace.
 }
 ```
 
-- `module` — derived from named graph IRI (`https://w3id.org/opda/graph/{module}`)
+- `module` — derived from named graph IRI (`https://opda.org.uk/pdtf/graph/{module}`)
 - `tiers` — `concept` + `logical` always present; `physical-ontology` when a `sh:NodeShape` targets the class
 
 ### `GET /api/entities/{tier}/{module}/{localName}`
@@ -54,14 +54,14 @@ Returns full structured data for a single entity. Tier is one of `concept`, `log
 **Response shape:**
 ```json
 {
-  "uri": "https://w3id.org/opda/#Property",
+  "uri": "https://opda.org.uk/pdtf/Property",
   "localName": "Property",
   "label": "Property",
   "module": "property",
   "tier": "logical",
   "summary": "Physical property. UFO Substance Kind...",
   "scopeNote": "DOLCE: Endurant / PhysicalObject...",
-  "dctSource": ["https://w3id.org/opda/odr/ODR-0005#section-2a"],
+  "dctSource": ["https://opda.org.uk/pdtf/odr/ODR-0005#section-2a"],
   "attributes": [
     {
       "localName": "areBoundariesUniform",
@@ -138,7 +138,7 @@ The engine (`lib/grlc-engine.js`) reads these files, parses decorators, determin
 
 ### Named graph module derivation
 
-Each TTL is loaded into a named graph `https://w3id.org/opda/graph/{module}` by `scripts/fuseki-load.mjs`. Example: `opda-property.ttl` → `graph/property`. The SPARQL queries use `GRAPH ?g { ?uri a owl:Class }` and extract the module from the IRI: `REPLACE(STR(?g), "^https://w3id.org/opda/graph/", "")`.
+Each TTL is loaded into a named graph `https://opda.org.uk/pdtf/graph/{module}` by `scripts/fuseki-load.mjs`. Example: `opda-property.ttl` → `graph/property`. The SPARQL queries use `GRAPH ?g { ?uri a owl:Class }` and extract the module from the IRI: `REPLACE(STR(?g), "^https://opda.org.uk/pdtf/graph/", "")`.
 
 ### SHACL blank-node join
 

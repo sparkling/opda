@@ -2,8 +2,8 @@
  * Namespace map for opda — resolves opda: and standard W3C prefixes.
  * Adapted from hm/semantic-modelling for opda (ADR-0021).
  *
- * opda: prefix = https://w3id.org/opda/#
- * (confirmed from @prefix opda: <https://w3id.org/opda/#> in opda TTLs)
+ * opda: prefix = https://opda.org.uk/pdtf/
+ * (confirmed from @prefix opda: <https://opda.org.uk/pdtf/> in opda TTLs)
  */
 
 /** Standard prefixes used by the opda ontology TTLs. */
@@ -19,7 +19,13 @@ const W3C_PREFIXES = {
   vann:  'http://purl.org/vocab/vann/',
   time:  'http://www.w3.org/2006/time#',
   vcard: 'http://www.w3.org/2006/vcard/ns#',
-  opda:  'https://w3id.org/opda/#',
+  // opda kind-namespace split (ADR-0006 as-built; the longest-first sort below
+  // makes these sub-namespaces win over the flat term base).
+  'opda-scheme':  'https://opda.org.uk/pdtf/scheme/',
+  'opda-shape':   'https://opda.org.uk/pdtf/shape/',
+  'opda-graph':   'https://opda.org.uk/pdtf/graph/',
+  'opda-harness': 'https://opda.org.uk/pdtf/harness/',
+  opda:  'https://opda.org.uk/pdtf/',
 };
 
 // Sort longest-first so most specific prefix wins
