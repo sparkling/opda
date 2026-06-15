@@ -4,7 +4,7 @@
  * Back-nav into the /ontology section, a kind + bounded-context badge, the
  * label, the dereferenceable IRI (selectable), and the rdfs:comment.
  */
-import { contextUrl } from '@/lib/ontology-model';
+import { contextUrl, NS } from '@/lib/ontology-model';
 interface Props {
   kind: string;
   label: string;
@@ -17,6 +17,7 @@ interface Props {
 }
 const { kind, label, localName, iri, comment, context, indexUrl, indexLabel } = Astro.props;
 const ctxHref = contextUrl(context);
+const ttlHref = iri.startsWith(NS) ? `/pdtf/${iri.slice(NS.length)}.ttl` : null;
 ---
 <nav class="term-nav" aria-label="Breadcrumb">
   <a href="/ontology">Ontology</a>
@@ -34,7 +35,7 @@ const ctxHref = contextUrl(context);
       : <span class="term-context">{context}</span>)}
   </p>
   <h1>{label}</h1>
-  <p class="term-iri"><code>{iri}</code></p>
+  <p class="term-iri"><code>{iri}</code>{ttlHref && <a class="term-ttl" href={ttlHref}>Turtle ↓</a>}</p>
   {comment && <p class="term-comment">{comment}</p>}
 </header>
 
@@ -67,6 +68,11 @@ const ctxHref = contextUrl(context);
     font: 400 var(--text-sm) / 1.4 var(--font-mono);
     color: var(--color-text-muted);
     word-break: break-all;
+  }
+  .term-ttl {
+    margin-left: var(--space-3);
+    font: 500 var(--text-xs) / 1 var(--font-sans);
+    white-space: nowrap;
   }
   .term-comment {
     font: 400 var(--text-base) / var(--leading-relaxed) var(--font-sans);

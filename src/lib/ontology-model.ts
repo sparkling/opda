@@ -214,3 +214,94 @@ export function allResources(): AnyResource[] {
     ...Object.values(model.schemes).map((s) => ({ entryKind: 'scheme' as const, ...s })),
   ];
 }
+
+// ── Turtle serialisation (ADR-0044 Phase 6 — CBD + one hop, from the model) ──
+const TTL_PREFIXES = `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`;
+
+const XSD = 'http://www.w3.org/2001/XMLSchema#';
+/** Turtle-safe quoted literal (JSON escaping is a valid Turtle string escape). */
+const ttlLit = (s: string) => JSON.stringify(String(s ?? ''));
+/** Percent-encode characters illegal in an IRI path (RFC 3987) — e.g. the [] in
+ *  JSON-pointer dct:source ids like harness/data-dictionary/...media[].mediaUrl. */
+const ttlEnc = (id: string) =>
+  id.replace(/[^A-Za-z0-9\-._~!$&'()*+,;=:@/%]/g, (ch) => encodeURIComponent(ch));
+/** Full IRI ref for an opda resource id. */
+const ttlRef = (id: string) => `<${NS}${ttlEnc(id)}>`;
+const ttlRange = (o: Ref) =>
+  o.kind === 'datatype'
+    ? (o.id.startsWith(XSD) ? `xsd:${o.localName}` : `<${o.id}>`)
+    : ttlRef(o.id);
+const isNum = (v: string) => /^-?\d+$/.test(v);
+
+/**
+ * Serialise one resource (by its model id) to a Turtle CBD + one-hop document —
+ * the machine alternate served at /pdtf/{id}.ttl (operator decision c). Built
+ * deterministically from the committed model so it matches the HTML page.
+ * Returns null if the id is not a known resource.
+ */
+export function resourceTurtle(id: string): string | null {
+  const self = ttlRef(id);
+  const po: string[] = [];
+  const hop: string[] = [];
+
+  const c = model.classes[id];
+  const op = model.objectProperties[id];
+  const dp = model.datatypeProperties[id];
+  const sh = model.shapes[id];
+  const co = model.concepts[id];
+  const sc = model.schemes[id];
+
+  if (c) {
+    po.push('a owl:Class', `rdfs:label ${ttlLit(c.label)}`);
+    if (c.comment) po.push(`rdfs:comment ${ttlLit(c.comment)}`);
+    if (c.scopeNote) po.push(`skos:scopeNote ${ttlLit(c.scopeNote)}`);
+    for (const s of c.dctSource) po.push(`dct:source ${ttlRef(s)}`);
+    for (const a of c.attributes) hop.push(`${ttlRef(a.id)} rdfs:label ${ttlLit(a.label)} .`);
+    for (const e of c.outgoing) hop.push(`${ttlRef(e.predicate)} rdfs:label ${ttlLit(e.predicateLabel)} .`);
+  } else if (op || dp) {
+    const p = (op || dp)!;
+    po.push(`a ${op ? 'owl:ObjectProperty' : 'owl:DatatypeProperty'}`, `rdfs:label ${ttlLit(p.label)}`);
+    if (p.comment) po.push(`rdfs:comment ${ttlLit(p.comment)}`);
+    for (const s of p.subjects) po.push(`rdfs:domain ${ttlRef(s.id)}`);
+    for (const o of p.objects) po.push(`rdfs:range ${ttlRange(o)}`);
+    if (p.inverse) po.push(`owl:inverseOf ${ttlRef(p.inverse.id)}`);
+    for (const s of p.dctSource) po.push(`dct:source ${ttlRef(s)}`);
+    for (const s of p.subjects) hop.push(`${ttlRef(s.id)} a owl:Class .`);
+  } else if (sh) {
+    po.push('a sh:NodeShape');
+    if (sh.target) po.push(`sh:targetClass ${ttlRef(sh.target.id)}`);
+    if (sh.targetSubjectsOf) po.push(`sh:targetSubjectsOf <${sh.targetSubjectsOf}>`);
+    for (const k of sh.constraints) {
+      const inner: string[] = [`sh:path <${k.path}>`];
+      if (k.datatype) inner.push(`sh:datatype xsd:${k.datatype}`);
+      if (k.class) inner.push(`sh:class <${k.class}>`);
+      if (k.minCount != null && isNum(k.minCount)) inner.push(`sh:minCount ${k.minCount}`);
+      if (k.maxCount != null && isNum(k.maxCount)) inner.push(`sh:maxCount ${k.maxCount}`);
+      if (k.severity) inner.push(`sh:severity sh:${k.severity}`);
+      if (k.message) inner.push(`sh:message ${ttlLit(k.message)}`);
+      po.push(`sh:property [ ${inner.join(' ; ')} ]`);
+    }
+  } else if (co) {
+    po.push('a skos:Concept', `skos:prefLabel ${ttlLit(co.prefLabel)}`);
+    if (co.definition) po.push(`skos:definition ${ttlLit(co.definition)}`);
+    for (const s of co.schemes) po.push(`skos:inScheme ${ttlRef(s.id)}`);
+    for (const b of co.broader) po.push(`skos:broader ${ttlRef(b.id)}`);
+    for (const s of co.dctSource) po.push(`dct:source ${ttlRef(s)}`);
+  } else if (sc) {
+    po.push('a skos:ConceptScheme', `skos:prefLabel ${ttlLit(sc.prefLabel)}`);
+    if (sc.definition) po.push(`skos:definition ${ttlLit(sc.definition)}`);
+    for (const t of sc.topConcepts) po.push(`skos:hasTopConcept ${ttlRef(t.id)}`);
+  } else {
+    return null;
+  }
+
+  let out = `${TTL_PREFIXES}\n\n${self} ${po.join(' ;\n    ')} .\n`;
+  if (hop.length) out += `\n# one hop — immediate neighbours\n${[...new Set(hop)].join('\n')}\n`;
+  return out;
+}

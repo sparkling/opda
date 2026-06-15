@@ -29,6 +29,7 @@ const title = (r.label ?? r.prefLabel ?? r.localName) as string;
 const description = ((r.comment ?? r.definition ?? '') as string).replace(/\s+/g, ' ').trim().slice(0, 160);
 ---
 <Layout title={title} description={description} hideComments={true}>
+  <link slot="head" rel="alternate" type="text/turtle" href={`/pdtf/${r.id}.ttl`} />
   {r.entryKind === 'class' ? <ClassDetail cls={r} />
     : r.entryKind === 'property' ? <PropertyDetail prop={r} />
     : r.entryKind === 'shape' ? <ShapeDetail shape={r} />
