@@ -308,9 +308,18 @@ async function main() {
   }
 
   // contexts (bounded contexts) = the module grouping, with member rollups.
+  // The module key derives from the named graph, so the cross-cutting graphs
+  // (opda-shapes / opda-vocabularies / opda-contexts) would otherwise masquerade
+  // as bounded contexts. The canonical model has exactly the 7 PDTF bounded
+  // contexts — agent, claim, descriptive, foundation, governance, property,
+  // transaction (ODR-0019/0020); SHACL, SKOS, and the context-definition graph
+  // are cross-cutting concerns, not contexts. Exclude them so `contexts` is the
+  // canonical 7 (per-context shapes still roll in via the `<ctx>-shapes`
+  // normalisation in moduleOf; cross-cutting schemes stay in `schemes` only).
+  const CROSS_CUTTING_MODULES = new Set(['shapes', 'vocabularies', 'contexts']);
   const contexts = new Map();
   const ctxAdd = (m, bucket, ref) => {
-    if (!m) return;
+    if (!m || CROSS_CUTTING_MODULES.has(m)) return;
     if (!contexts.has(m)) contexts.set(m, { id: m, localName: m,
       classes: [], objectProperties: [], datatypeProperties: [], shapes: [], schemes: [] });
     contexts.get(m)[bucket].push(ref);
