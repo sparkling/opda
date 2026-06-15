@@ -271,7 +271,9 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/ontology/modelling-frameworks', title: 'Modelling frameworks & upper ontology' },
       ]},
       { heading: 'Browse the model', items: [
+        { url: '/ontology/graph',        title: 'Interactive graph' },
         { url: '/ontology/classes',      title: 'Classes' },
+        { url: '/ontology/category',     title: 'UFO categories' },
         { url: '/ontology/properties',   title: 'Properties' },
         { url: '/ontology/vocabularies', title: 'Vocabularies (SKOS)' },
         { url: '/ontology/shapes',       title: 'SHACL shapes' },
