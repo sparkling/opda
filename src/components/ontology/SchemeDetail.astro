@@ -22,13 +22,6 @@ const { scheme } = Astro.props;
   indexLabel="Vocabularies"
 />
 
-{scheme.ufoCategory && (
-  <section class="term-section">
-    <h2>UFO category</h2>
-    <p><code>{scheme.ufoCategory}</code></p>
-  </section>
-)}
-
 {scheme.topConcepts.length > 0 && (
   <section class="term-section">
     <h2>Top concepts <span class="muted">· {scheme.topConcepts.length}</span></h2>

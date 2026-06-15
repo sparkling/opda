@@ -133,10 +133,10 @@ def emit_module(
     sha_str = git_sha or _MODULES_SOURCE_COMMIT
 
     graph = builder.build_graph()
-    # ADR-0044 Phase 5c — promote each class's documentary UFO category to a
-    # structured opda:ufoCategory facet (mirrors the SKOS-scheme convention).
-    from opda_gen.emitters.ufo_categories import annotate_ufo_categories
-    annotate_ufo_categories(graph)
+    # opda:ufoCategory is NOT applied to the per-module class graph (ADR-0045 /
+    # ODR-0031): it is an inert, annotation-graph-only documentary annotation,
+    # emitted in opda-annotations.ttl via foundation.build_annotations_graph().
+    # (ADR-0044 Phase 5c placed it here, breaching ODR-0030 Rule 1.)
     header = _comment_header(
         filename=filename,
         title=title,

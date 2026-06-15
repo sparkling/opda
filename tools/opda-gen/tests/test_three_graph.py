@@ -26,6 +26,7 @@ from rdflib.namespace import OWL, RDF
 
 from opda_gen.ci.three_graph_test import (
     check_derived_provenance,
+    check_no_advisory_in_classes,
     check_no_advisory_in_shapes,
     check_no_owl_imports_in_shapes,
     check_no_shacl_in_annotations,
@@ -79,6 +80,22 @@ def test_advisory_in_shapes_fail() -> None:
     g.add((OPDA_SHAPE.fooShape, OPDA.aiHint, Literal("don't")))
     violations = check_no_advisory_in_shapes(g)
     assert len(violations) == 1
+
+
+# Check 6 (ODR-0031 R2 / ADR-0045) — no advisory predicate in the classes graph.
+def test_no_advisory_in_clean_classes() -> None:
+    g = Graph()
+    g.add((OPDA.Foo, RDF.type, OWL.Class))
+    assert check_no_advisory_in_classes(g) == []
+
+
+def test_ufocategory_in_classes_fail() -> None:
+    g = Graph()
+    g.add((OPDA.Foo, RDF.type, OWL.Class))
+    g.add((OPDA.Foo, OPDA.ufoCategory, Literal("Substance Kind")))
+    violations = check_no_advisory_in_classes(g)
+    assert len(violations) == 1
+    assert "ufoCategory" in violations[0]
 
 
 def test_target_class_resolves_pass() -> None:

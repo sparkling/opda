@@ -208,44 +208,25 @@ def test_no_shacl_triples_in_vocabularies(emitted_graph: Graph) -> None:
     )
 
 
-# --- Confirmation #4 (every scheme has UFO category) ---------------------
-def test_every_scheme_has_ufo_category(emitted_graph: Graph) -> None:
-    """SPARQL equivalent of ADR-0010 §Confirmation #4:
-        SELECT ?s WHERE { ?s a skos:ConceptScheme .
-                          FILTER NOT EXISTS { ?s opda:ufoCategory ?c } }
-    MUST return empty.
+# --- ODR-0030 Rule 2 / ODR-0031: schemes do NOT carry opda:ufoCategory ----
+def test_no_scheme_has_ufo_category(emitted_graph: Graph) -> None:
+    """ODR-0030 Rule 2 / ODR-0031 (council session-041) split the
+    register-deference scheme axis ("Quale-in-Region" etc.) off
+    `opda:ufoCategory`: it is value-space shape, not UFO categorial work. The
+    facet now lives only on the nine UFO *class* categories, in the annotation
+    graph (opda-annotations.ttl). The vocabularies graph MUST therefore carry
+    no `opda:ufoCategory` triple — superseding the former ADR-0010
+    §Confirmation #4 / ODR-0011 §8a every-scheme-carries-ufoCategory contract.
+
+        SELECT ?s ?c WHERE { ?s opda:ufoCategory ?c }  MUST return empty.
     """
-    missing = []
-    for scheme in emitted_graph.subjects(RDF.type, SKOS.ConceptScheme):
-        if not list(emitted_graph.objects(scheme, OPDA.ufoCategory)):
-            missing.append(str(scheme))
-    assert missing == [], f"schemes missing opda:ufoCategory: {missing}"
-
-
-def test_ufo_category_value_is_in_seven_category_framework(
-    emitted_graph: Graph,
-) -> None:
-    """ODR-0011 §8a names exactly seven categories: Role label, Phase label,
-    Quale-in-Region, Method/plan code, Quality Region, Substance Kind label,
-    Quality Value. Every emitted `opda:ufoCategory` literal MUST be one of
-    these strings (ODR-0011 §"odr-review lint extension contract" item (ii))."""
-    allowed = {
-        "Role label",
-        "Phase label",
-        "Quale-in-Region",
-        "Method/plan code",
-        "Quality Region",
-        "Substance Kind label",
-        "Quality Value",
-    }
-    violations = []
-    for scheme, _p, cat in emitted_graph.triples(
-        (None, OPDA.ufoCategory, None)
-    ):
-        if str(cat) not in allowed:
-            violations.append((str(scheme), str(cat)))
-    assert violations == [], (
-        f"ufoCategory values not in the seven-category framework: {violations}"
+    offending = [
+        (str(s), str(o))
+        for s, _p, o in emitted_graph.triples((None, OPDA.ufoCategory, None))
+    ]
+    assert offending == [], (
+        "vocabularies graph still carries opda:ufoCategory (should be split "
+        f"off per ODR-0030 Rule 2 / ODR-0031): {offending}"
     )
 
 
@@ -516,15 +497,17 @@ def test_no_per_leaf_scheme_explosion(emitted_graph: Graph) -> None:
     assert not leafish, f"per-leaf scheme(s) minted (anti-pattern): {leafish}"
 
 
-def test_category_c_schemes_are_quale_in_region(emitted_graph: Graph) -> None:
-    """Per ODR-0011 §8a, the reused status value-spaces are Quale-in-Region
-    (Cagle SHACL-targeting: a value of a banded quality region)."""
+def test_category_c_schemes_carry_no_ufo_category(emitted_graph: Graph) -> None:
+    """The Category-C status value-spaces were register-deference
+    'Quale-in-Region' tags; ODR-0030 Rule 2 / ODR-0031 split opda:ufoCategory
+    off the schemes (value-space shape, not UFO categorial work), so they MUST
+    now carry none."""
     for name in _CATEGORY_C_SCHEMES:
         cats = [
             str(c)
             for c in emitted_graph.objects(OPDA_SCHEME[name], OPDA.ufoCategory)
         ]
-        assert cats == ["Quale-in-Region"], f"{name} ufoCategory = {cats}"
+        assert cats == [], f"{name} still carries opda:ufoCategory = {cats}"
 
 
 # --- ODR-0022 Category D (candidate): FixtureItemScheme ------------------
@@ -617,13 +600,11 @@ def test_peril_scheme_member_set_matches_rule_2(emitted_graph: Graph) -> None:
     }
 
 
-def test_peril_concepts_are_top_concepts_and_quale(emitted_graph: Graph) -> None:
+def test_peril_concepts_are_top_concepts(emitted_graph: Graph) -> None:
     """Each peril is skos:topConceptOf the scheme (mirroring
-    opda:BoundedContextScheme) and the scheme carries opda:ufoCategory
-    'Quale-in-Region' (Rule 2)."""
-    assert (OPDA_SCHEME.PerilScheme, OPDA.ufoCategory, None) in emitted_graph
-    ufo = list(emitted_graph.objects(OPDA_SCHEME.PerilScheme, OPDA.ufoCategory))
-    assert [str(x) for x in ufo] == ["Quale-in-Region"]
+    opda:BoundedContextScheme). opda:ufoCategory was split off the scheme
+    (ODR-0030 Rule 2 / ODR-0031), so the scheme MUST carry none."""
+    assert (OPDA_SCHEME.PerilScheme, OPDA.ufoCategory, None) not in emitted_graph
     for m in emitted_graph.subjects(SKOS.inScheme, OPDA_SCHEME.PerilScheme):
         assert (m, SKOS.topConceptOf, OPDA_SCHEME.PerilScheme) in emitted_graph, (
             f"peril {m} is not skos:topConceptOf the scheme"

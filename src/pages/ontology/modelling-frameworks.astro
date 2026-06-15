@@ -1,0 +1,543 @@
+---
+/**
+ * /ontology/modelling-frameworks — Foundational ontology & modelling frameworks
+ * in OPDA: what we built, why, and the benefits.
+ *
+ * The implementation-side companion to /ontology/foundational-ontology (the
+ * critique & alternatives page). Where that page asks *whether* UFO is the right
+ * foundation, this one is the reference for *how* OPDA actually uses it: the
+ * decisions taken (ODR-0030/0031/0027/0029, ODR-0004 §3a), the three-graph
+ * architecture deployed, and what it buys us. The one-line summary: OPDA is
+ * UFO-informed, never UFO-grounded — UFO/OntoClean as a design-time decision
+ * procedure, shipping only pragmatic SHACL + SKOS + plain RDF that stands on its
+ * own, carrying the foundational commitment as an inert, honestly-disclosed,
+ * CI-quarantined provenance record.
+ *
+ * Hand-authored from docs/modelling-frameworks-and-upper-ontologies.md. The seven
+ * Mermaid diagrams use bare site-palette tokens — client.js owns the dark/light
+ * theming (never hardcode per-node fills or class definitions here, per the
+ * diagram-theming convention).
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Foundational ontology & modelling frameworks in OPDA"
+  description="A reference for how the OPDA PDTF ontology actually uses a foundational ontology and a conceptual-modelling framework: the decisions taken, the three-graph architecture deployed, and what it buys us. OPDA is UFO-informed, never UFO-grounded — UFO and OntoClean as a design-time decision procedure, shipping only pragmatic SHACL, SKOS and plain RDF that stands on its own, carrying the foundational commitment as an inert, honestly-disclosed, CI-quarantined provenance record."
+>
+<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-15" />
+
+  <h1>Foundational ontology &amp; modelling frameworks in OPDA — what we built, why, and the benefits</h1>
+
+  <p class="lead">
+    How the OPDA PDTF ontology actually uses a foundational ontology and a conceptual-modelling framework:
+    the decisions we took, the architecture we deployed, and what it buys us. The one-line summary:
+    <strong>OPDA is UFO-<em>informed</em>, never UFO-<em>grounded</em>.</strong> We use the Unified Foundational
+    Ontology (UFO) and OntoClean as a <strong>design-time decision procedure</strong>, and ship only pragmatic
+    SHACL + SKOS + plain RDF that stands on its own — carrying the foundational commitment as an
+    <strong>inert, honestly-disclosed, CI-quarantined provenance record</strong>.
+  </p>
+
+  <p>
+    This document is a reference for <em>our</em> implementation. It is grounded in the decisions recorded in
+    <code>ODR-0030</code> (the foundational-ontology choice), <code>ODR-0031</code> (how
+    <code>opda:ufoCategory</code> is represented), <code>ODR-0027</code> (classification-over-inheritance),
+    <code>ODR-0029</code> (the entailment regime), <code>ODR-0004</code> §3a (three-graph separation), and
+    <code>ADR-0034</code> / <code>ADR-0044</code> / <code>ADR-0045</code> (the engineering).
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#decision">1. The decision</a> — retain UFO as a lens, scoped to the Relator spine</li>
+      <li><a href="#architecture">2. The architecture</a> — three graphs, one of them inert</li>
+      <li><a href="#categories">3. The UFO categories we use</a> — and the Relator spine that earns its keep</li>
+      <li><a href="#representation">4. How <code>opda:ufoCategory</code> is represented</a> — and the breach we fixed</li>
+      <li><a href="#ontoclean">5. OntoClean as our decision procedure</a> — classification over inheritance</li>
+      <li><a href="#honesty">6. The honesty doctrine</a> — informed, not grounded</li>
+      <li><a href="#council">7. How these decisions get made</a> — the Linked Data Council</li>
+      <li><a href="#benefits">8. The benefits</a> — what this architecture buys us</li>
+      <li><a href="#glossary">9. Glossary</a></li>
+      <li><a href="#sources">10. Sources</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="decision">1. The decision: retain UFO as a lens, scoped to the Relator spine</h2>
+  <p>
+    When we reviewed the foundational layer (council <code>session-040</code> → <code>ODR-0030</code>), the live
+    question was a four-way: <strong>retain</strong> UFO as a lightweight lens, <strong>deepen</strong> it to a
+    full OntoUML/UFO import, <strong>switch</strong> to BFO, or <strong>drop</strong> the foundational layer
+    entirely. We chose <strong>retain-as-lens, scoped to the Relator/Role/RoleMixin spine</strong> — and the
+    scoping is the whole point.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart TB
+    accTitle: OPDA's foundational-ontology decision
+    accDescr: The four options OPDA weighed — retain UFO as a lens, deepen to OntoUML, switch to BFO, or drop the foundational layer — and why retain-as-lens was chosen, scoped to the Relator/Role/RoleMixin spine.
+
+    Q["Should the standard rest on<br/>a foundational ontology at all?"]:::warning
+
+    Q --> A["RETAIN UFO as a design-time lens<br/>scoped to the Relator / Role / RoleMixin spine"]:::success
+    Q --> B["DEEPEN to OntoUML / full UFO import"]:::error
+    Q --> C["SWITCH the foundation to BFO"]:::error
+    Q --> D["DROP the foundational layer entirely"]:::error
+
+    B --> BR["Rejected: full UFO is not faithfully<br/>expressible in OWL 2 DL (gUFO authors) —<br/>buys undecidability, no triple a data file cashes"]:::external
+    C --> CR["Rejected as a switch: BFO has no native<br/>relator/deontic apparatus; its one decisive win<br/>(ISO/IEC 21838) is captured by a reserved crosswalk"]:::external
+    D --> DR["Rejected (held as live dissent): OntoClean is<br/>separable + the vocabulary is droppable, but the<br/>Relator category is categorially load-bearing"]:::external
+    A --> AR["The bounded reason: UFO+UFO-L natively unifies<br/>relational reification with Hohfeldian<br/>claim-right ⇔ duty correlativity — which a<br/>conveyancing domain needs"]:::external
+  </div></figure>
+
+  <p>
+    The honest account of <em>how</em> we use UFO: <strong>our modelling process is governed by a UFO/OntoClean
+    decision procedure; the artefact carries an inert provenance record of that governance.</strong> UFO is
+    load-bearing only at the relational-endurant spine — a handful of classes such as
+    <code>opda:Proprietorship</code> and <code>opda:Transaction</code> founding the <code>opda:Seller</code>/<code>opda:Buyer</code>
+    roles. Everywhere else it is documentary. The published claim is therefore <strong>"UFO-informed", never
+    "UFO-grounded with guarantees."</strong>
+  </p>
+  <p>
+    <strong>Why not deepen?</strong> The gUFO authors' own result is decisive: full UFO is not faithfully
+    expressible in decidable OWL 2 DL, so deepening imports non-computable commitments we would only route
+    around. <strong>Why not switch to BFO?</strong> BFO must reify a claim-right as a directive information
+    entity; its only decisive advantage (ISO/IEC 21838 standing) we hold in reserve via a referenced-not-imported
+    crosswalk, without abandoning UFO-L's superior domain fit. <strong>Why not drop it?</strong> OntoClean is
+    separable and the <em>vocabulary</em> is droppable — but the <strong>Relator</strong> does categorial work the
+    alternatives cannot reconstruct, so the foundation is <em>optional, not harmful</em>, and retained behind
+    falsifiable re-open triggers.
+  </p>
+
+  <h2 id="architecture">2. The architecture: three graphs, one of them inert</h2>
+  <p>
+    The foundational commitment is made safe by <strong>physical separation</strong> (<code>ODR-0004</code> §3a).
+    The emitter produces three kinds of graph, and the foundational/meta-level material lives entirely in the
+    third — the <strong>annotation graph</strong>, which is never reasoned over and never validates instances.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart TB
+    accTitle: OPDA's three-graph separation
+    accDescr: The classes graph feeds the reasoner under a shallow regime; the shapes graph validates instance data; the annotation graph holds the inert UFO/gUFO/OntoClean material and is never an input to either; CI gates enforce the separation including a sixth gate forbidding advisory predicates in the classes graph.
+
+    C1["opda-classes.ttl + opda-&lbrace;module&rbrace;.ttl<br/>OWL classes + properties"]:::user
+    S1["opda-shapes.ttl + opda-&lbrace;module&rbrace;-shapes.ttl<br/>SHACL node/property shapes"]:::security
+    A1["opda-annotations.ttl + *-annotations.ttl<br/>UFO categories · gated gUFO types ·<br/>UFOCategoryScheme · IAO crosswalk · DPV — INERT"]:::external
+    DATA["Instance data<br/>(PDTF transaction records)"]:::info
+    REASON["Reasoner<br/>(ODR-0029 RDFS-Plus: only<br/>rdfs:subClassOf type-propagation)"]:::process
+    VALID["pySHACL validator"]:::process
+
+    C1 -->|"input to"| REASON
+    S1 -->|"input to"| VALID
+    DATA -->|"validated by"| VALID
+    A1 -.->|"NEVER an input to"| REASON
+    A1 -.->|"NEVER targets"| VALID
+
+    GATE["CI separation gates (six checks)"]:::error
+    GATE -.->|"no sh:* in annotations"| A1
+    GATE -.->|"6th gate: no advisory predicate<br/>(incl. ufoCategory) in classes"| C1
+    GATE -.->|"no owl:imports from shapes"| S1
+  </div></figure>
+
+  <p>
+    <strong>What reasons over what.</strong> The reasoner sees only the classes graph, under the deliberately
+    shallow <strong>RDFS-Plus</strong> regime (<code>ODR-0029</code>): only <code>rdfs:subClassOf</code>
+    type-propagation fires; domain/range are validated as SHACL, not inferred. The SHACL validator checks
+    instance data against the shapes graph. The annotation graph — where every UFO/gUFO/OntoClean tag lives — is
+    an input to <strong>neither</strong>. Deleting the entire foundational layer changes zero inferences, zero
+    validation reports, and zero emitted bytes.
+  </p>
+  <p>
+    <strong>The CI gates make this real, not aspirational.</strong> Six checks enforce the separation; the
+    <strong>sixth</strong> (added in <code>ADR-0045</code>) forbids the advisory-predicate family — including
+    <code>opda:ufoCategory</code> — from appearing in the classes graph. It exists because a structured
+    <code>ufoCategory</code> facet was once emitted into the reasoned graph by mistake; the gate is what
+    guarantees that breach cannot silently re-ship.
+  </p>
+
+  <h2 id="categories">3. The UFO categories we use — and the Relator spine that earns its keep</h2>
+  <p>
+    OPDA classifies each OWL class under one of <strong>nine</strong> UFO meta-categories. They are a documentary
+    classification, not a subclass tree.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart TB
+    accTitle: The nine UFO meta-categories OPDA uses, with example classes and the Relator spine
+    accDescr: OPDA's classes are classified under nine UFO categories; the Relator category is load-bearing, with opda:Proprietorship and opda:Transaction founding the Buyer and Seller roles.
+
+    subgraph Substantials["Substantials (existentially independent)"]
+      SK["Substance Kind<br/>opda:Person · Property · Organisation ·<br/>LegalEstate · RegisteredTitle · Address"]:::user
+      RM["RoleMixin<br/>opda:Buyer · Seller · Evidence"]:::info
+      RO["Role<br/>opda:Proprietor"]:::info
+      COL["Collective<br/>opda:TransactionChain"]:::user
+    end
+    subgraph Moments["Moments (existentially dependent)"]
+      REL["Relator<br/>opda:Proprietorship · Transaction"]:::data
+      QY["Quality<br/>opda:AssuranceLevel"]:::data
+      QV["Quality Value<br/>opda:MonetaryAmount · RoomDimension"]:::data
+    end
+    subgraph Perdurants["Perdurants + information artefacts"]
+      EV["Event<br/>opda:Milestone · VerificationActivity ·<br/>UPRNSuccessionEvent"]:::process
+      IO["Information Object<br/>opda:Claim · EPCCertificate · Search ·<br/>RiskAssessment · Valuation"]:::service
+    end
+
+    REL -->|"founds (mediates)"| RM
+    REL -->|"founds"| RO
+  </div></figure>
+
+  <p>
+    <strong>The Relator is where UFO does irreducible work.</strong> The strictly irreducible thing is the
+    <strong>relational-reification primitive</strong>: reify a relationship as a first-class node that owns the
+    relation's own attributes. The proof in our corpus is the placement of <code>opda:numberOfSellers</code>
+    <em>on the <code>opda:Proprietorship</code> Relator</em> (<code>opda-agent.ttl</code>) — an aggregation
+    attribute of the relationship itself, which OntoClean's <em>monadic</em> meta-properties structurally cannot
+    derive (they have no mediation primitive). UFO's Relator is our chosen, apt expression of that primitive (with
+    FIBO's <em>Arrangement</em> cited as a co-precedent on <code>opda:Transaction</code>), and UFO-L adds the
+    Hohfeldian claim-right ⇔ duty correlativity a conveyancing domain (charges, covenants, easements) needs.
+  </p>
+  <p>
+    The other categories are facets: a class <em>is classified under</em> "Substance Kind" or "Event" — it is
+    <strong>not</strong> an instance of a UFO type in any reasoned graph (the level distinction; see §6).
+  </p>
+
+  <h2 id="representation">4. How <code>opda:ufoCategory</code> is represented — and the breach we fixed</h2>
+  <p>
+    The category tag went through three states. Understanding the journey is the clearest way to see <em>why</em>
+    the final design is shaped as it is (<code>ODR-0031</code> / <code>ADR-0045</code>).
+  </p>
+  <ol>
+    <li><strong>Free-text</strong> in <code>skos:scopeNote</code> prose ("UFO: Substance Kind") — unqueryable.</li>
+    <li><strong>Structured facet, but mis-placed</strong> (<code>ADR-0044</code> Phase 5c): promoted to a real
+      <code>opda:ufoCategory</code> predicate — but declared <code>owl:DatatypeProperty</code> and asserted
+      <em>inline in the reasoned class graphs</em>. This <strong>breached</strong> the <code>ODR-0030</code> Rule 1
+      quarantine ("annotation-graph-only"), and the three-graph gate had no check to catch it.</li>
+    <li><strong>The fix</strong> (<code>ADR-0045</code>): relocated to the annotation graph, retyped
+      <code>owl:AnnotationProperty</code>, and given a dereferenceable concept anchor.</li>
+  </ol>
+  <p>
+    The deployed shape decouples the <strong>simple tag consumers read</strong> from the <strong>governed concept
+    that carries the semantics</strong>:
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+flowchart LR
+    accTitle: How opda:ufoCategory is represented after ADR-0045
+    accDescr: A class carries an inert string tag for its UFO category; the string is keyed by notation to a SKOS concept in opda:UFOCategoryScheme, which carries the OntoClean definition and a closeMatch to the gUFO IRI — all in the annotation graph, never reasoned.
+
+    P["opda:Person<br/>(owl:Class — in the classes graph)"]:::user
+    L["'Substance Kind'<br/>(inert xsd:string tag —<br/>owl:AnnotationProperty)"]:::data
+    K["opda:SubstanceKindCategory<br/>(skos:Concept in opda:UFOCategoryScheme)<br/>skos:definition = OntoClean signature"]:::service
+    G["gufo:Kind<br/>(external gUFO IRI)"]:::external
+
+    P -->|"opda:ufoCategory"| L
+    L -.->|"skos:notation key"| K
+    K -->|"skos:closeMatch<br/>(reference-not-import)"| G
+  </div></figure>
+
+  <p>
+    Everything to the right of <code>opda:Person</code> lives in <code>opda-annotations.ttl</code>. The predicate
+    is an <code>owl:AnnotationProperty</code> (OWL 2 §10.1 — <strong>no model-theoretic consequence under any
+    regime</strong>, so inertness is intrinsic, not contingent on the shallow reasoner). The
+    <code>opda:UFOCategoryScheme</code> concept is the dereferenceable anchor that carries the OntoClean signature
+    as its <code>skos:definition</code> and a <code>skos:closeMatch</code> to the gUFO IRI —
+    <strong>reference-not-import</strong>, so we never pull gUFO's <code>rdfs:subClassOf</code> axioms into a graph
+    the reasoner closes over. That last point is the absolute red line: an <code>exactMatch</code>-to-gUFO edge in
+    a reasoned graph would re-import the contested metaphysics the whole architecture exists to keep out.
+  </p>
+  <p>
+    We also <strong>split off</strong> the register-deference scheme axis: the codes that read "Quale-in-Region"
+    etc. on the SKOS schemes were value-space shape, not UFO categorial work, so they no longer ride on
+    <code>opda:ufoCategory</code> (<code>ODR-0030</code> Rule 2).
+  </p>
+
+  <h2 id="ontoclean">5. OntoClean as our decision procedure — classification over inheritance</h2>
+  <p>
+    The discipline that actually moved bytes is <strong>OntoClean</strong> (<code>ODR-0027</code>). It is
+    separable from UFO (it predates it and works with any foundation), and it is what we run to decide, for every
+    type, whether it becomes a <strong>coded facet</strong>, a <strong>role</strong>, a <strong>subclass</strong>,
+    or a <strong>relator</strong>. The default is classification (a coded SKOS value); a subclass is the
+    <em>exception</em>, admitted only when a type clears the rigidity-plus-distinct-identity bar.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart TB
+    accTitle: OPDA's classification-over-inheritance cascade (ODR-0027)
+    accDescr: The OntoClean cascade OPDA runs — using rigidity, identity and dependence — to decide whether a candidate type is a coded facet, a role, a relator, or a genuine subclass, with worked examples from the corpus.
+
+    T["A candidate type"]:::process --> R&lbrace;"Rigid?"&rbrace;:::warning
+    R -->|"No — anti-rigid"| ROLE["Model as Role / RoleMixin<br/>— coded, NEVER a subclass of a Kind<br/>e.g. opda:Buyer, opda:Seller, opda:Evidence"]:::service
+    R -->|"Yes — rigid"| ID&lbrace;"Supplies its own<br/>identity criterion?"&rbrace;:::warning
+    ID -->|"No own IC (a value / label)<br/>+R, -I"| FACET["Code as a SKOS facet (sh:in)<br/>e.g. tenureKind, ownerType"]:::service
+    ID -->|"Yes, + mediates 2+ bearers (+D)"| REL["Reify as a Relator<br/>e.g. opda:Proprietorship,<br/>VouchEvidence attestation"]:::data
+    ID -->|"Yes, distinct IC + own properties"| SUB["Mint an owl:Class<br/>e.g. opda:RiskAssessment,<br/>opda:Person, opda:Property"]:::user
+  </div></figure>
+
+  <p>
+    Worked outcomes from the corpus that this cascade produced: <code>tenureKind</code> (+R, −I) → a coded facet,
+    not a subclass tree; <code>VouchEvidence</code> (+D, agent-founded) → re-sorted to a Relator;
+    <code>RiskAssessment</code> (+I, distinct identity) → retained as a class. Enforcement is
+    <strong>value-keyed</strong> in SHACL (an <code>sh:or</code> material implication on the coded value), not
+    class-keyed — so it holds without depending on entailment.
+  </p>
+  <p>
+    <strong>Is the OntoClean reasoning itself recorded?</strong> The <em>verdict</em> of every call is — in the
+    class topology and the coded facets (the <code>tenureKind</code> comment, for instance, records "+R but −I →
+    classification, not a subclass") — and the per-<em>category</em> signature ships in the
+    <code>opda:UFOCategoryScheme</code> <code>skos:definition</code>s (the Relator category reads "(+R, +I, +D)").
+    Whether to <strong>also</strong> mark up the meta-properties <strong>per type</strong> as structured
+    <code>owl:AnnotationProperty</code> data was a held 3–3 (<code>session-041</code>) that <code>session-042</code>
+    resolved as <strong>conditional adoption</strong> (<code>ADR-0046</code>): do it — ±R/±I, scoped to the
+    subsumption lattice the check ranges over, never unity — <strong>if and only if</strong> the canonical
+    OntoClean check (find every anti-rigid type that nonetheless subsumes) ships atomically as a TBox-only CI
+    gate. The principle the council converged on is the same minimum-model discipline that governs the rest of the
+    architecture: <em>you mark up a methodology's worksheet only when a machine reads it</em> — build the gate
+    that reads it, or keep the reasoning as prose.
+  </p>
+
+  <h2 id="honesty">6. The honesty doctrine — informed, not grounded</h2>
+  <p>
+    The one credibility risk a working data standard cannot afford is overclaiming a guarantee the architecture
+    does not provide. We pre-empt it with explicit honesty dispositions (<code>ODR-0030</code> Rule 7), and they
+    are <strong>machine-readable</strong>, not just prose.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart TB
+    accTitle: The decidability and honesty boundary
+    accDescr: What OPDA reasons over, what it validates, and what it merely annotates — with the honesty disclosures attached to the inert layer.
+
+    E["REASON (RDFS-Plus)<br/>rdfs:subClassOf type-propagation only"]:::user
+    V["VALIDATE (SHACL)<br/>cardinality, value sets, domain/range-as-checks,<br/>UFO-L correlativity where the use-case demands"]:::security
+    A["ANNOTATE (inert)<br/>UFO categories · gated gUFO types ·<br/>OntoClean lineage · IAO/BFO reserve"]:::external
+
+    E -->|"the wire reasons with<br/>nothing UFO-shaped"| A
+    V -->|"undecidable UFO constraints<br/>live here, not in OWL"| A
+
+    H1["'UFO-informed', never<br/>'UFO-grounded with guarantees'"]:::warning
+    H2["DOLCE lineage disclosed:<br/>the quality categories descend from<br/>DOLCE Quality/Quale/Region (WonderWeb D18)"]:::warning
+    H3["UFO-C (social/legal) flagged<br/>as the least-mature layer"]:::warning
+
+    A --> H1
+    A --> H2
+    A --> H3
+  </div></figure>
+
+  <p>
+    Three disclosures ride on the inert layer: we publish <strong>"UFO-informed", not "UFO-grounded with
+    guarantees"</strong>; a machine-readable <code>skos:scopeNote</code> on <code>opda:ufoCategory</code> discloses
+    that the quality categories descend from <strong>DOLCE's</strong> Quality/Quale/Region apparatus (WonderWeb
+    D18, 2003), not pure UFO; and we flag <strong>UFO-C</strong> (the social/intentional/legal layer) as
+    least-mature wherever the standard leans on it. The gated gUFO <code>rdf:type</code> typing pass
+    (<code>ADR-0034</code>) and the IAO information-artefact crosswalk (<code>ODR-0030</code> Rule 4, adopt-now)
+    follow the same reference-not-import, annotation-graph, never-reasoned discipline.
+  </p>
+
+  <h2 id="council">7. How these decisions get made — the Linked Data Council</h2>
+  <p>
+    The foundational and modelling decisions above were not taken ad hoc. Contested choices are shaped by a
+    <strong>Linked Data Council</strong> — a dialectic review by a panel of named linked-data authorities (each
+    citing published methodology), with a Devil's Advocate who must explicitly withdraw or hold on every question,
+    producing an auditable transcript. The verdict shapes a <em>proposal</em>; the operator ratifies
+    <em>adoption</em>.
+  </p>
+
+  <figure class="diagram" role="figure">  <div class="mermaid">
+---
+config:
+  layout: elk
+---
+flowchart LR
+    accTitle: OPDA's decision pipeline from council to artefact
+    accDescr: A council session produces a verdict that becomes an ODR and an ADR; the ADR drives the emitter; the emitter output is enforced by CI gates.
+
+    COUNCIL["Council session<br/>(e.g. session-040, session-041)<br/>named panel + Devil's Advocate"]:::user
+    ODR["ODR — ontology-modelling decision<br/>(ODR-0030, ODR-0031)"]:::user
+    ADR["ADR — engineering realisation<br/>(ADR-0044, ADR-0045)"]:::process
+    EMIT["opda-gen emitter<br/>deterministic, byte-identical"]:::service
+    GATE["CI gates<br/>three-graph · byte-identity ·<br/>dup-declaration · profile · baspi5"]:::error
+
+    COUNCIL -->|"shapes"| ODR
+    ODR -->|"realised by"| ADR
+    ADR -->|"drives"| EMIT
+    EMIT -->|"enforced by"| GATE
+  </div></figure>
+
+  <p>
+    This is why every term carries a <code>dct:source</code> and every non-trivial choice is traceable: the
+    <em>reasons</em> survive, not just the verdicts. When a defect is found — as with the Phase 5c quarantine
+    breach — the same machinery records the finding (<code>session-041</code>), the corrected decision
+    (<code>ODR-0031</code>), and the engineering fix (<code>ADR-0045</code>), with held dissent and its re-open
+    trigger recorded verbatim.
+  </p>
+
+  <h2 id="benefits">8. The benefits — what this architecture buys us</h2>
+  <table>
+    <thead>
+      <tr><th>Benefit</th><th>How the architecture delivers it</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Zero runtime cost / risk</strong></td>
+        <td>The foundational layer is inert (annotation-graph-only, <code>owl:AnnotationProperty</code>); deleting
+          it changes zero inferences, validations, or emitted bytes. No contested metaphysics ever reaches a
+          consumer's reasoner.</td>
+      </tr>
+      <tr>
+        <td><strong>Reversibility</strong></td>
+        <td>Because UFO is a lens, not a dependency, the "drop the vocabulary" exit (Devil's Advocate's held
+          position) stays cheap. The OntoClean <em>judgement</em> survives the UFO <em>vocabulary</em> if it is
+          ever retired.</td>
+      </tr>
+      <tr>
+        <td><strong>Honesty / no overclaim</strong></td>
+        <td>"UFO-informed, not UFO-grounded", the DOLCE-lineage disclosure, and the UFO-C maturity flag are
+          machine-readable and CI-checkable — the standard never claims a guarantee it does not perform.</td>
+      </tr>
+      <tr>
+        <td><strong>Auditability</strong></td>
+        <td>The category tag, its OntoClean definition, and its gUFO alignment are queryable structured data; the
+          decisions behind them are citable council/ODR/ADR records.</td>
+      </tr>
+      <tr>
+        <td><strong>Decidability + soundness</strong></td>
+        <td>A small, sound RDFS-Plus core is reasoned; everything undecidable (UFO's modal/mereological
+          constraints) is validated in SHACL — exactly what the gUFO authors' OWL-2-DL result mandates.</td>
+      </tr>
+      <tr>
+        <td><strong>Governable vocabularies</strong></td>
+        <td>Classification-over-inheritance keeps kind-axes as flat, <code>sh:in</code>-governed SKOS facets
+          instead of brittle subclass trees; promotion to a class is a checkable OntoClean test, not taste.</td>
+      </tr>
+      <tr>
+        <td><strong>Interoperability on demand</strong></td>
+        <td>Reference-not-import crosswalks (gUFO <code>closeMatch</code>, the reserved IAO/BFO alignment) give
+          external alignment and the ISO-21838 credential <em>if and when</em> a contract needs it, with no
+          speculative maintenance tax.</td>
+      </tr>
+      <tr>
+        <td><strong>CI-enforced invariants</strong></td>
+        <td>Six three-graph gates + byte-identity emission mean the quarantine is enforced, not merely asserted —
+          the one defect that did ship (Phase 5c) now cannot recur.</td>
+      </tr>
+      <tr>
+        <td><strong>Dereferenceable on the web</strong></td>
+        <td>Every term, including <code>/pdtf/ufoCategory</code> and the per-category pages, resolves to a themed
+          page (<code>ADR-0044</code>); badges read "classified-under", never "is-a", carrying the honesty verb to
+          the reader.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    The synthesis, in one sentence: <strong>we keep the one discipline that demonstrably improves the model (the
+    UFO/OntoClean decision procedure and the Relator primitive) and ship only pragmatic SHACL/SKOS/RDF that stands
+    on its own — carrying the foundational commitment as an inert, honestly-disclosed, CI-quarantined provenance
+    record.</strong>
+  </p>
+
+  <h2 id="glossary">9. Glossary</h2>
+  <table>
+    <thead>
+      <tr><th>Term</th><th>Meaning in OPDA</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>UFO-informed, not UFO-grounded</strong></td>
+        <td>We use UFO as a design-time decision procedure; the wire format reasons with nothing UFO-shaped.</td>
+      </tr>
+      <tr>
+        <td><strong>Three-graph separation</strong></td>
+        <td>Classes (reasoned) ⊥ shapes (validate) ⊥ annotations (inert), with CI gates — <code>ODR-0004</code>
+          §3a.</td>
+      </tr>
+      <tr>
+        <td><strong>RDFS-Plus</strong></td>
+        <td>The shallow entailment regime (<code>ODR-0029</code>): only <code>rdfs:subClassOf</code>
+          type-propagation fires.</td>
+      </tr>
+      <tr>
+        <td><strong>Relator</strong></td>
+        <td>A reified relationship that owns the relation's attributes (<code>opda:Proprietorship</code>,
+          <code>opda:Transaction</code>) — UFO's irreducible contribution to our model.</td>
+      </tr>
+      <tr>
+        <td><strong>OntoClean cascade</strong></td>
+        <td>The rigidity/identity/dependence decision procedure (<code>ODR-0027</code>) for
+          subclass-vs-facet-vs-role-vs-relator.</td>
+      </tr>
+      <tr>
+        <td><strong>Classification over inheritance</strong></td>
+        <td>Kind-axes ship as coded SKOS facets by default; a subclass is the exception, admitted only on a
+          distinct identity criterion.</td>
+      </tr>
+      <tr>
+        <td><strong>Reference-not-import</strong></td>
+        <td>Aligning to gUFO / IAO via <code>skos:closeMatch</code>/<code>exactMatch</code>, never
+          <code>owl:imports</code> — alignment without the foreign axioms.</td>
+      </tr>
+      <tr>
+        <td><strong>The quarantine</strong></td>
+        <td>The annotation graph, never reasoned or validated over; the sixth CI gate keeps
+          <code>ufoCategory</code> out of the classes graph.</td>
+      </tr>
+      <tr>
+        <td><strong><code>opda:UFOCategoryScheme</code></strong></td>
+        <td>The SKOS scheme of nine category concepts, each carrying its OntoClean definition + a gUFO
+          <code>closeMatch</code>, in the annotation graph.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="sources">10. Sources</h2>
+  <p>
+    <strong>Internal decisions:</strong> <code>ODR-0030</code> (foundational-ontology choice) ·
+    <code>ODR-0031</code> (<code>ufoCategory</code> representation) · <code>ODR-0027</code> (classification
+    doctrine) · <code>ODR-0029</code> (entailment regime) · <code>ODR-0004</code> §3a (three-graph separation) ·
+    <code>ODR-0011</code> §8a (the UFO category framework) · <code>ADR-0034</code> (gated gUFO typing) ·
+    <code>ADR-0044</code> (ontology as web pages) · <code>ADR-0045</code> (the quarantine restoration + gUFO
+    scheme + sixth gate). Council transcripts: <code>session-040</code> and <code>session-041</code>.
+  </p>
+  <p>
+    <strong>External literature:</strong> G. Guizzardi, <em>Ontological Foundations for Structural Conceptual
+    Models</em> (2005); Almeida, Guizzardi, Sales &amp; Fonseca, <em>gUFO: A Gentle Foundational Ontology for
+    OWL</em> (the OWL-2-DL expressibility limit); Masolo, Borgo, Gangemi, Guarino &amp; Oltramari, <em>WonderWeb
+    Deliverable D18 — DOLCE</em> (2003); Guarino &amp; Welty, "An Overview of OntoClean" (<em>Handbook on
+    Ontologies</em>, 2009); Griffo, Almeida &amp; Guizzardi (UFO-L legal relations); <strong>ISO/IEC
+    21838-2</strong> (BFO); W3C <em>OWL 2 Structural Specification</em> §10 (annotation properties),
+    <em>SHACL</em>, <em>SKOS Reference</em>; Bernabé et al. (2023, no measured downstream benefit from
+    foundational ontologies); Merrill (2010, BFO interoperability does not require its realism).
+  </p>
+
+  <p class="muted">
+    This document describes OPDA's deployed implementation. The patterns are reusable, but the choices here are
+    ours — taken for the reasons recorded above, and enforced by the CI gates that ship with the corpus.
+  </p>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The honest counter-view — <em>whether</em> UFO is the right foundation at all, with sourced critiques and the
+    upper-ontology alternatives compared — is on
+    <a href="/ontology/foundational-ontology">Foundational ontology: critique &amp; alternatives</a>, the sibling
+    critique page.
+  </p>
+</Layout>

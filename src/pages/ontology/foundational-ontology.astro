@@ -1,0 +1,414 @@
+---
+/**
+ * /ontology/foundational-ontology — Foundational ontology: critique & alternatives.
+ *
+ * The honest counter-view to /ontology/foundation. That page presents the UFO
+ * meta-category legend the model commits to; this one asks *whether UFO is the
+ * right foundation at all* — sourced critiques of UFO/OntoUML/gUFO/OntoClean, a
+ * comparison of the upper-ontology alternatives (BFO, DOLCE, SUMO, GFO, gist) and
+ * the lightweight "no upper ontology" options, the pros/cons for a property-
+ * transaction data-interchange standard specifically, and a balanced verdict.
+ *
+ * Sourced from a four-stream web-research pass (June 2026); the live UFO-category
+ * distribution is read at build time from opda-vocabularies.ttl (the same fs-read
+ * pattern as src/pages/ontology/foundation.astro) to surface the UFO+DOLCE-hybrid
+ * fact. The Council deliberation subsection is wired below to the recorded session
+ * + the ODR it routes to.
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ONT = path.resolve(process.cwd(), 'source/03-standards/ontology');
+function ttl(name: string): string {
+  try { return fs.readFileSync(path.join(ONT, name), 'utf8'); } catch { return ''; }
+}
+
+// Live UFO-category distribution across the emitted vocabularies. The rhetorical
+// point: most ufoCategory tags are "Quale-in-Region" — a DOLCE construct — so the
+// "UFO layer" is really a UFO+DOLCE hybrid.
+function ufoCategoryCounts(): { label: string; n: number }[] {
+  const matches = ttl('opda-vocabularies.ttl').match(/opda:ufoCategory\s+"([^"]+)"/g) ?? [];
+  const counts = new Map<string, number>();
+  for (const t of matches) {
+    const v = t.match(/"([^"]+)"/)?.[1] ?? '';
+    counts.set(v, (counts.get(v) ?? 0) + 1);
+  }
+  return [...counts.entries()].map(([label, n]) => ({ label, n })).sort((a, b) => b.n - a.n);
+}
+const ufoCats = ufoCategoryCounts();
+const ufoTotal = ufoCats.reduce((s, c) => s + c.n, 0);
+const dolceShare = ufoCats.find((c) => c.label === 'Quale-in-Region')?.n ?? 0;
+const gufoEmitted = /gufo:/.test(ttl('opda-descriptive-annotations.ttl')) || /gufo:/.test(ttl('opda-descriptive.ttl'));
+
+// §2 — the UFO/OntoUML/gUFO/OntoClean critique, themed and honestly graded.
+const CRITIQUES = [
+  { theme: 'OWL is semantically lossy for UFO', strength: 'Strong', forOpda: 'Validates the design. Modality, anti-transitivity, weak supplementation and design-time constraint checking do not survive into OWL 2 DL — the gUFO authors count 12,288 possible OWL approximations of UFO-B alone. Their own conclusion: push constraints into SHACL. That is exactly what OPDA does.' },
+  { theme: 'gUFO is a lossy projection, not UFO', strength: 'Strong', forOpda: 'Claim "UFO-informed", never "UFO-grounded with formal guarantees". gUFO drops the quality-space apparatus, replaces modal semantics with reified situations, and moves OntoClean enforcement to runtime SHACL. It is a labelling + pattern vocabulary, which is how OPDA uses it.' },
+  { theme: 'Comprehension cost / steep learning curve', strength: 'Moderate', forOpda: 'Cuts in OPDA’s favour. The controlled evidence (Verdonck et al. 2020) shows the foundational layer imposes a measurable comprehension cost — but it targets heavyweight OntoUML modelling as a daily practice. PDTF consumers never read OntoUML; they read JSON/SHACL. The category tags + a targeted decision rule sidestep the burden.' },
+  { theme: 'Meta-category proliferation (kind/role/phase/relator/mode/...)', strength: 'Weak–Moderate', forOpda: 'Widely felt (it drives gUFO and the anti-pattern catalogues) but no peer-reviewed paper has "too many stereotypes" as its thesis. Honest framing: an inference, not a citation. OPDA uses a 7-category subset as tags, not the full lattice.' },
+  { theme: 'Contested metaphysics (trope theory, modality, 3D endurantism)', strength: 'Moderate (philosophically), Weak (practically)', forOpda: 'Real but "no escape": every foundation carries contested commitments, and BFO’s Aristotelian realism is attacked just as hard (DeBellis 2025) while handling social/legal/virtual entities — OPDA’s actual domain — worse. You are not asserting tropes exist; you use moments as a modelling device.' },
+  { theme: 'OntoClean depends on S5 modal logic; labour-intensive to apply', strength: 'Strong (the modal barrier)', forOpda: 'Bites hardest when OntoClean is applied exhaustively across a large auto-built ontology. Applied as a targeted human decision aid — "does this distinction earn an OWL subclass, or a coded SKOS facet?" — it is arguably OntoClean’s best-fit use, and the barrier is largely defused.' },
+  { theme: 'Adoption is academic-heavy; tooling research-grade', strength: 'Moderate', forOpda: 'Watch, don’t block. UFO’s deployed footprint is narrower than BFO’s (no ISO standard, no OBO-scale uptake) — but UFO is now itself in ISO/IEC standardisation, and OPDA’s use needs no OntoUML editor. UFO-C (social) is the least-mature layer and the one most relevant to conveyancing — a standing risk flag.' },
+];
+
+// §3 — the alternatives, scored for OPDA's purpose (a governed OWL/SHACL property-
+// transaction interchange covering roles, legal estates, claims, evidence, PII).
+const ALTS = [
+  { name: 'UFO (current)', rigour: '●●●', fit: '●●●', size: '●●○', tooling: '●●○', adoption: '●●○', gov: '●●○', note: 'UFO-C social commitments/claims + UFO-L Hohfeldian legal relations map onto estates, charges, offers, obligations. The bar the others must clear.' },
+  { name: 'DOLCE', rigour: '●●●', fit: '●●○', size: '●○○', tooling: '●●○', adoption: '●●○', gov: '●●○', note: 'Already partly in OPDA (Quale-in-Region). Social objects + roles-as-qua-individuals, but no first-class relator, and OWL gets only a lite fragment of a first-order theory.' },
+  { name: 'BFO', rigour: '●●●', fit: '●○○', size: '●●●', tooling: '●●●', adoption: '●●●', gov: '●●●', note: 'ISO/IEC 21838-2; 600+ OBO ontologies; reasoner-friendly. But must reify obligations/rights as "directive information entities" and leans on an external relation ontology — a structural mismatch for a claims/roles domain.' },
+  { name: 'SUMO', rigour: '●●○', fit: '●○○', size: '●○○', tooling: '●○○', adoption: '●●○', gov: '●●○', note: 'Largest public ontology; SUO-KIF is not OWL (needs re-engineering); documented type-translation inconsistencies + thin design rationale. WordNet bridge irrelevant to a tight interchange.' },
+  { name: 'GFO', rigour: '●●●', fit: '●○○', size: '●●○', tooling: '●○○', adoption: '●○○', gov: '●●○', note: 'Elegant 3D/4D integration, but its relation theory hits Bradley’s regress ("ill-suited for most conceptual modelling") and adoption is biomedicine-centric.' },
+  { name: 'gist', rigour: '●○○', fit: '●●○', size: '●●●', tooling: '●●●', adoption: '●●○', gov: '●○○', note: 'The real pragmatic challenger: ~100 classes, OWL-native, CC-BY, actively maintained, business primitives (Agreement/Commitment/Obligation). But philosophically thin (Semantic Arts built gistBFO to backfill rigour) and single-vendor-governed.' },
+  { name: 'Lightweight (schema.org, PROV-O, SKOS, DC)', rigour: '●○○', fit: '●○○', size: '●●●', tooling: '●●●', adoption: '●●●', gov: '●●●', note: 'Components, not foundations. The right design keeps them in that role on top of a grounded core: PROV-O for evidence/provenance, SKOS for code-lists, DC for metadata, schema.org as export-only.' },
+];
+
+// §4 — what real interchange / property standards actually rest on.
+const REALSTACKS = [
+  { std: 'PDTF / BASPI (OPDA)', found: 'JSON Schema (+ this linked-data model behind it)', fo: 'No' },
+  { std: 'RICS Data Standard / OSCRE', found: 'Industry data dictionary', fo: 'No (an "ontology layer" is aspirational)' },
+  { std: 'IFC / buildingSMART', found: 'EXPRESS schema', fo: 'No — ifcOWL is an after-the-fact projection, widely criticised' },
+  { std: 'HL7 FHIR', found: '80/20 resource model + extensions', fo: 'No' },
+  { std: 'schema.org', found: 'Lightweight vocabulary', fo: 'No ("not intended as a universal ontology")' },
+  { std: 'GS1 / ISO 20022 / GLEIF', found: 'Code lists / message models / common data format', fo: 'No' },
+  { std: 'OBO Foundry (biomedicine)', found: 'BFO', fo: 'YES — the genuine exception' },
+];
+---
+<Layout
+  title="Foundational ontology: critique & alternatives"
+  description="An honest, sourced assessment of OPDA's foundational-ontology choice: critiques of UFO / OntoUML / gUFO / OntoClean, a comparison of the upper-ontology alternatives (BFO, DOLCE, SUMO, GFO, gist) and the lightweight options, the pros and cons for a property-transaction data-interchange standard, and a balanced verdict on the restrained UFO-as-lens posture."
+>
+<PageMeta category="Understand the model" variant="brand" updated="Draft · Updated 2026-06-14" />
+
+  <h1>Foundational ontology: critique &amp; alternatives</h1>
+
+  <p class="lead">
+    <a href="/ontology/foundation">Foundations &amp; architecture</a> presents the UFO meta-category
+    legend the model commits to. This page is its honest counter-view: <em>should the standard rest on
+    UFO at all?</em> It collects the published critiques of <strong>UFO / OntoUML / gUFO / OntoClean</strong>,
+    weighs the upper-ontology <strong>alternatives</strong> (BFO, DOLCE, SUMO, GFO, gist) and the
+    lightweight "no upper ontology" options, sets out the <strong>pros and cons for a property-transaction
+    data-interchange standard specifically</strong>, and lands a balanced verdict. Every external claim is
+    graded by source strength; where a critique is widely felt but not citable, it is flagged as an
+    inference, not a fact.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <p class="callout__label">On this page</p>
+    <ul>
+      <li><a href="#commitment">What OPDA actually commits to</a> — UFO as a lens, not an import</li>
+      <li><a href="#critique">Critique of UFO / OntoUML / gUFO / OntoClean</a> — sourced and graded</li>
+      <li><a href="#alternatives">The alternatives, compared</a> — BFO, DOLCE, SUMO, GFO, gist, lightweight</li>
+      <li><a href="#pdtf">Pros &amp; cons for the PDTF standard</a> — domain fit, the meta-question</li>
+      <li><a href="#verdict">Verdict — is a lens worth the tax?</a></li>
+      <li><a href="#council">Council deliberation &amp; conclusions</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="commitment">What OPDA actually commits to</h2>
+  <p>
+    The critique only makes sense against an honest baseline, because <strong>OPDA does not import UFO</strong>.
+    It uses UFO three ways, all deliberately restrained:
+  </p>
+  <ul>
+    <li><strong>gUFO advisory annotations.</strong> {gufoEmitted ? 'A handful of' : 'A gated set of'} <code>rdf:type gufo:Quality</code>
+      markers sit in the descriptive <em>annotation</em> graph (ADR-0034), quarantined from the class and
+      shapes graphs and never reasoned over. gUFO is the "gentle", lightweight OWL implementation of UFO.</li>
+    <li><strong>The seven-category framework as SKOS tags.</strong> Each enum scheme carries one
+      <code>opda:ufoCategory</code> label (ODR-0011 §8a) — an advisory classification, dual-sourced to
+      Guizzardi&nbsp;2005 / DOLCE and the OPDA council that bound it.</li>
+    <li><strong>OntoClean as a decision procedure.</strong> The rigidity / identity / dependence tests
+      decide one thing: whether a distinction earns an OWL subclass or stays a coded SKOS facet
+      (the classification-over-inheritance doctrine, <a href="/modelling/odr/odr-0027">ODR-0027</a>).</li>
+  </ul>
+  <div class="callout callout--note">
+    <p class="callout__label">It is really a UFO+DOLCE hybrid</p>
+    <p>
+      Of the <strong>{ufoTotal}</strong> <code>opda:ufoCategory</code> tags emitted across the vocabularies,
+      <strong>{dolceShare}</strong> are <code>Quale-in-Region</code> — which is a <strong>DOLCE</strong>
+      construct (Masolo et al., WonderWeb D18), not strictly UFO. The full live distribution:
+    </p>
+    <ul>
+      {ufoCats.map((c) => (<li><code>{c.label}</code> &times; {c.n}</li>))}
+    </ul>
+    <p class="muted">Read at build time from <code>opda-vocabularies.ttl</code>.</p>
+  </div>
+  <p>
+    UFO/gUFO is also just <em>one of ~seven</em> standards in the stack (RDF/OWL, SHACL, SKOS, PROV-O, DPV,
+    UFO/gUFO), and per <a href="/modelling/odr/odr-0029">ODR-0029</a> the reasoning is shallow — only RDFS
+    subclass entailment materialises. So the question is never "is heavyweight OntoUML worth it" — OPDA
+    never pays that — but "is a <em>lens you barely materialise</em> worth its conceptual tax?"
+  </p>
+
+  <h2 id="critique">Critique of UFO / OntoUML / gUFO / OntoClean</h2>
+  <p>
+    The genuinely critical literature on UFO is thinner than the promotional literature — the field is small
+    and substantially authored by the Guizzardi / Guarino / NEMO network. The sharpest critiques are therefore
+    (a) about the broader enterprise of foundational conceptual modelling, (b) from rival camps (BFO realists;
+    BORO 4D-extensionalists), or (c) <em>self-acknowledged</em> by the authors — which is, notably, where the
+    strongest and most decision-relevant critique lives.
+  </p>
+  <table>
+    <thead><tr><th>Critique</th><th>Strength</th><th>What it means for OPDA</th></tr></thead>
+    <tbody>
+      {CRITIQUES.map((c) => (
+        <tr>
+          <td><strong>{c.theme}</strong></td>
+          <td>{c.strength}</td>
+          <td>{c.forOpda}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    The single best-sourced limitation is the first row, and it is the gUFO authors' <em>own</em> analysis
+    (<a href="https://arxiv.org/abs/2603.20948">Almeida, Guizzardi, Sales &amp; Fonseca 2026</a>): UFO's
+    formal apparatus — modal-logic rigidity, anti-transitive inherence, weak-supplementation mereology,
+    design-time constraint enforcement — <strong>cannot be faithfully captured in decidable OWL 2 DL</strong>.
+    The recommended resolution is to validate constraints in SHACL/SPARQL at runtime rather than in the
+    reasoner. That is precisely OPDA's architecture (<a href="/modelling/odr/odr-0029">ODR-0029</a>): infer
+    only the safe RDFS-Plus closure, validate everything else as SHACL. The critique that should most worry a
+    UFO adopter is the one that most strongly <em>vindicates</em> this project's restraint.
+  </p>
+  <p>
+    The honest counterweight: do not inflate the claim. gUFO supplies a <em>taxonomy of types and reification
+    patterns</em>, not UFO's formal guarantees — so the defensible statement is "UFO-informed", not
+    "UFO-grounded". And three popular critiques are weakly sourced: "too many meta-categories" (an inference
+    that drives gUFO and the anti-pattern catalogues, but has no peer-reviewed thesis), "the A/B/C layering is
+    fragmented" (normal research-ontology evolution, consolidated in the 2022 <em>Applied Ontology</em>
+    synthesis), and "OntoClean is subjective / rarely used" (only the S5 modal-logic barrier is well-sourced).
+  </p>
+
+  <h2 id="alternatives">The alternatives, compared</h2>
+  <p>
+    Scored for <em>OPDA's</em> purpose — a governed OWL/SHACL property-transaction interchange covering roles,
+    legal estates, claims, evidence and PII. <span class="muted">(&#9679;&#9679;&#9679; strong &middot;
+    &#9679;&#9679;&#9675; moderate &middot; &#9679;&#9675;&#9675; weak)</span>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th><th>Rigour</th><th>Social / legal fit</th><th>Simplicity</th>
+        <th>OWL / SHACL tooling</th><th>Adoption</th><th>Governance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ALTS.map((a) => (
+        <tr>
+          <td><strong>{a.name}</strong></td>
+          <td>{a.rigour}</td><td>{a.fit}</td><td>{a.size}</td>
+          <td>{a.tooling}</td><td>{a.adoption}</td><td>{a.gov}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <ul>
+    {ALTS.map((a) => (<li><strong>{a.name}.</strong> {a.note}</li>))}
+  </ul>
+  <p>
+    Three contenders are real; the rest are not. <strong>BFO</strong> wins only on standardisation
+    (ISO/IEC 21838-2) and reasoner-friendliness — but the peer-reviewed Merrill exchange establishes that
+    BFO's interoperability benefits "neither follow from nor require" its contested realism, so choosing UFO
+    forfeits no genuine engineering benefit, only the ISO badge. <strong>DOLCE</strong> is the credible
+    heavyweight switch and is already partly in OPDA, but a wholesale move trades <em>down</em> on relational /
+    legal-position modelling. <strong>gist</strong> is the one to evaluate if adoption pressure ever forces a
+    lighter foundation — not SUMO/Cyc/GFO — with eyes open to its rigour and single-vendor-governance gaps.
+  </p>
+
+  <h2 id="pdtf">Pros &amp; cons for the PDTF standard</h2>
+  <p>
+    <strong>The pro that dominates: domain fit.</strong> A conveyance is a dense lattice of roles, claims,
+    obligations, evidence and legal estates. UFO makes these <em>first-class</em> — the relator pattern, UFO-C
+    social commitments/claims, and UFO-L's formalisation of Hohfeldian legal positions (Claim-Right &harr; Duty,
+    Power &harr; Subjection) map almost directly onto the PDTF domain. No alternative matches this: DOLCE lacks a
+    native relator, GFO's relations hit Bradley's regress, and BFO must re-encode rights and obligations as
+    information entities. For a property-rights interchange standard, this is decisive.
+  </p>
+  <table>
+    <thead><tr><th>Pros (for PDTF)</th><th>Cons (for PDTF)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Native fit for roles / relators / claims / legal positions (UFO-C, UFO-L).</td>
+        <td>No ISO standard (BFO has ISO/IEC 21838-2); UFO-C — the layer PDTF leans on — is the least mature.</td>
+      </tr>
+      <tr>
+        <td>Descriptive (cognition / language-respecting) register suits socially-constructed artefacts (titles, charges, obligations) better than BFO's realism.</td>
+        <td>Needs linked-data / formal-ontology skills "less common than JSON tooling" across member firms (ADR-0039) — mitigated by generating JSON Schema / OpenAPI from the model.</td>
+      </tr>
+      <tr>
+        <td>OntoClean is a principled, reusable rule for the subclass-vs-facet decision the standard makes constantly.</td>
+        <td>The UFO+DOLCE hybrid is real but undocumented as such — an honesty / governance debt (most tags are DOLCE).</td>
+      </tr>
+      <tr>
+        <td>Restrained use (gUFO advisory + SHACL constraints) is exactly what the gUFO authors recommend — low lock-in, reversible.</td>
+        <td>Risk of rhetorical inflation: presenting the model as "UFO-grounded with guarantees" when gUFO supplies neither the modal semantics nor constraint enforcement.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    <strong>The con that should give pause: the meta-question.</strong> Should a practical data-interchange
+    standard ship <em>any</em> foundational layer? The strongest empirical evidence says be cautious. A 2023
+    systematic review found essentially <em>no</em> measurable benefit from foundational ontologies in
+    practice, with complexity the universally-cited cost. And the revealed preference of successful interchange
+    standards points away from foundations entirely:
+  </p>
+  <table>
+    <thead><tr><th>Standard</th><th>What it actually rests on</th><th>Foundational ontology?</th></tr></thead>
+    <tbody>
+      {REALSTACKS.map((r) => (
+        <tr><td><strong>{r.std}</strong></td><td>{r.found}</td><td>{r.fo}</td></tr>
+      ))}
+    </tbody>
+  </table>
+  <p>
+    schema.org's own designers attribute its success to <em>simplicity over richer predecessors</em>; the one
+    place the built-environment sector lifted a big schema into formal semantics — <code>ifcOWL</code> —
+    produced an artefact criticised as bloated and hard to reason over. The single solid pro-foundational case
+    (BFO/OBO in biomedicine) rests on conditions PDTF does not have: thousands of curators, decades of funding,
+    a single coordinating foundry, and a domain with genuine shared scientific reality.
+  </p>
+
+  <h2 id="verdict">Verdict — is a lens worth the tax?</h2>
+  <p>
+    On the evidence, <strong>OPDA's restrained UFO-as-lens posture is well-supported — arguably the
+    lowest-risk way to consume foundational-ontology value.</strong> The reasoning:
+  </p>
+  <ul>
+    <li><strong>The critiques mostly miss.</strong> They target heavyweight OntoUML modelling and exhaustive
+      OntoClean application — neither of which OPDA does. The one critique that lands hardest (OWL is lossy for
+      UFO) <em>endorses</em> the quarantine-and-validate-with-SHACL architecture.</li>
+    <li><strong>No alternative beats UFO on the dimension that matters here</strong> — the legal/social core.
+      The serious challengers each lose ground: BFO on domain fit, DOLCE on relators, gist on rigour and
+      governance.</li>
+    <li><strong>But the meta-question is live and should be answered explicitly, not by default.</strong> The
+      defensible position is the one OPDA already occupies: use UFO/OntoClean as a <em>design lens</em> at
+      modelling time, ship <em>lightweight</em> SHACL/SKOS/JSON artefacts implementers actually consume, and
+      reserve any deeper foundational commitment for the specific sub-areas where wide, durable, multi-party
+      machine-integration is a proven requirement.</li>
+  </ul>
+  <p>
+    Three honest caveats to carry forward: (1) say <strong>"UFO-informed"</strong>, not "UFO-grounded with
+    guarantees"; (2) <strong>name the UFO+DOLCE hybrid</strong> rather than presenting a pure-UFO story;
+    (3) flag <strong>UFO-C as the least-mature layer</strong> exactly where PDTF leans on it. A thin, optional
+    <strong>BFO/IAO alignment</strong> is the one change worth holding in reserve — to be revisited only if
+    ISO-21838 credibility or external (e.g. biomedical / government-registry) interoperability becomes a hard
+    requirement, capturing BFO's standardisation upside without inheriting its realist austerity for the
+    roles-and-claims core.
+  </p>
+
+  <h2 id="council">Council deliberation &amp; conclusions</h2>
+  <p>
+    This assessment was adjudicated by a <strong>Linked Data Council</strong> — a six-member dialectic panel
+    convened as a live agent team with member-to-member cross-examination (session-040): Queen
+    <strong>Allemang</strong> (pragmatic RDF/SHACL), Devil's Advocate <strong>Cagle</strong> (the "you don't
+    need an upper ontology" advocate), with <strong>Guizzardi</strong> (UFO), <strong>Guarino</strong>
+    (OntoClean/DOLCE), <strong>Knublauch</strong> (SHACL), and <strong>Barry Smith</strong> (BFO/ISO). The
+    decision of record is <a href="/modelling/odr/odr-0030"><strong>ODR-0030</strong></a> (<code>status:
+    proposed</code> — the operator ratifies adoption).
+  </p>
+
+  <h3>The verdict — AFFIRM, scoped (every question 6-0)</h3>
+  <table>
+    <thead><tr><th>Question</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Q1 — Retain UFO-as-lens, or drop for SHACL+SKOS only?</td><td><strong>AFFIRM</strong> — but scoped to the Relator/Role spine (below)</td></tr>
+      <tr><td>Q2 — Deepen to heavyweight OntoUML / full-UFO?</td><td><strong>No</strong>, unanimously — the gUFO authors' own OWL-2-DL undecidability result is decisive</td></tr>
+      <tr><td>Q3 — A thin BFO/IAO alignment?</td><td><strong>Layered</strong> — ADOPT-NOW an IAO information-artefact crosswalk; HOLD-IN-RESERVE the BFO spine + ISO-21838 credential; deontic core stays UFO-L</td></tr>
+      <tr><td>Q4 — Honesty dispositions?</td><td><strong>AFFIRM</strong> — "UFO-informed" not "UFO-grounded"; name the DOLCE lineage in a <code>skos:scopeNote</code>; flag UFO-C least-mature</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What the cross-examination sharpened</h3>
+  <p>
+    The live debate did not rubber-stamp the proposition — it <em>scoped</em> it. The Devil's Advocate's wedge
+    — <strong>OntoClean ≠ UFO</strong> (the rigidity/identity meta-properties that do the real work predate and
+    are separable from UFO) — was met precisely: OntoClean is a theory of meta-properties and is silent on
+    <em>"the Relator founds the RoleMixins,"</em> so UFO is categorially load-bearing exactly at the
+    <strong>Relator/Role spine</strong> (<code>opda:Proprietorship</code>/<code>opda:Transaction</code> founding
+    Seller/Buyer — the same layer where UFO-L's Hohfeldian apparatus lives) and inert elsewhere. The proof case both adversaries verified at file:line:
+    <code>opda:numberOfSellers</code> sits on the <code>Proprietorship</code> Relator, not on the Roles — a
+    <em>relational placement</em> OntoClean's <em>monadic</em> meta-properties cannot derive. They co-signed the
+    finding that the irreducible primitive is <strong>relational reification</strong> (UFO's Relator being
+    OPDA's <em>chosen</em> apt expression — the corpus cites FIBO Arrangement as a co-precedent), and that UFO
+    earns its <em>specific</em> keep only because <strong>UFO+UFO-L uniquely unifies that reification with
+    Hohfeldian Claim-Right↔Duty correlativity</strong> — which is why the retention is
+    <strong>necessary-and-bounded, not pervasive-and-grounding</strong>, and robust to "why UFO and not
+    BFO/FIBO?" Both
+    adversaries conceded against interest: the proponent agreed the <strong>35 "Quale-in-Region" tags are
+    register-deference</strong> (an external authority — EPC, HMLR, INSPIRE — closes the value space) and
+    "should stop being presented as UFO doing work"; the DA agreed the layer is <em>optional, not harmful</em>.
+    The settled honest verb: <em>"OPDA's modelling process is governed by a UFO/OntoClean decision procedure;
+    the artefact carries an inert provenance record of that governance"</em> — UFO-informed, never UFO-grounded.
+  </p>
+
+  <h3>Held-as-live dissent (Cagle) &amp; re-open triggers</h3>
+  <p>
+    The DA withdrew his REJECT (no net harm shown at near-zero runtime cost) but holds the separability point
+    as live dissent: the foundation <em>vocabulary</em> is droppable. Three falsifiable re-open triggers are
+    recorded — if any fires, retiring the UFO vocabulary (keeping OntoClean-as-judgement + SHACL + SKOS) is
+    revisited: (i) the gUFO/<code>ufoCategory</code> layer is ever made reasoned-over, out of the
+    <a href="/modelling/odr/odr-0029">ODR-0029</a> annotation-graph quarantine; (ii) the 35/47 DOLCE-mislabel is
+    shown to cause a downstream modelling error; (iii) maintaining the mapping measurably delays a council
+    decision. Knublauch's standing condition: retention lapses if the gUFO quarantine ceases to be CI-enforced.
+  </p>
+  <p class="muted">
+    Full per-question transcript, the Smith↔Guizzardi Q3 settlement, and the tally + DA scorecard:
+    <code>docs/ontology/odr/council/session-040-foundational-ontology-choice.md</code>. Decision of record:
+    <a href="/modelling/odr/odr-0030">ODR-0030</a>.
+  </p>
+
+  <h2 id="sources">Sources</h2>
+  <p class="muted">
+    Assembled from a four-stream web-research pass (June 2026). PDFs that returned as binary were summarised by
+    a fetch model; verbatim quotes from those should be confirmed against the originals before any external
+    publication.
+  </p>
+  <h3>UFO / OntoUML / gUFO / OntoClean</h3>
+  <ul>
+    <li>Almeida, Guizzardi, Sales &amp; Fonseca, <em>gUFO: A Gentle Foundational Ontology for Semantic Web Knowledge Graphs</em> (2026) — <a href="https://arxiv.org/abs/2603.20948">arXiv:2603.20948</a> (the OWL-loss + SHACL-constraint analysis)</li>
+    <li>Guizzardi et al., <em>UFO: Unified Foundational Ontology</em>, <em>Applied Ontology</em> 17(1) (2022) — <a href="https://dl.acm.org/doi/abs/10.3233/AO-210256">ACM DL</a></li>
+    <li>Verdonck, Gailly &amp; de Cesare, <em>Comprehending 3D and 4D ontology-driven conceptual models</em>, <em>D&amp;KE</em> (2020) — <a href="https://www.sciencedirect.com/science/article/abs/pii/S0306437920300582">ScienceDirect</a></li>
+    <li>Guizzardi et al., <em>Ontological Patterns, Anti-Patterns and Pattern Languages</em> (Springer, 2014) — <a href="https://link.springer.com/chapter/10.1007/978-3-319-12206-9_2">link</a>; OntoUML <a href="https://ontouml.readthedocs.io/en/latest/anti-patterns/">anti-pattern catalogue</a></li>
+    <li>Guarino &amp; Welty, <em>An Overview of OntoClean</em> — <a href="http://www.loa.istc.cnr.it/old/Papers/GuarinoWeltyOntoCleanv3.pdf">PDF</a>; <a href="https://en.wikipedia.org/wiki/OntoClean">OntoClean (S5 modal barrier)</a></li>
+    <li>Guarino &amp; Guizzardi, <em>In the Defense of Ontological Foundations for Conceptual Modeling</em>, <em>SJIS</em> (2006) — <a href="https://aisel.aisnet.org/sjis/vol18/iss1/1/">AIS</a>; Guizzardi, <em>In Defense of a Trope-Based Ontology</em> (ER 2006) — <a href="https://www.inf.ufes.br/~gguizzardi/ER2006CR.pdf">PDF</a></li>
+    <li>Barcelos et al., <em>An Automated Transformation from OntoUML to OWL and SWRL</em> (ONTOBRAS 2013) — <a href="https://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf">PDF</a></li>
+  </ul>
+  <h3>BFO &amp; the realism debate</h3>
+  <ul>
+    <li>Smith et al., <em>The OBO Foundry</em>, <em>Nature Biotechnology</em> (2007) — <a href="https://www.nature.com/articles/nbt1346">link</a>; <a href="https://www.iso.org/standard/74572.html">ISO/IEC 21838-2:2021</a></li>
+    <li>Merrill, <em>Ontological realism: Methodology or misdirection?</em>, <em>Applied Ontology</em> (2010) — <a href="https://journals.sagepub.com/doi/10.3233/AO-2010-0076">link</a></li>
+    <li>Bernabé et al., <em>The use of foundational ontologies in biomedical research</em>, <em>J. Biomedical Semantics</em> (2023) — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10712036/">PMC</a> (no measurable benefit found)</li>
+    <li>Griffo, Almeida &amp; Guizzardi, UFO-L legal relations (2016/2018) — <a href="https://nemo.inf.ufes.br/wp-content/papercite-data/pdf/conceptual_modeling_of_legal_relations_2018.pdf">PDF</a></li>
+    <li>DeBellis, <em>Foundational Limits: Why BFO's Aristotelian Framework Cannot…</em> (KEOD 2025) — <a href="https://www.scitepress.org/Papers/2025/137712/137712.pdf">SciTePress</a></li>
+  </ul>
+  <h3>DOLCE, SUMO, GFO, gist &amp; the lightweight options</h3>
+  <ul>
+    <li>Keet, <em>An Introduction to Ontology Engineering</em>, §7.2 Foundational Ontologies — <a href="https://eng.libretexts.org/Bookshelves/Computer_Science/Programming_and_Computation_Fundamentals/An_Introduction_to_Ontology_Engineering_(Keet)/07%3A_Top-Down_Ontology_Development/7.02%3A_Foundational_Ontologies">LibreTexts</a></li>
+    <li>Borgo et al., <em>DOLCE: A Descriptive Ontology…</em>, <em>Applied Ontology</em> (2022) — <a href="https://arxiv.org/abs/2308.01597">arXiv</a></li>
+    <li>Allen, <em>Semantic Modeling with SUMO</em> (2020) — <a href="https://arxiv.org/pdf/2012.15835">arXiv</a>; Álvez et al., <em>Adimen-SUMO</em> (2012)</li>
+    <li>Semantic Arts, <em>gist</em> — <a href="https://www.semanticarts.com/gist/">overview</a>; <a href="https://www.semanticarts.com/gistbfo-an-open-source-bfo-compatible-version-of-gist/">gistBFO</a></li>
+    <li>Patel-Schneider, <em>Analyzing Schema.org</em> (ISWC 2014); schema.org <a href="https://schema.org/docs/datamodel.html">data model</a> ("not intended as a universal ontology")</li>
+    <li>PROV-O — <a href="https://www.w3.org/TR/prov-o/">W3C Rec</a>; SKOS — Baker et al., <em>Key Choices in the Design of SKOS</em> — <a href="https://arxiv.org/pdf/1302.1224">arXiv</a></li>
+  </ul>
+  <h3>The meta-question &amp; what real standards use</h3>
+  <ul>
+    <li>Cagle, <em>Do You Need An Upper Ontology?</em>, <em>The Ontologist</em> (2026) — <a href="https://ontologist.substack.com/p/do-you-need-an-upper-ontology">link</a></li>
+    <li>Guha, Brickley &amp; Macbeth, <em>Schema.org: Evolution of Structured Data on the Web</em>, <em>ACM Queue</em> (2016) — <a href="https://queue.acm.org/detail.cfm?id=2857276">link</a> (simplicity-wins)</li>
+    <li>PDTF schemas (JSON Schema) — <a href="https://github.com/Property-Data-Trust-Framework/schemas">GitHub</a>; ifcOWL — <a href="https://technical.buildingsmart.org/standards/ifc/ifc-formats/ifcowl/">buildingSMART</a></li>
+    <li>HL7 FHIR RDF — <a href="https://www.hl7.org/fhir/rdf.html">spec</a>; ISO 20022 JSON Schema; GLEIF L1 ontology</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <p>
+    The positive view — the UFO legend the model commits to — is on
+    <a href="/ontology/foundation">Foundations &amp; architecture</a>; the classification-over-inheritance
+    doctrine OntoClean drives is on <a href="/ontology/identity">Identity &amp; classification</a>
+    (<a href="/modelling/odr/odr-0027">ODR-0027</a>). Why the model stays deliberately thin is on
+    <a href="/ontology/known-issues#thin">Known issues</a>; the inference / validation boundary is
+    <a href="/modelling/odr/odr-0029">ODR-0029</a>. Full index: the
+    <a href="/ontology">Ontology section overview</a>.
+  </p>
+</Layout>

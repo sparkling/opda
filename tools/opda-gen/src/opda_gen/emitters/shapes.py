@@ -150,6 +150,7 @@ _ODR_0022_S4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rul
 _ODR_0024_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3")
 _ODR_0024_R6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6")
 _ODR_0024_R10 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R10")
+_ODR_0031_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0031/section-R3")
 _ODR_0024_R11 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R11")
 _ODR_0009_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1")
 _ODR_0009_Q7 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7")
@@ -426,6 +427,48 @@ def build_domain_range_constraint_shapes(g: Graph) -> None:
 
 
 # --- Foundation meta-shapes (called by foundation.build_shapes_graph) ----
+def build_ufo_category_value_shape(g: Graph) -> None:
+    """Extend `g` in place with the ODR-0031 R3 `opda:ufoCategory` value guard.
+
+    A **tag-level editorial meta-shape**: every subject bearing `opda:ufoCategory`
+    MUST carry a value drawn from the nine UFO meta-categories (the
+    `opda:UFOCategoryScheme` notations). It governs the *facet value-space* only —
+    it does NOT key any constraint on instance object-level structure (no instance
+    bears `opda:ufoCategory`; only `owl:Class` TBox subjects do, in the annotation
+    graph), so it stays the permitted "tag-level editorial guard" of ODR-0031 R3
+    and never fires the ODR-0030 Rule 1 quarantine trigger on instance data. The
+    nine values are sourced from `emitters.ufo_categories.UFO_CATEGORY_CONCEPTS`
+    so the guard and the scheme cannot drift. `sh:Violation` per ODR-0013 §Q1.
+    """
+    from opda_gen.emitters.ufo_categories import UFO_CATEGORY_CONCEPTS
+
+    shape_iri = OPDA_SHAPE["UFOCategoryValue_MetaShape"]
+    g.add((shape_iri, RDF.type, SH.NodeShape))
+    g.add((shape_iri, SH.targetSubjectsOf, OPDA.ufoCategory))
+    pshape = BNode()
+    g.add((shape_iri, SH["property"], pshape))
+    g.add((pshape, SH.path, OPDA.ufoCategory))
+    in_list = BNode()
+    Collection(g, in_list, [Literal(v) for v in sorted(UFO_CATEGORY_CONCEPTS)])
+    g.add((pshape, SH["in"], in_list))
+    g.add((pshape, SH.severity, SH.Violation))
+    g.add((pshape, SH.message, Literal(
+        "opda:ufoCategory MUST be one of the nine UFO meta-categories "
+        "(the opda:UFOCategoryScheme notations) — ODR-0031 R3 tag-level "
+        "editorial guard on the facet value-space.",
+        lang="en",
+    )))
+    g.add((shape_iri, OPDA.metaShapeJustification, Literal(
+        "ODR-0031 R3: a tag-level editorial guard on opda:ufoCategory's own "
+        "value-space (the nine UFO categories). A meta-shape over the "
+        "annotation-graph facet; it does NOT key any constraint on tagged "
+        "instances' object-level structure, so the ODR-0030 Rule 1 quarantine "
+        "holds and the facet stays inert on the wire.",
+        lang="en",
+    )))
+    g.add((shape_iri, DCTERMS.source, _ODR_0031_R3))
+
+
 def build_foundation_meta_shapes(g: Graph) -> None:
     """Extend `g` in place with the five foundation-level meta-shapes
     + the cross-cutting SHACL-AF rules (DeprecationChain, PII-without-DPV).

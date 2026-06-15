@@ -27,8 +27,7 @@ opda:DPVMappingRecord
     rdfs:label "DPV Mapping Record"@en ;
     rdfs:comment "Mapping record from an OPDA Kind class to its DPV baseline personal-data category and optional variant-conditional refinements. UFO Information Particular. Per ODR-0018 §Rule 4 + ODR-0012 §Evidence co-annotation, ODR-0012 is the authoring authority — this module emits the mapping records; ADR-0012 emits the resulting DPV co-annotation triples into opda-annotations.ttl (three-graph separation)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
-    skos:scopeNote "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a."@en ;
-    opda:ufoCategory "Information Object" .
+    skos:scopeNote "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a."@en .
 
 opda:SpecialCategoryScheme
     rdf:type owl:Class ;

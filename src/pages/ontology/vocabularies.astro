@@ -20,11 +20,6 @@ function exists(rel: string): boolean {
 const schemes = Object.values(model.schemes).sort((a, b) => a.localName.localeCompare(b.localName));
 const totalConcepts = schemes.reduce((n, s) => n + s.concepts.length, 0);
 
-// UFO-category roll-up (the seven-category framework, ODR-0011 §8a).
-const byUfo = new Map<string, number>();
-for (const s of schemes) byUfo.set(s.ufoCategory || '(unlabelled)', (byUfo.get(s.ufoCategory || '(unlabelled)') ?? 0) + 1);
-const ufoRows = [...byUfo.entries()].sort((a, b) => b[1] - a[1]);
-
 const SKOSMOS = { href: '/ontology/tools/skosmos/schemes.html', live: exists('tools/skosmos/schemes.html'), browser: 'http://localhost:9090/' };
 const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tools/ontospy/index.html') };
 ---
@@ -70,32 +65,24 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
     below reflects each scheme's actual IRI.
   </p>
 
-  <h2 id="ufo">UFO-category roll-up</h2>
+  <h2 id="ufo">UFO category</h2>
   <p>
-    Each scheme is tagged <code>opda:ufoCategory</code> under the seven-category UFO framework
-    (<a href="/modelling/odr/ODR-0011">ODR-0011</a> §8a). The great majority are
-    <strong>Quale-in-Region</strong> (ordinal/nominal quality regions — ratings, statuses, types); a few are
-    <strong>Substance Kind labels</strong> (e.g. fixture items, property types) where the coded value names a
-    kind without minting an OWL subclass.
+    Schemes no longer carry <code>opda:ufoCategory</code>. The register-deference value-space tags
+    (<strong>Quale-in-Region</strong> etc.) were split off the predicate — they are value-space shape,
+    not UFO categorial work (<a href="/ontology/foundational-ontology">ODR-0030 Rule 2 / ODR-0031</a>).
+    The <code>opda:ufoCategory</code> facet is now reserved for the nine UFO meta-categories of the OWL
+    <a href="/ontology/classes#by-category">classes</a>, as an inert, annotation-graph-only documentary
+    annotation (UFO-informed, not UFO-grounded).
   </p>
-  <table>
-    <thead><tr><th>UFO category</th><th>Schemes</th></tr></thead>
-    <tbody>
-      {ufoRows.map(([cat, n]) => (
-        <tr><td>{cat}</td><td>{n}</td></tr>
-      ))}
-    </tbody>
-  </table>
 
   <h2 id="index">Scheme index <span class="muted">· {schemes.length} schemes · {totalConcepts} concepts</span></h2>
   <table>
-    <thead><tr><th>Scheme</th><th>Concepts</th><th>UFO category</th><th>Definition</th></tr></thead>
+    <thead><tr><th>Scheme</th><th>Concepts</th><th>Definition</th></tr></thead>
     <tbody>
       {schemes.map((s) => (
         <tr>
           <td><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a>{s.prefLabel && s.prefLabel !== s.localName && <><br/><span class="muted">{s.prefLabel}</span></>}</td>
           <td>{s.concepts.length}</td>
-          <td>{s.ufoCategory || <span class="muted">—</span>}</td>
           <td>{s.definition || <span class="muted">—</span>}</td>
         </tr>
       ))}

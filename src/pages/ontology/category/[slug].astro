@@ -32,10 +32,11 @@ const { cat } = Astro.props;
     <p class="term-kind"><span class="pill pill--brand">UFO meta-category</span></p>
     <h1>{cat.category}</h1>
     <p class="term-comment">
-      {cat.classes.length} {cat.classes.length === 1 ? 'class' : 'classes'} whose UFO foundational
-      meta-category is <strong>{cat.category}</strong> — from the structured <code>opda:ufoCategory</code>
-      facet (ODR-0011 §8a; the classification doctrine keeps kinds as facets, not subclass trees —
-      <a href="/ontology/identity#doctrine">ODR-0027</a>).
+      {cat.classes.length} {cat.classes.length === 1 ? 'class' : 'classes'} <strong>classified under</strong> the
+      UFO foundational meta-category <strong>{cat.category}</strong> — from the inert <code>opda:ufoCategory</code>
+      facet (an annotation-graph-only documentary annotation; <a href="/ontology/foundational-ontology">UFO-informed,
+      not UFO-grounded</a>). The classification doctrine keeps kinds as facets, not subclass trees
+      (<a href="/ontology/identity#doctrine">ODR-0027</a>).
     </p>
   </header>
 

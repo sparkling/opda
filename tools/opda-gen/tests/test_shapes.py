@@ -533,3 +533,37 @@ def test_planted_off_domain_triple_raises_violation() -> None:
     assert str(SH.Violation) in severities, (
         f"off-domain breach must be sh:Violation; got {severities}"
     )
+
+
+def test_ufo_category_value_guard_covers_every_emitted_tag() -> None:
+    """ODR-0031 R3: the opda:ufoCategory tag-level guard (UFOCategoryValue_MetaShape)
+    enumerates exactly the nine UFO categories via sh:in, targets subjects-of
+    opda:ufoCategory (the TBox tags, never instances), and covers every emitted
+    tag value — so the guard and opda:UFOCategoryScheme cannot drift.
+    """
+    from rdflib.collection import Collection
+
+    from opda_gen.emitters.foundation import build_annotations_graph
+    from opda_gen.emitters.shapes import build_ufo_category_value_shape
+    from opda_gen.namespaces import OPDA, OPDA_SHAPE
+
+    sh = Namespace("http://www.w3.org/ns/shacl#")
+
+    shapes = Graph()
+    build_ufo_category_value_shape(shapes)
+    shape = OPDA_SHAPE["UFOCategoryValue_MetaShape"]
+
+    # Tag-level guard: targets subjects-of opda:ufoCategory (TBox), never instances.
+    assert (shape, sh.targetSubjectsOf, OPDA.ufoCategory) in shapes
+    pshape = shapes.value(shape, sh["property"])
+    in_node = shapes.value(pshape, sh["in"])
+    allowed = {str(x) for x in Collection(shapes, in_node)}
+    assert len(allowed) == 9, f"expected 9 UFO categories; got {sorted(allowed)}"
+
+    # Coverage: every emitted opda:ufoCategory value sits in the guard's sh:in set.
+    annotations = build_annotations_graph()
+    emitted = {str(o) for _s, _p, o in annotations.triples((None, OPDA.ufoCategory, None))}
+    assert emitted, "no opda:ufoCategory tags were emitted into the annotation graph"
+    assert emitted <= allowed, (
+        f"emitted ufoCategory values outside the sh:in guard (drift): {sorted(emitted - allowed)}"
+    )

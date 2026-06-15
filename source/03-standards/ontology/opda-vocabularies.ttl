@@ -24,8 +24,7 @@ opda-v:ActionAlertRatingScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-4> ;
     dct:title "Search/environmental action-alert rating value-space (1–5)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 — an ordinal quality region). DOLCE: Quality-Region (Masolo D18 §4.3). The notation is the integer level; the colour anchors (Green at 1, Red at 5) are the data dictionary's own title text. Per-member dct:source is the schema leaf path (ODR-0022 G2)."@en ;
-    opda:hasSteward "Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (deputy Isaac) (rating-scheme steward per ODR-0008d Rule 4)"@en .
 
 opda-v:AddressVariantScheme
     rdf:type skos:ConceptScheme ;
@@ -34,8 +33,7 @@ opda-v:AddressVariantScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a-address-variant> ;
     dct:title "Address variant Quality Value"@en ;
     skos:scopeNote "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). Members particularise an Address Substance Kind per ODR-0015 §Q1. Ratified by the Council at session-015."@en ;
-    opda:hasSteward "Guizzardi (S015 Q1)"@en ;
-    opda:ufoCategory "Quality Value" .
+    opda:hasSteward "Guizzardi (S015 Q1)"@en .
 
 opda-v:AssuranceLevelScheme
     rdf:type skos:ConceptScheme ;
@@ -44,8 +42,7 @@ opda-v:AssuranceLevelScheme
     dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
     dct:title "Identity assurance level (eIDAS + PDTF)"@en ;
     skos:scopeNote "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). Low/Substantial/High inherit verbatim from Regulation (EU) No 910/2014 (eIDAS) Article 8 per ODR-0011 §4a regulator-citation discipline. PDTF-Standard ratified by ODR-0009 §Q3 as an OPDA-specific intermediate level."@en ;
-    opda:hasSteward "Moreau (S009 Q3)"@en ;
-    opda:ufoCategory "Quality Value" .
+    opda:hasSteward "Moreau (S009 Q3)"@en .
 
 opda-v:AttachmentStatusNotApplicableScheme
     rdf:type skos:ConceptScheme ;
@@ -54,8 +51,7 @@ opda-v:AttachmentStatusNotApplicableScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Disclosure attachment status with non-applicable (Attached / Not applicable / To follow)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Three-value variant of AttachmentStatusScheme for questions where the document may not apply."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:AttachmentStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -64,8 +60,7 @@ opda-v:AttachmentStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Disclosure attachment status (Attached / To follow)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The most-reused disclosure-envelope value-space (~90 leaves); the attached document itself is an ODR-0009 Evidence (Category B), not a Quality of the Property."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:BoundaryResponsibilityScheme
     rdf:type skos:ConceptScheme ;
@@ -74,8 +69,7 @@ opda-v:BoundaryResponsibilityScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Boundary ownership / maintenance responsibility (Seller / Shared / Neighbour / Not known)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the per-side boundary-ownership questions (left / right / rear / front)."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:BroadbandConnectionTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -84,8 +78,7 @@ opda-v:BroadbandConnectionTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6> ;
     dct:title "Broadband connection type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the broadband.typeOfConnection enum the data dictionary carries (ODR-0024 R6)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:BuiltFormScheme
     rdf:type skos:ConceptScheme ;
@@ -94,8 +87,7 @@ opda-v:BuiltFormScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Property built-form classification"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:CentralHeatingFuelTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -104,8 +96,7 @@ opda-v:CentralHeatingFuelTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Property central-heating fuel type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:ChargePaymentStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -114,8 +105,7 @@ opda-v:ChargePaymentStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Charge payment status (Due / Completed but unpaid / Anticipated / Not applicable)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the managed-area charge questions. Definitions are conservative — flagged for WG wording on the 'Completed but unpaid' vs 'Due' boundary."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:ConstructionTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -124,8 +114,7 @@ opda-v:ConstructionTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6> ;
     dct:title "Standard-form construction type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the isStandardForm.constructionType enum the data dictionary carries (ODR-0024 R6)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:CouncilTaxBandSchemeEW
     rdf:type skos:ConceptScheme ;
@@ -134,8 +123,7 @@ opda-v:CouncilTaxBandSchemeEW
     dct:source <https://www.gov.uk/council-tax-bands> ;
     dct:title "Council Tax Band — Valuation Office Agency banding (England & Wales)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Verbatim source: VOA council-tax bands published at https://www.gov.uk/council-tax-bands."@en ;
-    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; VOA-governed)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; VOA-governed)"@en .
 
 opda-v:CouncilTaxBandSchemeScotland
     rdf:type skos:ConceptScheme ;
@@ -144,8 +132,7 @@ opda-v:CouncilTaxBandSchemeScotland
     dct:source <https://www.saa.gov.uk/council-tax/council-tax-bands/> ;
     dct:title "Council Tax Band — Scottish Assessors Association banding"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Verbatim source: SAA council-tax bands published at https://www.saa.gov.uk/council-tax/council-tax-bands/."@en ;
-    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; SAA-governed)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; SAA-governed)"@en .
 
 opda-v:CurrencyScheme
     rdf:type skos:ConceptScheme ;
@@ -154,8 +141,7 @@ opda-v:CurrencyScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R3> ;
     dct:title "ISO-4217 currency code value-space"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4) — the currency dimension of the monetary-amount quality value-space (the magnitude is the other dimension). DOLCE: Quality-Region (Masolo et al. 2003 D18 §4.3). Value-space governed by ISO 4217."@en ;
-    opda:hasSteward "Baker (deputy Isaac) (enumeration-vocabulary steward per ODR-0011 §8a)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (deputy Isaac) (enumeration-vocabulary steward per ODR-0011 §8a)"@en .
 
 opda-v:CurrentEnergyRatingScheme
     rdf:type skos:ConceptScheme ;
@@ -164,8 +150,7 @@ opda-v:CurrentEnergyRatingScheme
     dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     dct:title "Energy Performance Certificate (EPC) current energy rating"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Verbatim source: DESNZ Energy Performance Certificate guidance."@en ;
-    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed)"@en .
 
 opda-v:DeedSupplyStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -174,8 +159,7 @@ opda-v:DeedSupplyStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Deed/document supply status (Attached / To follow / Lost)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the leasehold required-documents questions where a document may have been lost. Distinct from AttachmentStatusScheme by the 'Lost' member."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:EvidenceMethodScheme
     rdf:type skos:ConceptScheme ;
@@ -184,8 +168,7 @@ opda-v:EvidenceMethodScheme
     dct:source <https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html> ;
     dct:title "Identity-evidence kind (OIDC4IDA evidence.type)"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members inherited verbatim from OpenID Connect for Identity Assurance 1.0 `evidence` type per ODR-0011 §4a regulator-citation discipline; each binds to its opda:*Evidence subclass via skos:exactMatch (NEVER owl:sameAs). NOTE (Council session-036): the scheme IRI retains the historical 'evidenceMethod' token by design — it denotes the evidence-KIND axis (OIDC4IDA evidence.type); do NOT rename the dereferenceable IRI (opaque-IRI / Cool-URIs discipline; renaming is ODR-0024 §R4 namespace-landmine churn)."@en ;
-    opda:hasSteward "Moreau (S009 Q3)"@en ;
-    opda:ufoCategory "Substance Kind label" .
+    opda:hasSteward "Moreau (S009 Q3)"@en .
 
 opda-v:FeeTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -194,8 +177,7 @@ opda-v:FeeTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Managed-area fee type (Service charges / Ground rent / Administration fees / All)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the managed-area contact-details bank-account questions."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:FittedOrFreestandingScheme
     rdf:type skos:ConceptScheme ;
@@ -204,8 +186,7 @@ opda-v:FittedOrFreestandingScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Kitchen-appliance fitment (Fitted / Freestanding)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the kitchen-appliance fixtures checklist (hob, oven, extractor, etc.)."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:FixtureItemScheme
     rdf:type skos:ConceptScheme ;
@@ -214,8 +195,7 @@ opda-v:FixtureItemScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Fixtures-and-fittings checklist items"@en ;
     skos:scopeNote "UFO: the items are Objects/Kinds (Guizzardi 2005 Ch. 4) — a controlled list of chattels, not Qualities of the Property (ODR-0022 §4 D Object/Mode split). CANDIDATE scheme: ratified as a scheme (not a FixtureItem class — that would be over-engineering absent a named §Q4a query). Item definitions are conservative path humanisations; WG owns final wording. Colliding bare names (bedroom1 ×5, kitchen ×5, etc.) are kept distinct by the category-qualified URI."@en ;
-    opda:hasSteward "Allemang (fixtures sub-module steward per ODR-0022 §4)"@en ;
-    opda:ufoCategory "Substance Kind label" .
+    opda:hasSteward "Allemang (fixtures sub-module steward per ODR-0022 §4)"@en .
 
 opda-v:HeatingTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -224,8 +204,7 @@ opda-v:HeatingTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Property heating-system type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:InclusionScheme
     rdf:type skos:ConceptScheme ;
@@ -234,8 +213,7 @@ opda-v:InclusionScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Fixture inclusion (Included / Excluded)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Two-value variant of InclusionStatusScheme used by the free-text `otherItems[]` fixtures slots."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:InclusionStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -244,8 +222,7 @@ opda-v:InclusionStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Fixture inclusion status (Included / Excluded / None)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The value-space for the ~89-item fixtures checklist (ODR-0022 §4 Category D). Reserved property `opda:inclusionStatus` is a transaction Mode/Relator (ODR-0023 R4) owned by the Council — only the value-scheme is emitted here."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:ManagedAreaResponsibilityScheme
     rdf:type skos:ConceptScheme ;
@@ -254,8 +231,7 @@ opda-v:ManagedAreaResponsibilityScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Managed-area maintenance responsibility (Landlord / Management Company / Managing Agent / Rentcharge Owner / the Lessees / Not applicable)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). The canonical managed-area-payee superset; the leasehold / managed-freehold variants are profile `sh:in` restrictions over this scheme's members."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:MilestoneKindScheme
     rdf:type skos:ConceptScheme ;
@@ -264,8 +240,7 @@ opda-v:MilestoneKindScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
     dct:title "Transaction milestone kind code"@en ;
     skos:scopeNote "UFO: Method/plan code (Guizzardi 2005 Ch. 4 + Guizzardi & Wagner 2010 action-modelling). Codes are ratified by ODR-0007 §Q2 transaction-lifecycle pattern; each milestone corresponds to a stage transition in the PDTF process."@en ;
-    opda:hasSteward "Guizzardi (S007 Q2)"@en ;
-    opda:ufoCategory "Method/plan code" .
+    opda:hasSteward "Guizzardi (S007 Q2)"@en .
 
 opda-v:OffMainsDrainageSystemTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -274,8 +249,7 @@ opda-v:OffMainsDrainageSystemTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Off-mains drainage system type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Applies only when the Property is not connected to the mains sewerage system."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:OfstedRatingScheme
     rdf:type skos:ConceptScheme ;
@@ -284,8 +258,7 @@ opda-v:OfstedRatingScheme
     dct:source <https://www.gov.uk/government/organisations/ofsted> ;
     dct:title "Ofsted school-inspection rating"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Regulator-governed (Ofsted) per ODR-0011 §4a; scheme-level dct:source is the Ofsted authority (ODR-0024 R6). Minted from the ofstedRating enum the data dictionary carries on the school band."@en ;
-    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; Ofsted-governed)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; Ofsted-governed)"@en .
 
 opda-v:OwnerTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -294,8 +267,7 @@ opda-v:OwnerTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Legal owner Substance Kind discriminator"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Each member binds to the corresponding UFO Substance Kind via skos:exactMatch (Private individual → opda:Person; Organisation → opda:Organisation). NEVER owl:sameAs per ODR-0005 Anti-pattern §5."@en ;
-    opda:hasSteward "Guizzardi (S006 Q1)"@en ;
-    opda:ufoCategory "Substance Kind label" .
+    opda:hasSteward "Guizzardi (S006 Q1)"@en .
 
 opda-v:OwnershipTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -304,8 +276,7 @@ opda-v:OwnershipTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Legal-estate ownership type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). NTS2 four-value canonical set used as authority (per data dictionary)."@en ;
-    opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en .
 
 opda-v:ParticipantStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -314,8 +285,7 @@ opda-v:ParticipantStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Transaction participant phase label"@en ;
     skos:scopeNote "UFO: Phase label (Guizzardi 2005 Ch. 4 — intra-Kind phase). DOLCE: Stage of an Endurant (Masolo D18 §4)."@en ;
-    opda:hasSteward "Guizzardi (S006 Q7)"@en ;
-    opda:ufoCategory "Phase label" .
+    opda:hasSteward "Guizzardi (S006 Q7)"@en .
 
 opda-v:PerilScheme
     rdf:type skos:ConceptScheme ;
@@ -324,8 +294,7 @@ opda-v:PerilScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-2> ;
     dct:title "Environmental / search peril dataset axis"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Mirrors opda:BoundedContextScheme member-for-member (a flat scheme; each concept is skos:topConceptOf). The peril → sub-peril taxonomy axis uses skos:narrower (ODR-0008d Rule 4); the data dictionary attests no enumerated sub-peril value-set, so all 12 perils are top concepts and the per-result recursion is carried by opda:hasSubAssessment, not by TBox concepts."@en ;
-    opda:hasSteward "Baker (deputy Isaac) (PerilScheme steward per ODR-0008d Rule 2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Baker (deputy Isaac) (PerilScheme steward per ODR-0008d Rule 2)"@en .
 
 opda-v:PriceQualifierScheme
     rdf:type skos:ConceptScheme ;
@@ -334,8 +303,7 @@ opda-v:PriceQualifierScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6> ;
     dct:title "Asking-price qualifier"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the priceQualifier enum the data dictionary carries (ODR-0024 R6); qualifies the headline price, which is itself a deferred Category-G monetary leaf (ODR-0024 R3)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:PropertyTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -344,8 +312,7 @@ opda-v:PropertyTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Property type Substance Kind label"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members may bind to OWL sub-classes of opda:Property via skos:exactMatch when conditional Building/Room class promotions trigger (per ODR-0008 §Q4a held-as-live). Distinct from BuiltFormScheme (Quale-in-Region)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Substance Kind label" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:RoadAdoptionStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -354,8 +321,7 @@ opda-v:RoadAdoptionStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Road / footway adoption status (public / private / section 38 / unchecked)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the roads-and-public-rights-of-way search results. Regulator-adjacent (Highways Act 1980 s.38); flagged for WG wording on the verbatim s.38 definition."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:RoleScheme
     rdf:type skos:ConceptScheme ;
@@ -364,8 +330,7 @@ opda-v:RoleScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Transaction participant role label"@en ;
     skos:scopeNote "UFO: Role label (Guizzardi 2005 Ch. 4 — anti-rigid Roles in a Relator). DOLCE: Endurant-played-role (Masolo D18 §4)."@en ;
-    opda:hasSteward "Guizzardi (RoleMixin steward per S006 Q2)"@en ;
-    opda:ufoCategory "Role label" .
+    opda:hasSteward "Guizzardi (RoleMixin steward per S006 Q2)"@en .
 
 opda-v:SchoolTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -374,8 +339,7 @@ opda-v:SchoolTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R4> ;
     dct:title "Nearby-school band value-space (College / Nursery / Primary / Secondary / Private)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Carried by ONE shared opda:schoolType datatype property (sh:in this scheme in the overlay profile), NEVER five generic object properties (ODR-0024 R4)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:SellersCapacityScheme
     rdf:type skos:ConceptScheme ;
@@ -384,8 +348,7 @@ opda-v:SellersCapacityScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Seller capacity Method/plan code"@en ;
     skos:scopeNote "UFO: Method/plan code (Guizzardi 2005 Ch. 4 + Guizzardi & Wagner 2010). Codes authorise the Seller's Activity (the act of selling) under a defined legal arrangement."@en ;
-    opda:hasSteward "Guizzardi (S006 Q4)"@en ;
-    opda:ufoCategory "Method/plan code" .
+    opda:hasSteward "Guizzardi (S006 Q4)"@en .
 
 opda-v:TenureKindScheme
     rdf:type skos:ConceptScheme ;
@@ -394,8 +357,7 @@ opda-v:TenureKindScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "UFO Substance Kind label for tenure"@en ;
     skos:scopeNote "UFO: Substance Kind label (Guizzardi 2005 Ch. 4). Members bind to OWL sub-classes via `skos:exactMatch`; OPDA pattern per ODR-0005 Anti-pattern §5."@en ;
-    opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en ;
-    opda:ufoCategory "Substance Kind label" .
+    opda:hasSteward "Kendall (LegalEstate steward per S008 Q2)"@en .
 
 opda-v:TransactionStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -404,8 +366,7 @@ opda-v:TransactionStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Transaction lifecycle phase label"@en ;
     skos:scopeNote "UFO: Phase label (Guizzardi 2005 Ch. 4 — intra-Kind phase). Data dictionary leaf `status` carries a broader 9-value enum (including marketing-side and let-side phases); the ADR-named five-phase canonical set is emitted here as the UFO phase set for the sale lifecycle. Per-member dct:source cites ODR-0011 §8a (Council ratifying anchor); per-member prov:wasDerivedFrom links each canonical label to the underlying data-dictionary enum value it sources from (G10 closure per ADR-0013)."@en ;
-    opda:hasSteward "Guizzardi (S007 Q3)"@en ;
-    opda:ufoCategory "Phase label" .
+    opda:hasSteward "Guizzardi (S007 Q3)"@en .
 
 opda-v:TransportTypeScheme
     rdf:type skos:ConceptScheme ;
@@ -414,8 +375,7 @@ opda-v:TransportTypeScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6> ;
     dct:title "Nearby transport-node type"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Minted from the transportType enum the data dictionary carries on the transport band (ODR-0024 R6)."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:UnitOfAreaScheme
     rdf:type skos:ConceptScheme ;
@@ -424,8 +384,7 @@ opda-v:UnitOfAreaScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Internal-area unit (square metres / square feet)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the internal-area measurement questions. A measurement unit rather than a descriptive Quality value; flagged for WG on whether QUDT unit IRIs should be referenced via skos:exactMatch."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:UtilityConnectionStatusNotKnownScheme
     rdf:type skos:ConceptScheme ;
@@ -434,8 +393,7 @@ opda-v:UtilityConnectionStatusNotKnownScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Mains utility connection status with unknown (Yes / No / To be connected / Not known)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Four-value variant of UtilityConnectionStatusScheme for questions where the Seller may legitimately not know."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:UtilityConnectionStatusScheme
     rdf:type skos:ConceptScheme ;
@@ -444,8 +402,7 @@ opda-v:UtilityConnectionStatusScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a-ufo-meta-category> ;
     dct:title "Mains utility connection status (Yes / No / To be connected)"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Reused across the mains-utility-presence questions; 'To be connected' captures an in-progress connection."@en ;
-    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (descriptive-layer status-enum steward per ODR-0022 §1 Cat C)"@en .
 
 opda-v:YesNoNotApplicableScheme
     rdf:type skos:ConceptScheme ;
@@ -454,8 +411,7 @@ opda-v:YesNoNotApplicableScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     dct:title "Yes/No/Not applicable mode label register"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register for BASPI5 form questions; the 'Not applicable' member captures absence-of-context rather than negative answer."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:YesNoNotKnownScheme
     rdf:type skos:ConceptScheme ;
@@ -464,8 +420,7 @@ opda-v:YesNoNotKnownScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     dct:title "Yes/No/Not known mode label register"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register for BASPI5 form questions where the Seller may legitimately not know the answer."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:YesNoNotRequiredScheme
     rdf:type skos:ConceptScheme ;
@@ -474,8 +429,7 @@ opda-v:YesNoNotRequiredScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     dct:title "Yes/No/Not required mode label register"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). Mode register for BASPI5 form questions where the question itself becomes not-required in some discriminator branches."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 opda-v:YesNoScheme
     rdf:type skos:ConceptScheme ;
@@ -484,8 +438,7 @@ opda-v:YesNoScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-1a-scheme-steward> ;
     dct:title "Yes/No binary register"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Used by ~276 BASPI5 discriminator questions; emitted as a shared scheme per ODR-0011 §1a one-scheme-per-enum discipline."@en ;
-    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en ;
-    opda:ufoCategory "Quale-in-Region" .
+    opda:hasSteward "Allemang (property-qualities sub-module steward per S008 Q2)"@en .
 
 <https://opda.org.uk/pdtf/scheme/actionAlertRating/1>
     rdf:type skos:Concept ;

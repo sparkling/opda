@@ -514,40 +514,11 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.isPIIBearing, DCTERMS.source, _ODR_0018_SECTION_RULE1))
 
-    # --- ADR-0044 — opda:ufoCategory declaration (a dereferenceable term) -----
-    # The predicate carrying every class's + scheme's structured UFO meta-category
-    # (Phase 5c) is declared here so it is itself a first-class, dereferenceable
-    # opda: term (/pdtf/ufoCategory), not an undeclared annotation. Domain-less
-    # (borne by owl:Class AND skos:ConceptScheme); range xsd:string. Mirrors the
-    # opda:isPIIBearing term-annotation pattern.
-    g.add((OPDA.ufoCategory, RDF.type, OWL.DatatypeProperty))
-    g.add((OPDA.ufoCategory, RDFS.range, XSD.string))
-    g.add((OPDA.ufoCategory, RDFS.label, Literal("UFO category", lang="en")))
-    g.add((OPDA.ufoCategory, RDFS.comment, Literal(
-        "The UFO foundational meta-category of an ontology term — borne by "
-        "owl:Class instances (Substance Kind / Relator / Role / RoleMixin / "
-        "Event / Information Object / Quality / Quality Value / Collective) and "
-        "by skos:ConceptScheme instances (the Quale-in-Region / Quality-Value / "
-        "Substance-Kind-label axis, ODR-0011 §8a). A documentary annotation: it "
-        "records the foundational-ontology commitment without entailing logical "
-        "axioms (the classification doctrine keeps kinds as facets, not subclass "
-        "trees — ODR-0027). Domain-unconstrained (cross-cutting); range xsd:string.",
-        lang="en",
-    )))
-    g.add((OPDA.ufoCategory, SKOS.scopeNote, Literal(
-        "Promotes the UFO meta-category from documentary scopeNote free-text to "
-        "a structured, queryable facet (ADR-0044 Phase 5c). Drives the "
-        "/ontology/category pages and the per-term UFO badge.",
-        lang="en",
-    )))
-    g.add((OPDA.ufoCategory, DCTERMS.source,
-           URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0011/section-8a")))
-
-    # ADR-0044 Phase 5c — structured opda:ufoCategory facet on the foundation
-    # classes (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator,
-    # ValidationContext); DatatypeProperties are untouched (owl:Class only).
-    from opda_gen.emitters.ufo_categories import annotate_ufo_categories
-    annotate_ufo_categories(g)
+    # opda:ufoCategory is an inert, annotation-graph-only documentary annotation
+    # (ODR-0030 Rule 1; restored by ADR-0045 / ODR-0031 after the ADR-0044
+    # Phase 5c placement breach). It is declared + tagged + scheme-anchored in
+    # the foundation ANNOTATION graph — see build_annotations_graph() +
+    # emitters/ufo_categories.py — NOT here in the reasoned class graph.
     return g
 
 
@@ -606,31 +577,38 @@ def build_shapes_graph() -> Graph:
     from opda_gen.emitters.shapes import (
         build_domain_range_constraint_shapes,
         build_foundation_meta_shapes,
+        build_ufo_category_value_shape,
     )
 
     build_foundation_meta_shapes(g)
     # ODR-0029 R3: the domain/range-as-SHACL-constraint layer (validates the
     # rdfs:domain/range the Safe-Group closure deliberately does NOT infer).
     build_domain_range_constraint_shapes(g)
+    # ODR-0031 R3: tag-level editorial guard on the opda:ufoCategory value-space
+    # (governs the facet's nine values; never constrains instance object-level
+    # data, so the ODR-0030 Rule 1 quarantine holds).
+    build_ufo_category_value_shape(g)
     return g
 
 
 def build_annotations_graph() -> Graph:
     """Build the foundation advisory annotations graph.
 
-    Per ADR-0009 + ADR-0012: header-only. The six foundation classes
-    (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator,
-    ValidationContext) are NOT PII-bearing — none carry a DPV
-    co-annotation. The opda:hasSpecialCategoryData property added by
-    ADR-0014 G14 is a Cat 4 shape target predicate; its DPV
-    co-annotation lands on the bearing class (opda:Person) in
-    opda-agent-annotations.ttl, not here.
+    Carries the **opda:ufoCategory facet** (ADR-0045 / ODR-0031): the
+    `owl:AnnotationProperty` declaration, one inert string tag per OWL class
+    (the 9-term UFO axis), and `opda:UFOCategoryScheme` (gUFO `skos:closeMatch`
+    + OntoClean signatures, referenced-not-imported, never reasoned) — relocated
+    here from the reasoned class graph to restore the ODR-0030 Rule 1 quarantine
+    breached by ADR-0044 Phase 5c.
 
-    No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples;
-    no DPV triples (the foundation classes carry no PII regime); only
-    the ontology header declaring `opda:targetsClassGraph
-    <https://opda.org.uk/pdtf/harness/release/1.0.0/>` (post-ADR-0014 G14 + MVP-gate
-    version bump).
+    The six foundation classes (DiagnosticExemplar, GeneratorRun, RoleMixin,
+    Role, Relator, ValidationContext) are NOT PII-bearing — none carry a DPV
+    co-annotation; per-module DPV annotations live in
+    opda-<module>-annotations.ttl.
+
+    No `sh:*`/`opda:aiHint`/`opda:uiHint`/`opda:exampleValue` triples and no
+    `owl:Class` triples (ODR-0004 §3a three-graph separation); the ontology
+    header declares `opda:targetsClassGraph`.
     """
     g = Graph()
     _bind_common(g)
@@ -639,6 +617,14 @@ def build_annotations_graph() -> Graph:
         "OPDA Advisory Annotations Graph", lang="en"
     )))
     g.add((_ANNOTATIONS_GRAPH_IRI, OPDA.targetsClassGraph, _ONTOLOGY_IRI))
+
+    # ADR-0045 / ODR-0031 — the opda:ufoCategory facet (declaration + per-class
+    # string tags + the gUFO-aligned opda:UFOCategoryScheme) is an inert,
+    # annotation-graph-only documentary annotation; emitted here, NOT in the
+    # reasoned class graph (restores the ODR-0030 Rule 1 quarantine breached by
+    # ADR-0044 Phase 5c). owl:AnnotationProperty ⇒ inert by OWL 2 §10.1.
+    from opda_gen.emitters.ufo_categories import emit_ufo_category_annotations
+    emit_ufo_category_annotations(g)
     return g
 
 
@@ -710,10 +696,12 @@ def emit_foundation(
             ANNOTATIONS_FILENAME,
             "OPDA advisory annotations graph (foundation header)",
             [
-                "Header-only per ADR-0012: the six foundation classes",
-                "(DiagnosticExemplar, GeneratorRun, RoleMixin, Role,",
-                "Relator, ValidationContext) are not PII-bearing — no DPV",
-                "co-annotation baseline applies. Per-module DPV annotations",
+                "Carries the opda:ufoCategory facet (ADR-0045 / ODR-0031):",
+                "the owl:AnnotationProperty declaration, one inert string tag",
+                "per class (the 9-term UFO axis), and opda:UFOCategoryScheme",
+                "(gUFO closeMatch + OntoClean signatures, referenced-not-",
+                "imported, never reasoned). The six foundation classes carry no",
+                "DPV co-annotation (not PII-bearing); per-module DPV annotations",
                 "live in opda-<module>-annotations.ttl.",
                 "MUST NOT contain sh:* or owl:Class triples",
                 "(ODR-0004 §3a three-graph separation).",

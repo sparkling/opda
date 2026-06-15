@@ -83,6 +83,13 @@
     sh:targetClass sh:NodeShape ;
     opda:metaShapeJustification "ODR-0010 three-rule interface contract Rule 2: no overlay shape may set sh:severity to sh:Warning or sh:Info on a property where the base shape declared sh:Violation."@en .
 
+<https://opda.org.uk/pdtf/shape/UFOCategoryValue_MetaShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0031/section-R3> ;
+    sh:property _:be969c404eb54 ;
+    sh:targetSubjectsOf opda:ufoCategory ;
+    opda:metaShapeJustification "ODR-0031 R3: a tag-level editorial guard on opda:ufoCategory's own value-space (the nine UFO categories). A meta-shape over the annotation-graph facet; it does NOT key any constraint on tagged instances' object-level structure, so the ODR-0030 Rule 1 quarantine holds and the facet stays inert on the wire."@en .
+
 <https://opda.org.uk/pdtf/shape/abilityToResideAtPropertyDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
@@ -2267,6 +2274,26 @@ _:ba5342297663c
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX dpv-pd: <https://w3id.org/dpv/pd#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nCONSTRUCT {\n  ?class opda:hasPIIWithoutCoAnnotationFlag true .\n}\nWHERE {\n  ?class a owl:Class ;\n         opda:isPIIBearing true .\n  FILTER NOT EXISTS {\n    ?class dpv-pd:hasPersonalDataCategory ?category .\n  }\n}" .
 
+_:b025d9ec14992
+    rdf:first "Role" ;
+    rdf:rest _:b157e94f21ed2 .
+
+_:b0ee9efe5c0be
+    rdf:first "Quality Value" ;
+    rdf:rest _:bff2637387229 .
+
+_:b157e94f21ed2
+    rdf:first "RoleMixin" ;
+    rdf:rest _:bbcd174111e0f .
+
+_:b1d5776b614da
+    rdf:first "Collective" ;
+    rdf:rest _:be12aa2c646cd .
+
+_:b22aeb44b9997
+    rdf:first "Information Object" ;
+    rdf:rest _:bbd8bfee6a127 .
+
 _:b31a36993357b
     sh:select "PREFIX sh: <http://www.w3.org/ns/shacl#>\nPREFIX opda: <https://opda.org.uk/pdtf/>\nSELECT ?shape WHERE {\n  ?shape sh:targetClass sh:NodeShape .\n  ?shape sh:severity sh:Violation .\n  FILTER NOT EXISTS {\n    ?shape opda:metaShapeJustification ?j .\n  }\n}" .
 
@@ -2278,3 +2305,25 @@ _:b4c20cfb30e26
 
 _:bbc82439db04f
     sh:select "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX sh: <http://www.w3.org/ns/shacl#>\nSELECT ?profileShape WHERE {\n  ?profileShape sh:targetClass ?kind .\n  ?kind opda:identityKey ?key .\n  ?profileShape sh:property [ sh:path ?key ; sh:maxCount 0 ] .\n}" .
+
+_:bbcd174111e0f
+    rdf:first "Substance Kind" ;
+    rdf:rest rdf:nil .
+
+_:bbd8bfee6a127
+    rdf:first "Quality" ;
+    rdf:rest _:b0ee9efe5c0be .
+
+_:be12aa2c646cd
+    rdf:first "Event" ;
+    rdf:rest _:b22aeb44b9997 .
+
+_:be969c404eb54
+    sh:in _:b1d5776b614da ;
+    sh:message "opda:ufoCategory MUST be one of the nine UFO meta-categories (the opda:UFOCategoryScheme notations) — ODR-0031 R3 tag-level editorial guard on the facet value-space."@en ;
+    sh:path opda:ufoCategory ;
+    sh:severity sh:Violation .
+
+_:bff2637387229
+    rdf:first "Relator" ;
+    rdf:rest _:b025d9ec14992 .

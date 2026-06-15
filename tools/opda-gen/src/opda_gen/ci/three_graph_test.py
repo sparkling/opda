@@ -243,12 +243,47 @@ def check_derived_provenance(
 
 
 # ---------------------------------------------------------------------------
+# Check 6: no advisory predicate in the classes graph (ODR-0031 R2 / ADR-0045).
+# ---------------------------------------------------------------------------
+# The opda:ufoCategory facet (and the wider advisory family) is annotation-
+# graph-only (ODR-0030 Rule 1). ADR-0044 Phase 5c shipped it inline in the
+# reasoned class graphs, and the five ODR-0004 §3a checks did not catch it —
+# they police the shapes + annotation graphs, never the classes graph. This
+# sixth check closes that blind spot ("relocate AND gate, atomically",
+# council session-041): with it the ODR-0030 quarantine is CI-enforced, not
+# merely asserted (Knublauch's session-040 standing condition).
+CLASSES_FORBIDDEN_PREDICATES: list[URIRef] = [
+    OPDA.ufoCategory,
+    *ADVISORY_PREDICATE_WHITELIST,
+]
+
+
+def check_no_advisory_in_classes(class_graph: Graph) -> list[str]:
+    """Enforce ODR-0031 R2 / ADR-0045:
+
+      ASK { GRAPH opda:classes { ?s opda:ufoCategory ?o } } (and the rest of
+      the advisory-predicate family — opda:aiHint / uiHint / exampleValue)
+      MUST return false.
+
+    Returns a list of violation strings (empty == PASS).
+    """
+    violations: list[str] = []
+    for predicate in CLASSES_FORBIDDEN_PREDICATES:
+        for s, _p, o in class_graph.triples((None, predicate, None)):
+            violations.append(
+                f"classes graph contains advisory predicate {predicate} "
+                f"on {s} = {o} (ODR-0030 Rule 1: annotation-graph-only)"
+            )
+    return violations
+
+
+# ---------------------------------------------------------------------------
 # Orchestration.
 # ---------------------------------------------------------------------------
 def run_all(ontology_dir: Path) -> list[str]:
-    """Run all five checks against an emission directory.
+    """Run all six checks against an emission directory.
 
-    Returns a flat list of violation strings across all five checks (empty
+    Returns a flat list of violation strings across all six checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
 
@@ -313,4 +348,5 @@ def run_all(ontology_dir: Path) -> list[str]:
     out.extend(check_no_advisory_in_shapes(shapes_g))
     out.extend(check_target_class_resolves(shapes_g, classes_g))
     out.extend(check_derived_provenance(ontology_dir / "derived"))
+    out.extend(check_no_advisory_in_classes(classes_g))
     return out

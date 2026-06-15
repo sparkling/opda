@@ -3,11 +3,11 @@
   "counts": {
     "classes": 40,
     "objectProperties": 30,
-    "datatypeProperties": 226,
-    "shapes": 324,
-    "concepts": 314,
-    "schemes": 48,
-    "contexts": 7
+    "datatypeProperties": 225,
+    "shapes": 325,
+    "concepts": 323,
+    "schemes": 49,
+    "contexts": 8
   },
   "classes": {
     "Address": {
@@ -10316,28 +10316,6 @@
         "harness/data-dictionary/propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare"
       ]
     },
-    "ufoCategory": {
-      "uri": "https://opda.org.uk/pdtf/ufoCategory",
-      "id": "ufoCategory",
-      "localName": "ufoCategory",
-      "label": "UFO category",
-      "comment": "The UFO foundational meta-category of an ontology term — borne by owl:Class instances (Substance Kind / Relator / Role / RoleMixin / Event / Information Object / Quality / Quality Value / Collective) and by skos:ConceptScheme instances (the Quale-in-Region / Quality-Value / Substance-Kind-label axis, ODR-0011 §8a). A documentary annotation: it records the foundational-ontology commitment without entailing logical axioms (the classification doctrine keeps kinds as facets, not subclass trees — ODR-0027). Domain-unconstrained (cross-cutting); range xsd:string.",
-      "kind": "datatype",
-      "module": "foundation",
-      "subjects": [],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0011/section-8a"
-      ]
-    },
     "unitaryAuthority": {
       "uri": "https://opda.org.uk/pdtf/unitaryAuthority",
       "id": "unitaryAuthority",
@@ -14216,6 +14194,26 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/typeOfHealthCare",
       "constraints": []
     },
+    "shape/UFOCategoryValue_MetaShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/UFOCategoryValue_MetaShape",
+      "id": "shape/UFOCategoryValue_MetaShape",
+      "localName": "UFOCategoryValue_MetaShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/ufoCategory",
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/ufoCategory",
+          "pathLocal": "ufoCategory",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:ufoCategory MUST be one of the nine UFO meta-categories (the opda:UFOCategoryScheme notations) — ODR-0031 R3 tag-level editorial guard on the facet value-space."
+        }
+      ]
+    },
     "shape/unitaryAuthorityDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/unitaryAuthorityDomainShape",
       "id": "shape/unitaryAuthorityDomainShape",
@@ -14504,6 +14502,25 @@
     }
   },
   "concepts": {
+    "CollectiveCategory": {
+      "uri": "https://opda.org.uk/pdtf/CollectiveCategory",
+      "id": "CollectiveCategory",
+      "localName": "CollectiveCategory",
+      "prefLabel": "Collective",
+      "definition": "An aggregate of endurants with uniform membership (cf. gufo:Collection).",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
     "ConveyancingContext": {
       "uri": "https://opda.org.uk/pdtf/ConveyancingContext",
       "id": "ConveyancingContext",
@@ -14540,6 +14557,44 @@
       "narrower": [],
       "dctSource": [
         "harness/odr/ODR-0020/section-decision"
+      ]
+    },
+    "EventCategory": {
+      "uri": "https://opda.org.uk/pdtf/EventCategory",
+      "id": "EventCategory",
+      "localName": "EventCategory",
+      "prefLabel": "Event",
+      "definition": "A perdurant (occurrent): an entity that unfolds in time and has temporal parts.",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
+    "InformationObjectCategory": {
+      "uri": "https://opda.org.uk/pdtf/InformationObjectCategory",
+      "id": "InformationObjectCategory",
+      "localName": "InformationObjectCategory",
+      "prefLabel": "Information Object",
+      "definition": "An informational artefact / information content entity (documentary). An OPDA domain category rather than a core UFO endurant universal — cf. IAO information content entity (ODR-0030 Rule 4 crosswalk).",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
       ]
     },
     "MortgageLendingContext": {
@@ -14597,6 +14652,101 @@
       "narrower": [],
       "dctSource": [
         "harness/odr/ODR-0020/section-decision"
+      ]
+    },
+    "QualityCategory": {
+      "uri": "https://opda.org.uk/pdtf/QualityCategory",
+      "id": "QualityCategory",
+      "localName": "QualityCategory",
+      "prefLabel": "Quality",
+      "definition": "An individualised quality inhering in an endurant. Descends from DOLCE's Quality (Masolo et al., WonderWeb D18, 2003).",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
+    "QualityValueCategory": {
+      "uri": "https://opda.org.uk/pdtf/QualityValueCategory",
+      "id": "QualityValueCategory",
+      "localName": "QualityValueCategory",
+      "prefLabel": "Quality Value",
+      "definition": "The value of a quality — its position (Quale) in a quality region / space. Descends from DOLCE's Quale-in-Region (Masolo et al., WonderWeb D18, 2003).",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
+    "RelatorCategory": {
+      "uri": "https://opda.org.uk/pdtf/RelatorCategory",
+      "id": "RelatorCategory",
+      "localName": "RelatorCategory",
+      "prefLabel": "Relator",
+      "definition": "A relational endurant founded by an event, mediating two or more bearers (OntoClean +R, +I, +D). The relational-reification primitive (ODR-0030): it owns the relation's aggregation/modal attributes.",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
+    "RoleCategory": {
+      "uri": "https://opda.org.uk/pdtf/RoleCategory",
+      "id": "RoleCategory",
+      "localName": "RoleCategory",
+      "prefLabel": "Role",
+      "definition": "An anti-rigid, externally-founded sortal role played by a single Kind (OntoClean −R, +D).",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
+    "RoleMixinCategory": {
+      "uri": "https://opda.org.uk/pdtf/RoleMixinCategory",
+      "id": "RoleMixinCategory",
+      "localName": "RoleMixinCategory",
+      "prefLabel": "RoleMixin",
+      "definition": "An anti-rigid, externally-founded, dispersive (cross-sortal) role (OntoClean −R, +D) that spans more than one Kind.",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
       ]
     },
     "scheme/actionAlertRating/1": {
@@ -20451,6 +20601,25 @@
         "harness/odr/ODR-0011/section-1a-scheme-steward"
       ]
     },
+    "SubstanceKindCategory": {
+      "uri": "https://opda.org.uk/pdtf/SubstanceKindCategory",
+      "id": "SubstanceKindCategory",
+      "localName": "SubstanceKindCategory",
+      "prefLabel": "Substance Kind",
+      "definition": "A rigid sortal (OntoClean +R, +O) that supplies its own principle of identity — instances are necessarily of this type, and it carries an identity criterion its instances inherit.",
+      "module": "annotations",
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/odr/ODR-0031"
+      ]
+    },
     "SurveyingContext": {
       "uri": "https://opda.org.uk/pdtf/SurveyingContext",
       "id": "SurveyingContext",
@@ -20514,7 +20683,7 @@
       "localName": "ActionAlertRatingScheme",
       "prefLabel": "Action Alert Rating",
       "definition": "The value-space of opda:actionAlertRating on an opda:RiskAssessment: an ordinal 1–5 scale where 1 is Green (lowest risk) and 5 is Red (highest risk). Derived from the data dictionary's actual actionAlertRating integer leaf + its title \"Action alert rating (1 is Green, 5 is Red)\" (ODR-0008d Rule 4).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20546,7 +20715,7 @@
       "localName": "AddressVariantScheme",
       "prefLabel": "Address Variant",
       "definition": "Quality Values for the variant under which an Address is presented (marketing, title, inspire, postal). Each variant particularises an underlying Address Substance Kind per ODR-0015 §Q1.",
-      "ufoCategory": "Quality Value",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20574,7 +20743,7 @@
       "localName": "AssuranceLevelScheme",
       "prefLabel": "Assurance Level",
       "definition": "Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus the OPDA-specific PDTF-Standard intermediate level per ODR-0009 §Q3, applied to identity-verification claims.",
-      "ufoCategory": "Quality Value",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20602,7 +20771,7 @@
       "localName": "AttachmentStatusNotApplicableScheme",
       "prefLabel": "Attachment Status (with Not applicable)",
       "definition": "Status of a supporting document attached to a disclosure answer, admitting non-applicable as a third option (Attached / Not applicable / To follow).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20626,7 +20795,7 @@
       "localName": "AttachmentStatusScheme",
       "prefLabel": "Attachment Status",
       "definition": "Status of a supporting document attached to a disclosure answer: provided now, or to follow.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20646,7 +20815,7 @@
       "localName": "BoundaryResponsibilityScheme",
       "prefLabel": "Boundary Responsibility",
       "definition": "Which party is responsible for a legal boundary of the property (the Seller, shared, the neighbour, or not known).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20674,7 +20843,7 @@
       "localName": "BroadbandConnectionTypeScheme",
       "prefLabel": "Broadband Connection Type",
       "definition": "Classification of a Property's broadband connection type (None / ADSL copper wire / Cable / FTTC (Fibre to the Cabinet) / FTTP (Fibre to the Premises)).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20706,7 +20875,7 @@
       "localName": "BuiltFormScheme",
       "prefLabel": "Built Form",
       "definition": "Classification of a Property's structural built-form (detached, semi-detached, terraced, etc.).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20738,7 +20907,7 @@
       "localName": "CentralHeatingFuelTypeScheme",
       "prefLabel": "Central Heating Fuel Type",
       "definition": "Classification of the fuel used by a Property's central heating system.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20774,7 +20943,7 @@
       "localName": "ChargePaymentStatusScheme",
       "prefLabel": "Charge Payment Status",
       "definition": "Payment status of a managed-area charge (due, completed but unpaid, anticipated, or not applicable).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20802,7 +20971,7 @@
       "localName": "ConstructionTypeScheme",
       "prefLabel": "Construction Type",
       "definition": "Classification of a Property's standard-form construction type (Brick and block / Steel frame / Timber frame / Insulated concrete framework / Structural insulated panel (SIP)).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20834,7 +21003,7 @@
       "localName": "CouncilTaxBandSchemeEW",
       "prefLabel": "Council Tax Band (England & Wales)",
       "definition": "Valuation Office Agency banding for England & Wales (Bands A–H) assigned to each domestic property for council tax calculation.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20878,7 +21047,7 @@
       "localName": "CouncilTaxBandSchemeScotland",
       "prefLabel": "Council Tax Band (Scotland)",
       "definition": "Scottish Assessors Association banding for Scotland (Bands A–I) assigned to each domestic property for council tax calculation. Band I is Scotland-specific.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20926,7 +21095,7 @@
       "localName": "CurrencyScheme",
       "prefLabel": "Currency",
       "definition": "The currency of an opda:MonetaryAmount — an ISO-4217 alpha-3 currency code. Seeded with the currencies occurring in UK property-pack data (GBP / EUR / USD); extensible to the full ISO-4217 code space as data requires.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20950,7 +21119,7 @@
       "localName": "CurrentEnergyRatingScheme",
       "prefLabel": "Current Energy Rating",
       "definition": "EPC current energy rating banding (A–G) published by DESNZ (Department for Energy Security and Net Zero) for residential properties in England & Wales.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -20990,7 +21159,7 @@
       "localName": "DeedSupplyStatusScheme",
       "prefLabel": "Deed Supply Status",
       "definition": "Supply status of a requested deed or document: attached now, to follow, or lost.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21014,7 +21183,7 @@
       "localName": "EvidenceMethodScheme",
       "prefLabel": "Evidence Kind",
       "definition": "The OIDC4IDA `evidence.type` kinds of identity evidence (Document, Electronic-Record, Vouch) — the governed facet for opda:evidenceType, bound to the evidence subclasses by skos:exactMatch (ODR-0011 §8a).",
-      "ufoCategory": "Substance Kind label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21038,7 +21207,7 @@
       "localName": "FeeTypeScheme",
       "prefLabel": "Fee Type",
       "definition": "Type of recurring fee a payee collects for a managed freehold or commonhold (service charges, ground rent, administration fees, or all).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21066,7 +21235,7 @@
       "localName": "FittedOrFreestandingScheme",
       "prefLabel": "Fitted or Freestanding",
       "definition": "Whether a kitchen appliance is fitted (built in) or freestanding (movable).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21086,7 +21255,7 @@
       "localName": "FixtureItemScheme",
       "prefLabel": "Fixture Item",
       "definition": "Controlled list of the fixtures-and-fittings checklist *items* (boiler/immersion heater, radiators, curtains, carpets, kitchen appliances, garden items, etc.) a seller discloses for a sale. Items are Objects/Kinds; their inclusion in a given sale is a Mode/Relator of the transaction (council-reserved, ODR-0023 R4) and is NOT a property of any item concept.",
-      "ufoCategory": "Substance Kind label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21454,7 +21623,7 @@
       "localName": "HeatingTypeScheme",
       "prefLabel": "Heating Type",
       "definition": "Classification of a Property's overall heating-system arrangement (central, communal, room-only, or none).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21482,7 +21651,7 @@
       "localName": "InclusionScheme",
       "prefLabel": "Inclusion (Included / Excluded)",
       "definition": "Whether a free-text 'other item' is included in or excluded from the sale (binary variant, no 'None' option).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21502,7 +21671,7 @@
       "localName": "InclusionStatusScheme",
       "prefLabel": "Inclusion Status",
       "definition": "Whether a fixtures-and-fittings item is included in, excluded from, or absent from (None) the sale. NOTE: this is the *value-space* only; the inclusion-status property that ranges over it is council-reserved (ODR-0023 R4) and is NOT minted here.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21526,7 +21695,7 @@
       "localName": "ManagedAreaResponsibilityScheme",
       "prefLabel": "Managed-Area Responsibility",
       "definition": "Which party deals with the day-to-day maintenance of a managed area. The canonical six-value superset; per-form subsets (e.g. without 'the Lessees', or without 'Rentcharge Owner') are `sh:in` restrictions in the overlay profile, NOT separate schemes (ODR-0011 §1a).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21562,7 +21731,7 @@
       "localName": "MilestoneKindScheme",
       "prefLabel": "Milestone Kind",
       "definition": "Method/plan codes for the procedural milestones authorising stages of a Transaction Activity (instruction → offerAccepted → exchange → completion → registration).",
-      "ufoCategory": "Method/plan code",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21594,7 +21763,7 @@
       "localName": "OffMainsDrainageSystemTypeScheme",
       "prefLabel": "Off-Mains Drainage System Type",
       "definition": "Classification of a Property's off-mains drainage system (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21630,7 +21799,7 @@
       "localName": "OfstedRatingScheme",
       "prefLabel": "Ofsted Rating",
       "definition": "Ofsted school-inspection rating of a nearby school (opda:NearbyFacility school band): Outstanding / Good / Requires Improvement / Inadequate / Other.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21662,7 +21831,7 @@
       "localName": "OwnershipTypeScheme",
       "prefLabel": "Ownership Type",
       "definition": "Classification of a legal estate's ownership structure (Freehold, Leasehold, Commonhold, Other).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21690,7 +21859,7 @@
       "localName": "OwnerTypeScheme",
       "prefLabel": "Owner Type",
       "definition": "Substance Kind labels discriminating Private individual (opda:Person) from Organisation (opda:Organisation) as legal owner. Distinct from RoleScheme (transactional role) and TenureKindScheme (sub-Kind of LegalEstate).",
-      "ufoCategory": "Substance Kind label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21710,7 +21879,7 @@
       "localName": "ParticipantStatusScheme",
       "prefLabel": "Participant Status",
       "definition": "Phase labels for the lifecycle of a Participant Substance Kind.",
-      "ufoCategory": "Phase label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21738,7 +21907,7 @@
       "localName": "PerilScheme",
       "prefLabel": "Environmental Peril",
       "definition": "The 12 environmental / local-authority search perils a property's authority-retrieved risk assessments (opda:RiskAssessment) are individuated by. Each peril is a dereferenceable concept governed by a named data authority (ODR-0008d Rule 2); the peril is NEVER an opaque string and NEVER an rdfs:subClassOf hierarchy (a delimited value-space is a scheme, not a class tree).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21798,7 +21967,7 @@
       "localName": "PriceQualifierScheme",
       "prefLabel": "Price Qualifier",
       "definition": "Qualifier on a Property's marketed asking price (Price / Fixed price / Guide price / Offers in excess of / Offers in region of / Offers over / Offers invited / Sale by tender / From).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21846,7 +22015,7 @@
       "localName": "PropertyTypeScheme",
       "prefLabel": "Property Type",
       "definition": "Substance Kind labels for the physical-form kind of a Property (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from BuiltFormScheme which carries the structural Quale (Detached / Semi-detached / Terrace).",
-      "ufoCategory": "Substance Kind label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21882,7 +22051,7 @@
       "localName": "RoadAdoptionStatusScheme",
       "prefLabel": "Road Adoption Status",
       "definition": "Maintenance-responsibility status of an abutting road or footway: publicly maintained, private, subject to a section-38 agreement, or unchecked.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21910,7 +22079,7 @@
       "localName": "RoleScheme",
       "prefLabel": "Participant Role",
       "definition": "Role labels for the anti-rigid Roles a Person/Organisation plays as a Participant in a Transaction Relator.",
-      "ufoCategory": "Role label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -21970,7 +22139,7 @@
       "localName": "SchoolTypeScheme",
       "prefLabel": "School Type",
       "definition": "The value-space of opda:schoolType on opda:NearbyFacility — the band of a nearby school (College / Nursery / Primary / Secondary / Private). Replaces the five range-less generic object properties the council rejected (session-028 Q1); minted from the schoolType structural band set, not a data-dictionary enum.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22002,7 +22171,7 @@
       "localName": "SellersCapacityScheme",
       "prefLabel": "Seller's Capacity",
       "definition": "Method/plan codes for the capacity under which a Seller is authorised to act in a sale.",
-      "ufoCategory": "Method/plan code",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22038,7 +22207,7 @@
       "localName": "TenureKindScheme",
       "prefLabel": "Tenure Kind",
       "definition": "Substance Kind labels for tenure (Freehold, Leasehold, Commonhold). Each member binds to its corresponding OWL sub-class via `skos:exactMatch` per ODR-0011 §8a Substance Kind label cross-scheme consistency check (NEVER `owl:sameAs`).",
-      "ufoCategory": "Substance Kind label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22062,7 +22231,7 @@
       "localName": "TransactionStatusScheme",
       "prefLabel": "Transaction Status",
       "definition": "Phase labels for the lifecycle of a Transaction Substance Kind, tracking the five canonical phases ADR-0010 names (Listed → Offered → Accepted → Exchanged → Completed).",
-      "ufoCategory": "Phase label",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22094,7 +22263,7 @@
       "localName": "TransportTypeScheme",
       "prefLabel": "Transport Type",
       "definition": "Classification of a nearby transport node (opda:NearbyFacility transport band): Local connection / Ferry terminal / Bus stop/station / National rail station / Trunk road/motorway / Airport / Helipad / Tramway / Underground/Subway / Other.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22146,7 +22315,7 @@
       "localName": "UnitOfAreaScheme",
       "prefLabel": "Unit of Area",
       "definition": "Unit in which an internal floor area is expressed (square metres or square feet).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22166,7 +22335,7 @@
       "localName": "UtilityConnectionStatusNotKnownScheme",
       "prefLabel": "Utility Connection Status (with Not known)",
       "definition": "Mains-utility connection status admitting unknown-to-Seller as a fourth option (Yes / No / To be connected / Not known).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22194,7 +22363,7 @@
       "localName": "UtilityConnectionStatusScheme",
       "prefLabel": "Utility Connection Status",
       "definition": "Whether a mains utility (electricity, gas, water, drainage) is connected, not connected, or to be connected.",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22218,7 +22387,7 @@
       "localName": "YesNoNotApplicableScheme",
       "prefLabel": "Yes/No/Not applicable",
       "definition": "Mode label register for BASPI5 questions admitting non-applicable as a third option (Yes / No / Not applicable).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22242,7 +22411,7 @@
       "localName": "YesNoNotKnownScheme",
       "prefLabel": "Yes/No/Not known",
       "definition": "Mode label register for BASPI5 questions admitting unknown-to-Seller as a third option (Yes / No / Not known).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22266,7 +22435,7 @@
       "localName": "YesNoNotRequiredScheme",
       "prefLabel": "Yes/No/Not required",
       "definition": "Mode label register for BASPI5 questions admitting not-required as a third option (Yes / No / Not required).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22290,7 +22459,7 @@
       "localName": "YesNoScheme",
       "prefLabel": "Yes/No",
       "definition": "Binary register for affirmative/negative answers to BASPI5 discriminator questions (Yes / No).",
-      "ufoCategory": "Quale-in-Region",
+      "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
       "concepts": [
@@ -22301,6 +22470,54 @@
         {
           "id": "scheme/yesNo/Yes",
           "localName": "Yes"
+        }
+      ]
+    },
+    "UFOCategoryScheme": {
+      "uri": "https://opda.org.uk/pdtf/UFOCategoryScheme",
+      "id": "UFOCategoryScheme",
+      "localName": "UFOCategoryScheme",
+      "prefLabel": "UFO Category Scheme",
+      "definition": "The nine UFO foundational meta-categories OPDA classifies its classes under. Each concept carries its OntoClean signature and a skos:closeMatch to the corresponding gUFO type where one exists. Referenced-not-imported; never reasoned over (ODR-0031 R2).",
+      "ufoCategory": "",
+      "module": "annotations",
+      "topConcepts": [],
+      "concepts": [
+        {
+          "id": "CollectiveCategory",
+          "localName": "CollectiveCategory"
+        },
+        {
+          "id": "EventCategory",
+          "localName": "EventCategory"
+        },
+        {
+          "id": "InformationObjectCategory",
+          "localName": "InformationObjectCategory"
+        },
+        {
+          "id": "QualityCategory",
+          "localName": "QualityCategory"
+        },
+        {
+          "id": "QualityValueCategory",
+          "localName": "QualityValueCategory"
+        },
+        {
+          "id": "RelatorCategory",
+          "localName": "RelatorCategory"
+        },
+        {
+          "id": "RoleCategory",
+          "localName": "RoleCategory"
+        },
+        {
+          "id": "RoleMixinCategory",
+          "localName": "RoleMixinCategory"
+        },
+        {
+          "id": "SubstanceKindCategory",
+          "localName": "SubstanceKindCategory"
         }
       ]
     }
@@ -22442,6 +22659,20 @@
         }
       ],
       "schemes": []
+    },
+    "annotations": {
+      "id": "annotations",
+      "localName": "annotations",
+      "classes": [],
+      "objectProperties": [],
+      "datatypeProperties": [],
+      "shapes": [],
+      "schemes": [
+        {
+          "id": "UFOCategoryScheme",
+          "localName": "UFOCategoryScheme"
+        }
+      ]
     },
     "claim": {
       "id": "claim",
@@ -23155,10 +23386,6 @@
         {
           "id": "isPIIBearing",
           "localName": "isPIIBearing"
-        },
-        {
-          "id": "ufoCategory",
-          "localName": "ufoCategory"
         }
       ],
       "shapes": [],

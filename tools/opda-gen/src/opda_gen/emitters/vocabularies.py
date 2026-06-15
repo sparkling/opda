@@ -2797,7 +2797,10 @@ def build_vocabularies_graph() -> Graph:
         g.add((scheme_uri, DCTERMS.title, Literal(scheme.title, lang="en")))
         g.add((scheme_uri, SKOS.definition, Literal(scheme.definition, lang="en")))
         g.add((scheme_uri, DCTERMS.source, scheme.scheme_source))
-        g.add((scheme_uri, OPDA.ufoCategory, Literal(scheme.ufo_category)))
+        # opda:ufoCategory is NOT emitted on schemes (ODR-0030 Rule 2 /
+        # ODR-0031): the register-deference scheme axis ("Quale-in-Region" etc.)
+        # is value-space shape, not UFO categorial work, so it is split off the
+        # predicate. Scheme.ufo_category is retained as source-level docs only.
         scope_note_text = scheme.scope_note
         if scheme.placeholder_warning:
             scope_note_text = (

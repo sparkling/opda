@@ -267,6 +267,8 @@ export const SECTIONS: Record<string, Section> = {
       { heading: 'Understand the model', items: [
         { url: '/ontology/foundation', title: 'Foundations & architecture' },
         { url: '/ontology/identity',   title: 'Identity & classification' },
+        { url: '/ontology/foundational-ontology', title: 'Foundational ontology — critique' },
+        { url: '/ontology/modelling-frameworks', title: 'Modelling frameworks & upper ontology' },
       ]},
       { heading: 'Browse the model', items: [
         { url: '/ontology/classes',      title: 'Classes' },

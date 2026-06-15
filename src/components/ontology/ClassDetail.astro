@@ -28,7 +28,7 @@ const { cls } = Astro.props;
   <section class="term-section">
     <h2>Classification</h2>
     {cls.ufoCategory && (
-      <p class="term-ufo">UFO meta-category: <a href={`/ontology/category/${ufoSlug(cls.ufoCategory)}`}><strong>{cls.ufoCategory}</strong></a></p>
+      <p class="term-ufo">Classified under UFO meta-category <a href={`/ontology/category/${ufoSlug(cls.ufoCategory)}`}><strong>{cls.ufoCategory}</strong></a> <span class="muted">— a design-time classification (<a href="/ontology/foundational-ontology">UFO-informed, not UFO-grounded</a>), not an entailed type</span></p>
     )}
     {cls.scopeNote && <p class="term-scope">{cls.scopeNote}</p>}
   </section>
