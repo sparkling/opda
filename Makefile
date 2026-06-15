@@ -101,6 +101,10 @@ ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile,
 ci-ontology-doc:	## Doc-drift gate (ADR-0041): the custom /ontology reference must match the committed corpus
 	node scripts/ci-ontology-doc-drift.mjs
 
+.PHONY: ci-ontology-model
+ci-ontology-model:	## Model doc-drift gate (ADR-0044): regen ontology-model.json from live Fuseki & diff (needs `make serve-data`)
+	node scripts/ci-ontology-model-drift.mjs
+
 .PHONY: ci
 ci: test ci-ontology ci-ontology-doc	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"

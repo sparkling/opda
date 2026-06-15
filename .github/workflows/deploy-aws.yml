@@ -76,6 +76,14 @@ jobs:
       # production never runs, reaches, or exposes them.
       - run: npm run build:data
 
+      # ADR-0044 Phase 7 — ontology-model doc-drift gate. build:data regenerates
+      # src/data/ontology-model.json from the live triplestore; fail the deploy if
+      # it drifted from the committed copy (corpus changed without the model being
+      # regenerated + committed). Keeps the committed model — read by the /pdtf
+      # pages, typed indexes, .ttl alternates and the ADR-0043 graph — authoritative.
+      - name: Ontology model doc-drift gate (ADR-0044)
+        run: git diff --exit-code -- src/data/ontology-model.json
+
       - name: Assume deploy role (OIDC)
         uses: aws-actions/configure-aws-credentials@v6
         with:
