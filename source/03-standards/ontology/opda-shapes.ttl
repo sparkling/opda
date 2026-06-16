@@ -1994,6 +1994,14 @@
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:roleNotation .
 
+<https://opda.org.uk/pdtf/shape/roleNotationRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class skos:Concept ;
+    sh:message "opda:roleNotation has an object outside its declared rdfs:range: every object of opda:roleNotation MUST be an instance of Concept (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:roleNotation .
+
 <https://opda.org.uk/pdtf/shape/roomNameDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;

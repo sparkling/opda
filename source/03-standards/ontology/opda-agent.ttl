@@ -173,15 +173,6 @@ opda:reference
     rdfs:domain opda:Organisation ;
     rdfs:range xsd:string .
 
-opda:roleNotation
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "role notation"@en ;
-    rdfs:comment "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    rdfs:domain opda:RoleMixin ;
-    rdfs:range xsd:string ;
-    skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:roleNotation \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .
-
 opda:sellersCapacityDetails
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sellers capacity details"@en ;
@@ -233,3 +224,12 @@ opda:ownerType
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Proprietor ;
     rdfs:range skos:Concept .
+
+opda:roleNotation
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "role notation"@en ;
+    rdfs:comment "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:domain opda:RoleMixin ;
+    rdfs:range skos:Concept ;
+    skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:roleNotation \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .

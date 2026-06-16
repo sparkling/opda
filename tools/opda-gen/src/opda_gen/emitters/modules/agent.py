@@ -376,8 +376,11 @@ def build_graph() -> Graph:
     # opda:Role class on case-insensitive hosts; the name now also matches its
     # "Notation value" semantics.
     # Domain: foundation opda:RoleMixin (cross-sortal role pattern).
-    # Range: xsd:string (notation value; per-overlay shapes constrain
-    # via sh:in over opda:RoleScheme members). The role-bearing PATTERN
+    # Range: skos:Concept (Council-046 Q3b — coded values are concept IRIs
+    # from opda:RoleScheme, joining via skos:inScheme like every other coded
+    # property; per-overlay shapes constrain via sh:in over the scheme member
+    # IRIs). The IRI is held stable (renamed from opda:role per ADR-0044) and
+    # is NOT re-renamed despite now carrying a concept. The role-bearing PATTERN
     # remains encoded by opda:Seller/opda:Buyer/opda:Proprietor sub-typing
     # of opda:RoleMixin/opda:Role per ODR-0006 §Q2; this predicate
     # exposes the notation so DASH editors render the role enum and
@@ -386,9 +389,9 @@ def build_graph() -> Graph:
     # `rdfs:domain` other than opda:RoleMixin so the predicate may
     # also be borne by Buyer / Proprietor / Conveyancer / etc. without
     # additional axioms.
-    g.add((OPDA.roleNotation, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.roleNotation, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.roleNotation, RDFS.domain, OPDA.RoleMixin))
-    g.add((OPDA.roleNotation, RDFS.range, XSD.string))
+    g.add((OPDA.roleNotation, RDFS.range, SKOS.Concept))
     g.add((OPDA.roleNotation, RDFS.label, Literal("role notation", lang="en")))
     g.add((OPDA.roleNotation, RDFS.comment, Literal(
         "Notation value naming the transactional role borne by a "

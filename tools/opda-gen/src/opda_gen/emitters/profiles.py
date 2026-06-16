@@ -1118,7 +1118,7 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         g, seller_shape,
         path=OPDA.roleNotation,
         min_count=1, max_count=1,
-        in_scheme_members=["Seller"],
+        in_scheme_members=_scheme_member_uris_subset("RoleScheme", ["Seller"]),
         sh_order=1, sh_group=grp_participants,
         form_question_anchor="B1",
     )
@@ -1228,11 +1228,11 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
         g, buyer_shape,
         path=OPDA.roleNotation,
         min_count=1, max_count=1,
-        in_scheme_members=[
+        in_scheme_members=_scheme_member_uris_subset("RoleScheme", [
             "Buyer", "Seller's Conveyancer", "Prospective Buyer",
             "Buyer's Conveyancer", "Estate Agent", "Buyer's Agent",
             "Surveyor", "Mortgage Broker", "Lender", "Landlord", "Tenant",
-        ],
+        ]),
         sh_order=1, sh_group=grp_participants,
         form_question_anchor="B1",
     )

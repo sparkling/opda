@@ -35,7 +35,7 @@
 <https://opda.org.uk/pdtf/shape/Baspi5_BuyerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:bb33b9b56ab3d ;
+    sh:property _:b951dacd61981 ;
     sh:targetClass opda:Buyer .
 
 <https://opda.org.uk/pdtf/shape/Baspi5_LegalEstateShape>
@@ -53,7 +53,7 @@
 <https://opda.org.uk/pdtf/shape/Baspi5_SellerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:property _:b06e37a19a68f, _:b5b422a366a20, _:b5e7df1c80e0f ;
+    sh:property _:b06e37a19a68f, _:b0ef4eb45c5b8, _:b5b422a366a20 ;
     sh:targetClass opda:Seller .
 
 <https://opda.org.uk/pdtf/shape/Baspi5_SellersCapacityShape>
@@ -115,17 +115,13 @@ opda:Baspi5_Participants_Group
     rdfs:label "Participants"@en ;
     sh:order "1"^^xsd:integer .
 
-_:b01d33d61be57
-    rdf:first "Seller's Conveyancer" ;
-    rdf:rest _:b45efdad76d68 .
-
 _:b0545c5b5a606
     rdf:first <https://opda.org.uk/pdtf/scheme/propertyType/Flat> ;
     rdf:rest _:b604cac89cd68 .
 
-_:b0654af6bc0f5
-    rdf:first "Buyer" ;
-    rdf:rest _:b01d33d61be57 .
+_:b05a06af69355
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Buyers-Agent> ;
+    rdf:rest _:b8fcc3801d2b0 .
 
 _:b06e37a19a68f
     dct:source <https://www.basp.uk/forms/baspi5#B1.3> ;
@@ -136,6 +132,10 @@ _:b06e37a19a68f
     sh:order "3"^^xsd:integer ;
     sh:path <http://www.w3.org/2006/vcard/ns#email> ;
     sh:severity sh:Violation .
+
+_:b0a27aef59d6f
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Buyers-Conveyancer> ;
+    rdf:rest _:b7b7a90988c30 .
 
 _:b0abc84a01bbe
     rdf:first <https://opda.org.uk/pdtf/scheme/yesNo/Yes> ;
@@ -189,13 +189,20 @@ _:b0c190ebf868c
     rdf:first <https://opda.org.uk/pdtf/scheme/sellersCapacity/Assistant> ;
     rdf:rest _:bb4bf3a231542 .
 
+_:b0ef4eb45c5b8
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:b5773421c2fe9 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:nodeKind sh:IRI ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:roleNotation ;
+    sh:severity sh:Violation .
+
 _:b11c3004bbed8
     rdf:first <https://opda.org.uk/pdtf/scheme/centralHeatingFuelType/Electricity> ;
     rdf:rest _:b35c689566817 .
-
-_:b145accbf4a97
-    rdf:first "Seller" ;
-    rdf:rest rdf:nil .
 
 _:b14d53d8e58c1
     rdf:first <https://opda.org.uk/pdtf/scheme/propertyType/Park-home> ;
@@ -218,6 +225,10 @@ _:b1bf6006aff1a
 _:b1d5dbab8f1da
     rdf:first <https://opda.org.uk/pdtf/scheme/centralHeatingFuelType/Biomass> ;
     rdf:rest _:ba66664f50508 .
+
+_:b2016542c212e
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Lender> ;
+    rdf:rest _:bbe4cde60f122 .
 
 _:b239c944ef282
     rdf:first <https://opda.org.uk/pdtf/scheme/centralHeatingFuelType/LPG> ;
@@ -242,10 +253,6 @@ _:b2a2b2b56946d
     sh:order "21"^^xsd:integer ;
     sh:path opda:hasBeenFlooded ;
     sh:severity sh:Violation .
-
-_:b2a3f35be4067
-    rdf:first "Mortgage Broker" ;
-    rdf:rest _:b8e9bc0194f94 .
 
 _:b2acef2a8fd8a
     dct:source <https://www.basp.uk/forms/baspi5#A1.2.1> ;
@@ -376,16 +383,12 @@ _:b431700016e65
     sh:path opda:tenureKind ;
     sh:severity sh:Violation .
 
-_:b45811fea6480
-    rdf:first "Buyer's Conveyancer" ;
-    rdf:rest _:bdcddbc2d0d03 .
+_:b4470c84bccb0
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Tenant> ;
+    rdf:rest rdf:nil .
 
 _:b45a6be2eb181
     sh:property _:ba86f841c8db6 .
-
-_:b45efdad76d68
-    rdf:first "Prospective Buyer" ;
-    rdf:rest _:b45811fea6480 .
 
 _:b479caefed83e
     dct:source <https://www.basp.uk/forms/baspi5#A1.8> ;
@@ -404,6 +407,10 @@ _:b479caefed83e
 _:b497f3d458645
     rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Leasehold> ;
     rdf:rest _:baff7fb0800c4 .
+
+_:b4bde751a318d
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Prospective-Buyer> ;
+    rdf:rest _:b0a27aef59d6f .
 
 _:b5182de21de64
     dct:source <https://www.basp.uk/forms/baspi5#A7.4.0.2> ;
@@ -434,6 +441,14 @@ _:b526a23a46669
 _:b56dd11d67007
     rdf:first <https://opda.org.uk/pdtf/scheme/propertyType/Other> ;
     rdf:rest rdf:nil .
+
+_:b5773421c2fe9
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Seller> ;
+    rdf:rest rdf:nil .
+
+_:b5778e62bf8cd
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Sellers-Conveyancer> ;
+    rdf:rest _:b4bde751a318d .
 
 _:b5b422a366a20
     dct:source <https://www.basp.uk/forms/baspi5#B1.1> ;
@@ -492,16 +507,6 @@ _:b5d285156c5a3
 _:b5d285156c5a3
     rdf:first <https://opda.org.uk/pdtf/scheme/yesNo/No> ;
     rdf:rest rdf:nil .
-
-_:b5e7df1c80e0f
-    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b145accbf4a97 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:roleNotation ;
-    sh:severity sh:Violation .
 
 _:b604cac89cd68
     rdf:first <https://opda.org.uk/pdtf/scheme/propertyType/Maisonette> ;
@@ -571,6 +576,10 @@ _:b7b4861db2901
     rdf:first <https://opda.org.uk/pdtf/scheme/heatingType/None> ;
     rdf:rest rdf:nil .
 
+_:b7b7a90988c30
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Estate-Agent> ;
+    rdf:rest _:b05a06af69355 .
+
 _:b7d9012299e46
     rdf:first <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> ;
     rdf:rest _:bb9936bc7df8c .
@@ -604,9 +613,9 @@ _:b8bd17941e155
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/A> ;
     rdf:rest _:b885e32d50ff3 .
 
-_:b8e9bc0194f94
-    rdf:first "Lender" ;
-    rdf:rest _:b9c6881466435 .
+_:b8fcc3801d2b0
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Surveyor> ;
+    rdf:rest _:bcc2b470296ba .
 
 _:b92aebf58f84b
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/F> ;
@@ -616,13 +625,20 @@ _:b92ccecaa2757
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/E> ;
     rdf:rest _:b92aebf58f84b .
 
+_:b951dacd61981
+    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
+    sh:group opda:Baspi5_Participants_Group ;
+    sh:in _:bd35fbcb61262 ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:nodeKind sh:IRI ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:roleNotation ;
+    sh:severity sh:Violation .
+
 _:b980d837479b7
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/D> ;
     rdf:rest _:b92ccecaa2757 .
-
-_:b9c6881466435
-    rdf:first "Landlord" ;
-    rdf:rest _:bca44e8ce3601 .
 
 _:b9f7a0e07af31
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/G> ;
@@ -682,16 +698,6 @@ _:baff7fb0800c4
     rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Commonhold> ;
     rdf:rest _:b7a9eb0fa50b0 .
 
-_:bb33b9b56ab3d
-    dct:source <https://www.basp.uk/forms/baspi5#B1> ;
-    sh:group opda:Baspi5_Participants_Group ;
-    sh:in _:b0654af6bc0f5 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:roleNotation ;
-    sh:severity sh:Violation .
-
 _:bb4bf3a231542
     rdf:first <https://opda.org.uk/pdtf/scheme/sellersCapacity/Other> ;
     rdf:rest rdf:nil .
@@ -718,6 +724,10 @@ _:bbd41b4253f15
     sh:path opda:hasAddress ;
     sh:severity sh:Violation .
 
+_:bbe4cde60f122
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Landlord> ;
+    rdf:rest _:b4470c84bccb0 .
+
 _:bc36b424d0e28
     dct:source <https://www.basp.uk/forms/baspi5#A10.1.1> ;
     dash:editor dash:EnumSelectEditor ;
@@ -734,13 +744,13 @@ _:bc473980b4756
     rdf:first <https://opda.org.uk/pdtf/scheme/sellersCapacity/Under-Power-of-Attorney> ;
     rdf:rest _:b0c190ebf868c .
 
-_:bca44e8ce3601
-    rdf:first "Tenant" ;
-    rdf:rest rdf:nil .
-
 _:bcbf10646f453
     rdf:first <https://opda.org.uk/pdtf/scheme/offMainsDrainageSystemType/Other> ;
     rdf:rest _:bdb55f492e874 .
+
+_:bcc2b470296ba
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Mortgage-Broker> ;
+    rdf:rest _:b2016542c212e .
 
 _:bcf039399a3a0
     rdf:first <https://opda.org.uk/pdtf/scheme/heatingType/Central-heating> ;
@@ -752,6 +762,10 @@ _:bd1fe8899167a
     sh:minCount "1"^^xsd:integer ;
     sh:nodeKind sh:IRI ;
     sh:path opda:hasAssertedCapacity .
+
+_:bd35fbcb61262
+    rdf:first <https://opda.org.uk/pdtf/scheme/role/Buyer> ;
+    rdf:rest _:b5778e62bf8cd .
 
 _:bd745d21157b8
     dct:source <https://www.basp.uk/forms/baspi5#A1.8.6.1> ;
@@ -773,10 +787,6 @@ _:bdb55f492e874
     rdf:first <https://opda.org.uk/pdtf/scheme/offMainsDrainageSystemType/Not-known> ;
     rdf:rest rdf:nil .
 
-_:bdcddbc2d0d03
-    rdf:first "Estate Agent" ;
-    rdf:rest _:bfde08a6255c4 .
-
 _:be399445f7478
     rdf:first <https://opda.org.uk/pdtf/scheme/heatingType/Room-heaters-only> ;
     rdf:rest _:b7b4861db2901 .
@@ -792,14 +802,6 @@ _:bf45ac119f302
 _:bfb92942381fb
     rdf:first <https://opda.org.uk/pdtf/scheme/builtForm/Other> ;
     rdf:rest rdf:nil .
-
-_:bfdaed475f6d1
-    rdf:first "Surveyor" ;
-    rdf:rest _:b2a3f35be4067 .
-
-_:bfde08a6255c4
-    rdf:first "Buyer's Agent" ;
-    rdf:rest _:bfdaed475f6d1 .
 
 _:bffb0117ea640
     dct:source <https://www.basp.uk/forms/baspi5#A1.3.0.2> ;
