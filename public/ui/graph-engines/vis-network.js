@@ -37,6 +37,7 @@
     async mount(container, rawData, opts) {
       var l = await ensureLibs();
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
       var byId = {};      // id -> node data (for onSelect)
       var network = null, nodesDS = null, edgesDS = null;
       var allNodeIds = [];
@@ -57,7 +58,7 @@
       }
 
       function build() {
-        var view = S.viewData(rawData, showSkos);
+        var view = S.viewData(rawData, { showSkos: showSkos, facets: facets });
         byId = {};
         view.nodes.forEach(function (d) { byId[d.id] = d; });
         allNodeIds = view.nodes.map(function (d) { return d.id; });
@@ -114,6 +115,7 @@
       return {
         setTheme: function () { reColour(); },
         setSkos: function (show) { showSkos = show; build(); },
+        setFacets: function (f) { facets = f; build(); },
         reset: function () { unfocus(); if (network) network.fit(); opts.onSelect(null); },
         destroy: function () { try { if (network) network.destroy(); } catch (e) {} },
       };

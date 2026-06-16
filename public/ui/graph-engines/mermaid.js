@@ -8,8 +8,9 @@
  * The SKOS layer is deliberately omitted (showSkos is ignored) — see `note`.
  *
  * Source is generated per the diagramming skill's 17-LINKED-DATA-GUIDE
- * (`flowchart LR` + ELK, Subject -->|predicate| Object), coloured by UFO
- * meta-category via one classDef per category built from OPDAGraph.COLORS.ufo.
+ * (`flowchart LR` + ELK, Subject -->|predicate| Object). Nodes share ONE uniform
+ * class fill (the UFO facet is a FILTER, not a colour); SHACL-shaped classes get
+ * a brand-coloured stroke. The facet filter (opts.facets) drops class nodes.
  * Theme follows client.js: base theme + themeVariables resolved from opts.theme
  * (re-resolved from OPDAGraph.themeColors() on a theme flip). Mermaid + the ELK
  * layout loader lazy-load from the SAME jsdelivr modules client.js uses, cached
@@ -42,15 +43,19 @@
     return id;
   }
 
-  // classDef name per UFO meta-category. Prefixed with "ufo_" + alnum-only so it
-  // can NEVER collide with a Mermaid reserved word (class/graph/end/default/style).
-  function classDefName(category) {
-    return 'ufo_' + String(category || 'default').replace(/[^A-Za-z0-9]/g, '_');
-  }
-
   // Escape a label for use inside a Mermaid "double-quoted" string.
   function q(label) {
     return '"' + String(label == null ? '' : label).replace(/"/g, '&quot;') + '"';
+  }
+
+  // Mermaid classDef colours must be hex/named — it CANNOT parse rgb(...) (the
+  // parens break the flowchart parser). themeColors() resolves to rgb(), so
+  // convert; pass hex/named values through untouched.
+  function toHex(c) {
+    var m = /^rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(String(c || ''));
+    if (!m) return c;
+    function h(n) { return ('0' + parseInt(n, 10).toString(16)).slice(-2); }
+    return '#' + h(m[1]) + h(m[2]) + h(m[3]);
   }
 
   // themeVariables matching client.js's base-theme integration, driven by opts.theme.
@@ -69,13 +74,12 @@
     };
   }
 
-  // Build the Mermaid `flowchart LR` source from the OWL backbone view.
-  // Returns { src, nClasses, nEdges }.
-  function buildSource(data) {
-    var view = S.viewData(data, false); // OWL backbone: classes + objectProperty edges
+  // Build the Mermaid `flowchart LR` source from the OWL backbone view, honouring
+  // the facet filter. Returns { src, nClasses, nEdges }.
+  function buildSource(data, facets) {
+    var view = S.viewData(data, { showSkos: false, facets: facets }); // OWL backbone
     var seen = {};            // safeId -> modelId (collision guard)
     var idMap = {};           // modelId -> safeId
-    var usedCats = {};        // category -> true (only emit classDefs we use)
 
     var lines = [
       '---',
@@ -88,22 +92,18 @@
       'flowchart LR',
     ];
 
-    // classDef per UFO category actually present, coloured from COLORS.ufo.
-    var nodeLines = [];
-    view.nodes.forEach(function (d) {
+    // Uniform class styling — the UFO facet is a FILTER, not a colour. Shaped
+    // classes get the brand stroke to mark a SHACL node-shape (cf. the legend).
+    // Colours must be hex for the Mermaid classDef parser (no rgb()).
+    var classColor = toHex(S.COLORS.class);
+    var brand = toHex(S.themeColors().brand);
+    lines.push('    classDef og_class fill:' + classColor + ',stroke:' + classColor + ',stroke-width:1.5px,color:#ffffff');
+    lines.push('    classDef og_shape fill:' + classColor + ',stroke:' + brand + ',stroke-width:3px,color:#ffffff');
+
+    var nodeLines = view.nodes.map(function (d) {
       var sid = safeId(d.id, seen);
       idMap[d.id] = sid;
-      var cat = (d.ufoCategory && S.COLORS.ufo[d.ufoCategory]) ? d.ufoCategory : null;
-      var cd = classDefName(cat || 'default');
-      usedCats[cd] = cat; // value: category name or null (default)
-      nodeLines.push('    ' + sid + '[' + q(d.label || d.id) + ']:::' + cd);
-    });
-
-    var classDefLines = Object.keys(usedCats).map(function (cd) {
-      var cat = usedCats[cd];
-      var fill = cat ? S.COLORS.ufo[cat] : S.COLORS.defaultClass;
-      // white-ish stroke + readable text; fill is the category hue.
-      return '    classDef ' + cd + ' fill:' + fill + ',stroke:' + fill + ',stroke-width:1.5px,color:#ffffff';
+      return '    ' + sid + '[' + q(d.label || d.id) + ']:::' + (d.hasShape ? 'og_shape' : 'og_class');
     });
 
     var edgeLines = view.edges.map(function (e) {
@@ -112,12 +112,7 @@
       return '    ' + s + ' -->|' + q(e.label || '') + '| ' + t;
     }).filter(Boolean);
 
-    var src = lines
-      .concat(classDefLines)
-      .concat(nodeLines)
-      .concat(edgeLines)
-      .join('\n');
-
+    var src = lines.concat(nodeLines).concat(edgeLines).join('\n');
     return { src: src, nClasses: view.nodes.length, nEdges: edgeLines.length };
   }
 
@@ -130,6 +125,7 @@
 
     async mount(container, data, opts) {
       container.classList.add('og-canvas--diagram');
+      var facets = opts.facets || null;
 
       function fail(msg) {
         container.innerHTML = '<div style="padding:1rem;font:14px/1.5 var(--font-sans,sans-serif);' +
@@ -137,7 +133,7 @@
       }
 
       async function render() {
-        var built = buildSource(data);
+        var built = buildSource(data, facets);
         var theme = S.themeColors();
         try {
           var mermaid = await ensureMermaid();
@@ -172,6 +168,7 @@
         setSkos: function () {
           if (opts.onStatus) opts.onStatus('SKOS layer omitted for Mermaid (OWL backbone only)');
         },
+        setFacets: function (f) { facets = f; render(); },
         reset: function () { render(); },
         destroy: function () {
           try { container.innerHTML = ''; container.classList.remove('og-canvas--diagram'); } catch (e) {}

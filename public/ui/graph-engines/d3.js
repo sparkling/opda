@@ -39,6 +39,7 @@
       var W = container.clientWidth || 800, H = container.clientHeight || 600;
       var t = opts.theme;
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
 
       var svg = d3.select(container).append('svg')
         .attr('width', '100%').attr('height', '100%')
@@ -53,7 +54,7 @@
       var sim = null, node = null, link = null, label = null;
 
       function build() {
-        var view = S.viewData(rawData, showSkos);
+        var view = S.viewData(rawData, { showSkos: showSkos, facets: facets });
         var nodes = view.nodes.map(function (d) { return Object.assign({}, d); }); // fresh objects d3 mutates
         var ids = {}; nodes.forEach(function (n) { ids[n.id] = true; });
         var links = view.edges.map(function (d) { return Object.assign({}, d); })
@@ -132,6 +133,7 @@
           svg.select('.d3-arrow-fill').attr('fill', th.line);
         },
         setSkos: function (show) { showSkos = show; unfocus(); build(); },
+        setFacets: function (f) { facets = f; unfocus(); build(); },
         reset: function () { unfocus(); build(); opts.onSelect(null); },
         destroy: function () { try { if (sim) sim.stop(); svg.remove(); } catch (e) {} },
       };

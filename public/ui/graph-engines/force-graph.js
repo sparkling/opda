@@ -34,6 +34,7 @@
     async mount(container, rawData, opts) {
       var ForceGraph = await ensureLib();
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
       var th = S.themeColors();
       var highlightNodes = null;   // null = no focus; else a {id:true} set
       var highlightLinks = null;
@@ -43,7 +44,7 @@
         .height(container.clientHeight || 600);
 
       function build() {
-        var view = S.viewData(rawData, showSkos);
+        var view = S.viewData(rawData, { showSkos: showSkos, facets: facets });
         var gData = {
           nodes: view.nodes.map(function (d) { return Object.assign({}, d); }),
           links: view.edges.map(function (d) { return Object.assign({}, d); }),
@@ -115,6 +116,7 @@
           fg.refresh();                 // repaint canvas labels with new th.text
         },
         setSkos: function (show) { showSkos = show; build(); },
+        setFacets: function (f) { facets = f; build(); },
         reset: function () { unfocus(); opts.onSelect(null); },
         destroy: function () {
           try {

@@ -20,8 +20,8 @@
   }
 
   // Flatten our { nodes, edges } view into G6 v5's { nodes:[{id,data}], edges:[{source,target,data}] }.
-  function toG6Data(rawData, showSkos) {
-    var view = S.viewData(rawData, showSkos);
+  function toG6Data(rawData, showSkos, facets) {
+    var view = S.viewData(rawData, { showSkos: showSkos, facets: facets });
     return {
       nodes: view.nodes.map(function (d) { return { id: d.id, data: d }; }),
       // Explicit unique edge id — multiple object properties can share a
@@ -65,10 +65,11 @@
       var l = await ensureLib();
       var theme = opts.theme;
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
 
       var graph = new l.Graph({
         container: container,
-        data: toG6Data(rawData, showSkos),
+        data: toG6Data(rawData, showSkos, facets),
         theme: S.isDark() ? 'dark' : 'light',
         node: { style: nodeStyle(theme) },
         edge: { style: edgeStyle(theme) },
@@ -115,9 +116,19 @@
       // with the d3-force layout, which would block mount() from ever returning
       // the handle (killing the theme/SKOS/reset controls) even though the graph
       // draws fine. Fire it, report status from the source counts, return now.
-      var counts = toG6Data(rawData, showSkos);
+      var counts = toG6Data(rawData, showSkos, facets);
       graph.render();
       opts.onStatus(counts.nodes.length + ' nodes · ' + counts.edges.length + ' edges');
+
+      // Re-derive + repaint from the current showSkos/facets filter state.
+      function rebuild() {
+        clearFocus();
+        graph.setData(toG6Data(rawData, showSkos, facets));
+        graph.render().then(function () {
+          var d = graph.getData();
+          opts.onStatus(d.nodes.length + ' nodes · ' + d.edges.length + ' edges');
+        });
+      }
 
       return {
         setTheme: function () {
@@ -127,15 +138,8 @@
           graph.setEdge({ style: edgeStyle(th) });
           try { graph.draw(); } catch (e) {}
         },
-        setSkos: function (show) {
-          showSkos = show;
-          clearFocus();
-          graph.setData(toG6Data(rawData, showSkos));
-          graph.render().then(function () {
-            var d = graph.getData();
-            opts.onStatus(d.nodes.length + ' nodes · ' + d.edges.length + ' edges');
-          });
-        },
+        setSkos: function (show) { showSkos = show; rebuild(); },
+        setFacets: function (f) { facets = f; rebuild(); },
         reset: function () {
           clearFocus();
           try { graph.fitView(); } catch (e) {}

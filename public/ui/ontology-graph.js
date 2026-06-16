@@ -45,11 +45,58 @@
     return {
       isDark: S.isDark(),
       showSkos: !!(el('og-skos') && el('og-skos').checked),
+      facets: facetFilter(),
       colors: S.COLORS,
       theme: S.themeColors(),
       onSelect: renderInfo,
       onStatus: status,
     };
+  }
+
+  // ── Facet filter ──────────────────────────────────────────────────────────
+  // The opda:ufoCategory facet is a FILTER (not a colour). One checkbox per
+  // category present in the data, plus an "Uncategorised" box if any class
+  // lacks a facet. All-checked → returns null (no filter); a subset → a Set of
+  // visible values (uncategorised = '').
+  function buildFacets() {
+    var wrap = el('og-facets');
+    if (!wrap || !data) return;
+    wrap.innerHTML = '';
+    var cats = (data.ufoCategories || []).slice();
+    var items = cats.map(function (c) { return { value: c, label: c }; });
+    var hasUncat = (data.nodes || []).some(function (n) {
+      return n.data.type === 'class' && !n.data.ufoCategory;
+    });
+    if (hasUncat) items.push({ value: '', label: 'Uncategorised' });
+    items.forEach(function (it) {
+      var lab = document.createElement('label');
+      lab.className = 'og-facet';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = true;
+      cb.dataset.facet = it.value;
+      cb.addEventListener('change', applyFacets);
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode(it.label));
+      wrap.appendChild(lab);
+    });
+  }
+
+  function facetFilter() {
+    var wrap = el('og-facets');
+    if (!wrap) return null;
+    var boxes = wrap.querySelectorAll('input[type="checkbox"]');
+    if (!boxes.length) return null;
+    var visible = new Set();
+    var all = true;
+    boxes.forEach(function (b) {
+      if (b.checked) visible.add(b.dataset.facet); else all = false;
+    });
+    return all ? null : visible; // all-checked = no filter
+  }
+
+  function applyFacets() {
+    if (active && active.handle && active.handle.setFacets) active.handle.setFacets(facetFilter());
   }
 
   function syncLayoutControl(engine) {
@@ -168,7 +215,8 @@
     } catch (e) {
       status('Could not load the graph data.'); return;
     }
-    activate(engines[0].id); // first tab (Cytoscape, the ADR-0043 pick)
+    buildFacets();             // facet checkboxes depend on the loaded data
+    activate(engines[0].id);   // first tab (Cytoscape, the ADR-0043 pick)
   }
 
   window.OPDA_GRAPH = { mount: mount };

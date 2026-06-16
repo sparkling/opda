@@ -91,6 +91,7 @@
         layout: { name: 'preset' },
       });
       var curLayout = 'fcose';
+      var facets = opts.facets || null;
 
       function runLayout(name) {
         if (name === 'fcose' && !l.hasFcose) name = 'cose';
@@ -101,6 +102,15 @@
         var sk = cy.elements('node[type="scheme"], node[type="concept"], edge[kind="inScheme"], edge[kind="broader"]');
         sk.style('display', show ? 'element' : 'none');
       }
+      // Facet filter — toggle class-node display by opda:ufoCategory. Cytoscape
+      // auto-hides edges whose endpoint is display:none, so incident edges follow.
+      function applyFacets(f) {
+        var classes = cy.nodes('[type="class"]');
+        if (!f) { classes.style('display', 'element'); return; }
+        classes.forEach(function (n) {
+          n.style('display', f.has(n.data('ufoCategory') || '') ? 'element' : 'none');
+        });
+      }
       function clearFocus() { cy.elements().removeClass('faded').removeClass('highlight'); }
       function focus(node) {
         cy.elements().removeClass('highlight').addClass('faded');
@@ -108,6 +118,7 @@
       }
 
       applySkos(opts.showSkos);
+      applyFacets(facets);
       cy.on('tap', 'node', function (evt) { focus(evt.target); opts.onSelect(evt.target.data()); });
       cy.on('tap', function (evt) { if (evt.target === cy) { clearFocus(); opts.onSelect(null); } });
       runLayout('fcose');
@@ -116,6 +127,7 @@
       return {
         setTheme: function () { cy.style(styleSheet(Object.assign({}, opts, { theme: S.themeColors() }))); },
         setSkos: function (show) { applySkos(show); runLayout(curLayout); },
+        setFacets: function (f) { facets = f; applyFacets(f); runLayout(curLayout); },
         setLayout: function (name) { runLayout(name); },
         reset: function () { clearFocus(); runLayout(curLayout); opts.onSelect(null); },
         destroy: function () { try { cy.destroy(); } catch (e) {} },

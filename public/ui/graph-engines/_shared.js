@@ -23,11 +23,14 @@
  *               node = { data: { id, ref, label, type, ufoCategory, module, hasShape } }
  *               edge = { data: { id, source, target, label, kind } }
  *               type ∈ class|scheme|concept|external · kind ∈ objectProperty|inScheme|broader
- *   opts      : { isDark, showSkos, colors, theme, onSelect(nodeData|null), onStatus(msg) }
- *   handle    : { setTheme(isDark)?, setSkos(show)?, reset()?, destroy()? }  (all optional)
+ *   opts      : { isDark, showSkos, facets, colors, theme, onSelect(nodeData|null), onStatus(msg) }
+ *               facets = Set of visible opda:ufoCategory values (null = show all).
+ *   handle    : { setTheme(isDark)?, setSkos(show)?, setFacets(facetSet|null)?, reset()?, destroy()? }
  *
- * Adapters NEVER hardcode the palette — they take colours from opts.colors /
- * opts.theme so dark-mode re-theming stays in one place.
+ * Node fill encodes the node TYPE (class/scheme/concept/external) — NOT the UFO
+ * facet, which is a filter (opts.facets / handle.setFacets). Adapters NEVER
+ * hardcode the palette — colours come from opts.colors / opts.theme so dark-mode
+ * re-theming stays in one place.
  */
 (function () {
   'use strict';
@@ -35,24 +38,15 @@
 
   var registry = (window.opdaGraphEngines = window.opdaGraphEngines || {});
 
-  // Okabe–Ito colour-blind-safe categorical palette → UFO meta-category.
-  var UFO_COLORS = {
-    'Substance Kind':    '#0072B2',
-    'Relator':           '#D55E00',
-    'Role':              '#009E73',
-    'RoleMixin':         '#56B4E9',
-    'Event':             '#CC79A7',
-    'Information Object': '#E69F00',
-    'Quality':           '#B22222',
-    'Quality Value':     '#8C5E2A',
-    'Collective':        '#7F7F7F',
-  };
+  // Node fill encodes the structural node TYPE/layer, not the UFO facet. The
+  // facet (opda:ufoCategory) is a FILTER dimension instead — it was too noisy as
+  // a 9-hue fill, and painting gUFO categories onto domain nodes conflated the
+  // layers. One calm colour per type keeps the OWL / SKOS / external layers legible.
   var COLORS = {
-    ufo: UFO_COLORS,
-    scheme: '#6E56CF',        // SKOS concept scheme
-    concept: '#9E8CFC',       // SKOS concept
-    external: '#9E9E9E',      // non-opda target
-    defaultClass: '#7F7F7F',
+    class:    '#0072B2',      // owl:Class (uniform — filter by facet, not colour)
+    scheme:   '#6E56CF',      // skos:ConceptScheme
+    concept:  '#9E8CFC',      // skos:Concept
+    external: '#9E9E9E',      // non-opda object-property target
   };
 
   // Resolve a CSS custom property to a concrete rgb() string — a hidden probe
@@ -81,25 +75,37 @@
   }
 
   function colorForNode(d) {
-    if (d.type === 'class') return UFO_COLORS[d.ufoCategory] || COLORS.defaultClass;
     if (d.type === 'scheme') return COLORS.scheme;
     if (d.type === 'concept') return COLORS.concept;
     if (d.type === 'external') return COLORS.external;
-    return COLORS.defaultClass;
+    return COLORS.class; // class (and any unknown) → the primary entity colour
   }
 
   // True for nodes/edges that belong to the SKOS layer (hidden unless toggled on).
   function isSkosNode(d) { return d.type === 'scheme' || d.type === 'concept'; }
   function isSkosEdge(d) { return d.kind === 'inScheme' || d.kind === 'broader'; }
 
-  // A shallow filtered view of data honouring the SKOS toggle. Returns plain
-  // arrays of node/edge `data` objects (most non-Cytoscape engines want those).
-  function viewData(data, showSkos) {
+  // A shallow filtered view of data honouring the SKOS toggle AND the facet
+  // filter. The second arg is either a boolean (legacy: showSkos) or an options
+  // object { showSkos, facets } where `facets` is a Set of visible ufoCategory
+  // values (null/absent = no facet filter). Only class nodes carry a facet, so
+  // the facet filter acts on the class layer; scheme/concept/external pass through.
+  // Returns plain arrays of node/edge `data` objects (most engines want those).
+  function viewData(data, filter) {
+    if (typeof filter === 'boolean') filter = { showSkos: filter };
+    filter = filter || {};
+    var showSkos = !!filter.showSkos;
+    var facets = filter.facets || null;
     var nodes = data.nodes.map(function (n) { return n.data; });
     var edges = data.edges.map(function (e) { return e.data; });
     if (!showSkos) {
       nodes = nodes.filter(function (d) { return !isSkosNode(d); });
       edges = edges.filter(function (d) { return d.kind === 'objectProperty'; });
+    }
+    if (facets) {
+      nodes = nodes.filter(function (d) {
+        return d.type !== 'class' || facets.has(d.ufoCategory || '');
+      });
     }
     var ids = {};
     nodes.forEach(function (d) { ids[d.id] = true; });

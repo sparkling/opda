@@ -67,8 +67,8 @@
   }
 
   // Build the DOT digraph from the SKOS-aware view. Returns { src, n, m }.
-  function buildSource(data, showSkos, theme) {
-    var view = S.viewData(data, showSkos);
+  function buildSource(data, showSkos, theme, facets) {
+    var view = S.viewData(data, { showSkos: showSkos, facets: facets });
     var line = theme.line, text = theme.text, muted = theme.muted, brand = theme.brand;
 
     var lines = [
@@ -118,6 +118,7 @@
     async mount(container, data, opts) {
       container.classList.add('og-canvas--diagram');
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
 
       function fail(msg) {
         container.innerHTML = '<div style="padding:1rem;font:14px/1.5 var(--font-sans,sans-serif);' +
@@ -127,7 +128,7 @@
 
       async function render() {
         var theme = S.themeColors();
-        var built = buildSource(data, showSkos, theme);
+        var built = buildSource(data, showSkos, theme, facets);
         try {
           var gv = await ensureGraphviz();
           var svg = gv.dot(built.src, 'svg');
@@ -148,6 +149,7 @@
       return {
         setTheme: function () { render(); },
         setSkos: function (show) { showSkos = show; render(); },
+        setFacets: function (f) { facets = f; render(); },
         reset: function () { render(); },
         destroy: function () {
           try { container.innerHTML = ''; container.classList.remove('og-canvas--diagram'); } catch (e) {}

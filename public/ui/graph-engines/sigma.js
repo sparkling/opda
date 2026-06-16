@@ -42,11 +42,12 @@
     async mount(container, rawData, opts) {
       var l = await ensureLibs();
       var showSkos = opts.showSkos;
+      var facets = opts.facets || null;
       var focusId = null;
       var g = null, renderer = null;
 
       function buildGraph() {
-        var view = S.viewData(rawData, showSkos);
+        var view = S.viewData(rawData, { showSkos: showSkos, facets: facets });
         // multigraph: several object properties can link the same class pair
         // (e.g. LegalEstate→MonetaryAmount); a simple Graph throws on the dup.
         var graph = new l.Graph({ multi: true });
@@ -136,6 +137,7 @@
           renderer.refresh();
         },
         setSkos: function (show) { showSkos = show; focusId = null; render(); },
+        setFacets: function (f) { facets = f; focusId = null; render(); },
         reset: function () { focusId = null; renderer.refresh(); opts.onSelect(null); },
         destroy: function () { try { if (renderer) renderer.kill(); } catch (e) {} },
       };
