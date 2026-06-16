@@ -66,6 +66,15 @@
     sh:targetSubjectsOf opda:ontoCleanRigidity ;
     opda:metaShapeJustification "ADR-0046 §change 3 (TBox OntoClean meta-shape; ODR-0031 R3 tag-guard pattern): this canonical check 'every rigid (+R) type that is nonetheless rdfs:subClassOf an anti-rigid (−R) type' is the sole consumer that makes the per-type opda:ontoCleanRigidity tags non-decorative (session-042 atomicity rule). Runs over the TBox + annotation graph only; NEVER the instance-validation union. sh:Violation because a +R-subclass-of-−R subsumption is a structural soundness failure of the OntoClean lattice, not an optional advisory."@en .
 
+<https://opda.org.uk/pdtf/shape/OntoCleanIncompatibleIdentitySubclassing_MetaShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0046> ;
+    sh:message "OntoClean violation: a type that supplies its own identity criterion (+I, 'supplies-IC') is rdfs:subClassOf another type that also supplies its own identity criterion. Two independent own-identity suppliers carry distinct, incompatible identity criteria — a subsumption between them would force the subclass to bear two rival own-ICs (Guarino & Welty 2009 §3 — a sortal cannot subsume a different sortal; 'carries-IC ⊑ supplies-IC' is the valid IC-inheritance direction). ADR-0046 ±I TBox OntoClean meta-shape."@en ;
+    sh:severity sh:Violation ;
+    sh:sparql _:bf14fb937df36 ;
+    sh:targetSubjectsOf opda:ontoCleanIdentity ;
+    opda:metaShapeJustification "ADR-0046 §change 3 (±I TBox OntoClean meta-shape; ODR-0031 R3 tag-guard pattern): this canonical check 'every supplies-IC (+I) type that is nonetheless rdfs:subClassOf another supplies-IC (+I) type' is the sole consumer that makes the per-type opda:ontoCleanIdentity tags non-decorative (session-042 atomicity rule; addresses Baker's held 'no-decoration' dissent on the ±I tags). Runs over the TBox + annotation graph only; NEVER the instance-validation union. sh:Violation because two colliding own-identity criteria on one subclass is a structural soundness failure of the OntoClean lattice, not an optional advisory."@en .
+
 <https://opda.org.uk/pdtf/shape/PIIWithoutDPVCoAnnotationRule>
     rdf:type sh:NodeShape ;
     rdfs:comment "Meta-rule: any class marked opda:isPIIBearing true that lacks a dpv-pd:hasPersonalDataCategory annotation in the annotation graph is flagged as a PII-without-co-annotation breach. Severity sh:Warning per ADR-0012 §SHACL-AF rule emission (silent PII leakage is high-impact even though the rule is SHACL-AF-pattern-shaped)."@en ;
@@ -2591,6 +2600,9 @@ _:be969c404eb54
     sh:message "opda:ufoCategory MUST be one of the nine UFO meta-categories (the opda:UFOCategoryScheme notations) — ODR-0031 R3 tag-level editorial guard on the facet value-space."@en ;
     sh:path opda:ufoCategory ;
     sh:severity sh:Violation .
+
+_:bf14fb937df36
+    sh:select "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT $this ?superClass WHERE {\n  $this opda:ontoCleanIdentity \"supplies-IC\" .\n  $this rdfs:subClassOf ?superClass .\n  ?superClass opda:ontoCleanIdentity \"supplies-IC\" .\n}" .
 
 _:bff2637387229
     rdf:first "Relator" ;

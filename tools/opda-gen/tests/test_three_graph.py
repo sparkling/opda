@@ -30,6 +30,7 @@ from opda_gen.ci.three_graph_test import (
     check_no_advisory_in_shapes,
     check_no_owl_imports_in_shapes,
     check_no_shacl_in_annotations,
+    check_ontoclean_identity_tbox,
     check_ontoclean_tbox,
     check_target_class_resolves,
     check_ufocategory_not_instance_keyed,
@@ -394,3 +395,109 @@ def test_run_all_clean_corpus_with_ontoclean_passes(tmp_path: Path) -> None:
     violations = run_all(tmp_path)
     ontoclean_violations = [v for v in violations if "OntoClean" in v]
     assert ontoclean_violations == [], f"clean corpus should pass check 8: {violations}"
+
+
+# --- Check 9 (ADR-0046 ±I limb): TBox OntoClean identity-criterion check ----
+# The canonical violation form: SELECT ?sub ?super WHERE {
+#   ?sub opda:ontoCleanIdentity "supplies-IC" . ?sub rdfs:subClassOf ?super .
+#   ?super opda:ontoCleanIdentity "supplies-IC" }
+# Two own-identity suppliers in a subclass relation carry incompatible ICs.
+# carries-IC ⊑ supplies-IC (IC inheritance) and no-own-IC ⊑ * are PERMITTED.
+
+def test_ontoclean_identity_supplies_subclasses_supplies_fails() -> None:
+    """POSITIVE CONTROL — supplies-IC ⊑ supplies-IC is the IC-incompatibility
+    violation the ±I shape MUST flag (proves the gate is non-vacuous)."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Synthetic: two distinct own-identity suppliers in a subclass relation —
+    # the subclass would bear two rival own-ICs (forbidden).
+    classes.add((OPDA.Relator, RDFS.subClassOf, OPDA.Property))
+    annotations.add((OPDA.Relator, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    annotations.add((OPDA.Property, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    violations = check_ontoclean_identity_tbox(classes, annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "supplies-IC" in violations[0]
+    assert "OntoClean" in violations[0]
+
+
+def test_ontoclean_identity_carries_subclasses_supplies_passes() -> None:
+    """NEGATIVE CONTROL — carries-IC ⊑ supplies-IC is the VALID IC-inheritance
+    direction (the real OPDA Transaction ⊑ Relator edge); the shape must PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Transaction (carries-IC) subClassOf Relator (supplies-IC) — VALID; the
+    # subclass inherits the super's supplied IC rather than asserting a rival.
+    classes.add((OPDA.Transaction, RDFS.subClassOf, OPDA.Relator))
+    annotations.add((OPDA.Transaction, OPDA.ontoCleanIdentity, Literal("carries-IC")))
+    annotations.add((OPDA.Relator, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    violations = check_ontoclean_identity_tbox(classes, annotations)
+    assert violations == [], f"carries-IC ⊑ supplies-IC should PASS: {violations}"
+
+
+def test_ontoclean_identity_noown_subclasses_noown_passes() -> None:
+    """NEGATIVE CONTROL — no-own-IC ⊑ no-own-IC (Buyer ⊑ RoleMixin): neither
+    owns an IC; both borrow from a bearer — compatible, the shape must PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Buyer (no-own-IC RoleMixin) subClassOf RoleMixin (no-own-IC) — real
+    # OPDA pattern; compatible.
+    classes.add((OPDA.Buyer, RDFS.subClassOf, OPDA.RoleMixin))
+    annotations.add((OPDA.Buyer, OPDA.ontoCleanIdentity, Literal("no-own-IC")))
+    annotations.add((OPDA.RoleMixin, OPDA.ontoCleanIdentity, Literal("no-own-IC")))
+    violations = check_ontoclean_identity_tbox(classes, annotations)
+    assert violations == [], f"no-own-IC ⊑ no-own-IC should PASS: {violations}"
+
+
+def test_ontoclean_identity_noown_subclasses_supplies_passes() -> None:
+    """NEGATIVE CONTROL — no-own-IC ⊑ supplies-IC (a Role under a Kind): the
+    subclass borrows identity, the super supplies one — compatible, PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    classes.add((OPDA.Proprietor, RDFS.subClassOf, OPDA.Person))
+    annotations.add((OPDA.Proprietor, OPDA.ontoCleanIdentity, Literal("no-own-IC")))
+    annotations.add((OPDA.Person, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    violations = check_ontoclean_identity_tbox(classes, annotations)
+    assert violations == [], f"no-own-IC ⊑ supplies-IC should PASS: {violations}"
+
+
+def test_ontoclean_identity_no_tags_passes() -> None:
+    """Types without OntoClean identity tags are not checked — PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    classes.add((OPDA.Foo, RDFS.subClassOf, OPDA.Bar))
+    violations = check_ontoclean_identity_tbox(classes, annotations)
+    assert violations == [], f"untagged types should PASS: {violations}"
+
+
+def test_run_all_clean_corpus_with_ontoclean_identity_passes(tmp_path: Path) -> None:
+    """A clean corpus with valid OntoClean identity tags passes run_all check 9."""
+    prefix = (
+        "@prefix opda: <https://opda.org.uk/pdtf/> .\n"
+        "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+        "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+        "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+    )
+    (tmp_path / "opda-classes.ttl").write_text(
+        prefix
+        + "opda:Relator rdf:type owl:Class .\n"
+        + "opda:Transaction rdf:type owl:Class ; rdfs:subClassOf opda:Relator .\n"
+    )
+    (tmp_path / "opda-shapes.ttl").write_text(prefix)
+    (tmp_path / "opda-annotations.ttl").write_text(
+        prefix
+        + 'opda:Relator opda:ontoCleanIdentity "supplies-IC" .\n'
+        + 'opda:Transaction opda:ontoCleanIdentity "carries-IC" .\n'
+    )
+    violations = run_all(tmp_path)
+    ontoclean_violations = [v for v in violations if "OntoClean" in v]
+    assert ontoclean_violations == [], f"clean corpus should pass check 9: {violations}"

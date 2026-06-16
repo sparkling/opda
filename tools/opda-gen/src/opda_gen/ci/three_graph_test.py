@@ -18,17 +18,19 @@ Each check is one function returning a list of violation strings. Empty list
 == PASS. The implementing functions document the exact ODR-0004 §3a clause
 they enforce in the docstring.
 
-The full corpus check (`run_all`) executes all eight checks across a directory
+The full corpus check (`run_all`) executes all nine checks across a directory
 containing `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`,
 the 6 per-module TTLs, plus `opda-vocabularies.ttl` + `opda-contexts.ttl` (the
 ODR-0029 reasoned union, scanned by check 6), and (per check #5) optionally
 `derived/` artefacts whose git history is inspected for non-service-account
 commits. Checks 6-7 (ufoCategory quarantine + meta-shape guard) realise
-ODR-0030/0031 + the session-044 regression-hardening.  Check 8 (ADR-0046) runs
-the TBox OntoClean meta-shape over the class+annotation graph only (the editorial
-pass — never the instance-validation union) and verifies the canonical query
-SELECT ?sub ?super WHERE { ?sub rdfs:subClassOf ?super .
-  ?super opda:ontoCleanRigidity "anti-rigid" } returns empty.
+ODR-0030/0031 + the session-044 regression-hardening.  Check 8 (ADR-0046 ±R limb)
+runs the TBox OntoClean rigidity meta-shape over the class+annotation graph only
+(the editorial pass — never the instance-validation union), enforcing the
+violation form `rigid ⊑ anti-rigid` returns empty.  Check 9 (ADR-0046 ±I limb)
+is its identity-criterion sibling over the same editorial pass, enforcing that
+the violation form `supplies-IC ⊑ supplies-IC` (two incompatible own-identity
+criteria) returns empty.
 """
 
 from __future__ import annotations
@@ -410,12 +412,78 @@ def check_ontoclean_tbox(
 
 
 # ---------------------------------------------------------------------------
+# Check 9: TBox OntoClean ±I identity check (ADR-0046 — the ±I limb).
+# ---------------------------------------------------------------------------
+def check_ontoclean_identity_tbox(
+    class_graph: Graph, annotation_graph: Graph
+) -> list[str]:
+    """ADR-0046 ±I limb — the canonical OntoClean identity-criterion check.
+
+    The identity (±I) sibling of `check_ontoclean_tbox` (the ±R limb). Over the
+    MERGED class+annotation graph (the TBox editorial pass — NEVER the
+    instance-validation union), enforce the OntoClean IC-compatibility
+    constraint (Guarino & Welty 2009 §3): **a type that supplies its own
+    identity criterion cannot subsume another type that also supplies its own
+    identity criterion.** The VIOLATION form is
+
+      SELECT ?sub ?super WHERE {
+        ?sub   opda:ontoCleanIdentity "supplies-IC" .
+        ?sub   rdfs:subClassOf ?super .
+        ?super opda:ontoCleanIdentity "supplies-IC" .
+      }
+
+    which MUST return EMPTY. Two independent own-identity suppliers carry
+    *distinct, incompatible* identity criteria; a subsumption between them
+    would force the subclass to bear two rival own-ICs on the same instances
+    (a sortal cannot subsume a different sortal). The compatible directions —
+    `carries-IC ⊑ supplies-IC` (the subclass inherits the super's supplied IC;
+    e.g. `Transaction ⊑ Relator`) and `no-own-IC ⊑ *` (Roles/RoleMixins, which
+    borrow identity from a bearer; e.g. `Buyer ⊑ RoleMixin`,
+    `Proprietor ⊑ Role`) — are PERMITTED. In the OPDA corpus the check is empty:
+    `Relator` is the only `supplies-IC` type and it subclasses nothing tagged.
+
+    Mirrors the ±R limb's sole `rigid ⊑ anti-rigid` pairing with the sole
+    `supplies-IC ⊑ supplies-IC` pairing. Returns a list of violation strings
+    (empty == PASS).
+    """
+    from rdflib.namespace import RDFS
+
+    merged = Graph()
+    for t in class_graph:
+        merged.add(t)
+    for t in annotation_graph:
+        merged.add(t)
+
+    violations: list[str] = []
+
+    # Canonical check: a SUPPLIES-IC type must not subclass another SUPPLIES-IC
+    # type. (carries-IC ⊑ supplies-IC and no-own-IC ⊑ anything are compatible.)
+    for sub, super_ in merged.subject_objects(RDFS.subClassOf):
+        if not (isinstance(sub, URIRef) and isinstance(super_, URIRef)):
+            continue
+        super_identity = merged.value(super_, OPDA.ontoCleanIdentity)
+        if super_identity is None or str(super_identity) != "supplies-IC":
+            continue
+        sub_identity = merged.value(sub, OPDA.ontoCleanIdentity)
+        if sub_identity is not None and str(sub_identity) == "supplies-IC":
+            violations.append(
+                f"OntoClean violation: {sub} (supplies-IC) rdfs:subClassOf "
+                f"{super_} (supplies-IC) — a type supplying its own identity "
+                "criterion must not subclass another own-IC supplier "
+                "(incompatible identity criteria; ADR-0046 ±I limb; "
+                "Guarino & Welty 2009 §3)."
+            )
+
+    return violations
+
+
+# ---------------------------------------------------------------------------
 # Orchestration.
 # ---------------------------------------------------------------------------
 def run_all(ontology_dir: Path) -> list[str]:
-    """Run all eight checks against an emission directory.
+    """Run all nine checks against an emission directory.
 
-    Returns a flat list of violation strings across all eight checks (empty
+    Returns a flat list of violation strings across all nine checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
 
@@ -497,7 +565,10 @@ def run_all(ontology_dir: Path) -> list[str]:
     out.extend(check_derived_provenance(ontology_dir / "derived"))
     out.extend(check_no_advisory_in_classes(reasoned_g))
     out.extend(check_ufocategory_not_instance_keyed(shapes_g))
-    # Check 8 (ADR-0046 seventh CI gate): TBox OntoClean canonical check.
+    # Check 8 (ADR-0046 seventh CI gate): TBox OntoClean canonical check (±R).
     # Runs over class + annotation graph ONLY (editorial pass; never instances).
     out.extend(check_ontoclean_tbox(classes_g, annotations_g))
+    # Check 9 (ADR-0046 ±I limb): TBox OntoClean identity-criterion check.
+    # Same editorial pass (class + annotation graph only; never instances).
+    out.extend(check_ontoclean_identity_tbox(classes_g, annotations_g))
     return out

@@ -545,6 +545,87 @@ def build_ontoclean_tbox_meta_shape(g: Graph) -> None:
     )))
 
 
+def build_ontoclean_identity_tbox_meta_shape(g: Graph) -> None:
+    """Extend `g` in place with the ADR-0046 ±I TBox OntoClean meta-shape.
+
+    The identity-criterion (±I) sibling of the rigidity (±R) meta-shape — the
+    canonical OntoClean IC-compatibility check as a SHACL `sh:Violation`
+    meta-shape (the ODR-0031 R3 tag-guard pattern):
+
+    - **Incompatible-IC subsumption** (the check): a type that **supplies its
+      own** identity criterion (`opda:ontoCleanIdentity "supplies-IC"`) MUST
+      NOT be `rdfs:subClassOf` another type that ALSO supplies its own IC
+      (`"supplies-IC"`). Two independent own-identity suppliers carry
+      *distinct* identity criteria; a subsumption between them would force the
+      subclass to bear two mutually-incompatible own-ICs on the same instances
+      — exactly the OntoClean prohibition (Guarino & Welty 2009 §3: an identity
+      criterion is inherited down a subsumption chain and a subtype cannot
+      supply a second, incompatible one; a sortal cannot subsume a different
+      sortal). The `carries-IC ⊑ supplies-IC` direction (e.g.
+      `Transaction ⊑ Relator`) is VALID — the subclass *inherits* the super's
+      supplied IC rather than asserting a rival one — and `no-own-IC ⊑ *`
+      (Roles/RoleMixins, which borrow identity from a bearer) is likewise
+      compatible. So the sole incompatible pairing is `supplies-IC ⊑
+      supplies-IC`, mirroring the ±R shape's sole `rigid ⊑ anti-rigid`.
+
+    Targeting: `sh:targetSubjectsOf opda:ontoCleanIdentity` — selects TBox
+    class subjects bearing an identity tag. The SPARQL `sh:select` query runs
+    over the TBox + annotation graph (the editorial pass — NEVER the
+    instance-validation union). No `sh:targetClass`/`sh:path` on instance
+    data: this shape validates the *meta-level* (ADR-0046 §change 3;
+    ODR-0031 R3 tag-guard pattern; quarantine intact).
+
+    Carries `opda:metaShapeJustification` (required by the
+    MetaShapeOverShapeGraph meta-shape for sh:Violation elevation — ODR-0017
+    §2a). `dct:source` → ADR-0046. ADR-0046 atomicity rule: this shape MUST
+    ship in the same change as the per-type tags in `ufo_categories.py`.
+    """
+    shape_iri = OPDA_SHAPE["OntoCleanIncompatibleIdentitySubclassing_MetaShape"]
+    sparql_node = BNode()
+    g.add((shape_iri, RDF.type, SH.NodeShape))
+    # sh:targetSubjectsOf targets the TBox subjects bearing the identity tag.
+    # No sh:targetClass (would target instances); no sh:path on instance data.
+    g.add((shape_iri, SH.targetSubjectsOf, OPDA.ontoCleanIdentity))
+    g.add((shape_iri, SH.sparql, sparql_node))
+    g.add((shape_iri, SH.severity, SH.Violation))
+    g.add((shape_iri, SH.message, Literal(
+        "OntoClean violation: a type that supplies its own identity criterion "
+        "(+I, 'supplies-IC') is rdfs:subClassOf another type that also "
+        "supplies its own identity criterion. Two independent own-identity "
+        "suppliers carry distinct, incompatible identity criteria — a "
+        "subsumption between them would force the subclass to bear two rival "
+        "own-ICs (Guarino & Welty 2009 §3 — a sortal cannot subsume a "
+        "different sortal; 'carries-IC ⊑ supplies-IC' is the valid "
+        "IC-inheritance direction). ADR-0046 ±I TBox OntoClean meta-shape.",
+        lang="en",
+    )))
+    g.add((shape_iri, OPDA.metaShapeJustification, Literal(
+        "ADR-0046 §change 3 (±I TBox OntoClean meta-shape; ODR-0031 R3 "
+        "tag-guard pattern): this canonical check 'every supplies-IC (+I) type "
+        "that is nonetheless rdfs:subClassOf another supplies-IC (+I) type' is "
+        "the sole consumer that makes the per-type opda:ontoCleanIdentity tags "
+        "non-decorative (session-042 atomicity rule; addresses Baker's held "
+        "'no-decoration' dissent on the ±I tags). Runs over the TBox + "
+        "annotation graph only; NEVER the instance-validation union. "
+        "sh:Violation because two colliding own-identity criteria on one "
+        "subclass is a structural soundness failure of the OntoClean lattice, "
+        "not an optional advisory.",
+        lang="en",
+    )))
+    g.add((shape_iri, DCTERMS.source, _ADR_0046))
+    # SPARQL select over the TBox (run by the CI gate against class+annotation
+    # graph only — ADR-0046 §change 4; never the instance-validation union).
+    g.add((sparql_node, SH.select, Literal(
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+        "SELECT $this ?superClass WHERE {\n"
+        "  $this opda:ontoCleanIdentity \"supplies-IC\" .\n"
+        "  $this rdfs:subClassOf ?superClass .\n"
+        "  ?superClass opda:ontoCleanIdentity \"supplies-IC\" .\n"
+        "}"
+    )))
+
+
 def build_foundation_meta_shapes(g: Graph) -> None:
     """Extend `g` in place with the five foundation-level meta-shapes
     + the cross-cutting SHACL-AF rules (DeprecationChain, PII-without-DPV).
@@ -758,10 +839,12 @@ def build_foundation_meta_shapes(g: Graph) -> None:
         ),
     )
 
-    # --- ADR-0046: TBox OntoClean meta-shape (the seventh CI gate's shape) -
-    # Atomic with the per-type tags in ufo_categories.py: ships in the same
-    # change or neither ships (session-042 atomicity rule / ADR-0046 §Atomic).
+    # --- ADR-0046: TBox OntoClean meta-shapes (the seventh + eighth CI gates'
+    # shapes) — the ±R rigidity limb and the ±I identity limb. Both atomic with
+    # the per-type tags in ufo_categories.py: they ship in the same change or
+    # neither ships (session-042 atomicity rule / ADR-0046 §Atomic).
     build_ontoclean_tbox_meta_shape(g)
+    build_ontoclean_identity_tbox_meta_shape(g)
 
 
 # --- Per-module shape builders -------------------------------------------
