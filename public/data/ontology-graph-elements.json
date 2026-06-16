@@ -309,7 +309,7 @@
         "type": "class",
         "ufoCategory": "Relator",
         "module": "agent",
-        "hasShape": false,
+        "hasShape": true,
         "layer": "owl"
       }
     },

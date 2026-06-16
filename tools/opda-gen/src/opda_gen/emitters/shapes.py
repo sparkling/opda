@@ -971,6 +971,28 @@ def build_agent_shapes() -> Graph:
         _ODR_0024_R6,
     )
 
+    # --- Relator-spine mediation: a Proprietorship mediates ≥2 Roles -----
+    # Council session-045 Q2 / 046: the Relator's existential mediation is a
+    # genuine relation (Guizzardi 2005 Ch.4 §4.4 — a Relator binds ≥2 bearers),
+    # asserted design-time + enforced closed-world here, NEVER reasoned
+    # (ODR-0029/0031). Satisfied by proprietorship-relator-multi-proprietor.ttl
+    # (one Proprietorship mediating two Proprietor roles).
+    _med_p = BNode()
+    g.add((OPDA_SHAPE.ProprietorshipMediationShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.ProprietorshipMediationShape, SH.targetClass, OPDA.Proprietorship))
+    g.add((OPDA_SHAPE.ProprietorshipMediationShape, SH.property, _med_p))
+    g.add((OPDA_SHAPE.ProprietorshipMediationShape, DCTERMS.source, _ODR_0006_Q3))
+    g.add((_med_p, SH.path, OPDA.mediates))
+    g.add((_med_p, SH.minCount, Literal(2)))
+    g.add((_med_p, SH.severity, SH.Violation))
+    g.add((_med_p, SH.message, Literal(
+        "A Proprietorship Relator MUST mediate ≥2 Proprietor roles "
+        "(opda:mediates, sh:minCount 2) — a relator that binds fewer than two "
+        "bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). "
+        "Design-time + SHACL-validated, never reasoned.",
+        lang="en",
+    )))
+
     return g
 
 

@@ -56,6 +56,12 @@
     sh:property _:be03e609b30d9 ;
     sh:targetClass opda:Person .
 
+<https://opda.org.uk/pdtf/shape/ProprietorshipMediationShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
+    sh:property _:b107f8e173fa2 ;
+    sh:targetClass opda:Proprietorship .
+
 <https://opda.org.uk/pdtf/shape/SpecialCategoryPIIWithoutLawfulBasisShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q3> ;
@@ -77,6 +83,12 @@ _:b0fb940433a06
     sh:maxCount "1"^^xsd:integer ;
     sh:message "Organisation identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."@en ;
     sh:path opda:hasAssertedCapacity ;
+    sh:severity sh:Violation .
+
+_:b107f8e173fa2
+    sh:message "A Proprietorship Relator MUST mediate ≥2 Proprietor roles (opda:mediates, sh:minCount 2) — a relator that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned."@en ;
+    sh:minCount "2"^^xsd:integer ;
+    sh:path opda:mediates ;
     sh:severity sh:Violation .
 
 _:b52342e4c789f

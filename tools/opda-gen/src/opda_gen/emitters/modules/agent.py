@@ -63,6 +63,8 @@ CLASSES = (
 
 OBJECT_PROPERTIES = (
     OPDA.hasEvidencedAuthority,
+    OPDA.mediates,
+    OPDA.founds,
 )
 
 DATATYPE_PROPERTIES = (
@@ -294,6 +296,47 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasEvidencedAuthority, DCTERMS.source, _ODR_0006_Q4))
+
+    # --- ObjectProperty: opda:mediates (ODR-0006 §Q3 — Relator spine) ----
+    # The Relator's existential mediation of the Roles it founds (council
+    # session-045 Q2 / session-046): asserted design-time, SHACL-validated
+    # (opda:ProprietorshipMediationShape — sh:minCount 2; a Relator binds ≥2
+    # bearers, Guizzardi 2005 Ch.4 §4.4), NEVER reasoned (ODR-0029/0031 — the
+    # UFO layer is inert at load). Domain/range left open (the Relator spine
+    # varies by Relator; the SHACL shape carries the cardinality). Realises
+    # ODR-0006 §Q3, previously specified-but-unemitted. Categorially distinct
+    # from rdfs:subClassOf — relator→role, not role-under-Kind.
+    g.add((OPDA.mediates, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.mediates, RDFS.label, Literal("mediates", lang="en")))
+    g.add((OPDA.mediates, RDFS.comment, Literal(
+        "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) "
+        "existentially mediates the ≥2 Role instances it founds (e.g. the "
+        "opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS "
+        "that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); "
+        "opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. "
+        "Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031).",
+        lang="en",
+    )))
+    g.add((OPDA.mediates, DCTERMS.source, _ODR_0006_Q3))
+
+    # --- ObjectProperty: opda:founds (ODR-0006 §Q3 — Relator spine) ------
+    # Relator → Role founding edge: an opda:Transaction relator founds the
+    # opda:Seller / opda:Buyer RoleMixins; an opda:Proprietorship founds its
+    # opda:Proprietor roles. Per UFO anti-rigidity every Role is externally
+    # founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3 Role
+    # layer). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator
+    # spine only — not a general roleOf.
+    g.add((OPDA.founds, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.founds, RDFS.label, Literal("founds", lang="en")))
+    g.add((OPDA.founds, RDFS.comment, Literal(
+        "Relator → Role founding. A Transaction relator founds the Seller and "
+        "Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per "
+        "UFO anti-rigidity every Role is externally founded by its Relator "
+        "(Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned "
+        "(ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf.",
+        lang="en",
+    )))
+    g.add((OPDA.founds, DCTERMS.source, _ODR_0006_Q3))
 
     # ==== G11 expansion (ADR-0013) ======================================
     # --- DatatypeProperty: opda:ownerType (BASPI5 legalOwners[].ownerType) -
