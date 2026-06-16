@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-03
 tags: [strategy, direction, linked-data, ontology, pdtf, model-driven, governance, rbac, ai, mcp, standards-development]
 supersedes: []
@@ -194,3 +194,7 @@ A comprehensive supporting knowledgebase is maintained at `docs/linked-data-init
 * **Index note:** `docs/adr/README.md`'s index table is only maintained through ADR-0005, so
   this ADR was filed without a misleading partial table edit; the full index can be
   regenerated separately.
+
+## Amendments
+
+- **2026-06-16 — RATIFIED (operator).** Status `proposed` → `accepted`. The operator ratifies the strategic direction — the linked-data model as the foundation and direction of PDTF standards development; the substrate-now (RBAC) / adopted-but-deferred (ODRL policies) dispositions in §Decision stand.

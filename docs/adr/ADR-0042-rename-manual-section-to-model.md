@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-14
 tags: [information-architecture, routing, rename, manual, model, astro]
 supersedes: []
@@ -58,3 +58,7 @@ Chosen option: "Option A — URL-only rename", because it fixes the user-facing 
 * Parent IA decision: [ADR-0041 §Hosting](./ADR-0041-ontology-reference-document-generation.md) (the three-section IA; this rename is its M5 split).
 * Slug taxonomy: [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-taxonomy.md).
 * Manual content-collection wiring: [ADR-0016](./ADR-0016-manual-content-collection-wiring.md) (the collection this rename deliberately leaves internal).
+
+## Amendments
+
+- **2026-06-16 — RATIFIED (operator).** Status `proposed` → `accepted`. The `/manual` → `/model` URL rename is implemented and live (`src/pages/model`).

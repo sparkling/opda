@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-06-14
 tags: [documentation, ontology, generator, ci-gate, multi-page, bake-off, ontology-section, council-038]
 supersedes: []
@@ -143,3 +143,5 @@ Closes every remaining open finding from the adversarial review, folding in Coun
 * **session-038 citation RE-FRAMED.** §More Information now states session-038 ratified the *original* single-page hybrid and the plan is substantially amended since — read with the Amendments.
 
 All adversarial-review findings (B1–B3, M1–M6, hygiene) are now dispositioned.
+
+- **2026-06-16 — RATIFIED (operator).** Status `proposed` → `accepted`. The hybrid generated-reference-in-hand-authored-shell + the consuming doc-drift CI gate are implemented and live (`scripts/gen-ontology-custom.mjs` + `scripts/ci-ontology-doc-drift.mjs`, the `make ci-ontology-doc` gate); Peroni's re-open trigger (generated body + gate that consumes it) is satisfied.
