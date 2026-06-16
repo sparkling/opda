@@ -181,7 +181,27 @@ async function main() {
       OPTIONAL { GRAPH ?pg { ?s skos:prefLabel ?pref } }
       OPTIONAL { GRAPH ?dg { ?s skos:definition ?def } }
       OPTIONAL { GRAPH ?ug { ?s opda:ufoCategory ?ufo } }
-      OPTIONAL { GRAPH ?tg { ?s skos:hasTopConcept ?top } }
+      # Top concepts assert via EITHER direction: the corpus uses the inverse
+      # skos:topConceptOf (SKOS Reference S8: owl:inverseOf hasTopConcept; S7:
+      # rdfs:subPropertyOf inScheme), which a hasTopConcept-only query silently
+      # dropped — every scheme root was lost (council session-045/046).
+      OPTIONAL {
+        { GRAPH ?tg { ?s skos:hasTopConcept ?top } }
+        UNION
+        { GRAPH ?tg2 { ?top skos:topConceptOf ?s } }
+      }
+    }`);
+
+  // 6b. sh:in IRI members per property-path -------------------------------
+  // Recovers the class→scheme binding for IRI-valued coded properties
+  // (currency/peril) via member skos:inScheme scheme. String-literal sh:in is
+  // excluded (isIRI) — its binding is doctrine (ODR-0011 §7a), not an asserted
+  // triple, and the prefLabel join is non-injective (council session-046). A
+  // pure asserted-triple join: sh:in-member(IRI) → skos:inScheme → scheme.
+  const shInRows = await select(`
+    SELECT DISTINCT ?path ?member WHERE {
+      ${GRAPH('?shape a sh:NodeShape ; sh:property ?ps . ?ps sh:path ?path ; sh:in ?list . ?list rdf:rest*/rdf:first ?member')}
+      FILTER(isIRI(?member) && STRSTARTS(STR(?member), "${BASE}"))
     }`);
 
   // 7. dct:source provenance for every term --------------------------------
@@ -240,6 +260,17 @@ async function main() {
     for (const s of c.schemes) schemes.get(s)?.concepts.add(c.uri);
   }
 
+  // Constrained-property path → scheme(s): a coded property whose SHACL sh:in
+  // lists concept IRIs draws values from those concepts' scheme(s) (the faithful
+  // class→scheme recovery for the IRI cases; council session-046).
+  const schemesByPath = new Map();
+  for (const r of shInRows) {
+    const memberSchemes = concepts.get(r.member)?.schemes;
+    if (!memberSchemes || memberSchemes.size === 0) continue;
+    if (!schemesByPath.has(r.path)) schemesByPath.set(r.path, new Set());
+    for (const sc of memberSchemes) schemesByPath.get(r.path).add(sc);
+  }
+
   const classSet = new Set(classRows.map((r) => r.cls));
   const schemeSet = new Set([...schemes.keys()]);
   const refLabel = (uri) =>
@@ -270,10 +301,15 @@ async function main() {
     const attributes = [...dataProps.values()].filter((p) => p.domain.has(uri))
       .map((p) => ({ localName: p.localName, id: p.id, label: p.label,
         type: [...p.range].map(local)[0] || null, description: p.comment }));
-    // SKOS schemes referenced by this class's coded (scheme-ranged) properties.
+    // SKOS schemes this class's coded properties draw values from — recovered
+    // two ways: a direct scheme-typed range (rare), and the real binding, a
+    // property whose SHACL sh:in lists concept IRIs that skos:inScheme a scheme
+    // (currency/peril). rdfs:range alone never matched — that was the bug.
     const usesSchemes = new Set();
-    for (const p of allProps) if (p.domain.has(uri)) for (const rg of p.range)
-      if (schemeSet.has(rg)) usesSchemes.add(rg);
+    for (const p of allProps) if (p.domain.has(uri)) {
+      for (const rg of p.range) if (schemeSet.has(rg)) usesSchemes.add(rg);
+      for (const sc of (schemesByPath.get(p.uri) || [])) usesSchemes.add(sc);
+    }
 
     classes.set(uri, {
       uri, id: id(uri), localName: local(uri), label: r.label || local(uri),

@@ -1139,7 +1139,12 @@
           "localName": "MonetaryAmountShape"
         }
       ],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/CurrencyScheme",
+          "localName": "CurrencyScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0024/section-Rules-R3"
       ]
@@ -2370,7 +2375,12 @@
           "localName": "RiskAssessmentShape"
         }
       ],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/PerilScheme",
+          "localName": "PerilScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0008d/section-Rule-1"
       ]
@@ -20649,7 +20659,32 @@
       "definition": "The six industry bounded contexts of the UK PDTF, each owning a SHACL overlay profile (ODR-0010). Domain-term membership in a context is a derived, on-demand query (opda:servesContext per ODR-0020), never hand-authored except per ODR-0019 Rule 8.",
       "ufoCategory": "",
       "module": "contexts",
-      "topConcepts": [],
+      "topConcepts": [
+        {
+          "id": "ConveyancingContext",
+          "localName": "ConveyancingContext"
+        },
+        {
+          "id": "EstateAgencyContext",
+          "localName": "EstateAgencyContext"
+        },
+        {
+          "id": "MortgageLendingContext",
+          "localName": "MortgageLendingContext"
+        },
+        {
+          "id": "PropertyDataServicesContext",
+          "localName": "PropertyDataServicesContext"
+        },
+        {
+          "id": "PropertyTechnologyContext",
+          "localName": "PropertyTechnologyContext"
+        },
+        {
+          "id": "SurveyingContext",
+          "localName": "SurveyingContext"
+        }
+      ],
       "concepts": [
         {
           "id": "ConveyancingContext",
@@ -21097,7 +21132,20 @@
       "definition": "The currency of an opda:MonetaryAmount — an ISO-4217 alpha-3 currency code. Seeded with the currencies occurring in UK property-pack data (GBP / EUR / USD); extensible to the full ISO-4217 code space as data requires.",
       "ufoCategory": "",
       "module": "vocabularies",
-      "topConcepts": [],
+      "topConcepts": [
+        {
+          "id": "scheme/currency/EUR",
+          "localName": "EUR"
+        },
+        {
+          "id": "scheme/currency/GBP",
+          "localName": "GBP"
+        },
+        {
+          "id": "scheme/currency/USD",
+          "localName": "USD"
+        }
+      ],
       "concepts": [
         {
           "id": "scheme/currency/EUR",
@@ -21909,7 +21957,56 @@
       "definition": "The 12 environmental / local-authority search perils a property's authority-retrieved risk assessments (opda:RiskAssessment) are individuated by. Each peril is a dereferenceable concept governed by a named data authority (ODR-0008d Rule 2); the peril is NEVER an opaque string and NEVER an rdfs:subClassOf hierarchy (a delimited value-space is a scheme, not a class tree).",
       "ufoCategory": "",
       "module": "vocabularies",
-      "topConcepts": [],
+      "topConcepts": [
+        {
+          "id": "scheme/peril/Climate",
+          "localName": "Climate"
+        },
+        {
+          "id": "scheme/peril/CoalMining",
+          "localName": "CoalMining"
+        },
+        {
+          "id": "scheme/peril/CoastalErosion",
+          "localName": "CoastalErosion"
+        },
+        {
+          "id": "scheme/peril/ContaminatedLand",
+          "localName": "ContaminatedLand"
+        },
+        {
+          "id": "scheme/peril/Energy",
+          "localName": "Energy"
+        },
+        {
+          "id": "scheme/peril/Flooding",
+          "localName": "Flooding"
+        },
+        {
+          "id": "scheme/peril/GroundStability",
+          "localName": "GroundStability"
+        },
+        {
+          "id": "scheme/peril/Infrastructure",
+          "localName": "Infrastructure"
+        },
+        {
+          "id": "scheme/peril/NonCoalMining",
+          "localName": "NonCoalMining"
+        },
+        {
+          "id": "scheme/peril/Planning",
+          "localName": "Planning"
+        },
+        {
+          "id": "scheme/peril/Radon",
+          "localName": "Radon"
+        },
+        {
+          "id": "scheme/peril/Transportation",
+          "localName": "Transportation"
+        }
+      ],
       "concepts": [
         {
           "id": "scheme/peril/Climate",
