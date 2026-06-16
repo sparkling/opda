@@ -74,10 +74,11 @@
           })
           .linkColor(function (l) {
             if (highlightLinks && !highlightLinks[l.__id]) return 'rgba(127,127,127,0.04)';
-            return th.line;
+            return l.kind === 'constrainedByScheme' ? S.COLORS.derived : th.line;
           })
           .linkWidth(1)
-          .linkDirectionalArrowLength(function (l) { return l.kind === 'objectProperty' ? 3 : 0; })
+          .linkLineDash(function (l) { return l.kind === 'constrainedByScheme' ? [4, 2] : null; })
+          .linkDirectionalArrowLength(function (l) { return (l.kind === 'objectProperty' || l.kind === 'constrainedByScheme') ? 3 : 0; })
           .linkDirectionalArrowRelPos(1)
           .onNodeClick(function (n) { focus(n); opts.onSelect(n); })
           .onBackgroundClick(function () { unfocus(); opts.onSelect(null); });

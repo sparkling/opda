@@ -54,7 +54,11 @@
         };
       }
       function visEdge(d) {
-        return { id: d.id, from: d.source, to: d.target, arrows: 'to' };
+        var e = { id: d.id, from: d.source, to: d.target, arrows: 'to' };
+        // Derived constrained-by bridge: dashed + distinct colour, never identical
+        // to an asserted object property (council guardrail).
+        if (d.kind === 'constrainedByScheme') { e.dashes = true; e.color = { color: S.COLORS.derived }; }
+        return e;
       }
 
       function build() {

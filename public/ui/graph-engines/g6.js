@@ -45,8 +45,10 @@
   }
 
   function edgeStyle(theme) {
+    var isCbs = function (d) { return d && d.data && d.data.kind === 'constrainedByScheme'; };
     return {
-      stroke: theme.line,
+      stroke: function (d) { return isCbs(d) ? S.COLORS.derived : theme.line; },
+      lineDash: function (d) { return isCbs(d) ? [4, 2] : false; },
       lineWidth: 1,
       strokeOpacity: 0.55,
       endArrow: true,

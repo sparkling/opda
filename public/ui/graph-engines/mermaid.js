@@ -77,7 +77,13 @@
   // Build the Mermaid `flowchart LR` source from the OWL backbone view, honouring
   // the facet filter. Returns { src, nClasses, nEdges }.
   function buildSource(data, facets) {
-    var view = S.viewData(data, { showSkos: false, facets: facets }); // OWL backbone
+    var raw = S.viewData(data, { showSkos: false, facets: facets }); // OWL backbone
+    // Mermaid is the OWL class-backbone diagram — exclude the derived scheme
+    // bridges + their scheme nodes (the SKOS register; the interactive engines show them).
+    var view = {
+      nodes: raw.nodes.filter(function (d) { return d.type !== 'scheme'; }),
+      edges: raw.edges.filter(function (e) { return e.kind !== 'constrainedByScheme'; }),
+    };
     var seen = {};            // safeId -> modelId (collision guard)
     var idMap = {};           // modelId -> safeId
 

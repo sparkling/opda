@@ -54,6 +54,11 @@
           'text-rotation': 'autorotate', 'text-background-color': t.surface,
           'text-background-opacity': 0.85, 'text-background-padding': 1 } },
       { selector: 'edge[kind="inScheme"]', style: { 'line-style': 'dashed', 'opacity': 0.3 } },
+      { selector: 'edge[kind="constrainedByScheme"]', style: {
+          'line-style': 'dashed', 'line-color': c.derived, 'target-arrow-color': c.derived,
+          'label': 'data(label)', 'font-size': 8, 'color': c.derived, 'opacity': 0.9,
+          'text-rotation': 'autorotate', 'text-background-color': t.surface,
+          'text-background-opacity': 0.85, 'text-background-padding': 1 } },
       { selector: '.faded', style: { 'opacity': 0.08, 'text-opacity': 0.08 } },
       { selector: '.highlight', style: { 'opacity': 1, 'text-opacity': 1, 'z-index': 99 } },
       { selector: 'node:selected', style: { 'border-width': 4, 'border-color': t.brand } },

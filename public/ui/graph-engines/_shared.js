@@ -47,6 +47,7 @@
     scheme:   '#6E56CF',      // skos:ConceptScheme
     concept:  '#9E8CFC',      // skos:Concept
     external: '#9E9E9E',      // non-opda object-property target
+    derived:  '#009E73',      // derived "constrained-by" bridge — dashed, never an asserted edge
   };
 
   // Resolve a CSS custom property to a concrete rgb() string — a hidden probe
@@ -99,8 +100,13 @@
     var nodes = data.nodes.map(function (n) { return n.data; });
     var edges = data.edges.map(function (e) { return e.data; });
     if (!showSkos) {
-      nodes = nodes.filter(function (d) { return !isSkosNode(d); });
-      edges = edges.filter(function (d) { return d.kind === 'objectProperty'; });
+      // OWL T-Box default + the derived scheme bridges (council 045 Q1/Q3): keep
+      // classes/externals, objectProperty + constrainedByScheme edges, and the few
+      // scheme nodes those bridges target — but not the rest of the SKOS layer.
+      var bridgeTargets = {};
+      edges.forEach(function (d) { if (d.kind === 'constrainedByScheme') bridgeTargets[d.target] = true; });
+      nodes = nodes.filter(function (d) { return !isSkosNode(d) || bridgeTargets[d.id]; });
+      edges = edges.filter(function (d) { return d.kind === 'objectProperty' || d.kind === 'constrainedByScheme'; });
     }
     if (facets) {
       nodes = nodes.filter(function (d) {
@@ -110,12 +116,12 @@
     var ids = {};
     nodes.forEach(function (d) { ids[d.id] = true; });
     edges = edges.filter(function (d) { return ids[d.source] && ids[d.target]; });
-    // Drop external targets left with no live edge (their connecting class was
-    // filtered out) — they'd otherwise float as context-free diamonds. A no-op
-    // in the unfiltered view; only bites once a facet filter removes a connector.
+    // Drop external/scheme targets left with no live edge (their connecting class
+    // was facet-filtered out, or the bridge's class is hidden) — they'd otherwise
+    // float context-free. A no-op in the unfiltered view; only bites under a filter.
     var deg = {};
     edges.forEach(function (d) { deg[d.source] = deg[d.target] = true; });
-    nodes = nodes.filter(function (d) { return d.type !== 'external' || deg[d.id]; });
+    nodes = nodes.filter(function (d) { return (d.type !== 'external' && d.type !== 'scheme') || deg[d.id]; });
     return { nodes: nodes, edges: edges };
   }
 

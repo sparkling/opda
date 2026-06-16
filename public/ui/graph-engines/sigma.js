@@ -62,7 +62,9 @@
         });
         view.edges.forEach(function (e) {
           if (graph.hasNode(e.source) && graph.hasNode(e.target) && !graph.hasEdge(e.id)) {
-            graph.addEdgeWithKey(e.id, e.source, e.target, { type: 'arrow' });
+            var attrs = { type: 'arrow' };
+            if (e.kind === 'constrainedByScheme') attrs.color = S.COLORS.derived; // distinct, not the asserted-edge colour
+            graph.addEdgeWithKey(e.id, e.source, e.target, attrs);
           }
         });
         try {
@@ -96,7 +98,7 @@
             return Object.assign({}, attrs, { hidden: true });
           }
         }
-        return Object.assign({}, attrs, { color: t.line });
+        return Object.assign({}, attrs, { color: attrs.color || t.line });
       }
 
       function render() {

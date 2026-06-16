@@ -18,7 +18,7 @@ const counts = model.counts;
 
 // Node fill encodes node TYPE (see _shared.js COLORS); the UFO facet is a filter,
 // not a colour. Bump clientV when the engine/orchestrator JS changes (cache-bust).
-const clientV = '5';
+const clientV = '6';
 ---
 <Layout
   title="Ontology graph — interactive bake-off"
@@ -82,7 +82,11 @@ const clientV = '5';
             <li><span class="og-swatch og-swatch--external"></span>External target</li>
             <li><span class="og-swatch og-swatch--shape"></span>Has SHACL shape</li>
           </ul>
-          <p class="og-legend-note">Colour shows node <strong>type</strong>; use <strong>Filter by facet</strong> above to narrow classes by <code>opda:ufoCategory</code>.</p>
+          <h4>Edges</h4>
+          <ul class="og-legend--shapes">
+            <li><span class="og-swatch og-swatch--bridge"></span>constrained-by · derived (dashed)</li>
+          </ul>
+          <p class="og-legend-note">Colour shows node <strong>type</strong> (the <code>opda:layer</code> facet: owl / skos / external); use <strong>Filter by facet</strong> above to narrow classes by <code>opda:ufoCategory</code>. The dashed green <strong>constrained-by</strong> bridge is <em>derived</em> from a SHACL <code>sh:in</code>→<code>skos:inScheme</code> join (not an asserted property). The SKOS layer is best browsed as a flat list — <a href="/ontology/vocabularies">Vocabularies</a>.</p>
         </div>
       </aside>
     </div>
@@ -167,6 +171,7 @@ const clientV = '5';
     .og-swatch--concept { background: #9E8CFC; }
     .og-swatch--external { background: #9E9E9E; transform: rotate(45deg); border-radius: 2px; }
     .og-swatch--shape { background: transparent; border: 3px double var(--color-brand-500); }
+    .og-swatch--bridge { background: transparent; border: 0; border-top: 2px dashed #009E73; border-radius: 0; height: 0; width: 16px; align-self: center; }
     .og-legend-note { font: 400 var(--text-xs)/1.4 var(--font-sans); color: var(--color-text-muted); margin: var(--space-3) 0 0; }
     .og-noscript, .og-info a { font-size: var(--text-sm); }
     @media (max-width: 56rem) { .og-stage { grid-template-columns: 1fr; } .og-canvas { height: 60vh; } }

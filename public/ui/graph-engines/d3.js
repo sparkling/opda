@@ -72,9 +72,10 @@
           .alphaDecay(0.045).velocityDecay(0.4);
 
         link = g.append('g').attr('stroke-opacity', 0.5).selectAll('line').data(links).join('line')
-          .attr('stroke', th.line).attr('stroke-width', 1)
-          .attr('stroke-dasharray', function (d) { return d.kind === 'inScheme' ? '3,3' : null; })
-          .attr('marker-end', function (d) { return d.kind === 'objectProperty' ? 'url(#d3-arrow)' : null; });
+          .attr('stroke', function (d) { return d.kind === 'constrainedByScheme' ? S.COLORS.derived : th.line; })
+          .attr('stroke-width', 1)
+          .attr('stroke-dasharray', function (d) { return (d.kind === 'inScheme' || d.kind === 'constrainedByScheme') ? '3,3' : null; })
+          .attr('marker-end', function (d) { return (d.kind === 'objectProperty' || d.kind === 'constrainedByScheme') ? 'url(#d3-arrow)' : null; });
 
         node = g.append('g').selectAll('circle').data(nodes).join('circle')
           .attr('r', function (d) { return RADIUS[d.type]; })

@@ -101,6 +101,8 @@
       var skos = (e.kind === 'inScheme' || e.kind === 'broader');
       var attrs = 'label=' + q(e.label || '');
       if (skos) attrs += ', style=dashed';
+      // derived constrained-by bridge → dashed + distinct colour (never an asserted edge).
+      if (e.kind === 'constrainedByScheme') attrs += ', style=dashed, color=' + q(S.COLORS.derived) + ', fontcolor=' + q(S.COLORS.derived);
       lines.push('  ' + q(e.source) + ' -> ' + q(e.target) + ' [' + attrs + '];');
     });
 
