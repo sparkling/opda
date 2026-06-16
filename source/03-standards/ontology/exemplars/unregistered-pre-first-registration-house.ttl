@@ -35,7 +35,7 @@ opda-x:property
 opda-x:estate
     a opda:LegalEstate ;
     rdfs:label "Common-law freehold of 7 Old Lane — held since pre-1990 (outside compulsory-registration triggers until sale)" ;
-    opda:tenureKind "freehold" ;
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> ;
     opda:registrationStatus "unregistered" .
 
 # Deliberately NO opda:RegisteredTitle individual — registration not yet completed.

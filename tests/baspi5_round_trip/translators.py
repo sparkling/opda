@@ -32,6 +32,36 @@ from rdflib.namespace import RDF, XSD
 # --- Namespaces -----------------------------------------------------------
 OPDA = Namespace("https://opda.org.uk/pdtf/")
 VCARD = Namespace("http://www.w3.org/2006/vcard/ns#")
+OPDA_SCHEME = Namespace("https://opda.org.uk/pdtf/scheme/")
+
+
+# --- Concept IRI helpers (Council-046 Q3b) --------------------------------
+def _concept_iri(slug_base: str, notation: str) -> URIRef:
+    """Return the concept IRI for a scheme member by slug_base and notation.
+
+    Uses the same slugify logic as vocabularies.Member.uri_slug() so the
+    translated IRI matches the emitted SKOS concept exactly.
+    """
+    from opda_gen.emitters.vocabularies import _slugify_for_uri
+    return URIRef(f"https://opda.org.uk/pdtf/scheme/{slug_base}/{_slugify_for_uri(notation)}")
+
+
+def _notation_from_concept_iri(slug_base: str, concept_iri: URIRef) -> str:
+    """Recover the skos:notation string for a concept IRI.
+
+    Looks up the IRI in the scheme registry so the exact notation (which
+    may differ from the slug — e.g. "Seller's Conveyancer" vs
+    "Seller-s-Conveyancer") is returned.
+    """
+    from opda_gen.emitters.vocabularies import _all_schemes
+    target = str(concept_iri)
+    for scheme in _all_schemes():
+        if scheme.slug_base == slug_base:
+            for member in scheme.members:
+                if str(scheme.member_uri(member)) == target:
+                    return member.notation
+    # Fallback: extract slug from URI path (good enough for simple notations)
+    return target.rsplit("/", 1)[-1]
 
 
 def _data_ns(tx_id: str) -> Namespace:
@@ -92,9 +122,11 @@ def json_to_rdf(
     # --- buildInformation.building.{propertyType, builtForm} --------------
     build = property_pack.get("buildInformation", {}).get("building", {})
     if "propertyType" in build:
-        g.add((prop_uri, OPDA.propertyType, Literal(build["propertyType"])))
+        g.add((prop_uri, OPDA.propertyType,
+               _concept_iri("propertyType", build["propertyType"])))
     if "builtForm" in build:
-        g.add((prop_uri, OPDA.builtForm, Literal(build["builtForm"])))
+        g.add((prop_uri, OPDA.builtForm,
+               _concept_iri("builtForm", build["builtForm"])))
 
     # --- energyEfficiency.currentEnergyRating + EPCCertificate ------------
     # opda:currentEnergyRating has rdfs:domain opda:Property, so it is asserted
@@ -109,7 +141,7 @@ def json_to_rdf(
         g.add((epc_uri, RDF.type, OPDA.EPCCertificate))
         g.add((prop_uri, OPDA.hasEPCCertificate, epc_uri))
         g.add((prop_uri, OPDA.currentEnergyRating,
-               Literal(energy["currentEnergyRating"])))
+               _concept_iri("currentEnergyRating", energy["currentEnergyRating"])))
 
     # --- LegalEstate (ownershipsToBeTransferred[]) ------------------------
     ownerships = property_pack.get("ownership", {}).get(
@@ -120,7 +152,7 @@ def json_to_rdf(
         g.add((estate_uri, RDF.type, OPDA.LegalEstate))
         if "ownershipType" in ownership:
             g.add((estate_uri, OPDA.ownershipType,
-                   Literal(ownership["ownershipType"])))
+                   _concept_iri("ownershipType", ownership["ownershipType"])))
         if "titleNumber" in ownership:
             title_uri = URIRef(ns[f"title-{idx}"])
             g.add((title_uri, RDF.type, OPDA.RegisteredTitle))
@@ -149,7 +181,7 @@ def json_to_rdf(
             capacity = p.get("sellersCapacity", {}).get("capacity")
             if capacity:
                 g.add((seller_uri, OPDA.hasAssertedCapacity,
-                       Literal(capacity)))
+                       _concept_iri("sellersCapacity", capacity)))
         elif role == "Buyer":
             buyer_uri = URIRef(ns[f"buyer-{idx}"])
             g.add((buyer_uri, RDF.type, OPDA.Buyer))
@@ -218,15 +250,19 @@ def rdf_to_baspi5_json(
     # buildInformation.building.
     build: dict[str, Any] = {}
     for v in rdf_graph.objects(prop_uri, OPDA.propertyType):
-        build["propertyType"] = str(v)
+        build["propertyType"] = _notation_from_concept_iri("propertyType", URIRef(str(v)))
     for v in rdf_graph.objects(prop_uri, OPDA.builtForm):
-        build["builtForm"] = str(v)
+        build["builtForm"] = _notation_from_concept_iri("builtForm", URIRef(str(v)))
     if build:
         property_pack["buildInformation"] = {"building": build}
 
     # energyEfficiency.currentEnergyRating.
     for v in rdf_graph.objects(prop_uri, OPDA.currentEnergyRating):
-        property_pack["energyEfficiency"] = {"currentEnergyRating": str(v)}
+        property_pack["energyEfficiency"] = {
+            "currentEnergyRating": _notation_from_concept_iri(
+                "currentEnergyRating", URIRef(str(v))
+            )
+        }
         break
 
     # ownership.ownershipsToBeTransferred[].
@@ -238,7 +274,9 @@ def rdf_to_baspi5_json(
             break
         e: dict[str, Any] = {}
         for v in rdf_graph.objects(estate_uri, OPDA.ownershipType):
-            e["ownershipType"] = str(v)
+            e["ownershipType"] = _notation_from_concept_iri(
+                "ownershipType", URIRef(str(v))
+            )
         title_uri = URIRef(ns[f"title-{idx}"])
         for v in rdf_graph.objects(title_uri, OPDA.titleNumber):
             e["titleNumber"] = str(v)
@@ -267,7 +305,9 @@ def rdf_to_baspi5_json(
         for v in rdf_graph.objects(seller_uri, VCARD.email):
             p["email"] = str(v)
         for v in rdf_graph.objects(seller_uri, OPDA.hasAssertedCapacity):
-            p["sellersCapacity"] = {"capacity": str(v)}
+            p["sellersCapacity"] = {
+                "capacity": _notation_from_concept_iri("sellersCapacity", URIRef(str(v)))
+            }
         participants.append(p)
     for buyer_uri in sorted(rdf_graph.subjects(RDF.type, OPDA.Buyer),
                             key=str):

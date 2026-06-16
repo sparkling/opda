@@ -35,7 +35,7 @@ opda-x:property
 opda-x:estate-leasehold
     a opda:LegalEstate ;
     rdfs:label "Leasehold estate in Flat 12 Cedar House (since 2007; extended 2024)" ;
-    opda:tenureKind "leasehold" ;
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Leasehold> ;
     opda:leaseTerm opda-x:lease-term-current .
 
 # The lease term as an OWL-Time interval (Q5)

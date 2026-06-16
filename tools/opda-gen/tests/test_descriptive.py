@@ -55,13 +55,17 @@ def test_disclosure_detail_is_flat_no_subproperty() -> None:
     # risk-assessment / artefact-reference datatype properties (Family D), all
     # flat per §Q6a.
     dtps = set(g.subjects(RDF.type, OWL.DatatypeProperty))
+    # Council-046 Q3b: riskIndicator and inclusionStatus are now
+    # ObjectProperty/skos:Concept — removed from this DatatypeProperty check.
     assert {
         OPDA.disclosureDetail,
-        OPDA.riskIndicator,
         OPDA.actionAlertRating,
-        OPDA.inclusionStatus,
         OPDA.price,
     } <= dtps
+    # Confirm the flipped properties are now ObjectProperty.
+    ops = set(g.subjects(RDF.type, OWL.ObjectProperty))
+    assert OPDA.riskIndicator in ops
+    assert OPDA.inclusionStatus in ops
     # §Q6a flatness: NO descriptive datatype property is a subproperty.
     for dtp in dtps:
         assert (dtp, RDFS.subPropertyOf, None) not in g
@@ -283,19 +287,31 @@ def test_r5_followon_walk_emitted() -> None:
 
     from opda_gen.emitters import shapes
 
+    from rdflib.namespace import SKOS
+
     g = descriptive.build_graph()
-    cases = {
-        OPDA.constructionType: (OPDA.Property, XSD.string),
-        OPDA.transportType: (OPDA.NearbyFacility, XSD.string),
-        OPDA.ofstedRating: (OPDA.NearbyFacility, XSD.string),
-        OPDA.marketingTenure: (OPDA.Property, XSD.string),
+    # Council-046 Q3b: the 6 enum properties are now ObjectProperty/skos:Concept.
+    enum_cases = {
+        OPDA.constructionType: OPDA.Property,
+        OPDA.transportType: OPDA.NearbyFacility,
+        OPDA.ofstedRating: OPDA.NearbyFacility,
+        OPDA.marketingTenure: OPDA.Property,
+    }
+    for prop, dom in enum_cases.items():
+        assert (prop, RDF.type, OWL.ObjectProperty) in g, prop
+        assert (prop, RDFS.domain, dom) in g, prop
+        assert (prop, RDFS.range, SKOS.Concept) in g, prop
+        assert prop in descriptive.OBJECT_PROPERTIES, prop
+
+    # Non-enum DatatypeProperty cases still hold.
+    dtp_cases = {
         OPDA.hasLift: (OPDA.Property, XSD.string),
         OPDA.isLeaseQualifying: (OPDA.LegalEstate, XSD.string),
         OPDA.freeholdOwner: (OPDA.LegalEstate, XSD.string),
         OPDA.forTheManagedAreas: (OPDA.LegalEstate, XSD.decimal),
         OPDA.fromTheOwners: (OPDA.LegalEstate, XSD.decimal),
     }
-    for prop, (dom, rng) in cases.items():
+    for prop, (dom, rng) in dtp_cases.items():
         assert (prop, RDF.type, OWL.DatatypeProperty) in g, prop
         assert (prop, RDFS.domain, dom) in g, prop
         assert (prop, RDFS.range, rng) in g, prop
@@ -321,16 +337,18 @@ def test_r5_followon_walk_emitted() -> None:
 
 def test_category_e_properties_emitted() -> None:
     """ODR-0008d Rule 3: opda:peril (object property → skos:Concept),
-    opda:riskIndicator + opda:actionAlertRating (datatype), and
-    opda:hasSubAssessment (self-referential object property) are minted with
-    a RiskAssessment domain."""
+    opda:riskIndicator (Council-046 Q3b: now ObjectProperty/skos:Concept),
+    opda:actionAlertRating (datatype integer), and opda:hasSubAssessment
+    (self-referential object property) are minted with a RiskAssessment domain."""
     g = descriptive.build_graph()
     # peril — object property, range skos:Concept
     assert (OPDA.peril, RDF.type, OWL.ObjectProperty) in g
     assert (OPDA.peril, RDFS.range, SKOS.Concept) in g
     assert (OPDA.peril, RDFS.domain, OPDA.RiskAssessment) in g
-    # riskIndicator / actionAlertRating — datatype properties
-    assert (OPDA.riskIndicator, RDF.type, OWL.DatatypeProperty) in g
+    # riskIndicator — Council-046 Q3b: now ObjectProperty/skos:Concept
+    assert (OPDA.riskIndicator, RDF.type, OWL.ObjectProperty) in g
+    assert (OPDA.riskIndicator, RDFS.range, SKOS.Concept) in g
+    # actionAlertRating — still a datatype integer property
     assert (OPDA.actionAlertRating, RDF.type, OWL.DatatypeProperty) in g
     assert (OPDA.actionAlertRating, RDFS.range, XSD.integer) in g
     # hasSubAssessment — self-referential mereological part-of
@@ -385,9 +403,10 @@ def test_five_classes_retro_corrected_to_information_object() -> None:
 def test_inclusion_status_is_transaction_mode_not_property_domain() -> None:
     """ODR-0022 §4 / S027 R4: opda:inclusionStatus is minted but is NEVER
     rdfs:domain opda:Property (it is a Mode/Relator of the sale transaction);
-    its comment states the Mode binding."""
+    its comment states the Mode binding.
+    Council-046 Q3b: now ObjectProperty/skos:Concept."""
     g = descriptive.build_graph()
-    assert (OPDA.inclusionStatus, RDF.type, OWL.DatatypeProperty) in g
+    assert (OPDA.inclusionStatus, RDF.type, OWL.ObjectProperty) in g
     assert (OPDA.inclusionStatus, RDFS.domain, OPDA.Property) not in g
     comment = " ".join(str(c) for c in g.objects(OPDA.inclusionStatus, RDFS.comment))
     assert "Mode" in comment and "transaction" in comment.lower()

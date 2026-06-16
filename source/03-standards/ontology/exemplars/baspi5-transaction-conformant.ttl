@@ -39,10 +39,10 @@
     rdfs:label "BASPI5 conformant transaction — property"@en ;
     opda:hasUPRN "100023336956" ;
     opda:hasAddress <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/address> ;
-    opda:propertyType "House" ;
-    opda:builtForm "Detached" ;
-    opda:currentEnergyRating "C" ;
-    opda:heatingType "Central heating" .
+    opda:propertyType <https://opda.org.uk/pdtf/scheme/propertyType/House> ;
+    opda:builtForm <https://opda.org.uk/pdtf/scheme/builtForm/Detached> ;
+    opda:currentEnergyRating <https://opda.org.uk/pdtf/scheme/currentEnergyRating/C> ;
+    opda:heatingType <https://opda.org.uk/pdtf/scheme/heatingType/Central-heating> .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/address>
     a opda:Address ;
@@ -54,7 +54,7 @@
     vcard:fn "Alex Vendor" ;
     vcard:email "alex.vendor@example.org" ;
     opda:roleNotation "Seller" ;
-    opda:hasAssertedCapacity "Legal Owner" .
+    opda:hasAssertedCapacity <https://opda.org.uk/pdtf/scheme/sellersCapacity/Legal-Owner> .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/buyer>
     a opda:Person, opda:Buyer ;
@@ -64,5 +64,5 @@
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-conformant/estate>
     a opda:LegalEstate ;
-    opda:ownershipType "Freehold" ;
-    opda:tenureKind "Freehold" .
+    opda:ownershipType <https://opda.org.uk/pdtf/scheme/ownershipType/Freehold> ;
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> .

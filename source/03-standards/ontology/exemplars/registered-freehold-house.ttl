@@ -32,7 +32,7 @@ opda-x:property
 opda-x:estate
     a opda:LegalEstate ;
     rdfs:label "Freehold estate in 24 Acacia Avenue" ;
-    opda:tenureKind "freehold" .
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> .
 
 # Registered title — UFO Substance Kind, DOLCE NonPhysicalEndurant; IC = title-number lineage (S005 §3c).
 opda-x:title

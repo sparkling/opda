@@ -45,7 +45,7 @@ opda-x:verification-activity
 opda-x:vouch-attestation
     a opda:Evidence , prov:Entity ;
     rdfs:label "Solicitor vouch of residency for Aaron Patel (signed 2024-06-04)" ;
-    opda:evidenceType "Vouch" ;
+    opda:evidenceType <https://opda.org.uk/pdtf/scheme/evidenceMethod/Vouch> ;
     opda:attestedBy opda-x:solicitor-andrea-kessler ;
     opda:voucherRegulator <opda:SRA> ;
     opda:voucherLicenseNumber "SRA-541234" ;

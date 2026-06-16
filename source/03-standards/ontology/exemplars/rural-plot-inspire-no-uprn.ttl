@@ -36,7 +36,7 @@ opda-x:property
 opda-x:estate
     a opda:LegalEstate ;
     rdfs:label "Freehold estate in the grazing plot" ;
-    opda:tenureKind "freehold" .
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> .
 
 # Registered title (S005 §3c — title-number lineage).
 opda-x:title

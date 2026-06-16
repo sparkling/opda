@@ -165,6 +165,15 @@ OBJECT_PROPERTIES = (
     OPDA.securityDeposit,
     OPDA.sharedOwnershipRent,
     OPDA.soldPrice,
+    # Council-046 Q3b: enum properties flipped to ObjectProperty/skos:Concept.
+    OPDA.constructionType,
+    OPDA.priceQualifier,
+    OPDA.typeOfConnection,
+    OPDA.marketingTenure,
+    OPDA.transportType,
+    OPDA.ofstedRating,
+    OPDA.riskIndicator,
+    OPDA.inclusionStatus,
 )
 
 # Category A reusable disclosure-detail annotation property (ODR-0022 §1) +
@@ -201,7 +210,6 @@ DATATYPE_PROPERTIES = (
     OPDA.documentTypeCode,
     OPDA.expectedDeliveryDate,
     OPDA.filedUnder,
-    OPDA.inclusionStatus,
     OPDA.listedDate,
     OPDA.localAuthorityName,
     OPDA.localAuthorityReference,
@@ -220,7 +228,6 @@ DATATYPE_PROPERTIES = (
     OPDA.religiousCharacter,
     OPDA.reportDate,
     OPDA.retrievedOn,
-    OPDA.riskIndicator,
     OPDA.schoolType,
     OPDA.soldDate,
     OPDA.specialties,
@@ -230,14 +237,9 @@ DATATYPE_PROPERTIES = (
     OPDA.typeOfHealthCare,
     OPDA.unitaryAuthority,
     OPDA.url,
-    # ODR-0024 R5/R6 follow-on walk (ADR-0005 §G23) — the enum + Yes/No
-    # Property/estate attributes the structural C-vs-G rule surfaced.
-    OPDA.constructionType,
-    OPDA.priceQualifier,
-    OPDA.typeOfConnection,
-    OPDA.marketingTenure,
-    OPDA.transportType,
-    OPDA.ofstedRating,
+    # ODR-0024 R5/R6 follow-on walk (ADR-0005 §G23) — the Yes/No
+    # Property/estate attributes (enum properties moved to OBJECT_PROPERTIES
+    # by Council-046 Q3b).
     OPDA.hasLift,
     OPDA.isHMO,
     OPDA.isStudentAccommodation,
@@ -530,9 +532,9 @@ def build_graph() -> Graph:
     # Quale-in-Region datatype property; the node shape sh:in-restricts it to
     # the scheme value-space. (Already attested as a flat datatype property
     # in the data dictionary; here it is given its RiskAssessment home.)
-    g.add((OPDA.riskIndicator, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.riskIndicator, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.riskIndicator, RDFS.domain, OPDA.RiskAssessment))
-    g.add((OPDA.riskIndicator, RDFS.range, XSD.string))
+    g.add((OPDA.riskIndicator, RDFS.range, SKOS.Concept))
     g.add((OPDA.riskIndicator, RDFS.label, Literal("risk indicator", lang="en")))
     g.add((OPDA.riskIndicator, RDFS.comment, Literal(
         "Whether action is recommended / the property is at risk for the "
@@ -602,8 +604,8 @@ def build_graph() -> Graph:
     # already-emitted opda:InclusionStatusScheme (Included / Excluded /
     # None). It is therefore NEVER rdfs:domain opda:Property; it is bound on
     # a transaction-scoped fixtures-list node (see shapes.py).
-    g.add((OPDA.inclusionStatus, RDF.type, OWL.DatatypeProperty))
-    g.add((OPDA.inclusionStatus, RDFS.range, XSD.string))
+    g.add((OPDA.inclusionStatus, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.inclusionStatus, RDFS.range, SKOS.Concept))
     g.add((OPDA.inclusionStatus, RDFS.label,
            Literal("inclusion status", lang="en")))
     g.add((OPDA.inclusionStatus, RDFS.comment, Literal(
@@ -1815,10 +1817,20 @@ def build_graph() -> Graph:
              "amount.fromTheOwners",),
         ),
     ]
+    # The 6 enum properties are now ObjectProperty/skos:Concept (Council-046 Q3b).
+    _r5_scheme_valued = {
+        OPDA.constructionType, OPDA.priceQualifier, OPDA.typeOfConnection,
+        OPDA.marketingTenure, OPDA.transportType, OPDA.ofstedRating,
+    }
     for prop, domain, rng, label, comment, paths in _walk_r5:
-        g.add((prop, RDF.type, OWL.DatatypeProperty))
-        g.add((prop, RDFS.domain, domain))
-        g.add((prop, RDFS.range, rng))
+        if prop in _r5_scheme_valued:
+            g.add((prop, RDF.type, OWL.ObjectProperty))
+            g.add((prop, RDFS.domain, domain))
+            g.add((prop, RDFS.range, SKOS.Concept))
+        else:
+            g.add((prop, RDF.type, OWL.DatatypeProperty))
+            g.add((prop, RDFS.domain, domain))
+            g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
         for p in paths:

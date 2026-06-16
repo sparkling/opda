@@ -494,7 +494,7 @@ def _schema_leaf_source(schema_id: str, leaf_path: str) -> URIRef:
 
 def _maybe_scheme_members(
     range_local: str, enum: tuple[str, ...] | None,
-) -> list[str] | None:
+) -> list[URIRef] | None:
     """Return `sh:in` members for a bound leaf, or None.
 
     Only when the predicate's `rdfs:range` is an emitted `opda:*Scheme` that
@@ -503,6 +503,8 @@ def _maybe_scheme_members(
     datatypes or value-structured classes), so this returns None in practice;
     kept for forward-correctness per the S034 spec. `_scheme_members` raises
     ValueError on an unknown scheme — caught here → omit `sh:in` on miss.
+
+    Council-046 Q3b: now returns URIRef list (from updated `_scheme_members`).
     """
     if not enum or not range_local.endswith("Scheme"):
         return None
@@ -675,8 +677,8 @@ def _enumerated_comment_header(
     return "\n".join(lines) + "\n"
 
 
-def _scheme_members(scheme_local_name: str) -> list[str]:
-    """Return the notation values of an emitted SKOS scheme by local name.
+def _scheme_members(scheme_local_name: str) -> list[URIRef]:
+    """Return the concept URIs of an emitted SKOS scheme by local name.
 
     Used to compute `sh:in` lists for profile shapes — the profile cites
     the scheme members as a closed enumeration per ODR-0010 §Rule 2
@@ -684,20 +686,47 @@ def _scheme_members(scheme_local_name: str) -> list[str]:
     from the in-code scheme registry rather than re-parsing the emitted
     Turtle so this module remains a pure emitter (no I/O dependency on
     the vocabularies file at profile-emit time).
+
+    Council-046 Q3b: changed from notation strings to concept URIRefs to
+    match the ObjectProperty/skos:Concept TBox retype.
     """
     from opda_gen.emitters.vocabularies import _all_schemes
 
     for scheme in _all_schemes():
         if scheme.local_name == scheme_local_name:
-            return [m.notation for m in scheme.members]
+            return [scheme.member_uri(m) for m in scheme.members]
     raise ValueError(f"unknown scheme: {scheme_local_name}")
 
 
-def _add_in_list(g: Graph, blank: BNode, items: list[str]) -> None:
-    """Attach a SHACL `sh:in` RDF list of string literals to ``blank``."""
+def _scheme_member_uris_subset(
+    scheme_local: str, notations: list[str]
+) -> list[URIRef]:
+    """Return URIs for a specific subset of scheme members, identified by notation.
+
+    Council-046 Q3b: used to resolve hardcoded notation lists in the BASPI5
+    overlay (roleNotation / hasAssertedCapacity branches) to concept IRIs.
+    """
+    from opda_gen.emitters.vocabularies import _all_schemes
+
+    for scheme in _all_schemes():
+        if scheme.local_name == scheme_local:
+            notation_to_uri = {m.notation: scheme.member_uri(m) for m in scheme.members}
+            return [notation_to_uri[n] for n in notations]
+    raise ValueError(f"unknown scheme: {scheme_local}")
+
+
+def _add_in_list(g: Graph, blank: BNode, items: list) -> None:
+    """Attach a SHACL `sh:in` RDF list to ``blank``.
+
+    Items that are already URIRef are emitted as-is; plain strings are
+    wrapped in Literal (legacy fallback for leaf.enum ad-hoc enumerations
+    that are not backed by an emitted SKOS scheme).
+    """
     rdf_list = BNode()
     g.add((blank, SH["in"], rdf_list))
-    Collection(g, rdf_list, [Literal(v) for v in items])
+    Collection(g, rdf_list, [
+        v if isinstance(v, URIRef) else Literal(v) for v in items
+    ])
 
 
 def _add_property_shape(
@@ -741,6 +770,9 @@ def _add_property_shape(
         g.add((prop, SH.maxCount, Literal(max_count)))
     if in_scheme_members is not None:
         _add_in_list(g, prop, in_scheme_members)
+        # Council-046 Q3b: emit sh:nodeKind sh:IRI when all items are URIRef.
+        if in_scheme_members and isinstance(in_scheme_members[0], URIRef):
+            g.add((prop, SH.nodeKind, SH.IRI))
     g.add((prop, SH.severity, severity))
     if dash_viewer is not None:
         g.add((prop, DASH.viewer, dash_viewer))
@@ -1141,7 +1173,10 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     branch_a_prop = BNode()
     g.add((branch_a, SH.property, branch_a_prop))
     g.add((branch_a_prop, SH.path, OPDA.hasAssertedCapacity))
-    _add_in_list(g, branch_a_prop, ["Legal Owner", "Mortgagee in Possession"])
+    g.add((branch_a_prop, SH.nodeKind, SH.IRI))
+    _add_in_list(g, branch_a_prop, _scheme_member_uris_subset(
+        "SellersCapacityScheme", ["Legal Owner", "Mortgagee in Possession"],
+    ))
     g.add((branch_a_prop, SH.minCount, Literal(1)))
     g.add((branch_a_prop, DCTERMS.source, _baspi5_question("B1.3.1")))
 
@@ -1150,12 +1185,15 @@ def _build_baspi5_shapes(g: Graph, profile_iri: URIRef) -> None:
     branch_b_prop = BNode()
     g.add((branch_b, SH.property, branch_b_prop))
     g.add((branch_b_prop, SH.path, OPDA.hasAssertedCapacity))
-    _add_in_list(g, branch_b_prop, [
-        "Personal Representative for a Deceased Owner",
-        "Under Power of Attorney",
-        "Assistant",
-        "Other",
-    ])
+    g.add((branch_b_prop, SH.nodeKind, SH.IRI))
+    _add_in_list(g, branch_b_prop, _scheme_member_uris_subset(
+        "SellersCapacityScheme", [
+            "Personal Representative for a Deceased Owner",
+            "Under Power of Attorney",
+            "Assistant",
+            "Other",
+        ],
+    ))
     g.add((branch_b_prop, SH.minCount, Literal(1)))
     g.add((branch_b_prop, DCTERMS.source, _baspi5_question("B1.3.1")))
     # Branch (b) ALSO requires evidenced authority (sellersCapacityDetails +

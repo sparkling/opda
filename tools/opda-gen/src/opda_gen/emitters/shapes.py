@@ -220,6 +220,7 @@ def _add_identity_key_shape(
     source_iri: URIRef,
     min_count: int = 0,
     max_count: int | None = 1,
+    node_kind: URIRef | None = None,
 ) -> None:
     """Emit a Category 1 (identity-key) shape.
 
@@ -243,6 +244,10 @@ def _add_identity_key_shape(
     a contingent administrative identifier; its presence is checked
     when present, but absence is handled by the SHACL-AF succession
     rule not the identity-key shape).
+
+    When `node_kind` is provided, `sh:nodeKind` is emitted instead of
+    `sh:datatype` — used for identity-key predicates that are now
+    ObjectProperty (Council-046 Q3b IRI flip).
     """
     pshape = BNode()
     g.add((shape_iri, RDF.type, SH.NodeShape))
@@ -250,7 +255,10 @@ def _add_identity_key_shape(
     g.add((shape_iri, SH.property, pshape))
     g.add((shape_iri, DCTERMS.source, source_iri))
     g.add((pshape, SH.path, identity_predicate))
-    g.add((pshape, SH.datatype, datatype))
+    if node_kind is not None:
+        g.add((pshape, SH.nodeKind, node_kind))
+    else:
+        g.add((pshape, SH.datatype, datatype))
     g.add((pshape, SH.severity, SH.Violation))
     g.add((pshape, SH.message, Literal(message, lang="en")))
     if min_count > 0:
@@ -717,9 +725,10 @@ def build_property_shapes() -> Graph:
         target_class=OPDA.LegalEstate,
         identity_predicate=OPDA.tenureKind,
         datatype=XSD.string,
+        node_kind=SH.IRI,
         message=(
             "LegalEstate identity surface: tenureKind (Freehold / "
-            "Leasehold / Commonhold) MUST be a single xsd:string value "
+            "Leasehold / Commonhold) MUST be a single concept IRI "
             "when present. The full rights-bundle IC per ODR-0005 §3b "
             "is enforced by the registered-title binding via "
             "opda:recordsEstate."
@@ -841,9 +850,10 @@ def build_agent_shapes() -> Graph:
         target_class=OPDA.Person,
         identity_predicate=OPDA.hasAssertedCapacity,
         datatype=XSD.string,
+        node_kind=SH.IRI,
         message=(
             "Person identity-key surface: hasAssertedCapacity MUST be a "
-            "single xsd:string value when present. The full Person IC "
+            "single concept IRI when present. The full Person IC "
             "per ODR-0006 §Q1 is borne by the identifier-bundle (NI "
             "number / passport / driving-licence); succession is tracked "
             "by the IdentifierSuccessionRule SHACL-AF rule below."
@@ -858,9 +868,10 @@ def build_agent_shapes() -> Graph:
         target_class=OPDA.Organisation,
         identity_predicate=OPDA.hasAssertedCapacity,
         datatype=XSD.string,
+        node_kind=SH.IRI,
         message=(
             "Organisation identity-key surface: hasAssertedCapacity MUST "
-            "be a single xsd:string value when present. Full IC per "
+            "be a single concept IRI when present. Full IC per "
             "ODR-0006 §Q6 borne by the registration-record (LEI / "
             "Companies House number); subclass relationship to "
             "org:Organization preserves cross-vocabulary identity."
@@ -1315,6 +1326,20 @@ def build_governance_shapes() -> Graph:
     return g
 
 
+def _scheme_member_uris(scheme_local: str) -> list[URIRef]:
+    """Return concept URIs for any SKOS scheme by local name (Council-046 Q3b).
+
+    Generic sibling of _peril_concept_uris / _currency_concept_uris — used by
+    _add_enum_value_shape after the sh:in flip from literal notations to IRIs.
+    """
+    from opda_gen.emitters.vocabularies import _all_schemes
+
+    for scheme in _all_schemes():
+        if scheme.local_name == scheme_local:
+            return [scheme.member_uri(m) for m in scheme.members]
+    raise ValueError(f"scheme not found: {scheme_local}")
+
+
 def _peril_concept_uris() -> list[URIRef]:
     """Return the 12 opda:PerilScheme concept URIs (ODR-0008d Rule 2).
 
@@ -1390,11 +1415,9 @@ def _add_enum_value_shape(
     p = BNode()
     g.add((shape_iri, SH.property, p))
     g.add((p, SH.path, prop))
-    g.add((p, SH.datatype, XSD.string))
+    g.add((p, SH.nodeKind, SH.IRI))
     g.add((p, SH.maxCount, Literal(1)))
-    _add_in_literal_list(
-        g, p, [Literal(v) for v in _scheme_notations(scheme_local)]
-    )
+    _add_in_iri_list(g, p, _scheme_member_uris(scheme_local))
     g.add((p, SH.severity, SH.Violation))
     g.add((p, SH.message, Literal(
         f"opda:{local} MUST be one of the opda:{scheme_local} member values "
@@ -1536,14 +1559,13 @@ def build_descriptive_shapes() -> Graph:
     # (2) opda:riskIndicator — sh:in the YesNoNotKnownScheme value-space.
     # riskIndicator's value-space {No, Not known, Yes} IS YesNoNotKnownScheme;
     # it reuses that scheme rather than minting a duplicate (ODR-0022 Cat C).
+    # Council-046 Q3b: flip to concept IRIs (matches ObjectProperty retype).
     p_ri = BNode()
     g.add((OPDA_SHAPE.RiskAssessmentShape, SH.property, p_ri))
     g.add((p_ri, SH.path, OPDA.riskIndicator))
     g.add((p_ri, SH.maxCount, Literal(1)))
-    _add_in_literal_list(
-        g, p_ri,
-        [Literal(v) for v in _scheme_notations("YesNoNotKnownScheme")],
-    )
+    g.add((p_ri, SH.nodeKind, SH.IRI))
+    _add_in_iri_list(g, p_ri, _scheme_member_uris("YesNoNotKnownScheme"))
     g.add((p_ri, SH.severity, SH.Violation))
     g.add((p_ri, SH.message, Literal(
         "RiskAssessment opda:riskIndicator MUST be one of the "
@@ -1654,13 +1676,12 @@ def build_descriptive_shapes() -> Graph:
         lang="en",
     )))
     # opda:inclusionStatus — sh:in the InclusionStatusScheme value-space.
+    # Council-046 Q3b: flip to concept IRIs (matches ObjectProperty retype).
     p_incl = BNode()
     g.add((OPDA_SHAPE.FixturesListShape, SH.property, p_incl))
     g.add((p_incl, SH.path, OPDA.inclusionStatus))
-    _add_in_literal_list(
-        g, p_incl,
-        [Literal(v) for v in _scheme_notations("InclusionStatusScheme")],
-    )
+    g.add((p_incl, SH.nodeKind, SH.IRI))
+    _add_in_iri_list(g, p_incl, _scheme_member_uris("InclusionStatusScheme"))
     g.add((p_incl, SH.severity, SH.Violation))
     g.add((p_incl, SH.message, Literal(
         "Fixtures-item opda:inclusionStatus MUST be one of the "

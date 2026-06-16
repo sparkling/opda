@@ -43,7 +43,7 @@ opda-x:verification-activity
 opda-x:hmrc-api-response
     a opda:Evidence , prov:Entity ;
     rdfs:label "HMRC tax-record API response for NI QQ987654A" ;
-    opda:evidenceType "Electronic-Record" ;
+    opda:evidenceType <https://opda.org.uk/pdtf/scheme/evidenceMethod/Electronic-Record> ;
     opda:apiEndpoint <https://api.hmrc.gov.uk/individuals/employments/v1.0> ;
     opda:apiResponseId "hmrc-2024-05-08-09142200-87654" ;
     opda:retrievedAt "2024-05-08T09:14:22Z"^^xsd:dateTime ;

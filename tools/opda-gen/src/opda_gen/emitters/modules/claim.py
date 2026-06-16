@@ -338,9 +338,9 @@ def build_graph() -> Graph:
     # the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space
     # idiom) + opda:EvidenceFacetShape (the value-keyed per-kind obligations).
     # rdfs:range is documentary (ODR-0026 §R2); the real constraint is SHACL.
-    g.add((OPDA.evidenceType, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.evidenceType, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.evidenceType, RDFS.domain, OPDA.Evidence))
-    g.add((OPDA.evidenceType, RDFS.range, XSD.string))
+    g.add((OPDA.evidenceType, RDFS.range, SKOS.Concept))
     g.add((OPDA.evidenceType, RDFS.label, Literal("evidence type", lang="en")))
     g.add((OPDA.evidenceType, RDFS.comment, Literal(
         "The OIDC4IDA acquisition kind of a piece of evidence — the "

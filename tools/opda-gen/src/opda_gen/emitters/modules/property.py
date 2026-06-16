@@ -427,9 +427,9 @@ def build_graph() -> Graph:
     # ADR-0031 register: STANDS on opda:Property; Quale-in-Region; flat
     # (§Q6a — no named consumer query); range opda:BuiltFormScheme; dct:source
     # tightened to the G2 schema-leaf-path.
-    g.add((OPDA.builtForm, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.builtForm, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.builtForm, RDFS.domain, OPDA.Property))
-    g.add((OPDA.builtForm, RDFS.range, XSD.string))
+    g.add((OPDA.builtForm, RDFS.range, SKOS.Concept))
     g.add((OPDA.builtForm, RDFS.label, Literal("built form", lang="en")))
     g.add((OPDA.builtForm, RDFS.comment, Literal(
         "Property built-form classification per opda:BuiltFormScheme "
@@ -444,9 +444,9 @@ def build_graph() -> Graph:
     # ADR-0031 register: STANDS on opda:Property; Quale-in-Region (EPC band
     # A–G, DESNZ-governed); range opda:CurrentEnergyRatingScheme; dct:source
     # tightened to the G2 schema-leaf-path.
-    g.add((OPDA.currentEnergyRating, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.currentEnergyRating, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.currentEnergyRating, RDFS.domain, OPDA.Property))
-    g.add((OPDA.currentEnergyRating, RDFS.range, XSD.string))
+    g.add((OPDA.currentEnergyRating, RDFS.range, SKOS.Concept))
     g.add((OPDA.currentEnergyRating, RDFS.label,
            Literal("current energy rating", lang="en")))
     g.add((OPDA.currentEnergyRating, RDFS.comment, Literal(
@@ -474,9 +474,9 @@ def build_graph() -> Graph:
     g.add((OPDA.hasUPRN, DCTERMS.source, _ODR_0005_S6A))
 
     # --- DatatypeProperty: opda:tenureKind (ODR-0008 §Q5a) ---------------
-    g.add((OPDA.tenureKind, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.tenureKind, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.tenureKind, RDFS.domain, OPDA.LegalEstate))
-    g.add((OPDA.tenureKind, RDFS.range, XSD.string))
+    g.add((OPDA.tenureKind, RDFS.range, SKOS.Concept))
     g.add((OPDA.tenureKind, RDFS.label, Literal("tenure kind", lang="en")))
     g.add((OPDA.tenureKind, RDFS.comment, Literal(
         "Tenure classification per opda:TenureKindScheme — Substance "
@@ -725,10 +725,39 @@ def build_graph() -> Graph:
         OPDA.heatingType: (_G2_HEATING_TYPE,),
         OPDA.centralHeatingFuelType: (_G2_CENTRAL_HEATING_FUEL_TYPE,),
     }
+    # Properties whose range is a SKOS concept (scheme-valued enums).
+    _g11_scheme_valued = {
+        OPDA.propertyType,
+        OPDA.ownershipType,
+        OPDA.heatingType,
+        OPDA.centralHeatingFuelType,
+        OPDA.offMainsDrainageSystemType,
+        # Council-046 Q3b: the BASPI5 yes/no discriminators are bound to a
+        # YesNo* scheme via the overlay `sh:in` (concept IRIs), so their range
+        # is skos:Concept like every other coded value (uniform with
+        # opda:riskIndicator) — NOT xsd:string. Operator-ratified 2026-06-16.
+        OPDA.areBoundariesUniform,
+        OPDA.hasBeenFlooded,
+        OPDA.hasSmartHomeSystems,
+        OPDA.hasSprayFoamInstalled,
+        OPDA.hasValidGuaranteesOrWarranties,
+        OPDA.isGroundRentPayable,
+        OPDA.isInsured,
+        OPDA.isLocatedOverCommercialPremises,
+        OPDA.isSharedOwnership,
+        OPDA.isSupplyMetered,
+        OPDA.sellerContributesToServiceCharge,
+        OPDA.soldWithVacantPossession,
+    }
     for prop, domain, label, comment in _g11_properties:
-        g.add((prop, RDF.type, OWL.DatatypeProperty))
-        g.add((prop, RDFS.domain, domain))
-        g.add((prop, RDFS.range, XSD.string))
+        if prop in _g11_scheme_valued:
+            g.add((prop, RDF.type, OWL.ObjectProperty))
+            g.add((prop, RDFS.domain, domain))
+            g.add((prop, RDFS.range, SKOS.Concept))
+        else:
+            g.add((prop, RDF.type, OWL.DatatypeProperty))
+            g.add((prop, RDFS.domain, domain))
+            g.add((prop, RDFS.range, XSD.string))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
         for src in _g2_sources.get(prop, (_ODR_0008_S5A,)):

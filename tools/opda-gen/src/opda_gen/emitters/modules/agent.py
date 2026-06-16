@@ -265,9 +265,9 @@ def build_graph() -> Graph:
     g.add((OPDA.NameChangeEvent, DCTERMS.source, _ODR_0006_Q1))
 
     # --- DatatypeProperty: opda:hasAssertedCapacity (ODR-0006 §Q4) ------
-    g.add((OPDA.hasAssertedCapacity, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.hasAssertedCapacity, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.hasAssertedCapacity, RDFS.domain, OPDA.Seller))
-    g.add((OPDA.hasAssertedCapacity, RDFS.range, XSD.string))
+    g.add((OPDA.hasAssertedCapacity, RDFS.range, SKOS.Concept))
     g.add((OPDA.hasAssertedCapacity, RDFS.label,
            Literal("has asserted capacity", lang="en")))
     g.add((OPDA.hasAssertedCapacity, RDFS.comment, Literal(
@@ -340,9 +340,9 @@ def build_graph() -> Graph:
 
     # ==== G11 expansion (ADR-0013) ======================================
     # --- DatatypeProperty: opda:ownerType (BASPI5 legalOwners[].ownerType) -
-    g.add((OPDA.ownerType, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.ownerType, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.ownerType, RDFS.domain, OPDA.Proprietor))
-    g.add((OPDA.ownerType, RDFS.range, XSD.string))
+    g.add((OPDA.ownerType, RDFS.range, SKOS.Concept))
     g.add((OPDA.ownerType, RDFS.label, Literal("owner type", lang="en")))
     g.add((OPDA.ownerType, RDFS.comment, Literal(
         "Substance Kind label discriminating Private individual "

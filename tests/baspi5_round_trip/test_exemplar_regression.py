@@ -33,7 +33,7 @@ import pytest
 from rdflib import Graph
 
 from .compare_reports import reports_equivalent
-from .conftest import EXEMPLARS_DIR
+from .conftest import EXEMPLARS_DIR, ONTOLOGY_DIR
 
 
 # ---------------------------------------------------------------------------
@@ -63,7 +63,11 @@ def test_exemplar_validation_matches_expected_report(
     expected-report.ttl (semantic equivalence per
     compare_reports.reports_equivalent).
     """
-    from opda_gen.emitters.exemplar_reports import _normalise_report
+    from opda_gen.emitters.exemplar_reports import (
+        _exemplar_data_with_tbox,
+        _normalise_report,
+        _tbox_graph,
+    )
     from opda_gen.jena_shacl import validate
 
     exemplar_path = EXEMPLARS_DIR / f"{exemplar_stem}.ttl"
@@ -72,7 +76,14 @@ def test_exemplar_validation_matches_expected_report(
         f"missing expected report for {exemplar_stem}: {expected_path}"
     )
 
-    _conforms, report_graph = validate(shapes_only_graph, exemplar_path)
+    # Validate against exemplar ∪ TBox — the same data-graph construction the
+    # expected-report EMITTER uses (exemplar_reports._exemplar_data_with_tbox),
+    # so Jena's sh:class can resolve asserted rdf:type/skos:Concept for the
+    # concept-IRI coded values (Council-046 Q3b; ODR-0029 R3). Validating the
+    # bare exemplar diverged from the emitter and mis-fired sh:class on
+    # referenced concept IRIs whose type triples live in the vocabularies graph.
+    data = _exemplar_data_with_tbox(exemplar_path, _tbox_graph(ONTOLOGY_DIR))
+    _conforms, report_graph = validate(shapes_only_graph, data)
     actual = _normalise_report(report_graph)
     expected = Graph()
     expected.parse(expected_path, format="turtle")

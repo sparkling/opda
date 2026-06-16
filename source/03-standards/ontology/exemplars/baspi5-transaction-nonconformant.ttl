@@ -26,10 +26,10 @@
     rdfs:label "BASPI5 non-conformant transaction — property"@en ;
     opda:hasUPRN "100023336957" ;
     opda:hasAddress <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/address> ;
-    opda:propertyType "House" ;
-    opda:builtForm "Detached" ;
-    opda:currentEnergyRating "C" ;
-    opda:heatingType "Central heating" .
+    opda:propertyType <https://opda.org.uk/pdtf/scheme/propertyType/House> ;
+    opda:builtForm <https://opda.org.uk/pdtf/scheme/builtForm/Detached> ;
+    opda:currentEnergyRating <https://opda.org.uk/pdtf/scheme/currentEnergyRating/C> ;
+    opda:heatingType <https://opda.org.uk/pdtf/scheme/heatingType/Central-heating> .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/address>
     a opda:Address ;
@@ -43,7 +43,7 @@
     vcard:fn "Pat Attorney" ;
     vcard:email "pat.attorney@example.org" ;
     opda:roleNotation "Seller" ;
-    opda:hasAssertedCapacity "Under Power of Attorney" .
+    opda:hasAssertedCapacity <https://opda.org.uk/pdtf/scheme/sellersCapacity/Under-Power-of-Attorney> .
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/buyer>
     a opda:Person, opda:Buyer ;
@@ -53,5 +53,5 @@
 
 <https://opda.org.uk/pdtf/harness/data/baspi5-nonconformant/estate>
     a opda:LegalEstate ;
-    opda:ownershipType "Freehold" ;
-    opda:tenureKind "Freehold" .
+    opda:ownershipType <https://opda.org.uk/pdtf/scheme/ownershipType/Freehold> ;
+    opda:tenureKind <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> .

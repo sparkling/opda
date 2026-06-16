@@ -33,4 +33,4 @@ Realises:
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"

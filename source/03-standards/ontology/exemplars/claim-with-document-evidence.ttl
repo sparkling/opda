@@ -43,7 +43,7 @@ opda-x:verification-activity
 opda-x:probate-document
     a opda:Evidence , prov:Entity ;
     rdfs:label "Grant of probate HMCTS reference 2024-PB-09876" ;
-    opda:evidenceType "Document" ;
+    opda:evidenceType <https://opda.org.uk/pdtf/scheme/evidenceMethod/Document> ;
     opda:documentType "grant-of-probate" ;
     opda:issuerAuthority <opda:HMCTS> ;
     opda:documentReference "2024-PB-09876" ;
