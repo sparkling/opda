@@ -110,6 +110,12 @@
     var ids = {};
     nodes.forEach(function (d) { ids[d.id] = true; });
     edges = edges.filter(function (d) { return ids[d.source] && ids[d.target]; });
+    // Drop external targets left with no live edge (their connecting class was
+    // filtered out) — they'd otherwise float as context-free diamonds. A no-op
+    // in the unfiltered view; only bites once a facet filter removes a connector.
+    var deg = {};
+    edges.forEach(function (d) { deg[d.source] = deg[d.target] = true; });
+    nodes = nodes.filter(function (d) { return d.type !== 'external' || deg[d.id]; });
     return { nodes: nodes, edges: edges };
   }
 

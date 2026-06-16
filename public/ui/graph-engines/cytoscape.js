@@ -106,9 +106,17 @@
       // auto-hides edges whose endpoint is display:none, so incident edges follow.
       function applyFacets(f) {
         var classes = cy.nodes('[type="class"]');
-        if (!f) { classes.style('display', 'element'); return; }
-        classes.forEach(function (n) {
+        if (!f) classes.style('display', 'element');
+        else classes.forEach(function (n) {
           n.style('display', f.has(n.data('ufoCategory') || '') ? 'element' : 'none');
+        });
+        // Hide external targets whose neighbouring classes are all hidden now
+        // (edgeless) so they don't float as context-free diamonds.
+        cy.nodes('[type="external"]').forEach(function (ext) {
+          var live = ext.neighborhood('node').filter(function (n) {
+            return n.style('display') !== 'none';
+          }).length > 0;
+          ext.style('display', live ? 'element' : 'none');
         });
       }
       function clearFocus() { cy.elements().removeClass('faded').removeClass('highlight'); }
