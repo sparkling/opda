@@ -16,16 +16,6 @@ import PageMeta from '@/components/PageMeta.astro';
         document, a checklist, and an audit profile per control.
       </p>
 
-      <div class="callout callout--warn">
-        <div class="callout__label">Draft — content pending</div>
-        <p>
-          Commissioned by ADR 0001 Wave 2. Owner: Compliance &amp; Risk WG
-          (per <code>governance.md</code> §3.C they already own data-protection
-          impact assessment). Page scaffolding ready; section content to be authored
-          once the workstream is staffed.
-        </p>
-      </div>
-
       <div class="callout callout--key">
         <div class="callout__label">Draft for C&amp;R WG review — 2026-05-18</div>
         <p>
@@ -1247,34 +1237,62 @@ import PageMeta from '@/components/PageMeta.astro';
         <li><a href="/governance/overlay-attachments">Overlay attachments</a> — sibling Wave 2 workstream; attachment integrity is a verification concern that intersects this framework.</li>
       </ul>
 
-      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <h2 id="ka-rubric">DAMA KA rubric — Data Security</h2>
       <p>
-        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages carry a consistent rubric — <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. The summaries below map each rubric section onto the detail above; like the rest of this page they are a first-cut provisional draft for <em>Compliance &amp; Risk WG</em> ratification.
       </p>
 
       <section>
         <h3>Purpose</h3>
-        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+        <p>
+          Formalise the PDTF trust framework's implicit security controls into a published, auditable workstream —
+          KYC/KYB, DID key management, signature verification, revocation, and audit logging — operationalising
+          <a href="https://www.legislation.gov.uk/eur/2016/679/article/32">UK GDPR Art 32</a> for the shape of the
+          PDTF ecosystem (see <a href="#overview">§1 Overview</a>).
+        </p>
       </section>
       <section>
         <h3>Activities</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>Maintain each control's policy, checklist, and audit profile (<a href="#controls">§2</a>, <a href="#policy-checklist-audit">§4</a>).</li>
+          <li>Run the per-firm security self-assessment checklist (<a href="#checklist">§4.2</a>).</li>
+          <li>Conduct audits against the per-control audit profiles (<a href="#audit">§4.3</a>).</li>
+          <li>Execute the five-phase incident response and trigger reviews on W3C-standard changes (<a href="#incident">§5</a>).</li>
+        </ul>
       </section>
       <section>
         <h3>Deliverables</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>This framework, with a policy + checklist + audit profile per control (<a href="#policy-checklist-audit">§4</a>).</li>
+          <li>The Assurance Level × control matrix (<a href="#al-mapping">§3</a>) and the incident-response procedure (<a href="#incident">§5</a>).</li>
+        </ul>
       </section>
       <section>
         <h3>Roles</h3>
-        <p><em>Content pending — see <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> for current statement.</em></p>
+        <ul>
+          <li><strong>Compliance &amp; Risk WG</strong> — owns the framework end to end (<a href="#governance">§6</a>).</li>
+          <li><strong>Technical WG</strong> — cryptographic primitives and reference tooling.</li>
+          <li><strong>Trust Registry Operator / Governance Authority</strong> — registry &amp; status-list infrastructure; status changes.</li>
+          <li><strong>Accredited Issuers &amp; Verifiers</strong> — implement the controls at the AL they claim.</li>
+        </ul>
       </section>
       <section>
         <h3>Metrics</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>Control coverage per Assurance Level claimed.</li>
+          <li>Audit findings raised and closed per quarter.</li>
+          <li>Incident notifications within the statutory ICO 72-hour and subject windows.</li>
+          <li>Annual checklist completion rate across accredited issuers.</li>
+        </ul>
       </section>
       <section>
         <h3>Maturity</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <p>
+          <strong>Gap</strong> today — the framework is drafted but awaits C&amp;R WG kick-off. Reaches
+          <strong>Established</strong> once the policy and checklist are ratified and the first audits run, and
+          <strong>Strong</strong> once tier-5/6 independent audit attestations cover the controls across a majority
+          of accredited issuers.
+        </p>
       </section>
 </Layout>
 </content>

@@ -16,17 +16,6 @@ import PageMeta from '@/components/PageMeta.astro';
         Accreditation Directory.
       </p>
 
-      <div class="callout callout--warn">
-        <div class="callout__label">Draft — content pending</div>
-        <p>
-          Commissioned by <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 2.
-          Owner: Compliance &amp; Risk WG (DQ dimensions map onto UK GDPR Art 5(1)(d)
-          accuracy obligations). Technical WG provides schema hooks and per-overlay
-          validation rules. Page scaffolding ready; section content to be authored once
-          the workstream is staffed.
-        </p>
-      </div>
-
       <div class="callout callout--info">
         <div class="callout__label">Draft for Compliance &amp; Risk WG review — 2026-05-18</div>
         <p>
@@ -663,33 +652,60 @@ import PageMeta from '@/components/PageMeta.astro';
         <li><a href="/governance/data-stewardship">Data stewardship</a> — Domain Data Stewards' role in context-specific quality.</li>
       </ul>
 
-      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <h2 id="ka-rubric">DAMA KA rubric — Data Quality Management</h2>
       <p>
-        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages carry a consistent rubric — <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. The summaries below map each rubric section onto the detail above; like the rest of this page they are a first-cut provisional draft for <em>Compliance &amp; Risk WG</em> ratification.
       </p>
 
       <section>
         <h3>Purpose</h3>
-        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+        <p>
+          Give OPDA, member firms, and the consumers and regulators who rely on PDTF claims a shared way to talk
+          about <em>how good</em> a claim is — across six dimensions — separate from how strongly it is attested,
+          anchored on <a href="https://www.legislation.gov.uk/eur/2016/679/article/5">UK GDPR Art 5(1)(d)</a>
+          accuracy (see <a href="#overview">§1 Overview</a>).
+        </p>
       </section>
       <section>
         <h3>Activities</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>Define the six DQ dimensions per claim type per Assurance Level (<a href="#dimensions">§2</a>).</li>
+          <li>Author per-claim-type measurement protocols (<a href="#measurement">§3</a>).</li>
+          <li>Set the AL × DQ floors (<a href="#al-mapping">§4</a>) and validate quarterly submissions.</li>
+          <li>Spot-check sampled scores and flag inflated ratings (<a href="#reporting">§5</a>).</li>
+        </ul>
       </section>
       <section>
         <h3>Deliverables</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>This published framework, plus the per-claim-type measurement-protocol matrix (<a href="#protocol-shape">§3.1</a>).</li>
+          <li>A per-firm, per-dimension DQ profile fed quarterly into the <a href="/governance/accreditation-directory">Accreditation Directory</a>.</li>
+        </ul>
       </section>
       <section>
         <h3>Roles</h3>
-        <p><em>Content pending — see <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> for current statement.</em></p>
+        <ul>
+          <li><strong>Compliance &amp; Risk WG</strong> — owns the framework end to end (<a href="#governance">§6</a>).</li>
+          <li><strong>Technical WG</strong> — schema hooks and per-overlay validation rules.</li>
+          <li><strong>Domain Data Stewards</strong> — context-specific measurement protocols.</li>
+          <li><strong>Member firms</strong> — quarterly self-attestation and evidence retention.</li>
+        </ul>
       </section>
       <section>
         <h3>Metrics</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <ul>
+          <li>% of accredited firms submitting quarterly DQ profiles on time.</li>
+          <li>Median DQ score per dimension across the Directory.</li>
+          <li>Audit-trail-flagged score adjustments per quarter.</li>
+        </ul>
       </section>
       <section>
         <h3>Maturity</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG to author.</em></p>
+        <p>
+          <strong>Gap</strong> today — the framework is drafted but awaits C&amp;R WG kick-off. Reaches
+          <strong>Established</strong> once it is ratified and the first quarterly DQ profiles land in the
+          Accreditation Directory, and <strong>Strong</strong> once independent audit attestations cover ≥ 3
+          dimensions for a majority of accredited firms.
+        </p>
       </section>
 </Layout>

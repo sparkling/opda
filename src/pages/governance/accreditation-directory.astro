@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="Accreditation Directory"
   description="The published directory of OPDA-accredited member firms, with per-firm Assurance Level coverage plus capability maturity scores (Engagement / Process / Evidence) per DCAM-style capability. VC-signed self-attestation, quarterly cadence, public + drill-down tiers."
 >
-<PageMeta category="OPDA's rules" variant="brand" updated="Stub · spec in ADR 0004 · 2026-05-18" damaKa={["Data Governance", "Data Quality Management"]} />
+<PageMeta category="OPDA's rules" variant="brand" updated="Draft · spec in ADR 0004 · 2026-05-18" damaKa={["Data Governance", "Data Quality Management"]} />
 
       <h1>Accreditation Directory</h1>
       <p class="lead">
@@ -784,33 +784,59 @@ import PageMeta from '@/components/PageMeta.astro';
           tier-5-or-6 audit-partner list.</li>
       </ul>
 
-      <h2 id="ka-rubric">DAMA KA rubric — Wave 1 alignment</h2>
+      <h2 id="ka-rubric">DAMA KA rubric — Data Governance + Data Quality Management</h2>
       <p>
-        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages follow a consistent rubric: <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. Sections below may be filled incrementally by <em>Compliance &amp; Risk WG + Technical WG</em> — content authored above already maps to several of these; this scaffold is for the gaps.
+        Per <a href="/resource?path=docs/adr/0001-adopt-dcam-dmbok-elements.md">ADR 0001</a> Wave 1, KA-tagged pages carry a consistent rubric — <strong>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</strong>. The summaries below map each rubric section onto the detail above; like the rest of this page they are a first-cut provisional draft for joint <em>Compliance &amp; Risk WG + Technical WG</em> ratification.
       </p>
 
       <section>
         <h3>Purpose</h3>
-        <p><em>Content pending — see lead paragraph for current statement.</em></p>
+        <p>
+          Publish who is OPDA-accredited and how mature each member firm's data-management capabilities are —
+          two orthogonal axes (Assurance Level coverage and capability scores), deliberately without a single
+          collapsed maturity number (see <a href="#overview">§ Overview</a>).
+        </p>
       </section>
       <section>
         <h3>Activities</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+        <ul>
+          <li>Aggregate signed quarterly VCs and validate signatures plus audit-partner VCs (<a href="#build-pipeline">§ Build pipeline</a>).</li>
+          <li>Compute per-section averages and render the public card + drill-down (<a href="#public-surface">§ Public surface</a>).</li>
+          <li>Spot-check submissions and correct inflated scores (<a href="#spot-checks">§ Spot-checks</a>).</li>
+          <li>Publish on the quarterly cadence (<a href="#quarterly-cadence">§ Quarterly cadence</a>).</li>
+        </ul>
       </section>
       <section>
         <h3>Deliverables</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+        <ul>
+          <li>This public Directory and its drill-down view, plus the capability catalogue (<a href="#capability-catalogue">§ Catalogue</a>).</li>
+          <li>The build-time <code>src/data/accreditation/current.json</code> artefact consumed by this page.</li>
+        </ul>
       </section>
       <section>
         <h3>Roles</h3>
-        <p><em>Content pending — see <a href="/resource?path=docs/adr/0004-accreditation-directory.md">ADR 0004</a> for current statement.</em></p>
+        <ul>
+          <li><strong>Compliance &amp; Risk WG + Technical WG</strong> — joint owners (<a href="#first-publish">§ First publish</a>).</li>
+          <li><strong>Engagement WG</strong> — owns the OPDA-listed audit-partner list (<a href="#audit-partners">§ Audit partners</a>).</li>
+          <li><strong>Member firms</strong> — self-attest via signed Verifiable Credentials each quarter.</li>
+          <li><strong>OPDA</strong> — spot-checks and applies rating corrections.</li>
+        </ul>
       </section>
       <section>
         <h3>Metrics</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+        <ul>
+          <li>Number of firms published per quarter.</li>
+          <li>Evidence-tier distribution across the population.</li>
+          <li>Spot-check correction rate and stale-flag count.</li>
+        </ul>
       </section>
       <section>
         <h3>Maturity</h3>
-        <p><em>Content pending — Compliance &amp; Risk WG + Technical WG to author.</em></p>
+        <p>
+          <strong>Gap</strong> today — the page and spec are drafted, but the directory itself awaits its first
+          publish (after all four Wave 2 ADRs ratify). Reaches <strong>Established</strong> at the first quarterly
+          publish carrying real firm data, and <strong>Strong</strong> once tier-5/6 independently-audited scores
+          are common across the membership.
+        </p>
       </section>
 </Layout>
