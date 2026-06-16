@@ -2,9 +2,9 @@
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
     "classes": 40,
-    "objectProperties": 32,
-    "datatypeProperties": 225,
-    "shapes": 326,
+    "objectProperties": 64,
+    "datatypeProperties": 193,
+    "shapes": 360,
     "concepts": 323,
     "schemes": 49,
     "contexts": 8
@@ -357,15 +357,7 @@
       "ufoCategory": "RoleMixin",
       "module": "claim",
       "context": "claim",
-      "attributes": [
-        {
-          "localName": "evidenceType",
-          "id": "evidenceType",
-          "label": "evidence type",
-          "type": "string",
-          "description": "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL."
-        }
-      ],
+      "attributes": [],
       "outgoing": [
         {
           "predicate": "attestedBy",
@@ -380,6 +372,20 @@
           ],
           "inverse": null,
           "description": "Vouch → Agent attestation join. A facet borne by evidence playing the vouch role (opda:evidenceType 'Vouch'); mirror of prov:wasAttributedTo for vouch-specific use. The voucher's role (e.g. opda:VoucherRole) is captured via prov:qualifiedAttribution → prov:Attribution → prov:hadRole per S009 Q2 qualified-form discipline. Presence is required value-keyed when evidenceType='Vouch' (opda:EvidenceFacetShape, ADR-0012)."
+        },
+        {
+          "predicate": "evidenceType",
+          "predicateLabel": "evidence type",
+          "predicateLocal": "evidenceType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL."
         }
       ],
       "incoming": [
@@ -403,7 +409,12 @@
           "localName": "EvidenceIdentityKeyShape"
         }
       ],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/EvidenceMethodScheme",
+          "localName": "EvidenceMethodScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0009/section-Q1"
       ]
@@ -573,13 +584,6 @@
           "description": "Whether the head lease is leaseholder-controlled. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "isGroundRentPayable",
-          "id": "isGroundRentPayable",
-          "label": "is ground rent payable",
-          "type": "string",
-          "description": "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "isLeaseQualifying",
           "id": "isLeaseQualifying",
           "label": "is lease qualifying",
@@ -592,13 +596,6 @@
           "label": "is managing agent employed",
           "type": "string",
           "description": "Whether a managing agent is employed for the estate. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "isSharedOwnership",
-          "id": "isSharedOwnership",
-          "label": "is shared ownership",
-          "type": "string",
-          "description": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme."
         },
         {
           "localName": "landlordNotifiedOfSale",
@@ -641,13 +638,6 @@
           "label": "outstanding enforcement action",
           "type": "string",
           "description": "Whether there is outstanding enforcement action (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "ownershipType",
-          "id": "ownershipType",
-          "label": "ownership type",
-          "type": "string",
-          "description": "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
         },
         {
           "localName": "personWhoDealsWithTheDeedOfCovenant",
@@ -699,13 +689,6 @@
           "description": "Whether the seller completed a deed of certificate (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "sellerContributesToServiceCharge",
-          "id": "sellerContributesToServiceCharge",
-          "label": "seller contributes to service charge",
-          "type": "string",
-          "description": "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "sellerOwnedProperty",
           "id": "sellerOwnedProperty",
           "label": "seller owned property",
@@ -725,13 +708,6 @@
           "label": "start year of lease",
           "type": "gYear",
           "description": "Calendar year the leasehold term commenced. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."
-        },
-        {
-          "localName": "tenureKind",
-          "id": "tenureKind",
-          "label": "tenure kind",
-          "type": "string",
-          "description": "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels)."
         },
         {
           "localName": "titleExtents",
@@ -820,6 +796,62 @@
           "description": "Fee for a certificate of compliance required on a leasehold transfer (required-documents block). Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
+          "predicate": "isGroundRentPayable",
+          "predicateLabel": "is ground rent payable",
+          "predicateLocal": "isGroundRentPayable",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "isSharedOwnership",
+          "predicateLabel": "is shared ownership",
+          "predicateLocal": "isSharedOwnership",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "ownershipType",
+          "predicateLabel": "ownership type",
+          "predicateLocal": "ownershipType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
+        },
+        {
+          "predicate": "sellerContributesToServiceCharge",
+          "predicateLabel": "seller contributes to service charge",
+          "predicateLocal": "sellerContributesToServiceCharge",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme."
+        },
+        {
           "predicate": "sharedOwnershipRent",
           "predicateLabel": "shared ownership rent",
           "predicateLocal": "sharedOwnershipRent",
@@ -832,6 +864,20 @@
           ],
           "inverse": null,
           "description": "Rent payable on the retained share under a shared-ownership lease. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
+        },
+        {
+          "predicate": "tenureKind",
+          "predicateLabel": "tenure kind",
+          "predicateLocal": "tenureKind",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels)."
         }
       ],
       "incoming": [
@@ -1194,13 +1240,6 @@
           "description": "Distance in miles from the Property to a nearby facility (school / health-care / transport). xsd:decimal. Domain opda:NearbyFacility (the proximity relation on the genus), reused across the amenity bands; flat per §Q6a."
         },
         {
-          "localName": "ofstedRating",
-          "id": "ofstedRating",
-          "label": "Ofsted rating",
-          "type": "string",
-          "description": "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a."
-        },
-        {
           "localName": "otherRating",
           "id": "otherRating",
           "label": "other rating",
@@ -1236,13 +1275,6 @@
           "description": "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."
         },
         {
-          "localName": "transportType",
-          "id": "transportType",
-          "label": "transport type",
-          "type": "string",
-          "description": "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a."
-        },
-        {
           "localName": "typeOfHealthCare",
           "id": "typeOfHealthCare",
           "label": "type of health care",
@@ -1250,10 +1282,48 @@
           "description": "Type of a nearby health-care facility. Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."
         }
       ],
-      "outgoing": [],
+      "outgoing": [
+        {
+          "predicate": "ofstedRating",
+          "predicateLabel": "Ofsted rating",
+          "predicateLocal": "ofstedRating",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a."
+        },
+        {
+          "predicate": "transportType",
+          "predicateLabel": "transport type",
+          "predicateLocal": "transportType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a."
+        }
+      ],
       "incoming": [],
       "shapes": [],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/OfstedRatingScheme",
+          "localName": "OfstedRatingScheme"
+        },
+        {
+          "id": "scheme/TransportTypeScheme",
+          "localName": "TransportTypeScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0024/section-Rules-R4"
       ]
@@ -1409,13 +1479,6 @@
           "description": "Internal floor area of the Property — a measured UFO Quality (the unit of measure is carried alongside in the source structure). Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a."
         },
         {
-          "localName": "areBoundariesUniform",
-          "id": "areBoundariesUniform",
-          "label": "are boundaries uniform",
-          "type": "string",
-          "description": "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile."
-        },
-        {
           "localName": "bathrooms",
           "id": "bathrooms",
           "label": "bathrooms",
@@ -1428,20 +1491,6 @@
           "label": "bedrooms",
           "type": "integer",
           "description": "Number of bedrooms in the Property — a countable UFO Quality of the physical Property. Plain integer datatype (no enumerated value-space) per ODR-0008 §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "builtForm",
-          "id": "builtForm",
-          "label": "built form",
-          "type": "string",
-          "description": "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint)."
-        },
-        {
-          "localName": "centralHeatingFuelType",
-          "id": "centralHeatingFuelType",
-          "label": "central heating fuel type",
-          "type": "string",
-          "description": "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
         },
         {
           "localName": "centralHeatingInstalled",
@@ -1465,13 +1514,6 @@
           "description": "Charging basis that would apply consequentially (e.g. on a change of circumstances) for the Property's water/sewerage. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
         },
         {
-          "localName": "constructionType",
-          "id": "constructionType",
-          "label": "construction type",
-          "type": "string",
-          "description": "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a."
-        },
-        {
           "localName": "councilTaxBand",
           "id": "councilTaxBand",
           "label": "council tax band",
@@ -1484,13 +1526,6 @@
           "label": "current charging basis",
           "type": "string",
           "description": "Current basis on which the Property's water/sewerage is charged. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "currentEnergyRating",
-          "id": "currentEnergyRating",
-          "label": "current energy rating",
-          "type": "string",
-          "description": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."
         },
         {
           "localName": "dateInstalled",
@@ -1563,13 +1598,6 @@
           "description": "Whether the Property's smart-home systems will be handed over on completion. xsd:boolean. Flat per §Q6a."
         },
         {
-          "localName": "hasBeenFlooded",
-          "id": "hasBeenFlooded",
-          "label": "has been flooded",
-          "type": "string",
-          "description": "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "hasFloodDefences",
           "id": "hasFloodDefences",
           "label": "has flood defences",
@@ -1598,32 +1626,11 @@
           "description": "Whether the Property (building) has a lift. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "hasSmartHomeSystems",
-          "id": "hasSmartHomeSystems",
-          "label": "has smart home systems",
-          "type": "string",
-          "description": "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme."
-        },
-        {
-          "localName": "hasSprayFoamInstalled",
-          "id": "hasSprayFoamInstalled",
-          "label": "has spray foam installed",
-          "type": "string",
-          "description": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "hasUPRN",
           "id": "hasUPRN",
           "label": "has UPRN",
           "type": "string",
           "description": "Unique Property Reference Number — OS AddressBase identifier. Per ODR-0005 §6a a contingent administrative identifier under PROV-O succession; NOT a load-bearing identity criterion. Operationally checkable via dash:uniqueValueForClass (ADR-0012 emits the shape)."
-        },
-        {
-          "localName": "hasValidGuaranteesOrWarranties",
-          "id": "hasValidGuaranteesOrWarranties",
-          "label": "has valid guarantees or warranties",
-          "type": "string",
-          "description": "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme."
         },
         {
           "localName": "heading",
@@ -1638,13 +1645,6 @@
           "label": "heating last serviced date",
           "type": "date",
           "description": "Date the Property's central-heating system was last serviced. xsd:date. Flat per §Q6a."
-        },
-        {
-          "localName": "heatingType",
-          "id": "heatingType",
-          "label": "heating type",
-          "type": "string",
-          "description": "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
         },
         {
           "localName": "isConnectedToNationalGrid",
@@ -1668,13 +1668,6 @@
           "description": "Whether the Property is a House in Multiple Occupation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "isInsured",
-          "id": "isInsured",
-          "label": "is insured",
-          "type": "string",
-          "description": "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "isLimitedCompanySale",
           "id": "isLimitedCompanySale",
           "label": "is limited company sale",
@@ -1682,25 +1675,11 @@
           "description": "Whether the seller is a limited company. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "isLocatedOverCommercialPremises",
-          "id": "isLocatedOverCommercialPremises",
-          "label": "is located over commercial premises",
-          "type": "string",
-          "description": "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "isStudentAccommodation",
           "id": "isStudentAccommodation",
           "label": "is student accommodation",
           "type": "string",
           "description": "Whether the Property is student accommodation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "isSupplyMetered",
-          "id": "isSupplyMetered",
-          "label": "is supply metered",
-          "type": "string",
-          "description": "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme."
         },
         {
           "localName": "kitchens",
@@ -1759,13 +1738,6 @@
           "description": "Whether a Japanese-knotweed management plan is in place. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."
         },
         {
-          "localName": "marketingTenure",
-          "id": "marketingTenure",
-          "label": "marketing tenure",
-          "type": "string",
-          "description": "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."
-        },
-        {
           "localName": "mpan",
           "id": "mpan",
           "label": "MPAN",
@@ -1792,13 +1764,6 @@
           "label": "number of properties sharing",
           "type": "integer",
           "description": "Number of other properties sharing the Property's off-mains drainage system. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."
-        },
-        {
-          "localName": "offMainsDrainageSystemType",
-          "id": "offMainsDrainageSystemType",
-          "label": "off-mains drainage system type",
-          "type": "string",
-          "description": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage."
         },
         {
           "localName": "otherCentralHeatingFuelType",
@@ -1843,20 +1808,6 @@
           "description": "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."
         },
         {
-          "localName": "priceQualifier",
-          "id": "priceQualifier",
-          "label": "price qualifier",
-          "type": "string",
-          "description": "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a."
-        },
-        {
-          "localName": "propertyType",
-          "id": "propertyType",
-          "label": "property type",
-          "type": "string",
-          "description": "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
-        },
-        {
           "localName": "publicSewerMapAttached",
           "id": "publicSewerMapAttached",
           "label": "public sewer map attached",
@@ -1892,13 +1843,6 @@
           "description": "Name of the Property's sewerage provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
         },
         {
-          "localName": "soldWithVacantPossession",
-          "id": "soldWithVacantPossession",
-          "label": "sold with vacant possession",
-          "type": "string",
-          "description": "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme."
-        },
-        {
           "localName": "supplier",
           "id": "supplier",
           "label": "supplier",
@@ -1911,13 +1855,6 @@
           "label": "supply classification",
           "type": "string",
           "description": "Classification of the Property's water supply (e.g. metered / unmetered / rateable). A UFO Quale-in-Region of the physical Property. Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."
-        },
-        {
-          "localName": "typeOfConnection",
-          "id": "typeOfConnection",
-          "label": "type of connection",
-          "type": "string",
-          "description": "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."
         },
         {
           "localName": "typeOfFlooding",
@@ -2020,6 +1957,62 @@
           "description": "Annual cost of a controlled-parking permit for the Property. Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
+          "predicate": "areBoundariesUniform",
+          "predicateLabel": "are boundaries uniform",
+          "predicateLocal": "areBoundariesUniform",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile."
+        },
+        {
+          "predicate": "builtForm",
+          "predicateLabel": "built form",
+          "predicateLocal": "builtForm",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint)."
+        },
+        {
+          "predicate": "centralHeatingFuelType",
+          "predicateLabel": "central heating fuel type",
+          "predicateLocal": "centralHeatingFuelType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
+        },
+        {
+          "predicate": "constructionType",
+          "predicateLabel": "construction type",
+          "predicateLocal": "constructionType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a."
+        },
+        {
           "predicate": "councilTaxAnnualCharge",
           "predicateLabel": "council tax annual charge",
           "predicateLocal": "councilTaxAnnualCharge",
@@ -2034,6 +2027,20 @@
           "description": "Annual council-tax charge for the Property. Bearer opda:Property (a recurring liability of the dwelling). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
+          "predicate": "currentEnergyRating",
+          "predicateLabel": "current energy rating",
+          "predicateLocal": "currentEnergyRating",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."
+        },
+        {
           "predicate": "hasAddress",
           "predicateLabel": "has address",
           "predicateLocal": "hasAddress",
@@ -2046,6 +2053,20 @@
           ],
           "inverse": null,
           "description": "Canonical Property → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one Property may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire)."
+        },
+        {
+          "predicate": "hasBeenFlooded",
+          "predicateLabel": "has been flooded",
+          "predicateLocal": "hasBeenFlooded",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme."
         },
         {
           "predicate": "hasEPCCertificate",
@@ -2076,6 +2097,62 @@
           "description": "Relates an opda:Property to a room-dimension value structure (one per room in roomDimensions.rooms[]). Characterisation of a value, NOT mereological parthood (no opda:Room individual is asserted) and NOT transitive (Council session-030 / ODR-0024 R10)."
         },
         {
+          "predicate": "hasSmartHomeSystems",
+          "predicateLabel": "has smart home systems",
+          "predicateLocal": "hasSmartHomeSystems",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "hasSprayFoamInstalled",
+          "predicateLabel": "has spray foam installed",
+          "predicateLocal": "hasSprayFoamInstalled",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "hasValidGuaranteesOrWarranties",
+          "predicateLabel": "has valid guarantees or warranties",
+          "predicateLocal": "hasValidGuaranteesOrWarranties",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "heatingType",
+          "predicateLabel": "heating type",
+          "predicateLocal": "heatingType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
+        },
+        {
           "predicate": "holdingDeposit",
           "predicateLabel": "holding deposit",
           "predicateLocal": "holdingDeposit",
@@ -2090,6 +2167,76 @@
           "description": "Holding deposit in the Property's letting information (refundable — distinct value semantics from a sale price). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
+          "predicate": "isInsured",
+          "predicateLabel": "is insured",
+          "predicateLocal": "isInsured",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "isLocatedOverCommercialPremises",
+          "predicateLabel": "is located over commercial premises",
+          "predicateLocal": "isLocatedOverCommercialPremises",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "isSupplyMetered",
+          "predicateLabel": "is supply metered",
+          "predicateLocal": "isSupplyMetered",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "marketingTenure",
+          "predicateLabel": "marketing tenure",
+          "predicateLocal": "marketingTenure",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."
+        },
+        {
+          "predicate": "offMainsDrainageSystemType",
+          "predicateLabel": "off-mains drainage system type",
+          "predicateLocal": "offMainsDrainageSystemType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage."
+        },
+        {
           "predicate": "potentialCost",
           "predicateLabel": "potential cost",
           "predicateLocal": "potentialCost",
@@ -2102,6 +2249,34 @@
           ],
           "inverse": null,
           "description": "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
+        },
+        {
+          "predicate": "priceQualifier",
+          "predicateLabel": "price qualifier",
+          "predicateLocal": "priceQualifier",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a."
+        },
+        {
+          "predicate": "propertyType",
+          "predicateLabel": "property type",
+          "predicateLocal": "propertyType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."
         },
         {
           "predicate": "rent",
@@ -2130,6 +2305,34 @@
           ],
           "inverse": null,
           "description": "Security/tenancy deposit in the Property's letting information (refundable). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
+        },
+        {
+          "predicate": "soldWithVacantPossession",
+          "predicateLabel": "sold with vacant possession",
+          "predicateLocal": "soldWithVacantPossession",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme."
+        },
+        {
+          "predicate": "typeOfConnection",
+          "predicateLabel": "type of connection",
+          "predicateLocal": "typeOfConnection",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a."
         }
       ],
       "incoming": [
@@ -2156,7 +2359,24 @@
           "localName": "UPRNSuccessionRule"
         }
       ],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/BroadbandConnectionTypeScheme",
+          "localName": "BroadbandConnectionTypeScheme"
+        },
+        {
+          "id": "scheme/ConstructionTypeScheme",
+          "localName": "ConstructionTypeScheme"
+        },
+        {
+          "id": "scheme/PriceQualifierScheme",
+          "localName": "PriceQualifierScheme"
+        },
+        {
+          "id": "scheme/TenureKindScheme",
+          "localName": "TenureKindScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0005/section-2a",
         "harness/odr/ODR-0018/section-Rule1"
@@ -2172,19 +2392,31 @@
       "ufoCategory": "Role",
       "module": "agent",
       "context": "agent",
-      "attributes": [
+      "attributes": [],
+      "outgoing": [
         {
-          "localName": "ownerType",
-          "id": "ownerType",
-          "label": "owner type",
-          "type": "string",
+          "predicate": "ownerType",
+          "predicateLabel": "owner type",
+          "predicateLocal": "ownerType",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
           "description": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."
         }
       ],
-      "outgoing": [],
       "incoming": [],
       "shapes": [],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/OwnerTypeScheme",
+          "localName": "OwnerTypeScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q2"
       ]
@@ -2315,13 +2547,6 @@
           "description": "Date by which remedial action is required following a buildings-insurance RiskAssessment. xsd:date. Flat per §Q6a."
         },
         {
-          "localName": "riskIndicator",
-          "id": "riskIndicator",
-          "label": "risk indicator",
-          "type": "string",
-          "description": "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."
-        },
-        {
           "localName": "subCategory",
           "id": "subCategory",
           "label": "sub-category",
@@ -2357,6 +2582,20 @@
           ],
           "inverse": null,
           "description": "The environmental / search peril a RiskAssessment reports on — a dereferenceable opda:PerilScheme concept (ODR-0008d Rule 1c / Rule 2), NEVER an opaque string. The node shape restricts the value to the PerilScheme concepts via sh:in."
+        },
+        {
+          "predicate": "riskIndicator",
+          "predicateLabel": "risk indicator",
+          "predicateLocal": "riskIndicator",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."
         }
       ],
       "incoming": [
@@ -2384,6 +2623,10 @@
         {
           "id": "scheme/PerilScheme",
           "localName": "PerilScheme"
+        },
+        {
+          "id": "scheme/YesNoNotKnownScheme",
+          "localName": "YesNoNotKnownScheme"
         }
       ],
       "dctSource": [
@@ -2419,16 +2662,23 @@
       "ufoCategory": "RoleMixin",
       "module": "foundation",
       "context": "foundation",
-      "attributes": [
+      "attributes": [],
+      "outgoing": [
         {
-          "localName": "roleNotation",
-          "id": "roleNotation",
-          "label": "role notation",
-          "type": "string",
+          "predicate": "roleNotation",
+          "predicateLabel": "role notation",
+          "predicateLocal": "roleNotation",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
           "description": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."
         }
       ],
-      "outgoing": [],
       "incoming": [],
       "shapes": [],
       "usesSchemes": [],
@@ -2706,13 +2956,6 @@
           "description": "Names of occupiers aged 17 or over (other than the Seller) in the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No discriminator)."
         },
         {
-          "localName": "hasAssertedCapacity",
-          "id": "hasAssertedCapacity",
-          "label": "has asserted capacity",
-          "type": "string",
-          "description": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority."
-        },
-        {
           "localName": "hasOthersAged17OrOver",
           "id": "hasOthersAged17OrOver",
           "label": "has others aged 17 or over",
@@ -2728,6 +2971,20 @@
         }
       ],
       "outgoing": [
+        {
+          "predicate": "hasAssertedCapacity",
+          "predicateLabel": "has asserted capacity",
+          "predicateLocal": "hasAssertedCapacity",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority."
+        },
         {
           "predicate": "hasEvidencedAuthority",
           "predicateLabel": "has evidenced authority",
@@ -3291,6 +3548,34 @@
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.annualServiceCharge"
       ]
     },
+    "areBoundariesUniform": {
+      "uri": "https://opda.org.uk/pdtf/areBoundariesUniform",
+      "id": "areBoundariesUniform",
+      "localName": "areBoundariesUniform",
+      "label": "are boundaries uniform",
+      "comment": "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
     "attestedBy": {
       "uri": "https://opda.org.uk/pdtf/attestedBy",
       "id": "attestedBy",
@@ -3341,6 +3626,64 @@
         "harness/odr/ODR-0018/section-Rule4"
       ]
     },
+    "builtForm": {
+      "uri": "https://opda.org.uk/pdtf/builtForm",
+      "id": "builtForm",
+      "localName": "builtForm",
+      "label": "built form",
+      "comment": "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint).",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.buildInformation.building.builtForm",
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "centralHeatingFuelType": {
+      "uri": "https://opda.org.uk/pdtf/centralHeatingFuelType",
+      "id": "centralHeatingFuelType",
+      "localName": "centralHeatingFuelType",
+      "label": "central heating fuel type",
+      "comment": "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
     "certificateOfComplianceFee": {
       "uri": "https://opda.org.uk/pdtf/certificateOfComplianceFee",
       "id": "certificateOfComplianceFee",
@@ -3367,6 +3710,46 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee"
+      ]
+    },
+    "constructionType": {
+      "uri": "https://opda.org.uk/pdtf/constructionType",
+      "id": "constructionType",
+      "localName": "constructionType",
+      "label": "construction type",
+      "comment": "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/ConstructionTypeValueShape",
+          "path": "https://opda.org.uk/pdtf/constructionType",
+          "pathLocal": "constructionType",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:constructionType MUST be one of the opda:ConstructionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.surveys[].misc.constructionType"
       ]
     },
     "costsApplicableToTheDeed": {
@@ -3466,6 +3849,35 @@
         "harness/odr/ODR-0024/section-Rules-R3"
       ]
     },
+    "currentEnergyRating": {
+      "uri": "https://opda.org.uk/pdtf/currentEnergyRating",
+      "id": "currentEnergyRating",
+      "localName": "currentEnergyRating",
+      "label": "current energy rating",
+      "comment": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint).",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.energyEfficiency.certificate.currentEnergyRating",
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
     "estimatedAmount": {
       "uri": "https://opda.org.uk/pdtf/estimatedAmount",
       "id": "estimatedAmount",
@@ -3520,6 +3932,46 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/valuationComparisonData.propertyPricing.estimatedPrice"
+      ]
+    },
+    "evidenceType": {
+      "uri": "https://opda.org.uk/pdtf/evidenceType",
+      "id": "evidenceType",
+      "localName": "evidenceType",
+      "label": "evidence type",
+      "comment": "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL.",
+      "kind": "object",
+      "module": "claim",
+      "subjects": [
+        {
+          "id": "Evidence",
+          "localName": "Evidence",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/EvidenceTypeValueShape",
+          "path": "https://opda.org.uk/pdtf/evidenceType",
+          "pathLocal": "evidenceType",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:evidenceType MUST be one of the opda:EvidenceMethodScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0009/section-Q1"
       ]
     },
     "feeIncludingVAT": {
@@ -3605,6 +4057,85 @@
       "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0015/section-3a"
+      ]
+    },
+    "hasAssertedCapacity": {
+      "uri": "https://opda.org.uk/pdtf/hasAssertedCapacity",
+      "id": "hasAssertedCapacity",
+      "localName": "hasAssertedCapacity",
+      "label": "has asserted capacity",
+      "comment": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority.",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "Seller",
+          "localName": "Seller",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/OrganisationIdentityKeyShape",
+          "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
+          "pathLocal": "hasAssertedCapacity",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Organisation identity-key surface: hasAssertedCapacity MUST be a single concept IRI when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."
+        },
+        {
+          "shape": "shape/PersonIdentityKeyShape",
+          "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
+          "pathLocal": "hasAssertedCapacity",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Person identity-key surface: hasAssertedCapacity MUST be a single concept IRI when present. The full Person IC per ODR-0006 §Q1 is borne by the identifier-bundle (NI number / passport / driving-licence); succession is tracked by the IdentifierSuccessionRule SHACL-AF rule below."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0006/section-Q4"
+      ]
+    },
+    "hasBeenFlooded": {
+      "uri": "https://opda.org.uk/pdtf/hasBeenFlooded",
+      "id": "hasBeenFlooded",
+      "localName": "hasBeenFlooded",
+      "label": "has been flooded",
+      "comment": "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "hasChainPosition": {
@@ -3719,6 +4250,62 @@
         "harness/odr/ODR-0024/section-Rules-R10"
       ]
     },
+    "hasSmartHomeSystems": {
+      "uri": "https://opda.org.uk/pdtf/hasSmartHomeSystems",
+      "id": "hasSmartHomeSystems",
+      "localName": "hasSmartHomeSystems",
+      "label": "has smart home systems",
+      "comment": "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "hasSprayFoamInstalled": {
+      "uri": "https://opda.org.uk/pdtf/hasSprayFoamInstalled",
+      "id": "hasSprayFoamInstalled",
+      "localName": "hasSprayFoamInstalled",
+      "label": "has spray foam installed",
+      "comment": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
     "hasSubAssessment": {
       "uri": "https://opda.org.uk/pdtf/hasSubAssessment",
       "id": "hasSubAssessment",
@@ -3757,6 +4344,63 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0008d/section-Rule-4"
+      ]
+    },
+    "hasValidGuaranteesOrWarranties": {
+      "uri": "https://opda.org.uk/pdtf/hasValidGuaranteesOrWarranties",
+      "id": "hasValidGuaranteesOrWarranties",
+      "localName": "hasValidGuaranteesOrWarranties",
+      "label": "has valid guarantees or warranties",
+      "comment": "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "heatingType": {
+      "uri": "https://opda.org.uk/pdtf/heatingType",
+      "id": "heatingType",
+      "localName": "heatingType",
+      "label": "heating type",
+      "comment": "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.heating.heatingSystem.heatingType",
+        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "holdingDeposit": {
@@ -3821,6 +4465,180 @@
         "harness/odr/ODR-0005/section-2a"
       ]
     },
+    "inclusionStatus": {
+      "uri": "https://opda.org.uk/pdtf/inclusionStatus",
+      "id": "inclusionStatus",
+      "localName": "inclusionStatus",
+      "label": "inclusion status",
+      "comment": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/FixturesListShape",
+          "path": "https://opda.org.uk/pdtf/inclusionStatus",
+          "pathLocal": "inclusionStatus",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "Fixtures-item opda:inclusionStatus MUST be one of the opda:InclusionStatusScheme values (Excluded / Included / None) — a sale-transaction Mode, never a Quality of opda:Property (ODR-0022 §4 / session-027 R4)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0022/section-Rules-4"
+      ]
+    },
+    "isGroundRentPayable": {
+      "uri": "https://opda.org.uk/pdtf/isGroundRentPayable",
+      "id": "isGroundRentPayable",
+      "localName": "isGroundRentPayable",
+      "label": "is ground rent payable",
+      "comment": "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "isInsured": {
+      "uri": "https://opda.org.uk/pdtf/isInsured",
+      "id": "isInsured",
+      "localName": "isInsured",
+      "label": "is insured",
+      "comment": "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "isLocatedOverCommercialPremises": {
+      "uri": "https://opda.org.uk/pdtf/isLocatedOverCommercialPremises",
+      "id": "isLocatedOverCommercialPremises",
+      "localName": "isLocatedOverCommercialPremises",
+      "label": "is located over commercial premises",
+      "comment": "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "isSharedOwnership": {
+      "uri": "https://opda.org.uk/pdtf/isSharedOwnership",
+      "id": "isSharedOwnership",
+      "localName": "isSharedOwnership",
+      "label": "is shared ownership",
+      "comment": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "isSupplyMetered": {
+      "uri": "https://opda.org.uk/pdtf/isSupplyMetered",
+      "id": "isSupplyMetered",
+      "localName": "isSupplyMetered",
+      "label": "is supply metered",
+      "comment": "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
     "listPrice": {
       "uri": "https://opda.org.uk/pdtf/listPrice",
       "id": "listPrice",
@@ -3849,6 +4667,46 @@
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice"
       ]
     },
+    "marketingTenure": {
+      "uri": "https://opda.org.uk/pdtf/marketingTenure",
+      "id": "marketingTenure",
+      "localName": "marketingTenure",
+      "label": "marketing tenure",
+      "comment": "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/MarketingTenureValueShape",
+          "path": "https://opda.org.uk/pdtf/marketingTenure",
+          "pathLocal": "marketingTenure",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:marketingTenure MUST be one of the opda:TenureKindScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.marketingTenure"
+      ]
+    },
     "mediates": {
       "uri": "https://opda.org.uk/pdtf/mediates",
       "id": "mediates",
@@ -3875,6 +4733,142 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q3"
+      ]
+    },
+    "offMainsDrainageSystemType": {
+      "uri": "https://opda.org.uk/pdtf/offMainsDrainageSystemType",
+      "id": "offMainsDrainageSystemType",
+      "localName": "offMainsDrainageSystemType",
+      "label": "off-mains drainage system type",
+      "comment": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "ofstedRating": {
+      "uri": "https://opda.org.uk/pdtf/ofstedRating",
+      "id": "ofstedRating",
+      "localName": "ofstedRating",
+      "label": "Ofsted rating",
+      "comment": "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "NearbyFacility",
+          "localName": "NearbyFacility",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/OfstedRatingValueShape",
+          "path": "https://opda.org.uk/pdtf/ofstedRating",
+          "pathLocal": "ofstedRating",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:ofstedRating MUST be one of the opda:OfstedRatingScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.nearbyFacilities.schools[].ofstedRating"
+      ]
+    },
+    "ownershipType": {
+      "uri": "https://opda.org.uk/pdtf/ownershipType",
+      "id": "ownershipType",
+      "localName": "ownershipType",
+      "label": "ownership type",
+      "comment": "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"
+      ]
+    },
+    "ownerType": {
+      "uri": "https://opda.org.uk/pdtf/ownerType",
+      "id": "ownerType",
+      "localName": "ownerType",
+      "label": "owner type",
+      "comment": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate).",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "Proprietor",
+          "localName": "Proprietor",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/OwnerTypeValueShape",
+          "path": "https://opda.org.uk/pdtf/ownerType",
+          "pathLocal": "ownerType",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:ownerType MUST be one of the opda:OwnerTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "peril": {
@@ -3945,6 +4939,75 @@
         "harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.potentialCost"
       ]
     },
+    "priceQualifier": {
+      "uri": "https://opda.org.uk/pdtf/priceQualifier",
+      "id": "priceQualifier",
+      "localName": "priceQualifier",
+      "label": "price qualifier",
+      "comment": "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/PriceQualifierValueShape",
+          "path": "https://opda.org.uk/pdtf/priceQualifier",
+          "pathLocal": "priceQualifier",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:priceQualifier MUST be one of the opda:PriceQualifierScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.priceInformation.priceQualifier"
+      ]
+    },
+    "propertyType": {
+      "uri": "https://opda.org.uk/pdtf/propertyType",
+      "id": "propertyType",
+      "localName": "propertyType",
+      "label": "property type",
+      "comment": "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.buildInformation.building.propertyType",
+        "harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyType"
+      ]
+    },
     "recordsEstate": {
       "uri": "https://opda.org.uk/pdtf/recordsEstate",
       "id": "recordsEstate",
@@ -4001,6 +5064,74 @@
         "harness/data-dictionary/propertyPack.lettingInformation.rent"
       ]
     },
+    "riskIndicator": {
+      "uri": "https://opda.org.uk/pdtf/riskIndicator",
+      "id": "riskIndicator",
+      "localName": "riskIndicator",
+      "label": "risk indicator",
+      "comment": "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4).",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "RiskAssessment",
+          "localName": "RiskAssessment",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/RiskAssessmentShape",
+          "path": "https://opda.org.uk/pdtf/riskIndicator",
+          "pathLocal": "riskIndicator",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "RiskAssessment opda:riskIndicator MUST be one of the opda:YesNoNotKnownScheme values (No / Not known / Yes; ODR-0008d Rule 1c / Rule 4)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0008d/section-Rule-4"
+      ]
+    },
+    "roleNotation": {
+      "uri": "https://opda.org.uk/pdtf/roleNotation",
+      "id": "roleNotation",
+      "localName": "roleNotation",
+      "label": "role notation",
+      "comment": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class.",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0006/section-Q2"
+      ]
+    },
     "securityDeposit": {
       "uri": "https://opda.org.uk/pdtf/securityDeposit",
       "id": "securityDeposit",
@@ -4027,6 +5158,34 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.lettingInformation.securityDeposit"
+      ]
+    },
+    "sellerContributesToServiceCharge": {
+      "uri": "https://opda.org.uk/pdtf/sellerContributesToServiceCharge",
+      "id": "sellerContributesToServiceCharge",
+      "localName": "sellerContributesToServiceCharge",
+      "label": "seller contributes to service charge",
+      "comment": "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "sharedOwnershipRent": {
@@ -4083,6 +5242,34 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice"
+      ]
+    },
+    "soldWithVacantPossession": {
+      "uri": "https://opda.org.uk/pdtf/soldWithVacantPossession",
+      "id": "soldWithVacantPossession",
+      "localName": "soldWithVacantPossession",
+      "label": "sold with vacant possession",
+      "comment": "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "supportedBy": {
@@ -4151,6 +5338,126 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0018/section-Rule4"
+      ]
+    },
+    "tenureKind": {
+      "uri": "https://opda.org.uk/pdtf/tenureKind",
+      "id": "tenureKind",
+      "localName": "tenureKind",
+      "label": "tenure kind",
+      "comment": "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels).",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/LegalEstateIdentityKeyShape",
+          "path": "https://opda.org.uk/pdtf/tenureKind",
+          "pathLocal": "tenureKind",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "LegalEstate identity surface: tenureKind (Freehold / Leasehold / Commonhold) MUST be a single concept IRI when present. The full rights-bundle IC per ODR-0005 §3b is enforced by the registered-title binding via opda:recordsEstate."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "transportType": {
+      "uri": "https://opda.org.uk/pdtf/transportType",
+      "id": "transportType",
+      "localName": "transportType",
+      "label": "transport type",
+      "comment": "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "NearbyFacility",
+          "localName": "NearbyFacility",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/TransportTypeValueShape",
+          "path": "https://opda.org.uk/pdtf/transportType",
+          "pathLocal": "transportType",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:transportType MUST be one of the opda:TransportTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.nearbyFacilities.transport[].transportType"
+      ]
+    },
+    "typeOfConnection": {
+      "uri": "https://opda.org.uk/pdtf/typeOfConnection",
+      "id": "typeOfConnection",
+      "localName": "typeOfConnection",
+      "label": "type of connection",
+      "comment": "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+      "kind": "object",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#Concept",
+          "localName": "Concept",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/BroadbandConnectionValueShape",
+          "path": "https://opda.org.uk/pdtf/typeOfConnection",
+          "pathLocal": "typeOfConnection",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "opda:typeOfConnection MUST be one of the opda:BroadbandConnectionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
+        }
+      ],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.connectivity.broadband.typeOfConnection"
       ]
     }
   },
@@ -4574,34 +5881,6 @@
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area"
       ]
     },
-    "areBoundariesUniform": {
-      "uri": "https://opda.org.uk/pdtf/areBoundariesUniform",
-      "id": "areBoundariesUniform",
-      "localName": "areBoundariesUniform",
-      "label": "are boundaries uniform",
-      "comment": "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "authorisationToShare": {
       "uri": "https://opda.org.uk/pdtf/authorisationToShare",
       "id": "authorisationToShare",
@@ -4772,64 +6051,6 @@
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment"
       ]
     },
-    "builtForm": {
-      "uri": "https://opda.org.uk/pdtf/builtForm",
-      "id": "builtForm",
-      "localName": "builtForm",
-      "label": "built form",
-      "comment": "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint).",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.buildInformation.building.builtForm",
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
-    "centralHeatingFuelType": {
-      "uri": "https://opda.org.uk/pdtf/centralHeatingFuelType",
-      "id": "centralHeatingFuelType",
-      "localName": "centralHeatingFuelType",
-      "label": "central heating fuel type",
-      "comment": "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "centralHeatingInstalled": {
       "uri": "https://opda.org.uk/pdtf/centralHeatingInstalled",
       "id": "centralHeatingInstalled",
@@ -4998,46 +6219,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.waterAndDrainage.charging.consequentialChargingBasis"
-      ]
-    },
-    "constructionType": {
-      "uri": "https://opda.org.uk/pdtf/constructionType",
-      "id": "constructionType",
-      "localName": "constructionType",
-      "label": "construction type",
-      "comment": "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/ConstructionTypeValueShape",
-          "path": "https://opda.org.uk/pdtf/constructionType",
-          "pathLocal": "constructionType",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:constructionType MUST be one of the opda:ConstructionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.surveys[].misc.constructionType"
       ]
     },
     "consumerProtectionRegulationsResponse": {
@@ -5235,35 +6416,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.waterAndDrainage.charging.currentChargingBasis"
-      ]
-    },
-    "currentEnergyRating": {
-      "uri": "https://opda.org.uk/pdtf/currentEnergyRating",
-      "id": "currentEnergyRating",
-      "localName": "currentEnergyRating",
-      "label": "current energy rating",
-      "comment": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint).",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.energyEfficiency.certificate.currentEnergyRating",
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "dangerousCladdingOrDefects": {
@@ -6009,46 +7161,6 @@
         "harness/data-dictionary/propertyPack.buildInformation.building.entranceFloor"
       ]
     },
-    "evidenceType": {
-      "uri": "https://opda.org.uk/pdtf/evidenceType",
-      "id": "evidenceType",
-      "localName": "evidenceType",
-      "label": "evidence type",
-      "comment": "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL.",
-      "kind": "datatype",
-      "module": "claim",
-      "subjects": [
-        {
-          "id": "Evidence",
-          "localName": "Evidence",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/EvidenceTypeValueShape",
-          "path": "https://opda.org.uk/pdtf/evidenceType",
-          "pathLocal": "evidenceType",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:evidenceType MUST be one of the opda:EvidenceMethodScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0009/section-Q1"
-      ]
-    },
     "expectedDeliveryDate": {
       "uri": "https://opda.org.uk/pdtf/expectedDeliveryDate",
       "id": "expectedDeliveryDate",
@@ -6282,85 +7394,6 @@
         "harness/data-dictionary/propertyPack.smartHomeSystems.handoverOnCompletion"
       ]
     },
-    "hasAssertedCapacity": {
-      "uri": "https://opda.org.uk/pdtf/hasAssertedCapacity",
-      "id": "hasAssertedCapacity",
-      "localName": "hasAssertedCapacity",
-      "label": "has asserted capacity",
-      "comment": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority.",
-      "kind": "datatype",
-      "module": "agent",
-      "subjects": [
-        {
-          "id": "Seller",
-          "localName": "Seller",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/OrganisationIdentityKeyShape",
-          "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
-          "pathLocal": "hasAssertedCapacity",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "Organisation identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."
-        },
-        {
-          "shape": "shape/PersonIdentityKeyShape",
-          "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
-          "pathLocal": "hasAssertedCapacity",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "Person identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. The full Person IC per ODR-0006 §Q1 is borne by the identifier-bundle (NI number / passport / driving-licence); succession is tracked by the IdentifierSuccessionRule SHACL-AF rule below."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0006/section-Q4"
-      ]
-    },
-    "hasBeenFlooded": {
-      "uri": "https://opda.org.uk/pdtf/hasBeenFlooded",
-      "id": "hasBeenFlooded",
-      "localName": "hasBeenFlooded",
-      "label": "has been flooded",
-      "comment": "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "hasFixedRentcharge": {
       "uri": "https://opda.org.uk/pdtf/hasFixedRentcharge",
       "id": "hasFixedRentcharge",
@@ -6529,34 +7562,6 @@
         "harness/odr/ODR-0008/section-Q5a"
       ]
     },
-    "hasSmartHomeSystems": {
-      "uri": "https://opda.org.uk/pdtf/hasSmartHomeSystems",
-      "id": "hasSmartHomeSystems",
-      "localName": "hasSmartHomeSystems",
-      "label": "has smart home systems",
-      "comment": "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "hasSpecialCategoryData": {
       "uri": "https://opda.org.uk/pdtf/hasSpecialCategoryData",
       "id": "hasSpecialCategoryData",
@@ -6577,34 +7582,6 @@
       "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0012/section-Q5"
-      ]
-    },
-    "hasSprayFoamInstalled": {
-      "uri": "https://opda.org.uk/pdtf/hasSprayFoamInstalled",
-      "id": "hasSprayFoamInstalled",
-      "localName": "hasSprayFoamInstalled",
-      "label": "has spray foam installed",
-      "comment": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "hasTenantCompanyDissolved": {
@@ -6673,34 +7650,6 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0005/section-6a"
-      ]
-    },
-    "hasValidGuaranteesOrWarranties": {
-      "uri": "https://opda.org.uk/pdtf/hasValidGuaranteesOrWarranties",
-      "id": "hasValidGuaranteesOrWarranties",
-      "localName": "hasValidGuaranteesOrWarranties",
-      "label": "has valid guarantees or warranties",
-      "comment": "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "heading": {
@@ -6787,69 +7736,6 @@
         "harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate"
       ]
     },
-    "heatingType": {
-      "uri": "https://opda.org.uk/pdtf/heatingType",
-      "id": "heatingType",
-      "localName": "heatingType",
-      "label": "heating type",
-      "comment": "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.heating.heatingSystem.heatingType",
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
-    "inclusionStatus": {
-      "uri": "https://opda.org.uk/pdtf/inclusionStatus",
-      "id": "inclusionStatus",
-      "localName": "inclusionStatus",
-      "label": "inclusion status",
-      "comment": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/FixturesListShape",
-          "path": "https://opda.org.uk/pdtf/inclusionStatus",
-          "pathLocal": "inclusionStatus",
-          "datatype": null,
-          "class": null,
-          "minCount": null,
-          "maxCount": null,
-          "severity": "Violation",
-          "message": "Fixtures-item opda:inclusionStatus MUST be one of the opda:InclusionStatusScheme values (Excluded / Included / None) — a sale-transaction Mode, never a Quality of opda:Property (ODR-0022 §4 / session-027 R4)."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0022/section-Rules-4"
-      ]
-    },
     "isConnectedToNationalGrid": {
       "uri": "https://opda.org.uk/pdtf/isConnectedToNationalGrid",
       "id": "isConnectedToNationalGrid",
@@ -6906,34 +7792,6 @@
         "harness/data-dictionary/propertyPack.ownership.isFirstRegistration"
       ]
     },
-    "isGroundRentPayable": {
-      "uri": "https://opda.org.uk/pdtf/isGroundRentPayable",
-      "id": "isGroundRentPayable",
-      "localName": "isGroundRentPayable",
-      "label": "is ground rent payable",
-      "comment": "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "LegalEstate",
-          "localName": "LegalEstate",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "isHMO": {
       "uri": "https://opda.org.uk/pdtf/isHMO",
       "id": "isHMO",
@@ -6960,34 +7818,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.buildInformation.isHMO"
-      ]
-    },
-    "isInsured": {
-      "uri": "https://opda.org.uk/pdtf/isInsured",
-      "id": "isInsured",
-      "localName": "isInsured",
-      "label": "is insured",
-      "comment": "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "isLeaseQualifying": {
@@ -7046,34 +7876,6 @@
         "harness/data-dictionary/propertyPack.ownership.isLimitedCompanySale"
       ]
     },
-    "isLocatedOverCommercialPremises": {
-      "uri": "https://opda.org.uk/pdtf/isLocatedOverCommercialPremises",
-      "id": "isLocatedOverCommercialPremises",
-      "localName": "isLocatedOverCommercialPremises",
-      "label": "is located over commercial premises",
-      "comment": "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "isManagingAgentEmployed": {
       "uri": "https://opda.org.uk/pdtf/isManagingAgentEmployed",
       "id": "isManagingAgentEmployed",
@@ -7124,34 +7926,6 @@
         "harness/odr/ODR-0018/section-Rule1"
       ]
     },
-    "isSharedOwnership": {
-      "uri": "https://opda.org.uk/pdtf/isSharedOwnership",
-      "id": "isSharedOwnership",
-      "localName": "isSharedOwnership",
-      "label": "is shared ownership",
-      "comment": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "LegalEstate",
-          "localName": "LegalEstate",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "isStudentAccommodation": {
       "uri": "https://opda.org.uk/pdtf/isStudentAccommodation",
       "id": "isStudentAccommodation",
@@ -7178,34 +7952,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.buildInformation.isStudentAccommodation"
-      ]
-    },
-    "isSupplyMetered": {
-      "uri": "https://opda.org.uk/pdtf/isSupplyMetered",
-      "id": "isSupplyMetered",
-      "localName": "isSupplyMetered",
-      "label": "is supply metered",
-      "comment": "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "kitchens": {
@@ -7643,46 +8389,6 @@
         "harness/data-dictionary/propertyPack.specialistIssues.japaneseKnotweed.managementPlanInPlace"
       ]
     },
-    "marketingTenure": {
-      "uri": "https://opda.org.uk/pdtf/marketingTenure",
-      "id": "marketingTenure",
-      "localName": "marketingTenure",
-      "label": "marketing tenure",
-      "comment": "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/MarketingTenureValueShape",
-          "path": "https://opda.org.uk/pdtf/marketingTenure",
-          "pathLocal": "marketingTenure",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:marketingTenure MUST be one of the opda:TenureKindScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.marketingTenure"
-      ]
-    },
     "mediaUrl": {
       "uri": "https://opda.org.uk/pdtf/mediaUrl",
       "id": "mediaUrl",
@@ -7972,74 +8678,6 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0007/section-Q2"
-      ]
-    },
-    "offMainsDrainageSystemType": {
-      "uri": "https://opda.org.uk/pdtf/offMainsDrainageSystemType",
-      "id": "offMainsDrainageSystemType",
-      "localName": "offMainsDrainageSystemType",
-      "label": "off-mains drainage system type",
-      "comment": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
-    "ofstedRating": {
-      "uri": "https://opda.org.uk/pdtf/ofstedRating",
-      "id": "ofstedRating",
-      "localName": "ofstedRating",
-      "label": "Ofsted rating",
-      "comment": "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "NearbyFacility",
-          "localName": "NearbyFacility",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/OfstedRatingValueShape",
-          "path": "https://opda.org.uk/pdtf/ofstedRating",
-          "pathLocal": "ofstedRating",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:ofstedRating MUST be one of the opda:OfstedRatingScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.nearbyFacilities.schools[].ofstedRating"
       ]
     },
     "orderDate": {
@@ -8379,74 +9017,6 @@
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction"
       ]
     },
-    "ownershipType": {
-      "uri": "https://opda.org.uk/pdtf/ownershipType",
-      "id": "ownershipType",
-      "localName": "ownershipType",
-      "label": "ownership type",
-      "comment": "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "LegalEstate",
-          "localName": "LegalEstate",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType"
-      ]
-    },
-    "ownerType": {
-      "uri": "https://opda.org.uk/pdtf/ownerType",
-      "id": "ownerType",
-      "localName": "ownerType",
-      "label": "owner type",
-      "comment": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate).",
-      "kind": "datatype",
-      "module": "agent",
-      "subjects": [
-        {
-          "id": "Proprietor",
-          "localName": "Proprietor",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/OwnerTypeValueShape",
-          "path": "https://opda.org.uk/pdtf/ownerType",
-          "pathLocal": "ownerType",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:ownerType MUST be one of the opda:OwnerTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "parkingArrangements": {
       "uri": "https://opda.org.uk/pdtf/parkingArrangements",
       "id": "parkingArrangements",
@@ -8634,46 +9204,6 @@
         "harness/odr/ODR-0022/section-Rules-4"
       ]
     },
-    "priceQualifier": {
-      "uri": "https://opda.org.uk/pdtf/priceQualifier",
-      "id": "priceQualifier",
-      "localName": "priceQualifier",
-      "label": "price qualifier",
-      "comment": "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/PriceQualifierValueShape",
-          "path": "https://opda.org.uk/pdtf/priceQualifier",
-          "pathLocal": "priceQualifier",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:priceQualifier MUST be one of the opda:PriceQualifierScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.priceInformation.priceQualifier"
-      ]
-    },
     "pricingMethodology": {
       "uri": "https://opda.org.uk/pdtf/pricingMethodology",
       "id": "pricingMethodology",
@@ -8785,35 +9315,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea"
-      ]
-    },
-    "propertyType": {
-      "uri": "https://opda.org.uk/pdtf/propertyType",
-      "id": "propertyType",
-      "localName": "propertyType",
-      "label": "property type",
-      "comment": "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.buildInformation.building.propertyType",
-        "harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyType"
       ]
     },
     "providerName": {
@@ -9301,74 +9802,6 @@
         "harness/data-dictionary/propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn"
       ]
     },
-    "riskIndicator": {
-      "uri": "https://opda.org.uk/pdtf/riskIndicator",
-      "id": "riskIndicator",
-      "localName": "riskIndicator",
-      "label": "risk indicator",
-      "comment": "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4).",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "RiskAssessment",
-          "localName": "RiskAssessment",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/RiskAssessmentShape",
-          "path": "https://opda.org.uk/pdtf/riskIndicator",
-          "pathLocal": "riskIndicator",
-          "datatype": null,
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "RiskAssessment opda:riskIndicator MUST be one of the opda:YesNoNotKnownScheme values (No / Not known / Yes; ODR-0008d Rule 1c / Rule 4)."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0008d/section-Rule-4"
-      ]
-    },
-    "roleNotation": {
-      "uri": "https://opda.org.uk/pdtf/roleNotation",
-      "id": "roleNotation",
-      "localName": "roleNotation",
-      "label": "role notation",
-      "comment": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class.",
-      "kind": "datatype",
-      "module": "agent",
-      "subjects": [
-        {
-          "id": "RoleMixin",
-          "localName": "RoleMixin",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0006/section-Q2"
-      ]
-    },
     "roomName": {
       "uri": "https://opda.org.uk/pdtf/roomName",
       "id": "roomName",
@@ -9495,34 +9928,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate"
-      ]
-    },
-    "sellerContributesToServiceCharge": {
-      "uri": "https://opda.org.uk/pdtf/sellerContributesToServiceCharge",
-      "id": "sellerContributesToServiceCharge",
-      "localName": "sellerContributesToServiceCharge",
-      "label": "seller contributes to service charge",
-      "comment": "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "LegalEstate",
-          "localName": "LegalEstate",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "sellerOwnedProperty": {
@@ -9748,34 +10153,6 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate"
-      ]
-    },
-    "soldWithVacantPossession": {
-      "uri": "https://opda.org.uk/pdtf/soldWithVacantPossession",
-      "id": "soldWithVacantPossession",
-      "localName": "soldWithVacantPossession",
-      "label": "sold with vacant possession",
-      "comment": "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
       ]
     },
     "sortCode": {
@@ -10048,46 +10425,6 @@
         "harness/data-dictionary/propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare"
       ]
     },
-    "tenureKind": {
-      "uri": "https://opda.org.uk/pdtf/tenureKind",
-      "id": "tenureKind",
-      "localName": "tenureKind",
-      "label": "tenure kind",
-      "comment": "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels).",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "LegalEstate",
-          "localName": "LegalEstate",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/LegalEstateIdentityKeyShape",
-          "path": "https://opda.org.uk/pdtf/tenureKind",
-          "pathLocal": "tenureKind",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "LegalEstate identity surface: tenureKind (Freehold / Leasehold / Commonhold) MUST be a single xsd:string value when present. The full rights-bundle IC per ODR-0005 §3b is enforced by the registered-title binding via opda:recordsEstate."
-        }
-      ],
-      "dctSource": [
-        "harness/odr/ODR-0008/section-Q5a"
-      ]
-    },
     "titleExtents": {
       "uri": "https://opda.org.uk/pdtf/titleExtents",
       "id": "titleExtents",
@@ -10237,86 +10574,6 @@
       "dctSource": [
         "harness/data-dictionary/chain.onwardPurchase[].transactionId",
         "harness/data-dictionary/transactionId"
-      ]
-    },
-    "transportType": {
-      "uri": "https://opda.org.uk/pdtf/transportType",
-      "id": "transportType",
-      "localName": "transportType",
-      "label": "transport type",
-      "comment": "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "NearbyFacility",
-          "localName": "NearbyFacility",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/TransportTypeValueShape",
-          "path": "https://opda.org.uk/pdtf/transportType",
-          "pathLocal": "transportType",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:transportType MUST be one of the opda:TransportTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.nearbyFacilities.transport[].transportType"
-      ]
-    },
-    "typeOfConnection": {
-      "uri": "https://opda.org.uk/pdtf/typeOfConnection",
-      "id": "typeOfConnection",
-      "localName": "typeOfConnection",
-      "label": "type of connection",
-      "comment": "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
-      "kind": "datatype",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [
-        {
-          "shape": "shape/BroadbandConnectionValueShape",
-          "path": "https://opda.org.uk/pdtf/typeOfConnection",
-          "pathLocal": "typeOfConnection",
-          "datatype": "string",
-          "class": null,
-          "minCount": null,
-          "maxCount": "1",
-          "severity": "Violation",
-          "message": "opda:typeOfConnection MUST be one of the opda:BroadbandConnectionTypeScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
-        }
-      ],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.connectivity.broadband.typeOfConnection"
       ]
     },
     "typeOfFlooding": {
@@ -11107,6 +11364,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/areBoundariesUniform",
       "constraints": []
     },
+    "shape/areBoundariesUniformRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/areBoundariesUniformRangeShape",
+      "id": "shape/areBoundariesUniformRangeShape",
+      "localName": "areBoundariesUniformRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/attestedByDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/attestedByDomainShape",
       "id": "shape/attestedByDomainShape",
@@ -11181,7 +11447,7 @@
         {
           "path": "https://opda.org.uk/pdtf/typeOfConnection",
           "pathLocal": "typeOfConnection",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -11217,6 +11483,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/builtForm",
       "constraints": []
     },
+    "shape/builtFormRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/builtFormRangeShape",
+      "id": "shape/builtFormRangeShape",
+      "localName": "builtFormRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/CapacityAuthorityMatchRule": {
       "uri": "https://opda.org.uk/pdtf/shape/CapacityAuthorityMatchRule",
       "id": "shape/CapacityAuthorityMatchRule",
@@ -11236,6 +11511,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/centralHeatingFuelType",
+      "constraints": []
+    },
+    "shape/centralHeatingFuelTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/centralHeatingFuelTypeRangeShape",
+      "id": "shape/centralHeatingFuelTypeRangeShape",
+      "localName": "centralHeatingFuelTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/centralHeatingInstalledDomainShape": {
@@ -11408,6 +11692,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/constructionType",
       "constraints": []
     },
+    "shape/constructionTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/constructionTypeRangeShape",
+      "id": "shape/constructionTypeRangeShape",
+      "localName": "constructionTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/ConstructionTypeValueShape": {
       "uri": "https://opda.org.uk/pdtf/shape/ConstructionTypeValueShape",
       "id": "shape/ConstructionTypeValueShape",
@@ -11419,7 +11712,7 @@
         {
           "path": "https://opda.org.uk/pdtf/constructionType",
           "pathLocal": "constructionType",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -11552,6 +11845,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/currentEnergyRating",
+      "constraints": []
+    },
+    "shape/currentEnergyRatingRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/currentEnergyRatingRangeShape",
+      "id": "shape/currentEnergyRatingRangeShape",
+      "localName": "currentEnergyRatingRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/dangerousCladdingOrDefectsDomainShape": {
@@ -11912,6 +12214,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/evidenceType",
       "constraints": []
     },
+    "shape/evidenceTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/evidenceTypeRangeShape",
+      "id": "shape/evidenceTypeRangeShape",
+      "localName": "evidenceTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/EvidenceTypeValueShape": {
       "uri": "https://opda.org.uk/pdtf/shape/EvidenceTypeValueShape",
       "id": "shape/EvidenceTypeValueShape",
@@ -11923,7 +12234,7 @@
         {
           "path": "https://opda.org.uk/pdtf/evidenceType",
           "pathLocal": "evidenceType",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -12092,6 +12403,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasAssertedCapacity",
       "constraints": []
     },
+    "shape/hasAssertedCapacityRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasAssertedCapacityRangeShape",
+      "id": "shape/hasAssertedCapacityRangeShape",
+      "localName": "hasAssertedCapacityRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/hasBeenFloodedDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/hasBeenFloodedDomainShape",
       "id": "shape/hasBeenFloodedDomainShape",
@@ -12099,6 +12419,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasBeenFlooded",
+      "constraints": []
+    },
+    "shape/hasBeenFloodedRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasBeenFloodedRangeShape",
+      "id": "shape/hasBeenFloodedRangeShape",
+      "localName": "hasBeenFloodedRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/hasChainPositionDomainShape": {
@@ -12236,6 +12565,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasSmartHomeSystems",
       "constraints": []
     },
+    "shape/hasSmartHomeSystemsRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasSmartHomeSystemsRangeShape",
+      "id": "shape/hasSmartHomeSystemsRangeShape",
+      "localName": "hasSmartHomeSystemsRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/hasSprayFoamInstalledDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/hasSprayFoamInstalledDomainShape",
       "id": "shape/hasSprayFoamInstalledDomainShape",
@@ -12243,6 +12581,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasSprayFoamInstalled",
+      "constraints": []
+    },
+    "shape/hasSprayFoamInstalledRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasSprayFoamInstalledRangeShape",
+      "id": "shape/hasSprayFoamInstalledRangeShape",
+      "localName": "hasSprayFoamInstalledRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/hasSubAssessmentDomainShape": {
@@ -12290,6 +12637,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasValidGuaranteesOrWarranties",
       "constraints": []
     },
+    "shape/hasValidGuaranteesOrWarrantiesRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasValidGuaranteesOrWarrantiesRangeShape",
+      "id": "shape/hasValidGuaranteesOrWarrantiesRangeShape",
+      "localName": "hasValidGuaranteesOrWarrantiesRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/headingDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/headingDomainShape",
       "id": "shape/headingDomainShape",
@@ -12326,6 +12682,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/heatingType",
       "constraints": []
     },
+    "shape/heatingTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/heatingTypeRangeShape",
+      "id": "shape/heatingTypeRangeShape",
+      "localName": "heatingTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/holdingDepositDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/holdingDepositDomainShape",
       "id": "shape/holdingDepositDomainShape",
@@ -12360,6 +12725,15 @@
       "uri": "https://opda.org.uk/pdtf/shape/identifiesSamePropertyRangeShape",
       "id": "shape/identifiesSamePropertyRangeShape",
       "localName": "identifiesSamePropertyRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/inclusionStatusRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/inclusionStatusRangeShape",
+      "id": "shape/inclusionStatusRangeShape",
+      "localName": "inclusionStatusRangeShape",
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": null,
@@ -12404,6 +12778,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/isGroundRentPayable",
       "constraints": []
     },
+    "shape/isGroundRentPayableRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/isGroundRentPayableRangeShape",
+      "id": "shape/isGroundRentPayableRangeShape",
+      "localName": "isGroundRentPayableRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/isHMODomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/isHMODomainShape",
       "id": "shape/isHMODomainShape",
@@ -12420,6 +12803,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/isInsured",
+      "constraints": []
+    },
+    "shape/isInsuredRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/isInsuredRangeShape",
+      "id": "shape/isInsuredRangeShape",
+      "localName": "isInsuredRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/isLeaseQualifyingDomainShape": {
@@ -12449,6 +12841,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/isLocatedOverCommercialPremises",
       "constraints": []
     },
+    "shape/isLocatedOverCommercialPremisesRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/isLocatedOverCommercialPremisesRangeShape",
+      "id": "shape/isLocatedOverCommercialPremisesRangeShape",
+      "localName": "isLocatedOverCommercialPremisesRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/isManagingAgentEmployedDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/isManagingAgentEmployedDomainShape",
       "id": "shape/isManagingAgentEmployedDomainShape",
@@ -12467,6 +12868,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/isSharedOwnership",
       "constraints": []
     },
+    "shape/isSharedOwnershipRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/isSharedOwnershipRangeShape",
+      "id": "shape/isSharedOwnershipRangeShape",
+      "localName": "isSharedOwnershipRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/isStudentAccommodationDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/isStudentAccommodationDomainShape",
       "id": "shape/isStudentAccommodationDomainShape",
@@ -12483,6 +12893,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/isSupplyMetered",
+      "constraints": []
+    },
+    "shape/isSupplyMeteredRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/isSupplyMeteredRangeShape",
+      "id": "shape/isSupplyMeteredRangeShape",
+      "localName": "isSupplyMeteredRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/kitchensDomainShape": {
@@ -12556,12 +12975,12 @@
         {
           "path": "https://opda.org.uk/pdtf/tenureKind",
           "pathLocal": "tenureKind",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
           "severity": "Violation",
-          "message": "LegalEstate identity surface: tenureKind (Freehold / Leasehold / Commonhold) MUST be a single xsd:string value when present. The full rights-bundle IC per ODR-0005 §3b is enforced by the registered-title binding via opda:recordsEstate."
+          "message": "LegalEstate identity surface: tenureKind (Freehold / Leasehold / Commonhold) MUST be a single concept IRI when present. The full rights-bundle IC per ODR-0005 §3b is enforced by the registered-title binding via opda:recordsEstate."
         }
       ]
     },
@@ -12682,6 +13101,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/marketingTenure",
       "constraints": []
     },
+    "shape/marketingTenureRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/marketingTenureRangeShape",
+      "id": "shape/marketingTenureRangeShape",
+      "localName": "marketingTenureRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/MarketingTenureValueShape": {
       "uri": "https://opda.org.uk/pdtf/shape/MarketingTenureValueShape",
       "id": "shape/MarketingTenureValueShape",
@@ -12693,7 +13121,7 @@
         {
           "path": "https://opda.org.uk/pdtf/marketingTenure",
           "pathLocal": "marketingTenure",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -12886,6 +13314,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/offMainsDrainageSystemType",
       "constraints": []
     },
+    "shape/offMainsDrainageSystemTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/offMainsDrainageSystemTypeRangeShape",
+      "id": "shape/offMainsDrainageSystemTypeRangeShape",
+      "localName": "offMainsDrainageSystemTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/ofstedRatingDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/ofstedRatingDomainShape",
       "id": "shape/ofstedRatingDomainShape",
@@ -12893,6 +13330,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/ofstedRating",
+      "constraints": []
+    },
+    "shape/ofstedRatingRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/ofstedRatingRangeShape",
+      "id": "shape/ofstedRatingRangeShape",
+      "localName": "ofstedRatingRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/OfstedRatingValueShape": {
@@ -12906,7 +13352,7 @@
         {
           "path": "https://opda.org.uk/pdtf/ofstedRating",
           "pathLocal": "ofstedRating",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -12914,6 +13360,24 @@
           "message": "opda:ofstedRating MUST be one of the opda:OfstedRatingScheme member values (ODR-0024 R5/R6 — a controlled value-space sh:in-restricted via sh:targetSubjectsOf, holding without an overlay profile)."
         }
       ]
+    },
+    "shape/OntoCleanAntiRigidSubclassing_MetaShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/OntoCleanAntiRigidSubclassing_MetaShape",
+      "id": "shape/OntoCleanAntiRigidSubclassing_MetaShape",
+      "localName": "OntoCleanAntiRigidSubclassing_MetaShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/ontoCleanRigidity",
+      "constraints": []
+    },
+    "shape/OntoCleanIncompatibleIdentitySubclassing_MetaShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/OntoCleanIncompatibleIdentitySubclassing_MetaShape",
+      "id": "shape/OntoCleanIncompatibleIdentitySubclassing_MetaShape",
+      "localName": "OntoCleanIncompatibleIdentitySubclassing_MetaShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/ontoCleanIdentity",
+      "constraints": []
     },
     "shape/orderDateDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/orderDateDomainShape",
@@ -12938,12 +13402,12 @@
         {
           "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
           "pathLocal": "hasAssertedCapacity",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Organisation identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."
+          "message": "Organisation identity-key surface: hasAssertedCapacity MUST be a single concept IRI when present. Full IC per ODR-0006 §Q6 borne by the registration-record (LEI / Companies House number); subclass relationship to org:Organization preserves cross-vocabulary identity."
         }
       ]
     },
@@ -13055,6 +13519,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/ownershipType",
       "constraints": []
     },
+    "shape/ownershipTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/ownershipTypeRangeShape",
+      "id": "shape/ownershipTypeRangeShape",
+      "localName": "ownershipTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/ownerTypeDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/ownerTypeDomainShape",
       "id": "shape/ownerTypeDomainShape",
@@ -13062,6 +13535,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/ownerType",
+      "constraints": []
+    },
+    "shape/ownerTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/ownerTypeRangeShape",
+      "id": "shape/ownerTypeRangeShape",
+      "localName": "ownerTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/OwnerTypeValueShape": {
@@ -13075,7 +13557,7 @@
         {
           "path": "https://opda.org.uk/pdtf/ownerType",
           "pathLocal": "ownerType",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -13125,12 +13607,12 @@
         {
           "path": "https://opda.org.uk/pdtf/hasAssertedCapacity",
           "pathLocal": "hasAssertedCapacity",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Person identity-key surface: hasAssertedCapacity MUST be a single xsd:string value when present. The full Person IC per ODR-0006 §Q1 is borne by the identifier-bundle (NI number / passport / driving-licence); succession is tracked by the IdentifierSuccessionRule SHACL-AF rule below."
+          "message": "Person identity-key surface: hasAssertedCapacity MUST be a single concept IRI when present. The full Person IC per ODR-0006 §Q1 is borne by the identifier-bundle (NI number / passport / driving-licence); succession is tracked by the IdentifierSuccessionRule SHACL-AF rule below."
         }
       ]
     },
@@ -13209,6 +13691,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/priceQualifier",
       "constraints": []
     },
+    "shape/priceQualifierRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/priceQualifierRangeShape",
+      "id": "shape/priceQualifierRangeShape",
+      "localName": "priceQualifierRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/PriceQualifierValueShape": {
       "uri": "https://opda.org.uk/pdtf/shape/PriceQualifierValueShape",
       "id": "shape/PriceQualifierValueShape",
@@ -13220,7 +13711,7 @@
         {
           "path": "https://opda.org.uk/pdtf/priceQualifier",
           "pathLocal": "priceQualifier",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -13318,6 +13809,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/propertyType",
+      "constraints": []
+    },
+    "shape/propertyTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/propertyTypeRangeShape",
+      "id": "shape/propertyTypeRangeShape",
+      "localName": "propertyTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/ProprietorshipMediationShape": {
@@ -13626,6 +14126,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/riskIndicator",
       "constraints": []
     },
+    "shape/riskIndicatorRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/riskIndicatorRangeShape",
+      "id": "shape/riskIndicatorRangeShape",
+      "localName": "riskIndicatorRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/roleNotationDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/roleNotationDomainShape",
       "id": "shape/roleNotationDomainShape",
@@ -13633,6 +14142,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/roleNotation",
+      "constraints": []
+    },
+    "shape/roleNotationRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/roleNotationRangeShape",
+      "id": "shape/roleNotationRangeShape",
+      "localName": "roleNotationRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/RoomDimensionShape": {
@@ -13807,6 +14325,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/sellerContributesToServiceCharge",
       "constraints": []
     },
+    "shape/sellerContributesToServiceChargeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/sellerContributesToServiceChargeRangeShape",
+      "id": "shape/sellerContributesToServiceChargeRangeShape",
+      "localName": "sellerContributesToServiceChargeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/sellerOwnedPropertyDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/sellerOwnedPropertyDomainShape",
       "id": "shape/sellerOwnedPropertyDomainShape",
@@ -13946,6 +14473,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/soldWithVacantPossession",
+      "constraints": []
+    },
+    "shape/soldWithVacantPossessionRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/soldWithVacantPossessionRangeShape",
+      "id": "shape/soldWithVacantPossessionRangeShape",
+      "localName": "soldWithVacantPossessionRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/sortCodeDomainShape": {
@@ -14152,6 +14688,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/tenureKind",
       "constraints": []
     },
+    "shape/tenureKindRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/tenureKindRangeShape",
+      "id": "shape/tenureKindRangeShape",
+      "localName": "tenureKindRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/titleExtentsDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/titleExtentsDomainShape",
       "id": "shape/titleExtentsDomainShape",
@@ -14229,6 +14774,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/transportType",
       "constraints": []
     },
+    "shape/transportTypeRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/transportTypeRangeShape",
+      "id": "shape/transportTypeRangeShape",
+      "localName": "transportTypeRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/TransportTypeValueShape": {
       "uri": "https://opda.org.uk/pdtf/shape/TransportTypeValueShape",
       "id": "shape/TransportTypeValueShape",
@@ -14240,7 +14794,7 @@
         {
           "path": "https://opda.org.uk/pdtf/transportType",
           "pathLocal": "transportType",
-          "datatype": "string",
+          "datatype": null,
           "class": null,
           "minCount": null,
           "maxCount": "1",
@@ -14256,6 +14810,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/typeOfConnection",
+      "constraints": []
+    },
+    "shape/typeOfConnectionRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/typeOfConnectionRangeShape",
+      "id": "shape/typeOfConnectionRangeShape",
+      "localName": "typeOfConnectionRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/typeOfFloodingDomainShape": {
@@ -22731,12 +23294,24 @@
           "localName": "founds"
         },
         {
+          "id": "hasAssertedCapacity",
+          "localName": "hasAssertedCapacity"
+        },
+        {
           "id": "hasEvidencedAuthority",
           "localName": "hasEvidencedAuthority"
         },
         {
           "id": "mediates",
           "localName": "mediates"
+        },
+        {
+          "id": "ownerType",
+          "localName": "ownerType"
+        },
+        {
+          "id": "roleNotation",
+          "localName": "roleNotation"
         }
       ],
       "datatypeProperties": [
@@ -22755,10 +23330,6 @@
         {
           "id": "dateOfBirth",
           "localName": "dateOfBirth"
-        },
-        {
-          "id": "hasAssertedCapacity",
-          "localName": "hasAssertedCapacity"
         },
         {
           "id": "hasOthersAged17OrOver",
@@ -22789,16 +23360,8 @@
           "localName": "organisationReference"
         },
         {
-          "id": "ownerType",
-          "localName": "ownerType"
-        },
-        {
           "id": "reference",
           "localName": "reference"
-        },
-        {
-          "id": "roleNotation",
-          "localName": "roleNotation"
         },
         {
           "id": "sellersCapacityDetails",
@@ -22890,6 +23453,10 @@
           "localName": "attestedBy"
         },
         {
+          "id": "evidenceType",
+          "localName": "evidenceType"
+        },
+        {
           "id": "supportedBy",
           "localName": "supportedBy"
         }
@@ -22898,10 +23465,6 @@
         {
           "id": "digest",
           "localName": "digest"
-        },
-        {
-          "id": "evidenceType",
-          "localName": "evidenceType"
         }
       ],
       "shapes": [
@@ -22995,6 +23558,10 @@
           "localName": "certificateOfComplianceFee"
         },
         {
+          "id": "constructionType",
+          "localName": "constructionType"
+        },
+        {
           "id": "costsApplicableToTheDeed",
           "localName": "costsApplicableToTheDeed"
         },
@@ -23031,8 +23598,20 @@
           "localName": "holdingDeposit"
         },
         {
+          "id": "inclusionStatus",
+          "localName": "inclusionStatus"
+        },
+        {
           "id": "listPrice",
           "localName": "listPrice"
+        },
+        {
+          "id": "marketingTenure",
+          "localName": "marketingTenure"
+        },
+        {
+          "id": "ofstedRating",
+          "localName": "ofstedRating"
         },
         {
           "id": "peril",
@@ -23043,8 +23622,16 @@
           "localName": "potentialCost"
         },
         {
+          "id": "priceQualifier",
+          "localName": "priceQualifier"
+        },
+        {
           "id": "rent",
           "localName": "rent"
+        },
+        {
+          "id": "riskIndicator",
+          "localName": "riskIndicator"
         },
         {
           "id": "securityDeposit",
@@ -23057,6 +23644,14 @@
         {
           "id": "soldPrice",
           "localName": "soldPrice"
+        },
+        {
+          "id": "transportType",
+          "localName": "transportType"
+        },
+        {
+          "id": "typeOfConnection",
+          "localName": "typeOfConnection"
         }
       ],
       "datatypeProperties": [
@@ -23087,10 +23682,6 @@
         {
           "id": "consentsObtained",
           "localName": "consentsObtained"
-        },
-        {
-          "id": "constructionType",
-          "localName": "constructionType"
         },
         {
           "id": "contributionIncludedInServiceCharge",
@@ -23205,10 +23796,6 @@
           "localName": "headLeaseholderControlled"
         },
         {
-          "id": "inclusionStatus",
-          "localName": "inclusionStatus"
-        },
-        {
           "id": "isConnectedToNationalGrid",
           "localName": "isConnectedToNationalGrid"
         },
@@ -23273,16 +23860,8 @@
           "localName": "managementPlanInPlace"
         },
         {
-          "id": "marketingTenure",
-          "localName": "marketingTenure"
-        },
-        {
           "id": "mediaUrl",
           "localName": "mediaUrl"
-        },
-        {
-          "id": "ofstedRating",
-          "localName": "ofstedRating"
         },
         {
           "id": "orderDate",
@@ -23307,10 +23886,6 @@
         {
           "id": "price",
           "localName": "price"
-        },
-        {
-          "id": "priceQualifier",
-          "localName": "priceQualifier"
         },
         {
           "id": "pricingMethodology",
@@ -23353,10 +23928,6 @@
           "localName": "retrievedOn"
         },
         {
-          "id": "riskIndicator",
-          "localName": "riskIndicator"
-        },
-        {
           "id": "roomName",
           "localName": "roomName"
         },
@@ -23395,14 +23966,6 @@
         {
           "id": "subCategory",
           "localName": "subCategory"
-        },
-        {
-          "id": "transportType",
-          "localName": "transportType"
-        },
-        {
-          "id": "typeOfConnection",
-          "localName": "typeOfConnection"
         },
         {
           "id": "typeOfHealthCare",
@@ -23639,20 +24202,100 @@
       ],
       "objectProperties": [
         {
+          "id": "areBoundariesUniform",
+          "localName": "areBoundariesUniform"
+        },
+        {
+          "id": "builtForm",
+          "localName": "builtForm"
+        },
+        {
+          "id": "centralHeatingFuelType",
+          "localName": "centralHeatingFuelType"
+        },
+        {
+          "id": "currentEnergyRating",
+          "localName": "currentEnergyRating"
+        },
+        {
           "id": "hasAddress",
           "localName": "hasAddress"
+        },
+        {
+          "id": "hasBeenFlooded",
+          "localName": "hasBeenFlooded"
         },
         {
           "id": "hasEPCCertificate",
           "localName": "hasEPCCertificate"
         },
         {
+          "id": "hasSmartHomeSystems",
+          "localName": "hasSmartHomeSystems"
+        },
+        {
+          "id": "hasSprayFoamInstalled",
+          "localName": "hasSprayFoamInstalled"
+        },
+        {
+          "id": "hasValidGuaranteesOrWarranties",
+          "localName": "hasValidGuaranteesOrWarranties"
+        },
+        {
+          "id": "heatingType",
+          "localName": "heatingType"
+        },
+        {
           "id": "identifiesSameProperty",
           "localName": "identifiesSameProperty"
         },
         {
+          "id": "isGroundRentPayable",
+          "localName": "isGroundRentPayable"
+        },
+        {
+          "id": "isInsured",
+          "localName": "isInsured"
+        },
+        {
+          "id": "isLocatedOverCommercialPremises",
+          "localName": "isLocatedOverCommercialPremises"
+        },
+        {
+          "id": "isSharedOwnership",
+          "localName": "isSharedOwnership"
+        },
+        {
+          "id": "isSupplyMetered",
+          "localName": "isSupplyMetered"
+        },
+        {
+          "id": "offMainsDrainageSystemType",
+          "localName": "offMainsDrainageSystemType"
+        },
+        {
+          "id": "ownershipType",
+          "localName": "ownershipType"
+        },
+        {
+          "id": "propertyType",
+          "localName": "propertyType"
+        },
+        {
           "id": "recordsEstate",
           "localName": "recordsEstate"
+        },
+        {
+          "id": "sellerContributesToServiceCharge",
+          "localName": "sellerContributesToServiceCharge"
+        },
+        {
+          "id": "soldWithVacantPossession",
+          "localName": "soldWithVacantPossession"
+        },
+        {
+          "id": "tenureKind",
+          "localName": "tenureKind"
         }
       ],
       "datatypeProperties": [
@@ -23677,10 +24320,6 @@
           "localName": "area"
         },
         {
-          "id": "areBoundariesUniform",
-          "localName": "areBoundariesUniform"
-        },
-        {
           "id": "bathrooms",
           "localName": "bathrooms"
         },
@@ -23691,14 +24330,6 @@
         {
           "id": "buildingsReinstatementCostAssessment",
           "localName": "buildingsReinstatementCostAssessment"
-        },
-        {
-          "id": "builtForm",
-          "localName": "builtForm"
-        },
-        {
-          "id": "centralHeatingFuelType",
-          "localName": "centralHeatingFuelType"
         },
         {
           "id": "centralHeatingInstalled",
@@ -23715,10 +24346,6 @@
         {
           "id": "currentChargingBasis",
           "localName": "currentChargingBasis"
-        },
-        {
-          "id": "currentEnergyRating",
-          "localName": "currentEnergyRating"
         },
         {
           "id": "dateInstalled",
@@ -23765,28 +24392,12 @@
           "localName": "handoverOnCompletion"
         },
         {
-          "id": "hasBeenFlooded",
-          "localName": "hasBeenFlooded"
-        },
-        {
           "id": "hasFixedRentcharge",
           "localName": "hasFixedRentcharge"
         },
         {
-          "id": "hasSmartHomeSystems",
-          "localName": "hasSmartHomeSystems"
-        },
-        {
-          "id": "hasSprayFoamInstalled",
-          "localName": "hasSprayFoamInstalled"
-        },
-        {
           "id": "hasUPRN",
           "localName": "hasUPRN"
-        },
-        {
-          "id": "hasValidGuaranteesOrWarranties",
-          "localName": "hasValidGuaranteesOrWarranties"
         },
         {
           "id": "heading",
@@ -23795,30 +24406,6 @@
         {
           "id": "heatingLastServicedDate",
           "localName": "heatingLastServicedDate"
-        },
-        {
-          "id": "heatingType",
-          "localName": "heatingType"
-        },
-        {
-          "id": "isGroundRentPayable",
-          "localName": "isGroundRentPayable"
-        },
-        {
-          "id": "isInsured",
-          "localName": "isInsured"
-        },
-        {
-          "id": "isLocatedOverCommercialPremises",
-          "localName": "isLocatedOverCommercialPremises"
-        },
-        {
-          "id": "isSharedOwnership",
-          "localName": "isSharedOwnership"
-        },
-        {
-          "id": "isSupplyMetered",
-          "localName": "isSupplyMetered"
         },
         {
           "id": "kitchens",
@@ -23857,10 +24444,6 @@
           "localName": "numberOfPropertiesSharing"
         },
         {
-          "id": "offMainsDrainageSystemType",
-          "localName": "offMainsDrainageSystemType"
-        },
-        {
           "id": "otherCentralHeatingFuelType",
           "localName": "otherCentralHeatingFuelType"
         },
@@ -23885,10 +24468,6 @@
           "localName": "outsideAreas"
         },
         {
-          "id": "ownershipType",
-          "localName": "ownershipType"
-        },
-        {
           "id": "parkingArrangements",
           "localName": "parkingArrangements"
         },
@@ -23907,10 +24486,6 @@
         {
           "id": "propertiesContributingToMaintenanceOfManagedArea",
           "localName": "propertiesContributingToMaintenanceOfManagedArea"
-        },
-        {
-          "id": "propertyType",
-          "localName": "propertyType"
         },
         {
           "id": "publicSewerMapAttached",
@@ -23933,10 +24508,6 @@
           "localName": "requirements"
         },
         {
-          "id": "sellerContributesToServiceCharge",
-          "localName": "sellerContributesToServiceCharge"
-        },
-        {
           "id": "sewerageBills",
           "localName": "sewerageBills"
         },
@@ -23949,10 +24520,6 @@
           "localName": "sharedOwnershipPercentage"
         },
         {
-          "id": "soldWithVacantPossession",
-          "localName": "soldWithVacantPossession"
-        },
-        {
           "id": "startYearOfLease",
           "localName": "startYearOfLease"
         },
@@ -23963,10 +24530,6 @@
         {
           "id": "supplyClassification",
           "localName": "supplyClassification"
-        },
-        {
-          "id": "tenureKind",
-          "localName": "tenureKind"
         },
         {
           "id": "titleExtents",

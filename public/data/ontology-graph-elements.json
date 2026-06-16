@@ -8,9 +8,9 @@
       "concept": 323
     },
     "edges": {
-      "constrainedByScheme": 2,
+      "constrainedByScheme": 11,
       "inScheme": 323,
-      "objectProperty": 28
+      "objectProperty": 59
     }
   },
   "modules": [
@@ -4268,6 +4268,16 @@
   "edges": [
     {
       "data": {
+        "id": "cbs:Evidence->scheme/EvidenceMethodScheme",
+        "source": "class:Evidence",
+        "target": "scheme:scheme/EvidenceMethodScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
         "id": "cbs:MonetaryAmount->scheme/CurrencyScheme",
         "source": "class:MonetaryAmount",
         "target": "scheme:scheme/CurrencyScheme",
@@ -4278,9 +4288,89 @@
     },
     {
       "data": {
+        "id": "cbs:NearbyFacility->scheme/OfstedRatingScheme",
+        "source": "class:NearbyFacility",
+        "target": "scheme:scheme/OfstedRatingScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:NearbyFacility->scheme/TransportTypeScheme",
+        "source": "class:NearbyFacility",
+        "target": "scheme:scheme/TransportTypeScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:Property->scheme/BroadbandConnectionTypeScheme",
+        "source": "class:Property",
+        "target": "scheme:scheme/BroadbandConnectionTypeScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:Property->scheme/ConstructionTypeScheme",
+        "source": "class:Property",
+        "target": "scheme:scheme/ConstructionTypeScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:Property->scheme/PriceQualifierScheme",
+        "source": "class:Property",
+        "target": "scheme:scheme/PriceQualifierScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:Property->scheme/TenureKindScheme",
+        "source": "class:Property",
+        "target": "scheme:scheme/TenureKindScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:Proprietor->scheme/OwnerTypeScheme",
+        "source": "class:Proprietor",
+        "target": "scheme:scheme/OwnerTypeScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
         "id": "cbs:RiskAssessment->scheme/PerilScheme",
         "source": "class:RiskAssessment",
         "target": "scheme:scheme/PerilScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
+        "id": "cbs:RiskAssessment->scheme/YesNoNotKnownScheme",
+        "source": "class:RiskAssessment",
+        "target": "scheme:scheme/YesNoNotKnownScheme",
         "label": "constrainedByScheme",
         "kind": "constrainedByScheme",
         "derived": true
@@ -7213,6 +7303,15 @@
     },
     {
       "data": {
+        "id": "op:evidenceType:Evidence->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Evidence",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "evidenceType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:attestedBy:Evidence->http://www.w3.org/ns/prov#Agent",
         "source": "class:Evidence",
         "target": "external:http://www.w3.org/ns/prov#Agent",
@@ -7258,10 +7357,73 @@
     },
     {
       "data": {
+        "id": "op:isGroundRentPayable:LegalEstate->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:LegalEstate",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "isGroundRentPayable",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:isSharedOwnership:LegalEstate->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:LegalEstate",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "isSharedOwnership",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:ownershipType:LegalEstate->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:LegalEstate",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "ownershipType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:sellerContributesToServiceCharge:LegalEstate->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:LegalEstate",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "sellerContributesToServiceCharge",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:tenureKind:LegalEstate->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:LegalEstate",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "tenureKind",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:currency:MonetaryAmount->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:MonetaryAmount",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
         "label": "currency",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:ofstedRating:NearbyFacility->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:NearbyFacility",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "ofstedRating",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:transportType:NearbyFacility->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:NearbyFacility",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "transportType",
         "kind": "objectProperty"
       }
     },
@@ -7348,6 +7510,186 @@
     },
     {
       "data": {
+        "id": "op:areBoundariesUniform:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "areBoundariesUniform",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:builtForm:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "builtForm",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:centralHeatingFuelType:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "centralHeatingFuelType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:constructionType:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "constructionType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:currentEnergyRating:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "currentEnergyRating",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasBeenFlooded:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasBeenFlooded",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasSmartHomeSystems:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasSmartHomeSystems",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasSprayFoamInstalled:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasSprayFoamInstalled",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasValidGuaranteesOrWarranties:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasValidGuaranteesOrWarranties",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:heatingType:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "heatingType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:isInsured:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "isInsured",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:isLocatedOverCommercialPremises:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "isLocatedOverCommercialPremises",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:isSupplyMetered:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "isSupplyMetered",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:marketingTenure:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "marketingTenure",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:offMainsDrainageSystemType:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "offMainsDrainageSystemType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:priceQualifier:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "priceQualifier",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:propertyType:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "propertyType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:soldWithVacantPossession:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "soldWithVacantPossession",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:typeOfConnection:Property->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Property",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "typeOfConnection",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:ownerType:Proprietor->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Proprietor",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "ownerType",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:recordsEstate:RegisteredTitle->LegalEstate",
         "source": "class:RegisteredTitle",
         "target": "class:LegalEstate",
@@ -7375,10 +7717,37 @@
     },
     {
       "data": {
+        "id": "op:riskIndicator:RiskAssessment->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:RiskAssessment",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "riskIndicator",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:roleNotation:RoleMixin->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:RoleMixin",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "roleNotation",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasEvidencedAuthority:Seller->Claim",
         "source": "class:Seller",
         "target": "class:Claim",
         "label": "hasEvidencedAuthority",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasAssertedCapacity:Seller->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Seller",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasAssertedCapacity",
         "kind": "objectProperty"
       }
     },
