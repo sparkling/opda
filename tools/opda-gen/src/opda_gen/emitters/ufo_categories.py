@@ -20,6 +20,19 @@ annotation graph (`opda-annotations.ttl`), via
      `skos:notation` matching the string tag, and a `skos:closeMatch` to the
      gUFO IRI where one exists.
 
+**OntoClean per-type markup (ADR-0046 / council session-042).** Conditionally
+adopted: the `opda:ontoCleanRigidity` / `opda:ontoCleanIdentity` /
+`opda:ontoCleanDependence` `owl:AnnotationProperty` declarations and per-type
+tags are emitted into `opda-annotations.ttl` (annotation-graph-only;
+NEVER the class or shapes graphs; OWL 2 §10.1 inert). SCOPE: the subsumption
+lattice the TBox OntoClean meta-shape (emitted in `shapes.py`) ranges over, plus
+its contrast set — the five subclass-bearing types (Transaction, Proprietorship,
+Proprietor, Buyer, Seller) and their three direct supers (Relator, Role,
+RoleMixin). Values DERIVE from each type's `opda:ufoCategory` signature; ±D is
+emitted ONLY for the Relator family (Relator, Transaction, Proprietorship) where
+the Relator-founds topology turned on dependence. NEVER `opda:ontoCleanUnity`.
+Atomic with the meta-shape: CI fails if tags exist without the consuming shape.
+
 **Why here, not in the class graph.** ADR-0044 Phase 5c declared the predicate
 `owl:DatatypeProperty` and asserted the tags inline in the reasoned class graphs
 — breaching ODR-0030 Rule 1 ("annotation-graph-only; retention lapses if
@@ -236,3 +249,141 @@ def emit_ufo_category_annotations(graph: Graph) -> None:
         if gufo_local is not None:
             graph.add((concept, SKOS.closeMatch, GUFO[gufo_local]))
         graph.add((concept, DCTERMS.source, _ODR_0031))
+
+    # (4) OntoClean per-type markup (ADR-0046 / session-042). Annotation-graph-
+    # only; NEVER class or shapes graphs; NEVER opda:ontoCleanUnity.
+    emit_ontoclean_annotations(graph)
+
+
+# ---------------------------------------------------------------------------
+# ADR-0046: OntoClean per-type markup (annotation-graph-only, OWL 2 §10.1).
+# ---------------------------------------------------------------------------
+# Scope: the subsumption lattice the TBox OntoClean meta-shape ranges over
+# + its contrast set — the five subclass-bearing OPDA types and their three
+# direct supers. Values derive from each type's opda:ufoCategory signature.
+# ±D emitted ONLY for the Relator family where the Relator-founds decision
+# turned on dependence. NEVER opda:ontoCleanUnity.
+#
+# Rigidity values:
+#   "rigid"       = +R  (instances necessarily of this type)
+#   "anti-rigid"  = −R  (instances contingently of this type)
+#   "semi-rigid"  = neither (some instances necessarily, some contingently)
+#   "non-rigid"   = ¬+R (no instance is necessarily of this type)
+#
+# Identity values:
+#   "supplies-IC"  = +I (the type supplies an identity criterion for its instances)
+#   "carries-IC"   = inherits IC from its supertype/category
+#   "no-own-IC"    = −I (no own IC; borrows from bearer — Roles/RoleMixins)
+#
+# Per-type tags (annotating opda classes; lattice + contrast set):
+#
+# Relator — RelatorCategory sig (+R, +I, +D); supplies IC = (bearers, event) tuple.
+# Transaction subClassOf Relator — inherits +R+D from Relator; carries IC from category.
+# Proprietorship subClassOf Relator — same as Transaction.
+# Role — RoleCategory sig (−R, +D implicit); never supplies own IC (borrows from bearer).
+# Proprietor subClassOf Role — inherits −R; no own IC.
+# RoleMixin — RoleMixinCategory sig (−R); never supplies own IC.
+# Buyer subClassOf RoleMixin — inherits −R; no own IC.
+# Seller subClassOf RoleMixin — inherits −R; no own IC.
+#
+# Canonical-query invariant (ADR-0046 §Confirmation):
+#   SELECT ?sub ?super WHERE { ?sub rdfs:subClassOf ?super .
+#     ?super opda:ontoCleanRigidity "anti-rigid" }
+# MUST return EMPTY — no anti-rigid type is a superclass of anything here.
+
+_ADR_0046 = OPDA["harness/adr/ADR-0046"]
+
+# (local-name → (rigidity, identity, dependence | None))
+# dependence is included ONLY for the Relator family (session-042 ±D rule).
+_ONTOCLEAN_TAGS: dict[str, tuple[str, str, str | None]] = {
+    # Relator — rigid, supplies IC (+R +I +D); foundational Relator decision.
+    "Relator": ("rigid", "supplies-IC", "dependent"),
+    # Transaction — subclass of Relator; carries Relator IC; founded (+D).
+    "Transaction": ("rigid", "carries-IC", "dependent"),
+    # Proprietorship — subclass of Relator; same as Transaction.
+    "Proprietorship": ("rigid", "carries-IC", "dependent"),
+    # Role — anti-rigid, no own IC (borrows from bearer); externally founded.
+    "Role": ("anti-rigid", "no-own-IC", None),
+    # Proprietor — subclass of Role; inherits anti-rigid + no own IC.
+    "Proprietor": ("anti-rigid", "no-own-IC", None),
+    # RoleMixin — anti-rigid, no own IC; cross-sortal.
+    "RoleMixin": ("anti-rigid", "no-own-IC", None),
+    # Buyer — subclass of RoleMixin; inherits anti-rigid + no own IC.
+    "Buyer": ("anti-rigid", "no-own-IC", None),
+    # Seller — subclass of RoleMixin; inherits anti-rigid + no own IC.
+    "Seller": ("anti-rigid", "no-own-IC", None),
+}
+
+_RIGIDITY_COMMENT = (
+    "OntoClean rigidity meta-property (ADR-0046 / council session-042). "
+    "owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. "
+    "Values: 'rigid' (+R), 'anti-rigid' (−R), 'semi-rigid', 'non-rigid'. "
+    "Scope: the subsumption lattice the TBox OntoClean meta-shape ranges over "
+    "(Relator, Transaction, Proprietorship, Role, Proprietor, RoleMixin, "
+    "Buyer, Seller) + their contrast set. Derived from each type's "
+    "opda:ufoCategory signature; NEVER opda:ontoCleanUnity. Consumed by the "
+    "TBox OntoClean meta-shape CI gate (ADR-0046 §change 3+4)."
+)
+
+_IDENTITY_COMMENT = (
+    "OntoClean identity meta-property (ADR-0046 / council session-042). "
+    "owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. "
+    "Values: 'supplies-IC' (+I, the type supplies an IC), 'carries-IC' "
+    "(inherits IC from supertype/category), 'no-own-IC' (−I, borrows IC "
+    "from bearer — Roles and RoleMixins). Derived from each type's "
+    "opda:ufoCategory signature."
+)
+
+_DEPENDENCE_COMMENT = (
+    "OntoClean dependence meta-property (ADR-0046 / council session-042). "
+    "owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. "
+    "Value: 'dependent' (+D, externally founded). Emitted ONLY for the "
+    "Relator family (Relator, Transaction, Proprietorship) where the "
+    "Relator-founds-RoleMixin topology turned on dependence (session-042 ±D "
+    "rule: ±D only where a Relator decision turned on it). "
+    "NEVER opda:ontoCleanUnity."
+)
+
+
+def emit_ontoclean_annotations(graph: Graph) -> None:
+    """Emit the ADR-0046 OntoClean per-type annotation-property tags.
+
+    Emits three `owl:AnnotationProperty` declarations
+    (`opda:ontoCleanRigidity`, `opda:ontoCleanIdentity`,
+    `opda:ontoCleanDependence`) and per-type tags for the eight types in
+    the subsumption lattice + contrast set. All triples land in ``graph``
+    (the annotation graph — `opda-annotations.ttl`). NEVER the class or
+    shapes graphs. NEVER `opda:ontoCleanUnity`. ADR-0046 / session-042.
+    """
+    # Annotation-property declarations.
+    graph.add((OPDA.ontoCleanRigidity, RDF.type, OWL.AnnotationProperty))
+    graph.add((OPDA.ontoCleanRigidity, RDFS.label,
+               Literal("OntoClean rigidity", lang="en")))
+    graph.add((OPDA.ontoCleanRigidity, RDFS.comment,
+               Literal(_RIGIDITY_COMMENT, lang="en")))
+    graph.add((OPDA.ontoCleanRigidity, DCTERMS.source, _ADR_0046))
+    graph.add((OPDA.ontoCleanRigidity, DCTERMS.source, _ODR_0031))
+
+    graph.add((OPDA.ontoCleanIdentity, RDF.type, OWL.AnnotationProperty))
+    graph.add((OPDA.ontoCleanIdentity, RDFS.label,
+               Literal("OntoClean identity", lang="en")))
+    graph.add((OPDA.ontoCleanIdentity, RDFS.comment,
+               Literal(_IDENTITY_COMMENT, lang="en")))
+    graph.add((OPDA.ontoCleanIdentity, DCTERMS.source, _ADR_0046))
+    graph.add((OPDA.ontoCleanIdentity, DCTERMS.source, _ODR_0031))
+
+    graph.add((OPDA.ontoCleanDependence, RDF.type, OWL.AnnotationProperty))
+    graph.add((OPDA.ontoCleanDependence, RDFS.label,
+               Literal("OntoClean dependence", lang="en")))
+    graph.add((OPDA.ontoCleanDependence, RDFS.comment,
+               Literal(_DEPENDENCE_COMMENT, lang="en")))
+    graph.add((OPDA.ontoCleanDependence, DCTERMS.source, _ADR_0046))
+    graph.add((OPDA.ontoCleanDependence, DCTERMS.source, _ODR_0031))
+
+    # Per-type tags — annotation-graph-only (ADR-0046 §confirmation criterion 1).
+    for local, (rigidity, identity, dependence) in _ONTOCLEAN_TAGS.items():
+        subj = OPDA[local]
+        graph.add((subj, OPDA.ontoCleanRigidity, Literal(rigidity)))
+        graph.add((subj, OPDA.ontoCleanIdentity, Literal(identity)))
+        if dependence is not None:
+            graph.add((subj, OPDA.ontoCleanDependence, Literal(dependence)))

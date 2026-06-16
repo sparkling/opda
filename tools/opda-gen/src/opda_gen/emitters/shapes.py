@@ -151,6 +151,7 @@ _ODR_0024_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rul
 _ODR_0024_R6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6")
 _ODR_0024_R10 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R10")
 _ODR_0031_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0031/section-R3")
+_ADR_0046 = URIRef("https://opda.org.uk/pdtf/harness/adr/ADR-0046")
 _ODR_0024_R11 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R11")
 _ODR_0009_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1")
 _ODR_0009_Q7 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q7")
@@ -477,6 +478,73 @@ def build_ufo_category_value_shape(g: Graph) -> None:
     g.add((shape_iri, DCTERMS.source, _ODR_0031_R3))
 
 
+def build_ontoclean_tbox_meta_shape(g: Graph) -> None:
+    """Extend `g` in place with the ADR-0046 TBox OntoClean meta-shape.
+
+    Emits the canonical OntoClean self-consistency check as a SHACL
+    `sh:Violation` meta-shape (the ODR-0031 R3 tag-guard pattern):
+
+    - **Rigid subclassing −R** (the primary check): every type tagged
+      `opda:ontoCleanRigidity "rigid"` MUST NOT be `rdfs:subClassOf` any
+      type tagged `opda:ontoCleanRigidity "anti-rigid"`. An anti-rigid type
+      cannot subsume a rigid one (Guarino & Welty 2009 §3: a rigid sortal's
+      necessity cannot be inherited through a contingent anti-rigid
+      supertype — `Person ⊑ Student` is forbidden, `Student ⊑ Person` valid).
+
+    Targeting: `sh:targetSubjectsOf opda:ontoCleanRigidity` — selects TBox
+    class subjects bearing a rigidity tag. The SPARQL `sh:select` query
+    runs over the TBox + annotation graph (the editorial pass — NEVER the
+    instance-validation union). No `sh:targetClass`/`sh:path` on instance
+    data: this shape validates the *meta-level* (ADR-0046 §change 3;
+    ODR-0031 R3 tag-guard pattern; quarantine intact).
+
+    Carries `opda:metaShapeJustification` (required by the
+    MetaShapeOverShapeGraph meta-shape for sh:Violation elevation — ODR-0017
+    §2a). `dct:source` → ADR-0046. ADR-0046 atomicity rule: this shape
+    MUST ship in the same change as the per-type tags in `ufo_categories.py`.
+    """
+    shape_iri = OPDA_SHAPE["OntoCleanAntiRigidSubclassing_MetaShape"]
+    sparql_node = BNode()
+    g.add((shape_iri, RDF.type, SH.NodeShape))
+    # sh:targetSubjectsOf targets the TBox subjects bearing the rigidity tag.
+    # No sh:targetClass (would target instances); no sh:path on instance data.
+    g.add((shape_iri, SH.targetSubjectsOf, OPDA.ontoCleanRigidity))
+    g.add((shape_iri, SH.sparql, sparql_node))
+    g.add((shape_iri, SH.severity, SH.Violation))
+    g.add((shape_iri, SH.message, Literal(
+        "OntoClean violation: a rigid (+R) type is rdfs:subClassOf an "
+        "anti-rigid (−R) type. An anti-rigid type cannot subsume a rigid one "
+        "(Guarino & Welty 2009 §3 — a rigid sortal's necessity cannot be "
+        "inherited through a contingent anti-rigid supertype; `Person ⊑ "
+        "Student` is forbidden, `Student ⊑ Person` is valid). ADR-0046 TBox "
+        "OntoClean meta-shape.",
+        lang="en",
+    )))
+    g.add((shape_iri, OPDA.metaShapeJustification, Literal(
+        "ADR-0046 §change 3 (TBox OntoClean meta-shape; ODR-0031 R3 "
+        "tag-guard pattern): this canonical check 'every rigid (+R) type "
+        "that is nonetheless rdfs:subClassOf an anti-rigid (−R) type' is the "
+        "sole consumer that makes the per-type opda:ontoCleanRigidity tags "
+        "non-decorative (session-042 atomicity rule). Runs over the TBox + "
+        "annotation graph only; NEVER the instance-validation union. "
+        "sh:Violation because a +R-subclass-of-−R subsumption is a structural "
+        "soundness failure of the OntoClean lattice, not an optional advisory.",
+        lang="en",
+    )))
+    g.add((shape_iri, DCTERMS.source, _ADR_0046))
+    # SPARQL select over the TBox (run by the CI gate against class+annotation
+    # graph only — ADR-0046 §change 4; never the instance-validation union).
+    g.add((sparql_node, SH.select, Literal(
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+        "SELECT $this ?superClass WHERE {\n"
+        "  $this opda:ontoCleanRigidity \"rigid\" .\n"
+        "  $this rdfs:subClassOf ?superClass .\n"
+        "  ?superClass opda:ontoCleanRigidity \"anti-rigid\" .\n"
+        "}"
+    )))
+
+
 def build_foundation_meta_shapes(g: Graph) -> None:
     """Extend `g` in place with the five foundation-level meta-shapes
     + the cross-cutting SHACL-AF rules (DeprecationChain, PII-without-DPV).
@@ -689,6 +757,11 @@ def build_foundation_meta_shapes(g: Graph) -> None:
             "value rather than a separate shape)."
         ),
     )
+
+    # --- ADR-0046: TBox OntoClean meta-shape (the seventh CI gate's shape) -
+    # Atomic with the per-type tags in ufo_categories.py: ships in the same
+    # change or neither ships (session-042 atomicity rule / ADR-0046 §Atomic).
+    build_ontoclean_tbox_meta_shape(g)
 
 
 # --- Per-module shape builders -------------------------------------------

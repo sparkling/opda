@@ -30,6 +30,7 @@ from opda_gen.ci.three_graph_test import (
     check_no_advisory_in_shapes,
     check_no_owl_imports_in_shapes,
     check_no_shacl_in_annotations,
+    check_ontoclean_tbox,
     check_target_class_resolves,
     check_ufocategory_not_instance_keyed,
     run_all,
@@ -288,3 +289,108 @@ def test_check_derived_provenance_env_var_allowlist(
     assert violations == [], (
         f"env-var allowlist should PASS but reported: {violations}"
     )
+
+
+# --- Check 8 (ADR-0046): TBox OntoClean canonical check -------------------
+# The canonical query: SELECT ?sub ?super WHERE {
+#   ?sub rdfs:subClassOf ?super . ?super opda:ontoCleanRigidity "anti-rigid" }
+# A RIGID type subclassing an ANTI-RIGID super is the soundness violation.
+# Anti-rigid subclassing anti-rigid (e.g. Buyer → RoleMixin) is PERMITTED.
+
+def test_ontoclean_tbox_rigid_subclasses_rigid_passes() -> None:
+    """A rigid type subclassing another rigid type — PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Relator (rigid) and Transaction (rigid subClassOf Relator) — OK.
+    classes.add((OPDA.Transaction, RDFS.subClassOf, OPDA.Relator))
+    annotations.add((OPDA.Relator, OPDA.ontoCleanRigidity, Literal("rigid")))
+    annotations.add((OPDA.Transaction, OPDA.ontoCleanRigidity, Literal("rigid")))
+    violations = check_ontoclean_tbox(classes, annotations)
+    assert violations == [], f"rigid-subclasses-rigid should PASS: {violations}"
+
+
+def test_ontoclean_tbox_rigid_subclasses_antrigid_fails() -> None:
+    """A RIGID type subclassing an ANTI-RIGID type — FAIL (OntoClean violation)."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Pathological case: a rigid Kind subclassing an anti-rigid RoleMixin.
+    classes.add((OPDA.Property, RDFS.subClassOf, OPDA.RoleMixin))
+    annotations.add((OPDA.Property, OPDA.ontoCleanRigidity, Literal("rigid")))
+    annotations.add((OPDA.RoleMixin, OPDA.ontoCleanRigidity, Literal("anti-rigid")))
+    violations = check_ontoclean_tbox(classes, annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "rigid" in violations[0]
+    assert "anti-rigid" in violations[0]
+    assert "OntoClean" in violations[0]
+
+
+def test_ontoclean_tbox_antrigid_subclasses_antrigid_passes() -> None:
+    """An anti-rigid type subclassing another anti-rigid type — PASS (normal)."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # Buyer (anti-rigid RoleMixin subClassOf RoleMixin) — OK; real OPDA pattern.
+    classes.add((OPDA.Buyer, RDFS.subClassOf, OPDA.RoleMixin))
+    annotations.add((OPDA.Buyer, OPDA.ontoCleanRigidity, Literal("anti-rigid")))
+    annotations.add((OPDA.RoleMixin, OPDA.ontoCleanRigidity, Literal("anti-rigid")))
+    violations = check_ontoclean_tbox(classes, annotations)
+    assert violations == [], f"anti-rigid subclassing anti-rigid should PASS: {violations}"
+
+
+def test_ontoclean_tbox_no_tags_passes() -> None:
+    """Types without OntoClean tags are not checked — PASS."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # No tags at all — the check has nothing to evaluate.
+    classes.add((OPDA.Foo, RDFS.subClassOf, OPDA.Bar))
+    violations = check_ontoclean_tbox(classes, annotations)
+    assert violations == [], f"untagged types should PASS: {violations}"
+
+
+def test_ontoclean_predicates_in_classes_fail() -> None:
+    """OntoClean predicates in the classes graph are a check-6 violation."""
+    g = Graph()
+    g.add((OPDA.Relator, OPDA.ontoCleanRigidity, Literal("rigid")))
+    violations = check_no_advisory_in_classes(g)
+    assert len(violations) == 1
+    assert "ontoCleanRigidity" in violations[0]
+
+
+def test_ontoclean_identity_in_classes_fail() -> None:
+    """opda:ontoCleanIdentity in the classes graph is a check-6 violation."""
+    g = Graph()
+    g.add((OPDA.Role, OPDA.ontoCleanIdentity, Literal("no-own-IC")))
+    violations = check_no_advisory_in_classes(g)
+    assert len(violations) == 1
+    assert "ontoCleanIdentity" in violations[0]
+
+
+def test_run_all_clean_corpus_with_ontoclean_passes(tmp_path: Path) -> None:
+    """A clean corpus with valid OntoClean tags passes run_all check 8."""
+    prefix = (
+        "@prefix opda: <https://opda.org.uk/pdtf/> .\n"
+        "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+        "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+        "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+    )
+    (tmp_path / "opda-classes.ttl").write_text(
+        prefix
+        + "opda:Relator rdf:type owl:Class .\n"
+        + "opda:Transaction rdf:type owl:Class ; rdfs:subClassOf opda:Relator .\n"
+    )
+    (tmp_path / "opda-shapes.ttl").write_text(prefix)
+    (tmp_path / "opda-annotations.ttl").write_text(
+        prefix
+        + 'opda:Relator opda:ontoCleanRigidity "rigid" .\n'
+        + 'opda:Transaction opda:ontoCleanRigidity "rigid" .\n'
+    )
+    violations = run_all(tmp_path)
+    ontoclean_violations = [v for v in violations if "OntoClean" in v]
+    assert ontoclean_violations == [], f"clean corpus should pass check 8: {violations}"

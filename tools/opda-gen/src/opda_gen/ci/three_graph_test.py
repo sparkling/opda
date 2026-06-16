@@ -18,13 +18,17 @@ Each check is one function returning a list of violation strings. Empty list
 == PASS. The implementing functions document the exact ODR-0004 §3a clause
 they enforce in the docstring.
 
-The full corpus check (`run_all`) executes all seven checks across a directory
+The full corpus check (`run_all`) executes all eight checks across a directory
 containing `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`,
 the 6 per-module TTLs, plus `opda-vocabularies.ttl` + `opda-contexts.ttl` (the
 ODR-0029 reasoned union, scanned by check 6), and (per check #5) optionally
 `derived/` artefacts whose git history is inspected for non-service-account
 commits. Checks 6-7 (ufoCategory quarantine + meta-shape guard) realise
-ODR-0030/0031 + the session-044 regression-hardening.
+ODR-0030/0031 + the session-044 regression-hardening.  Check 8 (ADR-0046) runs
+the TBox OntoClean meta-shape over the class+annotation graph only (the editorial
+pass — never the instance-validation union) and verifies the canonical query
+SELECT ?sub ?super WHERE { ?sub rdfs:subClassOf ?super .
+  ?super opda:ontoCleanRigidity "anti-rigid" } returns empty.
 """
 
 from __future__ import annotations
@@ -257,6 +261,11 @@ def check_derived_provenance(
 # merely asserted (Knublauch's session-040 standing condition).
 CLASSES_FORBIDDEN_PREDICATES: list[URIRef] = [
     OPDA.ufoCategory,
+    # ADR-0046: OntoClean per-type tags are annotation-graph-only (OWL 2 §10.1).
+    # They MUST NOT appear in any reasoned-union graph.
+    OPDA.ontoCleanRigidity,
+    OPDA.ontoCleanIdentity,
+    OPDA.ontoCleanDependence,
     *ADVISORY_PREDICATE_WHITELIST,
 ]
 
@@ -332,12 +341,81 @@ def check_ufocategory_not_instance_keyed(shapes_graph: Graph) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Check 8: TBox OntoClean canonical check (ADR-0046 seventh CI gate).
+# ---------------------------------------------------------------------------
+def check_ontoclean_tbox(
+    class_graph: Graph, annotation_graph: Graph
+) -> list[str]:
+    """ADR-0046 seventh CI gate — the canonical OntoClean rigidity check.
+
+    Over the MERGED class+annotation graph (the TBox editorial pass — NEVER the
+    instance-validation union), enforce the OntoClean rigidity-subsumption
+    constraint (Guarino & Welty 2009 §3): **an anti-rigid (−R) type cannot
+    subsume a rigid (+R) type.** The VIOLATION form is
+
+      SELECT ?sub ?super WHERE {
+        ?sub   opda:ontoCleanRigidity "rigid" .
+        ?sub   rdfs:subClassOf ?super .
+        ?super opda:ontoCleanRigidity "anti-rigid" .
+      }
+
+    which MUST return EMPTY — a rigid type subclassing an anti-rigid one breaks
+    the necessity of the rigid sortal (`Person ⊑ Student` is forbidden, whereas
+    `Student ⊑ Person` is valid). In the OPDA corpus it is empty: the only tagged
+    subsumption edges are anti-rigid⊑anti-rigid (Proprietor⊑Role,
+    Buyer/Seller⊑RoleMixin) and rigid⊑rigid (Transaction/Proprietorship⊑Relator).
+
+    NB the ADR-0046 §Confirmation query as literally written
+    (`?super opda:ontoCleanRigidity "anti-rigid"` with no constraint on `?sub`)
+    is over-broad — it also matches the VALID anti-rigid⊑anti-rigid edges and so
+    returns 3 rows, not zero. The violation form above (implemented here, and
+    matched by the OntoCleanAntiRigidSubclassing meta-shape in opda-shapes.ttl)
+    is the correct criterion. Returns a list of violation strings (empty == PASS).
+    """
+    from rdflib.namespace import RDFS
+
+    merged = Graph()
+    for t in class_graph:
+        merged.add(t)
+    for t in annotation_graph:
+        merged.add(t)
+
+    violations: list[str] = []
+
+    # Canonical check: a RIGID type must not subclass an ANTI-RIGID type.
+    # (An anti-rigid type subclassing another anti-rigid type is fine.)
+    # The ADR's confirmation query is:
+    #   SELECT ?sub ?super WHERE {
+    #     ?sub rdfs:subClassOf ?super .
+    #     ?super opda:ontoCleanRigidity "anti-rigid"
+    #   }
+    # In OPDA this returns EMPTY for the rigid types — Transaction/Proprietorship
+    # subclass Relator (rigid), never RoleMixin/Role (anti-rigid). The check
+    # fires only if a rigid type somehow ended up subclassing an anti-rigid one.
+    for sub, super_ in merged.subject_objects(RDFS.subClassOf):
+        if not (isinstance(sub, URIRef) and isinstance(super_, URIRef)):
+            continue
+        super_rigidity = merged.value(super_, OPDA.ontoCleanRigidity)
+        if super_rigidity is None or str(super_rigidity) != "anti-rigid":
+            continue
+        sub_rigidity = merged.value(sub, OPDA.ontoCleanRigidity)
+        if sub_rigidity is not None and str(sub_rigidity) == "rigid":
+            violations.append(
+                f"OntoClean violation: {sub} (rigid) rdfs:subClassOf {super_} "
+                f"(anti-rigid) — a rigid type must not subclass an anti-rigid "
+                "type (ADR-0046 canonical query; Guarino & Welty 2009 §3)."
+            )
+
+    return violations
+
+
+# ---------------------------------------------------------------------------
 # Orchestration.
 # ---------------------------------------------------------------------------
 def run_all(ontology_dir: Path) -> list[str]:
-    """Run all seven checks against an emission directory.
+    """Run all eight checks against an emission directory.
 
-    Returns a flat list of violation strings across all seven checks (empty
+    Returns a flat list of violation strings across all eight checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
 
@@ -419,4 +497,7 @@ def run_all(ontology_dir: Path) -> list[str]:
     out.extend(check_derived_provenance(ontology_dir / "derived"))
     out.extend(check_no_advisory_in_classes(reasoned_g))
     out.extend(check_ufocategory_not_instance_keyed(shapes_g))
+    # Check 8 (ADR-0046 seventh CI gate): TBox OntoClean canonical check.
+    # Runs over class + annotation graph ONLY (editorial pass; never instances).
+    out.extend(check_ontoclean_tbox(classes_g, annotations_g))
     return out

@@ -115,6 +115,24 @@ opda:SubstanceKindCategory
     skos:inScheme opda:UFOCategoryScheme ;
     skos:notation "Substance Kind" .
 
+opda:ontoCleanDependence
+    rdf:type owl:AnnotationProperty ;
+    rdfs:label "OntoClean dependence"@en ;
+    rdfs:comment "OntoClean dependence meta-property (ADR-0046 / council session-042). owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. Value: 'dependent' (+D, externally founded). Emitted ONLY for the Relator family (Relator, Transaction, Proprietorship) where the Relator-founds-RoleMixin topology turned on dependence (session-042 ±D rule: ±D only where a Relator decision turned on it). NEVER opda:ontoCleanUnity."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0046>, <https://opda.org.uk/pdtf/harness/odr/ODR-0031> .
+
+opda:ontoCleanIdentity
+    rdf:type owl:AnnotationProperty ;
+    rdfs:label "OntoClean identity"@en ;
+    rdfs:comment "OntoClean identity meta-property (ADR-0046 / council session-042). owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. Values: 'supplies-IC' (+I, the type supplies an IC), 'carries-IC' (inherits IC from supertype/category), 'no-own-IC' (−I, borrows IC from bearer — Roles and RoleMixins). Derived from each type's opda:ufoCategory signature."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0046>, <https://opda.org.uk/pdtf/harness/odr/ODR-0031> .
+
+opda:ontoCleanRigidity
+    rdf:type owl:AnnotationProperty ;
+    rdfs:label "OntoClean rigidity"@en ;
+    rdfs:comment "OntoClean rigidity meta-property (ADR-0046 / council session-042). owl:AnnotationProperty — annotation-graph-only, OWL 2 §10.1 inert. Values: 'rigid' (+R), 'anti-rigid' (−R), 'semi-rigid', 'non-rigid'. Scope: the subsumption lattice the TBox OntoClean meta-shape ranges over (Relator, Transaction, Proprietorship, Role, Proprietor, RoleMixin, Buyer, Seller) + their contrast set. Derived from each type's opda:ufoCategory signature; NEVER opda:ontoCleanUnity. Consumed by the TBox OntoClean meta-shape CI gate (ADR-0046 §change 3+4)."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0046>, <https://opda.org.uk/pdtf/harness/odr/ODR-0031> .
+
 opda:ufoCategory
     rdf:type owl:AnnotationProperty ;
     rdfs:label "UFO category"@en ;
@@ -133,6 +151,8 @@ opda:AttachedDocument
     opda:ufoCategory "Information Object" .
 
 opda:Buyer
+    opda:ontoCleanIdentity "no-own-IC" ;
+    opda:ontoCleanRigidity "anti-rigid" ;
     opda:ufoCategory "RoleMixin" .
 
 opda:Claim
@@ -187,24 +207,36 @@ opda:Property
     opda:ufoCategory "Substance Kind" .
 
 opda:Proprietor
+    opda:ontoCleanIdentity "no-own-IC" ;
+    opda:ontoCleanRigidity "anti-rigid" ;
     opda:ufoCategory "Role" .
 
 opda:Proprietorship
+    opda:ontoCleanDependence "dependent" ;
+    opda:ontoCleanIdentity "carries-IC" ;
+    opda:ontoCleanRigidity "rigid" ;
     opda:ufoCategory "Relator" .
 
 opda:RegisteredTitle
     opda:ufoCategory "Substance Kind" .
 
 opda:Relator
+    opda:ontoCleanDependence "dependent" ;
+    opda:ontoCleanIdentity "supplies-IC" ;
+    opda:ontoCleanRigidity "rigid" ;
     opda:ufoCategory "Relator" .
 
 opda:RiskAssessment
     opda:ufoCategory "Information Object" .
 
 opda:Role
+    opda:ontoCleanIdentity "no-own-IC" ;
+    opda:ontoCleanRigidity "anti-rigid" ;
     opda:ufoCategory "Role" .
 
 opda:RoleMixin
+    opda:ontoCleanIdentity "no-own-IC" ;
+    opda:ontoCleanRigidity "anti-rigid" ;
     opda:ufoCategory "RoleMixin" .
 
 opda:RoomDimension
@@ -214,12 +246,17 @@ opda:Search
     opda:ufoCategory "Information Object" .
 
 opda:Seller
+    opda:ontoCleanIdentity "no-own-IC" ;
+    opda:ontoCleanRigidity "anti-rigid" ;
     opda:ufoCategory "RoleMixin" .
 
 opda:Survey
     opda:ufoCategory "Information Object" .
 
 opda:Transaction
+    opda:ontoCleanDependence "dependent" ;
+    opda:ontoCleanIdentity "carries-IC" ;
+    opda:ontoCleanRigidity "rigid" ;
     opda:ufoCategory "Relator" .
 
 opda:TransactionChain
