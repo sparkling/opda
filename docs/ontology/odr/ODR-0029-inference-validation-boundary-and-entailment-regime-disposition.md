@@ -23,7 +23,7 @@ Council [session-039](council/session-039-entailment-regime-and-epc-modelling.md
 
 * The asserted model is sound with or without the closure; correctness must live in *modelling* + *validation*, not in entailment (ODR-0027 facets-not-subclasses; the closure is minimal by design).
 * Excluding `rdfs:domain`/`range` from inference is correct (materialising types from predicate use is unsound for master data — ODR-0025 §R2), but leaves a blind spot: domain mismatches are currently neither inferred nor validated.
-* The entailment rules are stable, audited, and transferred from a ratified sibling lineage — their *logic* is not to be churned.
+* The entailment rules are stable, audited, and adopted from established prior art (see §More Information) — their *logic* is not to be churned.
 * Honesty of naming: the ruleset is a sound but RL-incomplete fragment, not OWL 2 RL.
 
 ## Considered Options
@@ -83,3 +83,5 @@ The ruleset is a **sound, RL-incomplete fragment** (removing rules from a sound 
 * Ratifying deliberation: [Council session-039](council/session-039-entailment-regime-and-epc-modelling.md) — verdicts Q1 REVISE (EPC error real but re-located), Q2 REJECT-logic/REVISE-name, Q3 SHRINK (keep, don't drop), Q4 AFFIRM (domain/range as SHACL). DA Hendler WITHDRAWN (mechanism kept) + CONCEDED rename.
 * Records this disposition amends: [ADR-0035](../../adr/ADR-0035-load-time-owl-rl-safe-inference-materialisation.md) (reframe minimal/dormant + honest naming + frozen-logic note), [ODR-0028](ODR-0028-descriptive-layer-completeness-reconciliation.md) R3 (wording correction), [ADR-0014](../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) (round-trip inference flag), [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1 (naming prose).
 * Model facts: `opda-property.ttl` (`currentEnergyRating` domain `Property`; `hasEPCCertificate` join), `opda-descriptive.ttl` (`EPCCertificate` as Information Object), `profiles/baspi5.ttl` (`Baspi5_PropertyShape` owns the rating; `Baspi5_EPCCertificateShape` empty); inference impl `scripts/fuseki-load.mjs` + `config/opda-rdfs-plus.rules`; classification doctrine [ODR-0027](ODR-0027-classification-roles-inheritance-skos-doctrine.md).
+* Consolidating doctrine: [ODR-0033](ODR-0033-owl-axioms-as-documentary-ai-signal-doctrine.md) — the §R1 inference/validation boundary is one of the fragments it gathers into the single "author OWL/RDFS axioms as documentary AI-signal, never entailed" statement.
+* Prior art: the entailment ruleset is adopted from a sibling project's ratified safe-rule lineage (`~/source/hm/semantic-modelling`, council sessions 103–105; `config/hm-owl-rl-safe.rules`), recorded in [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) / [ODR-0026](ODR-0026-owl-rl-safe-ruleset-adoption-and-unevaluated-modelling-axioms.md) §More-Information.

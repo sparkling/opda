@@ -13,26 +13,26 @@ implements: [ODR-0003]
 
 ## Context and Problem Statement
 
-ODR-0025 set opda's entailment regime — RDFS plus a curated OWL 2 RL-*safe* rule subset, with certain OWL constructs excluded from the closure. Two questions were left open. First, whether to adopt the sibling project's specific safe ruleset as-is or re-derive one: analysis of `~/source/hm/semantic-modelling/config/hm-owl-rl-safe.rules` confirmed the rule bodies reference only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — zero domain IRIs — so they transfer verbatim. Second, what the exclusion of `rdfs:domain`/`rdfs:range`/`owl:equivalentClass` means for *authoring*: does opda stop using those constructs, or keep them but not evaluate them?
+ODR-0025 set opda's entailment regime — RDFS plus a curated OWL 2 RL-*safe* rule subset, with certain OWL constructs excluded from the closure. Two questions were left open. First, whether to adopt an established prior-art safe ruleset as-is or re-derive one (the prior-art source is recorded in §More Information): analysis of that ruleset confirmed the rule bodies reference only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — zero domain IRIs — so they transfer verbatim. Second, what the exclusion of `rdfs:domain`/`rdfs:range`/`owl:equivalentClass` means for *authoring*: does opda stop using those constructs, or keep them but not evaluate them?
 
 opda already authors the "excluded" constructs where they carry information: **27** `rdfs:subClassOf`, **2** `rdfs:subPropertyOf`, **3** `owl:equivalentClass` (the evidence-class short/long-name aliases, ADR-0011 — **since RETIRED by Council session-035; see R3 amendment**), and `rdfs:domain` declarations (e.g. `opda:currentEnergyRating rdfs:domain opda:Property`, the case behind ODR-0025 §R7). Removing them to match the closure would discard genuine documentation and OWL-identity information. This ODR settles both questions.
 
 ## Considered Options
 
 * **Option A (chosen) — Adopt the OWL-RL-safe ruleset wholesale and adopt the model-but-don't-evaluate principle.** Author `rdfs:domain`, `rdfs:range`, `owl:equivalentClass` where they carry information; the load-time closure does not evaluate them.
-* **Option B — Re-derive a bespoke opda ruleset.** Rejected: hm's safe set is pure W3C vocabulary, already council-ratified (hm S103–105) and validated; re-derivation adds risk for no gain.
+* **Option B — Re-derive a bespoke opda ruleset.** Rejected: the prior-art safe set (see §More Information) is pure W3C vocabulary, already ratified and validated upstream; re-derivation adds risk for no gain.
 * **Option C — Stop authoring `domain`/`range`/`equivalentClass` because they are not evaluated.** Rejected: they carry documentation and OWL-identity value independent of entailment; removing them loses information for humans and external tooling.
 * **Option D — Evaluate `equivalentClass` for the internal aliases only (a carve-out).** Rejected: it re-opens the ODR-0025 safe-set boundary for a need better met in the shape layer (R3); revisit only if a named consumer requires it.
 
 ## Decision Outcome
 
-Chosen option: "Option A — Adopt the OWL-RL-safe ruleset wholesale and adopt the model-but-don't-evaluate principle", because hm's safe set is pure W3C vocabulary transferring without semantic change, and `rdfs:domain`/`range`/`equivalentClass` carry real documentation and OWL-identity value independent of entailment.
+Chosen option: "Option A — Adopt the OWL-RL-safe ruleset wholesale and adopt the model-but-don't-evaluate principle", because the prior-art safe set (see §More Information) is pure W3C vocabulary transferring without semantic change, and `rdfs:domain`/`range`/`equivalentClass` carry real documentation and OWL-identity value independent of entailment.
 
 opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verbatim — only provenance, the entailment-graph IRI, and the consistency-gate namespace differ; ADR-0035) and adopts the **model-but-don't-evaluate** principle: opda continues to author `rdfs:domain`, `rdfs:range`, `owl:equivalentClass` (and the other ODR-0025 §R2-excluded constructs) because they carry real information — human documentation, OWL identity, and input for external DL tooling — while the load-time closure simply does not evaluate them; the ODR-0025 §R2 exclusion is a **non-evaluation, not a prohibition on authoring**.
 
 ### Consequences
 
-* Author `config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) verbatim from hm's (ADR-0035), with the three opda deltas only.
+* Author `config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) verbatim from the prior-art ruleset (ADR-0035; see §More Information), with the three opda deltas only.
 * Keep `rdfs:domain`/`range` and `owl:equivalentClass` in the emitted ontology — they are documentation/identity, not inference inputs; no authored axiom is removed.
 * SHACL shapes MUST NOT assume `equivalentClass` (or `domain`/`range`) entailment — target the actual asserted types. Audit any shape that targets a canonical evidence class while expecting short-name instances to match (R3).
 * The closure correctness test (ADR-0035 §Confirmation) asserts NO `equivalentClass`/`domain`/`range`-derived triple appears in the inferred graph.
@@ -44,13 +44,14 @@ opda adopts the OWL-RL-safe ruleset **wholesale** (the seven enabled rules, verb
 - Safe-set anchors: [ODR-0005](ODR-0005-property-land-identity-crux.md) §R5, [ODR-0017](ODR-0017-shacl-af-quality-rules-pattern.md) §R6 (no `owl:sameAs`).
 - Mechanism: ADR-0035 (`config/opda-rdfs-plus.rules` + the SPARQL-`INSERT` materialisation and consistency gate).
 - Alias origin: ADR-0011 (within-engineering short-name aliases for the diagnostic exemplar set).
-- Prior art: `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules`, hm ODR-0036 (SHACL rules & OWL inferencing), hm ODR-0014 (domain/range as documentation), council sessions 103–105.
+- Consolidating doctrine: [ODR-0033](ODR-0033-owl-axioms-as-documentary-ai-signal-doctrine.md) — gathers this record's §R2 (model-but-don't-evaluate) and §R3 (drop the redundant axiom where a safe substitute carries the signal) into the single "author OWL/RDFS axioms as documentary AI-signal, never entailed" doctrine.
+- Prior art (the adopted ruleset and the documentary-axiom idiom): `~/source/hm/semantic-modelling` — `config/hm-owl-rl-safe.rules` (the verbatim-adopted safe ruleset of §R1), hm ODR-0036 (SHACL rules & OWL inferencing), hm ODR-0014 (domain/range as documentation), council sessions 103–105.
 
 ## Rules
 
 ### R1 — Wholesale adoption of the safe ruleset
 
-`config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) is `hm-owl-rl-safe.rules` adopted verbatim: the seven enabled rules — `rdfs:subClassOf` transitivity + type propagation, `rdfs:subPropertyOf` transitivity + value propagation, `owl:inverseOf` (both directions), `owl:TransitiveProperty`, `owl:SymmetricProperty`. The rule bodies cite only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — no opda or hm IRI appears — so they transfer without semantic change. The only opda-specific deltas are: provenance comments (→ ODR-0025/0026), the entailment-graph IRI (`https://opda.org.uk/pdtf/graph/inferred/entailment`), and the consistency-gate subject-namespace filter (`https://opda.org.uk/pdtf/`). The mechanism (SPARQL-`INSERT` materialisation + consistency gate) is ADR-0035; disjointness remains a validation check, not an entailment.
+`config/opda-rdfs-plus.rules` (renamed from `opda-owl-rl-safe.rules` per ODR-0029 R5) is the prior-art safe ruleset (see §More Information) adopted verbatim: the seven enabled rules — `rdfs:subClassOf` transitivity + type propagation, `rdfs:subPropertyOf` transitivity + value propagation, `owl:inverseOf` (both directions), `owl:TransitiveProperty`, `owl:SymmetricProperty`. The rule bodies cite only `rdf:`/`rdfs:`/`owl:` vocabulary and generic variables — no project-specific IRI appears — so they transfer without semantic change. The only opda-specific deltas are: provenance comments (→ ODR-0025/0026), the entailment-graph IRI (`https://opda.org.uk/pdtf/graph/inferred/entailment`), and the consistency-gate subject-namespace filter (`https://opda.org.uk/pdtf/`). The mechanism (SPARQL-`INSERT` materialisation + consistency gate) is ADR-0035; disjointness remains a validation check, not an entailment.
 
 ### R2 — Model-but-don't-evaluate (clarifies ODR-0025 §R2)
 
