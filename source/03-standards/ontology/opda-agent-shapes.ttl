@@ -58,6 +58,14 @@
     sh:property _:b5c0a0eae2812 ;
     sh:targetClass opda:Organisation .
 
+<https://opda.org.uk/pdtf/shape/OrganisationNotPersonDisjointShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0049> ;
+    sh:message "opda:Organisation and opda:Person are owl:disjointWith: no node may be typed both (the SHACL dual of the ADR-0049 / Council session-050 standing class disjointness pair — rigid Substance Kinds with incompatible identity criteria; ODR-0028b / ODR-0013 §Q1)."@en ;
+    sh:not _:b88b6d7d49ea1 ;
+    sh:severity sh:Violation ;
+    sh:targetClass opda:Organisation .
+
 <https://opda.org.uk/pdtf/shape/OwnerTypeValueShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R6> ;
@@ -68,6 +76,14 @@
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
     sh:property _:b444490a4e360 ;
+    sh:targetClass opda:Person .
+
+<https://opda.org.uk/pdtf/shape/PersonNotOrganisationDisjointShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0049> ;
+    sh:message "opda:Person and opda:Organisation are owl:disjointWith: no node may be typed both (the SHACL dual of the ADR-0049 / Council session-050 standing class disjointness pair — rigid Substance Kinds with incompatible identity criteria; ODR-0028b / ODR-0013 §Q1)."@en ;
+    sh:not _:b8177c5ef58c0 ;
+    sh:severity sh:Violation ;
     sh:targetClass opda:Person .
 
 <https://opda.org.uk/pdtf/shape/PlaysRangeShape>
@@ -216,6 +232,12 @@ _:b8177c5ef58c0
 
 _:b8177c5ef58c0
     sh:class opda:Organisation .
+
+_:b8177c5ef58c0
+    sh:class opda:Organisation .
+
+_:b88b6d7d49ea1
+    sh:class opda:Person .
 
 _:b88b6d7d49ea1
     sh:class opda:Person .

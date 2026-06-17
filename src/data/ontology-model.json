@@ -4,7 +4,7 @@
     "classes": 40,
     "objectProperties": 69,
     "datatypeProperties": 193,
-    "shapes": 376,
+    "shapes": 378,
     "concepts": 323,
     "schemes": 49,
     "contexts": 8
@@ -1509,6 +1509,10 @@
         {
           "id": "shape/OrganisationIdentityKeyShape",
           "localName": "OrganisationIdentityKeyShape"
+        },
+        {
+          "id": "shape/OrganisationNotPersonDisjointShape",
+          "localName": "OrganisationNotPersonDisjointShape"
         }
       ],
       "usesSchemes": [],
@@ -1630,6 +1634,10 @@
         {
           "id": "shape/PersonIdentityKeyShape",
           "localName": "PersonIdentityKeyShape"
+        },
+        {
+          "id": "shape/PersonNotOrganisationDisjointShape",
+          "localName": "PersonNotOrganisationDisjointShape"
         },
         {
           "id": "shape/SpecialCategoryPIIWithoutLawfulBasisShape",
@@ -14327,6 +14335,18 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/organisationName",
       "constraints": []
     },
+    "shape/OrganisationNotPersonDisjointShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/OrganisationNotPersonDisjointShape",
+      "id": "shape/OrganisationNotPersonDisjointShape",
+      "localName": "OrganisationNotPersonDisjointShape",
+      "module": "agent",
+      "target": {
+        "id": "Organisation",
+        "localName": "Organisation"
+      },
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/organisationReferenceDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/organisationReferenceDomainShape",
       "id": "shape/organisationReferenceDomainShape",
@@ -14522,6 +14542,18 @@
           "message": "Person identity-key surface: hasAssertedCapacity MUST be a single concept IRI when present. The full Person IC per ODR-0006 §Q1 is borne by the identifier-bundle (NI number / passport / driving-licence); succession is tracked by the IdentifierSuccessionRule SHACL-AF rule below."
         }
       ]
+    },
+    "shape/PersonNotOrganisationDisjointShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/PersonNotOrganisationDisjointShape",
+      "id": "shape/PersonNotOrganisationDisjointShape",
+      "localName": "PersonNotOrganisationDisjointShape",
+      "module": "agent",
+      "target": {
+        "id": "Person",
+        "localName": "Person"
+      },
+      "targetSubjectsOf": null,
+      "constraints": []
     },
     "shape/personWhoDealsWithTheDeedOfCovenantDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/personWhoDealsWithTheDeedOfCovenantDomainShape",
@@ -24383,12 +24415,20 @@
           "localName": "OrganisationIdentityKeyShape"
         },
         {
+          "id": "shape/OrganisationNotPersonDisjointShape",
+          "localName": "OrganisationNotPersonDisjointShape"
+        },
+        {
           "id": "shape/OwnerTypeValueShape",
           "localName": "OwnerTypeValueShape"
         },
         {
           "id": "shape/PersonIdentityKeyShape",
           "localName": "PersonIdentityKeyShape"
+        },
+        {
+          "id": "shape/PersonNotOrganisationDisjointShape",
+          "localName": "PersonNotOrganisationDisjointShape"
         },
         {
           "id": "shape/PlaysRangeShape",

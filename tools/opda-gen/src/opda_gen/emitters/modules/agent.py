@@ -154,6 +154,30 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Person, DCTERMS.source, _ODR_0006_Q1))
+    # opda:Person owl:disjointWith opda:Organisation — the ONE standing class
+    # disjointness pair (ADR-0049 Q3; Council session-050 5–0, three-part bar).
+    # Documentary AI-signal, NEVER entailed: the frozen 7-rule closure (ODR-0025
+    # §R1) consumes no owl:disjointWith, so it materialises ZERO type triples
+    # (ADR-0035 zero-triple proof holds). It is CONSUMED by the disjointness
+    # CONSISTENCY gate (validation-not-materialisation): scripts/fuseki-load.mjs
+    # consistencyGate + ci/inference_closure_test.py clause 4 each query
+    # `?c1 owl:disjointWith ?c2 . ?x a ?c1 . ?x a ?c2` directly — arming the
+    # previously-vacuous ADR-0035 disjointness gate (zero authored before this).
+    # Authored ONCE (canonical direction Person→Organisation): the gate binds
+    # ?c1/?c2 from the single triple, so a both-typed `?x a Person, Organisation`
+    # violation fires without a reciprocal axiom — owl:AllDisjointClasses is NOT
+    # used (no rule walks the list; session-050 verified pairwise consumption).
+    # Both pass the three-part bar (session-050): (i) Person & Organisation are
+    # rigid Substance Kinds each with its OWN identity criterion (ODR-0006 §Q1/§Q6
+    # — multi-identifier persistence vs LegalEntity registration); (ii) their ICs
+    # are INCOMPATIBLE, not merely distinct, not complementary (a natural person
+    # is not a legal-institutional object — the opposite of the co-referring
+    # Property/LegalEstate/RegisteredTitle Kinds, ODR-0005); (iii) a real,
+    # occurring master-data misclassification hazard (a node typed as BOTH a
+    # Person and an Organisation). SHACL dual: opda:PersonNotOrganisationDisjoint
+    # Shape + opda:OrganisationNotPersonDisjointShape (sh:not, both directions) in
+    # shapes.py is the closed-world enforcement.
+    g.add((OPDA.Person, OWL.disjointWith, OPDA.Organisation))
 
     # --- opda:Organisation — UFO Substance Kind (ODR-0006 §Q1 + S006 Q6) -
     # rdfs:subClassOf org:Organization per S006 Q6 9-1 verdict (Allemang

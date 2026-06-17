@@ -53,6 +53,7 @@ opda:Person
     rdfs:label "Person"@en ;
     rdfs:comment "Natural person. UFO Substance Kind; DOLCE Endurant. IC: FIBO-style multi-identifier persistence (date-of-birth + state-issued ID + name) over name-change, gender-recognition, and death hard cases. Anchors PII regimes (DPV co-annotation lands per ODR-0018 in opda-annotations.ttl; ADR-0012 emits)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
+    owl:disjointWith opda:Organisation ;
     skos:scopeNote "DOLCE: Endurant / Agent (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid)."@en .
 
 opda:Proprietor

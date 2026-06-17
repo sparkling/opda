@@ -55,6 +55,31 @@ def test_real_corpus_subclass_propagation_present() -> None:
     assert propagated > 0
 
 
+def test_real_person_organisation_disjointness_authored() -> None:
+    """The ONE standing class disjointness pair (ADR-0049 Q3) is authored in
+    the real corpus and is directional-but-sufficient: a synthetic node typed
+    as BOTH opda:Person and opda:Organisation fires the consistency gate
+    against the committed `opda:Person owl:disjointWith opda:Organisation`
+    axiom (no reciprocal axiom needed — the gate binds ?c1/?c2 from the single
+    authored triple)."""
+    ds, missing = m._load_asserted(_ontology_dir())
+    assert missing == []
+    # The axiom is present (canonical single direction).
+    authored = m._q_count(
+        ds,
+        "GRAPH ?g { <https://opda.org.uk/pdtf/Person> "
+        "owl:disjointWith <https://opda.org.uk/pdtf/Organisation> }",
+    )
+    assert authored == 1, "Person⊥Organisation must be authored exactly once"
+    # A both-typed instance violates it — the gate fires on the real axiom.
+    ds.graph(URIRef("urn:test:disjoint-abox")).parse(
+        data="<urn:test:hybrid> a <https://opda.org.uk/pdtf/Person>, "
+        "<https://opda.org.uk/pdtf/Organisation> .",
+        format="turtle",
+    )
+    assert "disjoint" in _run_checks_on(ds)
+
+
 # --- Negative: each R2 exclusion / consistency clause is detected ------------
 def _minimal_dataset() -> Dataset:
     """A tiny TBox+ABox that fires subclass type-propagation: Sub ⊑ Super,

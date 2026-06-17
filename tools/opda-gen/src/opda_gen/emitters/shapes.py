@@ -172,6 +172,9 @@ _ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a
 # ODR-0029 R3 — domain/range-as-SHACL-constraint layer (the inference/validation
 # boundary: rdfs:domain / rdfs:range are VALIDATED closed-world, never inferred).
 _ODR_0029_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3")
+# ADR-0049 Q3 (Council session-050) — the SHACL dual of the one standing class
+# disjointness pair opda:Person owl:disjointWith opda:Organisation.
+_ADR_0049 = URIRef("https://opda.org.uk/pdtf/harness/adr/ADR-0049")
 
 
 # --- Common helpers -------------------------------------------------------
@@ -1104,6 +1107,41 @@ def build_agent_shapes() -> Graph:
         ),
         source_iri=_ODR_0006_Q4,
     )
+
+    # --- Person ⊥ Organisation mutual-exclusion (ADR-0049 Q3; session-050) ---
+    # The SHACL dual of `opda:Person owl:disjointWith opda:Organisation` (the
+    # ONE standing class disjointness pair; agent.py authors the OWL axiom).
+    # The OWL axiom is documentary AI-signal feeding the disjointness CONSISTENCY
+    # gate (fuseki-load consistencyGate / inference_closure_test clause 4); this
+    # shape is the closed-world SHACL enforcement per ODR-0028b / ODR-0013 §Q1.
+    # Two directions because SHACL `sh:not [ sh:class C ]` only fires for nodes
+    # that ARE the targetClass: targetClass Person → sh:not Organisation catches
+    # a Person also typed Organisation; the mirror (targetClass Organisation →
+    # sh:not Person) catches the reciprocal framing — together they reject a
+    # both-typed node from either entry. sh:Violation per ODR-0013 §Q1 (a node
+    # typed as two incompatible rigid Kinds is a structural identity error).
+    for _dj_target, _dj_forbidden, _dj_shape in (
+        (OPDA.Person, OPDA.Organisation,
+         OPDA_SHAPE.PersonNotOrganisationDisjointShape),
+        (OPDA.Organisation, OPDA.Person,
+         OPDA_SHAPE.OrganisationNotPersonDisjointShape),
+    ):
+        _dj_not = BNode()
+        g.add((_dj_shape, RDF.type, SH.NodeShape))
+        g.add((_dj_shape, SH.targetClass, _dj_target))
+        g.add((_dj_shape, SH["not"], _dj_not))
+        g.add((_dj_shape, SH.severity, SH.Violation))
+        g.add((_dj_shape, DCTERMS.source, _ADR_0049))
+        g.add((_dj_not, SH["class"], _dj_forbidden))
+        g.add((_dj_shape, SH.message, Literal(
+            f"opda:{_dj_target.split('/')[-1]} and "
+            f"opda:{_dj_forbidden.split('/')[-1]} are owl:disjointWith: no node "
+            f"may be typed both (the SHACL dual of the ADR-0049 / Council "
+            "session-050 standing class disjointness pair — rigid Substance "
+            "Kinds with incompatible identity criteria; ODR-0028b / ODR-0013 "
+            "§Q1).",
+            lang="en",
+        )))
 
     # --- Cat 4: special-category PII without lawful basis (per S012 Q3) -
     # Targets Person; expressed as a SHACL-AF SPARQL constraint because the
