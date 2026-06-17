@@ -30,6 +30,8 @@ from opda_gen.ci.three_graph_test import (
     check_no_advisory_in_shapes,
     check_no_owl_imports_in_shapes,
     check_no_shacl_in_annotations,
+    check_ontoclean_axis_consistency,
+    check_ontoclean_edge_frontier,
     check_ontoclean_identity_tbox,
     check_ontoclean_tbox,
     check_target_class_resolves,
@@ -389,8 +391,8 @@ def test_run_all_clean_corpus_with_ontoclean_passes(tmp_path: Path) -> None:
     (tmp_path / "opda-shapes.ttl").write_text(prefix)
     (tmp_path / "opda-annotations.ttl").write_text(
         prefix
-        + 'opda:Relator opda:ontoCleanRigidity "rigid" .\n'
-        + 'opda:Transaction opda:ontoCleanRigidity "rigid" .\n'
+        + 'opda:Relator opda:ufoCategory "Relator" ; opda:ontoCleanRigidity "rigid" .\n'
+        + 'opda:Transaction opda:ufoCategory "Relator" ; opda:ontoCleanRigidity "rigid" .\n'
     )
     violations = run_all(tmp_path)
     ontoclean_violations = [v for v in violations if "OntoClean" in v]
@@ -495,9 +497,155 @@ def test_run_all_clean_corpus_with_ontoclean_identity_passes(tmp_path: Path) -> 
     (tmp_path / "opda-shapes.ttl").write_text(prefix)
     (tmp_path / "opda-annotations.ttl").write_text(
         prefix
-        + 'opda:Relator opda:ontoCleanIdentity "supplies-IC" .\n'
-        + 'opda:Transaction opda:ontoCleanIdentity "carries-IC" .\n'
+        + 'opda:Relator opda:ufoCategory "Relator" ; opda:ontoCleanIdentity "supplies-IC" .\n'
+        + 'opda:Transaction opda:ufoCategory "Relator" ; opda:ontoCleanIdentity "carries-IC" .\n'
     )
     violations = run_all(tmp_path)
     ontoclean_violations = [v for v in violations if "OntoClean" in v]
     assert ontoclean_violations == [], f"clean corpus should pass check 9: {violations}"
+
+
+# --- Check 10 (ADR-0050): axis-consistency -------------------------------
+# The OntoClean projection MUST agree with the single canonical ufoCategory
+# axis (g): rigidity is a function of the category; identity must be in the
+# category's admissible family. A mismatch is the single-valued-ness breach.
+
+def test_axis_consistency_matching_tags_pass() -> None:
+    """NEGATIVE CONTROL — tags that agree with the ufoCategory signature PASS.
+    Mirrors the real OPDA corpus (Relator/Role/RoleMixin families)."""
+    annotations = Graph()
+    # Relator family (rigid, supplies/carries-IC), Role/RoleMixin (anti-rigid,
+    # no-own-IC) — exactly the emitted projection.
+    annotations.add((OPDA.Relator, OPDA.ufoCategory, Literal("Relator")))
+    annotations.add((OPDA.Relator, OPDA.ontoCleanRigidity, Literal("rigid")))
+    annotations.add((OPDA.Relator, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    annotations.add((OPDA.Transaction, OPDA.ufoCategory, Literal("Relator")))
+    annotations.add((OPDA.Transaction, OPDA.ontoCleanRigidity, Literal("rigid")))
+    annotations.add((OPDA.Transaction, OPDA.ontoCleanIdentity, Literal("carries-IC")))
+    annotations.add((OPDA.Buyer, OPDA.ufoCategory, Literal("RoleMixin")))
+    annotations.add((OPDA.Buyer, OPDA.ontoCleanRigidity, Literal("anti-rigid")))
+    annotations.add((OPDA.Buyer, OPDA.ontoCleanIdentity, Literal("no-own-IC")))
+    violations = check_ontoclean_axis_consistency(annotations)
+    assert violations == [], f"agreeing tags should PASS: {violations}"
+
+
+def test_axis_consistency_rigidity_mismatch_fails() -> None:
+    """POSITIVE CONTROL — a rigidity tag contradicting the ufoCategory MUST
+    FAIL (an anti-rigid RoleMixin tagged "rigid")."""
+    annotations = Graph()
+    annotations.add((OPDA.Buyer, OPDA.ufoCategory, Literal("RoleMixin")))
+    # RoleMixin ⇒ anti-rigid, but tagged rigid — the single-axis breach.
+    annotations.add((OPDA.Buyer, OPDA.ontoCleanRigidity, Literal("rigid")))
+    violations = check_ontoclean_axis_consistency(annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "axis-consistency" in violations[0]
+    assert "RoleMixin" in violations[0]
+
+
+def test_axis_consistency_identity_not_admissible_fails() -> None:
+    """POSITIVE CONTROL — an identity tag outside the category's family MUST
+    FAIL (a Role tagged "supplies-IC" — a Role never supplies its own IC)."""
+    annotations = Graph()
+    annotations.add((OPDA.Proprietor, OPDA.ufoCategory, Literal("Role")))
+    annotations.add((OPDA.Proprietor, OPDA.ontoCleanRigidity, Literal("anti-rigid")))
+    # Role admits only {no-own-IC}; supplies-IC is inadmissible.
+    annotations.add((OPDA.Proprietor, OPDA.ontoCleanIdentity, Literal("supplies-IC")))
+    violations = check_ontoclean_axis_consistency(annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "axis-consistency" in violations[0]
+    assert "not admissible" in violations[0]
+
+
+def test_axis_consistency_tag_without_ufocategory_fails() -> None:
+    """POSITIVE CONTROL — an OntoClean tag on a class with NO ufoCategory MUST
+    FAIL: the projection has no single axis to derive from (ADR-0050)."""
+    annotations = Graph()
+    annotations.add((OPDA.Mystery, OPDA.ontoCleanRigidity, Literal("rigid")))
+    violations = check_ontoclean_axis_consistency(annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "axis-consistency" in violations[0]
+    assert "no opda:ufoCategory" in violations[0]
+
+
+def test_axis_consistency_nonsortal_no_identity_passes() -> None:
+    """NEGATIVE CONTROL — a non-sortal category bearing only non-rigid rigidity
+    (no own identity) PASSES; non-sortals are never coerced to ±R/±I."""
+    annotations = Graph()
+    annotations.add((OPDA.SomeDoc, OPDA.ufoCategory, Literal("Information Object")))
+    annotations.add((OPDA.SomeDoc, OPDA.ontoCleanRigidity, Literal("non-rigid")))
+    violations = check_ontoclean_axis_consistency(annotations)
+    assert violations == [], f"non-rigid non-sortal should PASS: {violations}"
+
+
+# --- Check 11 (ADR-0050): edge-targeted growth-frontier guard ------------
+# A sortal-categorised endpoint of an intra-opda subClassOf edge MUST bear a
+# rigidity projection, else check 8 goes silently vacuous across that edge.
+
+def test_edge_frontier_tagged_endpoints_pass() -> None:
+    """NEGATIVE CONTROL — the real OPDA edge (Transaction ⊑ Relator), both
+    endpoints sortal AND rigidity-tagged, PASSES."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    classes.add((OPDA.Transaction, RDFS.subClassOf, OPDA.Relator))
+    for cls in (OPDA.Transaction, OPDA.Relator):
+        annotations.add((cls, OPDA.ufoCategory, Literal("Relator")))
+        annotations.add((cls, OPDA.ontoCleanRigidity, Literal("rigid")))
+    violations = check_ontoclean_edge_frontier(classes, annotations)
+    assert violations == [], f"tagged sortal endpoints should PASS: {violations}"
+
+
+def test_edge_frontier_untyped_sortal_endpoint_fails() -> None:
+    """POSITIVE CONTROL — Guarino's growth-frontier counterexample: a sortal
+    endpoint (a Relator-categorised middle class) lacking a rigidity projection
+    MUST FAIL (else check 8 is silently vacuous across the new edge)."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # CreditRiskAssessment ⊑ RiskAssessment, where RiskAssessment is sortal-
+    # categorised but carries NO rigidity projection (the untyped middle class).
+    classes.add((OPDA.CreditRiskAssessment, RDFS.subClassOf, OPDA.RiskAssessment))
+    annotations.add((OPDA.RiskAssessment, OPDA.ufoCategory, Literal("Relator")))
+    annotations.add((OPDA.CreditRiskAssessment, OPDA.ufoCategory, Literal("Relator")))
+    annotations.add((OPDA.CreditRiskAssessment, OPDA.ontoCleanRigidity, Literal("rigid")))
+    # RiskAssessment (the super) has ufoCategory but NO ontoCleanRigidity.
+    violations = check_ontoclean_edge_frontier(classes, annotations)
+    assert len(violations) == 1, f"expected one violation: {violations}"
+    assert "edge-frontier" in violations[0]
+    assert "RiskAssessment" in violations[0]
+
+
+def test_edge_frontier_nonsortal_endpoint_exempt_passes() -> None:
+    """NEGATIVE CONTROL — a NON-sortal endpoint (Information Object) needs no
+    rigidity projection; the edge PASSES (edge-participant scope, not
+    corpus-wide pre-typing)."""
+    from rdflib.namespace import RDFS
+
+    classes = Graph()
+    annotations = Graph()
+    # An edge between two Information Objects — g assigns them no ±R, so no
+    # rigidity projection is required.
+    classes.add((OPDA.SpecialSearch, RDFS.subClassOf, OPDA.Search))
+    annotations.add((OPDA.SpecialSearch, OPDA.ufoCategory, Literal("Information Object")))
+    annotations.add((OPDA.Search, OPDA.ufoCategory, Literal("Information Object")))
+    violations = check_ontoclean_edge_frontier(classes, annotations)
+    assert violations == [], f"non-sortal endpoints should PASS: {violations}"
+
+
+def test_edge_frontier_external_super_ignored_passes() -> None:
+    """NEGATIVE CONTROL — an edge whose super is NOT opda:-namespaced (an
+    external super, e.g. prov:Entity) is out of scope; PASS even if the opda
+    subclass is sortal-untyped (the guard is intra-opda only)."""
+    from rdflib.namespace import RDFS
+
+    PROV = Namespace("http://www.w3.org/ns/prov#")
+    classes = Graph()
+    annotations = Graph()
+    classes.add((OPDA.Person, RDFS.subClassOf, PROV.Agent))
+    annotations.add((OPDA.Person, OPDA.ufoCategory, Literal("Substance Kind")))
+    # Person is sortal + untyped-for-rigidity, but its only super is external —
+    # not an intra-opda edge, so out of the guard's scope.
+    violations = check_ontoclean_edge_frontier(classes, annotations)
+    assert violations == [], f"external-super edge should be out of scope: {violations}"

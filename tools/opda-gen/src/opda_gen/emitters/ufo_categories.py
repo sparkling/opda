@@ -293,25 +293,98 @@ def emit_ufo_category_annotations(graph: Graph) -> None:
 
 _ADR_0046 = OPDA["harness/adr/ADR-0046"]
 
-# (local-name → (rigidity, identity, dependence | None))
-# dependence is included ONLY for the Relator family (session-042 ±D rule).
-_ONTOCLEAN_TAGS: dict[str, tuple[str, str, str | None]] = {
-    # Relator — rigid, supplies IC (+R +I +D); foundational Relator decision.
+# ---------------------------------------------------------------------------
+# ADR-0050: g(ufoCategory) — the OntoClean rigidity/identity/dependence
+# projection is a real FUNCTION of the single canonical typing axis
+# (opda:ufoCategory), no longer a hand-maintained value-table.
+# ---------------------------------------------------------------------------
+# Council session-049 (matches hm ODR-0100): ufoCategory is the single
+# canonical typing axis; the OntoClean (±R, ±I, ±D) triple is a DERIVED VIEW
+# of it, never an independent assertion. This made the hand-table's
+# "Derived from each type's opda:ufoCategory signature" docstring true in
+# extension but false in mechanism (Allemang's verified bug, session-049).
+# `g` closes that gap: it computes the triple from the closed
+# UFOCategoryScheme signatures, so single-valued-ness holds BY CONSTRUCTION.
+#
+# `_UFO_CATEGORY_SIGNATURE` is g itself: the closed category → (rigidity,
+# identity-baseline, dependence) map, transcribed from the OntoClean
+# signatures the UFO_CATEGORY_CONCEPTS skos:definitions already carry
+# (RelatorCategory "+R, +I, +D"; Role/RoleMixin "−R, +D"; etc.). Non-sortal
+# categories (Information Object, Quality, Quality Value, Collective) — and
+# the perdurant Event — get rigidity "non-rigid" with NO identity / NO
+# dependence: g NEVER coerces a ±R/±I onto a category whose nature does not
+# carry one (the corpus-wide ±R coercion session-049 REJECTED 4–0).
+#
+#   rigidity:  "rigid" (+R) | "anti-rigid" (−R) | "non-rigid" (¬+R)
+#   identity:  "supplies-IC" (+I) | "no-own-IC" (−I) | None (non-sortal)
+#   dependence:"dependent" (+D) | None
+_UFO_CATEGORY_SIGNATURE: dict[str, tuple[str, str | None, str | None]] = {
+    # Rigid sortals.
+    "Substance Kind": ("rigid", "supplies-IC", None),
     "Relator": ("rigid", "supplies-IC", "dependent"),
-    # Transaction — subclass of Relator; carries Relator IC; founded (+D).
-    "Transaction": ("rigid", "carries-IC", "dependent"),
-    # Proprietorship — subclass of Relator; same as Transaction.
-    "Proprietorship": ("rigid", "carries-IC", "dependent"),
-    # Role — anti-rigid, no own IC (borrows from bearer); externally founded.
+    # Anti-rigid roles — never supply their own IC (borrow from a bearer).
     "Role": ("anti-rigid", "no-own-IC", None),
-    # Proprietor — subclass of Role; inherits anti-rigid + no own IC.
-    "Proprietor": ("anti-rigid", "no-own-IC", None),
-    # RoleMixin — anti-rigid, no own IC; cross-sortal.
     "RoleMixin": ("anti-rigid", "no-own-IC", None),
-    # Buyer — subclass of RoleMixin; inherits anti-rigid + no own IC.
-    "Buyer": ("anti-rigid", "no-own-IC", None),
-    # Seller — subclass of RoleMixin; inherits anti-rigid + no own IC.
-    "Seller": ("anti-rigid", "no-own-IC", None),
+    # Non-sortals + perdurant — no ±R/±I/±D coercion (session-049).
+    "Information Object": ("non-rigid", None, None),
+    "Event": ("non-rigid", None, None),
+    "Quality": ("non-rigid", None, None),
+    "Quality Value": ("non-rigid", None, None),
+    "Collective": ("non-rigid", None, None),
+}
+
+
+def ontoclean_signature(
+    local: str, *, is_subkind: bool
+) -> tuple[str, str | None, str | None]:
+    """Project a class's OntoClean (rigidity, identity, dependence) triple.
+
+    g(ufoCategory) yields the *category* signature (the rigidity/identity/
+    dependence the category root bears); ``is_subkind`` carries the one
+    structural bit g(category) cannot: a subkind within a `supplies-IC`
+    category INHERITS rather than supplies its IC, so its identity downgrades
+    `supplies-IC → carries-IC` (e.g. Transaction ⊑ Relator). Rigidity and
+    dependence pass straight through (a subkind is as rigid / as dependent as
+    its category). This keeps the OntoClean triple a derived function of the
+    single canonical axis (ADR-0050 / session-049). Raises ``KeyError`` if
+    ``local`` carries no ufoCategory or its category is outside the closed
+    scheme (a fail-loud guard, never a silent default).
+    """
+    category = UFO_CATEGORY[local]
+    rigidity, identity, dependence = _UFO_CATEGORY_SIGNATURE[category]
+    if is_subkind and identity == "supplies-IC":
+        identity = "carries-IC"
+    return rigidity, identity, dependence
+
+
+# Emission SCOPE for the OntoClean tags — the intra-`opda:` rdfs:subClassOf
+# edge participants + contrast set (Davis's edge-participant scope;
+# session-042/049): the five subclass-bearing OPDA types and their three
+# direct supers. This is a SCOPE decision (which classes get tagged), NOT the
+# tag VALUES — the values derive from g (above). It is NOT corpus-wide: the
+# ~31 edgeless classes stay untagged by design (session-049 REJECTED 4–0 the
+# corpus-wide rigidity-vector population). `is_subkind` marks the five
+# subkinds whose IC inherits from a supplies-IC super.
+_ONTOCLEAN_SCOPE: dict[str, bool] = {
+    # Relator family — the rigid Relator super + its two founded subkinds.
+    "Relator": False,
+    "Transaction": True,
+    "Proprietorship": True,
+    # Role family — the anti-rigid Role super + its subkind.
+    "Role": False,
+    "Proprietor": True,
+    # RoleMixin family — the anti-rigid RoleMixin super + its two subkinds.
+    "RoleMixin": False,
+    "Buyer": True,
+    "Seller": True,
+}
+
+# (local-name → (rigidity, identity, dependence | None)), DERIVED via g — no
+# longer hand-typed. dependence surfaces ONLY for the Relator family (the
+# session-042 ±D rule), because g returns it ONLY for the Relator signature.
+_ONTOCLEAN_TAGS: dict[str, tuple[str, str, str | None]] = {
+    local: ontoclean_signature(local, is_subkind=is_subkind)  # type: ignore[misc]
+    for local, is_subkind in _ONTOCLEAN_SCOPE.items()
 }
 
 _RIGIDITY_COMMENT = (

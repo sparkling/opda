@@ -18,7 +18,7 @@ Each check is one function returning a list of violation strings. Empty list
 == PASS. The implementing functions document the exact ODR-0004 §3a clause
 they enforce in the docstring.
 
-The full corpus check (`run_all`) executes all nine checks across a directory
+The full corpus check (`run_all`) executes all eleven checks across a directory
 containing `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`,
 the 6 per-module TTLs, plus `opda-vocabularies.ttl` + `opda-contexts.ttl` (the
 ODR-0029 reasoned union, scanned by check 6), and (per check #5) optionally
@@ -30,7 +30,14 @@ runs the TBox OntoClean rigidity meta-shape over the class+annotation graph only
 violation form `rigid ⊑ anti-rigid` returns empty.  Check 9 (ADR-0046 ±I limb)
 is its identity-criterion sibling over the same editorial pass, enforcing that
 the violation form `supplies-IC ⊑ supplies-IC` (two incompatible own-identity
-criteria) returns empty.
+criteria) returns empty.  Checks 10-11 (ADR-0050 / council session-049) enforce
+the single-canonical-axis invariant: check 10 (axis-consistency) asserts every
+rigidity/identity-tagged class's OntoClean projection agrees with g(ufoCategory)
+— rigidity/identity is a derived function of the single canonical typing axis,
+never an independent assertion; check 11 (edge-targeted growth-frontier guard)
+fails when a sortal-categorised endpoint of an intra-`opda:` rdfs:subClassOf edge
+lacks a rigidity projection, catching the silent-false-green where check 8 goes
+vacuous across an edge through an untyped middle class.
 """
 
 from __future__ import annotations
@@ -478,12 +485,211 @@ def check_ontoclean_identity_tbox(
 
 
 # ---------------------------------------------------------------------------
+# Check 10: axis-consistency — the OntoClean projection MUST agree with the
+# ufoCategory signature (ADR-0050 / council session-049; hm ODR-0100).
+# ---------------------------------------------------------------------------
+# ADR-0050 ratifies opda:ufoCategory as the SINGLE canonical typing axis; the
+# OntoClean (±R, ±I) triple is a DERIVED VIEW of it (a function g of the
+# category), never an independent assertion. The emitter now computes the tags
+# via g (ufo_categories.ontoclean_signature) — but a hand-edit to the emitted
+# TTL, or a future divergence, would break single-valued-ness silently. This
+# check is the INDEPENDENT oracle: it re-derives the expected (rigidity,
+# identity-family) from each rigidity-tagged class's emitted ufoCategory and
+# asserts the emitted OntoClean tags agree. It is the consuming gate Davis's
+# held dissent requires (the rule must not ship as prose without one).
+#
+# The check encodes g as a validation spec independent of the emitter, so it
+# is a genuine cross-check of the emitted artefact, not a tautology against the
+# generator. Rigidity is a pure function of the category. Identity is the
+# category's identity FAMILY: a supplies-IC category admits {supplies-IC (the
+# category root), carries-IC (a subkind that inherits the IC)}; an −I category
+# admits only {no-own-IC}; a non-sortal category admits no own OntoClean
+# identity at all.
+
+# category -> expected rigidity. Non-sortals + the perdurant Event are
+# "non-rigid" (NEVER a coerced ±R — session-049 rejected corpus-wide ±R).
+_CATEGORY_RIGIDITY: dict[str, str] = {
+    "Substance Kind": "rigid",
+    "Relator": "rigid",
+    "Role": "anti-rigid",
+    "RoleMixin": "anti-rigid",
+    "Information Object": "non-rigid",
+    "Event": "non-rigid",
+    "Quality": "non-rigid",
+    "Quality Value": "non-rigid",
+    "Collective": "non-rigid",
+}
+
+# category -> the admissible OntoClean identity family for a class of that
+# category. A supplies-IC (+I) category admits supplies-IC (root) or carries-IC
+# (subkind inheriting the IC); a −I category admits only no-own-IC; a
+# non-sortal category admits none (so an own-identity tag there is a violation).
+_CATEGORY_IDENTITY_FAMILY: dict[str, frozenset[str]] = {
+    "Substance Kind": frozenset({"supplies-IC", "carries-IC"}),
+    "Relator": frozenset({"supplies-IC", "carries-IC"}),
+    "Role": frozenset({"no-own-IC"}),
+    "RoleMixin": frozenset({"no-own-IC"}),
+    "Information Object": frozenset(),
+    "Event": frozenset(),
+    "Quality": frozenset(),
+    "Quality Value": frozenset(),
+    "Collective": frozenset(),
+}
+
+
+def check_ontoclean_axis_consistency(annotation_graph: Graph) -> list[str]:
+    """Enforce the ADR-0050 single-axis invariant on the emitted tags.
+
+    For every class bearing an `opda:ontoCleanRigidity` (or `…Identity`) tag,
+    re-derive the expected rigidity / identity-family from its emitted
+    `opda:ufoCategory` and assert the tags agree:
+
+      * `ontoCleanRigidity` MUST equal g(ufoCategory)'s rigidity
+        (`ufoCategory` "Role"/"RoleMixin" ⇒ "anti-rigid";
+         "Relator"/"Substance Kind" ⇒ "rigid"; non-sortals ⇒ "non-rigid");
+      * `ontoCleanIdentity` MUST be in g(ufoCategory)'s admissible identity
+        family (a `−I`/non-sortal category may NOT bear `supplies-IC`).
+
+    A rigidity/identity tag on a class with no `ufoCategory`, or with a
+    category outside the closed scheme, is itself a violation (the projection
+    has nothing to derive from). Returns a list of violation strings (empty
+    == PASS). TBox-only — reads the annotation graph; emits no shape.
+    """
+    violations: list[str] = []
+    tagged: set = set()
+    for s, _p, _o in annotation_graph.triples((None, OPDA.ontoCleanRigidity, None)):
+        tagged.add(s)
+    for s, _p, _o in annotation_graph.triples((None, OPDA.ontoCleanIdentity, None)):
+        tagged.add(s)
+
+    for subj in sorted(tagged, key=str):
+        cat_lit = annotation_graph.value(subj, OPDA.ufoCategory)
+        if cat_lit is None:
+            violations.append(
+                f"axis-consistency: {subj} bears an OntoClean tag but no "
+                "opda:ufoCategory — the single canonical typing axis is "
+                "absent, so the OntoClean projection has nothing to derive "
+                "from (ADR-0050)."
+            )
+            continue
+        category = str(cat_lit)
+        if category not in _CATEGORY_RIGIDITY:
+            violations.append(
+                f"axis-consistency: {subj} has opda:ufoCategory {category!r} "
+                "outside the closed UFOCategoryScheme — cannot derive an "
+                "OntoClean signature (ADR-0050)."
+            )
+            continue
+
+        rigidity = annotation_graph.value(subj, OPDA.ontoCleanRigidity)
+        if rigidity is not None:
+            expected = _CATEGORY_RIGIDITY[category]
+            if str(rigidity) != expected:
+                violations.append(
+                    f"axis-consistency: {subj} opda:ontoCleanRigidity "
+                    f"{str(rigidity)!r} contradicts its opda:ufoCategory "
+                    f"{category!r} (expected {expected!r}) — OntoClean "
+                    "rigidity must be a function of the single canonical "
+                    "ufoCategory axis (ADR-0050; session-049)."
+                )
+
+        identity = annotation_graph.value(subj, OPDA.ontoCleanIdentity)
+        if identity is not None:
+            family = _CATEGORY_IDENTITY_FAMILY[category]
+            if str(identity) not in family:
+                allowed = (
+                    "{" + ", ".join(sorted(family)) + "}" if family else "{}"
+                )
+                violations.append(
+                    f"axis-consistency: {subj} opda:ontoCleanIdentity "
+                    f"{str(identity)!r} is not admissible for opda:ufoCategory "
+                    f"{category!r} (admissible: {allowed}) — OntoClean "
+                    "identity must agree with the single canonical ufoCategory "
+                    "axis (ADR-0050; session-049)."
+                )
+
+    return violations
+
+
+# ---------------------------------------------------------------------------
+# Check 11: edge-targeted growth-frontier guard (ADR-0050 — REQUIRED for
+# soundness; council session-049, Guarino's growth-frontier counterexample).
+# ---------------------------------------------------------------------------
+# The OntoClean rigidity-subsumption gate (check 8) is only sound while every
+# endpoint of an intra-`opda:` rdfs:subClassOf edge that NEEDS a rigidity
+# projection actually has one. Today it does (the 5 edges' 8 endpoints are all
+# tagged). But adding a future sortal subkind edge through an UNTYPED middle
+# class (Guarino's `CreditRiskAssessment ⊐ RiskAssessment ⊐ AssessorRole`) would
+# slip past check 8 silently — the gate stays vacuously green because the
+# untyped middle class carries no rigidity to contradict. This guard fails CI
+# at edge-authoring time: any intra-`opda:` subClassOf edge whose endpoint is a
+# SORTAL-categorised class (Substance Kind / Relator / Role / RoleMixin —
+# categories that DO carry a rigidity) MUST bear an `opda:ontoCleanRigidity`
+# projection. Non-sortal endpoints (Information Object / Quality / Event / …)
+# are exempt — g assigns them no ±R, so they need none (this is the
+# edge-participant scope, NOT corpus-wide pre-typing of edgeless classes).
+
+# The sortal categories — those for which g yields a ±R rigidity that a
+# subsumption edge can contradict. A subClassOf endpoint of one of these MUST
+# carry a rigidity projection or check 8 goes silently vacuous.
+_SORTAL_CATEGORIES: frozenset[str] = frozenset(
+    {"Substance Kind", "Relator", "Role", "RoleMixin"}
+)
+
+
+def check_ontoclean_edge_frontier(
+    class_graph: Graph, annotation_graph: Graph
+) -> list[str]:
+    """Enforce the ADR-0050 edge-targeted growth-frontier guard.
+
+    Over the intra-`opda:` `rdfs:subClassOf` edges (both endpoints
+    `opda:`-namespaced), FAIL when an endpoint is a sortal-categorised class
+    (its `opda:ufoCategory` is one of Substance Kind / Relator / Role /
+    RoleMixin) yet lacks an `opda:ontoCleanRigidity` projection. Such a gap
+    makes the rigidity-subsumption gate (check 8) vacuously green across that
+    edge — the silent-false-green session-049's growth-frontier counterexample
+    exposed. Non-sortal endpoints are exempt (g assigns them no ±R).
+
+    Passes today: the five intra-`opda:` edges' endpoints (Relator, Role,
+    RoleMixin, Transaction, Proprietorship, Proprietor, Buyer, Seller) are all
+    tagged. Returns a list of violation strings (empty == PASS). TBox-only.
+    """
+    from rdflib.namespace import RDFS
+
+    opda_ns = str(OPDA)
+    violations: list[str] = []
+    seen: set = set()
+    for sub, super_ in class_graph.subject_objects(RDFS.subClassOf):
+        if not (isinstance(sub, URIRef) and isinstance(super_, URIRef)):
+            continue
+        if not (str(sub).startswith(opda_ns) and str(super_).startswith(opda_ns)):
+            continue
+        for endpoint in (sub, super_):
+            if endpoint in seen:
+                continue
+            cat_lit = annotation_graph.value(endpoint, OPDA.ufoCategory)
+            if cat_lit is None or str(cat_lit) not in _SORTAL_CATEGORIES:
+                continue
+            if annotation_graph.value(endpoint, OPDA.ontoCleanRigidity) is None:
+                seen.add(endpoint)
+                violations.append(
+                    f"edge-frontier: {endpoint} is a sortal-categorised "
+                    f"({str(cat_lit)!r}) endpoint of an intra-opda "
+                    "rdfs:subClassOf edge but lacks an opda:ontoCleanRigidity "
+                    "projection — the rigidity-subsumption gate (check 8) would "
+                    "be silently vacuous across this edge (ADR-0050; "
+                    "session-049 growth-frontier guard)."
+                )
+    return violations
+
+
+# ---------------------------------------------------------------------------
 # Orchestration.
 # ---------------------------------------------------------------------------
 def run_all(ontology_dir: Path) -> list[str]:
-    """Run all nine checks against an emission directory.
+    """Run all eleven checks against an emission directory.
 
-    Returns a flat list of violation strings across all nine checks (empty
+    Returns a flat list of violation strings across all eleven checks (empty
     == PASS). Tolerates missing files: a missing file is reported as a
     separate violation so the caller knows the corpus is incomplete.
 
@@ -571,4 +777,10 @@ def run_all(ontology_dir: Path) -> list[str]:
     # Check 9 (ADR-0046 ±I limb): TBox OntoClean identity-criterion check.
     # Same editorial pass (class + annotation graph only; never instances).
     out.extend(check_ontoclean_identity_tbox(classes_g, annotations_g))
+    # Check 10 (ADR-0050): axis-consistency — the OntoClean projection must
+    # agree with the single canonical ufoCategory axis (annotation graph only).
+    out.extend(check_ontoclean_axis_consistency(annotations_g))
+    # Check 11 (ADR-0050): edge-targeted growth-frontier guard — every sortal
+    # endpoint of an intra-opda subClassOf edge must bear a rigidity projection.
+    out.extend(check_ontoclean_edge_frontier(classes_g, annotations_g))
     return out
