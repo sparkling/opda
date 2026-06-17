@@ -79,7 +79,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
         <tbody>
           {g.classes.map((c) => (
             <tr>
-              <td><a href={`/pdtf/${c.id}`}><code>opda:{c.localName}</code></a></td>
+              <td style="white-space: nowrap"><a href={`/pdtf/${c.id}`}>{c.localName}</a></td>
               <td>{c.comment || <span class="muted">—</span>}</td>
             </tr>
           ))}
