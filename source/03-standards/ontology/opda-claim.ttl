@@ -26,14 +26,18 @@ opda:AssuranceLevel
     rdf:type owl:Class ;
     rdfs:label "Assurance Level"@en ;
     rdfs:comment "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering. Backed by opda:AssuranceLevelScheme SKOS scheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading)."@en ;
+    skos:definition "A graded quality judgement on a claim's verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and governed by the assurance-level concept scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8."@en .
 
 opda:AttachedDocument
     rdf:type owl:Class ;
     rdfs:label "Attached Document"@en ;
     rdfs:comment "A document attached to a transaction record (e.g. the registry additionalDocuments[] filed against a title to be sold). UFO Information Object; PROV-O Entity. A NEUTRAL document Kind — NOT evidence: it bears filing metadata (opda:documentDate / opda:documentTypeCode / opda:filedUnder / opda:retrievedOn) without the eIDAS-assurance commitment a document playing the evidence role carries (ODR-0024 R7 / session-028 Q7 — entailing every attached doc is Substantial-tier evidence). IC: individuated by its content + issuing activity (the artefact the registry holds), NOT by documentTypeCode / documentDate (mutable descriptive facets, not an identity principle). A document BECOMES evidence by playing the evidence role — recorded as opda:evidenceType 'Document' on an opda:Evidence (ODR-0027 §R6), NOT by an rdfs:subClassOf into evidence; an attached document stands as evidence only under ODR-0009, never by mere attachment."@en ;
+    skos:definition "A document filed against a transaction record, individuated by its content and issuing activity, that bears filing metadata without itself carrying the assurance commitment of evidence until it plays the evidence role."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R7> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral document bearer per ODR-0024 R7 — the one genuine Kind in the evidence family (ODR-0027 §R6); a document plays the evidence role (opda:evidenceType), it is not sub-classed into it."@en .
 
@@ -41,7 +45,9 @@ opda:Claim
     rdf:type owl:Class ;
     rdfs:label "Claim"@en ;
     rdfs:comment "Verifiable claim entity. UFO Information particular; PROV-O Entity. Per S009 Q1 80%-PROV-O mapping. Hard cases: contested assertion (multiple verifications with divergent verdicts); multi-method verification (electronic-record + vouch corroboration); assurance-level downgrade (vouch-only evidence caps at eIDAS Low)."@en ;
+    skos:definition "An assertion about a property transaction subject whose truth is backed by attached evidence and a recorded verification, such that the asserted fact and its provenance can be re-checked."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "UFO: Information particular (Guizzardi 2005 Ch. 4 §4.7). PROV-O: Entity (W3C PROV-O REC §3.2). The verified claim (claim plus verification bundle) is a derived entity per S009 Rule 1."@en .
 
@@ -49,7 +55,9 @@ opda:Evidence
     rdf:type owl:Class, opda:RoleMixin ;
     rdfs:label "Evidence"@en ;
     rdfs:comment "Evidence supporting a Claim. UFO RoleMixin (anti-rigid, cross-categorial — a bearer is evidence only qua a VerificationActivity using it; ODR-0006 Seller/Buyer pattern); PROV-O Entity. Evidence KIND is a coded isMemberOf classification — opda:evidenceType over opda:EvidenceMethodScheme (the OIDC4IDA evidence.type value-space: Document / Electronic-Record / Vouch) — NOT a subclass tree (ODR-0027 §R6; the former …Evidence subclasses are retired, since 'evidence is a role a document plays' and a Role is never rdfs:subClassOf a Kind). The three kinds are NOT collapsed (S009 R5): they remain distinct scheme concepts. Kind-specific attributes (opda:attestedBy for vouches; document/record specifics) are facets borne by the role; per-kind obligations are validated VALUE-KEYED by opda:EvidenceFacetShape (sh:targetSubjectsOf opda:evidenceType + sh:or material implication; ADR-0012)."@en ;
+    skos:definition "A role a bearer plays when a verification activity draws on it to support a claim, whose acquisition kind (Document, Electronic-Record or Vouch) is stated by a coded evidence-type value rather than by subclassing."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:subClassOf prov:Entity ;
     skos:scopeNote "PROV-O: Entity (W3C PROV-O REC §3.2). The three evidence kinds (Document / Electronic-Record / Vouch) are OIDC4IDA / eIDAS evidence.type concepts in opda:EvidenceMethodScheme (S009 Rule 5), carried as the coded opda:evidenceType value (ODR-0027 §R6)."@en .
 
@@ -57,14 +65,18 @@ opda:TrustFramework
     rdf:type owl:Class ;
     rdfs:label "Trust Framework"@en ;
     rdfs:comment "Trust framework citation — a governance regime that scopes claim validity (e.g. the UK Property Data Trust Framework). Per S009 5-residue mapped to dct:conformsTo on the verification activity (NOT a PROV-O primitive). Authoritative within scope per Session 003c Item 3 (OPDA TF authoritative scope)."@en ;
+    skos:definition "A cited governance regime of agreements, rules and technical standards that scopes the validity of a claim and is authoritative within its declared remit, such as the UK Property Data Trust Framework."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q5> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     skos:scopeNote "UFO: Information Particular (governance regime as informational artefact). dct:conformsTo binding per S009 Rule 5 (PROV-O residue)."@en .
 
 opda:VerificationActivity
     rdf:type owl:Class ;
     rdfs:label "Verification Activity"@en ;
     rdfs:comment "Verification activity recording the production of a verified claim from evidence. PROV-O Activity. The OIDC4IDA single 'time' is the completion instant → prov:endedAtTime. Uses qualified form prov:qualifiedAttribution → prov:Attribution with prov:hadRole so validation_method / verification_method are not discarded."@en ;
+    skos:definition "An activity that derives a verified claim from evidence, completing at a recorded instant and attributing the validation and verification methods to the agents that performed them."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "PROV-O: Activity (W3C PROV-O REC §3.2). UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7)."@en .
 
@@ -72,29 +84,37 @@ opda:digest
     rdf:type owl:DatatypeProperty ;
     rdfs:label "digest"@en ;
     rdfs:comment "Cryptographic digest of a Claim or Evidence (algorithm + value, e.g. 'sha256:e3b0...'). Local term per S009 5-residue (PROV-O has no notion of signature or hash). Algorithm validation by opda:DigestAlgorithmScheme SKOS scheme (ADR-0012 emits the constraint)."@en ;
+    skos:definition "Relates a claim or piece of evidence to its cryptographic hash, expressed as an algorithm-qualified digest value drawn from the digest-algorithm concept scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q4> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range xsd:string .
 
 opda:attestedBy
     rdf:type owl:ObjectProperty ;
     rdfs:label "attested by"@en ;
     rdfs:comment "Vouch → Agent attestation join. A facet borne by evidence playing the vouch role (opda:evidenceType 'Vouch'); mirror of prov:wasAttributedTo for vouch-specific use. The voucher's role (e.g. opda:VoucherRole) is captured via prov:qualifiedAttribution → prov:Attribution → prov:hadRole per S009 Q2 qualified-form discipline. Presence is required value-keyed when evidenceType='Vouch' (opda:EvidenceFacetShape, ADR-0012)."@en ;
+    skos:definition "Relates evidence playing the vouch role to the agent that attests it, mirroring prov:wasAttributedTo and required value-keyed when the evidence type is Vouch."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     rdfs:domain opda:Evidence ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range prov:Agent .
 
 opda:evidenceType
     rdf:type owl:ObjectProperty ;
     rdfs:label "evidence type"@en ;
     rdfs:comment "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL."@en ;
+    skos:definition "Relates a piece of evidence to the evidence-method scheme concept naming its OIDC4IDA acquisition kind (Document, Electronic-Record or Vouch), serving as the governed classifier in place of an evidence subclass tree."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     rdfs:domain opda:Evidence ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range skos:Concept .
 
 opda:supportedBy
     rdf:type owl:ObjectProperty ;
     rdfs:label "supported by"@en ;
     rdfs:comment "Claim → Evidence join. Convenience predicate alongside the canonical PROV-O prov:wasDerivedFrom chain (Claim prov:wasDerivedFrom Evidence). opda:supportedBy is the opda-namespaced inverse-style predicate for downstream consumers that prefer an opda: name; both directions emit so consumers can query from either end."@en ;
+    skos:definition "Relates a claim to a piece of evidence that backs it, providing an opda-namespaced counterpart to the canonical prov:wasDerivedFrom derivation chain."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
     rdfs:domain opda:Claim ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range opda:Evidence .

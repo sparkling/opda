@@ -276,7 +276,15 @@ def build_contexts_graph() -> Graph:
         "authorities.",
         lang="en",
     )))
-    g.add((OPDA.consumesFrom, RDFS.isDefinedBy, _ODR_0020))
+    g.add((OPDA.consumesFrom, SKOS.definition, Literal(
+        "Relates a domain term, or its owning module, to the upstream "
+        "conformist authority — an organisation or agent whose published model "
+        "PDTF aligns to (e.g. HM Land Registry, a local authority) — whose "
+        "definitions and codes it adopts, per the DDD Conformist relationship.",
+        lang="en",
+    )))
+    g.add((OPDA.consumesFrom, RDFS.isDefinedBy,
+           URIRef("https://opda.org.uk/pdtf/")))
     g.add((OPDA.consumesFrom, DCTERMS.source, _ODR_0019_RULE_8))
 
     return g

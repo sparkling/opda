@@ -84,6 +84,7 @@ _CLASS_GRAPH_FILES: tuple[str, ...] = (
     "opda-descriptive.ttl",
     "opda-vocabularies.ttl",
     "opda-contexts.ttl",
+    "foundation.ttl",
 )
 
 

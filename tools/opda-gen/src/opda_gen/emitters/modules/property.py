@@ -288,6 +288,15 @@ def build_graph() -> Graph:
         "supplies own IC).",
         lang="en",
     )))
+    g.add((OPDA.Property, SKOS.definition, Literal(
+        "A physical immovable property whose identity is fixed by spatial-"
+        "material continuity (with a legal-record-discontinuity override) and "
+        "persists through re-numbering, repair, and re-registration, as "
+        "distinct from the legal estate vested in it and the registered title "
+        "that records it.",
+        lang="en",
+    )))
+    g.add((OPDA.Property, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Property, DCTERMS.source, _ODR_0005_S2A))
 
     # --- opda:LegalEstate — UFO Substance Kind (ODR-0005 §3b) -----------
@@ -310,6 +319,15 @@ def build_graph() -> Graph:
         "(Guizzardi 2005 Ch. 4 §4.2).",
         lang="en",
     )))
+    g.add((OPDA.LegalEstate, SKOS.definition, Literal(
+        "A bundle of legal rights in land (such as a freehold or leasehold "
+        "estate) vested in a physical property, whose identity persists "
+        "through grant, transfer, registration, and discharge and is "
+        "distinguished from any coexisting registered title and the physical "
+        "property by the extent of the property rights it confers.",
+        lang="en",
+    )))
+    g.add((OPDA.LegalEstate, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.LegalEstate, DCTERMS.source, _ODR_0005_S3B))
 
     # --- opda:RegisteredTitle — UFO Substance Kind (ODR-0005 §3c) -------
@@ -332,6 +350,14 @@ def build_graph() -> Graph:
         "(Guizzardi 2005 Ch. 4 §4.2).",
         lang="en",
     )))
+    g.add((OPDA.RegisteredTitle, SKOS.definition, Literal(
+        "An informational record entity maintained in the HM Land Registry "
+        "title register, whose identity is fixed by its title-number lineage "
+        "and registry-event history, as distinct from the legal estate it "
+        "documents and the physical property it identifies.",
+        lang="en",
+    )))
+    g.add((OPDA.RegisteredTitle, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.RegisteredTitle, DCTERMS.source, _ODR_0005_S3C))
 
     # --- opda:Address — UFO Substance Kind (ODR-0015 §2a) ---------------
@@ -357,6 +383,15 @@ def build_graph() -> Graph:
         "structural compatibility with vCard consumers.",
         lang="en",
     )))
+    g.add((OPDA.Address, SKOS.definition, Literal(
+        "A socially-recognised locator constructed and stewarded by an "
+        "addressing authority (Royal Mail, OS AddressBase, HM Land Registry, "
+        "or INSPIRE) as a record entity, whose identity persists through "
+        "cosmetic re-formatting and authority-internal succession and never "
+        "collapses across variants stewarded by different authorities.",
+        lang="en",
+    )))
+    g.add((OPDA.Address, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Address, DCTERMS.source, _ODR_0015_S2A))
 
     # --- opda:UPRNSuccessionEvent — provenance event (ODR-0005 §6a) -----
@@ -380,6 +415,14 @@ def build_graph() -> Graph:
         "— here an Achievement: instantaneous administrative re-issuance).",
         lang="en",
     )))
+    g.add((OPDA.UPRNSuccessionEvent, SKOS.definition, Literal(
+        "A reified provenance activity recording the administrative re-"
+        "numbering of the UPRN for a single physical property, through which "
+        "the property's identity persists, captured with its own "
+        "dereferenceable identifier and audit trail.",
+        lang="en",
+    )))
+    g.add((OPDA.UPRNSuccessionEvent, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.UPRNSuccessionEvent, DCTERMS.source, _ODR_0005_S6A))
 
     # --- opda:LeaseTerm — OWL-Time-typed interval (ODR-0007 §Q5) --------
@@ -400,6 +443,14 @@ def build_graph() -> Graph:
         "Information particular bounding a leasehold tenure perdurant.",
         lang="en",
     )))
+    g.add((OPDA.LeaseTerm, SKOS.definition, Literal(
+        "A bounded time interval defining the duration of a leasehold legal "
+        "estate, carrying a beginning and either a duration or an end, and "
+        "succeeded by a derived interval when the lease is statutorily "
+        "extended.",
+        lang="en",
+    )))
+    g.add((OPDA.LeaseTerm, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.LeaseTerm, DCTERMS.source, _ODR_0007_S5))
 
     # --- opda:LeaseExtensionEvent — provenance event ---------------------
@@ -431,6 +482,14 @@ def build_graph() -> Graph:
         "the LegalEstate (which retains identity) and not to the Property.",
         lang="en",
     )))
+    g.add((OPDA.LeaseExtensionEvent, SKOS.definition, Literal(
+        "A reified provenance activity recording a statutory extension of a "
+        "leasehold term, which produces a successor lease term and updates "
+        "the registered title while the leasehold legal estate retains its "
+        "identity.",
+        lang="en",
+    )))
+    g.add((OPDA.LeaseExtensionEvent, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.LeaseExtensionEvent, DCTERMS.source, _ODR_0005_S3B))
 
     # --- DatatypeProperty: opda:addressVariant (ODR-0015 §Rule 6) -------
@@ -445,6 +504,13 @@ def build_graph() -> Graph:
         "Guarino's S001 Q4 'mode of presentation' framing.",
         lang="en",
     )))
+    g.add((OPDA.addressVariant, SKOS.definition, Literal(
+        "The authority-and-lifecycle tag of an Address (one of 'title', "
+        "'marketing', or 'inspire') identifying which addressing authority "
+        "stewards the locator and the lifecycle it follows.",
+        lang="en",
+    )))
+    g.add((OPDA.addressVariant, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.addressVariant, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6")))
 
@@ -463,6 +529,14 @@ def build_graph() -> Graph:
         "(ADR-0012 emits the constraint).",
         lang="en",
     )))
+    g.add((OPDA.builtForm, SKOS.definition, Literal(
+        "The built-form classification of a Property (such as detached, semi-"
+        "detached, terraced, or end-terrace) drawn from the BuiltForm "
+        "controlled scheme, describing how the building is structurally "
+        "attached to neighbouring buildings.",
+        lang="en",
+    )))
+    g.add((OPDA.builtForm, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.builtForm, DCTERMS.source, _G2_BUILT_FORM))
 
     # --- DatatypeProperty: opda:currentEnergyRating (ODR-0008 §Q5a) -----
@@ -481,6 +555,13 @@ def build_graph() -> Graph:
         "the scheme members (ADR-0012 emits the constraint).",
         lang="en",
     )))
+    g.add((OPDA.currentEnergyRating, SKOS.definition, Literal(
+        "The current energy-efficiency rating band (A to G) of a Property as "
+        "recorded on its Energy Performance Certificate, drawn from the "
+        "DESNZ-governed CurrentEnergyRating scheme.",
+        lang="en",
+    )))
+    g.add((OPDA.currentEnergyRating, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.currentEnergyRating, DCTERMS.source, _G2_CURRENT_ENERGY_RATING))
 
     # --- DatatypeProperty: opda:hasUPRN (ODR-0005 §6a) -------------------
@@ -496,6 +577,14 @@ def build_graph() -> Graph:
         "emits the shape).",
         lang="en",
     )))
+    g.add((OPDA.hasUPRN, SKOS.definition, Literal(
+        "The Unique Property Reference Number assigned to a Property in OS "
+        "AddressBase: a contingent administrative identifier subject to "
+        "provenance-tracked succession, not a load-bearing identity "
+        "criterion for the property.",
+        lang="en",
+    )))
+    g.add((OPDA.hasUPRN, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasUPRN, DCTERMS.source, _ODR_0005_S6A))
 
     # --- DatatypeProperty: opda:tenureKind (ODR-0008 §Q5a) ---------------
@@ -515,6 +604,14 @@ def build_graph() -> Graph:
         "applies only to load-bearing +I labels).",
         lang="en",
     )))
+    g.add((OPDA.tenureKind, SKOS.definition, Literal(
+        "The tenure classification of a LegalEstate (freehold, leasehold, or "
+        "commonhold) drawn from the TenureKind scheme: a coded facet, not a "
+        "subclass, since tenure change is a value change rather than a re-"
+        "typing.",
+        lang="en",
+    )))
+    g.add((OPDA.tenureKind, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.tenureKind, DCTERMS.source, _ODR_0008_S5A))
 
     # --- ObjectProperty: opda:hasAddress (ODR-0015 §3a; ODR-0005 §6b; ODR-0032) -
@@ -562,6 +659,14 @@ def build_graph() -> Graph:
         "(Mode-vs-Resource open).",
         lang="en",
     )))
+    g.add((OPDA.hasAddress, SKOS.definition, Literal(
+        "Relates an address-bearing entity (a Property, Person, or "
+        "Organisation) to an Address that locates it, uniformly across "
+        "address variants so that one bearer may hold several Addresses "
+        "differing on their variant.",
+        lang="en",
+    )))
+    g.add((OPDA.hasAddress, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasAddress, DCTERMS.source, _ODR_0015_S3A))
 
     # --- ObjectProperty: opda:hasEPCCertificate (ODR-0008 §Q4a) ---------
@@ -584,6 +689,14 @@ def build_graph() -> Graph:
         "distinct PROV-O artefact (10-year lifecycle, DESNZ register).",
         lang="en",
     )))
+    g.add((OPDA.hasEPCCertificate, SKOS.definition, Literal(
+        "Relates a Property to the Energy Performance Certificate issued for "
+        "it: a distinct certificate entity in the DESNZ register with its "
+        "own ten-year lifecycle, reached separately from the property's own "
+        "current energy rating.",
+        lang="en",
+    )))
+    g.add((OPDA.hasEPCCertificate, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasEPCCertificate, DCTERMS.source, _G2_EPC_CERTIFICATE))
 
     # --- ObjectProperty: opda:identifiesSameProperty (ODR-0005 §Rule 5) -
@@ -601,6 +714,13 @@ def build_graph() -> Graph:
         "may emit this predicate.",
         lang="en",
     )))
+    g.add((OPDA.identifiesSameProperty, SKOS.definition, Literal(
+        "Relates an identity-bearing surface (a RegisteredTitle, LegalEstate, "
+        "or Address) to the physical Property it identifies, asserting co-"
+        "reference without the property-propagating force of owl:sameAs.",
+        lang="en",
+    )))
+    g.add((OPDA.identifiesSameProperty, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.identifiesSameProperty, DCTERMS.source, _ODR_0005_S2A))
 
     # --- ObjectProperty: opda:recordsEstate (ODR-0005 §3c) --------------
@@ -617,6 +737,13 @@ def build_graph() -> Graph:
         "identifiesSameProperty Property).",
         lang="en",
     )))
+    g.add((OPDA.recordsEstate, SKOS.definition, Literal(
+        "Relates a RegisteredTitle to the LegalEstate that its HM Land "
+        "Registry record documents, forming one seam of the title-estate-"
+        "property structural triangle.",
+        lang="en",
+    )))
+    g.add((OPDA.recordsEstate, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.recordsEstate, DCTERMS.source, _ODR_0005_S3C))
 
     # ==== G11 expansion (ADR-0013) ======================================
@@ -636,6 +763,10 @@ def build_graph() -> Graph:
             "opda:builtForm (Quale-in-Region structural classification). "
             "Constrained by SHACL sh:in to the scheme members in the "
             "BASPI5 profile.",
+            "The property-type classification of a Property (house, bungalow, "
+            "park home, flat, maisonette, or other) drawn from the "
+            "PropertyType scheme, naming its physical-form kind as distinct "
+            "from its built form.",
         ),
         (
             OPDA.ownershipType,
@@ -645,6 +776,9 @@ def build_graph() -> Graph:
             "(Freehold / Leasehold / Commonhold / Managed Freehold / "
             "Other). UFO Quale-in-Region of LegalEstate. Constrained by "
             "SHACL sh:in to the scheme members in the BASPI5 profile.",
+            "The ownership-type classification of a LegalEstate (freehold, "
+            "leasehold, commonhold, managed freehold, or other) drawn from "
+            "the OwnershipType scheme.",
         ),
         (
             OPDA.heatingType,
@@ -654,6 +788,9 @@ def build_graph() -> Graph:
             "(Central heating / Communal heating system / Room heaters "
             "only / None). UFO Quale-in-Region. Constrained by SHACL "
             "sh:in to the scheme members in the BASPI5 profile.",
+            "The heating-system arrangement of a Property (central heating, "
+            "communal heating, room heaters only, or none) drawn from the "
+            "HeatingType scheme.",
         ),
         (
             OPDA.centralHeatingFuelType,
@@ -664,6 +801,9 @@ def build_graph() -> Graph:
             "Electricity / Oil / LPG / Biomass / Other). UFO "
             "Quale-in-Region. Constrained by SHACL sh:in to the scheme "
             "members in the BASPI5 profile.",
+            "The fuel powering a Property's central heating system (mains "
+            "gas, electricity, oil, LPG, biomass, or other) drawn from the "
+            "CentralHeatingFuelType scheme.",
         ),
         (
             OPDA.offMainsDrainageSystemType,
@@ -673,6 +813,10 @@ def build_graph() -> Graph:
             "opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / "
             "Cesspit / Sewerage treatment plant / Other / Not known). "
             "Applies when not connected to mains sewerage.",
+            "The off-mains drainage arrangement of a Property not connected "
+            "to mains sewerage (SuDS, septic tank, cesspit, sewerage "
+            "treatment plant, other, or not known) drawn from the "
+            "OffMainsDrainageSystemType scheme.",
         ),
         (
             OPDA.areBoundariesUniform,
@@ -681,6 +825,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: are the Property's legal and physical "
             "boundaries uniform (i.e. do they match)? Bound to "
             "opda:YesNoScheme via SHACL sh:in in the BASPI5 profile.",
+            "A coded yes/no value recording whether a Property's legal and "
+            "physical boundaries coincide.",
         ),
         (
             OPDA.isLocatedOverCommercialPremises,
@@ -689,6 +835,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is the Property located over "
             "commercial premises? Applies to Flats and Maisonettes per "
             "BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property (typically a "
+            "flat or maisonette) is situated over commercial premises.",
         ),
         (
             OPDA.isSharedOwnership,
@@ -697,6 +845,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is the LegalEstate a shared-ownership "
             "lease? Applies to Leasehold ownership per BASPI5 question "
             "A1.3.1. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a LegalEstate is held "
+            "under a shared-ownership lease.",
         ),
         (
             OPDA.isGroundRentPayable,
@@ -705,6 +855,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is ground rent payable on the "
             "Leasehold? BASPI5 ground-rent question. Bound to "
             "opda:YesNoScheme.",
+            "A coded yes/no value recording whether ground rent is payable on "
+            "a leasehold LegalEstate.",
         ),
         (
             OPDA.sellerContributesToServiceCharge,
@@ -714,6 +866,9 @@ def build_graph() -> Graph:
             "service charge for the Property? Applies to Leasehold / "
             "Managed Freehold / Commonhold per BASPI5. Bound to "
             "opda:YesNoScheme.",
+            "A coded yes/no value recording whether the seller contributes to "
+            "a service charge on a leasehold, managed-freehold, or commonhold "
+            "LegalEstate.",
         ),
         (
             OPDA.hasSprayFoamInstalled,
@@ -722,6 +877,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: has spray-foam insulation been "
             "installed in the Property? Relevant for mortgage-eligibility "
             "per BASPI5. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether spray-foam insulation has "
+            "been installed in a Property.",
         ),
         (
             OPDA.isSupplyMetered,
@@ -730,6 +887,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is the Property's utility supply "
             "(electricity / water / gas) metered? BASPI5 utility questions. "
             "Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property's utility "
+            "supply (electricity, water, or gas) is metered.",
         ),
         (
             OPDA.isInsured,
@@ -737,6 +896,8 @@ def build_graph() -> Graph:
             "is insured",
             "Yes/No discriminator: is the Property currently insured? "
             "BASPI5 insurance question. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property is currently "
+            "insured.",
         ),
         (
             OPDA.hasBeenFlooded,
@@ -744,6 +905,8 @@ def build_graph() -> Graph:
             "has been flooded",
             "Yes/No discriminator: has the Property been flooded? BASPI5 "
             "environmental-issue question. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property has been "
+            "flooded.",
         ),
         (
             OPDA.hasSmartHomeSystems,
@@ -752,6 +915,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: does the Property have smart-home "
             "systems installed? BASPI5 smart-home question. Bound to "
             "opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property has smart-home "
+            "systems installed.",
         ),
         (
             OPDA.hasValidGuaranteesOrWarranties,
@@ -760,6 +925,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: does the Property carry valid "
             "guarantees, warranties, or indemnity insurances? BASPI5 "
             "guarantees question. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property carries valid "
+            "guarantees, warranties, or indemnity insurances.",
         ),
         (
             OPDA.soldWithVacantPossession,
@@ -768,6 +935,8 @@ def build_graph() -> Graph:
             "Yes/No discriminator: is the Property sold with vacant "
             "possession (vs sold subject to existing tenancies)? BASPI5 "
             "completion question. Bound to opda:YesNoScheme.",
+            "A coded yes/no value recording whether a Property is sold with "
+            "vacant possession rather than subject to existing tenancies.",
         ),
     ]
     # ADR-0031 register dispositions (applied 2026-05-31): the four G11∩
@@ -806,7 +975,7 @@ def build_graph() -> Graph:
         OPDA.sellerContributesToServiceCharge,
         OPDA.soldWithVacantPossession,
     }
-    for prop, domain, label, comment in _g11_properties:
+    for prop, domain, label, comment, definition in _g11_properties:
         if prop in _g11_scheme_valued:
             g.add((prop, RDF.type, OWL.ObjectProperty))
             g.add((prop, RDFS.domain, domain))
@@ -817,6 +986,8 @@ def build_graph() -> Graph:
             g.add((prop, RDFS.range, XSD.string))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for src in _g2_sources.get(prop, (_ODR_0008_S5A,)):
             g.add((prop, DCTERMS.source, src))
 
@@ -829,12 +1000,13 @@ def build_graph() -> Graph:
     # regenerated by `opda-gen emit`, never hand-edited (ci-byte-identity).
     # (length / width / roomName deferred — they bear on the held-as-live
     # opda:Room promotion, ODR-0008 §Q4a / ADR-0011.)
-    _walk_b1: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+    _walk_b1: list[tuple[URIRef, URIRef, str, str, str, tuple[str, ...]]] = [
         (
             OPDA.bedrooms, XSD.integer, "bedrooms",
             "Number of bedrooms in the Property — a countable UFO Quality of "
             "the physical Property. Plain integer datatype (no enumerated "
             "value-space) per ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of bedrooms in a Property.",
             (
                 "propertyPack.residentialPropertyFeatures.bedrooms",
                 "valuationComparisonData.propertyDetails[].basicDetails.bedrooms",
@@ -844,6 +1016,7 @@ def build_graph() -> Graph:
             OPDA.bathrooms, XSD.integer, "bathrooms",
             "Number of bathrooms in the Property — a countable UFO Quality. "
             "Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of bathrooms in a Property.",
             (
                 "propertyPack.residentialPropertyFeatures.bathrooms",
                 "valuationComparisonData.propertyDetails[].basicDetails.bathrooms",
@@ -853,24 +1026,28 @@ def build_graph() -> Graph:
             OPDA.receptions, XSD.integer, "receptions",
             "Number of reception rooms in the Property. Plain integer datatype "
             "per ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of reception rooms in a Property.",
             ("propertyPack.residentialPropertyFeatures.receptions",),
         ),
         (
             OPDA.kitchens, XSD.integer, "kitchens",
             "Number of kitchens in the Property. Plain integer datatype per "
             "ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of kitchens in a Property.",
             ("propertyPack.residentialPropertyFeatures.kitchens",),
         ),
         (
             OPDA.diningAreas, XSD.integer, "dining areas",
             "Number of dining areas in the Property. Plain integer datatype "
             "per ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of dining areas in a Property.",
             ("propertyPack.residentialPropertyFeatures.diningAreas",),
         ),
         (
             OPDA.numberOfFloors, XSD.integer, "number of floors",
             "Number of floors (storeys) the Property comprises. Plain integer "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The count of floors (storeys) a Property comprises.",
             ("propertyPack.buildInformation.building.numberOfFloors",),
         ),
         (
@@ -878,6 +1055,8 @@ def build_graph() -> Graph:
             "Floor (storey) on which the Property's entrance is located "
             "(0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat "
             "per §Q6a.",
+            "The storey on which a Property's entrance is located, counted "
+            "from the ground floor as zero.",
             ("propertyPack.buildInformation.building.entranceFloor",),
         ),
         (
@@ -885,6 +1064,7 @@ def build_graph() -> Graph:
             "Calendar year the Property was built. xsd:gYear — the data "
             "dictionary types it as a year value; plain datatype per "
             "ODR-0008 §Q5a, flat per §Q6a.",
+            "The calendar year in which a Property was built.",
             (
                 "propertyPack.buildInformation.yearOfBuild",
                 "valuationComparisonData.propertyDetails[].basicDetails."
@@ -896,6 +1076,7 @@ def build_graph() -> Graph:
             "Internal floor area of the Property — a measured UFO Quality (the "
             "unit of measure is carried alongside in the source structure). "
             "Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The measured internal floor area of a Property.",
             (
                 "propertyPack.buildInformation.internalArea.area",
                 "valuationComparisonData.propertyDetails[].basicDetails."
@@ -903,12 +1084,14 @@ def build_graph() -> Graph:
             ),
         ),
     ]
-    for prop, rng, label, comment, paths in _walk_b1:
+    for prop, rng, label, comment, definition, paths in _walk_b1:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         g.add((prop, RDFS.domain, OPDA.Property))
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -929,7 +1112,9 @@ def build_graph() -> Graph:
     # opda:CouncilTaxBandSchemeScotland (sh:in-restricted in the overlay
     # profile, mirroring opda:currentEnergyRating). Each carries its G2
     # schema-leaf-path dct:source array (§Q3a — one per overlay occurrence).
-    _walk_a_property: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+    _walk_a_property: list[
+        tuple[URIRef, URIRef, str, str, str, tuple[str, ...]]
+    ] = [
         (
             OPDA.councilTaxBand, XSD.string, "council tax band",
             "Council-tax valuation band of the Property per "
@@ -938,6 +1123,9 @@ def build_graph() -> Graph:
             "regulator-sourced enum (VOA / Scottish Assessors). Constrained "
             "by SHACL sh:in to the scheme members in the overlay profile, "
             "mirroring opda:currentEnergyRating. Flat per §Q6a.",
+            "The council-tax valuation band of a Property (A to H, or not "
+            "banded) assigned by the Valuation Office Agency or the Scottish "
+            "Assessors.",
             ("propertyPack.councilTax.councilTaxBand",),
         ),
         (
@@ -946,6 +1134,8 @@ def build_graph() -> Graph:
             "unmetered / rateable). A UFO Quale-in-Region of the physical "
             "Property. Plain string datatype per ODR-0008 §Q5a (no "
             "ontology-governed enum in the data dictionary); flat per §Q6a.",
+            "The classification of a Property's water supply, such as "
+            "metered, unmetered, or rateable.",
             ("propertyPack.waterAndDrainage.water.supplyClassification",),
         ),
         (
@@ -954,6 +1144,8 @@ def build_graph() -> Graph:
             "(typed as a string in the data dictionary — a Yes/No-style "
             "response). Plain string datatype per ODR-0008 §Q5a; flat per "
             "§Q6a. A physical-system attribute of the Property.",
+            "An indicator of whether central heating is installed in a "
+            "Property.",
             (
                 "propertyPack.heating.heatingSystem.centralHeatingDetails."
                 "centralHeatingInstalled",
@@ -965,6 +1157,8 @@ def build_graph() -> Graph:
             "property-type is 'Other' (the open-ended companion to "
             "opda:propertyType). Plain string datatype per ODR-0008 §Q5a; "
             "flat per §Q6a.",
+            "The free-text property-type classifier captured for a Property "
+            "whose property type is recorded as 'Other'.",
             ("propertyPack.buildInformation.building.otherType",),
         ),
         (
@@ -974,6 +1168,8 @@ def build_graph() -> Graph:
             "fuel is 'Other' (the open-ended companion to "
             "opda:centralHeatingFuelType). Plain string datatype per ODR-0008 "
             "§Q5a; flat per §Q6a.",
+            "The free-text fuel classifier captured for a Property whose "
+            "central-heating fuel is recorded as 'Other'.",
             (
                 "propertyPack.heating.heatingSystem.centralHeatingDetails."
                 "centralHeatingFuel.otherCentralHeatingFuelType",
@@ -985,6 +1181,8 @@ def build_graph() -> Graph:
             "list in the data dictionary — each value an xsd:string). UFO "
             "Quality of the physical Property. Plain multi-valued string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "An additional heating feature of a Property beyond its primary "
+            "heating system.",
             ("propertyPack.heating.otherHeatingFeatures",),
         ),
         (
@@ -994,6 +1192,7 @@ def build_graph() -> Graph:
             "multi-valued list — each value an xsd:string). UFO Quality of "
             "the physical Property. Plain multi-valued string datatype per "
             "ODR-0008 §Q5a; flat per §Q6a.",
+            "An accessibility feature or adaptation present in a Property.",
             ("propertyPack.typeOfConstruction.accessibilityAndAdaptations",),
         ),
         (
@@ -1002,6 +1201,8 @@ def build_graph() -> Graph:
             "(a multi-valued list — each value an xsd:string). UFO Quality "
             "of the physical Property. Plain multi-valued string datatype per "
             "ODR-0008 §Q5a; flat per §Q6a.",
+            "An outside area belonging to a Property, such as a garden, yard, "
+            "or balcony.",
             ("propertyPack.residentialPropertyFeatures.outsideAreas",),
         ),
         (
@@ -1010,6 +1211,8 @@ def build_graph() -> Graph:
             "garage / etc. (a multi-valued list — each value an xsd:string). "
             "UFO Quality of the physical Property. Plain multi-valued string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "A parking arrangement available to a Property, such as "
+            "allocated, on-street, or garage parking.",
             ("propertyPack.parking.parkingArrangements",),
         ),
         (
@@ -1019,6 +1222,8 @@ def build_graph() -> Graph:
             "identifier whose leading zeros are significant — the same "
             "convention opda:hasUPRN follows, NOT xsd:integer despite the "
             "data-dictionary typing). Flat per §Q6a.",
+            "The Meter Point Administration Number identifying a Property's "
+            "electricity supply point.",
             ("propertyPack.electricity.mainsElectricity.electricityMeter.mpan",),
         ),
         (
@@ -1027,6 +1232,8 @@ def build_graph() -> Graph:
             "for the Property. xsd:string (a fixed-width numeric identifier, "
             "per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). "
             "Flat per §Q6a.",
+            "The Meter Point Reference Number identifying a Property's gas "
+            "supply point.",
             (
                 "propertyPack.heating.heatingSystem.centralHeatingDetails."
                 "centralHeatingFuel.gasMeter.mprn",
@@ -1038,6 +1245,8 @@ def build_graph() -> Graph:
             "Number of other properties sharing the Property's off-mains "
             "drainage system. Plain integer datatype per ODR-0008 §Q5a; flat "
             "per §Q6a.",
+            "The count of other properties sharing a Property's off-mains "
+            "drainage system.",
             (
                 "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
                 "offMainsDrainageSystem.otherConnectedProperties."
@@ -1051,6 +1260,8 @@ def build_graph() -> Graph:
             "works (typed as a string in the data dictionary — a free-form "
             "distance band). Plain string datatype per ODR-0008 §Q5a; flat "
             "per §Q6a.",
+            "The distance from a Property to the nearest sewerage-treatment "
+            "works.",
             (
                 "propertyPack.waterAndDrainage.drainage."
                 "distanceToNearestSewerageTreatment",
@@ -1061,6 +1272,8 @@ def build_graph() -> Graph:
             "Whether the public-sewer map is attached for the Property "
             "(a Yes/No-style string response in the data dictionary). Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "An indicator of whether the public-sewer map is attached for a "
+            "Property.",
             ("propertyPack.waterAndDrainage.maps.publicSewerMapAttached",),
         ),
         (
@@ -1068,36 +1281,46 @@ def build_graph() -> Graph:
             "Whether the waterworks map is attached for the Property "
             "(a Yes/No-style string response). Plain string datatype per "
             "ODR-0008 §Q5a; flat per §Q6a.",
+            "An indicator of whether the waterworks map is attached for a "
+            "Property.",
             ("propertyPack.waterAndDrainage.maps.waterworksMapAttached",),
         ),
         (
             OPDA.waterProvider, XSD.string, "water provider",
             "Name of the Property's water-supply provider. Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The name of the undertaker supplying water to a Property.",
             ("propertyPack.waterAndDrainage.charging.waterProvider",),
         ),
         (
             OPDA.sewerageProvider, XSD.string, "sewerage provider",
             "Name of the Property's sewerage provider. Plain string datatype "
             "per ODR-0008 §Q5a; flat per §Q6a.",
+            "The name of the undertaker providing sewerage services to a "
+            "Property.",
             ("propertyPack.waterAndDrainage.charging.sewerageProvider",),
         ),
         (
             OPDA.waterBills, XSD.string, "water bills",
             "Free-text water-billing description for the Property. Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "A description of the water-billing arrangements for a Property.",
             ("propertyPack.waterAndDrainage.charging.waterBills",),
         ),
         (
             OPDA.sewerageBills, XSD.string, "sewerage bills",
             "Free-text sewerage-billing description for the Property. Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "A description of the sewerage-billing arrangements for a "
+            "Property.",
             ("propertyPack.waterAndDrainage.charging.sewerageBills",),
         ),
         (
             OPDA.currentChargingBasis, XSD.string, "current charging basis",
             "Current basis on which the Property's water/sewerage is charged. "
             "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The basis on which a Property's water and sewerage charges are "
+            "currently levied.",
             ("propertyPack.waterAndDrainage.charging.currentChargingBasis",),
         ),
         (
@@ -1106,6 +1329,9 @@ def build_graph() -> Graph:
             "Charging basis that would apply consequentially (e.g. on a "
             "change of circumstances) for the Property's water/sewerage. "
             "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The basis on which a Property's water and sewerage charges would "
+            "be levied consequentially, such as following a change of "
+            "circumstances.",
             ("propertyPack.waterAndDrainage.charging.consequentialChargingBasis",),
         ),
         (
@@ -1116,6 +1342,8 @@ def build_graph() -> Graph:
             "property reused across the utility blocks (the data dictionary "
             "repeats the same `supplier` leaf under each). Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The name of the supplier of a Property utility or service, such "
+            "as electricity, gas, water, drainage, telephone, or television.",
             (
                 "propertyPack.connectivity.cableSatelliteTV.supplier",
                 "propertyPack.connectivity.telephone.supplier",
@@ -1133,6 +1361,8 @@ def build_graph() -> Graph:
             OPDA.logbookProvider, XSD.string, "logbook provider",
             "Name of the digital-property-logbook provider for the Property. "
             "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The name of the provider of a Property's digital property "
+            "logbook.",
             (
                 "propertyPack.completionAndMoving.digitalPropertyLogbook."
                 "logbookProvider",
@@ -1149,6 +1379,8 @@ def build_graph() -> Graph:
             "structured geo block, not this leaf-level string; the structured "
             "locator is opda:Address territory — ODR-0015 — and is out of "
             "this leaf's scope.)",
+            "A free-text description of the physical position of a Property "
+            "fixture or measurement point, such as a meter or stopcock.",
             (
                 "propertyPack.electricity.mainsElectricity.electricityMeter."
                 "location",
@@ -1166,6 +1398,8 @@ def build_graph() -> Graph:
             "parameter, NOT a free-text tail (FLAG: deviates from the generic "
             "free-text-collapse expectation; the data dictionary types it as "
             "a number). Flat per §Q6a.",
+            "The compass heading, in degrees, of the Google Street View "
+            "camera position for a Property's map locator.",
             ("propertyPack.location.googleStreetViewPOV.heading",),
         ),
         (
@@ -1173,6 +1407,8 @@ def build_graph() -> Graph:
             "Google Street View point-of-view pitch (degrees) for the "
             "Property's map locator. xsd:decimal numeric camera parameter. "
             "Flat per §Q6a.",
+            "The vertical pitch, in degrees, of the Google Street View "
+            "camera position for a Property's map locator.",
             ("propertyPack.location.googleStreetViewPOV.pitch",),
         ),
         (
@@ -1180,6 +1416,8 @@ def build_graph() -> Graph:
             "Google Street View point-of-view zoom level for the Property's "
             "map locator. xsd:decimal numeric camera parameter. Flat per "
             "§Q6a.",
+            "The zoom level of the Google Street View camera position for a "
+            "Property's map locator.",
             ("propertyPack.location.googleStreetViewPOV.zoom",),
         ),
         (
@@ -1187,6 +1425,8 @@ def build_graph() -> Graph:
             "Date a Property system was installed (heat pump / off-mains "
             "drainage system). xsd:date (a date-valued string in the data "
             "dictionary). Flat per §Q6a.",
+            "The date on which a Property system, such as a heat pump or off-"
+            "mains drainage system, was installed.",
             (
                 "propertyPack.electricity.heatPump.dateInstalled",
                 "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
@@ -1198,6 +1438,8 @@ def build_graph() -> Graph:
             "Expected connection date for a not-yet-connected Property "
             "utility / service. ONE shared date property reused across the "
             "utility blocks. xsd:date. Flat per §Q6a.",
+            "The expected date on which a not-yet-connected Property utility "
+            "or service is to be connected.",
             (
                 "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected",
                 "propertyPack.connectivity.telephone.dateToBeConnected",
@@ -1216,6 +1458,8 @@ def build_graph() -> Graph:
             OPDA.dateLastEmptied, XSD.date, "date last emptied",
             "Date the Property's off-mains drainage system was last emptied. "
             "xsd:date. Flat per §Q6a.",
+            "The date on which a Property's off-mains drainage system was "
+            "last emptied.",
             (
                 "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
                 "offMainsDrainageSystem.dateLastEmptied",
@@ -1225,6 +1469,8 @@ def build_graph() -> Graph:
             OPDA.dateLastServiced, XSD.date, "date last serviced",
             "Date the Property's off-mains drainage system was last serviced. "
             "xsd:date. Flat per §Q6a.",
+            "The date on which a Property's off-mains drainage system was "
+            "last serviced.",
             (
                 "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
                 "offMainsDrainageSystem.dateLastServiced",
@@ -1234,6 +1480,8 @@ def build_graph() -> Graph:
             OPDA.dateReplaced, XSD.date, "date replaced",
             "Date the Property's off-mains drainage system was last replaced. "
             "xsd:date. Flat per §Q6a.",
+            "The date on which a Property's off-mains drainage system was "
+            "last replaced.",
             (
                 "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage."
                 "offMainsDrainageSystem.dateReplaced",
@@ -1243,6 +1491,8 @@ def build_graph() -> Graph:
             OPDA.heatingLastServicedDate, XSD.date, "heating last serviced date",
             "Date the Property's central-heating system was last serviced. "
             "xsd:date. Flat per §Q6a.",
+            "The date on which a Property's central-heating system was last "
+            "serviced.",
             (
                 "propertyPack.heating.heatingSystem.centralHeatingDetails."
                 "heatingLastServicedDate",
@@ -1252,18 +1502,24 @@ def build_graph() -> Graph:
             OPDA.lastMaintained, XSD.date, "last maintained",
             "Date the Property's solar-panel system was last maintained. "
             "xsd:date. Flat per §Q6a.",
+            "The date on which a Property's solar-panel system was last "
+            "maintained.",
             ("propertyPack.electricity.solarPanels.lastMaintained",),
         ),
         (
             OPDA.yearInstalled, XSD.gYear, "year installed",
             "Calendar year the Property's solar-panel system was installed. "
             "xsd:gYear (a year value in the data dictionary). Flat per §Q6a.",
+            "The calendar year in which a Property's solar-panel system was "
+            "installed.",
             ("propertyPack.electricity.solarPanels.yearInstalled",),
         ),
         (
             OPDA.yearTested, XSD.gYear, "year tested",
             "Calendar year the Property's electrical installation was last "
             "tested by a qualified electrician. xsd:gYear. Flat per §Q6a.",
+            "The calendar year in which a Property's electrical installation "
+            "was last tested by a qualified electrician.",
             (
                 "propertyPack.electricalWorks.testedByQualifiedElectrician."
                 "yearTested",
@@ -1273,6 +1529,8 @@ def build_graph() -> Graph:
             OPDA.yearWorkCarriedOut, XSD.gYear, "year work carried out",
             "Calendar year electrical work was carried out on the Property "
             "(since 2005). xsd:gYear. Flat per §Q6a.",
+            "The calendar year in which electrical work was carried out on a "
+            "Property.",
             (
                 "propertyPack.electricalWorks.electricalWorkSince2005."
                 "yearWorkCarriedOut",
@@ -1283,6 +1541,9 @@ def build_graph() -> Graph:
             "Calendar year a Property alteration / change was completed "
             "(change of use, conservatory addition, window replacement since "
             "2002). xsd:gYear. Flat per §Q6a.",
+            "The calendar year in which an alteration or change to a Property, "
+            "such as a change of use, conservatory addition, or window "
+            "replacement, was completed.",
             (
                 "propertyPack.alterationsAndChanges.changeOfUse.yearCompleted",
                 "propertyPack.alterationsAndChanges.hasAddedConservatory."
@@ -1295,12 +1556,16 @@ def build_graph() -> Graph:
             OPDA.handoverOnCompletion, XSD.boolean, "handover on completion",
             "Whether the Property's smart-home systems will be handed over on "
             "completion. xsd:boolean. Flat per §Q6a.",
+            "A boolean recording whether a Property's smart-home systems will "
+            "be handed over to the buyer on completion.",
             ("propertyPack.smartHomeSystems.handoverOnCompletion",),
         ),
         (
             OPDA.willHandoverLogbook, XSD.boolean, "will handover logbook",
             "Whether the seller will hand over the digital property logbook "
             "on completion. xsd:boolean. Flat per §Q6a.",
+            "A boolean recording whether the seller will hand over a "
+            "Property's digital property logbook on completion.",
             (
                 "propertyPack.completionAndMoving.digitalPropertyLogbook."
                 "willHandoverLogbook",
@@ -1314,6 +1579,8 @@ def build_graph() -> Graph:
             "in the data dictionary). A physical-safety attribute of the "
             "Property. Plain string datatype per ODR-0008 §Q5a; flat per "
             "§Q6a.",
+            "A building-safety statement on whether occupiers can reside at a "
+            "Property given any identified safety issues.",
             (
                 "propertyPack.typeOfConstruction.buildingSafety."
                 "abilityToResideAtProperty",
@@ -1327,16 +1594,20 @@ def build_graph() -> Graph:
             "ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT "
             "is opda:RiskAssessment territory; this is the factual "
             "historical-flooding-type attribute.)",
+            "A type of historical flooding a Property has experienced, such "
+            "as river, surface-water, or groundwater flooding.",
             ("propertyPack.environmentalIssues.flooding.historicalFlooding."
              "typeOfFlooding",),
         ),
     ]
-    for prop, rng, label, comment, paths in _walk_a_property:
+    for prop, rng, label, comment, definition, paths in _walk_a_property:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         g.add((prop, RDFS.domain, OPDA.Property))
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -1364,6 +1635,13 @@ def build_graph() -> Graph:
         "ODR-0008 §Q5a; flat per §Q6a.",
         lang="en",
     )))
+    g.add((OPDA.titleNumber, SKOS.definition, Literal(
+        "The HM Land Registry title number identifying a RegisteredTitle "
+        "record (not the legal estate it documents), unique within the "
+        "register.",
+        lang="en",
+    )))
+    g.add((OPDA.titleNumber, RDFS.isDefinedBy, module_iri))
     for _p in (
         "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
         "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData."
@@ -1383,13 +1661,17 @@ def build_graph() -> Graph:
     # charges, deed costs, fees, reserve-fund contributions) are NOT here — they
     # COLLAPSE to opda:price (ODR-0022 §4; inputs/category_g_curation). Each
     # carries its G2 schema-leaf-path dct:source array (§Q3a).
-    _walk_b_estate: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+    _walk_b_estate: list[
+        tuple[URIRef, URIRef, str, str, str, tuple[str, ...]]
+    ] = [
         (
             OPDA.groundRentFrequency, XSD.string, "ground rent frequency",
             "Frequency at which ground rent is payable on the leasehold "
             "LegalEstate (typed as a string in the data dictionary — a "
             "free-form frequency label). Plain string datatype per ODR-0008 "
             "§Q5a; flat per §Q6a.",
+            "The frequency at which ground rent is payable on a leasehold "
+            "LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.groundRent.groundRentFrequency",
@@ -1400,6 +1682,8 @@ def build_graph() -> Graph:
             "Frequency at which ground rent is reviewed on the leasehold "
             "LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per "
             "§Q6a.",
+            "The frequency at which ground rent is reviewed on a leasehold "
+            "LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.groundRent.rentSubjectToIncrease."
@@ -1411,6 +1695,8 @@ def build_graph() -> Graph:
             "How a ground-rent increase is calculated on the leasehold "
             "LegalEstate (e.g. RPI-linked, doubling). Plain string datatype "
             "per ODR-0008 §Q5a; flat per §Q6a.",
+            "How a ground-rent increase is calculated on a leasehold "
+            "LegalEstate, such as by RPI-linking or doubling.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.groundRent.rentSubjectToIncrease."
@@ -1422,6 +1708,8 @@ def build_graph() -> Graph:
             "Whether the managed-freehold / commonhold LegalEstate carries a "
             "fixed rentcharge (a Yes/No-style string response). Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "An indicator of whether a managed-freehold or commonhold "
+            "LegalEstate carries a fixed rentcharge.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "managedFreeholdOrCommonholdInformation.serviceCharge."
@@ -1434,6 +1722,8 @@ def build_graph() -> Graph:
             "integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements "
             "opda:LeaseTerm (the OWL-Time interval) with the headline "
             "term-length figure.",
+            "The length in years of the term granted on a leasehold "
+            "LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
@@ -1443,6 +1733,8 @@ def build_graph() -> Graph:
             OPDA.startYearOfLease, XSD.gYear, "start year of lease",
             "Calendar year the leasehold term commenced. xsd:gYear (a year "
             "value in the data dictionary). Flat per §Q6a.",
+            "The calendar year in which the term of a leasehold LegalEstate "
+            "commenced.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.leaseTerm.startYearOfLease",
@@ -1454,6 +1746,8 @@ def build_graph() -> Graph:
             "Percentage of the Property owned under a shared-ownership "
             "leasehold LegalEstate. xsd:decimal (a number in the data "
             "dictionary). Flat per §Q6a.",
+            "The percentage of a Property owned under a shared-ownership "
+            "leasehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
@@ -1465,6 +1759,8 @@ def build_graph() -> Graph:
             "Count of other properties in the managed area sharing the "
             "leasehold LegalEstate's service arrangements. xsd:decimal (typed "
             "as a number in the data dictionary). Flat per §Q6a.",
+            "The count of other properties in the managed area sharing a "
+            "leasehold LegalEstate's service arrangements.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.general.otherPropertiesInManagedArea",
@@ -1476,6 +1772,8 @@ def build_graph() -> Graph:
             "Count of properties contributing to maintenance of the managed "
             "area for the leasehold LegalEstate. xsd:decimal (a number in the "
             "data dictionary). Flat per §Q6a.",
+            "The count of properties contributing to maintenance of the "
+            "managed area for a leasehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.serviceCharge."
@@ -1489,6 +1787,8 @@ def build_graph() -> Graph:
             "leasehold LegalEstate's buildings insurance (typed as a string "
             "in the data dictionary). Plain string datatype per ODR-0008 "
             "§Q5a; flat per §Q6a.",
+            "A buildings reinstatement-cost-assessment statement for a "
+            "leasehold LegalEstate's buildings insurance.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.buildingsInsurance."
@@ -1499,6 +1799,7 @@ def build_graph() -> Graph:
             OPDA.titleExtents, XSD.string, "title extents",
             "Statement of the extents covered by a title to be sold. Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "A statement of the extents covered by a title to be sold.",
             ("propertyPack.titlesToBeSold[].titleExtents",),
         ),
         (
@@ -1507,6 +1808,8 @@ def build_graph() -> Graph:
             "The property description as recorded on the title for the "
             "LegalEstate to be transferred. Plain string datatype per ODR-0008 "
             "§Q5a; flat per §Q6a.",
+            "The property description recorded on the title for a LegalEstate "
+            "to be transferred.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "titlePropertyDescription",
@@ -1517,6 +1820,8 @@ def build_graph() -> Graph:
             "Free-text ownership details captured when the ownership type is "
             "'Other' for the LegalEstate. Plain string datatype per ODR-0008 "
             "§Q5a; flat per §Q6a.",
+            "The free-text ownership details captured for a LegalEstate whose "
+            "ownership type is recorded as 'Other'.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "otherOwnershipDetails",
@@ -1527,6 +1832,8 @@ def build_graph() -> Graph:
             "Requirements stated for a licence-to-assign on the leasehold "
             "LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per "
             "§Q6a.",
+            "The requirements stated for a licence to assign a leasehold "
+            "LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.transferAndRegistration."
@@ -1539,6 +1846,8 @@ def build_graph() -> Graph:
             "Procedure for obtaining a transfer/registration certificate on "
             "the leasehold / managed-freehold LegalEstate. Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The procedure for obtaining a transfer or registration "
+            "certificate on a leasehold or managed-freehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.transferAndRegistration."
@@ -1554,6 +1863,8 @@ def build_graph() -> Graph:
             "Name/role of the person who deals with the deed of covenant for "
             "the leasehold / managed-freehold LegalEstate. Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The name or role of the person who deals with the deed of "
+            "covenant on a leasehold or managed-freehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.transferAndRegistration."
@@ -1573,6 +1884,8 @@ def build_graph() -> Graph:
             "`from` is a generic period-boundary name; reused across the "
             "estate's recurring date-range blocks rather than minted per "
             "block.)",
+            "The start date of a demand or decoration period on a leasehold "
+            "or managed-freehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.buildingsInsurance.lastDemandPeriod.from",
@@ -1607,6 +1920,8 @@ def build_graph() -> Graph:
             "ONE shared period-end property reused across those periods; flat "
             "per §Q6a. (FLAG: `to` is a generic period-boundary name; reused "
             "across the estate's recurring date-range blocks.)",
+            "The end date of a demand or decoration period on a leasehold or "
+            "managed-freehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.buildingsInsurance.lastDemandPeriod.to",
@@ -1639,6 +1954,8 @@ def build_graph() -> Graph:
             "Calendar year of a service-charge last-decorated period "
             "(externally / internally) on the leasehold LegalEstate. "
             "xsd:gYear. Flat per §Q6a.",
+            "The calendar year of a service-charge last-decorated period on a "
+            "leasehold LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.serviceCharge.lastDecoratedPeriod."
@@ -1653,18 +1970,22 @@ def build_graph() -> Graph:
             "Statement of ad-hoc service-charge expenses on the leasehold "
             "LegalEstate (typed as a string in the data dictionary). Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "A statement of ad-hoc service-charge expenses on a leasehold "
+            "LegalEstate.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.serviceCharge.adHocExpenses",
             ),
         ),
     ]
-    for prop, rng, label, comment, paths in _walk_b_estate:
+    for prop, rng, label, comment, definition, paths in _walk_b_estate:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         g.add((prop, RDFS.domain, OPDA.LegalEstate))
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 

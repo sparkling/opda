@@ -119,11 +119,11 @@ def test_isdefinedby_gap_lists_uncovered_terms() -> None:
 
 
 def test_committed_corpus_coverage_baseline() -> None:
-    """Both decision-4 gates are at 0% in the committed corpus today (the corpus
-    uses rdfs:comment@en + skos:scopeNote@en, not skos:definition@en, and
-    carries no rdfs:isDefinedBy). They therefore ship as warning+gaps; this test
-    pins that baseline so a future emitter backfill (which would change the TTL)
-    is a deliberate, visible move that updates this assertion."""
+    """Both decision-4 gates are at 100% in the committed corpus (operator
+    backfill, 2026-06-18): every class + property carries a skos:definition@en
+    and rdfs:isDefinedBy → owl:Ontology, so both gates FLIP from warning-first to
+    hard. This pins the completed baseline so a future regression (a new term
+    lacking a definition or isDefinedBy) fails deliberately."""
     from opda_gen.ci.description_coverage_test import (
         run_description_coverage,
         run_isdefinedby,
@@ -137,12 +137,9 @@ def test_committed_corpus_coverage_baseline() -> None:
     desc = run_description_coverage(ontology_dir)
     idb = run_isdefinedby(ontology_dir)
     assert desc is not None and idb is not None
-    # Warning-first today: gaps remain, so neither is complete.
-    assert not desc.is_complete
-    assert not idb.is_complete
-    # Every term is a gap (0% coverage) — the corpus has not adopted these
-    # annotation patterns yet. (Bound as <= total, not pinned to an exact count,
-    # so adding a term with a definition doesn't spuriously fail this gate.)
-    assert desc.covered == 0
-    assert idb.covered == 0
-    assert desc.total > 0 and idb.total > 0
+    # 100% after the operator backfill: both gates complete, zero gaps.
+    assert desc.is_complete
+    assert idb.is_complete
+    assert desc.covered == desc.total and desc.total > 0
+    assert idb.covered == idb.total and idb.total > 0
+    assert desc.gaps == () and idb.gaps == ()

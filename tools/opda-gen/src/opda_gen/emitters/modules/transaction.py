@@ -144,6 +144,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Transaction, DCTERMS.source, _ODR_0007_Q1))
+    g.add((OPDA.Transaction, SKOS.definition, Literal(
+        "Relational endurant binding the seller and buyer parties to the "
+        "conveyance of a single legal estate, persisting and accumulating "
+        "identity across the lifecycle of a property sale.",
+        lang="en",
+    )))
+    g.add((OPDA.Transaction, RDFS.isDefinedBy, module_iri))
 
     # --- opda:Milestone — Transaction lifecycle event (ODR-0007 §Q2) ----
     g.add((OPDA.Milestone, RDF.type, OWL.Class))
@@ -167,6 +174,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Milestone, DCTERMS.source, _ODR_0007_Q2))
+    g.add((OPDA.Milestone, SKOS.definition, Literal(
+        "Lifecycle event marking a significant point or stage in the "
+        "progression of a property transaction, occurring either at a "
+        "single instant or over a bounded interval.",
+        lang="en",
+    )))
+    g.add((OPDA.Milestone, RDFS.isDefinedBy, module_iri))
 
     # --- opda:TransactionChain — Aggregate of dependent Transactions ----
     g.add((OPDA.TransactionChain, RDF.type, OWL.Class))
@@ -190,6 +204,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.TransactionChain, DCTERMS.source, _ODR_0007_Q4))
+    g.add((OPDA.TransactionChain, SKOS.definition, Literal(
+        "Aggregate of interdependent property transactions linked where a "
+        "buyer in one is concurrently a seller in the next, such that the "
+        "completion of each is contingent on completion of the others.",
+        lang="en",
+    )))
+    g.add((OPDA.TransactionChain, RDFS.isDefinedBy, module_iri))
 
     # --- DatatypeProperty: opda:occurredAtTime ---------------------------
     g.add((OPDA.occurredAtTime, RDF.type, OWL.DatatypeProperty))
@@ -206,6 +227,12 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.occurredAtTime, DCTERMS.source, _ODR_0007_Q2))
+    g.add((OPDA.occurredAtTime, SKOS.definition, Literal(
+        "Records the actual instant at which a transaction milestone event "
+        "took place.",
+        lang="en",
+    )))
+    g.add((OPDA.occurredAtTime, RDFS.isDefinedBy, module_iri))
 
     # --- DatatypeProperty: opda:plannedAtTime (S007 Q6) -----------------
     g.add((OPDA.plannedAtTime, RDF.type, OWL.DatatypeProperty))
@@ -225,6 +252,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.plannedAtTime, DCTERMS.source, _ODR_0007_Q6))
+    g.add((OPDA.plannedAtTime, SKOS.definition, Literal(
+        "Records the expected instant at which a planned transaction "
+        "milestone is forecast to occur, carried on the plan companion to "
+        "the milestone for expected-versus-actual variance.",
+        lang="en",
+    )))
+    g.add((OPDA.plannedAtTime, RDFS.isDefinedBy, module_iri))
 
     # --- ObjectProperty: opda:hasChainPosition --------------------------
     g.add((OPDA.hasChainPosition, RDF.type, OWL.ObjectProperty))
@@ -240,6 +274,12 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasChainPosition, DCTERMS.source, _ODR_0007_Q4))
+    g.add((OPDA.hasChainPosition, SKOS.definition, Literal(
+        "Relates a property transaction to the transaction chain of which "
+        "it forms a part.",
+        lang="en",
+    )))
+    g.add((OPDA.hasChainPosition, RDFS.isDefinedBy, module_iri))
 
     # --- ObjectProperty: opda:hasParticipant (ODR-0007 §Q1; ODR-0032) -------
     # Transaction → Seller/Buyer: the parties to the transaction (Council
@@ -278,6 +318,11 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasParticipant, DCTERMS.source, _ODR_0007_Q1))
+    g.add((OPDA.hasParticipant, SKOS.definition, Literal(
+        "Relates a property transaction to a seller or buyer party to it.",
+        lang="en",
+    )))
+    g.add((OPDA.hasParticipant, RDFS.isDefinedBy, module_iri))
 
     # --- ObjectProperty: opda:concernsProperty (ODR-0007 §Q1; ODR-0032) -----
     # Transaction → Property: the property the transaction is about (Council
@@ -302,6 +347,12 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.concernsProperty, DCTERMS.source, _ODR_0007_Q1))
+    g.add((OPDA.concernsProperty, SKOS.definition, Literal(
+        "Relates a property transaction to the physical property that is "
+        "its subject.",
+        lang="en",
+    )))
+    g.add((OPDA.concernsProperty, RDFS.isDefinedBy, module_iri))
 
     # ==== Category-G curated walk — Family E: sale / completion / moving / ==
     # chain / sale-ready-declaration attributes (ADR-0031 work-item 2). Each
@@ -313,24 +364,33 @@ def build_graph() -> Graph:
     # response → xsd:boolean by structure. (Valuation pricing leaves — soldDate
     # / listedDate / yield / pricingMethodology / credibilitySources — live in
     # opda-descriptive.ttl on opda:Valuation, where that Kind is declared.)
-    _walk_e_txn: list[tuple[URIRef, URIRef, str, str, tuple[str, ...]]] = [
+    _walk_e_txn: list[tuple[URIRef, URIRef, str, str, str, tuple[str, ...]]] = [
         (
             OPDA.leaveKeys, XSD.boolean, "leave keys",
             "Completion undertaking: will the seller leave the keys? "
             "xsd:boolean. Flat per §Q6a. A sale-Transaction completion "
             "attribute (ODR-0007).",
+            "Records a seller's undertaking to leave keys for all door and "
+            "window locks, with any alarm codes, for the buyer on the day of "
+            "completion.",
             ("propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys",),
         ),
         (
             OPDA.removeRubbish, XSD.boolean, "remove rubbish",
             "Completion undertaking: will the seller remove rubbish? "
             "xsd:boolean. Flat per §Q6a.",
+            "Records a seller's undertaking to remove all rubbish and items "
+            "not included in the sale and to leave the property in a clean "
+            "and tidy condition on completion.",
             ("propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",),
         ),
         (
             OPDA.replaceLightFittings, XSD.boolean, "replace light fittings",
             "Completion undertaking: will the seller replace removed light "
             "fittings? xsd:boolean. Flat per §Q6a.",
+            "Records a seller's undertaking to replace any removed light "
+            "fittings with a ceiling rose, flex, bulb holder and bulb on "
+            "completion.",
             (
                 "propertyPack.completionAndMoving.sellerWillEnsure."
                 "replaceLightFittings",
@@ -340,6 +400,9 @@ def build_graph() -> Graph:
             OPDA.takeReasonableCare, XSD.boolean, "take reasonable care",
             "Completion undertaking: will the seller take reasonable care of "
             "the Property until completion? xsd:boolean. Flat per §Q6a.",
+            "Records a seller's undertaking to take reasonable care when "
+            "removing fittings or contents from the property before "
+            "completion.",
             (
                 "propertyPack.completionAndMoving.sellerWillEnsure."
                 "takeReasonableCare",
@@ -349,6 +412,9 @@ def build_graph() -> Graph:
             OPDA.authorisationToShare, XSD.boolean, "authorisation to share",
             "Sale-ready declaration: authorisation to share the property "
             "pack. xsd:boolean. Flat per §Q6a.",
+            "Records a seller's consent to share the information in the "
+            "sale-ready pack with their legal representative and with the "
+            "buyer and the buyer's legal representatives.",
             ("propertyPack.saleReadyDeclarations.authorisationToShare",),
         ),
         (
@@ -356,6 +422,9 @@ def build_graph() -> Graph:
             "authorised to act on behalf of all sellers",
             "Sale-ready declaration: is the declarant authorised to act on "
             "behalf of all sellers? xsd:boolean. Flat per §Q6a.",
+            "Records a declarant's confirmation of authority to supply data "
+            "and documents relating to the property on behalf of all of its "
+            "owners.",
             (
                 "propertyPack.saleReadyDeclarations."
                 "authorisedToActOnBehalfOfAllSellers",
@@ -367,6 +436,9 @@ def build_graph() -> Graph:
             "Declaration confirming the supplied information is accurate "
             "(owners' confirmation-of-accuracy + fixtures confirmation). "
             "xsd:boolean. ONE shared property; flat per §Q6a.",
+            "Records a declarant's confirmation that the supplied information "
+            "is accurate to the best of their knowledge, with an undertaking "
+            "to notify any change before exchange of contracts.",
             (
                 "propertyPack.confirmationOfAccuracyByOwners."
                 "confirmInformationIsAccurate",
@@ -379,6 +451,9 @@ def build_graph() -> Graph:
             "confirm will provide additional documentation",
             "Declaration confirming the owner will provide additional "
             "documentation. xsd:boolean. Flat per §Q6a.",
+            "Records a declarant's undertaking to provide their property "
+            "lawyer with additional documentation in support of the "
+            "information supplied.",
             (
                 "propertyPack.confirmationOfAccuracyByOwners."
                 "confirmWillProvideAdditionalDocumentation",
@@ -389,6 +464,9 @@ def build_graph() -> Graph:
             "Confirmation flag on a leasehold / managed-freehold "
             "confirmation-of-accuracy declaration. xsd:boolean. Flat per "
             "§Q6a.",
+            "Records a declarant's confirmation on a leasehold or "
+            "managed-freehold/commonhold confirmation-of-accuracy "
+            "declaration.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.confirmationOfAccuracy.confirmation",
@@ -402,6 +480,10 @@ def build_graph() -> Graph:
             "xsd:boolean (a confirmation response; the data dictionary leaves "
             "the type unset — it is a yes/no confirmation by structure). Flat "
             "per §Q6a.",
+            "Records a declarant's affirmation, on a managed-freehold or "
+            "commonhold confirmation, of authority to provide the information "
+            "on behalf of the selected parties and that a buyer may rely on "
+            "it.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "managedFreeholdOrCommonholdInformation.confirmation.response",
@@ -412,6 +494,9 @@ def build_graph() -> Graph:
             "consumer protection regulations response",
             "Declaration response to the Consumer Protection Regulations "
             "question. xsd:boolean. Flat per §Q6a.",
+            "Records a seller's affirmation, under the Consumer Protection "
+            "Regulations, that the disclosure answers are truthful and "
+            "accurate to the best of their knowledge.",
             (
                 "propertyPack.consumerProtectionRegulationsDeclaration."
                 "consumerProtectionRegulationsResponse",
@@ -422,6 +507,8 @@ def build_graph() -> Graph:
             "Date a contract / sale-ready declaration was signed. xsd:date. "
             "ONE shared property reused across contract and seller "
             "signatures; flat per §Q6a.",
+            "Records the date on which a contract or sale-ready declaration "
+            "was signed.",
             (
                 "contracts[].signatures[].signedOn",
                 "propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn",
@@ -432,6 +519,8 @@ def build_graph() -> Graph:
             "Name of the selling agent on an onward-purchase link in the "
             "transaction chain. Plain string datatype per ODR-0008 §Q5a; flat "
             "per §Q6a.",
+            "Names the estate agent selling the property on an "
+            "onward-purchase link of a transaction chain.",
             ("chain.onwardPurchase[].sellingAgent",),
         ),
         (
@@ -441,18 +530,23 @@ def build_graph() -> Graph:
             "per ODR-0008 §Q5a; flat per §Q6a. Complements the opda:Transaction "
             "IC's transaction-id-lineage (ODR-0007 §Q1) — the notation surface "
             "for the identifier.",
+            "Identifies a property transaction by its externally assigned "
+            "PDTF identifier, a UUID also carried on onward-purchase chain "
+            "links.",
             (
                 "chain.onwardPurchase[].transactionId",
                 "transactionId",
             ),
         ),
     ]
-    for prop, rng, label, comment, paths in _walk_e_txn:
+    for prop, rng, label, comment, definition, paths in _walk_e_txn:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         g.add((prop, RDFS.domain, OPDA.Transaction))
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 

@@ -317,6 +317,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.DiagnosticExemplar, DCTERMS.source, _ODR_0004_SECTION_8A))
+    g.add((OPDA.DiagnosticExemplar, SKOS.definition, Literal(
+        "A named hard case, expressed as minimal Turtle, that exposes one "
+        "identity-criterion-bearing surface for adjudication in a Council "
+        "modelling session.",
+        lang="en",
+    )))
+    g.add((OPDA.DiagnosticExemplar, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # --- opda:GeneratorRun (cites ODR-0004 §6a) --------------------------
     # Author note per ADR-0009 brief: comment + scopeNote authored here,
@@ -340,6 +347,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.GeneratorRun, DCTERMS.source, _ODR_0004_SECTION_6A))
+    g.add((OPDA.GeneratorRun, SKOS.definition, Literal(
+        "A single execution of the opda-gen pipeline that emitted a specific "
+        "set of TTL artefacts, recording the generator version, source "
+        "commit and timestamp needed to reproduce them.",
+        lang="en",
+    )))
+    g.add((OPDA.GeneratorRun, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # --- ADR-0011 — UFO meta-classes folded into the foundation ----------
     # These three classes are referenced cross-module (Seller / Buyer as
@@ -364,6 +378,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.RoleMixin, DCTERMS.source, _ODR_0006_SECTION_Q2))
+    g.add((OPDA.RoleMixin, SKOS.definition, Literal(
+        "An anti-rigid, cross-sortal role universal whose instances may be "
+        "borne by entities from more than one substantial Kind, contrasted "
+        "with a Role that commits to a single Kind.",
+        lang="en",
+    )))
+    g.add((OPDA.RoleMixin, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     g.add((OPDA.Role, RDF.type, OWL.Class))
     g.add((OPDA.Role, RDFS.label, Literal("Role", lang="en")))
@@ -383,6 +404,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Role, DCTERMS.source, _ODR_0006_SECTION_Q2))
+    g.add((OPDA.Role, SKOS.definition, Literal(
+        "An anti-rigid, sortal role universal whose instances are borne by "
+        "entities of a single substantial Kind and which borrows its "
+        "identity from that bearer rather than supplying its own.",
+        lang="en",
+    )))
+    g.add((OPDA.Role, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     g.add((OPDA.Relator, RDF.type, OWL.Class))
     g.add((OPDA.Relator, RDFS.label, Literal("Relator", lang="en")))
@@ -403,6 +431,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Relator, DCTERMS.source, _ODR_0006_SECTION_Q3))
+    g.add((OPDA.Relator, SKOS.definition, Literal(
+        "A relational endurant, founded by an external event, that mediates "
+        "two or more bearers and carries its own identity together with the "
+        "properties belonging to none of the mediated Kinds singly.",
+        lang="en",
+    )))
+    g.add((OPDA.Relator, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # --- ADR-0013 — opda:ValidationContext (UFO Substance Kind) ---------
     # Per ODR-0010 §Q1 (Guarino's accepted withdrawal condition): a
@@ -434,6 +469,14 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.ValidationContext, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1")))
+    g.add((OPDA.ValidationContext, SKOS.definition, Literal(
+        "A reified overlay profile that anchors per-profile cardinality and "
+        "enumeration constraints to a named, dereferenceable context, so a "
+        "constraint holds relative to that context rather than as a "
+        "free-floating axiom.",
+        lang="en",
+    )))
+    g.add((OPDA.ValidationContext, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # --- ADR-0014 G14 — opda:hasSpecialCategoryData (Cat 4 target) -------
     # The Cat 4 SHACL shape `SpecialCategoryPIIWithoutLawfulBasisShape`
@@ -473,6 +516,13 @@ def build_classes_graph() -> Graph:
     )))
     g.add((OPDA.hasSpecialCategoryData, DCTERMS.source,
            _ODR_0012_SECTION_Q5))
+    g.add((OPDA.hasSpecialCategoryData, SKOS.definition, Literal(
+        "Asserts whether a record carries GDPR Article 9 or 10 "
+        "special-category personal data, serving as the target predicate for "
+        "the special-category lawful-basis SHACL constraint.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSpecialCategoryData, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # --- ADR-0005 §G D3 — opda:isPIIBearing (Phase-1 PII-floor target) ----
     # The cross-cutting SHACL-AF rule `PIIWithoutDPVCoAnnotationRule` (in
@@ -513,6 +563,13 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.isPIIBearing, DCTERMS.source, _ODR_0018_SECTION_RULE1))
+    g.add((OPDA.isPIIBearing, SKOS.definition, Literal(
+        "Asserts whether a class bears personally identifiable information "
+        "under the Phase-1 floor, placing it in scope for the mandatory "
+        "data-protection category co-annotation discipline.",
+        lang="en",
+    )))
+    g.add((OPDA.isPIIBearing, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # opda:ufoCategory is an inert, annotation-graph-only documentary annotation
     # (ODR-0030 Rule 1; restored by ADR-0045 / ODR-0031 after the ADR-0044

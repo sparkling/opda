@@ -27,7 +27,9 @@ opda:Milestone
     rdf:type owl:Class ;
     rdfs:label "Milestone"@en ;
     rdfs:comment "Transaction lifecycle milestone. UFO Event particular; PROV-O Activity. Hybrid PROV-O typing per S007 Q2: instant milestones (instruction, offerAccepted, exchange) carry prov:atTime; interval milestones (completion-process, registration-process) carry prov:startedAtTime + prov:endedAtTime per Moreau W3C-grade discipline. Each Milestone Activity may pair with a prov:Plan carrying opda:plannedAtTime for expected-vs-actual variance (S007 Q6 Plan-vs-Activity reification)."@en ;
+    skos:definition "Lifecycle event marking a significant point or stage in the progression of a property transaction, occurring either at a single instant or over a bounded interval."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (instant) or Accomplishment (interval) per Masolo et al. 2003 D18 §4.4. PROV-O: Activity (W3C PROV-O REC §3.2)."@en .
 
@@ -35,7 +37,9 @@ opda:Transaction
     rdf:type owl:Class ;
     rdfs:label "Transaction"@en ;
     rdfs:comment "Property-transaction Relator. UFO Relator (relational endurant). FIBO Arrangement precedent. Founds opda:Seller and opda:Buyer RoleMixins (ODR-0006 §Q2). IC: 5-tuple (LegalEstate-concerned, Sellers-set, Buyers-set, transaction-id-lineage, founding-event). Hard cases per S007 Q1: party-substitution; estate-change; transaction-id reissuance; chain-link-break; aborted-transaction. Carries transactionId via dct:identifier and external-system refs via opda:externalIds."@en ;
+    skos:definition "Relational endurant binding the seller and buyer parties to the conveyance of a single legal estate, persisting and accumulating identity across the lifecycle of a property sale."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:subClassOf opda:Relator ;
     skos:scopeNote "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4). FIBO: Arrangement precedent (FIBO-FND Arrangements module)."@en .
 
@@ -43,156 +47,196 @@ opda:TransactionChain
     rdf:type owl:Class ;
     rdfs:label "Transaction Chain"@en ;
     rdfs:comment "Aggregate of dependent Transactions linked by buyer-also-seller participant overlap. S007 Q4 dual-mechanism: (a) recursive opda:dependsOnTransaction predicate between Transactions; (b) opda:chainMembers list-of-Transactions on a TransactionChain parent. Chain-length cap: sh:maxInclusive 7 per CLC data (ADR-0012 emits the SHACL constraint). Chain status is derived (any-blocked → chain-blocked)."@en ;
+    skos:definition "Aggregate of interdependent property transactions linked where a buyer in one is concurrently a seller in the next, such that the completion of each is contingent on completion of the others."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     skos:scopeNote "UFO: Aggregate (Guizzardi 2005 Ch. 4 §4.6 — collective of Relator instances). Dual modelling per S007 Q4 (recursive predicate + Aggregate) chosen because both shapes appear in real-world chain queries."@en .
 
 opda:authorisationToShare
     rdf:type owl:DatatypeProperty ;
     rdfs:label "authorisation to share"@en ;
     rdfs:comment "Sale-ready declaration: authorisation to share the property pack. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a seller's consent to share the information in the sale-ready pack with their legal representative and with the buyer and the buyer's legal representatives."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.saleReadyDeclarations.authorisationToShare> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:authorisedToActOnBehalfOfAllSellers
     rdf:type owl:DatatypeProperty ;
     rdfs:label "authorised to act on behalf of all sellers"@en ;
     rdfs:comment "Sale-ready declaration: is the declarant authorised to act on behalf of all sellers? xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a declarant's confirmation of authority to supply data and documents relating to the property on behalf of all of its owners."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:confirmInformationIsAccurate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "confirm information is accurate"@en ;
     rdfs:comment "Declaration confirming the supplied information is accurate (owners' confirmation-of-accuracy + fixtures confirmation). xsd:boolean. ONE shared property; flat per §Q6a."@en ;
+    skos:definition "Records a declarant's confirmation that the supplied information is accurate to the best of their knowledge, with an undertaking to notify any change before exchange of contracts."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:confirmWillProvideAdditionalDocumentation
     rdf:type owl:DatatypeProperty ;
     rdfs:label "confirm will provide additional documentation"@en ;
     rdfs:comment "Declaration confirming the owner will provide additional documentation. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a declarant's undertaking to provide their property lawyer with additional documentation in support of the information supplied."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:confirmation
     rdf:type owl:DatatypeProperty ;
     rdfs:label "confirmation"@en ;
     rdfs:comment "Confirmation flag on a leasehold / managed-freehold confirmation-of-accuracy declaration. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a declarant's confirmation on a leasehold or managed-freehold/commonhold confirmation-of-accuracy declaration."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy.confirmation>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:consumerProtectionRegulationsResponse
     rdf:type owl:DatatypeProperty ;
     rdfs:label "consumer protection regulations response"@en ;
     rdfs:comment "Declaration response to the Consumer Protection Regulations question. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a seller's affirmation, under the Consumer Protection Regulations, that the disclosure answers are truthful and accurate to the best of their knowledge."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:leaveKeys
     rdf:type owl:DatatypeProperty ;
     rdfs:label "leave keys"@en ;
     rdfs:comment "Completion undertaking: will the seller leave the keys? xsd:boolean. Flat per §Q6a. A sale-Transaction completion attribute (ODR-0007)."@en ;
+    skos:definition "Records a seller's undertaking to leave keys for all door and window locks, with any alarm codes, for the buyer on the day of completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:occurredAtTime
     rdf:type owl:DatatypeProperty ;
     rdfs:label "occurred at time"@en ;
     rdfs:comment "Actual completion instant of an event (informational alias for prov:atTime on opda:Milestone Activities where the consumer prefers an opda-namespaced predicate). PROV-O prov:atTime is the canonical W3C form; this predicate sits alongside for round-trip convenience with PDTF v3 schemas that use 'occurredAt' naming."@en ;
+    skos:definition "Records the actual instant at which a transaction milestone event took place."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:dateTime .
 
 opda:plannedAtTime
     rdf:type owl:DatatypeProperty ;
     rdfs:label "planned at time"@en ;
     rdfs:comment "Expected completion timestamp on a prov:Plan companion to an opda:Milestone Activity. Per S007 Q6 PROV-O Plan-vs-Activity reification, the planned time lives on the Plan resource and the actual time lives on the Activity; the Plan is linked from the Activity via prov:qualifiedAssociation → prov:Association → prov:hadPlan. The Cagle opda:MilestoneVarianceRule (ADR-0012) materialises variance into the validation report at sh:Info (under 14 days) or sh:Warning (over 14 days)."@en ;
+    skos:definition "Records the expected instant at which a planned transaction milestone is forecast to occur, carried on the plan companion to the milestone for expected-versus-actual variance."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6> ;
     rdfs:domain prov:Plan ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:dateTime .
 
 opda:removeRubbish
     rdf:type owl:DatatypeProperty ;
     rdfs:label "remove rubbish"@en ;
     rdfs:comment "Completion undertaking: will the seller remove rubbish? xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a seller's undertaking to remove all rubbish and items not included in the sale and to leave the property in a clean and tidy condition on completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:replaceLightFittings
     rdf:type owl:DatatypeProperty ;
     rdfs:label "replace light fittings"@en ;
     rdfs:comment "Completion undertaking: will the seller replace removed light fittings? xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a seller's undertaking to replace any removed light fittings with a ceiling rose, flex, bulb holder and bulb on completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:response
     rdf:type owl:DatatypeProperty ;
     rdfs:label "response"@en ;
     rdfs:comment "Response flag on a managed-freehold / commonhold confirmation. xsd:boolean (a confirmation response; the data dictionary leaves the type unset — it is a yes/no confirmation by structure). Flat per §Q6a."@en ;
+    skos:definition "Records a declarant's affirmation, on a managed-freehold or commonhold confirmation, of authority to provide the information on behalf of the selected parties and that a buyer may rely on it."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:sellingAgent
     rdf:type owl:DatatypeProperty ;
     rdfs:label "selling agent"@en ;
     rdfs:comment "Name of the selling agent on an onward-purchase link in the transaction chain. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "Names the estate agent selling the property on an onward-purchase link of a transaction chain."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/chain.onwardPurchase[].sellingAgent> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:string .
 
 opda:signedOn
     rdf:type owl:DatatypeProperty ;
     rdfs:label "signed on"@en ;
     rdfs:comment "Date a contract / sale-ready declaration was signed. xsd:date. ONE shared property reused across contract and seller signatures; flat per §Q6a."@en ;
+    skos:definition "Records the date on which a contract or sale-ready declaration was signed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/contracts[].signatures[].signedOn>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:date .
 
 opda:takeReasonableCare
     rdf:type owl:DatatypeProperty ;
     rdfs:label "take reasonable care"@en ;
     rdfs:comment "Completion undertaking: will the seller take reasonable care of the Property until completion? xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "Records a seller's undertaking to take reasonable care when removing fittings or contents from the property before completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:boolean .
 
 opda:transactionId
     rdf:type owl:DatatypeProperty ;
     rdfs:label "transaction ID"@en ;
     rdfs:comment "External transaction identifier (the PDTF transaction id; also carried on onward-purchase chain links). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Complements the opda:Transaction IC's transaction-id-lineage (ODR-0007 §Q1) — the notation surface for the identifier."@en ;
+    skos:definition "Identifies a property transaction by its externally assigned PDTF identifier, a UUID also carried on onward-purchase chain links."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/chain.onwardPurchase[].transactionId>, <https://opda.org.uk/pdtf/harness/data-dictionary/transactionId> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:string .
 
 opda:concernsProperty
     rdf:type owl:ObjectProperty ;
     rdfs:label "concerns property"@en ;
     rdfs:comment "Transaction → Property join: the physical Property the transaction is about (ODR-0007; Council session-047 GATED). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Transaction + rdfs:range opda:Property are both asserted (Council Q5 carrier ruling). The Transaction-level property join; the conveyed opda:LegalEstate is reached via opda:Property and opda:RegisteredTitle opda:recordsEstate."@en ;
+    skos:definition "Relates a property transaction to the physical property that is its subject."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range opda:Property .
 
 opda:hasChainPosition
     rdf:type owl:ObjectProperty ;
     rdfs:label "has chain position"@en ;
     rdfs:comment "Join from a Transaction to its TransactionChain (S007 Q4 Aggregate side). Mirror of opda:chainMembers (Chain → Transactions). Both directions emitted so consumers can query from either end without inverse-property inference dependency."@en ;
+    skos:definition "Relates a property transaction to the transaction chain of which it forms a part."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range opda:TransactionChain .
 
 opda:hasParticipant
     rdf:type owl:ObjectProperty ;
     rdfs:label "has participant"@en ;
     rdfs:comment "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted plain (universally true). The Seller/Buyer co-domain is documentary \"any-of\" rdfs:range opda:Seller , opda:Buyer (two triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction; schema.org domainIncludes idiom). Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the range does NOT entail every participant is a Seller). The authoritative disjunction stays in SHACL sh:or (opda:HasParticipantRangeShape), NOT owl:unionOf. The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (design-time, never reasoned)."@en ;
+    skos:definition "Relates a property transaction to a seller or buyer party to it."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
     rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range opda:Buyer, opda:Seller .

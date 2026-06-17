@@ -106,6 +106,289 @@ _ODR_0022_S4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rul
 _ODR_0022_S1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0022/section-Rules-1")
 
 
+# skos:definition (ISO-704 genus–differentia) for every property emitted via
+# the table-driven walks below (_walk_d_search / _walk_e_descriptive /
+# _walk_monetary / _walk_r5 / _walk_room). Keyed by the property IRI; each loop
+# emits g.add((prop, SKOS.definition, _DEFINITIONS[prop]@en)) + isDefinedBy.
+# Standalone (non-loop) terms carry their skos:definition inline in build_graph.
+_DEFINITIONS: dict[URIRef, str] = {
+    # --- Family D: search / planning / building-control / local-authority ---
+    OPDA.applicationType:
+        "The kind of a planning or building-control application recorded in a "
+        "local-authority search result.",
+    OPDA.applicationDate:
+        "The date a planning or building-control application was made, as "
+        "recorded in a local-authority search result.",
+    OPDA.decision:
+        "The determination reached on a planning or building-control "
+        "application in a local-authority search result.",
+    OPDA.decisionDate:
+        "The date a determination was reached on a planning or "
+        "building-control application.",
+    OPDA.refNumber:
+        "The application or case reference identifying a planning or "
+        "building-control matter in a search result.",
+    OPDA.status:
+        "The current state of a search-derived item — a planning permission, "
+        "designation plan, road-adoption entry, or search order.",
+    OPDA.statusDate:
+        "The date on which a designation plan's status was set in a "
+        "local-authority search result.",
+    OPDA.designationType:
+        "The kind of planning designation recorded in a local-authority "
+        "search result, such as a conservation area or tree-preservation "
+        "order.",
+    OPDA.planningStartDate:
+        "The date a planning matter commenced, as recorded in a "
+        "local-authority search result.",
+    OPDA.buildingControlStartDate:
+        "The date a building-control matter commenced, as recorded in a "
+        "local-authority search result.",
+    OPDA.localAuthorityName:
+        "The name of the local authority that issued or governs a search.",
+    OPDA.localAuthorityReference:
+        "The reference identifying a search within its local authority's "
+        "record system.",
+    OPDA.countyCouncil:
+        "The name of the county council for the locality of the property "
+        "searched.",
+    OPDA.districtCouncil:
+        "The name of the district council for the locality of the property "
+        "searched.",
+    OPDA.unitaryAuthority:
+        "The name of the unitary authority for the locality of the property "
+        "searched.",
+    OPDA.councilSearchTurnaroundTimeInWorkingDays:
+        "The quoted turnaround time, in working days, for a council search.",
+    OPDA.regulatedSearchTurnaroundTimeInWorkingDays:
+        "The quoted turnaround time, in working days, for a regulated search.",
+    OPDA.orderDate:
+        "The date a search was ordered.",
+    OPDA.expectedDeliveryDate:
+        "The date by which an ordered search is expected to be delivered.",
+    OPDA.reportDate:
+        "The date a search or survey report was produced.",
+    OPDA.productCode:
+        "The provider's product code identifying a particular search product.",
+    OPDA.providerName:
+        "The name of the organisation that supplied a search.",
+    OPDA.providerReference:
+        "The provider's own reference for a search.",
+    OPDA.subCategory:
+        "The named sub-division of an environmental-peril risk assessment, "
+        "drawn from the peril's riskSubcategories list.",
+    OPDA.dateRemedialActionRequired:
+        "The date by which remedial action is required following a "
+        "buildings-insurance risk assessment of a managed area.",
+    OPDA.documentDate:
+        "The date borne by a title or additional document attached to a "
+        "property pack.",
+    OPDA.documentTypeCode:
+        "The type code classifying a title or additional document attached to "
+        "a property pack.",
+    OPDA.filedUnder:
+        "The filing reference under which a title or additional document is "
+        "held.",
+    OPDA.retrievedOn:
+        "The date a title or additional document was retrieved from the "
+        "registry.",
+    OPDA.displayName:
+        "The human-readable name of a document or search artefact.",
+    OPDA.mediaUrl:
+        "The web address locating a media item such as a property image or "
+        "floorplan.",
+    OPDA.url:
+        "The web address locating an external artefact such as a contract "
+        "template or planning-permission page.",
+    # --- Family E (descriptive side): Valuation pricing + nearby facilities -
+    OPDA.soldDate:
+        "The date a comparable property was sold, as recorded in valuation "
+        "comparable listing information.",
+    OPDA.listedDate:
+        "The date a comparable property was listed for sale, as recorded in "
+        "valuation comparable listing information.",
+    OPDA["yield"]:
+        "The rental yield computed in a valuation's pricing analysis.",
+    OPDA.pricingMethodology:
+        "The method used to derive a valuation's price estimate.",
+    OPDA.credibilitySources:
+        "The sources cited as lending credibility to a valuation's price "
+        "estimate.",
+    OPDA.distanceInMiles:
+        "The distance in miles from a property to a nearby facility.",
+    OPDA.ageRange:
+        "The range of pupil ages catered for by a nearby school.",
+    OPDA.pupils:
+        "The number of pupils enrolled at a nearby school.",
+    OPDA.religiousCharacter:
+        "The religious affiliation, if any, of a nearby school.",
+    OPDA.otherRating:
+        "The rating of a nearby school awarded by a body other than Ofsted.",
+    OPDA.typeOfHealthCare:
+        "The category of a nearby health-care facility.",
+    OPDA.specialties:
+        "The clinical specialties offered by a nearby health-care facility.",
+    # --- Monetary walk: per-economic-kind amounts (range MonetaryAmount) ----
+    OPDA.annualGroundRent:
+        "The yearly ground rent payable under a leasehold estate.",
+    OPDA.annualServiceCharge:
+        "The yearly service charge payable under a leasehold or managed "
+        "freehold/commonhold estate.",
+    OPDA.certificateOfComplianceFee:
+        "The fee charged for a certificate of compliance required on a "
+        "leasehold transfer.",
+    OPDA.sharedOwnershipRent:
+        "The rent payable on the retained share under a shared-ownership "
+        "lease.",
+    OPDA.councilTaxAnnualCharge:
+        "The yearly council-tax charge levied on a property.",
+    OPDA.annualCostOfPermit:
+        "The yearly cost of a controlled-parking permit for a property.",
+    OPDA.rent:
+        "The rent stated in a property's letting information.",
+    OPDA.holdingDeposit:
+        "The refundable holding deposit stated in a property's letting "
+        "information.",
+    OPDA.securityDeposit:
+        "The refundable security deposit stated in a property's letting "
+        "information.",
+    OPDA.potentialCost:
+        "The estimated cost of potential remediation disclosed in a "
+        "property's building-safety information.",
+    OPDA.estimatedPrice:
+        "The estimated sale price stated in a valuation's pricing analysis.",
+    OPDA.estimatedAmount:
+        "The estimated rental amount stated in a valuation's rental-estimate "
+        "analysis.",
+    OPDA.listPrice:
+        "The price at which a comparable property was listed for sale.",
+    OPDA.soldPrice:
+        "The price at which a comparable property was sold.",
+    OPDA.costsApplicableToTheDeed:
+        "The costs payable for a deed of covenant required on a transfer.",
+    OPDA.feeIncludingVAT:
+        "The VAT-inclusive fee charged by a party for serving a notice of "
+        "transfer, assignment, or charge during conveyancing.",
+    # --- R5 follow-on: enum leaves (→ SKOS schemes) -------------------------
+    OPDA.constructionType:
+        "The structural construction method of a property, drawn from the "
+        "opda:ConstructionTypeScheme value-space.",
+    OPDA.priceQualifier:
+        "The qualifier attached to a marketed price, such as Guide price or "
+        "Offers over, drawn from the opda:PriceQualifierScheme value-space.",
+    OPDA.typeOfConnection:
+        "The broadband connection technology serving a property, drawn from "
+        "the opda:BroadbandConnectionTypeScheme value-space.",
+    OPDA.marketingTenure:
+        "The tenure under which a property is marketed, drawn from the "
+        "opda:TenureKindScheme value-space.",
+    OPDA.transportType:
+        "The kind of a nearby transport facility, such as a rail station or "
+        "bus stop, drawn from the opda:TransportTypeScheme value-space.",
+    OPDA.ofstedRating:
+        "The Ofsted rating of a nearby school, drawn from the "
+        "opda:OfstedRatingScheme value-space.",
+    # --- R5 follow-on: Yes/No disclosure flags + references -----------------
+    OPDA.hasLift:
+        "Whether the building containing a property has a lift.",
+    OPDA.isHMO:
+        "Whether a property is a House in Multiple Occupation.",
+    OPDA.isStudentAccommodation:
+        "Whether a property is student accommodation.",
+    OPDA.hasFloorplan:
+        "Whether a floorplan is available for a property.",
+    OPDA.loftInsulated:
+        "Whether a property's loft is insulated.",
+    OPDA.loftBoarded:
+        "Whether a property's loft is boarded.",
+    OPDA.hasFloodDefences:
+        "Whether a property has flood defences.",
+    OPDA.isConnectedToNationalGrid:
+        "Whether a property's solar panels are connected to the national "
+        "grid.",
+    OPDA.isFirstRegistration:
+        "Whether a sale constitutes the first registration of the title.",
+    OPDA.isLimitedCompanySale:
+        "Whether the seller in a sale is a limited company.",
+    OPDA.hasHelpToBuyEquityLoan:
+        "Whether a property is subject to a Help to Buy equity loan.",
+    OPDA.saleAtUndervalue:
+        "Whether a sale is being made at undervalue.",
+    OPDA.landlordInsuresIfFlat:
+        "Whether the landlord arranges buildings insurance for a flat.",
+    OPDA.willingToInsure:
+        "Whether an insurer is willing to insure against an unresolved "
+        "planning issue affecting a property.",
+    OPDA.managementPlanInPlace:
+        "Whether a management plan is in place for Japanese knotweed affecting "
+        "a property.",
+    OPDA.consentsObtained:
+        "Whether the required consents were obtained for work carried out "
+        "under a tree-preservation order.",
+    OPDA.dischargeCompliesWithGBR:
+        "Whether a property's off-mains drainage discharge complies with the "
+        "General Binding Rules.",
+    OPDA.isLeaseQualifying:
+        "Whether a lease is a qualifying lease under the Building Safety Act.",
+    OPDA.landlordNotifiedOfSale:
+        "Whether the landlord has been notified of a sale under the Building "
+        "Safety Act.",
+    OPDA.sellerCompletedDeedOfCertificate:
+        "Whether the seller completed a deed of certificate under the Building "
+        "Safety Act.",
+    OPDA.dangerousCladdingOrDefects:
+        "Whether a property has dangerous cladding or building-safety "
+        "defects.",
+    OPDA.contributionIncludedInServiceCharge:
+        "Whether a reserve-fund contribution is included within the service "
+        "charge.",
+    OPDA.isManagingAgentEmployed:
+        "Whether a managing agent is employed to manage an estate.",
+    OPDA.hasTenantCompanyDissolved:
+        "Whether the tenant management company for an estate has been "
+        "dissolved.",
+    OPDA.headLeaseholderControlled:
+        "Whether the head lease of an estate is leaseholder-controlled.",
+    OPDA.organisesBuildingInsurance:
+        "Whether a service contact organises buildings insurance for an "
+        "estate.",
+    OPDA.sellerOwnedProperty:
+        "Whether the seller has owned the property long enough to satisfy "
+        "enfranchisement qualification.",
+    OPDA.outstandingEnforcementAction:
+        "Whether there is outstanding enforcement action recorded in a "
+        "managed-area risk assessment.",
+    OPDA.urgentWorksCarriedOut:
+        "Whether urgent works were carried out, as recorded in a managed-area "
+        "risk assessment.",
+    OPDA.urgentWorksRecommended:
+        "Whether urgent works were recommended, as recorded in a managed-area "
+        "risk assessment.",
+    OPDA.dealsWithDayToDayMaintenanceOfManagedArea:
+        "Whether a contact is responsible for the day-to-day maintenance of a "
+        "managed area.",
+    OPDA.freeholdOwner:
+        "The named freehold owner recorded in a leasehold ownership-and-"
+        "management block.",
+    OPDA.forTheManagedAreas:
+        "The portion of a service-charge reserve fund attributable to the "
+        "managed areas.",
+    OPDA.fromTheOwners:
+        "The portion of a service-charge reserve fund contributed by the "
+        "owners.",
+    # --- Room-dimension by-value fields -------------------------------------
+    OPDA.length:
+        "The length of a room in metres, recorded as a field of an "
+        "opda:RoomDimension value structure.",
+    OPDA.width:
+        "The width of a room in metres, recorded as a field of an "
+        "opda:RoomDimension value structure.",
+    OPDA.roomName:
+        "The non-rigid label naming a room within an opda:RoomDimension value "
+        "structure, never an identity principle or key.",
+}
+
+
 CLASSES = (
     OPDA.Comparable,
     OPDA.EPCCertificate,
@@ -294,6 +577,7 @@ def build_graph() -> Graph:
 
     # --- Module ontology header --------------------------------------------
     module_iri = URIRef("https://opda.org.uk/pdtf/graph/descriptive")
+    _DEFINED_BY = module_iri  # rdfs:isDefinedBy target for every term below
     g.add((module_iri, RDF.type, OWL.Ontology))
     g.add((module_iri, DCTERMS.title,
            Literal("OPDA Descriptive Module", lang="en")))
@@ -317,6 +601,15 @@ def build_graph() -> Graph:
         "withdrawn). Hard cases: re-survey; supersession; withdrawal.",
         lang="en",
     )))
+    g.add((OPDA.Survey, SKOS.definition, Literal(
+        "An information artefact recording the findings of a professional "
+        "physical inspection of a property, retrieved from its issuing "
+        "authority and individuated by a distinct provenance chain back to "
+        "the professional-issued generating activity and a lifecycle of "
+        "issue, supersession, re-issue, and withdrawal.",
+        lang="en",
+    )))
+    g.add((OPDA.Survey, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.Survey, SKOS.scopeNote, Literal(
         "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information "
         "artefact, corrected from \"Substance Kind\" per ODR-0008d Rule 3). "
@@ -342,6 +635,14 @@ def build_graph() -> Graph:
         "owner-identifiable).",
         lang="en",
     )))
+    g.add((OPDA.EPCCertificate, SKOS.definition, Literal(
+        "An information artefact certifying the energy-efficiency rating of a "
+        "dwelling, issued under the DESNZ register and individuated by a "
+        "ten-year validity lifecycle, supersession on re-assessment, and an "
+        "address-and-owner-identifiable PII regime.",
+        lang="en",
+    )))
+    g.add((OPDA.EPCCertificate, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.EPCCertificate, SKOS.scopeNote, Literal(
         "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from "
         "\"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance "
@@ -366,6 +667,16 @@ def build_graph() -> Graph:
         "search yields many assessments, ODR-0008d Rule 3).",
         lang="en",
     )))
+    g.add((OPDA.Search, SKOS.definition, Literal(
+        "An information artefact returning the result of a local-authority or "
+        "environmental enquiry against a property (CON29R, LLC1, flood, "
+        "coal-mining, and similar), individuated by its issuing-authority "
+        "provenance chain and an ordered/returned/superseded lifecycle, and "
+        "carrying the per-peril risk assessments its generating activity "
+        "produces.",
+        lang="en",
+    )))
+    g.add((OPDA.Search, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.Search, SKOS.scopeNote, Literal(
         "UFO: Information Object (corrected from \"Substance Kind\" per "
         "ODR-0008d Rule 3). Covers CON29R / LLC1 / environmental / flood / "
@@ -387,6 +698,14 @@ def build_graph() -> Graph:
         "distinct lifecycle: instructed / delivered / superseded).",
         lang="en",
     )))
+    g.add((OPDA.Valuation, SKOS.definition, Literal(
+        "An information artefact stating an estimate of a property's market or "
+        "rental value, produced by a RICS-regulated professional or an "
+        "automated model and individuated by a regulated provenance chain and "
+        "an instructed/delivered/superseded lifecycle.",
+        lang="en",
+    )))
+    g.add((OPDA.Valuation, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.Valuation, SKOS.scopeNote, Literal(
         "UFO: Information Object (corrected from \"Substance Kind\" per "
         "ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 "
@@ -409,6 +728,14 @@ def build_graph() -> Graph:
         "underlying market data).",
         lang="en",
     )))
+    g.add((OPDA.Comparable, SKOS.definition, Literal(
+        "An information artefact recording a sale or rental of a comparable "
+        "property that supports a Valuation, sourced from Land Registry or VOA "
+        "data and individuated by that market-data provenance feeding the "
+        "valuation's derivation chain.",
+        lang="en",
+    )))
+    g.add((OPDA.Comparable, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.Comparable, SKOS.scopeNote, Literal(
         "UFO: Information Object (corrected from \"Substance Kind\" per "
         "ODR-0008d Rule 3). Land Registry Price Paid Data + VOA records "
@@ -454,6 +781,15 @@ def build_graph() -> Graph:
         "(proximity to the Property).",
         lang="en",
     )))
+    g.add((OPDA.NearbyFacility, SKOS.definition, Literal(
+        "A mind-independent social-physical endurant near a property — a "
+        "school, health-care facility, or transport node — listed for amenity "
+        "context and bearing its own identity criterion independent of the "
+        "property being transacted, since the same facility neighbours many "
+        "properties.",
+        lang="en",
+    )))
+    g.add((OPDA.NearbyFacility, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.NearbyFacility, SKOS.scopeNote, Literal(
         "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid "
         "social-physical endurant supplying its own IC). Warranted per "
@@ -497,6 +833,16 @@ def build_graph() -> Graph:
         "subclasses and NOT 72 datatype properties.",
         lang="en",
     )))
+    g.add((OPDA.RiskAssessment, SKOS.definition, Literal(
+        "An information artefact reporting the authority-retrieved result for "
+        "one environmental or search peril against a property (its indicator, "
+        "alert rating, result, summary, recommendations, and attribution), "
+        "individuated by the tuple of generating activity, source "
+        "peril/dataset, subject property, and generation time rather than by "
+        "its result values.",
+        lang="en",
+    )))
+    g.add((OPDA.RiskAssessment, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.RiskAssessment, SKOS.scopeNote, Literal(
         "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information "
         "artefact existentially dependent on its generating activity). "
@@ -524,6 +870,13 @@ def build_graph() -> Graph:
         "to the PerilScheme concepts via sh:in.",
         lang="en",
     )))
+    g.add((OPDA.peril, SKOS.definition, Literal(
+        "The environmental or search hazard a risk assessment reports on: the "
+        "opda:PerilScheme concept naming the dataset or peril whose result the "
+        "assessment records.",
+        lang="en",
+    )))
+    g.add((OPDA.peril, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.peril, DCTERMS.source, _ODR_0008D_RULE_1))
 
     # --- opda:riskIndicator — RiskAssessment Quale (Rule 1c) ------------
@@ -544,6 +897,13 @@ def build_graph() -> Graph:
         "Rule 4).",
         lang="en",
     )))
+    g.add((OPDA.riskIndicator, SKOS.definition, Literal(
+        "The at-risk indicator of a risk assessment: whether action is "
+        "recommended or the property is at risk for the assessed peril, drawn "
+        "from the No / Not known / Yes value-space.",
+        lang="en",
+    )))
+    g.add((OPDA.riskIndicator, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.riskIndicator, DCTERMS.source, _ODR_0008D_RULE_4))
 
     # --- opda:actionAlertRating — RiskAssessment Quale (Rule 1c) --------
@@ -562,6 +922,13 @@ def build_graph() -> Graph:
         "shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4).",
         lang="en",
     )))
+    g.add((OPDA.actionAlertRating, SKOS.definition, Literal(
+        "The action-alert severity of a risk assessment: an ordinal integer "
+        "from 1 (Green, lowest risk) to 5 (Red, highest risk) grading the "
+        "assessed peril.",
+        lang="en",
+    )))
+    g.add((OPDA.actionAlertRating, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.actionAlertRating, DCTERMS.source, _ODR_0008D_RULE_4))
 
     # --- opda:hasSubAssessment — self-referential part-of (Rule 4) ------
@@ -583,6 +950,13 @@ def build_graph() -> Graph:
         "axes (Rule 4).",
         lang="en",
     )))
+    g.add((OPDA.hasSubAssessment, SKOS.definition, Literal(
+        "The result-recursion link of a risk assessment to a constituent leaf "
+        "risk assessment: a mereological part-of holding between a parent "
+        "assessment and each of its riskSubcategories entries.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSubAssessment, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.hasSubAssessment, DCTERMS.source, _ODR_0008D_RULE_4))
 
     # NOTE on datasetAttribution (ODR-0008d Rule 5 / Rule 1c): the sixth
@@ -621,6 +995,14 @@ def build_graph() -> Graph:
         "owned by ODR-0007.",
         lang="en",
     )))
+    g.add((OPDA.inclusionStatus, SKOS.definition, Literal(
+        "The disposition of a fixtures-and-fittings item in a sale: whether "
+        "the item is Included in, Excluded from, or absent (None) from the "
+        "transaction, held as a mode of the sale rather than a quality of the "
+        "property.",
+        lang="en",
+    )))
+    g.add((OPDA.inclusionStatus, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.inclusionStatus, DCTERMS.source, _ODR_0022_S4))
 
     # --- opda:price — Category D shared fixtures monetary amount --------
@@ -651,6 +1033,14 @@ def build_graph() -> Graph:
         "is NOT migrated to it.",
         lang="en",
     )))
+    g.add((OPDA.price, SKOS.definition, Literal(
+        "The amount asked for a fixtures-and-fittings item included in a sale: "
+        "a single shared single-currency monetary figure scoped to "
+        "fixtures-and-fittings only, distinct from the headline and recurring "
+        "monetary leaves.",
+        lang="en",
+    )))
+    g.add((OPDA.price, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.price, DCTERMS.source, _ODR_0022_S4))
 
     # --- opda:disclosureDetail — Category A (ODR-0022 §Rules.1) ---------
@@ -676,6 +1066,13 @@ def build_graph() -> Graph:
         "per-question detail property is NEVER minted (ODR-0022 §Rules.6).",
         lang="en",
     )))
+    g.add((OPDA.disclosureDetail, SKOS.definition, Literal(
+        "The free-text elaboration of a disclosure answer: a reusable "
+        "comment-grade note whose governing question is fixed by the subject "
+        "node and the instance-level source, not by the property itself.",
+        lang="en",
+    )))
+    g.add((OPDA.disclosureDetail, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.disclosureDetail, DCTERMS.source, _ODR_0022_S1))
 
     # ==== Category-G curated walk — Family D: search / planning / building- =
@@ -1037,6 +1434,8 @@ def build_graph() -> Graph:
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(_DEFINITIONS[prop], lang="en")))
+        g.add((prop, RDFS.isDefinedBy, _DEFINED_BY))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -1168,6 +1567,8 @@ def build_graph() -> Graph:
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(_DEFINITIONS[prop], lang="en")))
+        g.add((prop, RDFS.isDefinedBy, _DEFINED_BY))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -1200,6 +1601,13 @@ def build_graph() -> Graph:
         "profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
         lang="en",
     )))
+    g.add((OPDA.schoolType, SKOS.definition, Literal(
+        "The educational stage of a nearby school: its band within the "
+        "opda:SchoolTypeScheme value-space (College, Nursery, Primary, "
+        "Secondary, or Private).",
+        lang="en",
+    )))
+    g.add((OPDA.schoolType, RDFS.isDefinedBy, _DEFINED_BY))
     for _slug in ("college", "nursery", "primary", "secondary", "private"):
         g.add((OPDA.schoolType, DCTERMS.source, _dd_source(
             f"propertyPack.nearbyFacilities.schools[].schoolType.{_slug}"
@@ -1234,6 +1642,14 @@ def build_graph() -> Graph:
         "FIBO / schema.org MonetaryAmount pattern (amount + currency).",
         lang="en",
     )))
+    g.add((OPDA.MonetaryAmount, SKOS.definition, Literal(
+        "A sum of money as a value structure: a numeric magnitude paired with "
+        "an ISO-4217 currency, individuated by-value (equal magnitude and "
+        "equal currency) and reused as the range of the per-economic-kind "
+        "monetary properties.",
+        lang="en",
+    )))
+    g.add((OPDA.MonetaryAmount, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.MonetaryAmount, SKOS.scopeNote, Literal(
         "UFO: quality value / abstract individual (Guizzardi 2005 — a value in "
         "a quality structure, not an endurant). DOLCE: Abstract / "
@@ -1257,6 +1673,13 @@ def build_graph() -> Graph:
         "amounts). Flat per ODR-0008 §Q6a.",
         lang="en",
     )))
+    g.add((OPDA.amount, SKOS.definition, Literal(
+        "The numeric magnitude of a monetary amount: the decimal-valued size "
+        "dimension of an opda:MonetaryAmount value structure, paired with its "
+        "currency.",
+        lang="en",
+    )))
+    g.add((OPDA.amount, RDFS.isDefinedBy, _DEFINED_BY))
     for _p in (
         "propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges.amount",
         "propertyPack.ownership.ownershipsToBeTransferred[]."
@@ -1278,6 +1701,12 @@ def build_graph() -> Graph:
         "overlay profile supplies GBP as the default (ODR-0024 R3).",
         lang="en",
     )))
+    g.add((OPDA.currency, SKOS.definition, Literal(
+        "The currency of a monetary amount: the ISO-4217 opda:CurrencyScheme "
+        "concept denominating an opda:MonetaryAmount value structure.",
+        lang="en",
+    )))
+    g.add((OPDA.currency, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.currency, DCTERMS.source, _ODR_0024_R3))
 
     # --- The 16 per-economic-kind monetary properties (range MonetaryAmount)
@@ -1462,6 +1891,8 @@ def build_graph() -> Graph:
         g.add((prop, RDFS.range, OPDA.MonetaryAmount))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(_DEFINITIONS[prop], lang="en")))
+        g.add((prop, RDFS.isDefinedBy, _DEFINED_BY))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -1833,6 +2264,8 @@ def build_graph() -> Graph:
             g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(_DEFINITIONS[prop], lang="en")))
+        g.add((prop, RDFS.isDefinedBy, _DEFINED_BY))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 
@@ -1862,6 +2295,14 @@ def build_graph() -> Graph:
         "future opda:Room/opda:Building if an identity fact ever earns the Kind.",
         lang="en",
     )))
+    g.add((OPDA.RoomDimension, SKOS.definition, Literal(
+        "The dimensions of a single room as a value structure: a length and "
+        "width in metres together with a non-rigid room name, individuated "
+        "by-value and characterising a property without asserting any room "
+        "individual.",
+        lang="en",
+    )))
+    g.add((OPDA.RoomDimension, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.RoomDimension, SKOS.scopeNote, Literal(
         "UFO: a quality-value structure (a bundle of Quale-in-Region values), "
         "not an endurant (Guizzardi 2005); the dimensions are Qualities of a "
@@ -1884,6 +2325,13 @@ def build_graph() -> Graph:
         "transitive (Council session-030 / ODR-0024 R10).",
         lang="en",
     )))
+    g.add((OPDA.hasRoomDimension, SKOS.definition, Literal(
+        "The link from a property to one of its room-dimension value "
+        "structures: a non-transitive characterisation relating a property to "
+        "a room's length, width, and name, one per room.",
+        lang="en",
+    )))
+    g.add((OPDA.hasRoomDimension, RDFS.isDefinedBy, _DEFINED_BY))
     g.add((OPDA.hasRoomDimension, DCTERMS.source, _ODR_0024_R10))
 
     # the three by-value room-dimension fields (no key; roomName non-rigid)
@@ -1917,6 +2365,8 @@ def build_graph() -> Graph:
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(_DEFINITIONS[prop], lang="en")))
+        g.add((prop, RDFS.isDefinedBy, _DEFINED_BY))
         g.add((prop, DCTERMS.source, _dd_source(path)))
 
     # --- opda:Room / opda:Building classes: NOT minted (session-030) -----

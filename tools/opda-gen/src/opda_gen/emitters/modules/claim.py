@@ -40,6 +40,11 @@ OPDA = Namespace("https://opda.org.uk/pdtf/")
 PROV = Namespace("http://www.w3.org/ns/prov#")
 
 
+# rdfs:isDefinedBy target — this module's owl:Ontology subject (see the
+# module header emitted in build_graph()).
+_MODULE_IRI = URIRef("https://opda.org.uk/pdtf/graph/claim")
+
+
 _ODR_0009_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1")
 _ODR_0009_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3")
 _ODR_0009_Q4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q4")
@@ -121,6 +126,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Claim, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.Claim, SKOS.definition, Literal(
+        "An assertion about a property transaction subject whose truth is "
+        "backed by attached evidence and a recorded verification, such that "
+        "the asserted fact and its provenance can be re-checked.",
+        lang="en",
+    )))
+    g.add((OPDA.Claim, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:Evidence — a RoleMixin over prov:Entity (ODR-0009 §Q1;
     #     ODR-0027 §R6) ---------------------------------------------------
@@ -161,6 +173,14 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.Evidence, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.Evidence, SKOS.definition, Literal(
+        "A role a bearer plays when a verification activity draws on it to "
+        "support a claim, whose acquisition kind (Document, Electronic-Record "
+        "or Vouch) is stated by a coded evidence-type value rather than by "
+        "subclassing.",
+        lang="en",
+    )))
+    g.add((OPDA.Evidence, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:AttachedDocument — neutral document Kind (ODR-0024 R7) -----
     # The neutral bearer for registry-attached document filing-metadata
@@ -205,6 +225,14 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.AttachedDocument, DCTERMS.source, _ODR_0024_R7))
+    g.add((OPDA.AttachedDocument, SKOS.definition, Literal(
+        "A document filed against a transaction record, individuated by its "
+        "content and issuing activity, that bears filing metadata without "
+        "itself carrying the assurance commitment of evidence until it plays "
+        "the evidence role.",
+        lang="en",
+    )))
+    g.add((OPDA.AttachedDocument, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- Evidence kind: a coded isMemberOf classification, NOT subclasses ---
     # ODR-0027 §R6 (directing-authority adoption of the hm approach;
@@ -239,6 +267,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.VerificationActivity, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.VerificationActivity, SKOS.definition, Literal(
+        "An activity that derives a verified claim from evidence, completing "
+        "at a recorded instant and attributing the validation and "
+        "verification methods to the agents that performed them.",
+        lang="en",
+    )))
+    g.add((OPDA.VerificationActivity, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:AssuranceLevel — backed by SKOS scheme --------------------
     g.add((OPDA.AssuranceLevel, RDF.type, OWL.Class))
@@ -258,6 +293,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.AssuranceLevel, DCTERMS.source, _ODR_0009_Q3))
+    g.add((OPDA.AssuranceLevel, SKOS.definition, Literal(
+        "A graded quality judgement on a claim's verification, drawn from the "
+        "eIDAS levels of assurance (Low, Substantial, High) and governed by "
+        "the assurance-level concept scheme.",
+        lang="en",
+    )))
+    g.add((OPDA.AssuranceLevel, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:TrustFramework --------------------------------------------
     g.add((OPDA.TrustFramework, RDF.type, OWL.Class))
@@ -278,6 +320,14 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.TrustFramework, DCTERMS.source, _ODR_0009_Q5))
+    g.add((OPDA.TrustFramework, SKOS.definition, Literal(
+        "A cited governance regime of agreements, rules and technical "
+        "standards that scopes the validity of a claim and is authoritative "
+        "within its declared remit, such as the UK Property Data Trust "
+        "Framework.",
+        lang="en",
+    )))
+    g.add((OPDA.TrustFramework, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- DatatypeProperty: opda:digest (S009 Q4) ------------------------
     g.add((OPDA.digest, RDF.type, OWL.DatatypeProperty))
@@ -292,6 +342,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.digest, DCTERMS.source, _ODR_0009_Q4))
+    g.add((OPDA.digest, SKOS.definition, Literal(
+        "Relates a claim or piece of evidence to its cryptographic hash, "
+        "expressed as an algorithm-qualified digest value drawn from the "
+        "digest-algorithm concept scheme.",
+        lang="en",
+    )))
+    g.add((OPDA.digest, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- ObjectProperty: opda:supportedBy -------------------------------
     g.add((OPDA.supportedBy, RDF.type, OWL.ObjectProperty))
@@ -308,6 +365,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.supportedBy, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.supportedBy, SKOS.definition, Literal(
+        "Relates a claim to a piece of evidence that backs it, providing an "
+        "opda-namespaced counterpart to the canonical prov:wasDerivedFrom "
+        "derivation chain.",
+        lang="en",
+    )))
+    g.add((OPDA.supportedBy, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- ObjectProperty: opda:attestedBy --------------------------------
     # A facet borne by an opda:Evidence playing the vouch role (ODR-0027 §R2);
@@ -329,6 +393,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.attestedBy, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.attestedBy, SKOS.definition, Literal(
+        "Relates evidence playing the vouch role to the agent that attests "
+        "it, mirroring prov:wasAttributedTo and required value-keyed when the "
+        "evidence type is Vouch.",
+        lang="en",
+    )))
+    g.add((OPDA.attestedBy, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- DatatypeProperty: opda:evidenceType (the isMemberOf classifier) -
     # ODR-0027 §R6: the coded evidence-KIND classification that replaced both
@@ -356,5 +427,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.evidenceType, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.evidenceType, SKOS.definition, Literal(
+        "Relates a piece of evidence to the evidence-method scheme concept "
+        "naming its OIDC4IDA acquisition kind (Document, Electronic-Record or "
+        "Vouch), serving as the governed classifier in place of an evidence "
+        "subclass tree.",
+        lang="en",
+    )))
+    g.add((OPDA.evidenceType, RDFS.isDefinedBy, _MODULE_IRI))
 
     return g

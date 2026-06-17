@@ -27,49 +27,63 @@ opda:DiagnosticExemplar
     rdf:type owl:Class ;
     rdfs:label "Diagnostic Exemplar"@en ;
     rdfs:comment "Informational endurant. IC: the named hard case — minimal Turtle exposing one IC-bearing surface as input to a Council session's identity-criterion validation. Hard cases: registered freehold house; unregistered house pre-first-registration; flat with split UPRN."@en ;
+    skos:definition "A named hard case, expressed as minimal Turtle, that exposes one identity-criterion-bearing surface for adjudication in a Council modelling session."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-8a-diagnostic-exemplars> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational)."@en .
 
 opda:GeneratorRun
     rdf:type owl:Class ;
     rdfs:label "Generator Run"@en ;
     rdfs:comment "Information particular. IC: a single execution of the opda-gen pipeline that produced a specific set of emitted TTL artefacts. Carries the generator version (opda-gen-<semver>), the source commit SHA, and the emission timestamp. Per ODR-0004 §6a, every emission is reproducible from the recorded (version, commit) pair."@en ;
+    skos:definition "A single execution of the opda-gen pipeline that emitted a specific set of TTL artefacts, recording the generator version, source commit and timestamp needed to reproduce them."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-6a-generator-first> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "UFO: Information Particular. Provenance unit for byte-identity CI; instances are minted by the build pipeline, not by hand."@en .
 
 opda:Relator
     rdf:type owl:Class ;
     rdfs:label "Relator"@en ;
     rdfs:comment "UFO Relator — a relational endurant that mediates two or more bearers and is founded by an external event. The Relator carries its own identity (the (mediated-bearers, founding-event) tuple) and bears properties that don't belong to any single mediated Kind. OPDA Relators in scope: opda:Transaction (founds Seller / Buyer RoleMixins per ODR-0007 §Q1); opda:Proprietorship (binds Proprietor Roles to a RegisteredTitle per ODR-0006 §Q3)."@en ;
+    skos:definition "A relational endurant, founded by an external event, that mediates two or more bearers and carries its own identity together with the properties belonging to none of the mediated Kinds singly."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6)."@en .
 
 opda:Role
     rdf:type owl:Class ;
     rdfs:label "Role"@en ;
     rdfs:comment "UFO Role — anti-rigid, sortal role. An instance of a Role is borne by a bearer drawn from a single substantial Kind (e.g. Proprietor is borne by a Person — or by an Organisation under a named specialisation, but never simultaneously). A Role NEVER supplies its own identity; it borrows identity from its bearer (ODR-0005 Anti-pattern §3 — never key a Role). Per ODR-0006 §Q2."@en ;
+    skos:definition "An anti-rigid, sortal role universal whose instances are borne by entities of a single substantial Kind and which borrows its identity from that bearer rather than supplying its own."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single Kind."@en .
 
 opda:RoleMixin
     rdf:type owl:Class ;
     rdfs:label "Role Mixin"@en ;
     rdfs:comment "UFO RoleMixin — anti-rigid, cross-sortal role pattern. An instance of a RoleMixin is borne by a bearer drawn from more than one substantial Kind (e.g. Seller may be borne by Person OR Organisation). Distinguished from `opda:Role` (which is sortal — borne by a single Kind). Per ODR-0006 §Q2 Role layer."@en ;
+    skos:definition "An anti-rigid, cross-sortal role universal whose instances may be borne by entities from more than one substantial Kind, contrasted with a Role that commits to a single Kind."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). DOLCE: Role qua Universal without sortal commitment (Masolo et al. 2003 D18 §4.5)."@en .
 
 opda:ValidationContext
     rdf:type owl:Class ;
     rdfs:label "Validation Context"@en ;
     rdfs:comment "Reification of an overlay-profile validation context per ODR-0010 §Q1 (Guarino withdrawal condition). Each instance carries five properties: opda:profileURI, opda:requires, opda:overlaysContext, opda:sourcedFrom, opda:formVersion. Anchors per-profile cardinality/enum constraints in a named context — converting conditionality from 'required (depending)' to 'required relative to a named, dereferenceable context'. ADR-0013 emits per-profile instances under <https://opda.org.uk/pdtf/Baspi5ValidationContext> etc."@en ;
+    skos:definition "A reified overlay profile that anchors per-profile cardinality and enumeration constraints to a named, dereferenceable context, so a constraint holds relative to that context rather than as a free-floating axiom."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     skos:scopeNote "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject so its constraints have determinate model theory (Guarino's withdrawal condition discharged at S010)."@en .
 
 opda:hasSpecialCategoryData
     rdf:type owl:DatatypeProperty ;
     rdfs:label "has special-category data"@en ;
     rdfs:comment "Flag indicating that a record carries GDPR Article 9 / 10 special-category personal data (race, religion, health, sex life, sexual orientation, political opinion, trade-union membership, biometric/genetic data, criminal convictions). Domain unconstrained at foundation scope so the predicate may be borne by Person records (the typical case targeted by the Cat 4 SHACL shape in opda-agent-shapes.ttl) or by any other Kind that carries article-9/10 data downstream. Engineering placeholder pending S012 Q3 Council ratification of the canonical predicate name."@en ;
+    skos:definition "Asserts whether a record carries GDPR Article 9 or 10 special-category personal data, serving as the target predicate for the special-category lawful-basis SHACL constraint."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     rdfs:range xsd:boolean ;
     skos:scopeNote "Placeholder predicate — Cat 4 SHACL shape (SpecialCategoryPIIWithoutLawfulBasisShape) targets this predicate per ADR-0012. Council Author-only session via S012 Q3 may rename or refine the canonical name; ADR-0012 shape updates in lockstep. Until then, this declaration gives the Cat 4 shape a real TBox-level target."@en .
 
@@ -77,6 +91,8 @@ opda:isPIIBearing
     rdf:type owl:DatatypeProperty ;
     rdfs:label "is PII bearing"@en ;
     rdfs:comment "Flag marking a class as a bearer of personally identifiable information under the ODR-0012 Phase-1 floor. A class asserted opda:isPIIBearing true is in scope for the Phase-1 PII-co-annotation discipline (ODR-0018 §Rule 1): it MUST carry a class-level dpv-pd:hasPersonalDataCategory baseline in opda-<module>-annotations.ttl. The cross-cutting SHACL-AF rule PIIWithoutDPVCoAnnotationRule flags any opda:isPIIBearing true class lacking that co-annotation as a sh:Warning breach. Range xsd:boolean; emitted true on exactly the baseline PII-bearing Kinds (Person, Property, Address, RegisteredTitle, Claim, EPCCertificate) — Organisation is intentionally unmarked (ODR-0006 §Q6: not a data subject)."@en ;
+    skos:definition "Asserts whether a class bears personally identifiable information under the Phase-1 floor, placing it in scope for the mandatory data-protection category co-annotation discipline."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     rdfs:range xsd:boolean ;
     skos:scopeNote "Phase-1 PII-floor target predicate — the SHACL-AF rule PIIWithoutDPVCoAnnotationRule (opda-shapes.ttl) checks for opda:isPIIBearing true classes without a dpv-pd:hasPersonalDataCategory co-annotation. Asserted in the annotation graph (ODR-0018 §Rule 1) on the baseline PII Kinds so the rule's target set is non-empty and the floor is enforced."@en .

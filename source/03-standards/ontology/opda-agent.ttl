@@ -28,7 +28,9 @@ opda:Buyer
     rdf:type owl:Class ;
     rdfs:label "Buyer"@en ;
     rdfs:comment "UFO RoleMixin (anti-rigid; cross-sortal — borne by Person OR Organisation). Founded by an opda:Transaction Relator. The Buyer role of one transaction may correspond to the Seller role of the next in a TransactionChain (cf. exemplar chain-of-transactions.ttl)."@en ;
+    skos:definition "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party acquiring the interest in the Property; in a TransactionChain its bearer may bear the Seller role of the next transaction."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf opda:RoleMixin ;
     skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4). Mirror of opda:Seller founded by the same Transaction."@en .
 
@@ -36,7 +38,9 @@ opda:NameChangeEvent
     rdf:type owl:Class ;
     rdfs:label "Name Change Event"@en ;
     rdfs:comment "Reified PROV-O activity recording a Person's name change (deed-poll, marriage, gender recognition, etc.). The Person's identity PERSISTS through the name change per S006 Q1 — one Person individual with a name-attribute provenance chain via prov:wasRevisionOf, NOT two distinct Persons. Anti-pattern: owl:sameAs across the former/current names (cross-context inference propagation)."@en ;
+    skos:definition "A reified provenance activity (PROV-O Activity) recording a change to a Person's name — by deed poll, marriage, gender recognition, or the like — through which the Person's identity persists; it relates former and current name attributes by prov:wasRevisionOf rather than asserting two distinct persons."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (Masolo et al. 2003 D18 §4.4 — instantaneous administrative event)."@en .
 
@@ -44,7 +48,9 @@ opda:Organisation
     rdf:type owl:Class ;
     rdfs:label "Organisation"@en ;
     rdfs:comment "Corporate or unincorporated organisation. UFO Substance Kind; DOLCE NonPhysicalEndurant (Searle 1995 legal-institutional object). IC over merger / demerger / dissolution hard cases: FIBO LegalEntity pattern — multiple jurisdiction-issued identifiers (CRN, LEI) for one Kind; entity-merger produces a new individual via prov:wasDerivedFrom (S006 Q1 + Kendall S005 Q4 framing). Subclass of org:Organization per S006 Q6 9-1 verdict."@en ;
+    skos:definition "A corporate or unincorporated organisation — a legal-institutional object party to a property transaction — whose identity is fixed by jurisdiction-issued registration identifiers (e.g. CRN, LEI) and persists through merger, demerger, and dissolution, a new individual arising on entity-merger via prov:wasDerivedFrom."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q6> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf org:Organization ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). W3C Org Ontology alignment per S006 Q6 9-1 verdict (Allemang held-as-live)."@en .
 
@@ -52,7 +58,9 @@ opda:Person
     rdf:type owl:Class ;
     rdfs:label "Person"@en ;
     rdfs:comment "Natural person. UFO Substance Kind; DOLCE Endurant. IC: FIBO-style multi-identifier persistence (date-of-birth + state-issued ID + name) over name-change, gender-recognition, and death hard cases. Anchors PII regimes (DPV co-annotation lands per ODR-0018 in opda-annotations.ttl; ADR-0012 emits)."@en ;
+    skos:definition "A natural person — a human individual party to a property transaction — whose identity persists rigidly through name change, gender recognition, and death, and is fixed by a multi-identifier criterion (date of birth, state-issued identifier, and name) rather than by any single attribute."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     owl:disjointWith opda:Organisation ;
     skos:scopeNote "DOLCE: Endurant / Agent (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid)."@en .
 
@@ -60,7 +68,9 @@ opda:Proprietor
     rdf:type owl:Class ;
     rdfs:label "Proprietor"@en ;
     rdfs:comment "UFO Role (anti-rigid; sortal — borne by Person; sub-Role for Organisation-proprietorship under a named specialisation). Founded by an opda:Proprietorship Relator (ODR-0006 §Q3 Role layer). NEVER keyed (per ODR-0005 Anti-pattern §3 — a Proprietor has no identity qua Proprietor; identity borrows from bearer)."@en ;
+    skos:definition "An anti-rigid, sortal ownership role — borne by a Person — that is founded by a Proprietorship Relator and identifies a registered legal owner of the Property; it carries no identity of its own (it borrows identity from its bearer) and is never independently keyed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf opda:Role ;
     skos:scopeNote "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single bearer Kind."@en .
 
@@ -68,7 +78,9 @@ opda:Proprietorship
     rdf:type owl:Class ;
     rdfs:label "Proprietorship"@en ;
     rdfs:comment "UFO Relator (relational endurant) mediating Property + Proprietor instances against a RegisteredTitle. IC: the (Title, Persons-set) tuple per S006 Q3. Joint-tenancy vs tenants-in-common is a property of the Relator, NOT of the Roles. Founding event recorded via prov:wasGeneratedBy on the registration activity."@en ;
+    skos:definition "A relational endurant (UFO Relator) that binds one or more Proprietor roles to a Property against a RegisteredTitle, founded by the registration event and identified by the (Title, owner-set) tuple; the holding type — joint tenancy or tenancy in common — is a property of this relator, not of the roles it mediates."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf opda:Relator ;
     skos:scopeNote "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). HMLR Practice Guide 24 (joint tenancy / tenants in common)."@en .
 
@@ -76,7 +88,9 @@ opda:Seller
     rdf:type owl:Class ;
     rdfs:label "Seller"@en ;
     rdfs:comment "UFO RoleMixin (anti-rigid; cross-sortal — borne by Person OR Organisation). Founded by an opda:Transaction Relator (ODR-0006 §Q2 + ODR-0007 §Q1). An instance of opda:Seller is borne by a specific Person or Organisation in the context of a specific Transaction; the role identity is parasitic on the (Transaction, bearer) tuple."@en ;
+    skos:definition "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party disposing of the interest in the Property, the role's identity being parasitic on the (Transaction, bearer) tuple."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:subClassOf opda:RoleMixin ;
     skos:scopeNote "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). Sub-Roles PersonSeller / OrganisationSeller may sortalise the RoleMixin where downstream use requires (per ODR-0006 §Role layer)."@en .
 
@@ -84,167 +98,209 @@ opda:accountName
     rdf:type owl:DatatypeProperty ;
     rdfs:label "account name"@en ;
     rdfs:comment "Name on the bank account of a leasehold / managed-freehold contact organisation (landlord / managing agent / management company / rentcharge owner / resident-tenants' association). ONE shared property reused across those contact blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain — placed on opda:Organisation, no opda:BankAccount Kind minted.)"@en ;
+    skos:definition "The name in which a contact Organisation's bank account is held — the account holder for a landlord, managing agent, management company, rentcharge owner, or resident-tenants' association."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountName>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountName> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:accountNumber
     rdf:type owl:DatatypeProperty ;
     rdfs:label "account number"@en ;
     rdfs:comment "Bank-account number of a contact organisation. xsd:string (a fixed-width numeric identifier — leading zeros significant, per the opda:hasUPRN convention, NOT xsd:integer). ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    skos:definition "The account number of a contact Organisation's bank account, held as a string so that leading zeros remain significant."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountNumber> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:aged17OrOverNames
     rdf:type owl:DatatypeProperty ;
     rdfs:label "aged 17 or over names"@en ;
     rdfs:comment "Names of occupiers aged 17 or over (other than the Seller) in the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No discriminator)."@en ;
+    skos:definition "The names of the occupiers aged 17 or over, other than the Seller, residing in the Property, as disclosed when opda:hasOthersAged17OrOver is affirmative."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames> ;
     rdfs:domain opda:Seller ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:dateOfBirth
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date of birth"@en ;
     rdfs:comment "Date of birth of a Person participant. xsd:date. Flat per §Q6a. Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under ODR-0018 (DPV co-annotation in opda-annotations.ttl)."@en ;
+    skos:definition "The calendar date on which a Person was born — one component of the Person's multi-identifier identity criterion and an item of personal data."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].dateOfBirth> ;
     rdfs:domain opda:Person ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:date .
 
 opda:hasOthersAged17OrOver
     rdf:type owl:DatatypeProperty ;
     rdfs:label "has others aged 17 or over"@en ;
     rdfs:comment "Yes/No discriminator: does the Seller's household include occupiers aged 17 or over (other than the Seller)? BASPI5 occupiers question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "Relates a Seller to a Yes/No value recording whether the Property's household includes occupiers aged 17 or over other than the Seller — the BASPI5 occupiers discriminator gating disclosure of those occupiers' names."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Seller ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:middleNames
     rdf:type owl:DatatypeProperty ;
     rdfs:label "middle names"@en ;
     rdfs:comment "Middle name(s) of a Person legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The middle name or names of a Person, between the given name and the surname, as recorded for a legal owner."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.legalOwners.namesOfLegalOwners[].middleNames> ;
     rdfs:domain opda:Person ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:name
     rdf:type owl:DatatypeProperty ;
     rdfs:label "name"@en ;
     rdfs:comment "Generic name/label of a named entity — a participant, school, road, contract template, health-care facility, transport node, or planning designation. ONE shared naming property with NO rdfs:domain: it recurs across 46 polysemous occurrences with no single rigid bearer Kind (the domain-less shared-property convention opda:price / opda:inclusionStatus follow). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous; left domain-less by design rather than forcing one bearer.)"@en ;
+    skos:definition "The proper name or label of a named entity — used across polysemous contexts (participant, school, road, contract template, health-care facility, transport node, or planning designation) as a shared naming property with no single bearer kind."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/contracts[].contract.template.name>, <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].name>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.nearbyFacilities.healthCare[].name>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.nearbyFacilities.schools[].name>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.nearbyFacilities.transport[].name> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:numberOfNonUkResidentSellers
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of non-UK-resident sellers"@en ;
     rdfs:comment "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
+    skos:definition "The number of selling parties in the ownership who are not resident in the UK — a subset of the owner-set bearing on tax and withholding obligations."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.numberOfNonUkResidentSellers> ;
     rdfs:domain opda:Proprietorship ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:integer .
 
 opda:numberOfSellers
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of sellers"@en ;
     rdfs:comment "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
+    skos:definition "The number of selling parties in the ownership — the cardinality of the owner-set the Proprietorship mediates."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.numberOfSellers> ;
     rdfs:domain opda:Proprietorship ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:integer .
 
 opda:organisationName
     rdf:type owl:DatatypeProperty ;
     rdfs:label "organisation name"@en ;
     rdfs:comment "Name of an Organisation — a legal owner's registered/trading name, or the organisation a participant is acting for / belongs to. ONE shared property: the same opda:organisationName serves both leaves (Linked-Data shared-property pattern; supersedes the former opda:organisation, renamed-by-merge per ADR-0044 to remove the case-clash with the opda:Organisation class). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The registered or trading name of an Organisation — whether a legal owner or the organisation a participant acts for or belongs to."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].organisation>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.legalOwners.namesOfLegalOwners[].organisationName> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:organisationReference
     rdf:type owl:DatatypeProperty ;
     rdfs:label "organisation reference"@en ;
     rdfs:comment "Reference identifying an Organisation participant within an external system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An identifier by which an Organisation participant is referenced within an external system."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].organisationReference> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:reference
     rdf:type owl:DatatypeProperty ;
     rdfs:label "reference"@en ;
     rdfs:comment "Payment reference for a contact organisation's bank account. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    skos:definition "The payment reference to quote when remitting funds to a contact Organisation's bank account."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.reference>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.reference> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:sellersCapacityDetails
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sellers capacity details"@en ;
     rdfs:comment "Free-text detail elaborating a Seller's asserted capacity (companion to opda:hasAssertedCapacity, ODR-0006 §Q4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "Free-text narrative elaborating the capacity in which a Seller is selling, supplementing the coded value carried by opda:hasAssertedCapacity."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].sellersCapacity.sellersCapacityDetails> ;
     rdfs:domain opda:Seller ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:sortCode
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sort code"@en ;
     rdfs:comment "Bank sort code of a contact organisation. xsd:string. ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"@en ;
+    skos:definition "The six-digit UK bank sort code identifying the branch holding a contact Organisation's bank account."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.sortCode>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.sortCode> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
 opda:founds
     rdf:type owl:ObjectProperty ;
     rdfs:label "founds"@en ;
     rdfs:comment "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Documentary domain/range: plain rdfs:domain opda:Relator (Transaction & Proprietorship are both ⊑ opda:Relator — universally true) + \"any-of\" rdfs:range opda:Role , opda:RoleMixin (read disjunctively per the module-header convention — Proprietor is a Role, Seller/Buyer are RoleMixins; authoritative disjunction in opda:FoundsRangeShape sh:or, NOT owl:unionOf). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031) — the axioms are AI-signal, not entailed (zero domain/range triples materialise, ADR-0035). Relator spine only; not a general roleOf."@en ;
+    skos:definition "Relates a Relator to a Role it externally founds — a Transaction to its Seller and Buyer RoleMixins, or a Proprietorship to its Proprietor roles — capturing the UFO anti-rigidity dependence by which every role owes its existence to its founding relator."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
     rdfs:domain opda:Relator ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:Role, opda:RoleMixin .
 
 opda:hasAssertedCapacity
     rdf:type owl:ObjectProperty ;
     rdfs:label "has asserted capacity"@en ;
     rdfs:comment "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority."@en ;
+    skos:definition "Relates a Seller to the coded capacity in which it asserts it is selling (a member of opda:SellersCapacityScheme) — the sales-side half of the Capacity/Authority split, recording the claimed basis of authority to sell prior to its conveyancing-side evidencing."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4> ;
     rdfs:domain opda:Seller ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range skos:Concept .
 
 opda:hasEvidencedAuthority
     rdf:type owl:ObjectProperty ;
     rdfs:label "has evidenced authority"@en ;
     rdfs:comment "Conveyancing-side seam linking a Seller's asserted capacity to an opda:Claim of authority (e.g. probate, power of attorney). The founding grant is modelled as the missing Relator per ODR-0006 §Capacity split + ODR-0009 §Claim. Co-annotation with DPV lawful-basis lands per ODR-0018 in opda-annotations.ttl."@en ;
+    skos:definition "Relates a Seller to an opda:Claim evidencing its authority to sell (e.g. a grant of probate or power of attorney) — the conveyancing-side half of the Capacity/Authority split, linking the asserted capacity to the verifiable evidence of the founding grant."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q4> ;
     rdfs:domain opda:Seller ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:Claim .
 
 opda:hasRegisteredTitle
     rdf:type owl:ObjectProperty ;
     rdfs:label "has registered title"@en ;
     rdfs:comment "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty."@en ;
+    skos:definition "Relates a Proprietorship to the RegisteredTitle it is registered against — the HMLR title-register record naming the title arm of the holding, distinct from the Proprietor arm carried by opda:mediates."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
     rdfs:domain opda:Proprietorship ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:RegisteredTitle .
 
 opda:mediates
     rdf:type owl:ObjectProperty ;
     rdfs:label "mediates"@en ;
     rdfs:comment "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Single-class relator-spine edge: rdfs:domain opda:Proprietorship + rdfs:range opda:Proprietor authored as documentary domain/range (ODR-0032 §R2 session-050 amendment). Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031) — the documentary axioms are AI-signal, not entailed (the closure adds zero domain/range triples, ADR-0035)."@en ;
+    skos:definition "Relates a Relator to a Role it existentially binds — specifically a Proprietorship to each of the two-or-more Proprietor roles of a joint holding — expressing the UFO mediation by which a relator just is that which connects its relata."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
     rdfs:domain opda:Proprietorship ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:Proprietor .
 
 opda:ownerType
     rdf:type owl:ObjectProperty ;
     rdfs:label "owner type"@en ;
     rdfs:comment "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."@en ;
+    skos:definition "Relates a Proprietor to a coded Substance-Kind discriminator (a member of opda:OwnerTypeScheme) distinguishing whether the legal owner is a private individual (a Person) or an organisation, as reported by the BASPI5 legal-owners block."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Proprietor ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range skos:Concept .
 
 opda:playedBy
     rdf:type owl:ObjectProperty ;
     rdfs:label "played by"@en ;
     rdfs:comment "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. Documentary \"any-of\" domain/range (ODR-0032 §R2 session-050 amendment; schema.org domainIncludes idiom): rdfs:domain opda:Role , opda:RoleMixin (the subject is an opda:Role — Proprietor — OR an opda:RoleMixin — Seller/Buyer — sibling role meta-classes) and rdfs:range opda:Person , opda:Organisation (the bearer), each MULTIPLE triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction. Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the range does NOT entail every bearer is a Person). The authoritative disjunctions live in SHACL sh:or (subject: opda:RolePlaySubjectShape; bearer: opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT owl:unionOf (excluded construct). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."@en ;
+    skos:definition "Relates a Role qua-individual (a Seller, Buyer, or Proprietor) to the Person or Organisation that bears it — the navigable link home from a role-instance to its bearer, emitted only where the two are distinct nodes. Inverse of opda:plays."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
     rdfs:domain opda:Role, opda:RoleMixin ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:Organisation, opda:Person ;
     owl:inverseOf opda:plays ;
     skos:scopeNote "UFO: the role qua-individual is a relationally-dependent particular, externally founded and distinct from the rigid bearer (Guizzardi 2005 Ch. 4 §4.3.2; Masolo, Guizzardi, Vieu, Bottazzi, Ferrario KR 2004). Not redundant with co-typing — different entailments. The sh:path the ODR-0006 §SHACL SellerShape names."@en .
@@ -253,8 +309,10 @@ opda:plays
     rdf:type owl:ObjectProperty ;
     rdfs:label "plays"@en ;
     rdfs:comment "Bearer → Role inverse of opda:playedBy: the Role a Person or Organisation plays. Documentary \"any-of\" domain/range (the mirror of opda:playedBy; ODR-0032 §R2 session-050 amendment): rdfs:domain opda:Person , opda:Organisation (the bearer subject) and rdfs:range opda:Role , opda:RoleMixin (the role object), each MULTIPLE triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction. Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the domain does NOT entail every bearer is a Person). The authoritative subject/object disjunctions are carried by the opda:playedBy SHACL shapes (the inverse direction shares the same closed-world constraints); owl:unionOf is NOT used. Emitted as the navigable inverse so consumers query from either end without inverse-property inference (ODR-0029/0030 — UFO layer inert at load)."@en ;
+    skos:definition "Relates a Person or Organisation to a Role qua-individual it bears (a Seller, Buyer, or Proprietor) — the bearer-side navigable surface letting consumers query from either end without inverse-property inference. Inverse of opda:playedBy."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
     rdfs:domain opda:Organisation, opda:Person ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range opda:Role, opda:RoleMixin ;
     owl:inverseOf opda:playedBy ;
     skos:scopeNote "Inverse companion to opda:playedBy (UFO qua-individual edge, Guizzardi 2005 Ch. 4 §4.3.2). Bearer-side surface; both directions emitted per the opda:hasChainPosition / opda:chainMembers bidirectional convention."@en .
@@ -263,7 +321,9 @@ opda:roleNotation
     rdf:type owl:ObjectProperty ;
     rdfs:label "role notation"@en ;
     rdfs:comment "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."@en ;
+    skos:definition "Relates a role-bearer to a coded notation naming the transactional role it bears (a member of opda:RoleScheme — Seller, Buyer, Proprietor, Conveyancer, etc.) — the notation surface exposing the role for editor and SPARQL ergonomics alongside the canonical class-membership encoding."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
     rdfs:domain opda:RoleMixin ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range skos:Concept ;
     skos:scopeNote "Notation companion to the class-membership role encoding. Both surfaces coexist: `?s a opda:Seller` AND `?s opda:roleNotation \"Seller\"` are non-redundant — the typed encoding is the canonical IC; the predicate is the notation surface BASPI5 and other JSON-based overlays consume."@en .

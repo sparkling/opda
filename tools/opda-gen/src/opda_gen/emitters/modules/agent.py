@@ -153,6 +153,15 @@ def build_graph() -> Graph:
         "Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid).",
         lang="en",
     )))
+    g.add((OPDA.Person, SKOS.definition, Literal(
+        "A natural person — a human individual party to a property "
+        "transaction — whose identity persists rigidly through name change, "
+        "gender recognition, and death, and is fixed by a multi-identifier "
+        "criterion (date of birth, state-issued identifier, and name) rather "
+        "than by any single attribute.",
+        lang="en",
+    )))
+    g.add((OPDA.Person, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Person, DCTERMS.source, _ODR_0006_Q1))
     # opda:Person owl:disjointWith opda:Organisation — the ONE standing class
     # disjointness pair (ADR-0049 Q3; Council session-050 5–0, three-part bar).
@@ -201,6 +210,15 @@ def build_graph() -> Graph:
         "alignment per S006 Q6 9-1 verdict (Allemang held-as-live).",
         lang="en",
     )))
+    g.add((OPDA.Organisation, SKOS.definition, Literal(
+        "A corporate or unincorporated organisation — a legal-institutional "
+        "object party to a property transaction — whose identity is fixed by "
+        "jurisdiction-issued registration identifiers (e.g. CRN, LEI) and "
+        "persists through merger, demerger, and dissolution, a new individual "
+        "arising on entity-merger via prov:wasDerivedFrom.",
+        lang="en",
+    )))
+    g.add((OPDA.Organisation, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Organisation, DCTERMS.source, _ODR_0006_Q6))
 
     # --- opda:Seller — UFO RoleMixin (ODR-0006 §Q2 Role layer) ----------
@@ -228,6 +246,14 @@ def build_graph() -> Graph:
         "use requires (per ODR-0006 §Role layer).",
         lang="en",
     )))
+    g.add((OPDA.Seller, SKOS.definition, Literal(
+        "An anti-rigid, cross-sortal party role — borne by a Person or an "
+        "Organisation — that is founded by a specific Transaction and "
+        "identifies the party disposing of the interest in the Property, the "
+        "role's identity being parasitic on the (Transaction, bearer) tuple.",
+        lang="en",
+    )))
+    g.add((OPDA.Seller, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Seller, DCTERMS.source, _ODR_0006_Q2))
 
     # --- opda:Buyer — UFO RoleMixin -------------------------------------
@@ -247,6 +273,15 @@ def build_graph() -> Graph:
         "founded by the same Transaction.",
         lang="en",
     )))
+    g.add((OPDA.Buyer, SKOS.definition, Literal(
+        "An anti-rigid, cross-sortal party role — borne by a Person or an "
+        "Organisation — that is founded by a specific Transaction and "
+        "identifies the party acquiring the interest in the Property; in a "
+        "TransactionChain its bearer may bear the Seller role of the next "
+        "transaction.",
+        lang="en",
+    )))
+    g.add((OPDA.Buyer, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Buyer, DCTERMS.source, _ODR_0006_Q2))
 
     # --- opda:Proprietor — UFO Role (ODR-0006 §Q2) ----------------------
@@ -267,6 +302,14 @@ def build_graph() -> Graph:
         "commitment to a single bearer Kind.",
         lang="en",
     )))
+    g.add((OPDA.Proprietor, SKOS.definition, Literal(
+        "An anti-rigid, sortal ownership role — borne by a Person — that is "
+        "founded by a Proprietorship Relator and identifies a registered "
+        "legal owner of the Property; it carries no identity of its own (it "
+        "borrows identity from its bearer) and is never independently keyed.",
+        lang="en",
+    )))
+    g.add((OPDA.Proprietor, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Proprietor, DCTERMS.source, _ODR_0006_Q2))
 
     # --- opda:Proprietorship — UFO Relator (ODR-0006 §Q3) ---------------
@@ -289,6 +332,15 @@ def build_graph() -> Graph:
         "Practice Guide 24 (joint tenancy / tenants in common).",
         lang="en",
     )))
+    g.add((OPDA.Proprietorship, SKOS.definition, Literal(
+        "A relational endurant (UFO Relator) that binds one or more "
+        "Proprietor roles to a Property against a RegisteredTitle, founded by "
+        "the registration event and identified by the (Title, owner-set) "
+        "tuple; the holding type — joint tenancy or tenancy in common — is a "
+        "property of this relator, not of the roles it mediates.",
+        lang="en",
+    )))
+    g.add((OPDA.Proprietorship, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Proprietorship, DCTERMS.source, _ODR_0006_Q3))
 
     # --- opda:NameChangeEvent — provenance event -------------------------
@@ -314,6 +366,15 @@ def build_graph() -> Graph:
         "administrative event).",
         lang="en",
     )))
+    g.add((OPDA.NameChangeEvent, SKOS.definition, Literal(
+        "A reified provenance activity (PROV-O Activity) recording a change "
+        "to a Person's name — by deed poll, marriage, gender recognition, or "
+        "the like — through which the Person's identity persists; it relates "
+        "former and current name attributes by prov:wasRevisionOf rather than "
+        "asserting two distinct persons.",
+        lang="en",
+    )))
+    g.add((OPDA.NameChangeEvent, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.NameChangeEvent, DCTERMS.source, _ODR_0006_Q1))
 
     # --- DatatypeProperty: opda:hasAssertedCapacity (ODR-0006 §Q4) ------
@@ -331,6 +392,14 @@ def build_graph() -> Graph:
         "opda:hasEvidencedAuthority.",
         lang="en",
     )))
+    g.add((OPDA.hasAssertedCapacity, SKOS.definition, Literal(
+        "Relates a Seller to the coded capacity in which it asserts it is "
+        "selling (a member of opda:SellersCapacityScheme) — the sales-side "
+        "half of the Capacity/Authority split, recording the claimed basis "
+        "of authority to sell prior to its conveyancing-side evidencing.",
+        lang="en",
+    )))
+    g.add((OPDA.hasAssertedCapacity, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasAssertedCapacity, DCTERMS.source, _ODR_0006_Q4))
 
     # --- ObjectProperty: opda:hasEvidencedAuthority (ODR-0006 §Q4) ------
@@ -347,6 +416,14 @@ def build_graph() -> Graph:
         "DPV lawful-basis lands per ODR-0018 in opda-annotations.ttl.",
         lang="en",
     )))
+    g.add((OPDA.hasEvidencedAuthority, SKOS.definition, Literal(
+        "Relates a Seller to an opda:Claim evidencing its authority to sell "
+        "(e.g. a grant of probate or power of attorney) — the conveyancing-"
+        "side half of the Capacity/Authority split, linking the asserted "
+        "capacity to the verifiable evidence of the founding grant.",
+        lang="en",
+    )))
+    g.add((OPDA.hasEvidencedAuthority, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasEvidencedAuthority, DCTERMS.source, _ODR_0006_Q4))
 
     # --- ObjectProperty: opda:mediates (ODR-0006 §Q3 — Relator spine) ----
@@ -380,6 +457,14 @@ def build_graph() -> Graph:
         "not entailed (the closure adds zero domain/range triples, ADR-0035).",
         lang="en",
     )))
+    g.add((OPDA.mediates, SKOS.definition, Literal(
+        "Relates a Relator to a Role it existentially binds — specifically a "
+        "Proprietorship to each of the two-or-more Proprietor roles of a "
+        "joint holding — expressing the UFO mediation by which a relator just "
+        "is that which connects its relata.",
+        lang="en",
+    )))
+    g.add((OPDA.mediates, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.mediates, DCTERMS.source, _ODR_0006_Q3))
 
     # --- ObjectProperty: opda:founds (ODR-0006 §Q3 — Relator spine) ------
@@ -418,6 +503,14 @@ def build_graph() -> Graph:
         "ADR-0035). Relator spine only; not a general roleOf.",
         lang="en",
     )))
+    g.add((OPDA.founds, SKOS.definition, Literal(
+        "Relates a Relator to a Role it externally founds — a Transaction to "
+        "its Seller and Buyer RoleMixins, or a Proprietorship to its "
+        "Proprietor roles — capturing the UFO anti-rigidity dependence by "
+        "which every role owes its existence to its founding relator.",
+        lang="en",
+    )))
+    g.add((OPDA.founds, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.founds, DCTERMS.source, _ODR_0006_Q3))
 
     # --- ObjectProperty: opda:playedBy / opda:plays (ODR-0006 §Q2; ODR-0032) -
@@ -483,6 +576,14 @@ def build_graph() -> Graph:
         "ODR-0006 §SHACL SellerShape names.",
         lang="en",
     )))
+    g.add((OPDA.playedBy, SKOS.definition, Literal(
+        "Relates a Role qua-individual (a Seller, Buyer, or Proprietor) to "
+        "the Person or Organisation that bears it — the navigable link home "
+        "from a role-instance to its bearer, emitted only where the two are "
+        "distinct nodes. Inverse of opda:plays.",
+        lang="en",
+    )))
+    g.add((OPDA.playedBy, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.playedBy, DCTERMS.source, _ODR_0006_Q2))
 
     g.add((OPDA.plays, RDF.type, OWL.ObjectProperty))
@@ -515,6 +616,14 @@ def build_graph() -> Graph:
         "the opda:hasChainPosition / opda:chainMembers bidirectional convention.",
         lang="en",
     )))
+    g.add((OPDA.plays, SKOS.definition, Literal(
+        "Relates a Person or Organisation to a Role qua-individual it bears "
+        "(a Seller, Buyer, or Proprietor) — the bearer-side navigable surface "
+        "letting consumers query from either end without inverse-property "
+        "inference. Inverse of opda:playedBy.",
+        lang="en",
+    )))
+    g.add((OPDA.plays, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.plays, DCTERMS.source, _ODR_0006_Q2))
 
     # --- ObjectProperty: opda:hasRegisteredTitle (ODR-0006 §Q3; ODR-0032) ---
@@ -543,6 +652,14 @@ def build_graph() -> Graph:
         "opda:identifiesSameProperty.",
         lang="en",
     )))
+    g.add((OPDA.hasRegisteredTitle, SKOS.definition, Literal(
+        "Relates a Proprietorship to the RegisteredTitle it is registered "
+        "against — the HMLR title-register record naming the title arm of "
+        "the holding, distinct from the Proprietor arm carried by "
+        "opda:mediates.",
+        lang="en",
+    )))
+    g.add((OPDA.hasRegisteredTitle, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasRegisteredTitle, DCTERMS.source, _ODR_0006_Q3))
 
     # ==== G11 expansion (ADR-0013) ======================================
@@ -560,6 +677,14 @@ def build_graph() -> Graph:
         "LegalEstate).",
         lang="en",
     )))
+    g.add((OPDA.ownerType, SKOS.definition, Literal(
+        "Relates a Proprietor to a coded Substance-Kind discriminator "
+        "(a member of opda:OwnerTypeScheme) distinguishing whether the legal "
+        "owner is a private individual (a Person) or an organisation, as "
+        "reported by the BASPI5 legal-owners block.",
+        lang="en",
+    )))
+    g.add((OPDA.ownerType, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.ownerType, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")))
 
@@ -575,6 +700,14 @@ def build_graph() -> Graph:
         "occupiers question. Bound to opda:YesNoScheme.",
         lang="en",
     )))
+    g.add((OPDA.hasOthersAged17OrOver, SKOS.definition, Literal(
+        "Relates a Seller to a Yes/No value recording whether the Property's "
+        "household includes occupiers aged 17 or over other than the Seller "
+        "— the BASPI5 occupiers discriminator gating disclosure of those "
+        "occupiers' names.",
+        lang="en",
+    )))
+    g.add((OPDA.hasOthersAged17OrOver, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasOthersAged17OrOver, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")))
 
@@ -620,6 +753,15 @@ def build_graph() -> Graph:
         "surface BASPI5 and other JSON-based overlays consume.",
         lang="en",
     )))
+    g.add((OPDA.roleNotation, SKOS.definition, Literal(
+        "Relates a role-bearer to a coded notation naming the transactional "
+        "role it bears (a member of opda:RoleScheme — Seller, Buyer, "
+        "Proprietor, Conveyancer, etc.) — the notation surface exposing the "
+        "role for editor and SPARQL ergonomics alongside the canonical "
+        "class-membership encoding.",
+        lang="en",
+    )))
+    g.add((OPDA.roleNotation, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.roleNotation, DCTERMS.source, _ODR_0006_Q2))
 
     # ==== Category-G curated walk — Family C: Agent attributes ===============
@@ -646,19 +788,24 @@ def build_graph() -> Graph:
     #     road / contract-template / health-care / plan name); a single shared
     #     naming property, no rigid bearer Kind.
     _walk_c_agent: list[
-        tuple[URIRef, URIRef | None, URIRef, str, str, tuple[str, ...]]
+        tuple[URIRef, URIRef | None, URIRef, str, str, str, tuple[str, ...]]
     ] = [
         (
             OPDA.dateOfBirth, OPDA.Person, XSD.date, "date of birth",
             "Date of birth of a Person participant. xsd:date. Flat per §Q6a. "
             "Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under "
             "ODR-0018 (DPV co-annotation in opda-annotations.ttl).",
+            "The calendar date on which a Person was born — one component of "
+            "the Person's multi-identifier identity criterion and an item of "
+            "personal data.",
             ("participants[].dateOfBirth",),
         ),
         (
             OPDA.middleNames, OPDA.Person, XSD.string, "middle names",
             "Middle name(s) of a Person legal owner. Plain string datatype "
             "per ODR-0008 §Q5a; flat per §Q6a.",
+            "The middle name or names of a Person, between the given name and "
+            "the surname, as recorded for a legal owner.",
             ("propertyPack.legalOwners.namesOfLegalOwners[].middleNames",),
         ),
         (
@@ -671,6 +818,9 @@ def build_graph() -> Graph:
             "former opda:organisation, renamed-by-merge per ADR-0044 to remove "
             "the case-clash with the opda:Organisation class). Plain string "
             "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The registered or trading name of an Organisation — whether a "
+            "legal owner or the organisation a participant acts for or belongs "
+            "to.",
             (
                 "propertyPack.legalOwners.namesOfLegalOwners[].organisationName",
                 "participants[].organisation",
@@ -682,6 +832,8 @@ def build_graph() -> Graph:
             "Reference identifying an Organisation participant within an "
             "external system. Plain string datatype per ODR-0008 §Q5a; flat "
             "per §Q6a.",
+            "An identifier by which an Organisation participant is referenced "
+            "within an external system.",
             ("participants[].organisationReference",),
         ),
         (
@@ -691,6 +843,9 @@ def build_graph() -> Graph:
             "the Property. Plain string datatype per ODR-0008 §Q5a; flat per "
             "§Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No "
             "discriminator).",
+            "The names of the occupiers aged 17 or over, other than the "
+            "Seller, residing in the Property, as disclosed when "
+            "opda:hasOthersAged17OrOver is affirmative.",
             ("propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames",),
         ),
         (
@@ -699,6 +854,9 @@ def build_graph() -> Graph:
             "Free-text detail elaborating a Seller's asserted capacity "
             "(companion to opda:hasAssertedCapacity, ODR-0006 §Q4). Plain "
             "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "Free-text narrative elaborating the capacity in which a Seller "
+            "is selling, supplementing the coded value carried by "
+            "opda:hasAssertedCapacity.",
             ("participants[].sellersCapacity.sellersCapacityDetails",),
         ),
         (
@@ -708,6 +866,8 @@ def build_graph() -> Graph:
             "of the owner-set the Proprietorship Relator mediates). Plain "
             "integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
             "ownership-aggregate count; placed on opda:Proprietorship.)",
+            "The number of selling parties in the ownership — the cardinality "
+            "of the owner-set the Proprietorship mediates.",
             ("propertyPack.ownership.numberOfSellers",),
         ),
         (
@@ -717,6 +877,9 @@ def build_graph() -> Graph:
             "SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; "
             "flat per §Q6a. (FLAG: ownership-aggregate count; placed on "
             "opda:Proprietorship.)",
+            "The number of selling parties in the ownership who are not "
+            "resident in the UK — a subset of the owner-set bearing on tax "
+            "and withholding obligations.",
             ("propertyPack.ownership.numberOfNonUkResidentSellers",),
         ),
         (
@@ -728,6 +891,9 @@ def build_graph() -> Graph:
             "string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
             "bank-details domain — placed on opda:Organisation, no "
             "opda:BankAccount Kind minted.)",
+            "The name in which a contact Organisation's bank account is held "
+            "— the account holder for a landlord, managing agent, management "
+            "company, rentcharge owner, or resident-tenants' association.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.contactDetails.contacts.landlord."
@@ -761,6 +927,8 @@ def build_graph() -> Graph:
             "fixed-width numeric identifier — leading zeros significant, per "
             "the opda:hasUPRN convention, NOT xsd:integer). ONE shared "
             "property; flat per §Q6a. (FLAG: bank-details domain.)",
+            "The account number of a contact Organisation's bank account, "
+            "held as a string so that leading zeros remain significant.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.contactDetails.contacts.landlord."
@@ -792,6 +960,8 @@ def build_graph() -> Graph:
             OPDA.sortCode, OPDA.Organisation, XSD.string, "sort code",
             "Bank sort code of a contact organisation. xsd:string. ONE shared "
             "property; flat per §Q6a. (FLAG: bank-details domain.)",
+            "The six-digit UK bank sort code identifying the branch holding a "
+            "contact Organisation's bank account.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.contactDetails.contacts.landlord."
@@ -824,6 +994,8 @@ def build_graph() -> Graph:
             "Payment reference for a contact organisation's bank account. "
             "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
             "bank-details domain.)",
+            "The payment reference to quote when remitting funds to a contact "
+            "Organisation's bank account.",
             (
                 "propertyPack.ownership.ownershipsToBeTransferred[]."
                 "leaseholdInformation.contactDetails.contacts.landlord."
@@ -862,6 +1034,11 @@ def build_graph() -> Graph:
             "string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
             "polysemous; left domain-less by design rather than forcing one "
             "bearer.)",
+            "The proper name or label of a named entity — used across "
+            "polysemous contexts (participant, school, road, contract "
+            "template, health-care facility, transport node, or planning "
+            "designation) as a shared naming property with no single bearer "
+            "kind.",
             (
                 "contracts[].contract.template.name",
                 "participants[].name",
@@ -871,13 +1048,15 @@ def build_graph() -> Graph:
             ),
         ),
     ]
-    for prop, domain, rng, label, comment, paths in _walk_c_agent:
+    for prop, domain, rng, label, comment, definition, paths in _walk_c_agent:
         g.add((prop, RDF.type, OWL.DatatypeProperty))
         if domain is not None:
             g.add((prop, RDFS.domain, domain))
         g.add((prop, RDFS.range, rng))
         g.add((prop, RDFS.label, Literal(label, lang="en")))
         g.add((prop, RDFS.comment, Literal(comment, lang="en")))
+        g.add((prop, SKOS.definition, Literal(definition, lang="en")))
+        g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
 

@@ -80,7 +80,8 @@ opda:consumesFrom
     rdf:type owl:AnnotationProperty ;
     rdfs:label "consumes from"@en ;
     rdfs:comment "Links a domain term (or its owning module) to an upstream conformist authority — an opda:Organisation / prov:Agent whose published model PDTF conforms to (HM Land Registry, Local Authority, MHCLG Material Information, DSIT/DIATF Identity, W3C Trust & VCs). The DDD Conformist relationship per ODR-0020: upstream authorities own no overlay, so they are NEVER opda:servesContext targets and are NOT members of opda:BoundedContextScheme."@en ;
+    skos:definition "Relates a domain term, or its owning module, to the upstream conformist authority — an organisation or agent whose published model PDTF aligns to (e.g. HM Land Registry, a local authority) — whose definitions and codes it adopts, per the DDD Conformist relationship."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0019/section-rule-8> ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/harness/odr/ODR-0020/section-decision> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     rdfs:subPropertyOf prov:wasInfluencedBy ;
     skos:scopeNote "Annotation property (membership/provenance, not logical typing). rdfs:subPropertyOf prov:wasInfluencedBy so consumers can traverse it as PROV influence. ODR-0020 Rule on upstream authorities."@en .

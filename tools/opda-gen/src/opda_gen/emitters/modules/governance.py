@@ -35,6 +35,11 @@ DPV = Namespace("https://w3id.org/dpv#")
 DPV_PD = Namespace("https://w3id.org/dpv/pd#")
 
 
+# rdfs:isDefinedBy target — this module's owl:Ontology subject (see the
+# module header emitted in build_graph()).
+_MODULE_IRI = URIRef("https://opda.org.uk/pdtf/graph/governance")
+
+
 _ODR_0012_PHASE1 = URIRef(
     "https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Phase-1"
 )
@@ -115,6 +120,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.DPVMappingRecord, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.DPVMappingRecord, SKOS.definition, Literal(
+        "A data-bearing record that maps an OPDA Kind class to its default "
+        "DPV personal-data category and any variant-conditional refinements, "
+        "from which the data-protection co-annotation triples are emitted.",
+        lang="en",
+    )))
+    g.add((OPDA.DPVMappingRecord, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:SpecialCategoryScheme — SKOS scheme stub (Baker S012 Q3) --
     g.add((OPDA.SpecialCategoryScheme, RDF.type, OWL.Class))
@@ -139,6 +151,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.SpecialCategoryScheme, DCTERMS.source, _GDPR_ART_10))
+    g.add((OPDA.SpecialCategoryScheme, SKOS.definition, Literal(
+        "A concept scheme enumerating the GDPR Article 10 / DPA 2018 "
+        "special-category personal-data classes that attract elevated "
+        "lawful-basis discipline.",
+        lang="en",
+    )))
+    g.add((OPDA.SpecialCategoryScheme, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- ObjectProperty: opda:targetsKind -------------------------------
     g.add((OPDA.targetsKind, RDF.type, OWL.ObjectProperty))
@@ -153,6 +172,12 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.targetsKind, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.targetsKind, SKOS.definition, Literal(
+        "Relates a DPV mapping record to the OPDA Kind class whose instances "
+        "bear the personal-data category the record assigns.",
+        lang="en",
+    )))
+    g.add((OPDA.targetsKind, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- ObjectProperty: opda:baselineCategory --------------------------
     g.add((OPDA.baselineCategory, RDF.type, OWL.ObjectProperty))
@@ -167,6 +192,13 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.baselineCategory, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.baselineCategory, SKOS.definition, Literal(
+        "Relates a DPV mapping record to the DPV-PD personal-data category "
+        "that every instance of the target Kind bears by default, citing the "
+        "category without importing the DPV vocabulary.",
+        lang="en",
+    )))
+    g.add((OPDA.baselineCategory, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- Per-Kind mapping records (named individuals) -------------------
     # Each emits the (Kind, baselineCategory, dct:source) triple set.

@@ -26,14 +26,18 @@ opda:DPVMappingRecord
     rdf:type owl:Class ;
     rdfs:label "DPV Mapping Record"@en ;
     rdfs:comment "Mapping record from an OPDA Kind class to its DPV baseline personal-data category and optional variant-conditional refinements. UFO Information Particular. Per ODR-0018 §Rule 4 + ODR-0012 §Evidence co-annotation, ODR-0012 is the authoring authority — this module emits the mapping records; ADR-0012 emits the resulting DPV co-annotation triples into opda-annotations.ttl (three-graph separation)."@en ;
+    skos:definition "A data-bearing record that maps an OPDA Kind class to its default DPV personal-data category and any variant-conditional refinements, from which the data-protection co-annotation triples are emitted."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
     skos:scopeNote "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a."@en .
 
 opda:SpecialCategoryScheme
     rdf:type owl:Class ;
     rdfs:label "Article 10 Special Category Personal Data Scheme"@en ;
     rdfs:comment "GDPR Article 10 / DPA 2018 special-category personal-data scheme — flags PII categories with elevated lawful-basis discipline (caution-or-conviction; AML-result; etc.). Per S012 Q3 (Baker) the scheme structure is class-declared here; the scheme instance + members emit via ADR-0010 SKOS substrate when downstream demand materialises. Currently a class declaration only — member emission deferred per ODR-0011 §Operational specifications (no S012 Q3 enum currently scoped)."@en ;
+    skos:definition "A concept scheme enumerating the GDPR Article 10 / DPA 2018 special-category personal-data classes that attract elevated lawful-basis discipline."@en ;
     dct:source <https://gdpr-info.eu/art-10-gdpr/> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
     rdfs:subClassOf skos:ConceptScheme ;
     skos:scopeNote "Subclass of skos:ConceptScheme (W3C SKOS REC §3.1). Members enumerated per GDPR Article 10 special-category list when ADR-0010 scope-expansion activates the scheme."@en .
 
@@ -41,15 +45,19 @@ opda:baselineCategory
     rdf:type owl:ObjectProperty ;
     rdfs:label "baseline category"@en ;
     rdfs:comment "Reference to a DPV-PD category that all instances of the target Kind bear by default. Per ODR-0018 §Rule 1, every PII-bearing Kind declares its baseline. Per ODR-0012 §Reference-not-import + ODR-0018 §Rule 4, the DPV URI is cited but DPV is NOT imported."@en ;
+    skos:definition "Relates a DPV mapping record to the DPV-PD personal-data category that every instance of the target Kind bears by default, citing the category without importing the DPV vocabulary."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
-    rdfs:domain opda:DPVMappingRecord .
+    rdfs:domain opda:DPVMappingRecord ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> .
 
 opda:targetsKind
     rdf:type owl:ObjectProperty ;
     rdfs:label "targets kind"@en ;
     rdfs:comment "DPV mapping record → OPDA Kind class. The Kind is the class whose instances bear the personal-data category named by opda:baselineCategory (with optional variant refinements)."@en ;
+    skos:definition "Relates a DPV mapping record to the OPDA Kind class whose instances bear the personal-data category the record assigns."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
     rdfs:domain opda:DPVMappingRecord ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
     rdfs:range owl:Class .
 
 opda:ClaimDPVMapping

@@ -29,7 +29,9 @@ opda:Address
     rdf:type owl:Class ;
     rdfs:label "Address"@en ;
     rdfs:comment "Socially-recognised locator constructed by an authority (Royal Mail / OS AddressBase / HMLR / INSPIRE) and persisting as a record-entity in that authority's stewardship. UFO Substance Kind; DOLCE NonPhysicalEndurant. IC over five hard cases per ODR-0015 §3a: cosmetic re-format; authority-internal succession; cross-variant identity-claim never collapses; Property-side change; INSPIRE-only locatedness. NOT a Mode (S015 Q1 commitment)."@en ;
+    skos:definition "A socially-recognised locator constructed and stewarded by an addressing authority (Royal Mail, OS AddressBase, HM Land Registry, or INSPIRE) as a record entity, whose identity persists through cosmetic re-formatting and authority-internal succession and never collapses across variants stewarded by different authorities."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:subClassOf vcard:Address ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). Subclass of vcard:Address for structural compatibility with vCard consumers."@en .
 
@@ -37,7 +39,9 @@ opda:LeaseExtensionEvent
     rdf:type owl:Class ;
     rdfs:label "Lease Extension Event"@en ;
     rdfs:comment "Reified PROV-O activity recording a statutory lease extension (LRHUDA 1993 in England & Wales). Mutates the LeaseTerm of an existing leasehold LegalEstate (ODR-0005 §3b Rule 1 — LegalEstate identity PERSISTS through extension; rights-bundle is modified, not dissolved) and updates the RegisteredTitle's registry record. The same node may co-type as opda:Transaction (S007 Q1 Transaction-as-Relator); the dual typing reflects the property-lifecycle vs relator perspectives on the same event."@en ;
+    skos:definition "A reified provenance activity recording a statutory extension of a leasehold term, which produces a successor lease term and updates the registered title while the leasehold legal estate retains its identity."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Accomplishment (Masolo et al. 2003 D18 §4.4 — temporally extended with culmination at the registry-event timestamp). Hendler S005 Q5 'lease extension' consumer-fails case — the property of being-extended attaches to the registry-event lifecycle, not to the LegalEstate (which retains identity) and not to the Property."@en .
 
@@ -45,7 +49,9 @@ opda:LeaseTerm
     rdf:type owl:Class ;
     rdfs:label "Lease Term"@en ;
     rdfs:comment "OWL-Time ProperInterval representing a leasehold term. Carries time:hasBeginning + time:hasDurationDescription (or time:hasEnd) per S007 Q5. Belongs to opda:LegalEstate of leasehold tenure (opda:leaseTerm join predicate). Modified by opda:LeaseExtensionEvent on statutory extension — extension produces a successor LeaseTerm with prov:wasDerivedFrom chain."@en ;
+    skos:definition "A bounded time interval defining the duration of a leasehold legal estate, carrying a beginning and either a duration or an end, and succeeded by a derived interval when the lease is statutorily extended."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-lease-term> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:subClassOf time:ProperInterval ;
     skos:scopeNote "OWL-Time: ProperInterval (W3C Time Ontology REC §4.2). UFO: Information particular bounding a leasehold tenure perdurant."@en .
 
@@ -53,28 +59,36 @@ opda:LegalEstate
     rdf:type owl:Class ;
     rdfs:label "Legal Estate"@en ;
     rdfs:comment "Legal rights-bundle vested in a Property. UFO Substance Kind; DOLCE NonPhysicalEndurant (Searle 1995 legal-institutional object). IC: rights-bundle persistence — same individual through grant, transfer, registration, and discharge events; distinguishable from coexisting RegisteredTitle and physical Property by extent of property rights. Hard cases: tenure change; lease grant; lease termination; commonhold conversion; first registration of pre-existing common-law estate."@en ;
+    skos:definition "A bundle of legal rights in land (such as a freehold or leasehold estate) vested in a physical property, whose identity persists through grant, transfer, registration, and discharge and is distinguished from any coexisting registered title and the physical property by the extent of the property rights it confers."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2)."@en .
 
 opda:Property
     rdf:type owl:Class ;
     rdfs:label "Property"@en ;
     rdfs:comment "Physical property. UFO Substance Kind; DOLCE Endurant / PhysicalObject. IC: spatial-material continuity with Kendall+Davis legal-record-discontinuity-override hybrid (ODR-0005 §3a). Hard cases: demolition; subdivision; merger; replacement; first-registration; flat with split UPRN."@en ;
+    skos:definition "A physical immovable property whose identity is fixed by spatial-material continuity (with a legal-record-discontinuity override) and persists through re-numbering, repair, and re-registration, as distinct from the legal estate vested in it and the registered title that records it."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     skos:scopeNote "DOLCE: Endurant / PhysicalObject (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid, supplies own IC)."@en .
 
 opda:RegisteredTitle
     rdf:type owl:Class ;
     rdfs:label "Registered Title"@en ;
     rdfs:comment "HMLR title-register record. UFO Substance Kind (informational); DOLCE NonPhysicalEndurant. IC: title-number lineage + registry-event history (every lifecycle event captured as a reified prov:Activity with explicit prov:wasDerivedFrom / prov:wasInvalidatedBy triples). Hard cases: first registration (title opening); title closure; title merger; transfer between registers; title reissue on corrupt-plan replacement."@en ;
+    skos:definition "An informational record entity maintained in the HM Land Registry title register, whose identity is fixed by its title-number lineage and registry-event history, as distinct from the legal estate it documents and the physical property it identifies."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant (HMLR record-entity per Masolo et al. 2003 D18 §4.2). UFO: Substance Kind, informational (Guizzardi 2005 Ch. 4 §4.2)."@en .
 
 opda:UPRNSuccessionEvent
     rdf:type owl:Class ;
     rdfs:label "UPRN Succession Event"@en ;
     rdfs:comment "Reified PROV-O activity recording an administrative re-numbering of UPRN for a single physical Property (the Property's identity PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical succession form per Gandon W3C-side recommendation (S005 Q4) — own URI, dereferenceable identity, audit trail. Coexists with the denormalised opda:previousUPRN literal-pair convenience (authoritative form: this reified event)."@en ;
+    skos:definition "A reified provenance activity recording the administrative re-numbering of the UPRN for a single physical property, through which the property's identity persists, captured with its own dereferenceable identifier and audit trail."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance)."@en .
 
@@ -82,781 +96,977 @@ opda:abilityToResideAtProperty
     rdf:type owl:DatatypeProperty ;
     rdfs:label "ability to reside at property"@en ;
     rdfs:comment "Building-safety statement on whether occupiers can reside at the Property given any identified safety issues (typed as a string in the data dictionary). A physical-safety attribute of the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A building-safety statement on whether occupiers can reside at a Property given any identified safety issues."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:accessibilityAndAdaptations
     rdf:type owl:DatatypeProperty ;
     rdfs:label "accessibility and adaptations"@en ;
     rdfs:comment "Accessibility features and adaptations of the Property (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An accessibility feature or adaptation present in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.typeOfConstruction.accessibilityAndAdaptations> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:adHocExpenses
     rdf:type owl:DatatypeProperty ;
     rdfs:label "ad hoc expenses"@en ;
     rdfs:comment "Statement of ad-hoc service-charge expenses on the leasehold LegalEstate (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A statement of ad-hoc service-charge expenses on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:addressVariant
     rdf:type owl:DatatypeProperty ;
     rdfs:label "address variant"@en ;
     rdfs:comment "Required tag identifying the authority and lifecycle for this Address instance (one of 'title' | 'marketing' | 'inspire'). UFO Quality particularising the Address Substance Kind within Guarino's S001 Q4 'mode of presentation' framing."@en ;
+    skos:definition "The authority-and-lifecycle tag of an Address (one of 'title', 'marketing', or 'inspire') identifying which addressing authority stewards the locator and the lifecycle it follows."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6> ;
     rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:area
     rdf:type owl:DatatypeProperty ;
     rdfs:label "area"@en ;
     rdfs:comment "Internal floor area of the Property — a measured UFO Quality (the unit of measure is carried alongside in the source structure). Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The measured internal floor area of a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.internalArea.area>, <https://opda.org.uk/pdtf/harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:bathrooms
     rdf:type owl:DatatypeProperty ;
     rdfs:label "bathrooms"@en ;
     rdfs:comment "Number of bathrooms in the Property — a countable UFO Quality. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of bathrooms in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.bathrooms>, <https://opda.org.uk/pdtf/harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.bathrooms> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:bedrooms
     rdf:type owl:DatatypeProperty ;
     rdfs:label "bedrooms"@en ;
     rdfs:comment "Number of bedrooms in the Property — a countable UFO Quality of the physical Property. Plain integer datatype (no enumerated value-space) per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of bedrooms in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.bedrooms>, <https://opda.org.uk/pdtf/harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.bedrooms> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:buildingsReinstatementCostAssessment
     rdf:type owl:DatatypeProperty ;
     rdfs:label "buildings reinstatement cost assessment"@en ;
     rdfs:comment "Buildings reinstatement-cost-assessment statement for the leasehold LegalEstate's buildings insurance (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A buildings reinstatement-cost-assessment statement for a leasehold LegalEstate's buildings insurance."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:centralHeatingInstalled
     rdf:type owl:DatatypeProperty ;
     rdfs:label "central heating installed"@en ;
     rdfs:comment "Central-heating installation indicator for the Property (typed as a string in the data dictionary — a Yes/No-style response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A physical-system attribute of the Property."@en ;
+    skos:definition "An indicator of whether central heating is installed in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:consequentialChargingBasis
     rdf:type owl:DatatypeProperty ;
     rdfs:label "consequential charging basis"@en ;
     rdfs:comment "Charging basis that would apply consequentially (e.g. on a change of circumstances) for the Property's water/sewerage. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The basis on which a Property's water and sewerage charges would be levied consequentially, such as following a change of circumstances."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.consequentialChargingBasis> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:councilTaxBand
     rdf:type owl:DatatypeProperty ;
     rdfs:label "council tax band"@en ;
     rdfs:comment "Council-tax valuation band of the Property per opda:CouncilTaxBandSchemeEW (A–H / Not banded) or opda:CouncilTaxBandSchemeScotland. UFO Quale-in-Region; regulator-sourced enum (VOA / Scottish Assessors). Constrained by SHACL sh:in to the scheme members in the overlay profile, mirroring opda:currentEnergyRating. Flat per §Q6a."@en ;
+    skos:definition "The council-tax valuation band of a Property (A to H, or not banded) assigned by the Valuation Office Agency or the Scottish Assessors."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.councilTax.councilTaxBand> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:currentChargingBasis
     rdf:type owl:DatatypeProperty ;
     rdfs:label "current charging basis"@en ;
     rdfs:comment "Current basis on which the Property's water/sewerage is charged. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The basis on which a Property's water and sewerage charges are currently levied."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.currentChargingBasis> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:dateInstalled
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date installed"@en ;
     rdfs:comment "Date a Property system was installed (heat pump / off-mains drainage system). xsd:date (a date-valued string in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property system, such as a heat pump or off-mains drainage system, was installed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.heatPump.dateInstalled>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateInstalled> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:dateLastEmptied
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date last emptied"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last emptied. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property's off-mains drainage system was last emptied."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:dateLastServiced
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date last serviced"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last serviced. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property's off-mains drainage system was last serviced."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:dateReplaced
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date replaced"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last replaced. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property's off-mains drainage system was last replaced."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateReplaced> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:dateToBeConnected
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date to be connected"@en ;
     rdfs:comment "Expected connection date for a not-yet-connected Property utility / service. ONE shared date property reused across the utility blocks. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The expected date on which a not-yet-connected Property utility or service is to be connected."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.connectivity.cableSatelliteTV.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.connectivity.telephone.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.heatPump.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.mainsElectricity.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.otherSources.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.solarPanels.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.dateToBeConnected>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.water.mainsWater.dateToBeConnected> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:diningAreas
     rdf:type owl:DatatypeProperty ;
     rdfs:label "dining areas"@en ;
     rdfs:comment "Number of dining areas in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of dining areas in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.diningAreas> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:distanceToNearestSewerageTreatment
     rdf:type owl:DatatypeProperty ;
     rdfs:label "distance to nearest sewerage treatment"@en ;
     rdfs:comment "Distance from the Property to the nearest sewerage-treatment works (typed as a string in the data dictionary — a free-form distance band). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The distance from a Property to the nearest sewerage-treatment works."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:entranceFloor
     rdf:type owl:DatatypeProperty ;
     rdfs:label "entrance floor"@en ;
     rdfs:comment "Floor (storey) on which the Property's entrance is located (0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The storey on which a Property's entrance is located, counted from the ground floor as zero."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.entranceFloor> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:from
     rdf:type owl:DatatypeProperty ;
     rdfs:label "from"@en ;
     rdfs:comment "Start date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (ground-rent, service-charge, or buildings-insurance last-demand period; service-charge last-decorated period). xsd:date. ONE shared period-start property reused across those periods; flat per §Q6a. (FLAG: `from` is a generic period-boundary name; reused across the estate's recurring date-range blocks rather than minted per block.)"@en ;
+    skos:definition "The start date of a demand or decoration period on a leasehold or managed-freehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.from>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.from> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:groundRentFrequency
     rdf:type owl:DatatypeProperty ;
     rdfs:label "ground rent frequency"@en ;
     rdfs:comment "Frequency at which ground rent is payable on the leasehold LegalEstate (typed as a string in the data dictionary — a free-form frequency label). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The frequency at which ground rent is payable on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.groundRentFrequency> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:handoverOnCompletion
     rdf:type owl:DatatypeProperty ;
     rdfs:label "handover on completion"@en ;
     rdfs:comment "Whether the Property's smart-home systems will be handed over on completion. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "A boolean recording whether a Property's smart-home systems will be handed over to the buyer on completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.smartHomeSystems.handoverOnCompletion> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:boolean .
 
 opda:hasFixedRentcharge
     rdf:type owl:DatatypeProperty ;
     rdfs:label "has fixed rentcharge"@en ;
     rdfs:comment "Whether the managed-freehold / commonhold LegalEstate carries a fixed rentcharge (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An indicator of whether a managed-freehold or commonhold LegalEstate carries a fixed rentcharge."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:hasUPRN
     rdf:type owl:DatatypeProperty ;
     rdfs:label "has UPRN"@en ;
     rdfs:comment "Unique Property Reference Number — OS AddressBase identifier. Per ODR-0005 §6a a contingent administrative identifier under PROV-O succession; NOT a load-bearing identity criterion. Operationally checkable via dash:uniqueValueForClass (ADR-0012 emits the shape)."@en ;
+    skos:definition "The Unique Property Reference Number assigned to a Property in OS AddressBase: a contingent administrative identifier subject to provenance-tracked succession, not a load-bearing identity criterion for the property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:heading
     rdf:type owl:DatatypeProperty ;
     rdfs:label "heading"@en ;
     rdfs:comment "Google Street View point-of-view compass heading (degrees) for the Property's map locator. xsd:decimal — a numeric camera parameter, NOT a free-text tail (FLAG: deviates from the generic free-text-collapse expectation; the data dictionary types it as a number). Flat per §Q6a."@en ;
+    skos:definition "The compass heading, in degrees, of the Google Street View camera position for a Property's map locator."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.location.googleStreetViewPOV.heading> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:heatingLastServicedDate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "heating last serviced date"@en ;
     rdfs:comment "Date the Property's central-heating system was last serviced. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property's central-heating system was last serviced."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:kitchens
     rdf:type owl:DatatypeProperty ;
     rdfs:label "kitchens"@en ;
     rdfs:comment "Number of kitchens in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of kitchens in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.kitchens> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:lastMaintained
     rdf:type owl:DatatypeProperty ;
     rdfs:label "last maintained"@en ;
     rdfs:comment "Date the Property's solar-panel system was last maintained. xsd:date. Flat per §Q6a."@en ;
+    skos:definition "The date on which a Property's solar-panel system was last maintained."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.solarPanels.lastMaintained> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:lengthOfLeaseInYears
     rdf:type owl:DatatypeProperty ;
     rdfs:label "length of lease in years"@en ;
     rdfs:comment "Length of the leasehold term in years (the granted term). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements opda:LeaseTerm (the OWL-Time interval) with the headline term-length figure."@en ;
+    skos:definition "The length in years of the term granted on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.lengthOfLeaseInYears> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:location
     rdf:type owl:DatatypeProperty ;
     rdfs:label "location"@en ;
     rdfs:comment "Physical-location description of a Property fixture or measurement point — electricity / gas / water meter, stopcock, or survey/charge locus (typed as a free-form string in the data dictionary). ONE shared location-description property reused across those points. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: `propertyPack.location` is itself a structured geo block, not this leaf-level string; the structured locator is opda:Address territory — ODR-0015 — and is out of this leaf's scope.)"@en ;
+    skos:definition "A free-text description of the physical position of a Property fixture or measurement point, such as a meter or stopcock."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.mainsElectricity.electricityMeter.location>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.water.mainsWater.stopcock.location>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.water.mainsWater.waterMeter.location> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:logbookProvider
     rdf:type owl:DatatypeProperty ;
     rdfs:label "logbook provider"@en ;
     rdfs:comment "Name of the digital-property-logbook provider for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The name of the provider of a Property's digital property logbook."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:mpan
     rdf:type owl:DatatypeProperty ;
     rdfs:label "MPAN"@en ;
     rdfs:comment "Meter Point Administration Number — the electricity supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier whose leading zeros are significant — the same convention opda:hasUPRN follows, NOT xsd:integer despite the data-dictionary typing). Flat per §Q6a."@en ;
+    skos:definition "The Meter Point Administration Number identifying a Property's electricity supply point."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.mainsElectricity.electricityMeter.mpan> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:mprn
     rdf:type owl:DatatypeProperty ;
     rdfs:label "MPRN"@en ;
     rdfs:comment "Meter Point Reference Number — the gas supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier, per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). Flat per §Q6a."@en ;
+    skos:definition "The Meter Point Reference Number identifying a Property's gas supply point."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:numberOfFloors
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of floors"@en ;
     rdfs:comment "Number of floors (storeys) the Property comprises. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of floors (storeys) a Property comprises."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.numberOfFloors> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:numberOfPropertiesSharing
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of properties sharing"@en ;
     rdfs:comment "Number of other properties sharing the Property's off-mains drainage system. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of other properties sharing a Property's off-mains drainage system."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:otherCentralHeatingFuelType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other central heating fuel type"@en ;
     rdfs:comment "Free-text fuel classifier captured when the central-heating fuel is 'Other' (the open-ended companion to opda:centralHeatingFuelType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The free-text fuel classifier captured for a Property whose central-heating fuel is recorded as 'Other'."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:otherHeatingFeatures
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other heating features"@en ;
     rdfs:comment "Additional heating features of the Property (a multi-valued list in the data dictionary — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An additional heating feature of a Property beyond its primary heating system."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.otherHeatingFeatures> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:otherOwnershipDetails
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other ownership details"@en ;
     rdfs:comment "Free-text ownership details captured when the ownership type is 'Other' for the LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The free-text ownership details captured for a LegalEstate whose ownership type is recorded as 'Other'."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:otherPropertiesInManagedArea
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other properties in managed area"@en ;
     rdfs:comment "Count of other properties in the managed area sharing the leasehold LegalEstate's service arrangements. xsd:decimal (typed as a number in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The count of other properties in the managed area sharing a leasehold LegalEstate's service arrangements."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general.otherPropertiesInManagedArea> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:otherType
     rdf:type owl:DatatypeProperty ;
     rdfs:label "other type"@en ;
     rdfs:comment "Free-text classifier captured when the Property's built-form / property-type is 'Other' (the open-ended companion to opda:propertyType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The free-text property-type classifier captured for a Property whose property type is recorded as 'Other'."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.otherType> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:outsideAreas
     rdf:type owl:DatatypeProperty ;
     rdfs:label "outside areas"@en ;
     rdfs:comment "Outside areas of the Property — garden / yard / balcony / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An outside area belonging to a Property, such as a garden, yard, or balcony."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.outsideAreas> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:parkingArrangements
     rdf:type owl:DatatypeProperty ;
     rdfs:label "parking arrangements"@en ;
     rdfs:comment "Parking arrangements for the Property — allocated / on-street / garage / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A parking arrangement available to a Property, such as allocated, on-street, or garage parking."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.parking.parkingArrangements> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:personWhoDealsWithTheDeedOfCovenant
     rdf:type owl:DatatypeProperty ;
     rdfs:label "person who deals with the deed of covenant"@en ;
     rdfs:comment "Name/role of the person who deals with the deed of covenant for the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The name or role of the person who deals with the deed of covenant on a leasehold or managed-freehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:pitch
     rdf:type owl:DatatypeProperty ;
     rdfs:label "pitch"@en ;
     rdfs:comment "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
+    skos:definition "The vertical pitch, in degrees, of the Google Street View camera position for a Property's map locator."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.location.googleStreetViewPOV.pitch> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:procedureForObtainingCertificate
     rdf:type owl:DatatypeProperty ;
     rdfs:label "procedure for obtaining certificate"@en ;
     rdfs:comment "Procedure for obtaining a transfer/registration certificate on the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The procedure for obtaining a transfer or registration certificate on a leasehold or managed-freehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.procedureForObtainingCertificate> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:propertiesContributingToMaintenanceOfManagedArea
     rdf:type owl:DatatypeProperty ;
     rdfs:label "properties contributing to maintenance of managed area"@en ;
     rdfs:comment "Count of properties contributing to maintenance of the managed area for the leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The count of properties contributing to maintenance of the managed area for a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:publicSewerMapAttached
     rdf:type owl:DatatypeProperty ;
     rdfs:label "public sewer map attached"@en ;
     rdfs:comment "Whether the public-sewer map is attached for the Property (a Yes/No-style string response in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An indicator of whether the public-sewer map is attached for a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.maps.publicSewerMapAttached> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:receptions
     rdf:type owl:DatatypeProperty ;
     rdfs:label "receptions"@en ;
     rdfs:comment "Number of reception rooms in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The count of reception rooms in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.residentialPropertyFeatures.receptions> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
 
 opda:rentIncreaseCalculated
     rdf:type owl:DatatypeProperty ;
     rdfs:label "rent increase calculated"@en ;
     rdfs:comment "How a ground-rent increase is calculated on the leasehold LegalEstate (e.g. RPI-linked, doubling). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "How a ground-rent increase is calculated on a leasehold LegalEstate, such as by RPI-linking or doubling."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:rentReviewFrequency
     rdf:type owl:DatatypeProperty ;
     rdfs:label "rent review frequency"@en ;
     rdfs:comment "Frequency at which ground rent is reviewed on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The frequency at which ground rent is reviewed on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:requirements
     rdf:type owl:DatatypeProperty ;
     rdfs:label "requirements"@en ;
     rdfs:comment "Requirements stated for a licence-to-assign on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The requirements stated for a licence to assign a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:sewerageBills
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sewerage bills"@en ;
     rdfs:comment "Free-text sewerage-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A description of the sewerage-billing arrangements for a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.sewerageBills> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:sewerageProvider
     rdf:type owl:DatatypeProperty ;
     rdfs:label "sewerage provider"@en ;
     rdfs:comment "Name of the Property's sewerage provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The name of the undertaker providing sewerage services to a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.sewerageProvider> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:sharedOwnershipPercentage
     rdf:type owl:DatatypeProperty ;
     rdfs:label "shared ownership percentage"@en ;
     rdfs:comment "Percentage of the Property owned under a shared-ownership leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The percentage of a Property owned under a shared-ownership leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipPercentage> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:startYearOfLease
     rdf:type owl:DatatypeProperty ;
     rdfs:label "start year of lease"@en ;
     rdfs:comment "Calendar year the leasehold term commenced. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The calendar year in which the term of a leasehold LegalEstate commenced."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.startYearOfLease> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:supplier
     rdf:type owl:DatatypeProperty ;
     rdfs:label "supplier"@en ;
     rdfs:comment "Name of the supplier for a Property utility / service (electricity, gas-fuel, heat-pump, solar, water, drainage, telephone, cable/satellite TV). ONE shared supplier-name property reused across the utility blocks (the data dictionary repeats the same `supplier` leaf under each). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The name of the supplier of a Property utility or service, such as electricity, gas, water, drainage, telephone, or television."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.connectivity.cableSatelliteTV.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.connectivity.telephone.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.heatPump.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.mainsElectricity.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.otherSources.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.solarPanels.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.supplier>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.water.mainsWater.supplier> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:supplyClassification
     rdf:type owl:DatatypeProperty ;
     rdfs:label "supply classification"@en ;
     rdfs:comment "Classification of the Property's water supply (e.g. metered / unmetered / rateable). A UFO Quale-in-Region of the physical Property. Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."@en ;
+    skos:definition "The classification of a Property's water supply, such as metered, unmetered, or rateable."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.water.supplyClassification> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:titleExtents
     rdf:type owl:DatatypeProperty ;
     rdfs:label "title extents"@en ;
     rdfs:comment "Statement of the extents covered by a title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A statement of the extents covered by a title to be sold."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.titlesToBeSold[].titleExtents> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:titleNumber
     rdf:type owl:DatatypeProperty ;
     rdfs:label "title number"@en ;
     rdfs:comment "HMLR title number — identifies the registered-title RECORD (opda:RegisteredTitle), not the legal estate (ODR-0024 R8 / session-028 Q6). The estate has no title number; the record does — reach the estate via opda:recordsEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The HM Land Registry title number identifying a RegisteredTitle record (not the legal estate it documents), unique within the register."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].titleNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.titlesToBeSold[].titleNumber> ;
     rdfs:domain opda:RegisteredTitle ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:titlePropertyDescription
     rdf:type owl:DatatypeProperty ;
     rdfs:label "title property description"@en ;
     rdfs:comment "The property description as recorded on the title for the LegalEstate to be transferred. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The property description recorded on the title for a LegalEstate to be transferred."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:to
     rdf:type owl:DatatypeProperty ;
     rdfs:label "to"@en ;
     rdfs:comment "End date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (mirror of opda:from). xsd:date. ONE shared period-end property reused across those periods; flat per §Q6a. (FLAG: `to` is a generic period-boundary name; reused across the estate's recurring date-range blocks.)"@en ;
+    skos:definition "The end date of a demand or decoration period on a leasehold or managed-freehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.to>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.to> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
 opda:typeOfFlooding
     rdf:type owl:DatatypeProperty ;
     rdfs:label "type of flooding"@en ;
     rdfs:comment "Type(s) of historical flooding the Property has experienced (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT is opda:RiskAssessment territory; this is the factual historical-flooding-type attribute.)"@en ;
+    skos:definition "A type of historical flooding a Property has experienced, such as river, surface-water, or groundwater flooding."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:waterBills
     rdf:type owl:DatatypeProperty ;
     rdfs:label "water bills"@en ;
     rdfs:comment "Free-text water-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "A description of the water-billing arrangements for a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.waterBills> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:waterProvider
     rdf:type owl:DatatypeProperty ;
     rdfs:label "water provider"@en ;
     rdfs:comment "Name of the Property's water-supply provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The name of the undertaker supplying water to a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.charging.waterProvider> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:waterworksMapAttached
     rdf:type owl:DatatypeProperty ;
     rdfs:label "waterworks map attached"@en ;
     rdfs:comment "Whether the waterworks map is attached for the Property (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "An indicator of whether the waterworks map is attached for a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.waterAndDrainage.maps.waterworksMapAttached> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
 opda:willHandoverLogbook
     rdf:type owl:DatatypeProperty ;
     rdfs:label "will handover logbook"@en ;
     rdfs:comment "Whether the seller will hand over the digital property logbook on completion. xsd:boolean. Flat per §Q6a."@en ;
+    skos:definition "A boolean recording whether the seller will hand over a Property's digital property logbook on completion."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:boolean .
 
 opda:year
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year"@en ;
     rdfs:comment "Calendar year of a service-charge last-decorated period (externally / internally) on the leasehold LegalEstate. xsd:gYear. Flat per §Q6a."@en ;
+    skos:definition "The calendar year of a service-charge last-decorated period on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.year> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:yearCompleted
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year completed"@en ;
     rdfs:comment "Calendar year a Property alteration / change was completed (change of use, conservatory addition, window replacement since 2002). xsd:gYear. Flat per §Q6a."@en ;
+    skos:definition "The calendar year in which an alteration or change to a Property, such as a change of use, conservatory addition, or window replacement, was completed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.alterationsAndChanges.changeOfUse.yearCompleted>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.alterationsAndChanges.hasAddedConservatory.yearCompleted>, <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.alterationsAndChanges.windowReplacementsSince2002.yearCompleted> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:yearInstalled
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year installed"@en ;
     rdfs:comment "Calendar year the Property's solar-panel system was installed. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
+    skos:definition "The calendar year in which a Property's solar-panel system was installed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricity.solarPanels.yearInstalled> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:yearOfBuild
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year of build"@en ;
     rdfs:comment "Calendar year the Property was built. xsd:gYear — the data dictionary types it as a year value; plain datatype per ODR-0008 §Q5a, flat per §Q6a."@en ;
+    skos:definition "The calendar year in which a Property was built."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.yearOfBuild>, <https://opda.org.uk/pdtf/harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.buildInformation.yearOfBuild> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:yearTested
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year tested"@en ;
     rdfs:comment "Calendar year the Property's electrical installation was last tested by a qualified electrician. xsd:gYear. Flat per §Q6a."@en ;
+    skos:definition "The calendar year in which a Property's electrical installation was last tested by a qualified electrician."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricalWorks.testedByQualifiedElectrician.yearTested> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:yearWorkCarriedOut
     rdf:type owl:DatatypeProperty ;
     rdfs:label "year work carried out"@en ;
     rdfs:comment "Calendar year electrical work was carried out on the Property (since 2005). xsd:gYear. Flat per §Q6a."@en ;
+    skos:definition "The calendar year in which electrical work was carried out on a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.electricalWorks.electricalWorkSince2005.yearWorkCarriedOut> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:gYear .
 
 opda:zoom
     rdf:type owl:DatatypeProperty ;
     rdfs:label "zoom"@en ;
     rdfs:comment "Google Street View point-of-view zoom level for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
+    skos:definition "The zoom level of the Google Street View camera position for a Property's map locator."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.location.googleStreetViewPOV.zoom> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
 
 opda:areBoundariesUniform
     rdf:type owl:ObjectProperty ;
     rdfs:label "are boundaries uniform"@en ;
     rdfs:comment "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile."@en ;
+    skos:definition "A coded yes/no value recording whether a Property's legal and physical boundaries coincide."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:builtForm
     rdf:type owl:ObjectProperty ;
     rdfs:label "built form"@en ;
     rdfs:comment "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint)."@en ;
+    skos:definition "The built-form classification of a Property (such as detached, semi-detached, terraced, or end-terrace) drawn from the BuiltForm controlled scheme, describing how the building is structurally attached to neighbouring buildings."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.builtForm> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:centralHeatingFuelType
     rdf:type owl:ObjectProperty ;
     rdfs:label "central heating fuel type"@en ;
     rdfs:comment "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
+    skos:definition "The fuel powering a Property's central heating system (mains gas, electricity, oil, LPG, biomass, or other) drawn from the CentralHeatingFuelType scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:currentEnergyRating
     rdf:type owl:ObjectProperty ;
     rdfs:label "current energy rating"@en ;
     rdfs:comment "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."@en ;
+    skos:definition "The current energy-efficiency rating band (A to G) of a Property as recorded on its Energy Performance Certificate, drawn from the DESNZ-governed CurrentEnergyRating scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.energyEfficiency.certificate.currentEnergyRating> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:hasAddress
     rdf:type owl:ObjectProperty ;
     rdfs:label "has address"@en ;
     rdfs:comment "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation. Documentary \"any-of\" domain (ODR-0032 §R2 session-050 amendment): rdfs:domain opda:Property , opda:Person , opda:Organisation — three triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction; authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the domain does NOT entail every addressed Person is a Property). The authoritative bearer disjunction lives in SHACL sh:or (opda:HasAddressBearerShape), NOT owl:unionOf. rdfs:range opda:Address kept (single co-domain); the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."@en ;
+    skos:definition "Relates an address-bearing entity (a Property, Person, or Organisation) to an Address that locates it, uniformly across address variants so that one bearer may hold several Addresses differing on their variant."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a> ;
     rdfs:domain opda:Organisation, opda:Person, opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range opda:Address .
 
 opda:hasBeenFlooded
     rdf:type owl:ObjectProperty ;
     rdfs:label "has been flooded"@en ;
     rdfs:comment "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property has been flooded."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:hasEPCCertificate
     rdf:type owl:ObjectProperty ;
     rdfs:label "has EPC certificate"@en ;
     rdfs:comment "Property → opda:EPCCertificate join predicate. The energy rating band stays on the Property as opda:currentEnergyRating (its rdfs:domain); this join reaches the certificate Entity as a distinct PROV-O artefact (10-year lifecycle, DESNZ register)."@en ;
+    skos:definition "Relates a Property to the Energy Performance Certificate issued for it: a distinct certificate entity in the DESNZ register with its own ten-year lifecycle, reached separately from the property's own current energy rating."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.energyEfficiency.certificate> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range opda:EPCCertificate .
 
 opda:hasSmartHomeSystems
     rdf:type owl:ObjectProperty ;
     rdfs:label "has smart home systems"@en ;
     rdfs:comment "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property has smart-home systems installed."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:hasSprayFoamInstalled
     rdf:type owl:ObjectProperty ;
     rdfs:label "has spray foam installed"@en ;
     rdfs:comment "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether spray-foam insulation has been installed in a Property."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:hasValidGuaranteesOrWarranties
     rdf:type owl:ObjectProperty ;
     rdfs:label "has valid guarantees or warranties"@en ;
     rdfs:comment "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property carries valid guarantees, warranties, or indemnity insurances."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:heatingType
     rdf:type owl:ObjectProperty ;
     rdfs:label "heating type"@en ;
     rdfs:comment "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
+    skos:definition "The heating-system arrangement of a Property (central heating, communal heating, room heaters only, or none) drawn from the HeatingType scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.heating.heatingSystem.heatingType> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:identifiesSameProperty
     rdf:type owl:ObjectProperty ;
     rdfs:label "identifies same property"@en ;
     rdfs:comment "Co-reference predicate from any identity-bearing surface (RegisteredTitle, LegalEstate, Address) to the physical Property they identify. Per ODR-0005 Rule 5: NEVER use owl:sameAs (which would propagate every context's properties onto every other under inference). Domain intentionally unconstrained — any class with co-reference responsibility may emit this predicate."@en ;
+    skos:definition "Relates an identity-bearing surface (a RegisteredTitle, LegalEstate, or Address) to the physical Property it identifies, asserting co-reference without the property-propagating force of owl:sameAs."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range opda:Property .
 
 opda:isGroundRentPayable
     rdf:type owl:ObjectProperty ;
     rdfs:label "is ground rent payable"@en ;
     rdfs:comment "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether ground rent is payable on a leasehold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:isInsured
     rdf:type owl:ObjectProperty ;
     rdfs:label "is insured"@en ;
     rdfs:comment "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property is currently insured."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:isLocatedOverCommercialPremises
     rdf:type owl:ObjectProperty ;
     rdfs:label "is located over commercial premises"@en ;
     rdfs:comment "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property (typically a flat or maisonette) is situated over commercial premises."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:isSharedOwnership
     rdf:type owl:ObjectProperty ;
     rdfs:label "is shared ownership"@en ;
     rdfs:comment "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a LegalEstate is held under a shared-ownership lease."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:isSupplyMetered
     rdf:type owl:ObjectProperty ;
     rdfs:label "is supply metered"@en ;
     rdfs:comment "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property's utility supply (electricity, water, or gas) is metered."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:offMainsDrainageSystemType
     rdf:type owl:ObjectProperty ;
     rdfs:label "off-mains drainage system type"@en ;
     rdfs:comment "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage."@en ;
+    skos:definition "The off-mains drainage arrangement of a Property not connected to mains sewerage (SuDS, septic tank, cesspit, sewerage treatment plant, other, or not known) drawn from the OffMainsDrainageSystemType scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:ownershipType
     rdf:type owl:ObjectProperty ;
     rdfs:label "ownership type"@en ;
     rdfs:comment "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
+    skos:definition "The ownership-type classification of a LegalEstate (freehold, leasehold, commonhold, managed freehold, or other) drawn from the OwnershipType scheme."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:propertyType
     rdf:type owl:ObjectProperty ;
     rdfs:label "property type"@en ;
     rdfs:comment "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile."@en ;
+    skos:definition "The property-type classification of a Property (house, bungalow, park home, flat, maisonette, or other) drawn from the PropertyType scheme, naming its physical-form kind as distinct from its built form."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.buildInformation.building.propertyType>, <https://opda.org.uk/pdtf/harness/data-dictionary/valuationComparisonData.propertyDetails[].propertyType> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:recordsEstate
     rdf:type owl:ObjectProperty ;
     rdfs:label "records estate"@en ;
     rdfs:comment "Title-to-estate join: the RegisteredTitle's HMLR record names the LegalEstate it documents. Per ODR-0005 §3c, this is the three-way structural seam (RegisteredTitle recordsEstate LegalEstate; LegalEstate vests in Property; RegisteredTitle identifiesSameProperty Property)."@en ;
+    skos:definition "Relates a RegisteredTitle to the LegalEstate that its HM Land Registry record documents, forming one seam of the title-estate-property structural triangle."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c> ;
     rdfs:domain opda:RegisteredTitle ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range opda:LegalEstate .
 
 opda:sellerContributesToServiceCharge
     rdf:type owl:ObjectProperty ;
     rdfs:label "seller contributes to service charge"@en ;
     rdfs:comment "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether the seller contributes to a service charge on a leasehold, managed-freehold, or commonhold LegalEstate."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:soldWithVacantPossession
     rdf:type owl:ObjectProperty ;
     rdfs:label "sold with vacant possession"@en ;
     rdfs:comment "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme."@en ;
+    skos:definition "A coded yes/no value recording whether a Property is sold with vacant possession rather than subject to existing tenancies."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
 opda:tenureKind
     rdf:type owl:ObjectProperty ;
     rdfs:label "tenure kind"@en ;
     rdfs:comment "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels)."@en ;
+    skos:definition "The tenure classification of a LegalEstate (freehold, leasehold, or commonhold) drawn from the TenureKind scheme: a coded facet, not a subclass, since tenure change is a value change rather than a re-typing."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a> ;
     rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
