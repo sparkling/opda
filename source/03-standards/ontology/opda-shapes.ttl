@@ -844,6 +844,14 @@
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:forTheManagedAreas .
 
+<https://opda.org.uk/pdtf/shape/foundsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Relator ;
+    sh:message "opda:founds is used off its declared rdfs:domain: every subject of opda:founds MUST be an instance of Relator (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:founds .
+
 <https://opda.org.uk/pdtf/shape/freeholdOwnerDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
@@ -1499,6 +1507,22 @@
     sh:message "opda:marketingTenure has an object outside its declared rdfs:range: every object of opda:marketingTenure MUST be an instance of Concept (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:marketingTenure .
+
+<https://opda.org.uk/pdtf/shape/mediatesDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Proprietorship ;
+    sh:message "opda:mediates is used off its declared rdfs:domain: every subject of opda:mediates MUST be an instance of Proprietorship (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:mediates .
+
+<https://opda.org.uk/pdtf/shape/mediatesRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Proprietor ;
+    sh:message "opda:mediates has an object outside its declared rdfs:range: every object of opda:mediates MUST be an instance of Proprietor (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:mediates .
 
 <https://opda.org.uk/pdtf/shape/middleNamesDomainShape>
     rdf:type sh:NodeShape ;

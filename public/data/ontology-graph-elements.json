@@ -10,7 +10,7 @@
     "edges": {
       "constrainedByScheme": 12,
       "inScheme": 323,
-      "objectProperty": 81
+      "objectProperty": 85
     }
   },
   "modules": [
@@ -7466,6 +7466,24 @@
     },
     {
       "data": {
+        "id": "op:plays:Organisation->Role",
+        "source": "class:Organisation",
+        "target": "class:Role",
+        "label": "plays",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:plays:Organisation->RoleMixin",
+        "source": "class:Organisation",
+        "target": "class:RoleMixin",
+        "label": "plays",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasAssertedCapacity:Organisation->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:Organisation",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
@@ -7479,6 +7497,24 @@
         "source": "class:Person",
         "target": "class:Address",
         "label": "hasAddress",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:plays:Person->Role",
+        "source": "class:Person",
+        "target": "class:Role",
+        "label": "plays",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:plays:Person->RoleMixin",
+        "source": "class:Person",
+        "target": "class:RoleMixin",
+        "label": "plays",
         "kind": "objectProperty"
       }
     },

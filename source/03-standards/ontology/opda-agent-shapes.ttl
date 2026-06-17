@@ -39,7 +39,7 @@
 <https://opda.org.uk/pdtf/shape/FoundsRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
-    sh:message "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer) — Council session-047 Q5, founds type-pinned in SHACL (sh:or on the focus node), not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029."@en ;
+    sh:message "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:founds also carries documentary \"any-of\" rdfs:range opda:Role , opda:RoleMixin (read disjunctively, never entailed — ADR-0035; Council session-047 Q5 / session-050), preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029."@en ;
     sh:or _:b463e7f730616 ;
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:founds .
@@ -73,7 +73,7 @@
 <https://opda.org.uk/pdtf/shape/PlaysRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    sh:message "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or on the focus node (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."@en ;
+    sh:message "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:plays also carries documentary \"any-of\" rdfs:range opda:Role , opda:RoleMixin (read disjunctively, never entailed — ADR-0035 / session-050)."@en ;
     sh:or _:b463e7f730616 ;
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:plays .
@@ -95,13 +95,13 @@
 <https://opda.org.uk/pdtf/shape/RolePlayShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    sh:property _:b0039214d3483 ;
+    sh:property _:bbcf7b8a94a27 ;
     sh:targetSubjectsOf opda:playedBy .
 
 <https://opda.org.uk/pdtf/shape/RolePlaySubjectShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    sh:message "The subject of opda:playedBy MUST be an opda:Role (e.g. Proprietor) OR an opda:RoleMixin (e.g. Seller/Buyer) — only role-instances are played-by (Council session-047 Q4). Subject union in sh:or, not a non-universal rdfs:domain opda:Role (which would falsely exclude the RoleMixin roles)."@en ;
+    sh:message "The subject of opda:playedBy MUST be an opda:Role (e.g. Proprietor) OR an opda:RoleMixin (e.g. Seller/Buyer) — only role-instances are played-by (Council session-047 Q4). This sh:or is the AUTHORITATIVE subject disjunction; the predicate carries documentary \"any-of\" rdfs:domain opda:Role , opda:RoleMixin (read disjunctively, never entailed — ADR-0035 / session-050), not a conjunction that would falsely exclude every role."@en ;
     sh:or _:b463e7f730616 ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:playedBy .
@@ -127,12 +127,6 @@ _:b3a1b74eb6139
 _:b4fa3b5596392
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
-
-_:b0039214d3483
-    sh:message "opda:playedBy MUST point at an opda:Person OR an opda:Organisation (the role bearer). Bearer disjunction in sh:or, not an rdfs:range union (Council session-047 Q4/Q5; ODR-0006 §SHACL). OPTIONAL / distinct-node-only — emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge."@en ;
-    sh:or _:b75bdcb9bc24d ;
-    sh:path opda:playedBy ;
-    sh:severity sh:Violation .
 
 _:b30dd845c8998
     rdf:first <https://opda.org.uk/pdtf/scheme/ownerType/Organisation> ;
@@ -263,6 +257,12 @@ _:bba26fa44d6eb
 
 _:bba26fa44d6eb
     sh:class opda:Role .
+
+_:bbcf7b8a94a27
+    sh:message "opda:playedBy MUST point at an opda:Person OR an opda:Organisation (the role bearer). This sh:or is the AUTHORITATIVE bearer disjunction; the predicate also carries documentary \"any-of\" rdfs:range opda:Person , opda:Organisation (read disjunctively, never entailed — ADR-0035; Council session-047 Q4/Q5 / session-050). OPTIONAL / distinct-node-only — emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge."@en ;
+    sh:or _:b75bdcb9bc24d ;
+    sh:path opda:playedBy ;
+    sh:severity sh:Violation .
 
 _:bd7f8b0d0dfe9
     sh:message "An opda:Buyer role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."@en ;

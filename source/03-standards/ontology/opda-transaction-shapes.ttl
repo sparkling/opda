@@ -25,7 +25,7 @@
 <https://opda.org.uk/pdtf/shape/HasParticipantRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
-    sh:message "opda:hasParticipant MUST point at an opda:Seller OR an opda:Buyer (the parties to the transaction). Co-domain disjunction in sh:or, not an rdfs:range union (Council session-047 Q5; ODR-0007). The navigable parties-of-transaction edge; distinct from the opda:founds design-time relator spine."@en ;
+    sh:message "opda:hasParticipant MUST point at an opda:Seller OR an opda:Buyer (the parties to the transaction). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:hasParticipant also carries documentary \"any-of\" rdfs:range opda:Seller , opda:Buyer (read disjunctively, never entailed — ADR-0035; Council session-047 Q5 / session-050). The navigable parties-of-transaction edge; distinct from the opda:founds design-time relator spine."@en ;
     sh:or _:b75c74e53b473 ;
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:hasParticipant .

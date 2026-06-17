@@ -99,6 +99,29 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
            URIRef("https://opda.org.uk/pdtf/harness/release/transaction/1.1.0/")))
+    # The "any-of" documentary-domain/range convention (Council session-050 Q1
+    # binding rider; ADR-0049; ODR-0032 §R1 session-050 amendment). opda:has-
+    # Participant carries MULTIPLE rdfs:range triples (opda:Seller , opda:Buyer)
+    # read as "any-of" (the schema.org domainIncludes / hm ODR-0014 idiom), NOT
+    # the RDF Schema 1.1 §3.2 conjunction. Authored as documentary AI-signal per
+    # ODR-0026 §R2 and NEVER entailed — the frozen 7-rule closure (ODR-0025 §R1)
+    # consumes no rdfs:domain/range, so ADR-0035 proves zero domain/range
+    # triples materialise. The authoritative disjunction is SHACL sh:or
+    # (opda:HasParticipantRangeShape); owl:unionOf is NOT used (ODR-0030).
+    g.add((module_iri, SKOS.editorialNote, Literal(
+        "Documentary domain/range convention (ODR-0026 §R2; ODR-0032 §R1; "
+        "Council session-050 Q1): rdfs:domain/rdfs:range on the object "
+        "properties of this module are authored as documentary AI-signal and "
+        "are NEVER entailed (the frozen 7-rule closure, ODR-0025 §R1, consumes "
+        "no domain/range; ADR-0035 proves zero domain/range triples "
+        "materialise). Where one property carries MULTIPLE rdfs:domain or "
+        "rdfs:range triples (opda:hasParticipant — rdfs:range opda:Seller , "
+        "opda:Buyer) they read as \"any-of\" (the schema.org domainIncludes "
+        "idiom; hm ODR-0014), NOT the RDF Schema 1.1 §3.2 conjunction. SHACL "
+        "sh:or is the authoritative disjunction (opda:HasParticipantRangeShape); "
+        "owl:unionOf is NOT used (excluded construct, ODR-0030).",
+        lang="en",
+    )))
 
     # --- opda:Transaction — UFO Relator (ODR-0007 §Q1) ------------------
     g.add((OPDA.Transaction, RDF.type, OWL.Class))
@@ -221,28 +244,37 @@ def build_graph() -> Graph:
     # --- ObjectProperty: opda:hasParticipant (ODR-0007 §Q1; ODR-0032) -------
     # Transaction → Seller/Buyer: the parties to the transaction (Council
     # session-047 GATED). rdfs:domain opda:Transaction is universally true (only
-    # a Transaction has participants in this sense) and carries no never-reasoned
-    # commitment, so it IS asserted; the Seller∪Buyer co-domain is carried in
-    # SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range/owl:unionOf
-    # — `rdfs:range (Seller∪Buyer)` would entail every participant is a Seller
-    # (the union-entailment anti-pattern, Hendler / Council Q5). Distinct from
-    # opda:founds (the Relator → Role design-time founding spine, SHACL-pinned
-    # + never reasoned): hasParticipant is the navigable parties-of-transaction
-    # edge a consumer queries.
+    # a Transaction has participants in this sense) and is asserted plain. The
+    # Seller/Buyer co-domain is now authored as documentary "any-of" rdfs:range
+    # opda:Seller , opda:Buyer (ODR-0032 §R1/§R2 session-050 amendment; the
+    # schema.org domainIncludes idiom) — two triples read DISJUNCTIVELY per the
+    # module-header convention, NOT the RDFS §3.2 conjunction. Authored as
+    # AI-signal, NEVER entailed (the frozen closure consumes no domain/range —
+    # ADR-0035 proves zero domain/range triples materialise, so the range does
+    # NOT entail every participant is a Seller). The AUTHORITATIVE disjunction
+    # stays in SHACL sh:or (opda:HasParticipantRangeShape); owl:unionOf is NOT
+    # used (excluded construct, ODR-0030). Distinct from opda:founds (the Relator
+    # → Role design-time founding spine): hasParticipant is the navigable
+    # parties-of-transaction edge a consumer queries.
     g.add((OPDA.hasParticipant, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.hasParticipant, RDFS.domain, OPDA.Transaction))
+    g.add((OPDA.hasParticipant, RDFS.range, OPDA.Seller))
+    g.add((OPDA.hasParticipant, RDFS.range, OPDA.Buyer))
     g.add((OPDA.hasParticipant, RDFS.label,
            Literal("has participant", lang="en")))
     g.add((OPDA.hasParticipant, RDFS.comment, Literal(
         "Transaction → Seller/Buyer join: the parties to the transaction "
         "(ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction "
-        "is asserted (universally true, no never-reasoned commitment); the "
-        "Seller∪Buyer co-domain is carried in SHACL sh:or "
-        "(opda:HasParticipantRangeShape), NOT an rdfs:range union (which would "
-        "entail every participant is a Seller — Hendler's union-entailment "
-        "anti-pattern). The navigable parties-of-transaction edge; distinct "
-        "from the opda:founds Relator → Role founding spine (SHACL-pinned, "
-        "design-time, never reasoned).",
+        "is asserted plain (universally true). The Seller/Buyer co-domain is "
+        "documentary \"any-of\" rdfs:range opda:Seller , opda:Buyer (two "
+        "triples read DISJUNCTIVELY per the module-header convention, NOT the "
+        "RDFS §3.2 conjunction; schema.org domainIncludes idiom). Authored as "
+        "AI-signal, NEVER entailed (zero domain/range triples materialise, "
+        "ADR-0035 — so the range does NOT entail every participant is a "
+        "Seller). The authoritative disjunction stays in SHACL sh:or "
+        "(opda:HasParticipantRangeShape), NOT owl:unionOf. The navigable "
+        "parties-of-transaction edge; distinct from the opda:founds Relator → "
+        "Role founding spine (design-time, never reasoned).",
         lang="en",
     )))
     g.add((OPDA.hasParticipant, DCTERMS.source, _ODR_0007_Q1))

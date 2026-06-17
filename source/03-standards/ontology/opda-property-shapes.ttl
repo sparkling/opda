@@ -31,7 +31,7 @@
 <https://opda.org.uk/pdtf/shape/HasAddressBearerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a> ;
-    sh:message "opda:hasAddress is borne by an opda:Property, opda:Person OR opda:Organisation. Bearer disjunction in sh:or, not an rdfs:domain (which would entail every addressed Person is a Property — Hendler; Council session-047 Q6). Replaces the dropped Property-only rdfs:domain's auto-derived domain shape; rdfs:range opda:Address kept. The Address class/IC stays ODR-0015-pending."@en ;
+    sh:message "opda:hasAddress is borne by an opda:Property, opda:Person OR opda:Organisation. This sh:or is the AUTHORITATIVE bearer disjunction; the predicate also carries documentary \"any-of\" rdfs:domain opda:Property , opda:Person , opda:Organisation (read disjunctively, never entailed — ADR-0035; Council session-047 Q6 / session-050). rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending."@en ;
     sh:or _:bf27ea7af17aa ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:hasAddress .

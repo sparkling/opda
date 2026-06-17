@@ -347,6 +347,20 @@ def _domain_range_pairs() -> tuple[list[tuple[URIRef, URIRef]], list[tuple[URIRe
     the `sh:class C` dual — for a class C, not a datatype). Returns
     `(domain_pairs, range_pairs)`, each sorted by (predicate, class) for
     deterministic emission.
+
+    **Multi-domain / multi-range "any-of" predicates are EXCLUDED** (ODR-0032
+    §R1 / ADR-0049; Council session-050 Q1). A predicate carrying MULTIPLE
+    `rdfs:domain` (or `rdfs:range`) classes is the documentary "any-of"
+    disjunction idiom (schema.org `domainIncludes`; hm ODR-0014) — its
+    authoritative dual is a hand-authored SHACL `sh:or` shape (e.g.
+    opda:FoundsRangeShape / opda:RolePlayShape / opda:RolePlaySubjectShape /
+    opda:HasParticipantRangeShape / opda:HasAddressBearerShape), NOT the single
+    `sh:class` auto-dual. Auto-deriving a per-class `sh:class` shape for an
+    any-of predicate would mint ONE shape IRI carrying TWO+ `sh:class` triples =
+    a CONJUNCTION (every object both Role AND RoleMixin), which can never be
+    satisfied and would break all validation. So the single-`sh:class`
+    auto-derivation is reserved for SINGLE-domain / SINGLE-range edges; the
+    disjunction predicates are pinned by their hand `sh:or` shapes only.
     """
     from opda_gen.emitters.modules import MODULE_REGISTRY
 
@@ -357,10 +371,27 @@ def _domain_range_pairs() -> tuple[list[tuple[URIRef, URIRef]], list[tuple[URIRe
     xsd_ns = str(XSD)
     rdfs_literal = str(RDFS.Literal)
 
-    domain_pairs: list[tuple[URIRef, URIRef]] = []
+    # Count class-valued domain/range per predicate so the "any-of" (multi-class)
+    # disjunction predicates can be excluded from the single-sh:class auto-dual.
+    domain_count: dict[URIRef, int] = {}
+    range_count: dict[URIRef, int] = {}
     for pred, cls in merged.subject_objects(RDFS.domain):
         if isinstance(pred, URIRef) and isinstance(cls, URIRef):
-            domain_pairs.append((pred, cls))
+            domain_count[pred] = domain_count.get(pred, 0) + 1
+    for pred, cls in merged.subject_objects(RDFS.range):
+        if isinstance(pred, URIRef) and isinstance(cls, URIRef):
+            c = str(cls)
+            if c.startswith(xsd_ns) or c == rdfs_literal:
+                continue
+            range_count[pred] = range_count.get(pred, 0) + 1
+
+    domain_pairs: list[tuple[URIRef, URIRef]] = []
+    for pred, cls in merged.subject_objects(RDFS.domain):
+        if not (isinstance(pred, URIRef) and isinstance(cls, URIRef)):
+            continue
+        if domain_count.get(pred, 0) > 1:
+            continue  # "any-of" multi-domain → hand sh:or dual, not single sh:class
+        domain_pairs.append((pred, cls))
 
     range_pairs: list[tuple[URIRef, URIRef]] = []
     for pred, cls in merged.subject_objects(RDFS.range):
@@ -369,6 +400,8 @@ def _domain_range_pairs() -> tuple[list[tuple[URIRef, URIRef]], list[tuple[URIRe
         c = str(cls)
         if c.startswith(xsd_ns) or c == rdfs_literal:
             continue  # datatype range — constrained by sh:datatype, not sh:class
+        if range_count.get(pred, 0) > 1:
+            continue  # "any-of" multi-range → hand sh:or dual, not single sh:class
         range_pairs.append((pred, cls))
 
     domain_pairs.sort(key=lambda pc: (str(pc[0]), str(pc[1])))
@@ -985,16 +1018,19 @@ def build_property_shapes() -> Graph:
     )
 
     # --- opda:hasAddress bearer-typing: Property∪Person∪Organisation ---------
-    # Council session-047 Q6: opda:hasAddress was bearer-extended to
-    # Person/Organisation by DROPPING its Property-only rdfs:domain (a single
-    # rdfs:domain opda:Property would entail every addressed Person/Organisation
-    # is a Property — Hendler). This shape REPLACES the auto-derived
-    # opda:hasAddressDomainShape (build_domain_range_constraint_shapes, ODR-0029
-    # R3) that disappears with the dropped rdfs:domain: it pins the bearer to the
-    # Property∪Person∪Organisation union in SHACL sh:or. rdfs:range opda:Address
-    # is retained, so its auto-derived opda:hasAddressRangeShape still holds the
-    # co-domain. The opda:Address class/IC is NOT re-settled (RESIDUE-PENDING
-    # ODR-0015 Mode-vs-Resource). sh:Violation per ODR-0013 §Q1.
+    # Council session-047 Q6: opda:hasAddress is bearer-extended to
+    # Person/Organisation. Per the session-050 amendment (ADR-0049; ODR-0032
+    # §R2) the predicate carries documentary "any-of" rdfs:domain opda:Property ,
+    # opda:Person , opda:Organisation (read disjunctively, never entailed —
+    # ADR-0035). This shape is the AUTHORITATIVE bearer dual: it pins the bearer
+    # to the Property∪Person∪Organisation disjunction in SHACL sh:or. The
+    # multi-domain "any-of" is EXCLUDED from the single-sh:class auto-derivation
+    # (build_domain_range_constraint_shapes skips multi-domain predicates — a
+    # conjunctive multi-sh:class shape would be wrong for an any-of predicate),
+    # so this hand sh:or shape stands alone for the bearer. rdfs:range
+    # opda:Address is single → its auto-derived opda:hasAddressRangeShape still
+    # holds the co-domain. The opda:Address class/IC is NOT re-settled
+    # (RESIDUE-PENDING ODR-0015 Mode-vs-Resource). sh:Violation per ODR-0013 §Q1.
     # The sh:or is on the NODE SHAPE itself (focus = the SUBJECT/bearer, reached
     # via sh:targetSubjectsOf), NOT nested in a sh:property[sh:path] — a
     # path-scoped sh:or would constrain the VALUE nodes (the Address objects),
@@ -1008,11 +1044,12 @@ def build_property_shapes() -> Graph:
     g.add((OPDA_SHAPE.HasAddressBearerShape, DCTERMS.source, _ODR_0015_S3A))
     g.add((OPDA_SHAPE.HasAddressBearerShape, SH.message, Literal(
         "opda:hasAddress is borne by an opda:Property, opda:Person OR "
-        "opda:Organisation. Bearer disjunction in sh:or, not an rdfs:domain "
-        "(which would entail every addressed Person is a Property — Hendler; "
-        "Council session-047 Q6). Replaces the dropped Property-only "
-        "rdfs:domain's auto-derived domain shape; rdfs:range opda:Address "
-        "kept. The Address class/IC stays ODR-0015-pending.",
+        "opda:Organisation. This sh:or is the AUTHORITATIVE bearer disjunction; "
+        "the predicate also carries documentary \"any-of\" rdfs:domain "
+        "opda:Property , opda:Person , opda:Organisation (read disjunctively, "
+        "never entailed — ADR-0035; Council session-047 Q6 / session-050). "
+        "rdfs:range opda:Address kept; the Address class/IC stays "
+        "ODR-0015-pending.",
         lang="en",
     )))
 
@@ -1201,15 +1238,18 @@ def build_agent_shapes() -> Graph:
     )))
 
     # --- Relator-spine type-pinning: opda:founds co-domain + subject-guard ---
-    # Council session-047 Q5: opda:founds and opda:mediates are type-pinned in
-    # SHACL sh:class, NOT rdfs:domain/rdfs:range, preserving their shipped
-    # "Design-time, NEVER reasoned" commitment (ODR-0029/0030/0031). mediates'
-    # co-domain is pinned on ProprietorshipMediationShape above; founds' is
-    # pinned here (Relator → Role). A SHACL subject-guard confines BOTH
-    # predicates' SUBJECTS to opda:Relator, so the relator entailment is
-    # conservative-by-construction (Davis's refinement) rather than by good
-    # behaviour. sh:Violation per ODR-0013 §Q1 (a relator-spine edge off a
-    # non-relator/non-role node is a structural type error).
+    # Council session-047 Q5 + session-050 amendment (ADR-0049; ODR-0032 §R2):
+    # opda:founds and opda:mediates now carry documentary rdfs:domain/rdfs:range
+    # IN ADDITION to these SHACL shapes, preserving their shipped "Design-time,
+    # NEVER reasoned" commitment (the closure adds zero domain/range triples —
+    # ADR-0035; ODR-0029/0030/0031 untouched). founds' co-domain is an "any-of"
+    # (rdfs:range opda:Role , opda:RoleMixin); this sh:or is its AUTHORITATIVE
+    # dual (the multi-range any-of is excluded from the single-sh:class
+    # auto-derivation). mediates' co-domain (single opda:Proprietor) is pinned
+    # on ProprietorshipMediationShape above. A SHACL subject-guard confines BOTH
+    # predicates' SUBJECTS to opda:Relator, conservative-by-construction
+    # (Davis's refinement). sh:Violation per ODR-0013 §Q1 (a relator-spine edge
+    # off a non-relator/non-role node is a structural type error).
     # The value-type union goes DIRECTLY on the node shape (focus = the founds
     # OBJECT, reached via sh:targetObjectsOf), NOT nested in a sh:property[sh:path
     # opda:founds] — a path-scoped constraint re-traverses opda:founds FROM the
@@ -1228,9 +1268,11 @@ def build_agent_shapes() -> Graph:
     g.add((OPDA_SHAPE.FoundsRangeShape, SH.message, Literal(
         "opda:founds is the Relator → Role founding spine: every object of "
         "opda:founds MUST be an opda:Role (Proprietor) OR an opda:RoleMixin "
-        "(Seller/Buyer) — Council session-047 Q5, founds type-pinned in SHACL "
-        "(sh:or on the focus node), not rdfs:range, preserving its "
-        "'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029.",
+        "(Seller/Buyer). This sh:or is the AUTHORITATIVE co-domain disjunction; "
+        "opda:founds also carries documentary \"any-of\" rdfs:range opda:Role , "
+        "opda:RoleMixin (read disjunctively, never entailed — ADR-0035; Council "
+        "session-047 Q5 / session-050), preserving its 'NEVER reasoned' "
+        "commitment; ODR-0006 §Q3 / ODR-0029.",
         lang="en",
     )))
 
@@ -1254,12 +1296,15 @@ def build_agent_shapes() -> Graph:
     # --- Role-play bearer shapes: opda:playedBy (Council session-047 Q4) -----
     # opda:playedBy is OPTIONAL / distinct-node-only (NO sh:minCount — a co-typed
     # role with no distinct bearer node is conformant; never forces a vacuous
-    # self-edge). Its bearer co-domain Person∪Organisation is pinned in SHACL
-    # sh:or, NOT an rdfs:range union (which would entail every bearer is a Person
-    # — Hendler). RolePlayShape pins the co-domain for ALL playedBy objects
-    # (sh:targetSubjectsOf); SellerShape / BuyerShape carry the ODR-0006 §SHACL
-    # SellerShape pattern keyed on the role class (sh:targetClass + sh:path). All
-    # OPTIONAL. sh:Violation per ODR-0013 §Q1.
+    # self-edge). Per the session-050 amendment (ADR-0049; ODR-0032 §R2) the
+    # predicate carries documentary "any-of" rdfs:domain opda:Role , opda:Role-
+    # Mixin (subject) + rdfs:range opda:Person , opda:Organisation (bearer), read
+    # disjunctively and NEVER entailed (ADR-0035). These SHACL sh:or shapes are
+    # the AUTHORITATIVE duals; the multi-domain/range any-of is excluded from the
+    # single-sh:class auto-derivation. RolePlayShape pins the bearer co-domain
+    # for ALL playedBy objects (sh:targetSubjectsOf); SellerShape / BuyerShape
+    # carry the ODR-0006 §SHACL SellerShape pattern keyed on the role class
+    # (sh:targetClass + sh:path). All OPTIONAL. sh:Violation per ODR-0013 §Q1.
     _bearer_classes = [OPDA.Person, OPDA.Organisation]
 
     _rp_p = BNode()
@@ -1272,8 +1317,10 @@ def build_agent_shapes() -> Graph:
     g.add((_rp_p, SH.severity, SH.Violation))
     g.add((_rp_p, SH.message, Literal(
         "opda:playedBy MUST point at an opda:Person OR an opda:Organisation "
-        "(the role bearer). Bearer disjunction in sh:or, not an rdfs:range "
-        "union (Council session-047 Q4/Q5; ODR-0006 §SHACL). OPTIONAL / "
+        "(the role bearer). This sh:or is the AUTHORITATIVE bearer disjunction; "
+        "the predicate also carries documentary \"any-of\" rdfs:range "
+        "opda:Person , opda:Organisation (read disjunctively, never entailed — "
+        "ADR-0035; Council session-047 Q4/Q5 / session-050). OPTIONAL / "
         "distinct-node-only — emitted only where the role qua-individual is a "
         "node distinct from its bearer; never a self-edge.",
         lang="en",
@@ -1281,11 +1328,12 @@ def build_agent_shapes() -> Graph:
 
     # opda:playedBy SUBJECT-typing: the role-instance is an opda:Role (Proprietor)
     # OR an opda:RoleMixin (Seller/Buyer) — sibling role meta-classes (ODR-0006
-    # §Q2). opda:playedBy carries NO rdfs:domain (opda:Role alone is not
-    # universally true — it excludes Seller/Buyer), so the subject union is pinned
-    # HERE in SHACL sh:or (focus = the subject via sh:targetSubjectsOf). Replaces
-    # the auto-derived opda:playedByDomainShape that the dropped rdfs:domain would
-    # have produced. sh:Violation per ODR-0013 §Q1.
+    # §Q2). opda:playedBy carries documentary "any-of" rdfs:domain opda:Role ,
+    # opda:RoleMixin (read disjunctively, never entailed — ADR-0035); this SHACL
+    # sh:or is the AUTHORITATIVE subject dual (focus = the subject via
+    # sh:targetSubjectsOf). The multi-domain any-of is excluded from the
+    # single-sh:class auto-derivation (a conjunctive Role-AND-RoleMixin shape
+    # would falsely exclude every role). sh:Violation per ODR-0013 §Q1.
     g.add((OPDA_SHAPE.RolePlaySubjectShape, RDF.type, SH.NodeShape))
     g.add((OPDA_SHAPE.RolePlaySubjectShape, SH.targetSubjectsOf, OPDA.playedBy))
     g.add((OPDA_SHAPE.RolePlaySubjectShape, SH["or"],
@@ -1295,9 +1343,11 @@ def build_agent_shapes() -> Graph:
     g.add((OPDA_SHAPE.RolePlaySubjectShape, SH.message, Literal(
         "The subject of opda:playedBy MUST be an opda:Role (e.g. Proprietor) OR "
         "an opda:RoleMixin (e.g. Seller/Buyer) — only role-instances are "
-        "played-by (Council session-047 Q4). Subject union in sh:or, not a "
-        "non-universal rdfs:domain opda:Role (which would falsely exclude the "
-        "RoleMixin roles).",
+        "played-by (Council session-047 Q4). This sh:or is the AUTHORITATIVE "
+        "subject disjunction; the predicate carries documentary \"any-of\" "
+        "rdfs:domain opda:Role , opda:RoleMixin (read disjunctively, never "
+        "entailed — ADR-0035 / session-050), not a conjunction that would "
+        "falsely exclude every role.",
         lang="en",
     )))
 
@@ -1323,13 +1373,13 @@ def build_agent_shapes() -> Graph:
         )))
 
     # opda:plays co-domain: opda:Role (Proprietor) OR opda:RoleMixin
-    # (Seller/Buyer) — the inverse of opda:playedBy's subject union. opda:plays
-    # carries NO rdfs:domain/rdfs:range (a union rdfs:range would re-introduce the
-    # everything-becomes-an-X anti-pattern; the bearer subject is typed by the
-    # opda:playedBy shapes via the inverse) — so its co-domain is type-pinned HERE
-    # in SHACL sh:or, else it would be rangeless-AND-shapeless (the ADR-0048 §4
-    # limb (a) defect). Mirrors opda:FoundsRangeShape's co-domain pinning.
-    # sh:Violation per ODR-0013 §Q1.
+    # (Seller/Buyer) — the inverse of opda:playedBy's subject union. Per the
+    # session-050 amendment opda:plays carries documentary "any-of" rdfs:domain
+    # opda:Person , opda:Organisation + rdfs:range opda:Role , opda:RoleMixin
+    # (read disjunctively, never entailed — ADR-0035; the mirror of opda:playedBy).
+    # This sh:or is the AUTHORITATIVE co-domain dual; the multi-range any-of is
+    # excluded from the single-sh:class auto-derivation. Mirrors
+    # opda:FoundsRangeShape's co-domain pinning. sh:Violation per ODR-0013 §Q1.
     # sh:or DIRECTLY on the node shape (focus = the plays OBJECT, via
     # sh:targetObjectsOf) — NOT nested in a sh:property[sh:path opda:plays], which
     # would re-traverse opda:plays from the object (a Role, which has no outgoing
@@ -1344,10 +1394,10 @@ def build_agent_shapes() -> Graph:
     g.add((OPDA_SHAPE.PlaysRangeShape, SH.message, Literal(
         "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role "
         "(Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a "
-        "Person/Organisation bearer plays (Council session-047 Q4). Co-domain "
-        "union in sh:or on the focus node (opda:plays has no rdfs:range to avoid "
-        "the union-entailment anti-pattern); the bearer subject is typed by the "
-        "opda:playedBy shapes via the inverse.",
+        "Person/Organisation bearer plays (Council session-047 Q4). This sh:or "
+        "is the AUTHORITATIVE co-domain disjunction; opda:plays also carries "
+        "documentary \"any-of\" rdfs:range opda:Role , opda:RoleMixin (read "
+        "disjunctively, never entailed — ADR-0035 / session-050).",
         lang="en",
     )))
 
@@ -1465,11 +1515,12 @@ def build_transaction_shapes() -> Graph:
     )
 
     # --- opda:hasParticipant co-domain: Seller∪Buyer (Council session-047) ---
-    # opda:hasParticipant carries rdfs:domain opda:Transaction (universally true,
-    # no never-reasoned commitment — asserted in transaction.py) but NO
-    # rdfs:range: the Seller∪Buyer co-domain is pinned here in SHACL sh:or, not
-    # an rdfs:range union (which would entail every participant is a Seller —
-    # Hendler / Council Q5). sh:Violation per ODR-0013 §Q1.
+    # opda:hasParticipant carries rdfs:domain opda:Transaction (single, universally
+    # true — asserted plain in transaction.py) and, per the session-050 amendment
+    # (ADR-0049; ODR-0032 §R2), documentary "any-of" rdfs:range opda:Seller ,
+    # opda:Buyer (read disjunctively, never entailed — ADR-0035). This sh:or is
+    # the AUTHORITATIVE co-domain dual; the multi-range any-of is excluded from
+    # the single-sh:class auto-derivation. sh:Violation per ODR-0013 §Q1.
     # The sh:or is on the NODE SHAPE itself (focus = the participant OBJECT,
     # reached via sh:targetObjectsOf), NOT nested in a sh:property[sh:path] — a
     # path-scoped sh:or would look for the participant's OWN hasParticipant
@@ -1484,9 +1535,11 @@ def build_transaction_shapes() -> Graph:
     g.add((OPDA_SHAPE.HasParticipantRangeShape, DCTERMS.source, _ODR_0007_Q1))
     g.add((OPDA_SHAPE.HasParticipantRangeShape, SH.message, Literal(
         "opda:hasParticipant MUST point at an opda:Seller OR an opda:Buyer "
-        "(the parties to the transaction). Co-domain disjunction in sh:or, not "
-        "an rdfs:range union (Council session-047 Q5; ODR-0007). The navigable "
-        "parties-of-transaction edge; distinct from the opda:founds "
+        "(the parties to the transaction). This sh:or is the AUTHORITATIVE "
+        "co-domain disjunction; opda:hasParticipant also carries documentary "
+        "\"any-of\" rdfs:range opda:Seller , opda:Buyer (read disjunctively, "
+        "never entailed — ADR-0035; Council session-047 Q5 / session-050). The "
+        "navigable parties-of-transaction edge; distinct from the opda:founds "
         "design-time relator spine.",
         lang="en",
     )))

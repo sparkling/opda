@@ -20,7 +20,8 @@
     rdf:type owl:Ontology ;
     dct:title "OPDA Transaction Module"@en ;
     owl:imports <https://opda.org.uk/pdtf/> ;
-    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/transaction/1.1.0/> .
+    owl:versionIRI <https://opda.org.uk/pdtf/harness/release/transaction/1.1.0/> ;
+    skos:editorialNote "Documentary domain/range convention (ODR-0026 §R2; ODR-0032 §R1; Council session-050 Q1): rdfs:domain/rdfs:range on the object properties of this module are authored as documentary AI-signal and are NEVER entailed (the frozen 7-rule closure, ODR-0025 §R1, consumes no domain/range; ADR-0035 proves zero domain/range triples materialise). Where one property carries MULTIPLE rdfs:domain or rdfs:range triples (opda:hasParticipant — rdfs:range opda:Seller , opda:Buyer) they read as \"any-of\" (the schema.org domainIncludes idiom; hm ODR-0014), NOT the RDF Schema 1.1 §3.2 conjunction. SHACL sh:or is the authoritative disjunction (opda:HasParticipantRangeShape); owl:unionOf is NOT used (excluded construct, ODR-0030)."@en .
 
 opda:Milestone
     rdf:type owl:Class ;
@@ -191,6 +192,7 @@ opda:hasChainPosition
 opda:hasParticipant
     rdf:type owl:ObjectProperty ;
     rdfs:label "has participant"@en ;
-    rdfs:comment "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned)."@en ;
+    rdfs:comment "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted plain (universally true). The Seller/Buyer co-domain is documentary \"any-of\" rdfs:range opda:Seller , opda:Buyer (two triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction; schema.org domainIncludes idiom). Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the range does NOT entail every participant is a Seller). The authoritative disjunction stays in SHACL sh:or (opda:HasParticipantRangeShape), NOT owl:unionOf. The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (design-time, never reasoned)."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
-    rdfs:domain opda:Transaction .
+    rdfs:domain opda:Transaction ;
+    rdfs:range opda:Buyer, opda:Seller .

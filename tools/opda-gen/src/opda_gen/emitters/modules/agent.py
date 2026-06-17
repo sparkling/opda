@@ -111,6 +111,31 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
            URIRef("https://opda.org.uk/pdtf/harness/release/agent/1.1.0/")))
+    # The "any-of" documentary-domain/range convention (Council session-050 Q1
+    # binding rider; ADR-0049; ODR-0032 §R1 session-050 amendment). Some object
+    # properties in this module (opda:founds, opda:playedBy, opda:plays) carry
+    # MULTIPLE rdfs:domain and/or rdfs:range triples. These are read as "any-of"
+    # (the schema.org domainIncludes / hm ODR-0014 idiom), NOT the RDF Schema 1.1
+    # §3.2 conjunction. They are authored as documentary AI-signal per ODR-0026
+    # §R2 and are NEVER entailed — OPDA's frozen 7-rule closure (ODR-0025 §R1)
+    # consumes no rdfs:domain/range, so ADR-0035 proves zero domain/range triples
+    # materialise. The authoritative disjunction is SHACL sh:or
+    # (opda:FoundsRangeShape / opda:RolePlayShape / opda:RolePlaySubjectShape).
+    g.add((module_iri, SKOS.editorialNote, Literal(
+        "Documentary domain/range convention (ODR-0026 §R2; ODR-0032 §R1; "
+        "Council session-050 Q1): rdfs:domain/rdfs:range on the object "
+        "properties of this module are authored as documentary AI-signal and "
+        "are NEVER entailed (the frozen 7-rule closure, ODR-0025 §R1, consumes "
+        "no domain/range; ADR-0035 proves zero domain/range triples "
+        "materialise). Where one property carries MULTIPLE rdfs:domain or "
+        "rdfs:range triples (opda:founds, opda:playedBy, opda:plays) they read "
+        "as \"any-of\" (the schema.org domainIncludes idiom; hm ODR-0014), NOT "
+        "the RDF Schema 1.1 §3.2 conjunction. SHACL sh:or is the authoritative "
+        "disjunction (opda:FoundsRangeShape / opda:RolePlayShape / "
+        "opda:RolePlaySubjectShape); owl:unionOf is NOT used (excluded "
+        "construct, ODR-0030).",
+        lang="en",
+    )))
 
     # --- opda:Person — UFO Substance Kind (ODR-0006 §Q1) -----------------
     g.add((OPDA.Person, RDF.type, OWL.Class))
@@ -305,11 +330,18 @@ def build_graph() -> Graph:
     # session-045 Q2 / session-046): asserted design-time, SHACL-validated
     # (opda:ProprietorshipMediationShape — sh:minCount 2; a Relator binds ≥2
     # bearers, Guizzardi 2005 Ch.4 §4.4), NEVER reasoned (ODR-0029/0031 — the
-    # UFO layer is inert at load). Domain/range left open (the Relator spine
-    # varies by Relator; the SHACL shape carries the cardinality). Realises
-    # ODR-0006 §Q3, previously specified-but-unemitted. Categorially distinct
-    # from rdfs:subClassOf — relator→role, not role-under-Kind.
+    # UFO layer is inert at load). Single-class relator-spine edge:
+    # rdfs:domain opda:Proprietorship + rdfs:range opda:Proprietor are authored
+    # as documentary domain/range (ODR-0032 §R2 session-050 amendment — both
+    # endpoints single-class). Documentary domain/range is fully consistent with
+    # the "NEVER reasoned" commitment (the closure adds zero domain/range
+    # triples, ADR-0035), so this does NOT override ODR-0029/0031. SHACL carries
+    # the cardinality + co-domain class pin. Realises ODR-0006 §Q3, previously
+    # specified-but-unemitted. Categorially distinct from rdfs:subClassOf —
+    # relator→role, not role-under-Kind.
     g.add((OPDA.mediates, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.mediates, RDFS.domain, OPDA.Proprietorship))
+    g.add((OPDA.mediates, RDFS.range, OPDA.Proprietor))
     g.add((OPDA.mediates, RDFS.label, Literal("mediates", lang="en")))
     g.add((OPDA.mediates, RDFS.comment, Literal(
         "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) "
@@ -317,7 +349,11 @@ def build_graph() -> Graph:
         "opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS "
         "that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); "
         "opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. "
-        "Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031).",
+        "Single-class relator-spine edge: rdfs:domain opda:Proprietorship + "
+        "rdfs:range opda:Proprietor authored as documentary domain/range "
+        "(ODR-0032 §R2 session-050 amendment). Design-time + SHACL-validated, "
+        "NEVER reasoned (ODR-0029/0031) — the documentary axioms are AI-signal, "
+        "not entailed (the closure adds zero domain/range triples, ADR-0035).",
         lang="en",
     )))
     g.add((OPDA.mediates, DCTERMS.source, _ODR_0006_Q3))
@@ -329,14 +365,33 @@ def build_graph() -> Graph:
     # founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3 Role
     # layer). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator
     # spine only — not a general roleOf.
+    # Documentary domain/range (ODR-0032 §R2 session-050 amendment): a single
+    # PLAIN rdfs:domain opda:Relator (Transaction & Proprietorship are BOTH
+    # ⊑ opda:Relator, so the subject-type is universally true → plain, not
+    # any-of), and an "any-of" rdfs:range opda:Role , opda:RoleMixin (two
+    # triples read disjunctively per the module-header convention — Proprietor
+    # is a Role, Seller/Buyer are RoleMixins; the authoritative co-domain
+    # disjunction is opda:FoundsRangeShape sh:or). Authored as AI-signal, never
+    # entailed (ADR-0035 — zero domain/range triples materialise), so the
+    # "NEVER reasoned" commitment is preserved.
     g.add((OPDA.founds, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.founds, RDFS.domain, OPDA.Relator))
+    g.add((OPDA.founds, RDFS.range, OPDA.Role))
+    g.add((OPDA.founds, RDFS.range, OPDA.RoleMixin))
     g.add((OPDA.founds, RDFS.label, Literal("founds", lang="en")))
     g.add((OPDA.founds, RDFS.comment, Literal(
         "Relator → Role founding. A Transaction relator founds the Seller and "
         "Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per "
         "UFO anti-rigidity every Role is externally founded by its Relator "
-        "(Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned "
-        "(ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf.",
+        "(Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Documentary domain/range: "
+        "plain rdfs:domain opda:Relator (Transaction & Proprietorship are both "
+        "⊑ opda:Relator — universally true) + \"any-of\" rdfs:range opda:Role , "
+        "opda:RoleMixin (read disjunctively per the module-header convention — "
+        "Proprietor is a Role, Seller/Buyer are RoleMixins; authoritative "
+        "disjunction in opda:FoundsRangeShape sh:or, NOT owl:unionOf). "
+        "Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031) — the axioms "
+        "are AI-signal, not entailed (zero domain/range triples materialise, "
+        "ADR-0035). Relator spine only; not a general roleOf.",
         lang="en",
     )))
     g.add((OPDA.founds, DCTERMS.source, _ODR_0006_Q3))
@@ -348,40 +403,52 @@ def build_graph() -> Graph:
     # the role-instance's one link home to its bearer, for the cases where the
     # bearer and the role-instance are distinct nodes (Guizzardi 2005 Ch.4
     # §4.3.2 — the qua-individual is a relationally-dependent particular, not a
-    # denormalised copy). NO rdfs:domain: the role-instance subject is drawn from
-    # BOTH role meta-classes — opda:Role (sortal: Proprietor) AND opda:RoleMixin
-    # (cross-sortal: Seller, Buyer), which are SIBLINGS (ODR-0006 §Q2), not a
-    # parent-child pair, so `rdfs:domain opda:Role` is NOT universally true (it
-    # falsely excludes Seller/Buyer). Subject-typing (Role∪RoleMixin) therefore
-    # goes to SHACL opda:RolePlaySubjectShape sh:or — the same
-    # only-assert-rdfs:domain-where-universally-true rule (Hendler) the bearer
-    # disjunction follows. The bearer disjunction Person∪Organisation is carried
-    # in SHACL `sh:or` (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape),
-    # NEVER an rdfs:range/owl:unionOf — `rdfs:range (Person∪Organisation)` would
-    # entail every bearer is a Person (Hendler's everything-becomes-a-Person
-    # anti-pattern). OPTIONAL / distinct-node-only: the SHACL shapes carry NO
-    # sh:minCount, so a co-typed role with no distinct bearer node is conformant
-    # and no vacuous self-edge `?x playedBy ?x` is forced (Council session-047 Q4
-    # / Davis condition). opda:plays is the owl:inverseOf for query-from-either-
-    # end without inverse inference.
+    # denormalised copy). Documentary "any-of" domain/range (ODR-0032 §R1/§R2
+    # session-050 amendment; the schema.org domainIncludes idiom, hm ODR-0014):
+    # rdfs:domain opda:Role , opda:RoleMixin (the role-instance subject is drawn
+    # from BOTH role meta-classes — opda:Role for the sortal Proprietor AND
+    # opda:RoleMixin for the cross-sortal Seller/Buyer, which are SIBLINGS per
+    # ODR-0006 §Q2, not a parent-child pair) and rdfs:range opda:Person ,
+    # opda:Organisation (the bearer). Both are MULTIPLE triples read
+    # DISJUNCTIVELY ("any-of") per the module-header convention, NOT the RDFS
+    # §3.2 conjunction; authored as documentary AI-signal and NEVER entailed
+    # (the frozen closure consumes no domain/range — ADR-0035 proves zero
+    # domain/range triples materialise, so `rdfs:range opda:Person ,
+    # opda:Organisation` does NOT entail every bearer is a Person). The
+    # AUTHORITATIVE disjunction stays in SHACL `sh:or` (subject:
+    # opda:RolePlaySubjectShape; bearer: opda:RolePlayShape / opda:SellerShape /
+    # opda:BuyerShape); owl:unionOf is NOT used (excluded construct, ODR-0030).
+    # OPTIONAL / distinct-node-only: the SHACL shapes carry NO sh:minCount, so a
+    # co-typed role with no distinct bearer node is conformant and no vacuous
+    # self-edge `?x playedBy ?x` is forced (Council session-047 Q4 / Davis
+    # condition). opda:plays is the owl:inverseOf for query-from-either-end
+    # without inverse inference.
     g.add((OPDA.playedBy, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.playedBy, OWL.inverseOf, OPDA.plays))
+    g.add((OPDA.playedBy, RDFS.domain, OPDA.Role))
+    g.add((OPDA.playedBy, RDFS.domain, OPDA.RoleMixin))
+    g.add((OPDA.playedBy, RDFS.range, OPDA.Person))
+    g.add((OPDA.playedBy, RDFS.range, OPDA.Organisation))
     g.add((OPDA.playedBy, RDFS.label, Literal("played by", lang="en")))
     g.add((OPDA.playedBy, RDFS.comment, Literal(
         "Role → bearer navigable edge: the Person or Organisation that plays "
-        "this Role qua-individual. NO rdfs:domain — the subject is an opda:Role "
-        "(Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role "
-        "meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL "
-        "opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer "
-        "disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape "
-        "/ opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which "
-        "would entail every bearer is a Person — Hendler). OPTIONAL / "
-        "distinct-node-only per Council session-047 Q4: emitted only where the "
-        "role qua-individual is a node distinct from its bearer; never a "
-        "self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed "
-        "encoding is the canonical IC, this is the navigable link for the "
-        "distinct-node case (a qua-individual, prov:Agent-attested participant). "
-        "Inverse: opda:plays.",
+        "this Role qua-individual. Documentary \"any-of\" domain/range "
+        "(ODR-0032 §R2 session-050 amendment; schema.org domainIncludes idiom): "
+        "rdfs:domain opda:Role , opda:RoleMixin (the subject is an opda:Role — "
+        "Proprietor — OR an opda:RoleMixin — Seller/Buyer — sibling role "
+        "meta-classes) and rdfs:range opda:Person , opda:Organisation (the "
+        "bearer), each MULTIPLE triples read DISJUNCTIVELY per the module-header "
+        "convention, NOT the RDFS §3.2 conjunction. Authored as AI-signal, "
+        "NEVER entailed (zero domain/range triples materialise, ADR-0035 — so "
+        "the range does NOT entail every bearer is a Person). The authoritative "
+        "disjunctions live in SHACL sh:or (subject: opda:RolePlaySubjectShape; "
+        "bearer: opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT "
+        "owl:unionOf (excluded construct). OPTIONAL / distinct-node-only per "
+        "Council session-047 Q4: emitted only where the role qua-individual is "
+        "a node distinct from its bearer; never a self-edge. Coexists with role "
+        "co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, "
+        "this is the navigable link for the distinct-node case (a qua-individual, "
+        "prov:Agent-attested participant). Inverse: opda:plays.",
         lang="en",
     )))
     g.add((OPDA.playedBy, SKOS.scopeNote, Literal(
@@ -396,16 +463,26 @@ def build_graph() -> Graph:
 
     g.add((OPDA.plays, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.plays, OWL.inverseOf, OPDA.playedBy))
+    g.add((OPDA.plays, RDFS.domain, OPDA.Person))
+    g.add((OPDA.plays, RDFS.domain, OPDA.Organisation))
+    g.add((OPDA.plays, RDFS.range, OPDA.Role))
+    g.add((OPDA.plays, RDFS.range, OPDA.RoleMixin))
     g.add((OPDA.plays, RDFS.label, Literal("plays", lang="en")))
     g.add((OPDA.plays, RDFS.comment, Literal(
         "Bearer → Role inverse of opda:playedBy: the Role a Person or "
-        "Organisation plays. No rdfs:domain/rdfs:range — bearer-typing on the "
-        "subject and Role-typing on the object are carried by the opda:playedBy "
-        "SHACL shapes (the inverse direction shares the same closed-world "
-        "constraints; asserting rdfs:domain (Person∪Organisation) here would "
-        "re-introduce the union-entailment anti-pattern). Emitted as the "
-        "navigable inverse so consumers query from either end without "
-        "inverse-property inference (ODR-0029/0030 — UFO layer inert at load).",
+        "Organisation plays. Documentary \"any-of\" domain/range (the mirror "
+        "of opda:playedBy; ODR-0032 §R2 session-050 amendment): rdfs:domain "
+        "opda:Person , opda:Organisation (the bearer subject) and rdfs:range "
+        "opda:Role , opda:RoleMixin (the role object), each MULTIPLE triples "
+        "read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 "
+        "conjunction. Authored as AI-signal, NEVER entailed (zero domain/range "
+        "triples materialise, ADR-0035 — so the domain does NOT entail every "
+        "bearer is a Person). The authoritative subject/object disjunctions are "
+        "carried by the opda:playedBy SHACL shapes (the inverse direction "
+        "shares the same closed-world constraints); owl:unionOf is NOT used. "
+        "Emitted as the navigable inverse so consumers query from either end "
+        "without inverse-property inference (ODR-0029/0030 — UFO layer inert at "
+        "load).",
         lang="en",
     )))
     g.add((OPDA.plays, SKOS.scopeNote, Literal(

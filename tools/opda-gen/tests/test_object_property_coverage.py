@@ -18,7 +18,7 @@ over the committed corpus skips when the module TTLs are absent.
 from __future__ import annotations
 
 from rdflib import BNode, Graph, Literal, Namespace
-from rdflib.namespace import OWL, RDF, RDFS
+from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
 from opda_gen.ci.competency_query_test import (
     R2_GATED_INVENTORY,
@@ -33,6 +33,7 @@ from opda_gen.ci.object_property_coverage_test import (
     build_report,
     extract_object_property_facts,
     extract_shape_facts,
+    modules_with_convention_note,
     run,
 )
 from opda_gen.inputs.object_property_residue import (
@@ -83,41 +84,107 @@ def test_range_pinned_passes_via_owl_limb() -> None:
 
 
 # ---------------------------------------------------------------------------
-# build_report — limb (b): not-universally-true rdfs:domain
+# build_report — limb (b): INVERTED (Council session-050; ODR-0032 §Confirmation)
+# documentary "any-of" multi-domain/range is REQUIRED, with a SHACL sh:or dual
+# + the module convention note; FP/IFP are excluded.
 # ---------------------------------------------------------------------------
-def test_subject_bearer_predicate_with_domain_is_a_violation() -> None:
-    """A subject-bearer predicate (hasAddress) carrying a single rdfs:domain is
-    not-universally-true — bearer-typing belongs in SHACL sh:or (limb b)."""
+def test_disjunction_predicate_without_sh_or_dual_is_a_violation() -> None:
+    """A documentary "any-of" disjunction predicate (multi-domain, e.g. the
+    bearer-extended hasAddress) WITHOUT a matching SHACL sh:or value-type dual is
+    a limb-(b) violation — the dual is now REQUIRED (the inversion)."""
     ops = {
         "hasAddress": ObjectPropertyFacts(
-            "hasAddress", has_range=True, domain_classes=frozenset({"Property"})
+            "hasAddress",
+            has_range=True,
+            domain_classes=frozenset({"Property", "Person", "Organisation"}),
+        )
+    }
+    # SHACL-pinned on the range (limb a passes) but NO sh:or disjunction dual.
+    report = build_report(
+        ops, ShapeFacts(shacl_pinned=frozenset({"hasAddress"})), residue={}
+    )
+    assert "hasAddress" in report.disjunction_without_sh_or
+    assert not report.is_complete
+    assert any("NO matching SHACL sh:or" in v for v in report.violations)
+
+
+def test_disjunction_predicate_with_sh_or_dual_passes() -> None:
+    """A documentary "any-of" disjunction predicate (multi-range founds /
+    multi-domain hasAddress) WITH its SHACL sh:or dual + the convention note
+    PASSES — multi-domain/range is required, not forbidden (the inversion)."""
+    ops = {
+        "founds": ObjectPropertyFacts(
+            "founds",
+            has_range=True,
+            range_classes=frozenset({"Role", "RoleMixin"}),
+        ),
+        "hasAddress": ObjectPropertyFacts(
+            "hasAddress",
+            has_range=True,
+            domain_classes=frozenset({"Property", "Person", "Organisation"}),
+        ),
+    }
+    shapes = ShapeFacts(
+        shacl_pinned=frozenset({"founds", "hasAddress"}),
+        sh_or_dual=frozenset({"founds", "hasAddress"}),
+    )
+    report = build_report(ops, shapes, residue={}, convention_note_present=True)
+    assert report.disjunction_without_sh_or == {}
+    assert report.disjunction_without_convention == {}
+    assert report.is_complete
+
+
+def test_disjunction_predicate_without_convention_note_is_a_violation() -> None:
+    """A disjunction predicate present while the module-header "any-of"
+    convention note is ABSENT is a limb-(b) violation (the CI-gated MUST,
+    Council session-050 Q1)."""
+    ops = {
+        "founds": ObjectPropertyFacts(
+            "founds", has_range=True, range_classes=frozenset({"Role", "RoleMixin"})
+        )
+    }
+    shapes = ShapeFacts(
+        shacl_pinned=frozenset({"founds"}), sh_or_dual=frozenset({"founds"})
+    )
+    report = build_report(
+        ops, shapes, residue={}, convention_note_present=False
+    )
+    assert "founds" in report.disjunction_without_convention
+    assert not report.is_complete
+    assert any("convention note is absent" in v for v in report.violations)
+
+
+def test_single_domain_predicate_is_not_a_disjunction() -> None:
+    """A single-domain / single-range edge (mediates, concernsProperty) is NOT a
+    disjunction predicate: it carries a plain rdfs:domain/rdfs:range and needs no
+    sh:or dual (the auto-derived single sh:class shape is its dual)."""
+    ops = {
+        "mediates": ObjectPropertyFacts(
+            "mediates",
+            has_range=True,
+            domain_classes=frozenset({"Proprietorship"}),
+            range_classes=frozenset({"Proprietor"}),
+        ),
+    }
+    report = build_report(ops, ShapeFacts(), residue={})
+    assert report.disjunction_without_sh_or == {}
+    assert report.is_complete
+
+
+def test_functional_property_is_excluded_construct_violation() -> None:
+    """An object property authored owl:FunctionalProperty / IFP is a limb-(b)
+    violation (the ADR-0049 FP/IFP carve-out)."""
+    ops = {
+        "hasUPRN": ObjectPropertyFacts(
+            "hasUPRN",
+            has_range=True,
+            excluded_constructs=frozenset({"InverseFunctionalProperty"}),
         )
     }
     report = build_report(ops, ShapeFacts(), residue={})
-    assert report.not_universally_true_domain == {"hasAddress": "Property"}
+    assert report.excluded_construct == {"hasUPRN": "InverseFunctionalProperty"}
     assert not report.is_complete
-    assert any("not-universally-true rdfs:domain" in v for v in report.violations)
-
-
-def test_single_subject_predicate_with_domain_passes() -> None:
-    """playedBy/hasParticipant are EXCLUDED from the subject-bearer set: their
-    disjunction is on the OBJECT side and their subject domain (Role /
-    Transaction) is universally true, so a domain on them is legitimate."""
-    ops = {
-        "playedBy": ObjectPropertyFacts(
-            "playedBy", has_range=False, domain_classes=frozenset({"Role"})
-        ),
-        "hasParticipant": ObjectPropertyFacts(
-            "hasParticipant",
-            has_range=False,
-            domain_classes=frozenset({"Transaction"}),
-        ),
-    }
-    # Both SHACL-pinned on the object (sh:or / sh:class), so limb (a) passes.
-    shapes = ShapeFacts(shacl_pinned=frozenset({"playedBy", "hasParticipant"}))
-    report = build_report(ops, shapes, residue={})
-    assert report.not_universally_true_domain == {}
-    assert report.is_complete
+    assert any("FP/IFP are excluded" in v for v in report.violations)
 
 
 # ---------------------------------------------------------------------------
@@ -255,6 +322,68 @@ def test_shacl_pin_via_sh_or_disjunction() -> None:
     assert "playedBy" in facts.shacl_pinned
 
 
+def test_sh_or_dual_via_target_objects_of() -> None:
+    """sh_or_dual: an object-targeting node shape (FoundsRangeShape /
+    HasParticipantRangeShape) carrying sh:or [sh:class Role][sh:class RoleMixin]
+    is the authoritative disjunction dual."""
+    g = Graph()
+    shape = OPDA["shape/FoundsRangeShape"]
+    g.add((shape, RDF.type, SH.NodeShape))
+    g.add((shape, SH.targetObjectsOf, OPDA.founds))
+    m1, m2 = BNode(), BNode()
+    g.add((m1, SH["class"], OPDA.Role))
+    g.add((m2, SH["class"], OPDA.RoleMixin))
+    lst, tail = BNode(), BNode()
+    g.add((lst, RDF.first, m1))
+    g.add((lst, RDF.rest, tail))
+    g.add((tail, RDF.first, m2))
+    g.add((tail, RDF.rest, RDF.nil))
+    g.add((shape, SH["or"], lst))
+    facts = extract_shape_facts(g)
+    assert "founds" in facts.sh_or_dual
+
+
+def test_sh_or_dual_via_target_subjects_of() -> None:
+    """sh_or_dual: a SUBJECT-targeting node shape (HasAddressBearerShape /
+    RolePlaySubjectShape) carrying a node-level sh:or is a disjunction dual — the
+    subject-side bearer disjunction limb (b) accepts."""
+    g = Graph()
+    shape = OPDA["shape/HasAddressBearerShape"]
+    g.add((shape, RDF.type, SH.NodeShape))
+    g.add((shape, SH.targetSubjectsOf, OPDA.hasAddress))
+    m1, m2 = BNode(), BNode()
+    g.add((m1, SH["class"], OPDA.Property))
+    g.add((m2, SH["class"], OPDA.Person))
+    lst, tail = BNode(), BNode()
+    g.add((lst, RDF.first, m1))
+    g.add((lst, RDF.rest, tail))
+    g.add((tail, RDF.first, m2))
+    g.add((tail, RDF.rest, RDF.nil))
+    g.add((shape, SH["or"], lst))
+    facts = extract_shape_facts(g)
+    assert "hasAddress" in facts.sh_or_dual
+
+
+def test_modules_with_convention_note_present_and_absent() -> None:
+    """modules_with_convention_note: True when an ontology header carries the
+    any-of/documentary editorialNote; False when a header is present without
+    it; True (vacuous) when no ontology node exists."""
+    present = Graph()
+    onto = OPDA["graph/agent"]
+    present.add((onto, RDF.type, OWL.Ontology))
+    present.add((onto, SKOS.editorialNote, Literal(
+        "Documentary domain/range convention: … read as \"any-of\" …", lang="en"
+    )))
+    assert modules_with_convention_note(present) is True
+
+    absent = Graph()
+    absent.add((onto, RDF.type, OWL.Ontology))
+    absent.add((onto, SKOS.editorialNote, Literal("some other note", lang="en")))
+    assert modules_with_convention_note(absent) is False
+
+    assert modules_with_convention_note(Graph()) is True  # vacuous
+
+
 def test_vacuous_retraversal_is_not_pinned() -> None:
     """GUARD (Council session-047 as-built): a node shape whose focus is
     sh:targetObjectsOf <pred> that nests sh:property[sh:path <pred>] re-traverses
@@ -307,18 +436,38 @@ def test_shacl_path_without_value_type_is_not_pinned() -> None:
 # extract_object_property_facts — class-graph extraction
 # ---------------------------------------------------------------------------
 def test_extract_object_property_facts_range_and_domain() -> None:
-    """Pull rdfs:range presence + rdfs:domain opda: locals from the class
-    graph; non-opda: subjects ignored."""
+    """Pull rdfs:range presence + rdfs:domain/range opda: locals + FP/IFP
+    constructs from the class graph; non-opda: subjects ignored."""
     g = Graph()
     g.add((OPDA.concernsProperty, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.concernsProperty, RDFS.domain, OPDA.Transaction))
     g.add((OPDA.concernsProperty, RDFS.range, OPDA.Property))
-    g.add((OPDA.founds, RDF.type, OWL.ObjectProperty))  # rangeless
+    # founds: documentary any-of multi-range (the session-050 emission).
+    g.add((OPDA.founds, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.founds, RDFS.domain, OPDA.Relator))
+    g.add((OPDA.founds, RDFS.range, OPDA.Role))
+    g.add((OPDA.founds, RDFS.range, OPDA.RoleMixin))
     facts = extract_object_property_facts(g)
     assert facts["concernsProperty"].has_range is True
     assert facts["concernsProperty"].domain_classes == frozenset({"Transaction"})
-    assert facts["founds"].has_range is False
-    assert facts["founds"].domain_classes == frozenset()
+    assert facts["concernsProperty"].range_classes == frozenset({"Property"})
+    assert facts["concernsProperty"].is_disjunction is False
+    assert facts["founds"].has_range is True
+    assert facts["founds"].domain_classes == frozenset({"Relator"})
+    assert facts["founds"].range_classes == frozenset({"Role", "RoleMixin"})
+    assert facts["founds"].is_disjunction is True  # multi-range any-of
+
+
+def test_extract_object_property_facts_flags_fp_ifp() -> None:
+    """An object property typed owl:InverseFunctionalProperty surfaces in
+    excluded_constructs (the ADR-0049 carve-out check)."""
+    g = Graph()
+    g.add((OPDA.hasUPRN, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasUPRN, RDF.type, OWL.InverseFunctionalProperty))
+    facts = extract_object_property_facts(g)
+    assert facts["hasUPRN"].excluded_constructs == frozenset(
+        {"InverseFunctionalProperty"}
+    )
 
 
 # ---------------------------------------------------------------------------

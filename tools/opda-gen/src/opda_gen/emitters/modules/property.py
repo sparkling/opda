@@ -245,6 +245,31 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
            URIRef("https://opda.org.uk/pdtf/harness/release/property/1.1.0/")))
+    # The "any-of" documentary-domain/range convention (Council session-050 Q1
+    # binding rider; ADR-0049; ODR-0032 §R1 session-050 amendment). opda:has-
+    # Address carries MULTIPLE rdfs:domain triples (opda:Property , opda:Person ,
+    # opda:Organisation) read as "any-of" (the schema.org domainIncludes / hm
+    # ODR-0014 idiom), NOT the RDF Schema 1.1 §3.2 conjunction. Authored as
+    # documentary AI-signal per ODR-0026 §R2 and NEVER entailed — the frozen
+    # 7-rule closure (ODR-0025 §R1) consumes no rdfs:domain/range, so ADR-0035
+    # proves zero domain/range triples materialise. The authoritative
+    # disjunction is SHACL sh:or (opda:HasAddressBearerShape); owl:unionOf is
+    # NOT used (excluded construct, ODR-0030).
+    g.add((module_iri, SKOS.editorialNote, Literal(
+        "Documentary domain/range convention (ODR-0026 §R2; ODR-0032 §R1; "
+        "Council session-050 Q1): rdfs:domain/rdfs:range on the object "
+        "properties of this module are authored as documentary AI-signal and "
+        "are NEVER entailed (the frozen 7-rule closure, ODR-0025 §R1, consumes "
+        "no domain/range; ADR-0035 proves zero domain/range triples "
+        "materialise). Where one property carries MULTIPLE rdfs:domain or "
+        "rdfs:range triples (opda:hasAddress — rdfs:domain opda:Property , "
+        "opda:Person , opda:Organisation) they read as \"any-of\" (the "
+        "schema.org domainIncludes idiom; hm ODR-0014), NOT the RDF Schema 1.1 "
+        "§3.2 conjunction. SHACL sh:or is the authoritative disjunction "
+        "(opda:HasAddressBearerShape); owl:unionOf is NOT used (excluded "
+        "construct, ODR-0030).",
+        lang="en",
+    )))
 
     # --- opda:Property — UFO Substance Kind (ODR-0005 §2a) --------------
     g.add((OPDA.Property, RDF.type, OWL.Class))
@@ -493,20 +518,30 @@ def build_graph() -> Graph:
     g.add((OPDA.tenureKind, DCTERMS.source, _ODR_0008_S5A))
 
     # --- ObjectProperty: opda:hasAddress (ODR-0015 §3a; ODR-0005 §6b; ODR-0032) -
-    # Council session-047 Q6: extend the bearer to Person/Organisation by
-    # DROPPING the Property-only rdfs:domain — bearer-typing pushes to SHACL
-    # (opda:HasAddressBearerShape, sh:or [Property|Person|Organisation]),
-    # because a single rdfs:domain opda:Property would entail every
-    # address-bearing Person/Organisation is a Property (Hendler's
-    # everything-becomes-a-X anti-pattern). rdfs:range opda:Address is KEPT
-    # (single co-domain, universally true). The opda:Address class/IC is NOT
-    # re-settled here — Mode-vs-Resource stays ODR-0015's open question
-    # (RESIDUE-PENDING; the coverage gate must not manufacture an Address class).
-    # NB: dropping rdfs:domain removes this predicate's auto-derived
-    # opda:hasAddressDomainShape (build_domain_range_constraint_shapes, ODR-0029
-    # R3); opda:HasAddressBearerShape replaces it. The rdfs:range opda:Address
-    # auto-derived opda:hasAddressRangeShape is retained.
+    # Bearer → Address join, bearer-extended to Property/Person/Organisation
+    # (Council session-047 Q6). Documentary "any-of" domain (ODR-0032 §R1/§R2
+    # session-050 amendment; the schema.org domainIncludes idiom, hm ODR-0014):
+    # rdfs:domain opda:Property , opda:Person , opda:Organisation — three triples
+    # read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2
+    # conjunction. Authored as documentary AI-signal and NEVER entailed (the
+    # frozen closure consumes no domain — ADR-0035 proves zero domain/range
+    # triples materialise, so `rdfs:domain opda:Property , …` does NOT entail
+    # every addressed Person/Organisation is a Property). The AUTHORITATIVE
+    # bearer disjunction stays in SHACL sh:or (opda:HasAddressBearerShape,
+    # sh:or [Property|Person|Organisation]); owl:unionOf is NOT used (excluded
+    # construct, ODR-0030). rdfs:range opda:Address is KEPT (single co-domain →
+    # plain), with its auto-derived opda:hasAddressRangeShape retained. The
+    # opda:Address class/IC is NOT re-settled here — Mode-vs-Resource stays
+    # ODR-0015's open question (RESIDUE-PENDING; the coverage gate must not
+    # manufacture an Address class). NB: the multi-domain "any-of" is EXCLUDED
+    # from the single-sh:class auto-derivation (build_domain_range_constraint_-
+    # shapes skips multi-domain/range predicates — a conjunctive multi-sh:class
+    # shape would be wrong for an any-of predicate); opda:HasAddressBearerShape
+    # is the authoritative bearer dual.
     g.add((OPDA.hasAddress, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasAddress, RDFS.domain, OPDA.Property))
+    g.add((OPDA.hasAddress, RDFS.domain, OPDA.Person))
+    g.add((OPDA.hasAddress, RDFS.domain, OPDA.Organisation))
     g.add((OPDA.hasAddress, RDFS.range, OPDA.Address))
     g.add((OPDA.hasAddress, RDFS.label, Literal("has address", lang="en")))
     g.add((OPDA.hasAddress, RDFS.comment, Literal(
@@ -515,11 +550,16 @@ def build_graph() -> Graph:
         "across variants — one bearer may hasAddress multiple Address "
         "instances differing on opda:addressVariant (title / marketing / "
         "inspire). Per Council session-047 Q6 the predicate is bearer-extended "
-        "to Person/Organisation: no rdfs:domain (a single Property-only domain "
-        "would entail every addressed Person is a Property — Hendler); "
-        "bearer-typing (Property∪Person∪Organisation) lives in SHACL "
-        "opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address "
-        "class/IC stays ODR-0015-pending (Mode-vs-Resource open).",
+        "to Person/Organisation. Documentary \"any-of\" domain (ODR-0032 §R2 "
+        "session-050 amendment): rdfs:domain opda:Property , opda:Person , "
+        "opda:Organisation — three triples read DISJUNCTIVELY per the "
+        "module-header convention, NOT the RDFS §3.2 conjunction; authored as "
+        "AI-signal, NEVER entailed (zero domain/range triples materialise, "
+        "ADR-0035 — so the domain does NOT entail every addressed Person is a "
+        "Property). The authoritative bearer disjunction lives in SHACL sh:or "
+        "(opda:HasAddressBearerShape), NOT owl:unionOf. rdfs:range opda:Address "
+        "kept (single co-domain); the Address class/IC stays ODR-0015-pending "
+        "(Mode-vs-Resource open).",
         lang="en",
     )))
     g.add((OPDA.hasAddress, DCTERMS.source, _ODR_0015_S3A))
