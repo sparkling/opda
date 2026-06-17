@@ -204,15 +204,19 @@ async function main() {
       FILTER(isIRI(?member) && STRSTARTS(STR(?member), "${BASE}"))
     }`);
 
-  // 6c. SHACL-derived object-property edges (Council session-047 / ADR-0048) --
-  // founds/mediates/playedBy/hasParticipant/hasAddress carry their subject/object
-  // typing in SHACL (sh:or / sh:class), NOT OWL rdfs:domain/range — the council
-  // deliberately kept it out of OWL to avoid mis-entailment ("everything with a
-  // name is a Person"). But the class→class diagram (/ontology/classes) and the
-  // graph derive edges from domain/range, so without recovering the SHACL types
-  // these relationship-layer classes render as standalone boxes. Recover the
-  // effective subject/object classes from the shapes graph (opda-base IRIs only)
-  // and merge them into the object properties' domain/range when assembling.
+  // 6c. SHACL-derived object-property edges — belt-and-braces (ADR-0049 / Council
+  // session-050 Q4 keep-decision; supersedes the session-047 framing).
+  // founds/mediates/playedBy/plays/hasParticipant/hasAddress NOW carry documentary
+  // rdfs:domain/range (authored AI-signal, NEVER entailed — the frozen closure adds
+  // zero domain/range triples, ADR-0035), so the class→class diagram (/ontology/classes)
+  // and the graph derive the single-class edges NATIVELY. This SHACL recovery is
+  // RETAINED as belt-and-braces, NOT reverted, because the DISJUNCTIVE ("any-of")
+  // properties (playedBy/plays/hasParticipant/hasAddress) carry their authoritative
+  // per-class typing in SHACL sh:or, and documentary multi-domain/range alone
+  // under-determines the precise per-class edge — so recovering the sh:or members
+  // keeps every relationship class connected. The merge is idempotent with the native
+  // domain/range edges. Recover effective subject/object classes from the shapes
+  // graph (opda-base IRIs only) and merge into the object properties' domain/range.
   const inBase =
     `FILTER(isIRI(?cls) && STRSTARTS(STR(?cls), "${BASE}") && STRSTARTS(STR(?p), "${BASE}"))`;
   // Subject (domain) classes: a node shape's sh:targetClass that carries a
