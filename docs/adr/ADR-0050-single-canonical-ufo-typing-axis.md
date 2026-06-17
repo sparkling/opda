@@ -63,6 +63,8 @@ Council session-049 found the proposition's **headline was stale and its expensi
 
 ## Outstanding work and open tasks
 
+**ALL DONE (2026-06-17, commits `4589bb3` + the records): implemented, verified, full `make ci` green.** Items 1–7 below all landed — the invariant is stated (this ADR §Decision Outcome); `g(ufoCategory)` replaces the hand-table (values derived, docstring no longer lies; byte-identity held — the emitted 8 tags unchanged, proven by the `.py`-only commit); the axis-consistency check (three-graph check 10) + edge-targeted growth-frontier guard (check 11) ship green with positive controls; `SpecialCategoryScheme` exemption recorded; session-049 record + `adoption.md` row written. The corpus-wide rigidity-vector population stays REJECTED (Davis's edge-participant scope held).
+
 1. **State the single-axis invariant** (scoped to first-order universals) in the doctrine ODR / ADR.
 2. **Add the axis-consistency meta-shape** over the 8 tagged classes.
 3. **Add the edge-targeted growth-frontier guard** (required for soundness).
