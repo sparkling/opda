@@ -51,8 +51,10 @@ opda-x:buyer-person  a opda:Person ; rdfs:label "Robert Khan (buyer)" .
 
 # Each Role names its bearer via opda:playedBy (Role → Person/Org, ODR-0006 §Q2 /
 # ODR-0032 §R2; Council session-047 Q4 — the qua-individual navigable edge). The
-# bearer→role direction opda:plays is asserted on the seller (the navigable
-# inverse; both directions emitted per the bidirectional convention).
+# inverse opda:plays is NOT asserted in the ABox: it is the declared
+# owl:inverseOf opda:playedBy, so asserting both directions would be the
+# denormalisation drift the council warned against (Q4) — the coverage gate
+# records opda:plays as covered-via-inverse(opda:playedBy).
 opda-x:seller-role
     a opda:Seller ;
     rdfs:label "Seller Role borne by Diana Foster in this transaction" ;
@@ -62,8 +64,6 @@ opda-x:buyer-role
     a opda:Buyer ;
     rdfs:label "Buyer Role borne by Robert Khan in this transaction" ;
     opda:playedBy opda-x:buyer-person .
-
-opda-x:seller-person opda:plays opda-x:seller-role .
 
 # Transaction (UFO Relator per Q1; S007 §Rules Transaction-as-Relator IC over 5 hard cases).
 # opda:founds — the Relator founds its Seller/Buyer Roles (ODR-0006 §Q3 relator
