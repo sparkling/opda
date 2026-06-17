@@ -92,6 +92,47 @@ Do **NOT** author `owl:InverseFunctionalProperty` (out entirely) or a general `o
 
 A multi-bearer ("any-of") domain is authored as **repeated `rdfs:domain`** read as a disjunction (the `domainIncludes`-in-RDFS idiom), under a CI-gated module-header convention note and a per-property `rdfs:comment`, with the authoritative per-class disjunction carried in SHACL `sh:or`. `owl:unionOf` is **not** used — it is an excluded boolean class constructor, and a union of mutually disjoint sortals reifies a non-sortal that carries no identity criterion. This keeps the corpus boolean-constructor-free.
 
+### R6 — Permitted/excluded OWL-construct table (re-keyed to OPDA's frozen closure)
+
+This is the per-construct disposition for every OWL/RDFS modelling construct OPDA may encounter — the ODR-0030-adopted construct table from the sibling `semantic-modelling` corpus, **re-keyed to OPDA's frozen 7-rule closure** ([ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1). OPDA's **documentary-only band is LARGER than hm's**: hm runs disjointness (and more) as inference, whereas OPDA *validates* disjointness via SHACL + the ADR-0035 consistency gate and infers it never. Three bands:
+
+**Permitted + inferred** (the 7-rule closure, [ODR-0025](ODR-0025-entailment-regime-and-inference-semantics.md) §R1 — the *only* constructs OPDA reasons over):
+
+| Construct | Closure rule |
+|---|---|
+| `rdfs:subClassOf` | transitivity + type-propagation |
+| `rdfs:subPropertyOf` | transitivity + value-propagation |
+| `owl:inverseOf` | inverse materialisation |
+| `owl:TransitiveProperty` | transitive closure |
+| `owl:SymmetricProperty` | symmetric materialisation |
+
+**Permitted + documentary-only (authored as AI-signal, NEVER inferred — R1/R2):**
+
+| Construct | Where it lives / how it is checked |
+|---|---|
+| `rdfs:domain` | documentary; closed-world SHACL `sh:class`/`sh:or` (R2 — agrees) |
+| `rdfs:range` | documentary; closed-world SHACL `sh:class`/`sh:or` (R2 — agrees) |
+| `owl:disjointWith` | scoped (R2/§Confirmation); checked by the ADR-0035 consistency gate, **not** inferred; `Person`/`Organisation` alone now (ADR-0049 / session-050) |
+| `owl:equivalentClass` | documentary only |
+| `owl:equivalentProperty` | documentary only |
+| `owl:FunctionalProperty` | narrow **hand-curated world-fact singleton only** (R4); no general documentary layer — the home for uniqueness is SHACL `sh:maxCount 1` / `dash:uniqueValueForClass` |
+
+**Excluded entirely (never authored — neither inferred nor documentary):**
+
+| Construct | Excluded because |
+|---|---|
+| `owl:InverseFunctionalProperty` | asserts the negation of [ODR-0005](ODR-0005-property-land-identity-crux.md)'s bounded-context-identity ruling (R4) |
+| `owl:Restriction` | OWL class-expression constructor; not in the closure |
+| `owl:unionOf` | boolean class constructor; the disjunction form is repeated `rdfs:domain` (R5) |
+| `owl:intersectionOf` | boolean class constructor |
+| `owl:complementOf` | boolean class constructor |
+| `owl:cardinality` / `owl:minCardinality` / `owl:maxCardinality` / `owl:qualifiedCardinality` / `owl:minQualifiedCardinality` / `owl:maxQualifiedCardinality` | OWL cardinality restrictions; counting is SHACL `sh:minCount`/`sh:maxCount` |
+| `owl:oneOf` | enumeration class constructor; enumerations are SKOS `skos:Concept` + SHACL `sh:in` |
+| `owl:hasKey` | a key is IFP-adjacent; identity is bounded-context per [ODR-0005](ODR-0005-property-land-identity-crux.md) |
+| `owl:disjointUnionOf` | combines `unionOf` + disjointness, both handled above |
+
+**CI enforcement.** The **excluded** band is enforced corpus-wide by the `ci-excluded-construct` meta-shape gate (ADR-0049 task 4): it fails if ANY excluded construct appears anywhere in the class graph, detected as a real triple component (a predicate, or the object of an `rdf:type` axiom) — never as a substring of an annotation literal, so this record's own prose mentions of e.g. `owl:unionOf` do not trip it. This generalises the FP/IFP limb (b3) of the `ci-object-property-coverage` gate (which catches FP/IFP on object properties only) to the full excluded set, corpus-wide. The corpus has **zero** excluded constructs today, so the gate passes and arms drift protection. `owl:FunctionalProperty` is **not** failed corpus-wide (a hand-curated singleton is admissible, R4); its object-property carve-out is enforced narrowly by `ci-object-property-coverage` limb (b3).
+
 ## More Information
 
 - **Consolidates (these records keep their decisions; this names their shared doctrine):**

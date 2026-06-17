@@ -872,6 +872,184 @@ def ci_object_property_coverage(ontology_dir: Path | None, strict: bool) -> None
         )
 
 
+@main.command(name="ci-excluded-construct")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the class-graph module TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+def ci_excluded_construct(ontology_dir: Path | None) -> None:
+    """Run the ADR-0049 task 4 corpus-wide excluded-construct gate (ODR-0033).
+
+    Fails if ANY ODR-0033-excluded OWL construct (owl:InverseFunctionalProperty,
+    owl:Restriction, owl:unionOf, owl:intersectionOf, owl:complementOf, the OWL
+    cardinality restrictions, owl:oneOf, owl:hasKey, owl:disjointUnionOf) appears
+    anywhere in the corpus class graph, on any subject. Generalises the FP/IFP
+    limb (b3) of ci-object-property-coverage to the full excluded set,
+    corpus-wide. Each construct is detected as a real triple component (a
+    predicate, or the object of an rdf:type axiom) — never as a substring of an
+    annotation literal, so prose mentions of the convention do not trip it.
+    """
+    from opda_gen.ci.excluded_construct_test import run_all
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    violations = run_all(target)
+    if violations:
+        for v in violations:
+            click.echo(f"EXCLUDED-CONSTRUCT VIOLATION: {v}", err=True)
+        sys.exit(1)
+    click.echo(
+        "excluded-construct CI: PASS (corpus class graph free of all "
+        "ODR-0033-excluded OWL constructs)"
+    )
+
+
+def _report_coverage_gate(
+    report: "object | None",
+    *,
+    unavailable_msg: str,
+    pass_msg: str,
+    strict: bool,
+    violation_tag: str,
+    max_gaps: int = 40,
+) -> None:
+    """Shared warning-first → violation reporter for a decision-4 coverage gate.
+
+    Prints coverage X/Y; if complete, PASS (and `strict` may fail on a future
+    gap). If gaps remain, REPORT the gap list at WARNING severity and PASS —
+    `strict` does NOT bite (ADR-0049 decision 4: warning-first, no emitter
+    backfill). Imported lazily by each gate command to keep the dataclass type
+    out of the module top-level.
+    """
+    if report is None:
+        click.echo(unavailable_msg)
+        return
+    pct = (100.0 * report.covered / report.total) if report.total else 0.0
+    click.echo(
+        f"{report.label}: {report.covered}/{report.total} covered ({pct:.1f}%)"
+    )
+    if report.is_complete:
+        click.echo(pass_msg)
+        return
+    # Gaps remain → warning-first: report the gap list, PASS (exit 0).
+    shown = report.gaps[:max_gaps]
+    click.echo(
+        f"  WARNING ({len(report.gaps)} gap(s) — reported, NOT failing CI; "
+        "schedule emitter backfill, do not break byte-identity):"
+    )
+    click.echo("    " + ", ".join(shown))
+    if len(report.gaps) > len(shown):
+        click.echo(f"    ... and {len(report.gaps) - len(shown)} more")
+    if strict:
+        click.echo(
+            f"  ({violation_tag} is warning-first: gaps present → PASS at "
+            "exit 0 even under --strict, until coverage reaches 100%.)"
+        )
+
+
+@main.command(name="ci-description-coverage")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the class-graph module TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help=(
+        "Arm the warning→violation flip: once coverage is 100%, fail on any "
+        "regression. While gaps remain the gate PASSES (warning-first, "
+        "ADR-0049 decision 4 — no emitter backfill)."
+    ),
+)
+def ci_description_coverage(ontology_dir: Path | None, strict: bool) -> None:
+    """Run the ADR-0049 decision-4 ci-description-coverage gate (warning-first).
+
+    Measures `skos:definition`@en coverage over every opda: class AND
+    owl:*Property (hm ODR-0042 pattern). If 100% it is a hard gate; if gaps
+    remain it reports the gap list at warning severity and PASSES (does NOT
+    fail CI, does NOT backfill the emitter — that would change the TTL and
+    break byte-identity).
+    """
+    from opda_gen.ci.description_coverage_test import run_description_coverage
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run_description_coverage(target)
+    _report_coverage_gate(
+        report,
+        unavailable_msg=(
+            "description coverage: UNAVAILABLE (module class TTLs absent)"
+        ),
+        pass_msg=(
+            "description coverage: PASS (every class + property carries "
+            "skos:definition@en)"
+        ),
+        strict=strict,
+        violation_tag="DESCRIPTION-COVERAGE",
+    )
+    if strict and report is not None and report.is_complete:
+        # 100% reached → arm drift protection (a future regression fails).
+        return
+
+
+@main.command(name="ci-isdefinedby")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the class-graph module TTLs. Defaults to "
+        "source/03-standards/ontology/ relative to the OPDA repo root."
+    ),
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help=(
+        "Arm the warning→violation flip: once coverage is 100%, fail on any "
+        "regression. While gaps remain the gate PASSES (warning-first, "
+        "ADR-0049 decision 4 — no emitter backfill)."
+    ),
+)
+def ci_isdefinedby(ontology_dir: Path | None, strict: bool) -> None:
+    """Run the ADR-0049 decision-4 ci-isDefinedBy gate (warning-first).
+
+    Measures `rdfs:isDefinedBy` → `owl:Ontology` coverage over every declared
+    opda: term (classes + properties; hm ODR-0091 pattern). If 100% it is a
+    hard gate; if gaps remain it reports the gap list at warning severity and
+    PASSES (does NOT fail CI, does NOT backfill the emitter).
+    """
+    from opda_gen.ci.description_coverage_test import run_isdefinedby
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run_isdefinedby(target)
+    _report_coverage_gate(
+        report,
+        unavailable_msg="isDefinedBy: UNAVAILABLE (module class TTLs absent)",
+        pass_msg=(
+            "isDefinedBy: PASS (every declared opda: term rdfs:isDefinedBy "
+            "an owl:Ontology)"
+        ),
+        strict=strict,
+        violation_tag="ISDEFINEDBY",
+    )
+    if strict and report is not None and report.is_complete:
+        return
+
+
 @main.command(name="ci-baspi5-roundtrip")
 @click.option(
     "--ontology-dir",
