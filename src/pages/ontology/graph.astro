@@ -18,7 +18,7 @@ const counts = model.counts;
 
 // Node fill encodes node TYPE (see _shared.js COLORS); the UFO facet is a filter,
 // not a colour. Bump clientV when the engine/orchestrator JS changes (cache-bust).
-const clientV = '6';
+const clientV = '7';
 ---
 <Layout
   title="Ontology graph — interactive bake-off"
@@ -183,6 +183,7 @@ const clientV = '6';
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/d3.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/vis-network.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/force-graph.js?v=${clientV}`}></script>
+  <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/force-graph-3d.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/g6.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/sigma.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/mermaid.js?v=${clientV}`}></script>
