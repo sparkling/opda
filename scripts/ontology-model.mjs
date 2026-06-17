@@ -204,6 +204,49 @@ async function main() {
       FILTER(isIRI(?member) && STRSTARTS(STR(?member), "${BASE}"))
     }`);
 
+  // 6c. SHACL-derived object-property edges (Council session-047 / ADR-0048) --
+  // founds/mediates/playedBy/hasParticipant/hasAddress carry their subject/object
+  // typing in SHACL (sh:or / sh:class), NOT OWL rdfs:domain/range — the council
+  // deliberately kept it out of OWL to avoid mis-entailment ("everything with a
+  // name is a Person"). But the class→class diagram (/ontology/classes) and the
+  // graph derive edges from domain/range, so without recovering the SHACL types
+  // these relationship-layer classes render as standalone boxes. Recover the
+  // effective subject/object classes from the shapes graph (opda-base IRIs only)
+  // and merge them into the object properties' domain/range when assembling.
+  const inBase =
+    `FILTER(isIRI(?cls) && STRSTARTS(STR(?cls), "${BASE}") && STRSTARTS(STR(?p), "${BASE}"))`;
+  // Subject (domain) classes: a node shape's sh:targetClass that carries a
+  // property path ?p (e.g. SellerShape targetClass Seller + sh:path playedBy →
+  // Seller plays); OR a sh:targetSubjectsOf ?p shape's node-level sh:class /
+  // sh:or members (RolePlaySubjectShape, RelatorSpineSubjectShape, HasAddressBearerShape).
+  const shaclSubjRows = await select(`
+    SELECT DISTINCT ?p ?cls WHERE {
+      GRAPH ?g {
+        ?shape a sh:NodeShape .
+        { ?shape sh:targetClass ?cls ; sh:property ?ps . ?ps sh:path ?p . }
+        UNION { ?shape sh:targetSubjectsOf ?p ; sh:class ?cls . }
+        UNION { ?shape sh:targetSubjectsOf ?p ; sh:or ?l . ?l rdf:rest*/rdf:first ?m . ?m sh:class ?cls . }
+      }
+      FILTER(?g != <${ENTAILMENT}>)
+      ${inBase}
+    }`);
+  // Object (range) classes: a sh:targetObjectsOf ?p shape's node-level sh:class /
+  // sh:or members (FoundsRangeShape, PlaysRangeShape, HasParticipantRangeShape);
+  // OR a property shape sh:path ?p carrying sh:class / sh:or members (the
+  // SellerShape / RolePlayShape / ProprietorshipMediationShape co-domain pin).
+  const shaclObjRows = await select(`
+    SELECT DISTINCT ?p ?cls WHERE {
+      GRAPH ?g {
+        ?shape a sh:NodeShape .
+        { ?shape sh:targetObjectsOf ?p ; sh:class ?cls . }
+        UNION { ?shape sh:targetObjectsOf ?p ; sh:or ?l . ?l rdf:rest*/rdf:first ?m . ?m sh:class ?cls . }
+        UNION { ?shape sh:property ?ps . ?ps sh:path ?p ; sh:class ?cls . }
+        UNION { ?shape sh:property ?ps . ?ps sh:path ?p ; sh:or ?l . ?l rdf:rest*/rdf:first ?m . ?m sh:class ?cls . }
+      }
+      FILTER(?g != <${ENTAILMENT}>)
+      ${inBase}
+    }`);
+
   // 7. dct:source provenance for every term --------------------------------
   const srcRows = await select(`
     SELECT ?s ?src WHERE { ${GRAPH('?s dct:source ?src')} FILTER(STRSTARTS(STR(?s), "${BASE}")) }`);
@@ -225,6 +268,15 @@ async function main() {
   };
   const objProps = index(objRows, (r) => r.p, collectProp);
   const dataProps = index(dataRows, (r) => r.p, collectProp);
+
+  // Merge SHACL-derived subject/object classes into the object properties'
+  // domain/range (Council session-047 / ADR-0048): the relationship-layer edges
+  // pinned in SHACL (founds/mediates/playedBy/hasParticipant/hasAddress) become
+  // visible as class→class edges on /ontology/classes + the graph, without
+  // re-introducing the OWL domain/range entailment the council avoided. Only
+  // affects object properties (datatype shapes don't match these patterns).
+  for (const r of shaclSubjRows) objProps.get(r.p)?.domain.add(r.cls);
+  for (const r of shaclObjRows) objProps.get(r.p)?.range.add(r.cls);
 
   // Index node shapes.
   const shapes = index(shapeRows, (r) => r.shape, {

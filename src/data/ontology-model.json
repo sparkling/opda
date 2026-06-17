@@ -35,7 +35,20 @@
           "predicate": "hasAddress",
           "predicateLabel": "has address",
           "predicateLocal": "hasAddress",
-          "sources": [],
+          "sources": [
+            {
+              "id": "Property",
+              "localName": "Property"
+            },
+            {
+              "id": "Person",
+              "localName": "Person"
+            },
+            {
+              "id": "Organisation",
+              "localName": "Organisation"
+            }
+          ],
           "inverse": null,
           "description": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."
         }
@@ -134,8 +147,42 @@
       "module": "agent",
       "context": "agent",
       "attributes": [],
-      "outgoing": [],
-      "incoming": [],
+      "outgoing": [
+        {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "targets": [
+            {
+              "id": "Person",
+              "localName": "Person",
+              "kind": "class"
+            },
+            {
+              "id": "Organisation",
+              "localName": "Organisation",
+              "kind": "class"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
+        }
+      ],
+      "incoming": [
+        {
+          "predicate": "hasParticipant",
+          "predicateLabel": "has participant",
+          "predicateLocal": "hasParticipant",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned)."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/BuyerShape",
@@ -1382,8 +1429,63 @@
           "description": "Bank sort code of a contact organisation. xsd:string. ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)"
         }
       ],
-      "outgoing": [],
-      "incoming": [],
+      "outgoing": [
+        {
+          "predicate": "hasAddress",
+          "predicateLabel": "has address",
+          "predicateLocal": "hasAddress",
+          "targets": [
+            {
+              "id": "Address",
+              "localName": "Address",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."
+        },
+        {
+          "predicate": "hasAssertedCapacity",
+          "predicateLabel": "has asserted capacity",
+          "predicateLocal": "hasAssertedCapacity",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority."
+        }
+      ],
+      "incoming": [
+        {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "sources": [
+            {
+              "id": "Buyer",
+              "localName": "Buyer"
+            },
+            {
+              "id": "Role",
+              "localName": "Role"
+            },
+            {
+              "id": "RoleMixin",
+              "localName": "RoleMixin"
+            },
+            {
+              "id": "Seller",
+              "localName": "Seller"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/OrganisationIdentityKeyShape",
@@ -1421,8 +1523,63 @@
           "description": "Middle name(s) of a Person legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
         }
       ],
-      "outgoing": [],
-      "incoming": [],
+      "outgoing": [
+        {
+          "predicate": "hasAddress",
+          "predicateLabel": "has address",
+          "predicateLocal": "hasAddress",
+          "targets": [
+            {
+              "id": "Address",
+              "localName": "Address",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."
+        },
+        {
+          "predicate": "hasAssertedCapacity",
+          "predicateLabel": "has asserted capacity",
+          "predicateLocal": "hasAssertedCapacity",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority."
+        }
+      ],
+      "incoming": [
+        {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "sources": [
+            {
+              "id": "Buyer",
+              "localName": "Buyer"
+            },
+            {
+              "id": "Role",
+              "localName": "Role"
+            },
+            {
+              "id": "RoleMixin",
+              "localName": "RoleMixin"
+            },
+            {
+              "id": "Seller",
+              "localName": "Seller"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/CapacityAuthorityMatchRule",
@@ -2041,6 +2198,20 @@
           "description": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."
         },
         {
+          "predicate": "hasAddress",
+          "predicateLabel": "has address",
+          "predicateLocal": "hasAddress",
+          "targets": [
+            {
+              "id": "Address",
+              "localName": "Address",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."
+        },
+        {
           "predicate": "hasBeenFlooded",
           "predicateLabel": "has been flooded",
           "predicateLocal": "hasBeenFlooded",
@@ -2151,6 +2322,20 @@
           ],
           "inverse": null,
           "description": "Holding deposit in the Property's letting information (refundable — distinct value semantics from a sale price). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
+        },
+        {
+          "predicate": "identifiesSameProperty",
+          "predicateLabel": "identifies same property",
+          "predicateLocal": "identifiesSameProperty",
+          "targets": [
+            {
+              "id": "Property",
+              "localName": "Property",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Co-reference predicate from any identity-bearing surface (RegisteredTitle, LegalEstate, Address) to the physical Property they identify. Per ODR-0005 Rule 5: NEVER use owl:sameAs (which would propagate every context's properties onto every other under inference). Domain intentionally unconstrained — any class with co-reference responsibility may emit this predicate."
         },
         {
           "predicate": "isInsured",
@@ -2339,7 +2524,12 @@
           "predicate": "identifiesSameProperty",
           "predicateLabel": "identifies same property",
           "predicateLocal": "identifiesSameProperty",
-          "sources": [],
+          "sources": [
+            {
+              "id": "Property",
+              "localName": "Property"
+            }
+          ],
           "inverse": null,
           "description": "Co-reference predicate from any identity-bearing surface (RegisteredTitle, LegalEstate, Address) to the physical Property they identify. Per ODR-0005 Rule 5: NEVER use owl:sameAs (which would propagate every context's properties onto every other under inference). Domain intentionally unconstrained — any class with co-reference responsibility may emit this predicate."
         }
@@ -2408,7 +2598,25 @@
           "description": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate)."
         }
       ],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "mediates",
+          "predicateLabel": "mediates",
+          "predicateLocal": "mediates",
+          "sources": [
+            {
+              "id": "Proprietorship",
+              "localName": "Proprietorship"
+            },
+            {
+              "id": "Relator",
+              "localName": "Relator"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031)."
+        }
+      ],
       "shapes": [],
       "usesSchemes": [
         {
@@ -2460,6 +2668,20 @@
           ],
           "inverse": null,
           "description": "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty."
+        },
+        {
+          "predicate": "mediates",
+          "predicateLabel": "mediates",
+          "predicateLocal": "mediates",
+          "targets": [
+            {
+              "id": "Proprietor",
+              "localName": "Proprietor",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031)."
         }
       ],
       "incoming": [],
@@ -2541,7 +2763,41 @@
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
-      "outgoing": [],
+      "outgoing": [
+        {
+          "predicate": "founds",
+          "predicateLabel": "founds",
+          "predicateLocal": "founds",
+          "targets": [
+            {
+              "id": "Role",
+              "localName": "Role",
+              "kind": "class"
+            },
+            {
+              "id": "RoleMixin",
+              "localName": "RoleMixin",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf."
+        },
+        {
+          "predicate": "mediates",
+          "predicateLabel": "mediates",
+          "predicateLocal": "mediates",
+          "targets": [
+            {
+              "id": "Proprietor",
+              "localName": "Proprietor",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031)."
+        }
+      ],
       "incoming": [],
       "shapes": [],
       "usesSchemes": [],
@@ -2672,8 +2928,50 @@
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
-      "outgoing": [],
-      "incoming": [],
+      "outgoing": [
+        {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "targets": [
+            {
+              "id": "Person",
+              "localName": "Person",
+              "kind": "class"
+            },
+            {
+              "id": "Organisation",
+              "localName": "Organisation",
+              "kind": "class"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
+        }
+      ],
+      "incoming": [
+        {
+          "predicate": "founds",
+          "predicateLabel": "founds",
+          "predicateLocal": "founds",
+          "sources": [
+            {
+              "id": "Relator",
+              "localName": "Relator"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf."
+        },
+        {
+          "predicate": "plays",
+          "predicateLabel": "plays",
+          "predicateLocal": "plays",
+          "sources": [],
+          "inverse": "playedBy",
+          "description": "Bearer → Role inverse of opda:playedBy: the Role a Person or Organisation plays. No rdfs:domain/rdfs:range — bearer-typing on the subject and Role-typing on the object are carried by the opda:playedBy SHACL shapes (the inverse direction shares the same closed-world constraints; asserting rdfs:domain (Person∪Organisation) here would re-introduce the union-entailment anti-pattern). Emitted as the navigable inverse so consumers query from either end without inverse-property inference (ODR-0029/0030 — UFO layer inert at load)."
+        }
+      ],
       "shapes": [],
       "usesSchemes": [],
       "dctSource": [
@@ -2693,6 +2991,25 @@
       "attributes": [],
       "outgoing": [
         {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "targets": [
+            {
+              "id": "Person",
+              "localName": "Person",
+              "kind": "class"
+            },
+            {
+              "id": "Organisation",
+              "localName": "Organisation",
+              "kind": "class"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
+        },
+        {
           "predicate": "roleNotation",
           "predicateLabel": "role notation",
           "predicateLocal": "roleNotation",
@@ -2707,7 +3024,29 @@
           "description": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class."
         }
       ],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "founds",
+          "predicateLabel": "founds",
+          "predicateLocal": "founds",
+          "sources": [
+            {
+              "id": "Relator",
+              "localName": "Relator"
+            }
+          ],
+          "inverse": null,
+          "description": "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf."
+        },
+        {
+          "predicate": "plays",
+          "predicateLabel": "plays",
+          "predicateLocal": "plays",
+          "sources": [],
+          "inverse": "playedBy",
+          "description": "Bearer → Role inverse of opda:playedBy: the Role a Person or Organisation plays. No rdfs:domain/rdfs:range — bearer-typing on the subject and Role-typing on the object are carried by the opda:playedBy SHACL shapes (the inverse direction shares the same closed-world constraints; asserting rdfs:domain (Person∪Organisation) here would re-introduce the union-entailment anti-pattern). Emitted as the navigable inverse so consumers query from either end without inverse-property inference (ODR-0029/0030 — UFO layer inert at load)."
+        }
+      ],
       "shapes": [],
       "usesSchemes": [],
       "dctSource": [
@@ -3026,9 +3365,42 @@
           ],
           "inverse": null,
           "description": "Conveyancing-side seam linking a Seller's asserted capacity to an opda:Claim of authority (e.g. probate, power of attorney). The founding grant is modelled as the missing Relator per ODR-0006 §Capacity split + ODR-0009 §Claim. Co-annotation with DPV lawful-basis lands per ODR-0018 in opda-annotations.ttl."
+        },
+        {
+          "predicate": "playedBy",
+          "predicateLabel": "played by",
+          "predicateLocal": "playedBy",
+          "targets": [
+            {
+              "id": "Person",
+              "localName": "Person",
+              "kind": "class"
+            },
+            {
+              "id": "Organisation",
+              "localName": "Organisation",
+              "kind": "class"
+            }
+          ],
+          "inverse": "plays",
+          "description": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays."
         }
       ],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "hasParticipant",
+          "predicateLabel": "has participant",
+          "predicateLocal": "hasParticipant",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned)."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/SellerShape",
@@ -3259,9 +3631,34 @@
           "predicate": "hasParticipant",
           "predicateLabel": "has participant",
           "predicateLocal": "hasParticipant",
-          "targets": [],
+          "targets": [
+            {
+              "id": "Seller",
+              "localName": "Seller",
+              "kind": "class"
+            },
+            {
+              "id": "Buyer",
+              "localName": "Buyer",
+              "kind": "class"
+            }
+          ],
           "inverse": null,
           "description": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned)."
+        },
+        {
+          "predicate": "inclusionStatus",
+          "predicateLabel": "inclusion status",
+          "predicateLocal": "inclusionStatus",
+          "targets": [
+            {
+              "id": "http://www.w3.org/2004/02/skos/core#Concept",
+              "localName": "Concept",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007."
         }
       ],
       "incoming": [],
@@ -3275,7 +3672,12 @@
           "localName": "TransactionIdentityKeyShape"
         }
       ],
-      "usesSchemes": [],
+      "usesSchemes": [
+        {
+          "id": "scheme/InclusionStatusScheme",
+          "localName": "InclusionStatusScheme"
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0007/section-Q1"
       ]
@@ -4106,22 +4508,27 @@
       "comment": "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031). Relator spine only; not a general roleOf.",
       "kind": "object",
       "module": "agent",
-      "subjects": [],
-      "objects": [],
-      "inverse": null,
-      "constraints": [
+      "subjects": [
         {
-          "shape": "shape/FoundsRangeShape",
-          "path": "https://opda.org.uk/pdtf/founds",
-          "pathLocal": "founds",
-          "datatype": null,
-          "class": "https://opda.org.uk/pdtf/Role",
-          "minCount": null,
-          "maxCount": null,
-          "severity": "Violation",
-          "message": "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is type-pinned in SHACL sh:class, not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029)."
+          "id": "Relator",
+          "localName": "Relator",
+          "kind": "class"
         }
       ],
+      "objects": [
+        {
+          "id": "Role",
+          "localName": "Role",
+          "kind": "class"
+        },
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q3"
       ]
@@ -4134,7 +4541,23 @@
       "comment": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open).",
       "kind": "object",
       "module": "property",
-      "subjects": [],
+      "subjects": [
+        {
+          "id": "Organisation",
+          "localName": "Organisation",
+          "kind": "class"
+        },
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        },
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
       "objects": [
         {
           "id": "Address",
@@ -4157,6 +4580,16 @@
       "kind": "object",
       "module": "agent",
       "subjects": [
+        {
+          "id": "Organisation",
+          "localName": "Organisation",
+          "kind": "class"
+        },
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        },
         {
           "id": "Seller",
           "localName": "Seller",
@@ -4326,7 +4759,18 @@
           "kind": "class"
         }
       ],
-      "objects": [],
+      "objects": [
+        {
+          "id": "Buyer",
+          "localName": "Buyer",
+          "kind": "class"
+        },
+        {
+          "id": "Seller",
+          "localName": "Seller",
+          "kind": "class"
+        }
+      ],
       "inverse": null,
       "constraints": [],
       "dctSource": [
@@ -4578,7 +5022,13 @@
       "comment": "Co-reference predicate from any identity-bearing surface (RegisteredTitle, LegalEstate, Address) to the physical Property they identify. Per ODR-0005 Rule 5: NEVER use owl:sameAs (which would propagate every context's properties onto every other under inference). Domain intentionally unconstrained — any class with co-reference responsibility may emit this predicate.",
       "kind": "object",
       "module": "property",
-      "subjects": [],
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
       "objects": [
         {
           "id": "Property",
@@ -4612,7 +5062,13 @@
       "comment": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007.",
       "kind": "object",
       "module": "descriptive",
-      "subjects": [],
+      "subjects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
       "objects": [
         {
           "id": "http://www.w3.org/2004/02/skos/core#Concept",
@@ -4854,8 +5310,25 @@
       "comment": "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031).",
       "kind": "object",
       "module": "agent",
-      "subjects": [],
-      "objects": [],
+      "subjects": [
+        {
+          "id": "Proprietorship",
+          "localName": "Proprietorship",
+          "kind": "class"
+        },
+        {
+          "id": "Relator",
+          "localName": "Relator",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Proprietor",
+          "localName": "Proprietor",
+          "kind": "class"
+        }
+      ],
       "inverse": null,
       "constraints": [
         {
@@ -5058,8 +5531,40 @@
       "comment": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays.",
       "kind": "object",
       "module": "agent",
-      "subjects": [],
-      "objects": [],
+      "subjects": [
+        {
+          "id": "Buyer",
+          "localName": "Buyer",
+          "kind": "class"
+        },
+        {
+          "id": "Role",
+          "localName": "Role",
+          "kind": "class"
+        },
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "kind": "class"
+        },
+        {
+          "id": "Seller",
+          "localName": "Seller",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Organisation",
+          "localName": "Organisation",
+          "kind": "class"
+        },
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        }
+      ],
       "inverse": {
         "id": "plays",
         "localName": "plays"
@@ -5112,24 +5617,23 @@
       "kind": "object",
       "module": "agent",
       "subjects": [],
-      "objects": [],
+      "objects": [
+        {
+          "id": "Role",
+          "localName": "Role",
+          "kind": "class"
+        },
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "kind": "class"
+        }
+      ],
       "inverse": {
         "id": "playedBy",
         "localName": "playedBy"
       },
-      "constraints": [
-        {
-          "shape": "shape/PlaysRangeShape",
-          "path": "https://opda.org.uk/pdtf/plays",
-          "pathLocal": "plays",
-          "datatype": null,
-          "class": null,
-          "minCount": null,
-          "maxCount": null,
-          "severity": "Violation",
-          "message": "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."
-        }
-      ],
+      "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q2"
       ]
@@ -12602,18 +13106,7 @@
       "module": "agent",
       "target": null,
       "targetSubjectsOf": null,
-      "constraints": [
-        {
-          "path": "https://opda.org.uk/pdtf/founds",
-          "pathLocal": "founds",
-          "datatype": null,
-          "class": "https://opda.org.uk/pdtf/Role",
-          "minCount": null,
-          "maxCount": null,
-          "severity": "Violation",
-          "message": "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is type-pinned in SHACL sh:class, not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029)."
-        }
-      ]
+      "constraints": []
     },
     "shape/freeholdOwnerDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/freeholdOwnerDomainShape",
@@ -13991,18 +14484,7 @@
       "module": "agent",
       "target": null,
       "targetSubjectsOf": null,
-      "constraints": [
-        {
-          "path": "https://opda.org.uk/pdtf/plays",
-          "pathLocal": "plays",
-          "datatype": null,
-          "class": null,
-          "minCount": null,
-          "maxCount": null,
-          "severity": "Violation",
-          "message": "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."
-        }
-      ]
+      "constraints": []
     },
     "shape/potentialCostDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/potentialCostDomainShape",

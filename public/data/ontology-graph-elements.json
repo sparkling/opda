@@ -8,9 +8,9 @@
       "concept": 323
     },
     "edges": {
-      "constrainedByScheme": 11,
+      "constrainedByScheme": 12,
       "inScheme": 323,
-      "objectProperty": 60
+      "objectProperty": 81
     }
   },
   "modules": [
@@ -4378,6 +4378,16 @@
     },
     {
       "data": {
+        "id": "cbs:Transaction->scheme/InclusionStatusScheme",
+        "source": "class:Transaction",
+        "target": "scheme:scheme/InclusionStatusScheme",
+        "label": "constrainedByScheme",
+        "kind": "constrainedByScheme",
+        "derived": true
+      }
+    },
+    {
+      "data": {
         "id": "inScheme:CollectiveCategory->UFOCategoryScheme",
         "source": "concept:CollectiveCategory",
         "target": "scheme:UFOCategoryScheme",
@@ -7285,6 +7295,24 @@
     },
     {
       "data": {
+        "id": "op:playedBy:Buyer->Organisation",
+        "source": "class:Buyer",
+        "target": "class:Organisation",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:playedBy:Buyer->Person",
+        "source": "class:Buyer",
+        "target": "class:Person",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:supportedBy:Claim->Evidence",
         "source": "class:Claim",
         "target": "class:Evidence",
@@ -7429,6 +7457,51 @@
     },
     {
       "data": {
+        "id": "op:hasAddress:Organisation->Address",
+        "source": "class:Organisation",
+        "target": "class:Address",
+        "label": "hasAddress",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasAssertedCapacity:Organisation->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Organisation",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasAssertedCapacity",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasAddress:Person->Address",
+        "source": "class:Person",
+        "target": "class:Address",
+        "label": "hasAddress",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasAssertedCapacity:Person->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Person",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "hasAssertedCapacity",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasAddress:Property->Address",
+        "source": "class:Property",
+        "target": "class:Address",
+        "label": "hasAddress",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasEPCCertificate:Property->EPCCertificate",
         "source": "class:Property",
         "target": "class:EPCCertificate",
@@ -7487,6 +7560,15 @@
         "source": "class:Property",
         "target": "class:MonetaryAmount",
         "label": "securityDeposit",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:identifiesSameProperty:Property->Property",
+        "source": "class:Property",
+        "target": "class:Property",
+        "label": "identifiesSameProperty",
         "kind": "objectProperty"
       }
     },
@@ -7681,6 +7763,15 @@
     },
     {
       "data": {
+        "id": "op:mediates:Proprietorship->Proprietor",
+        "source": "class:Proprietorship",
+        "target": "class:Proprietor",
+        "label": "mediates",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasRegisteredTitle:Proprietorship->RegisteredTitle",
         "source": "class:Proprietorship",
         "target": "class:RegisteredTitle",
@@ -7694,6 +7785,33 @@
         "source": "class:RegisteredTitle",
         "target": "class:LegalEstate",
         "label": "recordsEstate",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:mediates:Relator->Proprietor",
+        "source": "class:Relator",
+        "target": "class:Proprietor",
+        "label": "mediates",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:founds:Relator->Role",
+        "source": "class:Relator",
+        "target": "class:Role",
+        "label": "founds",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:founds:Relator->RoleMixin",
+        "source": "class:Relator",
+        "target": "class:RoleMixin",
+        "label": "founds",
         "kind": "objectProperty"
       }
     },
@@ -7726,6 +7844,42 @@
     },
     {
       "data": {
+        "id": "op:playedBy:Role->Organisation",
+        "source": "class:Role",
+        "target": "class:Organisation",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:playedBy:Role->Person",
+        "source": "class:Role",
+        "target": "class:Person",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:playedBy:RoleMixin->Organisation",
+        "source": "class:RoleMixin",
+        "target": "class:Organisation",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:playedBy:RoleMixin->Person",
+        "source": "class:RoleMixin",
+        "target": "class:Person",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:roleNotation:RoleMixin->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:RoleMixin",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
@@ -7744,10 +7898,37 @@
     },
     {
       "data": {
+        "id": "op:playedBy:Seller->Organisation",
+        "source": "class:Seller",
+        "target": "class:Organisation",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:playedBy:Seller->Person",
+        "source": "class:Seller",
+        "target": "class:Person",
+        "label": "playedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasAssertedCapacity:Seller->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:Seller",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
         "label": "hasAssertedCapacity",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasParticipant:Transaction->Buyer",
+        "source": "class:Transaction",
+        "target": "class:Buyer",
+        "label": "hasParticipant",
         "kind": "objectProperty"
       }
     },
@@ -7780,10 +7961,28 @@
     },
     {
       "data": {
+        "id": "op:hasParticipant:Transaction->Seller",
+        "source": "class:Transaction",
+        "target": "class:Seller",
+        "label": "hasParticipant",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:hasChainPosition:Transaction->TransactionChain",
         "source": "class:Transaction",
         "target": "class:TransactionChain",
         "label": "hasChainPosition",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:inclusionStatus:Transaction->http://www.w3.org/2004/02/skos/core#Concept",
+        "source": "class:Transaction",
+        "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
+        "label": "inclusionStatus",
         "kind": "objectProperty"
       }
     },
