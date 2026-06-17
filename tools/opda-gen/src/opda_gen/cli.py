@@ -745,6 +745,133 @@ def ci_category_g_coverage(ontology_dir: Path | None, strict: bool) -> None:
         )
 
 
+@main.command(name="ci-object-property-coverage")
+@click.option(
+    "--ontology-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=False,
+    default=None,
+    help=(
+        "Directory containing the emitted module class + shape TTLs + "
+        "exemplars/. Defaults to source/03-standards/ontology/ relative to "
+        "the OPDA repo root."
+    ),
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help=(
+        "Fail (exit 1) on any of the four limbs: a rangeless-AND-shapeless "
+        "object property; a not-universally-true rdfs:domain on a multi-bearer "
+        "predicate; a malformed (empty/\"TODO\") residue-register entry; or a "
+        "GATED edge with no passing worked competency query. Default is "
+        "report-only (prints coverage and exits 0)."
+    ),
+)
+def ci_object_property_coverage(ontology_dir: Path | None, strict: bool) -> None:
+    """Run the ADR-0048 relationship-layer object-property coverage gate.
+
+    The object-property analogue of ci-category-g-coverage (Council
+    session-047): every opda: owl:ObjectProperty is type-pinned in OWL
+    (rdfs:range) OR SHACL (sh:class/sh:node); the council-named multi-bearer
+    predicates carry no single rdfs:domain (bearer-typing → SHACL); the residue
+    register (VALUE-SLOT / PENDING-upstream-IC / DEFERRED) is well-formed; and
+    every GATED edge is retrievable by a worked SPARQL competency query. The
+    class-graph dead-edge check is kept separate from the shapes-graph bearer
+    check (ODR-0013). Reports covered / deferred / uncovered competency edges
+    honestly — nothing is a silent skip.
+    """
+    from opda_gen.ci.competency_query_test import run_competency
+    from opda_gen.ci.object_property_coverage_test import (
+        extract_object_property_facts,
+        extract_shape_facts,
+        run,
+    )
+    from rdflib import Graph
+
+    target = ontology_dir if ontology_dir is not None else _default_ontology_dir()
+    report = run(target)
+    if not report.available:
+        click.echo(
+            "object-property coverage: UNAVAILABLE (module class TTLs absent)"
+        )
+        return
+
+    # Recompute the honest competency partition for the report banner (run()
+    # only merges the violation set into the report; this surfaces covered /
+    # deferred / uncovered counts).
+    class_graph = Graph()
+    for ttl in sorted(target.glob("*.ttl")):
+        if (
+            ttl.is_file()
+            and not ttl.name.endswith("-shapes.ttl")
+            and not ttl.name.endswith("-annotations.ttl")
+        ):
+            class_graph.parse(str(ttl), format="turtle")
+    shapes_graph = Graph()
+    for ttl in sorted(target.glob("*-shapes.ttl")):
+        shapes_graph.parse(str(ttl), format="turtle")
+    ops = extract_object_property_facts(class_graph)
+    shapes = extract_shape_facts(shapes_graph)
+    gated_now = {n for n, f in ops.items() if f.has_range or n in shapes.shacl_pinned}
+    comp = run_competency(target, gated_now)
+
+    click.echo(
+        f"object-property coverage: {report.gated_count} GATED edge(s) "
+        f"type-pinned (OWL or SHACL); residue register: "
+        f"{len(report.value_slot)} VALUE-SLOT, "
+        f"{len(report.residue_pending)} PENDING-upstream-IC, "
+        f"{len(report.deferred)} DEFERRED, "
+        f"{len(report.reference)} REFERENCE."
+    )
+    if report.reference:
+        # Surface the REFERENCE exemptions explicitly — a rangeless owl:ObjectProperty
+        # excused from limb (a) because its co-domain is an external IRI cited
+        # reference-not-import (ODR-0012/0018). Never silently excused.
+        for name, reason in sorted(report.reference.items()):
+            click.echo(f"  EXEMPT (REFERENCE, not a violation): opda:{name} — {reason}")
+    if comp.available:
+        click.echo(
+            f"competency-query coverage: {len(comp.covered)} covered, "
+            f"{len(comp.covered_via_inverse)} covered-via-inverse, "
+            f"{len(comp.deferred)} deferred-to-register, "
+            f"{len(comp.uncovered)} uncovered."
+        )
+        if comp.covered_via_inverse:
+            click.echo(
+                "  COVERED-VIA-INVERSE (owl:inverseOf a covered edge, not a "
+                "violation): "
+                + ", ".join(
+                    f"opda:{n}→opda:{p}"
+                    for n, p in sorted(comp.covered_via_inverse.items())
+                )
+            )
+        if comp.deferred:
+            click.echo(
+                "  DEFERRED (residue register, not a violation): "
+                + ", ".join(f"opda:{n}" for n in sorted(comp.deferred))
+            )
+    else:
+        click.echo("competency-query coverage: UNAVAILABLE (no exemplar ABox)")
+
+    shown = report.violations[:15]
+    for v in shown:
+        click.echo(f"  GAP: {v}")
+    if len(report.violations) > len(shown):
+        click.echo(f"  ... and {len(report.violations) - len(shown)} more")
+    if strict and report.violations:
+        for v in report.violations:
+            click.echo(f"OBJECT-PROPERTY-COVERAGE VIOLATION: {v}", err=True)
+        sys.exit(1)
+    if report.is_complete:
+        click.echo(
+            "object-property coverage: PASS (every owl:ObjectProperty "
+            "type-pinned; residue register well-formed; every GATED edge "
+            "competency-query-covered)"
+        )
+
+
 @main.command(name="ci-baspi5-roundtrip")
 @click.option(
     "--ontology-dir",

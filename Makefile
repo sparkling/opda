@@ -97,12 +97,13 @@ verify-ontology:	## Byte-identity: re-emit the ontology and diff it against the 
 	@echo "✓ ontology corpus is byte-identical to the generator output"
 
 .PHONY: ci-ontology
-ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile, baspi5) — mirrors the GH workflows
+ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile, baspi5, object-property-coverage) — mirrors the GH workflows
 	$(OPDA_GEN) pytest -q
 	$(OPDA_GEN) opda-gen ci-three-graph      --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-dup-declaration  --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-profile-contract --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-baspi5-roundtrip --ontology-dir ../../$(ONTOLOGY_DIR)
+	$(OPDA_GEN) opda-gen ci-object-property-coverage --strict --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(MAKE) verify-ontology
 	@echo "✓ all ontology CI gates passed"
 

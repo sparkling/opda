@@ -76,6 +76,16 @@ jobs:
       # production never runs, reaches, or exposes them.
       - run: npm run build:data
 
+      # ADR-0048 — relationship-layer object-property coverage gate. Fail the
+      # deploy if any owl:ObjectProperty is rangeless-AND-shapeless, a
+      # subject-bearer predicate carries a not-universally-true rdfs:domain, the
+      # residue register is malformed, or a GATED §R2 edge is not retrievable by
+      # its worked competency query. Static rdflib check over the committed
+      # corpus + exemplars (no Fuseki/JDK dependency).
+      - name: Object-property coverage gate (ADR-0048)
+        working-directory: tools/opda-gen
+        run: opda-gen ci-object-property-coverage --strict --ontology-dir ../../source/03-standards/ontology
+
       # ADR-0044 Phase 7 — ontology-model doc-drift gate. build:data regenerates
       # src/data/ontology-model.json from the live triplestore; fail the deploy if
       # it drifted from the committed copy (corpus changed without the model being

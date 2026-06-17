@@ -84,12 +84,23 @@ def test_all_six_modules_emit(emitted_modules: dict[str, Path]) -> None:
 # ---------------------------------------------------------------------------
 # §Confirmation #5 — owl:Ontology header with imports + versionIRI
 # ---------------------------------------------------------------------------
+# Per-module owl:versionIRI expectation. ADR-0014 set every module to 1.0.0
+# (MVP-gate release marker); ADR-0048 bumped agent/transaction/property to 1.1.0
+# (the relationship-layer object properties + role-play/relator SHACL added to
+# those three modules). The rest stay 1.0.0 until their own substantive change.
+_MODULE_VERSION_IRI: dict[str, str] = {
+    "agent": "1.1.0",
+    "transaction": "1.1.0",
+    "property": "1.1.0",
+}
+
+
 def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> None:
     """Per ADR-0011 §Module emission template + §Confirmation #5: each
     module declares an owl:Ontology with owl:imports of foundation +
-    vocabularies. ADR-0014 bumped the class-graph version IRI to 1.0.0
-    (MVP-gate release marker) and added opda:hasSpecialCategoryData
-    foundation DatatypeProperty per G14."""
+    vocabularies. ADR-0014 set the per-module version IRIs to 1.0.0
+    (MVP-gate release marker); ADR-0048 bumped agent/transaction/property
+    to 1.1.0 (relationship-layer object-property emission)."""
     for name, path in emitted_modules.items():
         g = Graph()
         g.parse(str(path), format="turtle")
@@ -103,11 +114,12 @@ def test_module_has_owl_ontology_header(emitted_modules: dict[str, Path]) -> Non
         assert (
             module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")
         ) in g, f"module {name} missing vocabularies owl:imports"
+        version = _MODULE_VERSION_IRI.get(name, "1.0.0")
         assert (
             module_iri,
             OWL.versionIRI,
-            URIRef(f"https://opda.org.uk/pdtf/harness/release/{name}/1.0.0/"),
-        ) in g, f"module {name} missing versionIRI 1.0.0"
+            URIRef(f"https://opda.org.uk/pdtf/harness/release/{name}/{version}/"),
+        ) in g, f"module {name} missing versionIRI {version}"
 
 
 # ---------------------------------------------------------------------------

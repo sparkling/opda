@@ -63,8 +63,11 @@ CLASSES = (
 
 OBJECT_PROPERTIES = (
     OPDA.hasEvidencedAuthority,
+    OPDA.hasRegisteredTitle,
     OPDA.mediates,
     OPDA.founds,
+    OPDA.playedBy,
+    OPDA.plays,
 )
 
 DATATYPE_PROPERTIES = (
@@ -107,7 +110,7 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://opda.org.uk/pdtf/harness/release/agent/1.0.0/")))
+           URIRef("https://opda.org.uk/pdtf/harness/release/agent/1.1.0/")))
 
     # --- opda:Person — UFO Substance Kind (ODR-0006 §Q1) -----------------
     g.add((OPDA.Person, RDF.type, OWL.Class))
@@ -337,6 +340,109 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.founds, DCTERMS.source, _ODR_0006_Q3))
+
+    # --- ObjectProperty: opda:playedBy / opda:plays (ODR-0006 §Q2; ODR-0032) -
+    # The qua-individual navigable edge from a Role to the Person/Organisation
+    # bearer that plays it (Council session-047 Q4). Distinct from role
+    # co-typing (`?x a opda:Person, opda:Seller`, ODR-0006 §Q2): playedBy names
+    # the role-instance's one link home to its bearer, for the cases where the
+    # bearer and the role-instance are distinct nodes (Guizzardi 2005 Ch.4
+    # §4.3.2 — the qua-individual is a relationally-dependent particular, not a
+    # denormalised copy). NO rdfs:domain: the role-instance subject is drawn from
+    # BOTH role meta-classes — opda:Role (sortal: Proprietor) AND opda:RoleMixin
+    # (cross-sortal: Seller, Buyer), which are SIBLINGS (ODR-0006 §Q2), not a
+    # parent-child pair, so `rdfs:domain opda:Role` is NOT universally true (it
+    # falsely excludes Seller/Buyer). Subject-typing (Role∪RoleMixin) therefore
+    # goes to SHACL opda:RolePlaySubjectShape sh:or — the same
+    # only-assert-rdfs:domain-where-universally-true rule (Hendler) the bearer
+    # disjunction follows. The bearer disjunction Person∪Organisation is carried
+    # in SHACL `sh:or` (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape),
+    # NEVER an rdfs:range/owl:unionOf — `rdfs:range (Person∪Organisation)` would
+    # entail every bearer is a Person (Hendler's everything-becomes-a-Person
+    # anti-pattern). OPTIONAL / distinct-node-only: the SHACL shapes carry NO
+    # sh:minCount, so a co-typed role with no distinct bearer node is conformant
+    # and no vacuous self-edge `?x playedBy ?x` is forced (Council session-047 Q4
+    # / Davis condition). opda:plays is the owl:inverseOf for query-from-either-
+    # end without inverse inference.
+    g.add((OPDA.playedBy, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.playedBy, OWL.inverseOf, OPDA.plays))
+    g.add((OPDA.playedBy, RDFS.label, Literal("played by", lang="en")))
+    g.add((OPDA.playedBy, RDFS.comment, Literal(
+        "Role → bearer navigable edge: the Person or Organisation that plays "
+        "this Role qua-individual. NO rdfs:domain — the subject is an opda:Role "
+        "(Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role "
+        "meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL "
+        "opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer "
+        "disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape "
+        "/ opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which "
+        "would entail every bearer is a Person — Hendler). OPTIONAL / "
+        "distinct-node-only per Council session-047 Q4: emitted only where the "
+        "role qua-individual is a node distinct from its bearer; never a "
+        "self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed "
+        "encoding is the canonical IC, this is the navigable link for the "
+        "distinct-node case (a qua-individual, prov:Agent-attested participant). "
+        "Inverse: opda:plays.",
+        lang="en",
+    )))
+    g.add((OPDA.playedBy, SKOS.scopeNote, Literal(
+        "UFO: the role qua-individual is a relationally-dependent particular, "
+        "externally founded and distinct from the rigid bearer (Guizzardi 2005 "
+        "Ch. 4 §4.3.2; Masolo, Guizzardi, Vieu, Bottazzi, Ferrario KR 2004). "
+        "Not redundant with co-typing — different entailments. The sh:path the "
+        "ODR-0006 §SHACL SellerShape names.",
+        lang="en",
+    )))
+    g.add((OPDA.playedBy, DCTERMS.source, _ODR_0006_Q2))
+
+    g.add((OPDA.plays, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.plays, OWL.inverseOf, OPDA.playedBy))
+    g.add((OPDA.plays, RDFS.label, Literal("plays", lang="en")))
+    g.add((OPDA.plays, RDFS.comment, Literal(
+        "Bearer → Role inverse of opda:playedBy: the Role a Person or "
+        "Organisation plays. No rdfs:domain/rdfs:range — bearer-typing on the "
+        "subject and Role-typing on the object are carried by the opda:playedBy "
+        "SHACL shapes (the inverse direction shares the same closed-world "
+        "constraints; asserting rdfs:domain (Person∪Organisation) here would "
+        "re-introduce the union-entailment anti-pattern). Emitted as the "
+        "navigable inverse so consumers query from either end without "
+        "inverse-property inference (ODR-0029/0030 — UFO layer inert at load).",
+        lang="en",
+    )))
+    g.add((OPDA.plays, SKOS.scopeNote, Literal(
+        "Inverse companion to opda:playedBy (UFO qua-individual edge, Guizzardi "
+        "2005 Ch. 4 §4.3.2). Bearer-side surface; both directions emitted per "
+        "the opda:hasChainPosition / opda:chainMembers bidirectional convention.",
+        lang="en",
+    )))
+    g.add((OPDA.plays, DCTERMS.source, _ODR_0006_Q2))
+
+    # --- ObjectProperty: opda:hasRegisteredTitle (ODR-0006 §Q3; ODR-0032) ---
+    # Proprietorship → RegisteredTitle: the Relator's title arm (ODR-0006 §Q3
+    # "mediating … against a RegisteredTitle"; Council session-047 GATED).
+    # Single-domain edge with NO never-reasoned commitment, so rdfs:domain +
+    # rdfs:range are BOTH asserted (the subject-type entailment opda:Proprietorship
+    # is universally true; contrast founds/mediates which carry the design-time
+    # commitment and are SHACL-pinned instead). Distinct from opda:mediates
+    # (Proprietorship → Proprietor roles): this arm binds the title the
+    # proprietorship is registered against.
+    g.add((OPDA.hasRegisteredTitle, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasRegisteredTitle, RDFS.domain, OPDA.Proprietorship))
+    g.add((OPDA.hasRegisteredTitle, RDFS.range, OPDA.RegisteredTitle))
+    g.add((OPDA.hasRegisteredTitle, RDFS.label,
+           Literal("has registered title", lang="en")))
+    g.add((OPDA.hasRegisteredTitle, RDFS.comment, Literal(
+        "Proprietorship → RegisteredTitle join: the HMLR title-register record "
+        "the Proprietorship Relator is registered against (ODR-0006 §Q3 — the "
+        "Relator mediates Property + Proprietor instances against a "
+        "RegisteredTitle). Single-domain edge with no never-reasoned "
+        "commitment, so rdfs:domain opda:Proprietorship + rdfs:range "
+        "opda:RegisteredTitle are both asserted (Council session-047 Q5 "
+        "carrier ruling). The Proprietor arm is opda:mediates; the property "
+        "arm reaches opda:Property via opda:RegisteredTitle "
+        "opda:identifiesSameProperty.",
+        lang="en",
+    )))
+    g.add((OPDA.hasRegisteredTitle, DCTERMS.source, _ODR_0006_Q3))
 
     # ==== G11 expansion (ADR-0013) ======================================
     # --- DatatypeProperty: opda:ownerType (BASPI5 legalOwners[].ownerType) -

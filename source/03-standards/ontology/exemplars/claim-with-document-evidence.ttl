@@ -64,6 +64,16 @@ opda-x:patricia-smith
     rdfs:label "Patricia Smith (claimant; Personal Representative)" ;
     opda:dateOfBirth "1967-02-14"^^xsd:date .
 
+# The Seller role Patricia plays, and the conveyancing-side capacity/authority
+# seam: opda:hasEvidencedAuthority links the Seller's asserted capacity to the
+# opda:Claim of authority evidenced by the grant of probate (ODR-0006 §Q4 /
+# ODR-0032 §R2; Council session-047 GATED). opda:playedBy names the bearer.
+opda-x:seller-role
+    a opda:Seller ;
+    rdfs:label "Seller Role borne by Patricia Smith (acting as Personal Representative)" ;
+    opda:playedBy opda-x:patricia-smith ;
+    opda:hasEvidencedAuthority opda-x:claim .
+
 # Cryptographic digest of the claim (S009 Q4 — local opda:digest, not PROV signature)
 opda-x:claim
     opda:digest "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" .

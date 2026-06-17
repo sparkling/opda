@@ -10,7 +10,7 @@
     "edges": {
       "constrainedByScheme": 11,
       "inScheme": 323,
-      "objectProperty": 59
+      "objectProperty": 60
     }
   },
   "modules": [
@@ -81,7 +81,7 @@
         "type": "class",
         "ufoCategory": "RoleMixin",
         "module": "agent",
-        "hasShape": false,
+        "hasShape": true,
         "layer": "owl"
       }
     },
@@ -405,7 +405,7 @@
         "type": "class",
         "ufoCategory": "RoleMixin",
         "module": "agent",
-        "hasShape": false,
+        "hasShape": true,
         "layer": "owl"
       }
     },
@@ -7429,15 +7429,6 @@
     },
     {
       "data": {
-        "id": "op:hasAddress:Property->Address",
-        "source": "class:Property",
-        "target": "class:Address",
-        "label": "hasAddress",
-        "kind": "objectProperty"
-      }
-    },
-    {
-      "data": {
         "id": "op:hasEPCCertificate:Property->EPCCertificate",
         "source": "class:Property",
         "target": "class:EPCCertificate",
@@ -7690,6 +7681,15 @@
     },
     {
       "data": {
+        "id": "op:hasRegisteredTitle:Proprietorship->RegisteredTitle",
+        "source": "class:Proprietorship",
+        "target": "class:RegisteredTitle",
+        "label": "hasRegisteredTitle",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:recordsEstate:RegisteredTitle->LegalEstate",
         "source": "class:RegisteredTitle",
         "target": "class:LegalEstate",
@@ -7766,6 +7766,15 @@
         "source": "class:Transaction",
         "target": "class:MonetaryAmount",
         "label": "feeIncludingVAT",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:concernsProperty:Transaction->Property",
+        "source": "class:Transaction",
+        "target": "class:Property",
+        "label": "concernsProperty",
         "kind": "objectProperty"
       }
     },

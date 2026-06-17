@@ -30,7 +30,19 @@ Realises:
   added). Per-module owl:imports + owl:versionIRI bumped in lockstep.
   Round-trip harness, 15 expected-report.ttl pairings, and CI workflow
   land in this version.
+- ADR-0048 — Relationship-emission walk + object-property coverage gate
+  (patch version bump 1.0.1 → 1.0.2; realises ODR-0032 as amended by
+  Council session-047). Adds the relationship-layer object properties
+  opda:playedBy / opda:plays / opda:hasRegisteredTitle (agent),
+  opda:hasParticipant / opda:concernsProperty (transaction); type-pins
+  the rangeless relator spine opda:founds / opda:mediates in SHACL
+  sh:class (preserving "never reasoned") + a relator subject-guard;
+  emits the role-play SHACL shapes (RolePlayShape / SellerShape /
+  BuyerShape, OPTIONAL/distinct-node-only); and bearer-extends
+  opda:hasAddress (drops Property-only rdfs:domain → SHACL sh:or
+  Property∪Person∪Organisation). Per-module owl:versionIRI bumped
+  agent/transaction/property 1.0.0 → 1.1.0.
 - ODR-0004 §6a — generator-first contract owner.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"

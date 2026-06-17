@@ -574,6 +574,19 @@ def _build_enumerated_shapes_for(
                 _gap("collider-ambiguous", leaf.leaf_path)
             continue
 
+        # A domainless predicate (e.g. opda:hasAddress after the ADR-0048 /
+        # Council session-047 Q6 domain-drop — bearer-typed corpus-wide via the
+        # global opda:HasAddressBearerShape, not per-form rdfs:domain) has no
+        # sh:targetClass the enumerator can synthesise. Per S034 ("bind only an
+        # emitted predicate with a single rdfs:domain; else GAP — never fabricate
+        # a target") GAP it: name it in the per-form gap register rather than
+        # emit an `sh:targetClass None` shape, which rdflib silently drops —
+        # a silent loss that also over-counts the "bound" coverage header. This
+        # mirrors the no-domain branch above for the bind()==None path.
+        if pred.domain_iri is None:
+            _gap("no-domain", leaf.leaf_path)
+            continue
+
         bound_count += 1
         bound_by_class.setdefault(pred.domain_iri, []).append((leaf, pred))
 

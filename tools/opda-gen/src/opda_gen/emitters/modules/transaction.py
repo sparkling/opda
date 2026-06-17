@@ -53,7 +53,9 @@ CLASSES = (
 )
 
 OBJECT_PROPERTIES = (
+    OPDA.concernsProperty,
     OPDA.hasChainPosition,
+    OPDA.hasParticipant,
 )
 
 DATATYPE_PROPERTIES = (
@@ -96,7 +98,7 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://opda.org.uk/pdtf/harness/release/transaction/1.0.0/")))
+           URIRef("https://opda.org.uk/pdtf/harness/release/transaction/1.1.0/")))
 
     # --- opda:Transaction — UFO Relator (ODR-0007 §Q1) ------------------
     g.add((OPDA.Transaction, RDF.type, OWL.Class))
@@ -215,6 +217,59 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasChainPosition, DCTERMS.source, _ODR_0007_Q4))
+
+    # --- ObjectProperty: opda:hasParticipant (ODR-0007 §Q1; ODR-0032) -------
+    # Transaction → Seller/Buyer: the parties to the transaction (Council
+    # session-047 GATED). rdfs:domain opda:Transaction is universally true (only
+    # a Transaction has participants in this sense) and carries no never-reasoned
+    # commitment, so it IS asserted; the Seller∪Buyer co-domain is carried in
+    # SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range/owl:unionOf
+    # — `rdfs:range (Seller∪Buyer)` would entail every participant is a Seller
+    # (the union-entailment anti-pattern, Hendler / Council Q5). Distinct from
+    # opda:founds (the Relator → Role design-time founding spine, SHACL-pinned
+    # + never reasoned): hasParticipant is the navigable parties-of-transaction
+    # edge a consumer queries.
+    g.add((OPDA.hasParticipant, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasParticipant, RDFS.domain, OPDA.Transaction))
+    g.add((OPDA.hasParticipant, RDFS.label,
+           Literal("has participant", lang="en")))
+    g.add((OPDA.hasParticipant, RDFS.comment, Literal(
+        "Transaction → Seller/Buyer join: the parties to the transaction "
+        "(ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction "
+        "is asserted (universally true, no never-reasoned commitment); the "
+        "Seller∪Buyer co-domain is carried in SHACL sh:or "
+        "(opda:HasParticipantRangeShape), NOT an rdfs:range union (which would "
+        "entail every participant is a Seller — Hendler's union-entailment "
+        "anti-pattern). The navigable parties-of-transaction edge; distinct "
+        "from the opda:founds Relator → Role founding spine (SHACL-pinned, "
+        "design-time, never reasoned).",
+        lang="en",
+    )))
+    g.add((OPDA.hasParticipant, DCTERMS.source, _ODR_0007_Q1))
+
+    # --- ObjectProperty: opda:concernsProperty (ODR-0007 §Q1; ODR-0032) -----
+    # Transaction → Property: the property the transaction is about (Council
+    # session-047 GATED). Single-domain edge with no never-reasoned commitment,
+    # so rdfs:domain opda:Transaction + rdfs:range opda:Property are BOTH
+    # asserted (Council Q5 carrier ruling). Distinct from the milestone-side
+    # opda:concerns (estate-typed) used in the diagnostic exemplars: this is the
+    # Transaction-level join to the physical Property.
+    g.add((OPDA.concernsProperty, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.concernsProperty, RDFS.domain, OPDA.Transaction))
+    g.add((OPDA.concernsProperty, RDFS.range, OPDA.Property))
+    g.add((OPDA.concernsProperty, RDFS.label,
+           Literal("concerns property", lang="en")))
+    g.add((OPDA.concernsProperty, RDFS.comment, Literal(
+        "Transaction → Property join: the physical Property the transaction is "
+        "about (ODR-0007; Council session-047 GATED). Single-domain edge with "
+        "no never-reasoned commitment, so rdfs:domain opda:Transaction + "
+        "rdfs:range opda:Property are both asserted (Council Q5 carrier "
+        "ruling). The Transaction-level property join; the conveyed "
+        "opda:LegalEstate is reached via opda:Property and "
+        "opda:RegisteredTitle opda:recordsEstate.",
+        lang="en",
+    )))
+    g.add((OPDA.concernsProperty, DCTERMS.source, _ODR_0007_Q1))
 
     # ==== Category-G curated walk — Family E: sale / completion / moving / ==
     # chain / sale-ready-declaration attributes (ADR-0031 work-item 2). Each

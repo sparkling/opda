@@ -165,6 +165,7 @@ _ODR_0012_PHASE1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section
 _ODR_0012_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q3")
 _ODR_0012_Q5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5")
 _ODR_0013_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0013/section-Q1")
+_ODR_0015_S3A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a")
 _ODR_0015_S4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a")
 _ODR_0017_S1A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-1a")
 _ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a")
@@ -983,6 +984,38 @@ def build_property_shapes() -> Graph:
         ),
     )
 
+    # --- opda:hasAddress bearer-typing: Property∪Person∪Organisation ---------
+    # Council session-047 Q6: opda:hasAddress was bearer-extended to
+    # Person/Organisation by DROPPING its Property-only rdfs:domain (a single
+    # rdfs:domain opda:Property would entail every addressed Person/Organisation
+    # is a Property — Hendler). This shape REPLACES the auto-derived
+    # opda:hasAddressDomainShape (build_domain_range_constraint_shapes, ODR-0029
+    # R3) that disappears with the dropped rdfs:domain: it pins the bearer to the
+    # Property∪Person∪Organisation union in SHACL sh:or. rdfs:range opda:Address
+    # is retained, so its auto-derived opda:hasAddressRangeShape still holds the
+    # co-domain. The opda:Address class/IC is NOT re-settled (RESIDUE-PENDING
+    # ODR-0015 Mode-vs-Resource). sh:Violation per ODR-0013 §Q1.
+    # The sh:or is on the NODE SHAPE itself (focus = the SUBJECT/bearer, reached
+    # via sh:targetSubjectsOf), NOT nested in a sh:property[sh:path] — a
+    # path-scoped sh:or would constrain the VALUE nodes (the Address objects),
+    # firing a false-positive on every well-typed Property bearer. This is the
+    # rangeless-focus idiom, mirroring opda:RelatorSpineSubjectShape.
+    g.add((OPDA_SHAPE.HasAddressBearerShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.HasAddressBearerShape, SH.targetSubjectsOf, OPDA.hasAddress))
+    g.add((OPDA_SHAPE.HasAddressBearerShape, SH["or"],
+           _sh_class_or(g, [OPDA.Property, OPDA.Person, OPDA.Organisation])))
+    g.add((OPDA_SHAPE.HasAddressBearerShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.HasAddressBearerShape, DCTERMS.source, _ODR_0015_S3A))
+    g.add((OPDA_SHAPE.HasAddressBearerShape, SH.message, Literal(
+        "opda:hasAddress is borne by an opda:Property, opda:Person OR "
+        "opda:Organisation. Bearer disjunction in sh:or, not an rdfs:domain "
+        "(which would entail every addressed Person is a Property — Hendler; "
+        "Council session-047 Q6). Replaces the dropped Property-only "
+        "rdfs:domain's auto-derived domain shape; rdfs:range opda:Address "
+        "kept. The Address class/IC stays ODR-0015-pending.",
+        lang="en",
+    )))
+
     return g
 
 
@@ -1144,6 +1177,12 @@ def build_agent_shapes() -> Graph:
     # asserted design-time + enforced closed-world here, NEVER reasoned
     # (ODR-0029/0031). Satisfied by proprietorship-relator-multi-proprietor.ttl
     # (one Proprietorship mediating two Proprietor roles).
+    # sh:class opda:Proprietor (Council session-047 Q5 / Decision detail):
+    # type-pins opda:mediates' co-domain in SHACL — mediates is rangeless in OWL
+    # (the "design-time, NEVER reasoned" relator spine, ODR-0029/0030/0031, comment
+    # preserved in agent.py), so the gate's "rangeless-AND-shapeless" check is
+    # satisfied by this sh:class (the gate's first real catch: mediates shipped
+    # range-unpinned in BOTH OWL and SHACL).
     _med_p = BNode()
     g.add((OPDA_SHAPE.ProprietorshipMediationShape, RDF.type, SH.NodeShape))
     g.add((OPDA_SHAPE.ProprietorshipMediationShape, SH.targetClass, OPDA.Proprietorship))
@@ -1151,12 +1190,153 @@ def build_agent_shapes() -> Graph:
     g.add((OPDA_SHAPE.ProprietorshipMediationShape, DCTERMS.source, _ODR_0006_Q3))
     g.add((_med_p, SH.path, OPDA.mediates))
     g.add((_med_p, SH.minCount, Literal(2)))
+    g.add((_med_p, SH["class"], OPDA.Proprietor))
     g.add((_med_p, SH.severity, SH.Violation))
     g.add((_med_p, SH.message, Literal(
         "A Proprietorship Relator MUST mediate ≥2 Proprietor roles "
-        "(opda:mediates, sh:minCount 2) — a relator that binds fewer than two "
-        "bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). "
-        "Design-time + SHACL-validated, never reasoned.",
+        "(opda:mediates, sh:minCount 2; sh:class opda:Proprietor) — a relator "
+        "that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 "
+        "Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned.",
+        lang="en",
+    )))
+
+    # --- Relator-spine type-pinning: opda:founds co-domain + subject-guard ---
+    # Council session-047 Q5: opda:founds and opda:mediates are type-pinned in
+    # SHACL sh:class, NOT rdfs:domain/rdfs:range, preserving their shipped
+    # "Design-time, NEVER reasoned" commitment (ODR-0029/0030/0031). mediates'
+    # co-domain is pinned on ProprietorshipMediationShape above; founds' is
+    # pinned here (Relator → Role). A SHACL subject-guard confines BOTH
+    # predicates' SUBJECTS to opda:Relator, so the relator entailment is
+    # conservative-by-construction (Davis's refinement) rather than by good
+    # behaviour. sh:Violation per ODR-0013 §Q1 (a relator-spine edge off a
+    # non-relator/non-role node is a structural type error).
+    _founds_obj = BNode()
+    g.add((OPDA_SHAPE.FoundsRangeShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.FoundsRangeShape, SH.targetObjectsOf, OPDA.founds))
+    g.add((OPDA_SHAPE.FoundsRangeShape, SH.property, _founds_obj))
+    g.add((OPDA_SHAPE.FoundsRangeShape, DCTERMS.source, _ODR_0006_Q3))
+    g.add((_founds_obj, SH.path, OPDA.founds))
+    g.add((_founds_obj, SH["class"], OPDA.Role))
+    g.add((_founds_obj, SH.severity, SH.Violation))
+    g.add((_founds_obj, SH.message, Literal(
+        "opda:founds is the Relator → Role founding spine: every object of "
+        "opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is "
+        "type-pinned in SHACL sh:class, not rdfs:range, preserving its "
+        "'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029).",
+        lang="en",
+    )))
+
+    # Subject-guard for the relator spine — founds + mediates subjects MUST be
+    # opda:Relator (one shape carrying both sh:targetSubjectsOf declarations).
+    _spine_subj = BNode()
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, SH.targetSubjectsOf, OPDA.founds))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, SH.targetSubjectsOf, OPDA.mediates))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, SH["class"], OPDA.Relator))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, DCTERMS.source, _ODR_0006_Q3))
+    g.add((OPDA_SHAPE.RelatorSpineSubjectShape, SH.message, Literal(
+        "opda:founds / opda:mediates are the Relator spine: every SUBJECT of "
+        "either MUST be an opda:Relator (Council session-047 Q5 subject-guard "
+        "— makes the relator entailment conservative-by-construction; ODR-0006 "
+        "§Q3). Design-time + SHACL-validated, never reasoned.",
+        lang="en",
+    )))
+
+    # --- Role-play bearer shapes: opda:playedBy (Council session-047 Q4) -----
+    # opda:playedBy is OPTIONAL / distinct-node-only (NO sh:minCount — a co-typed
+    # role with no distinct bearer node is conformant; never forces a vacuous
+    # self-edge). Its bearer co-domain Person∪Organisation is pinned in SHACL
+    # sh:or, NOT an rdfs:range union (which would entail every bearer is a Person
+    # — Hendler). RolePlayShape pins the co-domain for ALL playedBy objects
+    # (sh:targetSubjectsOf); SellerShape / BuyerShape carry the ODR-0006 §SHACL
+    # SellerShape pattern keyed on the role class (sh:targetClass + sh:path). All
+    # OPTIONAL. sh:Violation per ODR-0013 §Q1.
+    _bearer_classes = [OPDA.Person, OPDA.Organisation]
+
+    _rp_p = BNode()
+    g.add((OPDA_SHAPE.RolePlayShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.RolePlayShape, SH.targetSubjectsOf, OPDA.playedBy))
+    g.add((OPDA_SHAPE.RolePlayShape, SH.property, _rp_p))
+    g.add((OPDA_SHAPE.RolePlayShape, DCTERMS.source, _ODR_0006_Q2))
+    g.add((_rp_p, SH.path, OPDA.playedBy))
+    g.add((_rp_p, SH["or"], _sh_class_or(g, _bearer_classes)))
+    g.add((_rp_p, SH.severity, SH.Violation))
+    g.add((_rp_p, SH.message, Literal(
+        "opda:playedBy MUST point at an opda:Person OR an opda:Organisation "
+        "(the role bearer). Bearer disjunction in sh:or, not an rdfs:range "
+        "union (Council session-047 Q4/Q5; ODR-0006 §SHACL). OPTIONAL / "
+        "distinct-node-only — emitted only where the role qua-individual is a "
+        "node distinct from its bearer; never a self-edge.",
+        lang="en",
+    )))
+
+    # opda:playedBy SUBJECT-typing: the role-instance is an opda:Role (Proprietor)
+    # OR an opda:RoleMixin (Seller/Buyer) — sibling role meta-classes (ODR-0006
+    # §Q2). opda:playedBy carries NO rdfs:domain (opda:Role alone is not
+    # universally true — it excludes Seller/Buyer), so the subject union is pinned
+    # HERE in SHACL sh:or (focus = the subject via sh:targetSubjectsOf). Replaces
+    # the auto-derived opda:playedByDomainShape that the dropped rdfs:domain would
+    # have produced. sh:Violation per ODR-0013 §Q1.
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, SH.targetSubjectsOf, OPDA.playedBy))
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, SH["or"],
+           _sh_class_or(g, [OPDA.Role, OPDA.RoleMixin])))
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, DCTERMS.source, _ODR_0006_Q2))
+    g.add((OPDA_SHAPE.RolePlaySubjectShape, SH.message, Literal(
+        "The subject of opda:playedBy MUST be an opda:Role (e.g. Proprietor) OR "
+        "an opda:RoleMixin (e.g. Seller/Buyer) — only role-instances are "
+        "played-by (Council session-047 Q4). Subject union in sh:or, not a "
+        "non-universal rdfs:domain opda:Role (which would falsely exclude the "
+        "RoleMixin roles).",
+        lang="en",
+    )))
+
+    for _role_cls, _role_shape in (
+        (OPDA.Seller, OPDA_SHAPE.SellerShape),
+        (OPDA.Buyer, OPDA_SHAPE.BuyerShape),
+    ):
+        _role_p = BNode()
+        g.add((_role_shape, RDF.type, SH.NodeShape))
+        g.add((_role_shape, SH.targetClass, _role_cls))
+        g.add((_role_shape, SH.property, _role_p))
+        g.add((_role_shape, DCTERMS.source, _ODR_0006_Q2))
+        g.add((_role_p, SH.path, OPDA.playedBy))
+        g.add((_role_p, SH["or"], _sh_class_or(g, _bearer_classes)))
+        g.add((_role_p, SH.severity, SH.Violation))
+        g.add((_role_p, SH.message, Literal(
+            f"An opda:{_role_cls.split('/')[-1]} role, where it names a distinct "
+            "bearer node via opda:playedBy, MUST be played by an opda:Person OR "
+            "an opda:Organisation (ODR-0006 §SHACL role-play shape; Council "
+            "session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer "
+            "node are conformant (no sh:minCount, never a self-edge).",
+            lang="en",
+        )))
+
+    # opda:plays co-domain: opda:Role (Proprietor) OR opda:RoleMixin
+    # (Seller/Buyer) — the inverse of opda:playedBy's subject union. opda:plays
+    # carries NO rdfs:domain/rdfs:range (a union rdfs:range would re-introduce the
+    # everything-becomes-an-X anti-pattern; the bearer subject is typed by the
+    # opda:playedBy shapes via the inverse) — so its co-domain is type-pinned HERE
+    # in SHACL sh:or, else it would be rangeless-AND-shapeless (the ADR-0048 §4
+    # limb (a) defect). Mirrors opda:FoundsRangeShape's co-domain pinning.
+    # sh:Violation per ODR-0013 §Q1.
+    _plays_obj = BNode()
+    g.add((OPDA_SHAPE.PlaysRangeShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.PlaysRangeShape, SH.targetObjectsOf, OPDA.plays))
+    g.add((OPDA_SHAPE.PlaysRangeShape, SH.property, _plays_obj))
+    g.add((OPDA_SHAPE.PlaysRangeShape, DCTERMS.source, _ODR_0006_Q2))
+    g.add((_plays_obj, SH.path, OPDA.plays))
+    g.add((_plays_obj, SH["or"], _sh_class_or(g, [OPDA.Role, OPDA.RoleMixin])))
+    g.add((_plays_obj, SH.severity, SH.Violation))
+    g.add((_plays_obj, SH.message, Literal(
+        "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role "
+        "(Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a "
+        "Person/Organisation bearer plays (Council session-047 Q4). Co-domain "
+        "union in sh:or (opda:plays has no rdfs:range to avoid the "
+        "union-entailment anti-pattern); the bearer subject is typed by the "
+        "opda:playedBy shapes via the inverse.",
         lang="en",
     )))
 
@@ -1272,6 +1452,33 @@ def build_transaction_shapes() -> Graph:
             "interprets the variance category)."
         ),
     )
+
+    # --- opda:hasParticipant co-domain: Seller∪Buyer (Council session-047) ---
+    # opda:hasParticipant carries rdfs:domain opda:Transaction (universally true,
+    # no never-reasoned commitment — asserted in transaction.py) but NO
+    # rdfs:range: the Seller∪Buyer co-domain is pinned here in SHACL sh:or, not
+    # an rdfs:range union (which would entail every participant is a Seller —
+    # Hendler / Council Q5). sh:Violation per ODR-0013 §Q1.
+    # The sh:or is on the NODE SHAPE itself (focus = the participant OBJECT,
+    # reached via sh:targetObjectsOf), NOT nested in a sh:property[sh:path] — a
+    # path-scoped sh:or would look for the participant's OWN hasParticipant
+    # values (a wrong double-hop). Mirrors opda:FoundsRangeShape's co-domain
+    # pinning but with a class disjunction.
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, SH.targetObjectsOf,
+           OPDA.hasParticipant))
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, SH["or"],
+           _sh_class_or(g, [OPDA.Seller, OPDA.Buyer])))
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, DCTERMS.source, _ODR_0007_Q1))
+    g.add((OPDA_SHAPE.HasParticipantRangeShape, SH.message, Literal(
+        "opda:hasParticipant MUST point at an opda:Seller OR an opda:Buyer "
+        "(the parties to the transaction). Co-domain disjunction in sh:or, not "
+        "an rdfs:range union (Council session-047 Q5; ODR-0007). The navigable "
+        "parties-of-transaction edge; distinct from the opda:founds "
+        "design-time relator spine.",
+        lang="en",
+    )))
 
     return g
 
@@ -1551,6 +1758,28 @@ def _add_in_literal_list(g: Graph, prop: BNode, items: list) -> None:
     rdf_list = BNode()
     g.add((prop, SH["in"], rdf_list))
     Collection(g, rdf_list, list(items))
+
+
+def _sh_class_or(g: Graph, classes: list[URIRef]) -> BNode:
+    """Build a SHACL `sh:or` disjunction of `[ sh:class C ]` node shapes and
+    return the list BNode (the object for an `sh:or` triple).
+
+    The Council session-047 bearer-disjunction carrier (ODR-0032 §R1 / ODR-0013):
+    a multi-bearer/multi-range object property pins its co-domain to a UNION of
+    classes via `sh:or ([sh:class A][sh:class B]…)`, NOT an `rdfs:range`
+    `owl:unionOf` — an `rdfs:range` union would *entail* every object is an A
+    (Hendler's everything-becomes-an-A anti-pattern; rdfs:range infers, it does
+    not constrain). Order is preserved as given (deterministic byte-identity);
+    callers pass the disjuncts in a fixed, documented order.
+    """
+    disjuncts: list[BNode] = []
+    for cls in classes:
+        d = BNode()
+        g.add((d, SH["class"], cls))
+        disjuncts.append(d)
+    or_list = BNode()
+    Collection(g, or_list, disjuncts)
+    return or_list
 
 
 def _add_enum_value_shape(

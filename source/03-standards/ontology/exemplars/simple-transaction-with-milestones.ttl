@@ -49,21 +49,36 @@ opda-x:estate opda:identifiesSameProperty opda-x:property .
 opda-x:seller-person a opda:Person ; rdfs:label "Diana Foster (seller)" .
 opda-x:buyer-person  a opda:Person ; rdfs:label "Robert Khan (buyer)" .
 
+# Each Role names its bearer via opda:playedBy (Role → Person/Org, ODR-0006 §Q2 /
+# ODR-0032 §R2; Council session-047 Q4 — the qua-individual navigable edge). The
+# bearer→role direction opda:plays is asserted on the seller (the navigable
+# inverse; both directions emitted per the bidirectional convention).
 opda-x:seller-role
     a opda:Seller ;
     rdfs:label "Seller Role borne by Diana Foster in this transaction" ;
-    opda:rolePlayer opda-x:seller-person .
+    opda:playedBy opda-x:seller-person .
 
 opda-x:buyer-role
     a opda:Buyer ;
     rdfs:label "Buyer Role borne by Robert Khan in this transaction" ;
-    opda:rolePlayer opda-x:buyer-person .
+    opda:playedBy opda-x:buyer-person .
 
-# Transaction (UFO Relator per Q1; S007 §Rules Transaction-as-Relator IC over 5 hard cases)
+opda-x:seller-person opda:plays opda-x:seller-role .
+
+# Transaction (UFO Relator per Q1; S007 §Rules Transaction-as-Relator IC over 5 hard cases).
+# opda:founds — the Relator founds its Seller/Buyer Roles (ODR-0006 §Q3 relator
+# spine). opda:hasParticipant — the navigable parties-of-transaction edge
+# (Transaction → Seller/Buyer, ODR-0032 §R2 / ODR-0007; Council session-047
+# GATED). opda:concernsProperty — the physical Property the transaction is about
+# (Transaction → Property). opda:mediates (the relator's existential mediation of
+# its Roles) and opda:concerns (the LegalEstate being conveyed) are retained.
 opda-x:transaction
     a opda:Transaction ;
     rdfs:label "Freehold sale of 88 Forest Drive (Foster → Khan, 2024)" ;
+    opda:founds opda-x:seller-role , opda-x:buyer-role ;
+    opda:hasParticipant opda-x:seller-role , opda-x:buyer-role ;
     opda:mediates opda-x:seller-role , opda-x:buyer-role ;
+    opda:concernsProperty opda-x:property ;
     opda:concerns opda-x:estate .
 
 # Milestones — Q2 hybrid PROV-O (instants for instantaneous events; intervals for processes).

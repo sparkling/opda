@@ -2,9 +2,9 @@
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
     "classes": 40,
-    "objectProperties": 64,
+    "objectProperties": 69,
     "datatypeProperties": 193,
-    "shapes": 360,
+    "shapes": 373,
     "concepts": 323,
     "schemes": 49,
     "contexts": 8
@@ -35,14 +35,9 @@
           "predicate": "hasAddress",
           "predicateLabel": "has address",
           "predicateLocal": "hasAddress",
-          "sources": [
-            {
-              "id": "Property",
-              "localName": "Property"
-            }
-          ],
+          "sources": [],
           "inverse": null,
-          "description": "Canonical Property → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one Property may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire)."
+          "description": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open)."
         }
       ],
       "shapes": [
@@ -141,7 +136,12 @@
       "attributes": [],
       "outgoing": [],
       "incoming": [],
-      "shapes": [],
+      "shapes": [
+        {
+          "id": "shape/BuyerShape",
+          "localName": "BuyerShape"
+        }
+      ],
       "usesSchemes": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q2"
@@ -2041,20 +2041,6 @@
           "description": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint)."
         },
         {
-          "predicate": "hasAddress",
-          "predicateLabel": "has address",
-          "predicateLocal": "hasAddress",
-          "targets": [
-            {
-              "id": "Address",
-              "localName": "Address",
-              "kind": "class"
-            }
-          ],
-          "inverse": null,
-          "description": "Canonical Property → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one Property may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire)."
-        },
-        {
           "predicate": "hasBeenFlooded",
           "predicateLabel": "has been flooded",
           "predicateLocal": "hasBeenFlooded",
@@ -2337,6 +2323,19 @@
       ],
       "incoming": [
         {
+          "predicate": "concernsProperty",
+          "predicateLabel": "concerns property",
+          "predicateLocal": "concernsProperty",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → Property join: the physical Property the transaction is about (ODR-0007; Council session-047 GATED). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Transaction + rdfs:range opda:Property are both asserted (Council Q5 carrier ruling). The Transaction-level property join; the conveyed opda:LegalEstate is reached via opda:Property and opda:RegisteredTitle opda:recordsEstate."
+        },
+        {
           "predicate": "identifiesSameProperty",
           "predicateLabel": "identifies same property",
           "predicateLocal": "identifiesSameProperty",
@@ -2447,7 +2446,22 @@
           "description": "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"
         }
       ],
-      "outgoing": [],
+      "outgoing": [
+        {
+          "predicate": "hasRegisteredTitle",
+          "predicateLabel": "has registered title",
+          "predicateLocal": "hasRegisteredTitle",
+          "targets": [
+            {
+              "id": "RegisteredTitle",
+              "localName": "RegisteredTitle",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty."
+        }
+      ],
       "incoming": [],
       "shapes": [
         {
@@ -2495,7 +2509,21 @@
           "description": "Title-to-estate join: the RegisteredTitle's HMLR record names the LegalEstate it documents. Per ODR-0005 §3c, this is the three-way structural seam (RegisteredTitle recordsEstate LegalEstate; LegalEstate vests in Property; RegisteredTitle identifiesSameProperty Property)."
         }
       ],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "hasRegisteredTitle",
+          "predicateLabel": "has registered title",
+          "predicateLocal": "hasRegisteredTitle",
+          "sources": [
+            {
+              "id": "Proprietorship",
+              "localName": "Proprietorship"
+            }
+          ],
+          "inverse": null,
+          "description": "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty."
+        }
+      ],
       "shapes": [],
       "usesSchemes": [],
       "dctSource": [
@@ -3001,7 +3029,12 @@
         }
       ],
       "incoming": [],
-      "shapes": [],
+      "shapes": [
+        {
+          "id": "shape/SellerShape",
+          "localName": "SellerShape"
+        }
+      ],
       "usesSchemes": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q2"
@@ -3167,6 +3200,20 @@
       ],
       "outgoing": [
         {
+          "predicate": "concernsProperty",
+          "predicateLabel": "concerns property",
+          "predicateLocal": "concernsProperty",
+          "targets": [
+            {
+              "id": "Property",
+              "localName": "Property",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → Property join: the physical Property the transaction is about (ODR-0007; Council session-047 GATED). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Transaction + rdfs:range opda:Property are both asserted (Council Q5 carrier ruling). The Transaction-level property join; the conveyed opda:LegalEstate is reached via opda:Property and opda:RegisteredTitle opda:recordsEstate."
+        },
+        {
           "predicate": "costsApplicableToTheDeed",
           "predicateLabel": "costs applicable to the deed",
           "predicateLocal": "costsApplicableToTheDeed",
@@ -3207,6 +3254,14 @@
           ],
           "inverse": null,
           "description": "Join from a Transaction to its TransactionChain (S007 Q4 Aggregate side). Mirror of opda:chainMembers (Chain → Transactions). Both directions emitted so consumers can query from either end without inverse-property inference dependency."
+        },
+        {
+          "predicate": "hasParticipant",
+          "predicateLabel": "has participant",
+          "predicateLocal": "hasParticipant",
+          "targets": [],
+          "inverse": null,
+          "description": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned)."
         }
       ],
       "incoming": [],
@@ -3712,6 +3767,34 @@
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee"
       ]
     },
+    "concernsProperty": {
+      "uri": "https://opda.org.uk/pdtf/concernsProperty",
+      "id": "concernsProperty",
+      "localName": "concernsProperty",
+      "label": "concerns property",
+      "comment": "Transaction → Property join: the physical Property the transaction is about (ODR-0007; Council session-047 GATED). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Transaction + rdfs:range opda:Property are both asserted (Council Q5 carrier ruling). The Transaction-level property join; the conveyed opda:LegalEstate is reached via opda:Property and opda:RegisteredTitle opda:recordsEstate.",
+      "kind": "object",
+      "module": "transaction",
+      "subjects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0007/section-Q1"
+      ]
+    },
     "constructionType": {
       "uri": "https://opda.org.uk/pdtf/constructionType",
       "id": "constructionType",
@@ -4026,7 +4109,19 @@
       "subjects": [],
       "objects": [],
       "inverse": null,
-      "constraints": [],
+      "constraints": [
+        {
+          "shape": "shape/FoundsRangeShape",
+          "path": "https://opda.org.uk/pdtf/founds",
+          "pathLocal": "founds",
+          "datatype": null,
+          "class": "https://opda.org.uk/pdtf/Role",
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is type-pinned in SHACL sh:class, not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029)."
+        }
+      ],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q3"
       ]
@@ -4036,16 +4131,10 @@
       "id": "hasAddress",
       "localName": "hasAddress",
       "label": "has address",
-      "comment": "Canonical Property → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one Property may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire).",
+      "comment": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation: no rdfs:domain (a single Property-only domain would entail every addressed Person is a Property — Hendler); bearer-typing (Property∪Person∪Organisation) lives in SHACL opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open).",
       "kind": "object",
       "module": "property",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
+      "subjects": [],
       "objects": [
         {
           "id": "Address",
@@ -4220,6 +4309,56 @@
       "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q4"
+      ]
+    },
+    "hasParticipant": {
+      "uri": "https://opda.org.uk/pdtf/hasParticipant",
+      "id": "hasParticipant",
+      "localName": "hasParticipant",
+      "label": "has participant",
+      "comment": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted (universally true, no never-reasoned commitment); the Seller∪Buyer co-domain is carried in SHACL sh:or (opda:HasParticipantRangeShape), NOT an rdfs:range union (which would entail every participant is a Seller — Hendler's union-entailment anti-pattern). The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (SHACL-pinned, design-time, never reasoned).",
+      "kind": "object",
+      "module": "transaction",
+      "subjects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "objects": [],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0007/section-Q1"
+      ]
+    },
+    "hasRegisteredTitle": {
+      "uri": "https://opda.org.uk/pdtf/hasRegisteredTitle",
+      "id": "hasRegisteredTitle",
+      "localName": "hasRegisteredTitle",
+      "label": "has registered title",
+      "comment": "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty.",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "Proprietorship",
+          "localName": "Proprietorship",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "RegisteredTitle",
+          "localName": "RegisteredTitle",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0006/section-Q3"
       ]
     },
     "hasRoomDimension": {
@@ -4724,11 +4863,11 @@
           "path": "https://opda.org.uk/pdtf/mediates",
           "pathLocal": "mediates",
           "datatype": null,
-          "class": null,
+          "class": "https://opda.org.uk/pdtf/Proprietor",
           "minCount": "2",
           "maxCount": null,
           "severity": "Violation",
-          "message": "A Proprietorship Relator MUST mediate ≥2 Proprietor roles (opda:mediates, sh:minCount 2) — a relator that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned."
+          "message": "A Proprietorship Relator MUST mediate ≥2 Proprietor roles (opda:mediates, sh:minCount 2; sh:class opda:Proprietor) — a relator that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned."
         }
       ],
       "dctSource": [
@@ -4909,6 +5048,90 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0008d/section-Rule-1"
+      ]
+    },
+    "playedBy": {
+      "uri": "https://opda.org.uk/pdtf/playedBy",
+      "id": "playedBy",
+      "localName": "playedBy",
+      "label": "played by",
+      "comment": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. NO rdfs:domain — the subject is an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer), sibling role meta-classes, so subject-typing (Role∪RoleMixin) is in SHACL opda:RolePlaySubjectShape, not a non-universal rdfs:domain. The bearer disjunction Person∪Organisation lives in SHACL sh:or (opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT an rdfs:range union (which would entail every bearer is a Person — Hendler). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays.",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [],
+      "objects": [],
+      "inverse": {
+        "id": "plays",
+        "localName": "plays"
+      },
+      "constraints": [
+        {
+          "shape": "shape/BuyerShape",
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "An opda:Buyer role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."
+        },
+        {
+          "shape": "shape/RolePlayShape",
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:playedBy MUST point at an opda:Person OR an opda:Organisation (the role bearer). Bearer disjunction in sh:or, not an rdfs:range union (Council session-047 Q4/Q5; ODR-0006 §SHACL). OPTIONAL / distinct-node-only — emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge."
+        },
+        {
+          "shape": "shape/SellerShape",
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "An opda:Seller role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0006/section-Q2"
+      ]
+    },
+    "plays": {
+      "uri": "https://opda.org.uk/pdtf/plays",
+      "id": "plays",
+      "localName": "plays",
+      "label": "plays",
+      "comment": "Bearer → Role inverse of opda:playedBy: the Role a Person or Organisation plays. No rdfs:domain/rdfs:range — bearer-typing on the subject and Role-typing on the object are carried by the opda:playedBy SHACL shapes (the inverse direction shares the same closed-world constraints; asserting rdfs:domain (Person∪Organisation) here would re-introduce the union-entailment anti-pattern). Emitted as the navigable inverse so consumers query from either end without inverse-property inference (ODR-0029/0030 — UFO layer inert at load).",
+      "kind": "object",
+      "module": "agent",
+      "subjects": [],
+      "objects": [],
+      "inverse": {
+        "id": "playedBy",
+        "localName": "playedBy"
+      },
+      "constraints": [
+        {
+          "shape": "shape/PlaysRangeShape",
+          "path": "https://opda.org.uk/pdtf/plays",
+          "pathLocal": "plays",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0006/section-Q2"
       ]
     },
     "potentialCost": {
@@ -11492,6 +11715,29 @@
       "targetSubjectsOf": null,
       "constraints": []
     },
+    "shape/BuyerShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/BuyerShape",
+      "id": "shape/BuyerShape",
+      "localName": "BuyerShape",
+      "module": "agent",
+      "target": {
+        "id": "Buyer",
+        "localName": "Buyer"
+      },
+      "targetSubjectsOf": null,
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "An opda:Buyer role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."
+        }
+      ]
+    },
     "shape/CapacityAuthorityMatchRule": {
       "uri": "https://opda.org.uk/pdtf/shape/CapacityAuthorityMatchRule",
       "id": "shape/CapacityAuthorityMatchRule",
@@ -11637,6 +11883,24 @@
           "message": "The comparable record's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."
         }
       ]
+    },
+    "shape/concernsPropertyDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/concernsPropertyDomainShape",
+      "id": "shape/concernsPropertyDomainShape",
+      "localName": "concernsPropertyDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/concernsProperty",
+      "constraints": []
+    },
+    "shape/concernsPropertyRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/concernsPropertyRangeShape",
+      "id": "shape/concernsPropertyRangeShape",
+      "localName": "concernsPropertyRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
     },
     "shape/confirmationDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/confirmationDomainShape",
@@ -12331,6 +12595,26 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/forTheManagedAreas",
       "constraints": []
     },
+    "shape/FoundsRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/FoundsRangeShape",
+      "id": "shape/FoundsRangeShape",
+      "localName": "FoundsRangeShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/founds",
+          "pathLocal": "founds",
+          "datatype": null,
+          "class": "https://opda.org.uk/pdtf/Role",
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is type-pinned in SHACL sh:class, not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029)."
+        }
+      ]
+    },
     "shape/freeholdOwnerDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/freeholdOwnerDomainShape",
       "id": "shape/freeholdOwnerDomainShape",
@@ -12376,11 +12660,11 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/handoverOnCompletion",
       "constraints": []
     },
-    "shape/hasAddressDomainShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/hasAddressDomainShape",
-      "id": "shape/hasAddressDomainShape",
-      "localName": "hasAddressDomainShape",
-      "module": "shapes",
+    "shape/HasAddressBearerShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/HasAddressBearerShape",
+      "id": "shape/HasAddressBearerShape",
+      "localName": "HasAddressBearerShape",
+      "module": "property",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasAddress",
       "constraints": []
@@ -12536,6 +12820,42 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/hasOthersAged17OrOver",
+      "constraints": []
+    },
+    "shape/hasParticipantDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasParticipantDomainShape",
+      "id": "shape/hasParticipantDomainShape",
+      "localName": "hasParticipantDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/hasParticipant",
+      "constraints": []
+    },
+    "shape/HasParticipantRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/HasParticipantRangeShape",
+      "id": "shape/HasParticipantRangeShape",
+      "localName": "HasParticipantRangeShape",
+      "module": "transaction",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/hasRegisteredTitleDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasRegisteredTitleDomainShape",
+      "id": "shape/hasRegisteredTitleDomainShape",
+      "localName": "hasRegisteredTitleDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/hasRegisteredTitle",
+      "constraints": []
+    },
+    "shape/hasRegisteredTitleRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasRegisteredTitleRangeShape",
+      "id": "shape/hasRegisteredTitleRangeShape",
+      "localName": "hasRegisteredTitleRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/hasRoomDimensionDomainShape": {
@@ -13664,6 +13984,26 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/planningStartDate",
       "constraints": []
     },
+    "shape/PlaysRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/PlaysRangeShape",
+      "id": "shape/PlaysRangeShape",
+      "localName": "PlaysRangeShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/plays",
+          "pathLocal": "plays",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."
+        }
+      ]
+    },
     "shape/potentialCostDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/potentialCostDomainShape",
       "id": "shape/potentialCostDomainShape",
@@ -13835,11 +14175,11 @@
           "path": "https://opda.org.uk/pdtf/mediates",
           "pathLocal": "mediates",
           "datatype": null,
-          "class": null,
+          "class": "https://opda.org.uk/pdtf/Proprietor",
           "minCount": "2",
           "maxCount": null,
           "severity": "Violation",
-          "message": "A Proprietorship Relator MUST mediate ≥2 Proprietor roles (opda:mediates, sh:minCount 2) — a relator that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned."
+          "message": "A Proprietorship Relator MUST mediate ≥2 Proprietor roles (opda:mediates, sh:minCount 2; sh:class opda:Proprietor) — a relator that binds fewer than two bearers is not a relator (UFO Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Design-time + SHACL-validated, never reasoned."
         }
       ]
     },
@@ -13943,6 +14283,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/regulatedSearchTurnaroundTimeInWorkingDays",
+      "constraints": []
+    },
+    "shape/RelatorSpineSubjectShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/RelatorSpineSubjectShape",
+      "id": "shape/RelatorSpineSubjectShape",
+      "localName": "RelatorSpineSubjectShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/founds",
       "constraints": []
     },
     "shape/religiousCharacterDomainShape": {
@@ -14153,6 +14502,35 @@
       "targetSubjectsOf": null,
       "constraints": []
     },
+    "shape/RolePlayShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/RolePlayShape",
+      "id": "shape/RolePlayShape",
+      "localName": "RolePlayShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/playedBy",
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "opda:playedBy MUST point at an opda:Person OR an opda:Organisation (the role bearer). Bearer disjunction in sh:or, not an rdfs:range union (Council session-047 Q4/Q5; ODR-0006 §SHACL). OPTIONAL / distinct-node-only — emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge."
+        }
+      ]
+    },
+    "shape/RolePlaySubjectShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/RolePlaySubjectShape",
+      "id": "shape/RolePlaySubjectShape",
+      "localName": "RolePlaySubjectShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/playedBy",
+      "constraints": []
+    },
     "shape/RoomDimensionShape": {
       "uri": "https://opda.org.uk/pdtf/shape/RoomDimensionShape",
       "id": "shape/RoomDimensionShape",
@@ -14351,6 +14729,29 @@
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/sellersCapacityDetails",
       "constraints": []
+    },
+    "shape/SellerShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/SellerShape",
+      "id": "shape/SellerShape",
+      "localName": "SellerShape",
+      "module": "agent",
+      "target": {
+        "id": "Seller",
+        "localName": "Seller"
+      },
+      "targetSubjectsOf": null,
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/playedBy",
+          "pathLocal": "playedBy",
+          "datatype": null,
+          "class": null,
+          "minCount": null,
+          "maxCount": null,
+          "severity": "Violation",
+          "message": "An opda:Seller role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."
+        }
+      ]
     },
     "shape/sellingAgentDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/sellingAgentDomainShape",
@@ -23302,12 +23703,24 @@
           "localName": "hasEvidencedAuthority"
         },
         {
+          "id": "hasRegisteredTitle",
+          "localName": "hasRegisteredTitle"
+        },
+        {
           "id": "mediates",
           "localName": "mediates"
         },
         {
           "id": "ownerType",
           "localName": "ownerType"
+        },
+        {
+          "id": "playedBy",
+          "localName": "playedBy"
+        },
+        {
+          "id": "plays",
+          "localName": "plays"
         },
         {
           "id": "roleNotation",
@@ -23374,8 +23787,16 @@
       ],
       "shapes": [
         {
+          "id": "shape/BuyerShape",
+          "localName": "BuyerShape"
+        },
+        {
           "id": "shape/CapacityAuthorityMatchRule",
           "localName": "CapacityAuthorityMatchRule"
+        },
+        {
+          "id": "shape/FoundsRangeShape",
+          "localName": "FoundsRangeShape"
         },
         {
           "id": "shape/IdentifierSuccessionRule",
@@ -23394,8 +23815,28 @@
           "localName": "PersonIdentityKeyShape"
         },
         {
+          "id": "shape/PlaysRangeShape",
+          "localName": "PlaysRangeShape"
+        },
+        {
           "id": "shape/ProprietorshipMediationShape",
           "localName": "ProprietorshipMediationShape"
+        },
+        {
+          "id": "shape/RelatorSpineSubjectShape",
+          "localName": "RelatorSpineSubjectShape"
+        },
+        {
+          "id": "shape/RolePlayShape",
+          "localName": "RolePlayShape"
+        },
+        {
+          "id": "shape/RolePlaySubjectShape",
+          "localName": "RolePlaySubjectShape"
+        },
+        {
+          "id": "shape/SellerShape",
+          "localName": "SellerShape"
         },
         {
           "id": "shape/SpecialCategoryPIIWithoutLawfulBasisShape",
@@ -24602,6 +25043,10 @@
           "localName": "AddressIdentityKeyShape"
         },
         {
+          "id": "shape/HasAddressBearerShape",
+          "localName": "HasAddressBearerShape"
+        },
+        {
           "id": "shape/INSPIRESuccessionRule",
           "localName": "INSPIRESuccessionRule"
         },
@@ -24643,8 +25088,16 @@
       ],
       "objectProperties": [
         {
+          "id": "concernsProperty",
+          "localName": "concernsProperty"
+        },
+        {
           "id": "hasChainPosition",
           "localName": "hasChainPosition"
+        },
+        {
+          "id": "hasParticipant",
+          "localName": "hasParticipant"
         }
       ],
       "datatypeProperties": [
@@ -24714,6 +25167,10 @@
         }
       ],
       "shapes": [
+        {
+          "id": "shape/HasParticipantRangeShape",
+          "localName": "HasParticipantRangeShape"
+        },
         {
           "id": "shape/LeaseTermSuccessionRule",
           "localName": "LeaseTermSuccessionRule"

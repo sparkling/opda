@@ -81,6 +81,10 @@ jobs:
         working-directory: tools/opda-gen
         run: opda-gen ci-dup-declaration --ontology-dir ../../source/03-standards/ontology
 
+      - name: Object-property coverage CI (ADR-0048)
+        working-directory: tools/opda-gen
+        run: opda-gen ci-object-property-coverage --strict --ontology-dir ../../source/03-standards/ontology
+
       # ----- Activated by ADR-0010 (SKOS vocabulary emission) -----------
       # `opda-vocabularies.ttl` is committed alongside the foundation TTLs.
       # The `opda-gen emit` umbrella above already regenerates it, and the

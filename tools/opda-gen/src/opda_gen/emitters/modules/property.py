@@ -244,7 +244,7 @@ def build_graph() -> Graph:
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.imports, URIRef("https://opda.org.uk/pdtf/")))
     g.add((module_iri, OWL.versionIRI,
-           URIRef("https://opda.org.uk/pdtf/harness/release/property/1.0.0/")))
+           URIRef("https://opda.org.uk/pdtf/harness/release/property/1.1.0/")))
 
     # --- opda:Property — UFO Substance Kind (ODR-0005 §2a) --------------
     g.add((OPDA.Property, RDF.type, OWL.Class))
@@ -492,17 +492,34 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.tenureKind, DCTERMS.source, _ODR_0008_S5A))
 
-    # --- ObjectProperty: opda:hasAddress (ODR-0015 §3a; ODR-0005 §6b) ---
+    # --- ObjectProperty: opda:hasAddress (ODR-0015 §3a; ODR-0005 §6b; ODR-0032) -
+    # Council session-047 Q6: extend the bearer to Person/Organisation by
+    # DROPPING the Property-only rdfs:domain — bearer-typing pushes to SHACL
+    # (opda:HasAddressBearerShape, sh:or [Property|Person|Organisation]),
+    # because a single rdfs:domain opda:Property would entail every
+    # address-bearing Person/Organisation is a Property (Hendler's
+    # everything-becomes-a-X anti-pattern). rdfs:range opda:Address is KEPT
+    # (single co-domain, universally true). The opda:Address class/IC is NOT
+    # re-settled here — Mode-vs-Resource stays ODR-0015's open question
+    # (RESIDUE-PENDING; the coverage gate must not manufacture an Address class).
+    # NB: dropping rdfs:domain removes this predicate's auto-derived
+    # opda:hasAddressDomainShape (build_domain_range_constraint_shapes, ODR-0029
+    # R3); opda:HasAddressBearerShape replaces it. The rdfs:range opda:Address
+    # auto-derived opda:hasAddressRangeShape is retained.
     g.add((OPDA.hasAddress, RDF.type, OWL.ObjectProperty))
-    g.add((OPDA.hasAddress, RDFS.domain, OPDA.Property))
     g.add((OPDA.hasAddress, RDFS.range, OPDA.Address))
     g.add((OPDA.hasAddress, RDFS.label, Literal("has address", lang="en")))
     g.add((OPDA.hasAddress, RDFS.comment, Literal(
-        "Canonical Property → Address join predicate. Per ODR-0005 §6b "
+        "Canonical bearer → Address join predicate. Per ODR-0005 §6b "
         "pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform "
-        "across variants — one Property may hasAddress multiple Address "
+        "across variants — one bearer may hasAddress multiple Address "
         "instances differing on opda:addressVariant (title / marketing / "
-        "inspire).",
+        "inspire). Per Council session-047 Q6 the predicate is bearer-extended "
+        "to Person/Organisation: no rdfs:domain (a single Property-only domain "
+        "would entail every addressed Person is a Property — Hendler); "
+        "bearer-typing (Property∪Person∪Organisation) lives in SHACL "
+        "opda:HasAddressBearerShape. rdfs:range opda:Address kept; the Address "
+        "class/IC stays ODR-0015-pending (Mode-vs-Resource open).",
         lang="en",
     )))
     g.add((OPDA.hasAddress, DCTERMS.source, _ODR_0015_S3A))

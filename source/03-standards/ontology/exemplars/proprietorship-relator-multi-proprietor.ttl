@@ -41,20 +41,26 @@ opda-x:title
     opda:titleNumber "NK112233" .
 
 # Two Proprietor Roles — each borrows identity from its Person bearer
+# Two Proprietor Roles — each borrows identity from its Person bearer.
+# opda:playedBy names the bearer (Role → Person, ODR-0006 §Q2 / ODR-0032 §R2;
+# Council session-047 Q4).
 opda-x:proprietor-role-a
     a opda:Proprietor ;
     rdfs:label "Proprietor Role borne by Person A" ;
-    opda:rolePlayer opda-x:person-a .
+    opda:playedBy opda-x:person-a .
 
 opda-x:proprietor-role-b
     a opda:Proprietor ;
     rdfs:label "Proprietor Role borne by Person B" ;
-    opda:rolePlayer opda-x:person-b .
+    opda:playedBy opda-x:person-b .
 
-# Proprietorship Relator — binds the two Roles to the Title
+# Proprietorship Relator — mediates the two Proprietor Roles (≥2, the relator
+# spine) and binds them against the RegisteredTitle via opda:hasRegisteredTitle
+# (Proprietorship → RegisteredTitle, ODR-0006 §Q3 / ODR-0032 §R2; Council
+# session-047 GATED).
 opda-x:proprietorship
     a opda:Proprietorship ;
     rdfs:label "Joint-tenancy proprietorship of title NK112233" ;
     opda:tenancyKind "joint-tenancy" ;
     opda:mediates opda-x:proprietor-role-a , opda-x:proprietor-role-b ;
-    opda:proprietorshipOf opda-x:title .
+    opda:hasRegisteredTitle opda-x:title .
