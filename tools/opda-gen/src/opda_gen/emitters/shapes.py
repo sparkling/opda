@@ -1210,19 +1210,27 @@ def build_agent_shapes() -> Graph:
     # conservative-by-construction (Davis's refinement) rather than by good
     # behaviour. sh:Violation per ODR-0013 §Q1 (a relator-spine edge off a
     # non-relator/non-role node is a structural type error).
-    _founds_obj = BNode()
+    # The value-type union goes DIRECTLY on the node shape (focus = the founds
+    # OBJECT, reached via sh:targetObjectsOf), NOT nested in a sh:property[sh:path
+    # opda:founds] — a path-scoped constraint re-traverses opda:founds FROM the
+    # object (which has no outgoing founds), so it is vacuously satisfied and
+    # enforces nothing (the focus-vs-value-node trap; cf. HasParticipantRangeShape
+    # / RolePlaySubjectShape which pin on the node). founds ranges over a Role
+    # (Proprietor) OR a RoleMixin (Seller/Buyer) — siblings, neither a subclass of
+    # the other — so the union is sh:or[Role, RoleMixin], not sh:class opda:Role
+    # (which would falsely reject a Transaction→Seller/Buyer founding edge).
     g.add((OPDA_SHAPE.FoundsRangeShape, RDF.type, SH.NodeShape))
     g.add((OPDA_SHAPE.FoundsRangeShape, SH.targetObjectsOf, OPDA.founds))
-    g.add((OPDA_SHAPE.FoundsRangeShape, SH.property, _founds_obj))
+    g.add((OPDA_SHAPE.FoundsRangeShape, SH["or"],
+           _sh_class_or(g, [OPDA.Role, OPDA.RoleMixin])))
+    g.add((OPDA_SHAPE.FoundsRangeShape, SH.severity, SH.Violation))
     g.add((OPDA_SHAPE.FoundsRangeShape, DCTERMS.source, _ODR_0006_Q3))
-    g.add((_founds_obj, SH.path, OPDA.founds))
-    g.add((_founds_obj, SH["class"], OPDA.Role))
-    g.add((_founds_obj, SH.severity, SH.Violation))
-    g.add((_founds_obj, SH.message, Literal(
+    g.add((OPDA_SHAPE.FoundsRangeShape, SH.message, Literal(
         "opda:founds is the Relator → Role founding spine: every object of "
-        "opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is "
-        "type-pinned in SHACL sh:class, not rdfs:range, preserving its "
-        "'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029).",
+        "opda:founds MUST be an opda:Role (Proprietor) OR an opda:RoleMixin "
+        "(Seller/Buyer) — Council session-047 Q5, founds type-pinned in SHACL "
+        "(sh:or on the focus node), not rdfs:range, preserving its "
+        "'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029.",
         lang="en",
     )))
 
@@ -1322,20 +1330,23 @@ def build_agent_shapes() -> Graph:
     # in SHACL sh:or, else it would be rangeless-AND-shapeless (the ADR-0048 §4
     # limb (a) defect). Mirrors opda:FoundsRangeShape's co-domain pinning.
     # sh:Violation per ODR-0013 §Q1.
-    _plays_obj = BNode()
+    # sh:or DIRECTLY on the node shape (focus = the plays OBJECT, via
+    # sh:targetObjectsOf) — NOT nested in a sh:property[sh:path opda:plays], which
+    # would re-traverse opda:plays from the object (a Role, which has no outgoing
+    # plays) and so enforce nothing (the vacuous focus-vs-value-node trap; mirrors
+    # the FoundsRangeShape fix and HasParticipantRangeShape's node-level pinning).
     g.add((OPDA_SHAPE.PlaysRangeShape, RDF.type, SH.NodeShape))
     g.add((OPDA_SHAPE.PlaysRangeShape, SH.targetObjectsOf, OPDA.plays))
-    g.add((OPDA_SHAPE.PlaysRangeShape, SH.property, _plays_obj))
+    g.add((OPDA_SHAPE.PlaysRangeShape, SH["or"],
+           _sh_class_or(g, [OPDA.Role, OPDA.RoleMixin])))
+    g.add((OPDA_SHAPE.PlaysRangeShape, SH.severity, SH.Violation))
     g.add((OPDA_SHAPE.PlaysRangeShape, DCTERMS.source, _ODR_0006_Q2))
-    g.add((_plays_obj, SH.path, OPDA.plays))
-    g.add((_plays_obj, SH["or"], _sh_class_or(g, [OPDA.Role, OPDA.RoleMixin])))
-    g.add((_plays_obj, SH.severity, SH.Violation))
-    g.add((_plays_obj, SH.message, Literal(
+    g.add((OPDA_SHAPE.PlaysRangeShape, SH.message, Literal(
         "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role "
         "(Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a "
         "Person/Organisation bearer plays (Council session-047 Q4). Co-domain "
-        "union in sh:or (opda:plays has no rdfs:range to avoid the "
-        "union-entailment anti-pattern); the bearer subject is typed by the "
+        "union in sh:or on the focus node (opda:plays has no rdfs:range to avoid "
+        "the union-entailment anti-pattern); the bearer subject is typed by the "
         "opda:playedBy shapes via the inverse.",
         lang="en",
     )))

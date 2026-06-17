@@ -39,7 +39,9 @@
 <https://opda.org.uk/pdtf/shape/FoundsRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3> ;
-    sh:property _:bcdef10ac94c8 ;
+    sh:message "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer) — Council session-047 Q5, founds type-pinned in SHACL (sh:or on the focus node), not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029."@en ;
+    sh:or _:b463e7f730616 ;
+    sh:severity sh:Violation ;
     sh:targetObjectsOf opda:founds .
 
 <https://opda.org.uk/pdtf/shape/IdentifierSuccessionRule>
@@ -71,7 +73,9 @@
 <https://opda.org.uk/pdtf/shape/PlaysRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2> ;
-    sh:property _:b184443add40f ;
+    sh:message "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or on the focus node (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."@en ;
+    sh:or _:b463e7f730616 ;
+    sh:severity sh:Violation ;
     sh:targetObjectsOf opda:plays .
 
 <https://opda.org.uk/pdtf/shape/ProprietorshipMediationShape>
@@ -130,12 +134,6 @@ _:b0039214d3483
     sh:path opda:playedBy ;
     sh:severity sh:Violation .
 
-_:b184443add40f
-    sh:message "opda:plays (inverse of opda:playedBy) MUST point at an opda:Role (Proprietor) OR an opda:RoleMixin (Seller/Buyer): the role a Person/Organisation bearer plays (Council session-047 Q4). Co-domain union in sh:or (opda:plays has no rdfs:range to avoid the union-entailment anti-pattern); the bearer subject is typed by the opda:playedBy shapes via the inverse."@en ;
-    sh:or _:b463e7f730616 ;
-    sh:path opda:plays ;
-    sh:severity sh:Violation .
-
 _:b30dd845c8998
     rdf:first <https://opda.org.uk/pdtf/scheme/ownerType/Organisation> ;
     rdf:rest rdf:nil .
@@ -152,6 +150,10 @@ _:b444490a4e360
     sh:nodeKind sh:IRI ;
     sh:path opda:hasAssertedCapacity ;
     sh:severity sh:Violation .
+
+_:b463e7f730616
+    rdf:first _:bba26fa44d6eb ;
+    rdf:rest _:b70daa9eefa35 .
 
 _:b463e7f730616
     rdf:first _:bba26fa44d6eb ;
@@ -178,6 +180,13 @@ _:b70daa9eefa35
 _:b70daa9eefa35
     rdf:first _:b713b5948fe2e ;
     rdf:rest rdf:nil .
+
+_:b70daa9eefa35
+    rdf:first _:b713b5948fe2e ;
+    rdf:rest rdf:nil .
+
+_:b713b5948fe2e
+    sh:class opda:RoleMixin .
 
 _:b713b5948fe2e
     sh:class opda:RoleMixin .
@@ -252,11 +261,8 @@ _:bba26fa44d6eb
 _:bba26fa44d6eb
     sh:class opda:Role .
 
-_:bcdef10ac94c8
-    sh:class opda:Role ;
-    sh:message "opda:founds is the Relator → Role founding spine: every object of opda:founds MUST be an opda:Role (Council session-047 Q5 — founds is type-pinned in SHACL sh:class, not rdfs:range, preserving its 'NEVER reasoned' commitment; ODR-0006 §Q3 / ODR-0029)."@en ;
-    sh:path opda:founds ;
-    sh:severity sh:Violation .
+_:bba26fa44d6eb
+    sh:class opda:Role .
 
 _:bd7f8b0d0dfe9
     sh:message "An opda:Buyer role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."@en ;

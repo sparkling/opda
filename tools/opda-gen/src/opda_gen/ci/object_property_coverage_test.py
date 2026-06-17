@@ -207,15 +207,32 @@ def extract_shape_facts(shapes_graph: Graph) -> ShapeFacts:
         if local and _carries_value_type(shape):
             pinned.add(local)
 
-    # Pattern 2: a property shape `sh:path <pred>` carrying a value-type pin.
-    # (The property shape is the bnode reached from a node shape via sh:property;
-    # we key off the path + the pin on the same node, so the targeting node
-    # shape's subject class is irrelevant here — this is purely the co-domain
-    # type-pin, not the bearer/subject check.)
+    # Pattern 2: a property shape `sh:path <pred>` carrying a value-type pin
+    # (the bnode reached from a node shape via sh:property — e.g. SellerShape
+    # `sh:targetClass Seller` + `sh:property[sh:path playedBy; sh:or bearer]`, or
+    # RolePlayShape `sh:targetSubjectsOf playedBy` + the same property: focus is a
+    # class / the predicate's SUBJECTS, the path leads to the OBJECT, and the pin
+    # constrains that object — valid).
+    #
+    # GUARD against the VACUOUS re-traversal anti-pattern (Council session-047
+    # as-built — the bug that hid `founds`/`plays` behind a syntactic pin): a node
+    # shape whose focus is `sh:targetObjectsOf <pred>` that then nests
+    # `sh:property[sh:path <pred>]` re-traverses <pred> FROM its own object node
+    # (which has no outgoing <pred>), so it enforces NOTHING yet presents a
+    # `sh:path`+`sh:class` pin. Such a property shape MUST NOT count as a co-domain
+    # pin — otherwise a rangeless-AND-effectively-shapeless edge false-passes the
+    # gate. (The correct co-domain pin for the targetObjectsOf form is `sh:class`/
+    # `sh:or` DIRECTLY on the node shape — Pattern 1.)
     for ps, pred in shapes_graph.subject_objects(SH.path):
         local = _pred_local(pred)
-        if local and _carries_value_type(ps):
-            pinned.add(local)
+        if not (local and _carries_value_type(ps)):
+            continue
+        enclosing = set(shapes_graph.subjects(SH.property, ps))
+        if any(
+            (node, SH.targetObjectsOf, pred) in shapes_graph for node in enclosing
+        ):
+            continue  # vacuous: focus = <pred>'s objects, path re-traverses <pred>
+        pinned.add(local)
 
     return ShapeFacts(shacl_pinned=frozenset(pinned))
 

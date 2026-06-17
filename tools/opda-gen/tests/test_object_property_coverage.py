@@ -255,6 +255,41 @@ def test_shacl_pin_via_sh_or_disjunction() -> None:
     assert "playedBy" in facts.shacl_pinned
 
 
+def test_vacuous_retraversal_is_not_pinned() -> None:
+    """GUARD (Council session-047 as-built): a node shape whose focus is
+    sh:targetObjectsOf <pred> that nests sh:property[sh:path <pred>] re-traverses
+    <pred> FROM its own object (which has no outgoing <pred>) — vacuous, enforces
+    nothing — so it MUST NOT count as a co-domain pin. This is the bug that hid
+    rangeless `founds`/`plays` behind a syntactic pin before the fix."""
+    g = Graph()
+    shape = OPDA["shape/VacuousFoundsRangeShape"]
+    ps = BNode()
+    g.add((shape, RDF.type, SH.NodeShape))
+    g.add((shape, SH.targetObjectsOf, OPDA.founds))
+    g.add((shape, SH.property, ps))
+    g.add((ps, SH.path, OPDA.founds))  # re-traverses founds from its own object
+    g.add((ps, SH["class"], OPDA.Role))
+    facts = extract_shape_facts(g)
+    assert "founds" not in facts.shacl_pinned
+
+
+def test_legit_property_pin_under_subject_focus_still_counts() -> None:
+    """The guard must NOT reject a legitimate Pattern-2 pin: a subject/class-
+    focused node (sh:targetClass Seller / sh:targetSubjectsOf playedBy) whose
+    sh:property[sh:path playedBy] constrains the OBJECT (bearer) — focus is not
+    the predicate's own objects, so it survives the vacuity guard."""
+    g = Graph()
+    shape = OPDA["shape/SellerShape"]
+    ps = BNode()
+    g.add((shape, RDF.type, SH.NodeShape))
+    g.add((shape, SH.targetClass, OPDA.Seller))
+    g.add((shape, SH.property, ps))
+    g.add((ps, SH.path, OPDA.playedBy))
+    g.add((ps, SH["class"], OPDA.Person))
+    facts = extract_shape_facts(g)
+    assert "playedBy" in facts.shacl_pinned
+
+
 def test_shacl_path_without_value_type_is_not_pinned() -> None:
     """A property shape with sh:path but only sh:minCount (no sh:class/sh:node)
     is NOT a value-type pin — this is exactly the mediates defect session-047
