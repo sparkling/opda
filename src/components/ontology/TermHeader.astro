@@ -2,7 +2,14 @@
 /**
  * ADR-0044 — shared header for a canonical ontology term page (/pdtf/{id}).
  * Back-nav into the /ontology section, a kind + bounded-context badge, the
- * label, the dereferenceable IRI (selectable), and the rdfs:comment.
+ * label, the dereferenceable IRI (selectable), and the term's meaning.
+ *
+ * Meaning cascade (ADR-0049 decision-4 / ODR-0042): `definition`
+ * (skos:definition) is the PRIMARY meaning, rendered prominently; `comment`
+ * (rdfs:comment) is the secondary short hint. When only `comment` is given it
+ * stands alone as the lead text (the Concept/Scheme pages pass their definition
+ * via `comment`, which keeps that behaviour). A `comment` identical to the
+ * `definition` is suppressed so the same sentence is never shown twice.
  */
 import { contextUrl, NS } from '@/lib/ontology-model';
 interface Props {
@@ -10,14 +17,18 @@ interface Props {
   label: string;
   localName: string;
   iri: string;
+  definition?: string;
   comment?: string;
   context?: string | null;
   indexUrl: string;
   indexLabel: string;
 }
-const { kind, label, localName, iri, comment, context, indexUrl, indexLabel } = Astro.props;
+const { kind, label, localName, iri, definition, comment, context, indexUrl, indexLabel } = Astro.props;
 const ctxHref = contextUrl(context);
 const ttlHref = iri.startsWith(NS) ? `/pdtf/${iri.slice(NS.length)}.ttl` : null;
+const def = definition?.trim() || '';
+// Secondary hint: the rdfs:comment, unless it duplicates the definition.
+const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';
 ---
 <nav class="term-nav" aria-label="Breadcrumb">
   <a href="/ontology">Ontology</a>
@@ -36,7 +47,8 @@ const ttlHref = iri.startsWith(NS) ? `/pdtf/${iri.slice(NS.length)}.ttl` : null;
   </p>
   <h1>{label}</h1>
   <p class="term-iri"><code>{iri}</code>{ttlHref && <a class="term-ttl" href={ttlHref}>Turtle ↓</a>}</p>
-  {comment && <p class="term-comment">{comment}</p>}
+  {def && <p class="term-definition">{def}</p>}
+  {hint && <p class="term-comment">{hint}</p>}
 </header>
 
 <style>
@@ -74,9 +86,14 @@ const ttlHref = iri.startsWith(NS) ? `/pdtf/${iri.slice(NS.length)}.ttl` : null;
     font: 500 var(--text-xs) / 1 var(--font-sans);
     white-space: nowrap;
   }
-  .term-comment {
+  .term-definition {
     font: 400 var(--text-base) / var(--leading-relaxed) var(--font-sans);
     color: var(--color-text);
     margin: var(--space-3) 0 0;
+  }
+  .term-comment {
+    font: 400 var(--text-sm) / var(--leading-relaxed) var(--font-sans);
+    color: var(--color-text-muted);
+    margin: var(--space-2) 0 0;
   }
 </style>

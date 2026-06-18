@@ -56,6 +56,8 @@ export interface ClassEntry {
   localName: string;
   label: string;
   comment: string;
+  /** skos:definition (ADR-0049 decision-4) — the PRIMARY meaning; comment is the short fallback. */
+  definition: string;
   scopeNote: string;
   ufoCategory: string;
   module: string | null;
@@ -87,6 +89,8 @@ export interface PropertyEntry {
   localName: string;
   label: string;
   comment: string;
+  /** skos:definition (ADR-0049 decision-4) — the PRIMARY meaning; comment is the short fallback. */
+  definition: string;
   kind: 'object' | 'datatype';
   module: string | null;
   subjects: Ref[];
@@ -295,6 +299,7 @@ export function resourceTurtle(id: string): string | null {
 
   if (c) {
     po.push('a owl:Class', `rdfs:label ${ttlLit(c.label)}`);
+    if (c.definition) po.push(`skos:definition ${ttlLit(c.definition)}`);
     if (c.comment) po.push(`rdfs:comment ${ttlLit(c.comment)}`);
     if (c.scopeNote) po.push(`skos:scopeNote ${ttlLit(c.scopeNote)}`);
     for (const s of c.dctSource) po.push(`dct:source ${ttlRef(s)}`);
@@ -303,6 +308,7 @@ export function resourceTurtle(id: string): string | null {
   } else if (op || dp) {
     const p = (op || dp)!;
     po.push(`a ${op ? 'owl:ObjectProperty' : 'owl:DatatypeProperty'}`, `rdfs:label ${ttlLit(p.label)}`);
+    if (p.definition) po.push(`skos:definition ${ttlLit(p.definition)}`);
     if (p.comment) po.push(`rdfs:comment ${ttlLit(p.comment)}`);
     for (const s of p.subjects) po.push(`rdfs:domain ${ttlRef(s.id)}`);
     for (const o of p.objects) po.push(`rdfs:range ${ttlRange(o)}`);

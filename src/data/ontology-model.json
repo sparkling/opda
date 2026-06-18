@@ -16,6 +16,7 @@
       "localName": "Address",
       "label": "Address",
       "comment": "Socially-recognised locator constructed by an authority (Royal Mail / OS AddressBase / HMLR / INSPIRE) and persisting as a record-entity in that authority's stewardship. UFO Substance Kind; DOLCE NonPhysicalEndurant. IC over five hard cases per ODR-0015 §3a: cosmetic re-format; authority-internal succession; cross-variant identity-claim never collapses; Property-side change; INSPIRE-only locatedness. NOT a Mode (S015 Q1 commitment).",
+      "definition": "A socially-recognised locator constructed and stewarded by an addressing authority (Royal Mail, OS AddressBase, HM Land Registry, or INSPIRE) as a record entity, whose identity persists through cosmetic re-formatting and authority-internal succession and never collapses across variants stewarded by different authorities.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). Subclass of vcard:Address for structural compatibility with vCard consumers.",
       "ufoCategory": "Substance Kind",
       "module": "property",
@@ -75,6 +76,7 @@
       "localName": "AssuranceLevel",
       "label": "Assurance Level",
       "comment": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering. Backed by opda:AssuranceLevelScheme SKOS scheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading).",
+      "definition": "A graded quality judgement on a claim's verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and governed by the assurance-level concept scheme.",
       "scopeNote": "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8.",
       "ufoCategory": "Quality",
       "module": "claim",
@@ -94,6 +96,7 @@
       "localName": "AttachedDocument",
       "label": "Attached Document",
       "comment": "A document attached to a transaction record (e.g. the registry additionalDocuments[] filed against a title to be sold). UFO Information Object; PROV-O Entity. A NEUTRAL document Kind — NOT evidence: it bears filing metadata (opda:documentDate / opda:documentTypeCode / opda:filedUnder / opda:retrievedOn) without the eIDAS-assurance commitment a document playing the evidence role carries (ODR-0024 R7 / session-028 Q7 — entailing every attached doc is Substantial-tier evidence). IC: individuated by its content + issuing activity (the artefact the registry holds), NOT by documentTypeCode / documentDate (mutable descriptive facets, not an identity principle). A document BECOMES evidence by playing the evidence role — recorded as opda:evidenceType 'Document' on an opda:Evidence (ODR-0027 §R6), NOT by an rdfs:subClassOf into evidence; an attached document stands as evidence only under ODR-0009, never by mere attachment.",
+      "definition": "A document filed against a transaction record, individuated by its content and issuing activity, that bears filing metadata without itself carrying the assurance commitment of evidence until it plays the evidence role.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral document bearer per ODR-0024 R7 — the one genuine Kind in the evidence family (ODR-0027 §R6); a document plays the evidence role (opda:evidenceType), it is not sub-classed into it.",
       "ufoCategory": "Information Object",
       "module": "claim",
@@ -142,6 +145,7 @@
       "localName": "Buyer",
       "label": "Buyer",
       "comment": "UFO RoleMixin (anti-rigid; cross-sortal — borne by Person OR Organisation). Founded by an opda:Transaction Relator. The Buyer role of one transaction may correspond to the Seller role of the next in a TransactionChain (cf. exemplar chain-of-transactions.ttl).",
+      "definition": "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party acquiring the interest in the Property; in a TransactionChain its bearer may bear the Seller role of the next transaction.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4). Mirror of opda:Seller founded by the same Transaction.",
       "ufoCategory": "RoleMixin",
       "module": "agent",
@@ -200,6 +204,7 @@
       "localName": "Claim",
       "label": "Claim",
       "comment": "Verifiable claim entity. UFO Information particular; PROV-O Entity. Per S009 Q1 80%-PROV-O mapping. Hard cases: contested assertion (multiple verifications with divergent verdicts); multi-method verification (electronic-record + vouch corroboration); assurance-level downgrade (vouch-only evidence caps at eIDAS Low).",
+      "definition": "An assertion about a property transaction subject whose truth is backed by attached evidence and a recorded verification, such that the asserted fact and its provenance can be re-checked.",
       "scopeNote": "UFO: Information particular (Guizzardi 2005 Ch. 4 §4.7). PROV-O: Entity (W3C PROV-O REC §3.2). The verified claim (claim plus verification bundle) is a derived entity per S009 Rule 1.",
       "ufoCategory": "Information Object",
       "module": "claim",
@@ -262,6 +267,7 @@
       "localName": "Comparable",
       "label": "Comparable",
       "comment": "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline.",
+      "definition": "An information artefact recording a sale or rental of a comparable property that supports a Valuation, sourced from Land Registry or VOA data and individuated by that market-data provenance feeding the valuation's derivation chain.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Land Registry Price Paid Data + VOA records (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -291,6 +297,7 @@
       "localName": "DiagnosticExemplar",
       "label": "Diagnostic Exemplar",
       "comment": "Informational endurant. IC: the named hard case — minimal Turtle exposing one IC-bearing surface as input to a Council session's identity-criterion validation. Hard cases: registered freehold house; unregistered house pre-first-registration; flat with split UPRN.",
+      "definition": "A named hard case, expressed as minimal Turtle, that exposes one identity-criterion-bearing surface for adjudication in a Council modelling session.",
       "scopeNote": "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational).",
       "ufoCategory": "Substance Kind",
       "module": "foundation",
@@ -310,6 +317,7 @@
       "localName": "DPVMappingRecord",
       "label": "DPV Mapping Record",
       "comment": "Mapping record from an OPDA Kind class to its DPV baseline personal-data category and optional variant-conditional refinements. UFO Information Particular. Per ODR-0018 §Rule 4 + ODR-0012 §Evidence co-annotation, ODR-0012 is the authoring authority — this module emits the mapping records; ADR-0012 emits the resulting DPV co-annotation triples into opda-annotations.ttl (three-graph separation).",
+      "definition": "A data-bearing record that maps an OPDA Kind class to its default DPV personal-data category and any variant-conditional refinements, from which the data-protection co-annotation triples are emitted.",
       "scopeNote": "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a.",
       "ufoCategory": "Information Object",
       "module": "governance",
@@ -357,6 +365,7 @@
       "localName": "EPCCertificate",
       "label": "EPC Certificate",
       "comment": "Energy Performance Certificate — DESNZ-governed authority-retrieved artefact. UFO Information Object (a certificate is an information artefact, NOT a Substance Kind, per ODR-0008d Rule 3 A9 retro-correction); PROV-O Entity. Class-promoted per S008 Q4 three-criterion test: authority-retrieved provenance (DESNZ register); distinct lifecycle (10-year validity; supersession on re-assessment); distinct PII regime per ODR-0018 (address + owner-identifiable).",
+      "definition": "An information artefact certifying the energy-efficiency rating of a dwelling, issued under the DESNZ register and individuated by a ten-year validity lifecycle, supersession on re-assessment, and an address-and-owner-identifiable PII regime.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -400,6 +409,7 @@
       "localName": "Evidence",
       "label": "Evidence",
       "comment": "Evidence supporting a Claim. UFO RoleMixin (anti-rigid, cross-categorial — a bearer is evidence only qua a VerificationActivity using it; ODR-0006 Seller/Buyer pattern); PROV-O Entity. Evidence KIND is a coded isMemberOf classification — opda:evidenceType over opda:EvidenceMethodScheme (the OIDC4IDA evidence.type value-space: Document / Electronic-Record / Vouch) — NOT a subclass tree (ODR-0027 §R6; the former …Evidence subclasses are retired, since 'evidence is a role a document plays' and a Role is never rdfs:subClassOf a Kind). The three kinds are NOT collapsed (S009 R5): they remain distinct scheme concepts. Kind-specific attributes (opda:attestedBy for vouches; document/record specifics) are facets borne by the role; per-kind obligations are validated VALUE-KEYED by opda:EvidenceFacetShape (sh:targetSubjectsOf opda:evidenceType + sh:or material implication; ADR-0012).",
+      "definition": "A role a bearer plays when a verification activity draws on it to support a claim, whose acquisition kind (Document, Electronic-Record or Vouch) is stated by a coded evidence-type value rather than by subclassing.",
       "scopeNote": "PROV-O: Entity (W3C PROV-O REC §3.2). The three evidence kinds (Document / Electronic-Record / Vouch) are OIDC4IDA / eIDAS evidence.type concepts in opda:EvidenceMethodScheme (S009 Rule 5), carried as the coded opda:evidenceType value (ODR-0027 §R6).",
       "ufoCategory": "RoleMixin",
       "module": "claim",
@@ -472,6 +482,7 @@
       "localName": "GeneratorRun",
       "label": "Generator Run",
       "comment": "Information particular. IC: a single execution of the opda-gen pipeline that produced a specific set of emitted TTL artefacts. Carries the generator version (opda-gen-<semver>), the source commit SHA, and the emission timestamp. Per ODR-0004 §6a, every emission is reproducible from the recorded (version, commit) pair.",
+      "definition": "A single execution of the opda-gen pipeline that emitted a specific set of TTL artefacts, recording the generator version, source commit and timestamp needed to reproduce them.",
       "scopeNote": "UFO: Information Particular. Provenance unit for byte-identity CI; instances are minted by the build pipeline, not by hand.",
       "ufoCategory": "Information Object",
       "module": "foundation",
@@ -491,6 +502,7 @@
       "localName": "LeaseExtensionEvent",
       "label": "Lease Extension Event",
       "comment": "Reified PROV-O activity recording a statutory lease extension (LRHUDA 1993 in England & Wales). Mutates the LeaseTerm of an existing leasehold LegalEstate (ODR-0005 §3b Rule 1 — LegalEstate identity PERSISTS through extension; rights-bundle is modified, not dissolved) and updates the RegisteredTitle's registry record. The same node may co-type as opda:Transaction (S007 Q1 Transaction-as-Relator); the dual typing reflects the property-lifecycle vs relator perspectives on the same event.",
+      "definition": "A reified provenance activity recording a statutory extension of a leasehold term, which produces a successor lease term and updates the registered title while the leasehold legal estate retains its identity.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Accomplishment (Masolo et al. 2003 D18 §4.4 — temporally extended with culmination at the registry-event timestamp). Hendler S005 Q5 'lease extension' consumer-fails case — the property of being-extended attaches to the registry-event lifecycle, not to the LegalEstate (which retains identity) and not to the Property.",
       "ufoCategory": "Event",
       "module": "property",
@@ -510,6 +522,7 @@
       "localName": "LeaseTerm",
       "label": "Lease Term",
       "comment": "OWL-Time ProperInterval representing a leasehold term. Carries time:hasBeginning + time:hasDurationDescription (or time:hasEnd) per S007 Q5. Belongs to opda:LegalEstate of leasehold tenure (opda:leaseTerm join predicate). Modified by opda:LeaseExtensionEvent on statutory extension — extension produces a successor LeaseTerm with prov:wasDerivedFrom chain.",
+      "definition": "A bounded time interval defining the duration of a leasehold legal estate, carrying a beginning and either a duration or an end, and succeeded by a derived interval when the lease is statutorily extended.",
       "scopeNote": "OWL-Time: ProperInterval (W3C Time Ontology REC §4.2). UFO: Information particular bounding a leasehold tenure perdurant.",
       "ufoCategory": "Information Object",
       "module": "property",
@@ -534,6 +547,7 @@
       "localName": "LegalEstate",
       "label": "Legal Estate",
       "comment": "Legal rights-bundle vested in a Property. UFO Substance Kind; DOLCE NonPhysicalEndurant (Searle 1995 legal-institutional object). IC: rights-bundle persistence — same individual through grant, transfer, registration, and discharge events; distinguishable from coexisting RegisteredTitle and physical Property by extent of property rights. Hard cases: tenure change; lease grant; lease termination; commonhold conversion; first registration of pre-existing common-law estate.",
+      "definition": "A bundle of legal rights in land (such as a freehold or leasehold estate) vested in a physical property, whose identity persists through grant, transfer, registration, and discharge and is distinguished from any coexisting registered title and the physical property by the extent of the property rights it confers.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2).",
       "ufoCategory": "Substance Kind",
       "module": "property",
@@ -959,6 +973,7 @@
       "localName": "Milestone",
       "label": "Milestone",
       "comment": "Transaction lifecycle milestone. UFO Event particular; PROV-O Activity. Hybrid PROV-O typing per S007 Q2: instant milestones (instruction, offerAccepted, exchange) carry prov:atTime; interval milestones (completion-process, registration-process) carry prov:startedAtTime + prov:endedAtTime per Moreau W3C-grade discipline. Each Milestone Activity may pair with a prov:Plan carrying opda:plannedAtTime for expected-vs-actual variance (S007 Q6 Plan-vs-Activity reification).",
+      "definition": "Lifecycle event marking a significant point or stage in the progression of a property transaction, occurring either at a single instant or over a bounded interval.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (instant) or Accomplishment (interval) per Masolo et al. 2003 D18 §4.4. PROV-O: Activity (W3C PROV-O REC §3.2).",
       "ufoCategory": "Event",
       "module": "transaction",
@@ -987,6 +1002,7 @@
       "localName": "MonetaryAmount",
       "label": "Monetary Amount",
       "comment": "A monetary amount as a value structure: a magnitude (opda:amount, xsd:decimal) in a currency (opda:currency, an opda:CurrencyScheme ISO-4217 concept). UFO: a quality value / abstract value structure — NOT an endurant with independent existence and NOT a Quality of any bearer. IC (by-value): two opda:MonetaryAmount nodes denote the same amount iff equal magnitude AND equal currency. Reused as the rdfs:range across the distinct per-economic-kind monetary properties (annualGroundRent / annualServiceCharge / rent / holdingDeposit / securityDeposit / fees / estimatedPrice / soldPrice / listPrice / …), each bound to its OWN bearer — reuse the value type, NEVER the bearer (session-028 Q3 / ODR-0024 R3, Guizzardi-required). Distinct from the Category-D fixtures opda:price (a single-currency interim decimal scoped to fixtures-and-fittings only, ODR-0022 §4/§1/G1). Follows the FIBO / schema.org MonetaryAmount pattern (amount + currency).",
+      "definition": "A sum of money as a value structure: a numeric magnitude paired with an ISO-4217 currency, individuated by-value (equal magnitude and equal currency) and reused as the range of the per-economic-kind monetary properties.",
       "scopeNote": "UFO: quality value / abstract individual (Guizzardi 2005 — a value in a quality structure, not an endurant). DOLCE: Abstract / Quality-Region (Masolo et al. 2003 D18). Value identity is structural (magnitude + currency); the currency value-space is governed by ISO 4217 (opda:CurrencyScheme).",
       "ufoCategory": "Quality Value",
       "module": "descriptive",
@@ -1248,6 +1264,7 @@
       "localName": "NameChangeEvent",
       "label": "Name Change Event",
       "comment": "Reified PROV-O activity recording a Person's name change (deed-poll, marriage, gender recognition, etc.). The Person's identity PERSISTS through the name change per S006 Q1 — one Person individual with a name-attribute provenance chain via prov:wasRevisionOf, NOT two distinct Persons. Anti-pattern: owl:sameAs across the former/current names (cross-context inference propagation).",
+      "definition": "A reified provenance activity (PROV-O Activity) recording a change to a Person's name — by deed poll, marriage, gender recognition, or the like — through which the Person's identity persists; it relates former and current name attributes by prov:wasRevisionOf rather than asserting two distinct persons.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (Masolo et al. 2003 D18 §4.4 — instantaneous administrative event).",
       "ufoCategory": "Event",
       "module": "agent",
@@ -1267,6 +1284,7 @@
       "localName": "NearbyFacility",
       "label": "Nearby Facility",
       "comment": "A point-of-interest near the Property — a school, health-care facility, or transport node listed in propertyPack.nearbyFacilities for amenity context. UFO Substance Kind: a mind-independent social-physical endurant with its own identity criterion (a real-world facility persists through renaming, re-rating, and change of operator), distinct from the Property being transacted — NOT a Quality of opda:Property, since the same facility neighbours many properties (ODR-0024 R4 / session-028 Q1). Warranted on that UFO Substance-Kind basis, NOT ODR-0008 §Q4a (a provenance / lifecycle / PII test whose promotions are all Information Objects, which does not license a real-world facility). The genus bears all band attributes for the first cut (school / health-care / transport), band-scoped via SHACL in the overlay profiles; the per-band subkind split is held-as-live (Guizzardi dissent). Bears opda:distanceInMiles (proximity to the Property).",
+      "definition": "A mind-independent social-physical endurant near a property — a school, health-care facility, or transport node — listed for amenity context and bearing its own identity criterion independent of the property being transacted, since the same facility neighbours many properties.",
       "scopeNote": "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid social-physical endurant supplying its own IC). Warranted per ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-promotion test licenses Information Objects, not mind-independent facilities).",
       "ufoCategory": "Substance Kind",
       "module": "descriptive",
@@ -1381,6 +1399,7 @@
       "localName": "Organisation",
       "label": "Organisation",
       "comment": "No DPV class-level PII baseline for opda:Organisation per ODR-0006 §Q6 + ODR-0018 §Rule 4. Organisations are not data subjects; the sole-trader / individual-director surface produces an opda:Person co-annotation (linked via the actor's ownership / control relationship), not an Organisation co-annotation.",
+      "definition": "A corporate or unincorporated organisation — a legal-institutional object party to a property transaction — whose identity is fixed by jurisdiction-issued registration identifiers (e.g. CRN, LEI) and persists through merger, demerger, and dissolution, a new individual arising on entity-merger via prov:wasDerivedFrom.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). W3C Org Ontology alignment per S006 Q6 9-1 verdict (Allemang held-as-live).",
       "ufoCategory": "Substance Kind",
       "module": "agent",
@@ -1526,6 +1545,7 @@
       "localName": "Person",
       "label": "Person",
       "comment": "Natural person. UFO Substance Kind; DOLCE Endurant. IC: FIBO-style multi-identifier persistence (date-of-birth + state-issued ID + name) over name-change, gender-recognition, and death hard cases. Anchors PII regimes (DPV co-annotation lands per ODR-0018 in opda-annotations.ttl; ADR-0012 emits).",
+      "definition": "A natural person — a human individual party to a property transaction — whose identity persists rigidly through name change, gender recognition, and death, and is fixed by a multi-identifier criterion (date of birth, state-issued identifier, and name) rather than by any single attribute.",
       "scopeNote": "DOLCE: Endurant / Agent (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid).",
       "ufoCategory": "Substance Kind",
       "module": "agent",
@@ -1655,6 +1675,7 @@
       "localName": "Property",
       "label": "Property",
       "comment": "Physical property. UFO Substance Kind; DOLCE Endurant / PhysicalObject. IC: spatial-material continuity with Kendall+Davis legal-record-discontinuity-override hybrid (ODR-0005 §3a). Hard cases: demolition; subdivision; merger; replacement; first-registration; flat with split UPRN.",
+      "definition": "A physical immovable property whose identity is fixed by spatial-material continuity (with a legal-record-discontinuity override) and persists through re-numbering, repair, and re-registration, as distinct from the legal estate vested in it and the registered title that records it.",
       "scopeNote": "DOLCE: Endurant / PhysicalObject (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid, supplies own IC).",
       "ufoCategory": "Substance Kind",
       "module": "property",
@@ -2623,6 +2644,7 @@
       "localName": "Proprietor",
       "label": "Proprietor",
       "comment": "UFO Role (anti-rigid; sortal — borne by Person; sub-Role for Organisation-proprietorship under a named specialisation). Founded by an opda:Proprietorship Relator (ODR-0006 §Q3 Role layer). NEVER keyed (per ODR-0005 Anti-pattern §3 — a Proprietor has no identity qua Proprietor; identity borrows from bearer).",
+      "definition": "An anti-rigid, sortal ownership role — borne by a Person — that is founded by a Proprietorship Relator and identifies a registered legal owner of the Property; it carries no identity of its own (it borrows identity from its bearer) and is never independently keyed.",
       "scopeNote": "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single bearer Kind.",
       "ufoCategory": "Role",
       "module": "agent",
@@ -2680,6 +2702,7 @@
       "localName": "Proprietorship",
       "label": "Proprietorship",
       "comment": "UFO Relator (relational endurant) mediating Property + Proprietor instances against a RegisteredTitle. IC: the (Title, Persons-set) tuple per S006 Q3. Joint-tenancy vs tenants-in-common is a property of the Relator, NOT of the Roles. Founding event recorded via prov:wasGeneratedBy on the registration activity.",
+      "definition": "A relational endurant (UFO Relator) that binds one or more Proprietor roles to a Property against a RegisteredTitle, founded by the registration event and identified by the (Title, owner-set) tuple; the holding type — joint tenancy or tenancy in common — is a property of this relator, not of the roles it mediates.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). HMLR Practice Guide 24 (joint tenancy / tenants in common).",
       "ufoCategory": "Relator",
       "module": "agent",
@@ -2748,6 +2771,7 @@
       "localName": "RegisteredTitle",
       "label": "Registered Title",
       "comment": "HMLR title-register record. UFO Substance Kind (informational); DOLCE NonPhysicalEndurant. IC: title-number lineage + registry-event history (every lifecycle event captured as a reified prov:Activity with explicit prov:wasDerivedFrom / prov:wasInvalidatedBy triples). Hard cases: first registration (title opening); title closure; title merger; transfer between registers; title reissue on corrupt-plan replacement.",
+      "definition": "An informational record entity maintained in the HM Land Registry title register, whose identity is fixed by its title-number lineage and registry-event history, as distinct from the legal estate it documents and the physical property it identifies.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (HMLR record-entity per Masolo et al. 2003 D18 §4.2). UFO: Substance Kind, informational (Guizzardi 2005 Ch. 4 §4.2).",
       "ufoCategory": "Substance Kind",
       "module": "property",
@@ -2804,6 +2828,7 @@
       "localName": "Relator",
       "label": "Relator",
       "comment": "UFO Relator — a relational endurant that mediates two or more bearers and is founded by an external event. The Relator carries its own identity (the (mediated-bearers, founding-event) tuple) and bears properties that don't belong to any single mediated Kind. OPDA Relators in scope: opda:Transaction (founds Seller / Buyer RoleMixins per ODR-0007 §Q1); opda:Proprietorship (binds Proprietor Roles to a RegisteredTitle per ODR-0006 §Q3).",
+      "definition": "A relational endurant, founded by an external event, that mediates two or more bearers and carries its own identity together with the properties belonging to none of the mediated Kinds singly.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6).",
       "ufoCategory": "Relator",
       "module": "foundation",
@@ -2857,6 +2882,7 @@
       "localName": "RiskAssessment",
       "label": "Risk Assessment",
       "comment": "Per-peril authority-retrieved search / environmental result (the six-field block riskIndicator / actionAlertRating / result / summary / recommendations / datasetAttribution recurring across the environmental perils and CON29-style local searches). UFO Information Object (a report — an information artefact existentially dependent on its generating activity; NOT a Substance Kind and NOT a Quality of opda:Property, ODR-0008d Rule 1a); PROV-O Entity. IC (Rule 1b): individuated by the tuple ⟨generating activity (prov:wasGeneratedBy), source peril/dataset, subject property, generation time (prov:generatedAtTime)⟩ — identity grounded in the activity, not the result values. Hard cases: a re-run search is a DISTINCT RiskAssessment (new activity + generatedAtTime), prov:wasDerivedFrom the prior; two providers' assessments for one property are distinct (distinct prov:wasAttributedTo); a riskSubcategories[] entry is itself a leaf RiskAssessment (opda:hasSubAssessment); otherEnvironmental is a valid leaf with optional Qualities absent. One class instantiated per peril, NOT 12 subclasses and NOT 72 datatype properties.",
+      "definition": "An information artefact reporting the authority-retrieved result for one environmental or search peril against a property (its indicator, alert rating, result, summary, recommendations, and attribution), individuated by the tuple of generating activity, source peril/dataset, subject property, and generation time rather than by its result values.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom).",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -2969,6 +2995,7 @@
       "localName": "Role",
       "label": "Role",
       "comment": "UFO Role — anti-rigid, sortal role. An instance of a Role is borne by a bearer drawn from a single substantial Kind (e.g. Proprietor is borne by a Person — or by an Organisation under a named specialisation, but never simultaneously). A Role NEVER supplies its own identity; it borrows identity from its bearer (ODR-0005 Anti-pattern §3 — never key a Role). Per ODR-0006 §Q2.",
+      "definition": "An anti-rigid, sortal role universal whose instances are borne by entities of a single substantial Kind and which borrows its identity from that bearer rather than supplying its own.",
       "scopeNote": "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single Kind.",
       "ufoCategory": "Role",
       "module": "foundation",
@@ -3039,6 +3066,7 @@
       "localName": "RoleMixin",
       "label": "Role Mixin",
       "comment": "UFO RoleMixin — anti-rigid, cross-sortal role pattern. An instance of a RoleMixin is borne by a bearer drawn from more than one substantial Kind (e.g. Seller may be borne by Person OR Organisation). Distinguished from `opda:Role` (which is sortal — borne by a single Kind). Per ODR-0006 §Q2 Role layer.",
+      "definition": "An anti-rigid, cross-sortal role universal whose instances may be borne by entities from more than one substantial Kind, contrasted with a Role that commits to a single Kind.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). DOLCE: Role qua Universal without sortal commitment (Masolo et al. 2003 D18 §4.5).",
       "ufoCategory": "RoleMixin",
       "module": "foundation",
@@ -3123,6 +3151,7 @@
       "localName": "RoomDimension",
       "label": "Room Dimension",
       "comment": "A room's dimensions as a value structure — a length + width (xsd:decimal, metres) and a non-rigid roomName, one per room in a Property's roomDimensions.rooms[] repeating group. An ANONYMOUS by-value structure (no identity criterion, no key — individuated by its values), NOT a Substance Kind: Council session-030 ruled neither opda:Room nor opda:Building earns a class (Room has no data-realisable identity — roomName non-rigid, no positional token; opda:Building's +O IC via the ODR-0005 §3a-4 Replacement witness is genuine but latent). Reuses the opda:MonetaryAmount by-value pattern (ODR-0024 R3); attached to opda:Property via opda:hasRoomDimension (characterisation, NOT parthood — no mereology, no transitivity). Re-homes losslessly onto a future opda:Room/opda:Building if an identity fact ever earns the Kind.",
+      "definition": "The dimensions of a single room as a value structure: a length and width in metres together with a non-rigid room name, individuated by-value and characterising a property without asserting any room individual.",
       "scopeNote": "UFO: a quality-value structure (a bundle of Quale-in-Region values), not an endurant (Guizzardi 2005); the dimensions are Qualities of a room-feature of the Property (DOLCE feature). Value identity is structural (by-value); no instance identity is claimed (session-030).",
       "ufoCategory": "Quality Value",
       "module": "descriptive",
@@ -3183,6 +3212,7 @@
       "localName": "Search",
       "label": "Search",
       "comment": "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline.",
+      "definition": "An information artefact returning the result of a local-authority or environmental enquiry against a property (CON29R, LLC1, flood, coal-mining, and similar), individuated by its issuing-authority provenance chain and an ordered/returned/superseded lifecycle, and carrying the per-peril risk assessments its generating activity produces.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per PDTF v3 propertyPack.localSearches.",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -3374,6 +3404,7 @@
       "localName": "Seller",
       "label": "Seller",
       "comment": "UFO RoleMixin (anti-rigid; cross-sortal — borne by Person OR Organisation). Founded by an opda:Transaction Relator (ODR-0006 §Q2 + ODR-0007 §Q1). An instance of opda:Seller is borne by a specific Person or Organisation in the context of a specific Transaction; the role identity is parasitic on the (Transaction, bearer) tuple.",
+      "definition": "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party disposing of the interest in the Property, the role's identity being parasitic on the (Transaction, bearer) tuple.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). Sub-Roles PersonSeller / OrganisationSeller may sortalise the RoleMixin where downstream use requires (per ODR-0006 §Role layer).",
       "ufoCategory": "RoleMixin",
       "module": "agent",
@@ -3482,6 +3513,7 @@
       "localName": "SpecialCategoryScheme",
       "label": "Article 10 Special Category Personal Data Scheme",
       "comment": "GDPR Article 10 / DPA 2018 special-category personal-data scheme — flags PII categories with elevated lawful-basis discipline (caution-or-conviction; AML-result; etc.). Per S012 Q3 (Baker) the scheme structure is class-declared here; the scheme instance + members emit via ADR-0010 SKOS substrate when downstream demand materialises. Currently a class declaration only — member emission deferred per ODR-0011 §Operational specifications (no S012 Q3 enum currently scoped).",
+      "definition": "A concept scheme enumerating the GDPR Article 10 / DPA 2018 special-category personal-data classes that attract elevated lawful-basis discipline.",
       "scopeNote": "Subclass of skos:ConceptScheme (W3C SKOS REC §3.1). Members enumerated per GDPR Article 10 special-category list when ADR-0010 scope-expansion activates the scheme.",
       "ufoCategory": "",
       "module": "governance",
@@ -3501,6 +3533,7 @@
       "localName": "Survey",
       "label": "Survey",
       "comment": "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline.",
+      "definition": "An information artefact recording the findings of a professional physical inspection of a property, retrieved from its issuing authority and individuated by a distinct provenance chain back to the professional-issued generating activity and a lifecycle of issue, supersession, re-issue, and withdrawal.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact, corrected from \"Substance Kind\" per ODR-0008d Rule 3). DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). PROV-O: Entity (W3C PROV-O REC §3.2).",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -3530,6 +3563,7 @@
       "localName": "Transaction",
       "label": "Transaction",
       "comment": "Property-transaction Relator. UFO Relator (relational endurant). FIBO Arrangement precedent. Founds opda:Seller and opda:Buyer RoleMixins (ODR-0006 §Q2). IC: 5-tuple (LegalEstate-concerned, Sellers-set, Buyers-set, transaction-id-lineage, founding-event). Hard cases per S007 Q1: party-substitution; estate-change; transaction-id reissuance; chain-link-break; aborted-transaction. Carries transactionId via dct:identifier and external-system refs via opda:externalIds.",
+      "definition": "Relational endurant binding the seller and buyer parties to the conveyance of a single legal estate, persisting and accumulating identity across the lifecycle of a property sale.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4). FIBO: Arrangement precedent (FIBO-FND Arrangements module).",
       "ufoCategory": "Relator",
       "module": "transaction",
@@ -3752,6 +3786,7 @@
       "localName": "TransactionChain",
       "label": "Transaction Chain",
       "comment": "Aggregate of dependent Transactions linked by buyer-also-seller participant overlap. S007 Q4 dual-mechanism: (a) recursive opda:dependsOnTransaction predicate between Transactions; (b) opda:chainMembers list-of-Transactions on a TransactionChain parent. Chain-length cap: sh:maxInclusive 7 per CLC data (ADR-0012 emits the SHACL constraint). Chain status is derived (any-blocked → chain-blocked).",
+      "definition": "Aggregate of interdependent property transactions linked where a buyer in one is concurrently a seller in the next, such that the completion of each is contingent on completion of the others.",
       "scopeNote": "UFO: Aggregate (Guizzardi 2005 Ch. 4 §4.6 — collective of Relator instances). Dual modelling per S007 Q4 (recursive predicate + Aggregate) chosen because both shapes appear in real-world chain queries.",
       "ufoCategory": "Collective",
       "module": "transaction",
@@ -3785,6 +3820,7 @@
       "localName": "TrustFramework",
       "label": "Trust Framework",
       "comment": "Trust framework citation — a governance regime that scopes claim validity (e.g. the UK Property Data Trust Framework). Per S009 5-residue mapped to dct:conformsTo on the verification activity (NOT a PROV-O primitive). Authoritative within scope per Session 003c Item 3 (OPDA TF authoritative scope).",
+      "definition": "A cited governance regime of agreements, rules and technical standards that scopes the validity of a claim and is authoritative within its declared remit, such as the UK Property Data Trust Framework.",
       "scopeNote": "UFO: Information Particular (governance regime as informational artefact). dct:conformsTo binding per S009 Rule 5 (PROV-O residue).",
       "ufoCategory": "Information Object",
       "module": "claim",
@@ -3804,6 +3840,7 @@
       "localName": "UPRNSuccessionEvent",
       "label": "UPRN Succession Event",
       "comment": "Reified PROV-O activity recording an administrative re-numbering of UPRN for a single physical Property (the Property's identity PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical succession form per Gandon W3C-side recommendation (S005 Q4) — own URI, dereferenceable identity, audit trail. Coexists with the denormalised opda:previousUPRN literal-pair convenience (authoritative form: this reified event).",
+      "definition": "A reified provenance activity recording the administrative re-numbering of the UPRN for a single physical property, through which the property's identity persists, captured with its own dereferenceable identifier and audit trail.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance).",
       "ufoCategory": "Event",
       "module": "property",
@@ -3823,6 +3860,7 @@
       "localName": "ValidationContext",
       "label": "Validation Context",
       "comment": "Reification of an overlay-profile validation context per ODR-0010 §Q1 (Guarino withdrawal condition). Each instance carries five properties: opda:profileURI, opda:requires, opda:overlaysContext, opda:sourcedFrom, opda:formVersion. Anchors per-profile cardinality/enum constraints in a named context — converting conditionality from 'required (depending)' to 'required relative to a named, dereferenceable context'. ADR-0013 emits per-profile instances under <https://opda.org.uk/pdtf/Baspi5ValidationContext> etc.",
+      "definition": "A reified overlay profile that anchors per-profile cardinality and enumeration constraints to a named, dereferenceable context, so a constraint holds relative to that context rather than as a free-floating axiom.",
       "scopeNote": "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject so its constraints have determinate model theory (Guarino's withdrawal condition discharged at S010).",
       "ufoCategory": "Substance Kind",
       "module": "foundation",
@@ -3842,6 +3880,7 @@
       "localName": "Valuation",
       "label": "Valuation",
       "comment": "No DPV class-level baseline; PII coverage flows transitively via the linked opda:Property (which carries the postal-address baseline). Per ODR-0018 §Rule 1: only direct PII-bearing Kinds declare a baseline; transitively-linked Kinds do not duplicate the upstream baseline.",
+      "definition": "An information artefact stating an estimate of a property's market or rental value, produced by a RICS-regulated professional or an automated model and individuated by a regulated provenance chain and an instructed/delivered/superseded lifecycle.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
       "module": "descriptive",
@@ -3964,6 +4003,7 @@
       "localName": "VerificationActivity",
       "label": "Verification Activity",
       "comment": "Verification activity recording the production of a verified claim from evidence. PROV-O Activity. The OIDC4IDA single 'time' is the completion instant → prov:endedAtTime. Uses qualified form prov:qualifiedAttribution → prov:Attribution with prov:hadRole so validation_method / verification_method are not discarded.",
+      "definition": "An activity that derives a verified claim from evidence, completing at a recorded instant and attributing the validation and verification methods to the agents that performed them.",
       "scopeNote": "PROV-O: Activity (W3C PROV-O REC §3.2). UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7).",
       "ufoCategory": "Event",
       "module": "claim",
@@ -3990,6 +4030,7 @@
       "localName": "annualCostOfPermit",
       "label": "annual cost of permit",
       "comment": "Annual cost of a controlled-parking permit for the Property. Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The yearly cost of a controlled-parking permit for a property.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4018,6 +4059,7 @@
       "localName": "annualGroundRent",
       "label": "annual ground rent",
       "comment": "Annual ground rent payable under a leasehold estate. Bearer opda:LegalEstate (a tenure charge of the leasehold, not a Quality of the brick-and-mortar Property). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The yearly ground rent payable under a leasehold estate.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4046,6 +4088,7 @@
       "localName": "annualServiceCharge",
       "label": "annual service charge",
       "comment": "Annual service charge payable under a leasehold or managed freehold/commonhold estate. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The yearly service charge payable under a leasehold or managed freehold/commonhold estate.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4075,6 +4118,7 @@
       "localName": "areBoundariesUniform",
       "label": "are boundaries uniform",
       "comment": "Yes/No discriminator: are the Property's legal and physical boundaries uniform (i.e. do they match)? Bound to opda:YesNoScheme via SHACL sh:in in the BASPI5 profile.",
+      "definition": "A coded yes/no value recording whether a Property's legal and physical boundaries coincide.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4103,6 +4147,7 @@
       "localName": "attestedBy",
       "label": "attested by",
       "comment": "Vouch → Agent attestation join. A facet borne by evidence playing the vouch role (opda:evidenceType 'Vouch'); mirror of prov:wasAttributedTo for vouch-specific use. The voucher's role (e.g. opda:VoucherRole) is captured via prov:qualifiedAttribution → prov:Attribution → prov:hadRole per S009 Q2 qualified-form discipline. Presence is required value-keyed when evidenceType='Vouch' (opda:EvidenceFacetShape, ADR-0012).",
+      "definition": "Relates evidence playing the vouch role to the agent that attests it, mirroring prov:wasAttributedTo and required value-keyed when the evidence type is Vouch.",
       "kind": "object",
       "module": "claim",
       "subjects": [
@@ -4131,6 +4176,7 @@
       "localName": "baselineCategory",
       "label": "baseline category",
       "comment": "Reference to a DPV-PD category that all instances of the target Kind bear by default. Per ODR-0018 §Rule 1, every PII-bearing Kind declares its baseline. Per ODR-0012 §Reference-not-import + ODR-0018 §Rule 4, the DPV URI is cited but DPV is NOT imported.",
+      "definition": "Relates a DPV mapping record to the DPV-PD personal-data category that every instance of the target Kind bears by default, citing the category without importing the DPV vocabulary.",
       "kind": "object",
       "module": "governance",
       "subjects": [
@@ -4153,6 +4199,7 @@
       "localName": "builtForm",
       "label": "built form",
       "comment": "Property built-form classification per opda:BuiltFormScheme (SKOS scheme in opda-vocabularies.ttl). UFO Quale-in-Region. Constrained by SHACL sh:in to the BuiltForm scheme members (ADR-0012 emits the constraint).",
+      "definition": "The built-form classification of a Property (such as detached, semi-detached, terraced, or end-terrace) drawn from the BuiltForm controlled scheme, describing how the building is structurally attached to neighbouring buildings.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4182,6 +4229,7 @@
       "localName": "centralHeatingFuelType",
       "label": "central heating fuel type",
       "comment": "Fuel classification for a Property's central heating system per opda:CentralHeatingFuelTypeScheme (Mains gas / Electricity / Oil / LPG / Biomass / Other). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "definition": "The fuel powering a Property's central heating system (mains gas, electricity, oil, LPG, biomass, or other) drawn from the CentralHeatingFuelType scheme.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4211,6 +4259,7 @@
       "localName": "certificateOfComplianceFee",
       "label": "certificate of compliance fee",
       "comment": "Fee for a certificate of compliance required on a leasehold transfer (required-documents block). Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The fee charged for a certificate of compliance required on a leasehold transfer.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4239,6 +4288,7 @@
       "localName": "concernsProperty",
       "label": "concerns property",
       "comment": "Transaction → Property join: the physical Property the transaction is about (ODR-0007; Council session-047 GATED). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Transaction + rdfs:range opda:Property are both asserted (Council Q5 carrier ruling). The Transaction-level property join; the conveyed opda:LegalEstate is reached via opda:Property and opda:RegisteredTitle opda:recordsEstate.",
+      "definition": "Relates a property transaction to the physical property that is its subject.",
       "kind": "object",
       "module": "transaction",
       "subjects": [
@@ -4267,6 +4317,7 @@
       "localName": "constructionType",
       "label": "construction type",
       "comment": "Structural construction type of the Property (brick-and-block / timber frame / SIP / …) — value-space opda:ConstructionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. A Quale of opda:Property; flat per §Q6a.",
+      "definition": "The structural construction method of a property, drawn from the opda:ConstructionTypeScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4307,6 +4358,7 @@
       "localName": "costsApplicableToTheDeed",
       "label": "costs applicable to the deed",
       "comment": "Costs applicable to a deed of covenant required on transfer. Bearer opda:Transaction (a completion/transfer cost, not a standing estate charge). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The costs payable for a deed of covenant required on a transfer.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4336,6 +4388,7 @@
       "localName": "councilTaxAnnualCharge",
       "label": "council tax annual charge",
       "comment": "Annual council-tax charge for the Property. Bearer opda:Property (a recurring liability of the dwelling). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The yearly council-tax charge levied on a property.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4364,6 +4417,7 @@
       "localName": "currency",
       "label": "currency",
       "comment": "The currency of an opda:MonetaryAmount — a dereferenceable opda:CurrencyScheme concept (ISO-4217 alpha-3), NEVER an opaque string. The MonetaryAmount node shape makes it sh:minCount 1 (never absent on the value type) and sh:in-restricts it to the scheme; the overlay profile supplies GBP as the default (ODR-0024 R3).",
+      "definition": "The currency of a monetary amount: the ISO-4217 opda:CurrencyScheme concept denominating an opda:MonetaryAmount value structure.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4404,6 +4458,7 @@
       "localName": "currentEnergyRating",
       "label": "current energy rating",
       "comment": "EPC current energy rating band (A–G) per opda:CurrentEnergyRatingScheme. UFO Quale-in-Region. Regulator-sourced enum (DESNZ-governed). Constrained by SHACL sh:in to the scheme members (ADR-0012 emits the constraint).",
+      "definition": "The current energy-efficiency rating band (A to G) of a Property as recorded on its Energy Performance Certificate, drawn from the DESNZ-governed CurrentEnergyRating scheme.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4433,6 +4488,7 @@
       "localName": "estimatedAmount",
       "label": "estimated amount",
       "comment": "Estimated rental amount in a Valuation's rental-estimate analysis. Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The estimated rental amount stated in a valuation's rental-estimate analysis.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4461,6 +4517,7 @@
       "localName": "estimatedPrice",
       "label": "estimated price",
       "comment": "Estimated sale price in a Valuation's pricing analysis. Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The estimated sale price stated in a valuation's pricing analysis.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4489,6 +4546,7 @@
       "localName": "evidenceType",
       "label": "evidence type",
       "comment": "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL.",
+      "definition": "Relates a piece of evidence to the evidence-method scheme concept naming its OIDC4IDA acquisition kind (Document, Electronic-Record or Vouch), serving as the governed classifier in place of an evidence subclass tree.",
       "kind": "object",
       "module": "claim",
       "subjects": [
@@ -4529,6 +4587,7 @@
       "localName": "feeIncludingVAT",
       "label": "fee including VAT",
       "comment": "Fee (including VAT) charged by a party for serving a notice of transfer / assignment / charge during conveyancing. Bearer opda:Transaction (a transfer-process fee). → opda:MonetaryAmount (ODR-0024 R3); ONE shared property across the notice-fee blocks; flat per §Q6a.",
+      "definition": "The VAT-inclusive fee charged by a party for serving a notice of transfer, assignment, or charge during conveyancing.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4570,6 +4629,7 @@
       "localName": "founds",
       "label": "founds",
       "comment": "Relator → Role founding. A Transaction relator founds the Seller and Buyer RoleMixins; a Proprietorship founds its Proprietor roles. Per UFO anti-rigidity every Role is externally founded by its Relator (Guizzardi 2005 Ch.4 §4.4; ODR-0006 §Q3). Documentary domain/range: plain rdfs:domain opda:Relator (Transaction & Proprietorship are both ⊑ opda:Relator — universally true) + \"any-of\" rdfs:range opda:Role , opda:RoleMixin (read disjunctively per the module-header convention — Proprietor is a Role, Seller/Buyer are RoleMixins; authoritative disjunction in opda:FoundsRangeShape sh:or, NOT owl:unionOf). Design-time, NEVER reasoned (ODR-0030 Rule 1 / ODR-0031) — the axioms are AI-signal, not entailed (zero domain/range triples materialise, ADR-0035). Relator spine only; not a general roleOf.",
+      "definition": "Relates a Relator to a Role it externally founds — a Transaction to its Seller and Buyer RoleMixins, or a Proprietorship to its Proprietor roles — capturing the UFO anti-rigidity dependence by which every role owes its existence to its founding relator.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -4603,6 +4663,7 @@
       "localName": "hasAddress",
       "label": "has address",
       "comment": "Canonical bearer → Address join predicate. Per ODR-0005 §6b pre-commitment and ODR-0015 §3a, opda:hasAddress is uniform across variants — one bearer may hasAddress multiple Address instances differing on opda:addressVariant (title / marketing / inspire). Per Council session-047 Q6 the predicate is bearer-extended to Person/Organisation. Documentary \"any-of\" domain (ODR-0032 §R2 session-050 amendment): rdfs:domain opda:Property , opda:Person , opda:Organisation — three triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction; authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the domain does NOT entail every addressed Person is a Property). The authoritative bearer disjunction lives in SHACL sh:or (opda:HasAddressBearerShape), NOT owl:unionOf. rdfs:range opda:Address kept (single co-domain); the Address class/IC stays ODR-0015-pending (Mode-vs-Resource open).",
+      "definition": "Relates an address-bearing entity (a Property, Person, or Organisation) to an Address that locates it, uniformly across address variants so that one bearer may hold several Addresses differing on their variant.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4641,6 +4702,7 @@
       "localName": "hasAssertedCapacity",
       "label": "has asserted capacity",
       "comment": "Seller-side asserted capacity per opda:SellersCapacityScheme (SKOS in opda-vocabularies.ttl). Sales-context seam in the two-predicate Capacity/Authority split per S006 Q4 (Evans + Vernon load-bearing). The assertion lives on the Sales side; the evidence link lives on the Conveyancing side via opda:hasEvidencedAuthority.",
+      "definition": "Relates a Seller to the coded capacity in which it asserts it is selling (a member of opda:SellersCapacityScheme) — the sales-side half of the Capacity/Authority split, recording the claimed basis of authority to sell prior to its conveyancing-side evidencing.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -4702,6 +4764,7 @@
       "localName": "hasBeenFlooded",
       "label": "has been flooded",
       "comment": "Yes/No discriminator: has the Property been flooded? BASPI5 environmental-issue question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property has been flooded.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4730,6 +4793,7 @@
       "localName": "hasChainPosition",
       "label": "has chain position",
       "comment": "Join from a Transaction to its TransactionChain (S007 Q4 Aggregate side). Mirror of opda:chainMembers (Chain → Transactions). Both directions emitted so consumers can query from either end without inverse-property inference dependency.",
+      "definition": "Relates a property transaction to the transaction chain of which it forms a part.",
       "kind": "object",
       "module": "transaction",
       "subjects": [
@@ -4758,6 +4822,7 @@
       "localName": "hasEPCCertificate",
       "label": "has EPC certificate",
       "comment": "Property → opda:EPCCertificate join predicate. The energy rating band stays on the Property as opda:currentEnergyRating (its rdfs:domain); this join reaches the certificate Entity as a distinct PROV-O artefact (10-year lifecycle, DESNZ register).",
+      "definition": "Relates a Property to the Energy Performance Certificate issued for it: a distinct certificate entity in the DESNZ register with its own ten-year lifecycle, reached separately from the property's own current energy rating.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4786,6 +4851,7 @@
       "localName": "hasEvidencedAuthority",
       "label": "has evidenced authority",
       "comment": "Conveyancing-side seam linking a Seller's asserted capacity to an opda:Claim of authority (e.g. probate, power of attorney). The founding grant is modelled as the missing Relator per ODR-0006 §Capacity split + ODR-0009 §Claim. Co-annotation with DPV lawful-basis lands per ODR-0018 in opda-annotations.ttl.",
+      "definition": "Relates a Seller to an opda:Claim evidencing its authority to sell (e.g. a grant of probate or power of attorney) — the conveyancing-side half of the Capacity/Authority split, linking the asserted capacity to the verifiable evidence of the founding grant.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -4814,6 +4880,7 @@
       "localName": "hasParticipant",
       "label": "has participant",
       "comment": "Transaction → Seller/Buyer join: the parties to the transaction (ODR-0007; Council session-047 GATED). rdfs:domain opda:Transaction is asserted plain (universally true). The Seller/Buyer co-domain is documentary \"any-of\" rdfs:range opda:Seller , opda:Buyer (two triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction; schema.org domainIncludes idiom). Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the range does NOT entail every participant is a Seller). The authoritative disjunction stays in SHACL sh:or (opda:HasParticipantRangeShape), NOT owl:unionOf. The navigable parties-of-transaction edge; distinct from the opda:founds Relator → Role founding spine (design-time, never reasoned).",
+      "definition": "Relates a property transaction to a seller or buyer party to it.",
       "kind": "object",
       "module": "transaction",
       "subjects": [
@@ -4847,6 +4914,7 @@
       "localName": "hasRegisteredTitle",
       "label": "has registered title",
       "comment": "Proprietorship → RegisteredTitle join: the HMLR title-register record the Proprietorship Relator is registered against (ODR-0006 §Q3 — the Relator mediates Property + Proprietor instances against a RegisteredTitle). Single-domain edge with no never-reasoned commitment, so rdfs:domain opda:Proprietorship + rdfs:range opda:RegisteredTitle are both asserted (Council session-047 Q5 carrier ruling). The Proprietor arm is opda:mediates; the property arm reaches opda:Property via opda:RegisteredTitle opda:identifiesSameProperty.",
+      "definition": "Relates a Proprietorship to the RegisteredTitle it is registered against — the HMLR title-register record naming the title arm of the holding, distinct from the Proprietor arm carried by opda:mediates.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -4875,6 +4943,7 @@
       "localName": "hasRoomDimension",
       "label": "has room dimension",
       "comment": "Relates an opda:Property to a room-dimension value structure (one per room in roomDimensions.rooms[]). Characterisation of a value, NOT mereological parthood (no opda:Room individual is asserted) and NOT transitive (Council session-030 / ODR-0024 R10).",
+      "definition": "The link from a property to one of its room-dimension value structures: a non-transitive characterisation relating a property to a room's length, width, and name, one per room.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4903,6 +4972,7 @@
       "localName": "hasSmartHomeSystems",
       "label": "has smart home systems",
       "comment": "Yes/No discriminator: does the Property have smart-home systems installed? BASPI5 smart-home question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property has smart-home systems installed.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4931,6 +5001,7 @@
       "localName": "hasSprayFoamInstalled",
       "label": "has spray foam installed",
       "comment": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether spray-foam insulation has been installed in a Property.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -4959,6 +5030,7 @@
       "localName": "hasSubAssessment",
       "label": "has sub-assessment",
       "comment": "Self-referential mereological part-of: a riskSubcategories[] entry is itself a leaf opda:RiskAssessment (ODR-0008d Rule 4). The node shape realises the recursion via sh:node opda:RiskAssessment. This is the RESULT-recursion axis; the peril → sub-peril TAXONOMY axis is skos:narrower within opda:PerilScheme — two distinct axes (Rule 4).",
+      "definition": "The result-recursion link of a risk assessment to a constituent leaf risk assessment: a mereological part-of holding between a parent assessment and each of its riskSubcategories entries.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -4999,6 +5071,7 @@
       "localName": "hasValidGuaranteesOrWarranties",
       "label": "has valid guarantees or warranties",
       "comment": "Yes/No discriminator: does the Property carry valid guarantees, warranties, or indemnity insurances? BASPI5 guarantees question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property carries valid guarantees, warranties, or indemnity insurances.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5027,6 +5100,7 @@
       "localName": "heatingType",
       "label": "heating type",
       "comment": "Property heating-system arrangement per opda:HeatingTypeScheme (Central heating / Communal heating system / Room heaters only / None). UFO Quale-in-Region. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "definition": "The heating-system arrangement of a Property (central heating, communal heating, room heaters only, or none) drawn from the HeatingType scheme.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5056,6 +5130,7 @@
       "localName": "holdingDeposit",
       "label": "holding deposit",
       "comment": "Holding deposit in the Property's letting information (refundable — distinct value semantics from a sale price). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The refundable holding deposit stated in a property's letting information.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5084,6 +5159,7 @@
       "localName": "identifiesSameProperty",
       "label": "identifies same property",
       "comment": "Co-reference predicate from any identity-bearing surface (RegisteredTitle, LegalEstate, Address) to the physical Property they identify. Per ODR-0005 Rule 5: NEVER use owl:sameAs (which would propagate every context's properties onto every other under inference). Domain intentionally unconstrained — any class with co-reference responsibility may emit this predicate.",
+      "definition": "Relates an identity-bearing surface (a RegisteredTitle, LegalEstate, or Address) to the physical Property it identifies, asserting co-reference without the property-propagating force of owl:sameAs.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5124,6 +5200,7 @@
       "localName": "inclusionStatus",
       "label": "inclusion status",
       "comment": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007.",
+      "definition": "The disposition of a fixtures-and-fittings item in a sale: whether the item is Included in, Excluded from, or absent (None) from the transaction, held as a mode of the sale rather than a quality of the property.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5164,6 +5241,7 @@
       "localName": "isGroundRentPayable",
       "label": "is ground rent payable",
       "comment": "Yes/No discriminator: is ground rent payable on the Leasehold? BASPI5 ground-rent question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether ground rent is payable on a leasehold LegalEstate.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5192,6 +5270,7 @@
       "localName": "isInsured",
       "label": "is insured",
       "comment": "Yes/No discriminator: is the Property currently insured? BASPI5 insurance question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property is currently insured.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5220,6 +5299,7 @@
       "localName": "isLocatedOverCommercialPremises",
       "label": "is located over commercial premises",
       "comment": "Yes/No discriminator: is the Property located over commercial premises? Applies to Flats and Maisonettes per BASPI5 question A1.8.6.1. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property (typically a flat or maisonette) is situated over commercial premises.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5248,6 +5328,7 @@
       "localName": "isSharedOwnership",
       "label": "is shared ownership",
       "comment": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a LegalEstate is held under a shared-ownership lease.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5276,6 +5357,7 @@
       "localName": "isSupplyMetered",
       "label": "is supply metered",
       "comment": "Yes/No discriminator: is the Property's utility supply (electricity / water / gas) metered? BASPI5 utility questions. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property's utility supply (electricity, water, or gas) is metered.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5304,6 +5386,7 @@
       "localName": "listPrice",
       "label": "list price",
       "comment": "List price of a comparable property (valuation comparable listing info). Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The price at which a comparable property was listed for sale.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5332,6 +5415,7 @@
       "localName": "marketingTenure",
       "label": "marketing tenure",
       "comment": "Marketed tenure of the Property (Freehold / Leasehold / Commonhold) — value-space the existing opda:TenureKindScheme (ODR-0024 R6: reuse-before-mint, NOT a third tenure scheme), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+      "definition": "The tenure under which a property is marketed, drawn from the opda:TenureKindScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5372,6 +5456,7 @@
       "localName": "mediates",
       "label": "mediates",
       "comment": "Relator → Role mediation. A Relator (e.g. opda:Proprietorship) existentially mediates the ≥2 Role instances it founds (e.g. the opda:Proprietor roles of a joint tenancy). Per UFO a Relator just IS that which binds ≥2 relata (Guizzardi 2005 Ch.4 §4.4); opda:ProprietorshipMediationShape enforces sh:minCount 2 closed-world. Single-class relator-spine edge: rdfs:domain opda:Proprietorship + rdfs:range opda:Proprietor authored as documentary domain/range (ODR-0032 §R2 session-050 amendment). Design-time + SHACL-validated, NEVER reasoned (ODR-0029/0031) — the documentary axioms are AI-signal, not entailed (the closure adds zero domain/range triples, ADR-0035).",
+      "definition": "Relates a Relator to a Role it existentially binds — specifically a Proprietorship to each of the two-or-more Proprietor roles of a joint holding — expressing the UFO mediation by which a relator just is that which connects its relata.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -5417,6 +5502,7 @@
       "localName": "offMainsDrainageSystemType",
       "label": "off-mains drainage system type",
       "comment": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage.",
+      "definition": "The off-mains drainage arrangement of a Property not connected to mains sewerage (SuDS, septic tank, cesspit, sewerage treatment plant, other, or not known) drawn from the OffMainsDrainageSystemType scheme.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5445,6 +5531,7 @@
       "localName": "ofstedRating",
       "label": "Ofsted rating",
       "comment": "Ofsted rating of a nearby school (Outstanding / Good / …) — value-space opda:OfstedRatingScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer). Flat per §Q6a.",
+      "definition": "The Ofsted rating of a nearby school, drawn from the opda:OfstedRatingScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5485,6 +5572,7 @@
       "localName": "ownershipType",
       "label": "ownership type",
       "comment": "Ownership-type classification per opda:OwnershipTypeScheme (Freehold / Leasehold / Commonhold / Managed Freehold / Other). UFO Quale-in-Region of LegalEstate. Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "definition": "The ownership-type classification of a LegalEstate (freehold, leasehold, commonhold, managed freehold, or other) drawn from the OwnershipType scheme.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5513,6 +5601,7 @@
       "localName": "ownerType",
       "label": "owner type",
       "comment": "Substance Kind label discriminating Private individual (opda:Person) from Organisation (opda:Organisation) for a Proprietor (legal owner). Bound to opda:OwnerTypeScheme via SHACL sh:in in the BASPI5 profile. Distinct from opda:roleNotation (transactional role) and opda:tenureKind (sub-Kind of LegalEstate).",
+      "definition": "Relates a Proprietor to a coded Substance-Kind discriminator (a member of opda:OwnerTypeScheme) distinguishing whether the legal owner is a private individual (a Person) or an organisation, as reported by the BASPI5 legal-owners block.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -5553,6 +5642,7 @@
       "localName": "peril",
       "label": "peril",
       "comment": "The environmental / search peril a RiskAssessment reports on — a dereferenceable opda:PerilScheme concept (ODR-0008d Rule 1c / Rule 2), NEVER an opaque string. The node shape restricts the value to the PerilScheme concepts via sh:in.",
+      "definition": "The environmental or search hazard a risk assessment reports on: the opda:PerilScheme concept naming the dataset or peril whose result the assessment records.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5593,6 +5683,7 @@
       "localName": "playedBy",
       "label": "played by",
       "comment": "Role → bearer navigable edge: the Person or Organisation that plays this Role qua-individual. Documentary \"any-of\" domain/range (ODR-0032 §R2 session-050 amendment; schema.org domainIncludes idiom): rdfs:domain opda:Role , opda:RoleMixin (the subject is an opda:Role — Proprietor — OR an opda:RoleMixin — Seller/Buyer — sibling role meta-classes) and rdfs:range opda:Person , opda:Organisation (the bearer), each MULTIPLE triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction. Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the range does NOT entail every bearer is a Person). The authoritative disjunctions live in SHACL sh:or (subject: opda:RolePlaySubjectShape; bearer: opda:RolePlayShape / opda:SellerShape / opda:BuyerShape), NOT owl:unionOf (excluded construct). OPTIONAL / distinct-node-only per Council session-047 Q4: emitted only where the role qua-individual is a node distinct from its bearer; never a self-edge. Coexists with role co-typing (ODR-0006 §Q2) — the typed encoding is the canonical IC, this is the navigable link for the distinct-node case (a qua-individual, prov:Agent-attested participant). Inverse: opda:plays.",
+      "definition": "Relates a Role qua-individual (a Seller, Buyer, or Proprietor) to the Person or Organisation that bears it — the navigable link home from a role-instance to its bearer, emitted only where the two are distinct nodes. Inverse of opda:plays.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -5678,6 +5769,7 @@
       "localName": "plays",
       "label": "plays",
       "comment": "Bearer → Role inverse of opda:playedBy: the Role a Person or Organisation plays. Documentary \"any-of\" domain/range (the mirror of opda:playedBy; ODR-0032 §R2 session-050 amendment): rdfs:domain opda:Person , opda:Organisation (the bearer subject) and rdfs:range opda:Role , opda:RoleMixin (the role object), each MULTIPLE triples read DISJUNCTIVELY per the module-header convention, NOT the RDFS §3.2 conjunction. Authored as AI-signal, NEVER entailed (zero domain/range triples materialise, ADR-0035 — so the domain does NOT entail every bearer is a Person). The authoritative subject/object disjunctions are carried by the opda:playedBy SHACL shapes (the inverse direction shares the same closed-world constraints); owl:unionOf is NOT used. Emitted as the navigable inverse so consumers query from either end without inverse-property inference (ODR-0029/0030 — UFO layer inert at load).",
+      "definition": "Relates a Person or Organisation to a Role qua-individual it bears (a Seller, Buyer, or Proprietor) — the bearer-side navigable surface letting consumers query from either end without inverse-property inference. Inverse of opda:playedBy.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -5719,6 +5811,7 @@
       "localName": "potentialCost",
       "label": "potential cost",
       "comment": "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The estimated cost of potential remediation disclosed in a property's building-safety information.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5747,6 +5840,7 @@
       "localName": "priceQualifier",
       "label": "price qualifier",
       "comment": "Qualifier on the marketed price (Guide price / Offers over / …) — value-space opda:PriceQualifierScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Borne on opda:Property (the marketing price information); the Mode-vs-Quality nuance is held by session-029. Flat per §Q6a.",
+      "definition": "The qualifier attached to a marketed price, such as Guide price or Offers over, drawn from the opda:PriceQualifierScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5787,6 +5881,7 @@
       "localName": "propertyType",
       "label": "property type",
       "comment": "Substance Kind label classifying the physical-form Kind of a Property per opda:PropertyTypeScheme (House / Bungalow / Park home / Flat / Maisonette / Other). Distinct from opda:builtForm (Quale-in-Region structural classification). Constrained by SHACL sh:in to the scheme members in the BASPI5 profile.",
+      "definition": "The property-type classification of a Property (house, bungalow, park home, flat, maisonette, or other) drawn from the PropertyType scheme, naming its physical-form kind as distinct from its built form.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5816,6 +5911,7 @@
       "localName": "recordsEstate",
       "label": "records estate",
       "comment": "Title-to-estate join: the RegisteredTitle's HMLR record names the LegalEstate it documents. Per ODR-0005 §3c, this is the three-way structural seam (RegisteredTitle recordsEstate LegalEstate; LegalEstate vests in Property; RegisteredTitle identifiesSameProperty Property).",
+      "definition": "Relates a RegisteredTitle to the LegalEstate that its HM Land Registry record documents, forming one seam of the title-estate-property structural triangle.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5844,6 +5940,7 @@
       "localName": "rent",
       "label": "rent",
       "comment": "Rent in the Property's letting information. Bearer opda:Property (letting terms of the dwelling; no Tenancy Kind is minted — promote on a named query). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The rent stated in a property's letting information.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5872,6 +5969,7 @@
       "localName": "riskIndicator",
       "label": "risk indicator",
       "comment": "Whether action is recommended / the property is at risk for the RiskAssessment's peril (No / Not known / Yes). Value-space reuses opda:YesNoNotKnownScheme (a duplicate scheme would violate ODR-0022 Category C); the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4).",
+      "definition": "The at-risk indicator of a risk assessment: whether action is recommended or the property is at risk for the assessed peril, drawn from the No / Not known / Yes value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5912,6 +6010,7 @@
       "localName": "roleNotation",
       "label": "role notation",
       "comment": "Notation value naming the transactional role borne by a Seller / Buyer / Proprietor / Conveyancer / etc. Constrained by per-overlay profile shapes via SHACL `sh:in` over the SKOS RoleScheme members. Per ODR-0006 §Q2 the role-bearing pattern is encoded by `opda:Seller` / `opda:Buyer` / `opda:Proprietor` sub-classes of `opda:RoleMixin`; this predicate exposes the notation for DASH editor ergonomics and SPARQL convenience. Renamed from opda:role (ADR-0044) to avoid the case-clash with the opda:Role class.",
+      "definition": "Relates a role-bearer to a coded notation naming the transactional role it bears (a member of opda:RoleScheme — Seller, Buyer, Proprietor, Conveyancer, etc.) — the notation surface exposing the role for editor and SPARQL ergonomics alongside the canonical class-membership encoding.",
       "kind": "object",
       "module": "agent",
       "subjects": [
@@ -5940,6 +6039,7 @@
       "localName": "securityDeposit",
       "label": "security deposit",
       "comment": "Security/tenancy deposit in the Property's letting information (refundable). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The refundable security deposit stated in a property's letting information.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -5968,6 +6068,7 @@
       "localName": "sellerContributesToServiceCharge",
       "label": "seller contributes to service charge",
       "comment": "Yes/No discriminator: does the Seller contribute to a service charge for the Property? Applies to Leasehold / Managed Freehold / Commonhold per BASPI5. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether the seller contributes to a service charge on a leasehold, managed-freehold, or commonhold LegalEstate.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -5996,6 +6097,7 @@
       "localName": "sharedOwnershipRent",
       "label": "shared ownership rent",
       "comment": "Rent payable on the retained share under a shared-ownership lease. Bearer opda:LegalEstate. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The rent payable on the retained share under a shared-ownership lease.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -6024,6 +6126,7 @@
       "localName": "soldPrice",
       "label": "sold price",
       "comment": "Sold price of a comparable property (valuation comparable listing info). Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
+      "definition": "The price at which a comparable property was sold.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -6052,6 +6155,7 @@
       "localName": "soldWithVacantPossession",
       "label": "sold with vacant possession",
       "comment": "Yes/No discriminator: is the Property sold with vacant possession (vs sold subject to existing tenancies)? BASPI5 completion question. Bound to opda:YesNoScheme.",
+      "definition": "A coded yes/no value recording whether a Property is sold with vacant possession rather than subject to existing tenancies.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -6080,6 +6184,7 @@
       "localName": "supportedBy",
       "label": "supported by",
       "comment": "Claim → Evidence join. Convenience predicate alongside the canonical PROV-O prov:wasDerivedFrom chain (Claim prov:wasDerivedFrom Evidence). opda:supportedBy is the opda-namespaced inverse-style predicate for downstream consumers that prefer an opda: name; both directions emit so consumers can query from either end.",
+      "definition": "Relates a claim to a piece of evidence that backs it, providing an opda-namespaced counterpart to the canonical prov:wasDerivedFrom derivation chain.",
       "kind": "object",
       "module": "claim",
       "subjects": [
@@ -6108,6 +6213,7 @@
       "localName": "targetsKind",
       "label": "targets kind",
       "comment": "DPV mapping record → OPDA Kind class. The Kind is the class whose instances bear the personal-data category named by opda:baselineCategory (with optional variant refinements).",
+      "definition": "Relates a DPV mapping record to the OPDA Kind class whose instances bear the personal-data category the record assigns.",
       "kind": "object",
       "module": "governance",
       "subjects": [
@@ -6148,6 +6254,7 @@
       "localName": "tenureKind",
       "label": "tenure kind",
       "comment": "Tenure classification per opda:TenureKindScheme — Substance Kind label (Freehold / Leasehold / Commonhold), a coded facet on opda:LegalEstate enforced by SHACL sh:in. Per the ODR-0011 §8a load-bearing cascade (Council session-036), tenure is +R but −I (no distinct identity criterion; tenure-change is a value change, not a re-typing) → classification, NOT a subclass: opda does NOT mint Freehold/Leasehold/Commonhold OWL sub-classes, and no skos:exactMatch-to-subclass is emitted (the §8a subclass binding applies only to load-bearing +I labels).",
+      "definition": "The tenure classification of a LegalEstate (freehold, leasehold, or commonhold) drawn from the TenureKind scheme: a coded facet, not a subclass, since tenure change is a value change rather than a re-typing.",
       "kind": "object",
       "module": "property",
       "subjects": [
@@ -6188,6 +6295,7 @@
       "localName": "transportType",
       "label": "transport type",
       "comment": "Type of a nearby transport facility (rail station / bus stop / …) — value-space opda:TransportTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Domain opda:NearbyFacility (the genus bearer, as opda:schoolType). Flat per §Q6a.",
+      "definition": "The kind of a nearby transport facility, such as a rail station or bus stop, drawn from the opda:TransportTypeScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -6228,6 +6336,7 @@
       "localName": "typeOfConnection",
       "label": "type of connection",
       "comment": "Broadband connection type of the Property (FTTP / FTTC / cable / …) — value-space opda:BroadbandConnectionTypeScheme (ODR-0024 R6), sh:in-restricted via the descriptive enum shape. Flat per §Q6a.",
+      "definition": "The broadband connection technology serving a property, drawn from the opda:BroadbandConnectionTypeScheme value-space.",
       "kind": "object",
       "module": "descriptive",
       "subjects": [
@@ -6270,6 +6379,7 @@
       "localName": "abilityToResideAtProperty",
       "label": "ability to reside at property",
       "comment": "Building-safety statement on whether occupiers can reside at the Property given any identified safety issues (typed as a string in the data dictionary). A physical-safety attribute of the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A building-safety statement on whether occupiers can reside at a Property given any identified safety issues.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6298,6 +6408,7 @@
       "localName": "accessibilityAndAdaptations",
       "label": "accessibility and adaptations",
       "comment": "Accessibility features and adaptations of the Property (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An accessibility feature or adaptation present in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6326,6 +6437,7 @@
       "localName": "accountName",
       "label": "account name",
       "comment": "Name on the bank account of a leasehold / managed-freehold contact organisation (landlord / managing agent / management company / rentcharge owner / resident-tenants' association). ONE shared property reused across those contact blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain — placed on opda:Organisation, no opda:BankAccount Kind minted.)",
+      "definition": "The name in which a contact Organisation's bank account is held — the account holder for a landlord, managing agent, management company, rentcharge owner, or resident-tenants' association.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -6361,6 +6473,7 @@
       "localName": "accountNumber",
       "label": "account number",
       "comment": "Bank-account number of a contact organisation. xsd:string (a fixed-width numeric identifier — leading zeros significant, per the opda:hasUPRN convention, NOT xsd:integer). ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)",
+      "definition": "The account number of a contact Organisation's bank account, held as a string so that leading zeros remain significant.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -6396,6 +6509,7 @@
       "localName": "actionAlertRating",
       "label": "action alert rating",
       "comment": "The ordinal action-alert rating for the RiskAssessment's peril: an integer 1–5 where 1 is Green (lowest risk) and 5 is Red (highest). Value-space is opda:ActionAlertRatingScheme; the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4).",
+      "definition": "The action-alert severity of a risk assessment: an ordinal integer from 1 (Green, lowest risk) to 5 (Red, highest risk) grading the assessed peril.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6436,6 +6550,7 @@
       "localName": "addressVariant",
       "label": "address variant",
       "comment": "Required tag identifying the authority and lifecycle for this Address instance (one of 'title' | 'marketing' | 'inspire'). UFO Quality particularising the Address Substance Kind within Guarino's S001 Q4 'mode of presentation' framing.",
+      "definition": "The authority-and-lifecycle tag of an Address (one of 'title', 'marketing', or 'inspire') identifying which addressing authority stewards the locator and the lifecycle it follows.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6476,6 +6591,7 @@
       "localName": "adHocExpenses",
       "label": "ad hoc expenses",
       "comment": "Statement of ad-hoc service-charge expenses on the leasehold LegalEstate (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A statement of ad-hoc service-charge expenses on a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6504,6 +6620,7 @@
       "localName": "aged17OrOverNames",
       "label": "aged 17 or over names",
       "comment": "Names of occupiers aged 17 or over (other than the Seller) in the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Companion to opda:hasOthersAged17OrOver (the Yes/No discriminator).",
+      "definition": "The names of the occupiers aged 17 or over, other than the Seller, residing in the Property, as disclosed when opda:hasOthersAged17OrOver is affirmative.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -6532,6 +6649,7 @@
       "localName": "ageRange",
       "label": "age range",
       "comment": "Age range of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The range of pupil ages catered for by a nearby school.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6560,6 +6678,7 @@
       "localName": "amount",
       "label": "amount",
       "comment": "The magnitude of an opda:MonetaryAmount (xsd:decimal) — the numeric dimension of the value structure (the currency dimension is opda:currency). Covers the data-dictionary `amount` leaf (estate rentcharge / service-charge reserve-fund / local-land-charge amounts). Flat per ODR-0008 §Q6a.",
+      "definition": "The numeric magnitude of a monetary amount: the decimal-valued size dimension of an opda:MonetaryAmount value structure, paired with its currency.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6602,6 +6721,7 @@
       "localName": "applicationDate",
       "label": "application date",
       "comment": "Date a planning / building-control application was made (across the local-authority-search decision blocks). xsd:date. ONE shared property; flat per §Q6a.",
+      "definition": "The date a planning or building-control application was made, as recorded in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6631,6 +6751,7 @@
       "localName": "applicationType",
       "label": "application type",
       "comment": "Type of a planning / building-control application recorded in a local-authority Search result (across the planning-permission, building-regulations, listed-building, conservation, and certificate-of-lawfulness decision blocks). ONE shared property reused across those blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The kind of a planning or building-control application recorded in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6660,6 +6781,7 @@
       "localName": "area",
       "label": "area",
       "comment": "Internal floor area of the Property — a measured UFO Quality (the unit of measure is carried alongside in the source structure). Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The measured internal floor area of a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6689,6 +6811,7 @@
       "localName": "authorisationToShare",
       "label": "authorisation to share",
       "comment": "Sale-ready declaration: authorisation to share the property pack. xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a seller's consent to share the information in the sale-ready pack with their legal representative and with the buyer and the buyer's legal representatives.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -6717,6 +6840,7 @@
       "localName": "authorisedToActOnBehalfOfAllSellers",
       "label": "authorised to act on behalf of all sellers",
       "comment": "Sale-ready declaration: is the declarant authorised to act on behalf of all sellers? xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a declarant's confirmation of authority to supply data and documents relating to the property on behalf of all of its owners.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -6745,6 +6869,7 @@
       "localName": "bathrooms",
       "label": "bathrooms",
       "comment": "Number of bathrooms in the Property — a countable UFO Quality. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of bathrooms in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6774,6 +6899,7 @@
       "localName": "bedrooms",
       "label": "bedrooms",
       "comment": "Number of bedrooms in the Property — a countable UFO Quality of the physical Property. Plain integer datatype (no enumerated value-space) per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of bedrooms in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6803,6 +6929,7 @@
       "localName": "buildingControlStartDate",
       "label": "building control start date",
       "comment": "Start date of a building-control matter in a local-authority Search result. xsd:date. Flat per §Q6a.",
+      "definition": "The date a building-control matter commenced, as recorded in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -6831,6 +6958,7 @@
       "localName": "buildingsReinstatementCostAssessment",
       "label": "buildings reinstatement cost assessment",
       "comment": "Buildings reinstatement-cost-assessment statement for the leasehold LegalEstate's buildings insurance (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A buildings reinstatement-cost-assessment statement for a leasehold LegalEstate's buildings insurance.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6859,6 +6987,7 @@
       "localName": "centralHeatingInstalled",
       "label": "central heating installed",
       "comment": "Central-heating installation indicator for the Property (typed as a string in the data dictionary — a Yes/No-style response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A physical-system attribute of the Property.",
+      "definition": "An indicator of whether central heating is installed in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -6887,6 +7016,7 @@
       "localName": "confirmation",
       "label": "confirmation",
       "comment": "Confirmation flag on a leasehold / managed-freehold confirmation-of-accuracy declaration. xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a declarant's confirmation on a leasehold or managed-freehold/commonhold confirmation-of-accuracy declaration.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -6916,6 +7046,7 @@
       "localName": "confirmInformationIsAccurate",
       "label": "confirm information is accurate",
       "comment": "Declaration confirming the supplied information is accurate (owners' confirmation-of-accuracy + fixtures confirmation). xsd:boolean. ONE shared property; flat per §Q6a.",
+      "definition": "Records a declarant's confirmation that the supplied information is accurate to the best of their knowledge, with an undertaking to notify any change before exchange of contracts.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -6945,6 +7076,7 @@
       "localName": "confirmWillProvideAdditionalDocumentation",
       "label": "confirm will provide additional documentation",
       "comment": "Declaration confirming the owner will provide additional documentation. xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a declarant's undertaking to provide their property lawyer with additional documentation in support of the information supplied.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -6973,6 +7105,7 @@
       "localName": "consentsObtained",
       "label": "consents obtained",
       "comment": "Whether consents were obtained for work under a tree-preservation order. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the required consents were obtained for work carried out under a tree-preservation order.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7001,6 +7134,7 @@
       "localName": "consequentialChargingBasis",
       "label": "consequential charging basis",
       "comment": "Charging basis that would apply consequentially (e.g. on a change of circumstances) for the Property's water/sewerage. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The basis on which a Property's water and sewerage charges would be levied consequentially, such as following a change of circumstances.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7029,6 +7163,7 @@
       "localName": "consumerProtectionRegulationsResponse",
       "label": "consumer protection regulations response",
       "comment": "Declaration response to the Consumer Protection Regulations question. xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a seller's affirmation, under the Consumer Protection Regulations, that the disclosure answers are truthful and accurate to the best of their knowledge.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -7057,6 +7192,7 @@
       "localName": "contributionIncludedInServiceCharge",
       "label": "contribution included in service charge",
       "comment": "Whether a reserve-fund contribution is included in the service charge. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a reserve-fund contribution is included within the service charge.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7085,6 +7221,7 @@
       "localName": "councilSearchTurnaroundTimeInWorkingDays",
       "label": "council search turnaround time in working days",
       "comment": "Quoted turnaround time (working days) for a council search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The quoted turnaround time, in working days, for a council search.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7113,6 +7250,7 @@
       "localName": "councilTaxBand",
       "label": "council tax band",
       "comment": "Council-tax valuation band of the Property per opda:CouncilTaxBandSchemeEW (A–H / Not banded) or opda:CouncilTaxBandSchemeScotland. UFO Quale-in-Region; regulator-sourced enum (VOA / Scottish Assessors). Constrained by SHACL sh:in to the scheme members in the overlay profile, mirroring opda:currentEnergyRating. Flat per §Q6a.",
+      "definition": "The council-tax valuation band of a Property (A to H, or not banded) assigned by the Valuation Office Agency or the Scottish Assessors.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7142,6 +7280,7 @@
       "localName": "countyCouncil",
       "label": "county council",
       "comment": "Name of the county council for the Property's locality (local-authority Search context). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the county council for the locality of the property searched.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7170,6 +7309,7 @@
       "localName": "credibilitySources",
       "label": "credibility sources",
       "comment": "Sources lending credibility to a Valuation's price estimate (a multi-valued list — each value an xsd:string). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The sources cited as lending credibility to a valuation's price estimate.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7198,6 +7338,7 @@
       "localName": "currentChargingBasis",
       "label": "current charging basis",
       "comment": "Current basis on which the Property's water/sewerage is charged. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The basis on which a Property's water and sewerage charges are currently levied.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7226,6 +7367,7 @@
       "localName": "dangerousCladdingOrDefects",
       "label": "dangerous cladding or defects",
       "comment": "Whether there is dangerous cladding or building-safety defects. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property has dangerous cladding or building-safety defects.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7254,6 +7396,7 @@
       "localName": "dateInstalled",
       "label": "date installed",
       "comment": "Date a Property system was installed (heat pump / off-mains drainage system). xsd:date (a date-valued string in the data dictionary). Flat per §Q6a.",
+      "definition": "The date on which a Property system, such as a heat pump or off-mains drainage system, was installed.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7283,6 +7426,7 @@
       "localName": "dateLastEmptied",
       "label": "date last emptied",
       "comment": "Date the Property's off-mains drainage system was last emptied. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a Property's off-mains drainage system was last emptied.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7311,6 +7455,7 @@
       "localName": "dateLastServiced",
       "label": "date last serviced",
       "comment": "Date the Property's off-mains drainage system was last serviced. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a Property's off-mains drainage system was last serviced.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7339,6 +7484,7 @@
       "localName": "dateOfBirth",
       "label": "date of birth",
       "comment": "Date of birth of a Person participant. xsd:date. Flat per §Q6a. Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under ODR-0018 (DPV co-annotation in opda-annotations.ttl).",
+      "definition": "The calendar date on which a Person was born — one component of the Person's multi-identifier identity criterion and an item of personal data.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -7368,6 +7514,7 @@
       "localName": "dateRemedialActionRequired",
       "label": "date remedial action required",
       "comment": "Date by which remedial action is required following a buildings-insurance RiskAssessment. xsd:date. Flat per §Q6a.",
+      "definition": "The date by which remedial action is required following a buildings-insurance risk assessment of a managed area.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7396,6 +7543,7 @@
       "localName": "dateReplaced",
       "label": "date replaced",
       "comment": "Date the Property's off-mains drainage system was last replaced. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a Property's off-mains drainage system was last replaced.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7424,6 +7572,7 @@
       "localName": "dateToBeConnected",
       "label": "date to be connected",
       "comment": "Expected connection date for a not-yet-connected Property utility / service. ONE shared date property reused across the utility blocks. xsd:date. Flat per §Q6a.",
+      "definition": "The expected date on which a not-yet-connected Property utility or service is to be connected.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7460,6 +7609,7 @@
       "localName": "dealsWithDayToDayMaintenanceOfManagedArea",
       "label": "deals with day-to-day maintenance of managed area",
       "comment": "Whether the contact deals with day-to-day maintenance of the managed area. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a contact is responsible for the day-to-day maintenance of a managed area.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7488,6 +7638,7 @@
       "localName": "decision",
       "label": "decision",
       "comment": "Decision recorded on a planning / building-control application in a local-authority Search result. ONE shared property reused across the decision blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The determination reached on a planning or building-control application in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7517,6 +7668,7 @@
       "localName": "decisionDate",
       "label": "decision date",
       "comment": "Date a decision was made on a planning / building-control application. xsd:date. ONE shared property; flat per §Q6a.",
+      "definition": "The date a determination was reached on a planning or building-control application.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7546,6 +7698,7 @@
       "localName": "designationType",
       "label": "designation type",
       "comment": "Type of a planning designation recorded in a local-authority Search result (e.g. conservation area, tree preservation order). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The kind of planning designation recorded in a local-authority search result, such as a conservation area or tree-preservation order.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7574,6 +7727,7 @@
       "localName": "digest",
       "label": "digest",
       "comment": "Cryptographic digest of a Claim or Evidence (algorithm + value, e.g. 'sha256:e3b0...'). Local term per S009 5-residue (PROV-O has no notion of signature or hash). Algorithm validation by opda:DigestAlgorithmScheme SKOS scheme (ADR-0012 emits the constraint).",
+      "definition": "Relates a claim or piece of evidence to its cryptographic hash, expressed as an algorithm-qualified digest value drawn from the digest-algorithm concept scheme.",
       "kind": "datatype",
       "module": "claim",
       "subjects": [],
@@ -7619,6 +7773,7 @@
       "localName": "diningAreas",
       "label": "dining areas",
       "comment": "Number of dining areas in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of dining areas in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7647,6 +7802,7 @@
       "localName": "dischargeCompliesWithGBR",
       "label": "discharge complies with GBR",
       "comment": "Whether off-mains drainage discharge complies with the General Binding Rules. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property's off-mains drainage discharge complies with the General Binding Rules.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7675,6 +7831,7 @@
       "localName": "disclosureDetail",
       "label": "disclosure detail",
       "comment": "Reusable free-text elaboration slot for a disclosure question (the generic `details` / `comments` / `summary` tail). rdfs:comment-grade — NOT a domain entity and carries no identity criterion (ODR-0022 §Rules.1 Category A). The question being elaborated is carried by the subject node and the instance-level dct:source pointing at that question's schema leaf path; a per-question detail property is NEVER minted (ODR-0022 §Rules.6).",
+      "definition": "The free-text elaboration of a disclosure answer: a reusable comment-grade note whose governing question is fixed by the subject node and the instance-level source, not by the property itself.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [],
@@ -7775,6 +7932,7 @@
       "localName": "displayName",
       "label": "display name",
       "comment": "Human-readable display name of a document or Search artefact. Domain-less artefact-reference attribute; flat per §Q6a.",
+      "definition": "The human-readable name of a document or search artefact.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [],
@@ -7798,6 +7956,7 @@
       "localName": "distanceInMiles",
       "label": "distance in miles",
       "comment": "Distance in miles from the Property to a nearby facility (school / health-care / transport). xsd:decimal. Domain opda:NearbyFacility (the proximity relation on the genus), reused across the amenity bands; flat per §Q6a.",
+      "definition": "The distance in miles from a property to a nearby facility.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7828,6 +7987,7 @@
       "localName": "distanceToNearestSewerageTreatment",
       "label": "distance to nearest sewerage treatment",
       "comment": "Distance from the Property to the nearest sewerage-treatment works (typed as a string in the data dictionary — a free-form distance band). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The distance from a Property to the nearest sewerage-treatment works.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7856,6 +8016,7 @@
       "localName": "districtCouncil",
       "label": "district council",
       "comment": "Name of the district council for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the district council for the locality of the property searched.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7884,6 +8045,7 @@
       "localName": "documentDate",
       "label": "document date",
       "comment": "Date of a title / additional document. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — an attached doc is NOT evidence by mere attachment; a document plays the evidence role via opda:evidenceType, ODR-0027 §R6); flat per §Q6a.",
+      "definition": "The date borne by a title or additional document attached to a property pack.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7913,6 +8075,7 @@
       "localName": "documentTypeCode",
       "label": "document type code",
       "comment": "Type code of a title / additional document. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7). Plain string datatype per ODR-0008 §Q5a (no in-data enum; session-028 Q-SKOS keeps it bare); flat per §Q6a.",
+      "definition": "The type code classifying a title or additional document attached to a property pack.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7941,6 +8104,7 @@
       "localName": "entranceFloor",
       "label": "entrance floor",
       "comment": "Floor (storey) on which the Property's entrance is located (0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The storey on which a Property's entrance is located, counted from the ground floor as zero.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -7969,6 +8133,7 @@
       "localName": "expectedDeliveryDate",
       "label": "expected delivery date",
       "comment": "Expected delivery date for an ordered Search. xsd:date. Flat per §Q6a.",
+      "definition": "The date by which an ordered search is expected to be delivered.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -7997,6 +8162,7 @@
       "localName": "filedUnder",
       "label": "filed under",
       "comment": "Filing reference under which a title / additional document is held. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a.",
+      "definition": "The filing reference under which a title or additional document is held.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8026,6 +8192,7 @@
       "localName": "forTheManagedAreas",
       "label": "for the managed areas",
       "comment": "Portion of the service-charge reserve-fund amount attributable to the managed areas (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a.",
+      "definition": "The portion of a service-charge reserve fund attributable to the managed areas.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8054,6 +8221,7 @@
       "localName": "freeholdOwner",
       "label": "freehold owner",
       "comment": "Freehold owner named in the leasehold ownership-and-management block (a reference/name string, not a Yes/No flag). xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "The named freehold owner recorded in a leasehold ownership-and-management block.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8082,6 +8250,7 @@
       "localName": "from",
       "label": "from",
       "comment": "Start date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (ground-rent, service-charge, or buildings-insurance last-demand period; service-charge last-decorated period). xsd:date. ONE shared period-start property reused across those periods; flat per §Q6a. (FLAG: `from` is a generic period-boundary name; reused across the estate's recurring date-range blocks rather than minted per block.)",
+      "definition": "The start date of a demand or decoration period on a leasehold or managed-freehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8118,6 +8287,7 @@
       "localName": "fromTheOwners",
       "label": "from the owners",
       "comment": "Portion of the service-charge reserve-fund amount contributed by the owners (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a.",
+      "definition": "The portion of a service-charge reserve fund contributed by the owners.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8146,6 +8316,7 @@
       "localName": "groundRentFrequency",
       "label": "ground rent frequency",
       "comment": "Frequency at which ground rent is payable on the leasehold LegalEstate (typed as a string in the data dictionary — a free-form frequency label). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The frequency at which ground rent is payable on a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8174,6 +8345,7 @@
       "localName": "handoverOnCompletion",
       "label": "handover on completion",
       "comment": "Whether the Property's smart-home systems will be handed over on completion. xsd:boolean. Flat per §Q6a.",
+      "definition": "A boolean recording whether a Property's smart-home systems will be handed over to the buyer on completion.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8202,6 +8374,7 @@
       "localName": "hasFixedRentcharge",
       "label": "has fixed rentcharge",
       "comment": "Whether the managed-freehold / commonhold LegalEstate carries a fixed rentcharge (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An indicator of whether a managed-freehold or commonhold LegalEstate carries a fixed rentcharge.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8230,6 +8403,7 @@
       "localName": "hasFloodDefences",
       "label": "has flood defences",
       "comment": "Whether the Property has flood defences. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property has flood defences.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8258,6 +8432,7 @@
       "localName": "hasFloorplan",
       "label": "has floorplan",
       "comment": "Whether a floorplan is available for the Property. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a floorplan is available for a property.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8286,6 +8461,7 @@
       "localName": "hasHelpToBuyEquityLoan",
       "label": "has Help to Buy equity loan",
       "comment": "Whether the Property has a Help to Buy equity loan. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property is subject to a Help to Buy equity loan.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8314,6 +8490,7 @@
       "localName": "hasLift",
       "label": "has lift",
       "comment": "Whether the Property (building) has a lift. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the building containing a property has a lift.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8342,6 +8519,7 @@
       "localName": "hasOthersAged17OrOver",
       "label": "has others aged 17 or over",
       "comment": "Yes/No discriminator: does the Seller's household include occupiers aged 17 or over (other than the Seller)? BASPI5 occupiers question. Bound to opda:YesNoScheme.",
+      "definition": "Relates a Seller to a Yes/No value recording whether the Property's household includes occupiers aged 17 or over other than the Seller — the BASPI5 occupiers discriminator gating disclosure of those occupiers' names.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -8370,6 +8548,7 @@
       "localName": "hasSpecialCategoryData",
       "label": "has special-category data",
       "comment": "Flag indicating that a record carries GDPR Article 9 / 10 special-category personal data (race, religion, health, sex life, sexual orientation, political opinion, trade-union membership, biometric/genetic data, criminal convictions). Domain unconstrained at foundation scope so the predicate may be borne by Person records (the typical case targeted by the Cat 4 SHACL shape in opda-agent-shapes.ttl) or by any other Kind that carries article-9/10 data downstream. Engineering placeholder pending S012 Q3 Council ratification of the canonical predicate name.",
+      "definition": "Asserts whether a record carries GDPR Article 9 or 10 special-category personal data, serving as the target predicate for the special-category lawful-basis SHACL constraint.",
       "kind": "datatype",
       "module": "foundation",
       "subjects": [],
@@ -8392,6 +8571,7 @@
       "localName": "hasTenantCompanyDissolved",
       "label": "has tenant company dissolved",
       "comment": "Whether the tenant management company has been dissolved. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the tenant management company for an estate has been dissolved.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8420,6 +8600,7 @@
       "localName": "hasUPRN",
       "label": "has UPRN",
       "comment": "Unique Property Reference Number — OS AddressBase identifier. Per ODR-0005 §6a a contingent administrative identifier under PROV-O succession; NOT a load-bearing identity criterion. Operationally checkable via dash:uniqueValueForClass (ADR-0012 emits the shape).",
+      "definition": "The Unique Property Reference Number assigned to a Property in OS AddressBase: a contingent administrative identifier subject to provenance-tracked succession, not a load-bearing identity criterion for the property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8460,6 +8641,7 @@
       "localName": "heading",
       "label": "heading",
       "comment": "Google Street View point-of-view compass heading (degrees) for the Property's map locator. xsd:decimal — a numeric camera parameter, NOT a free-text tail (FLAG: deviates from the generic free-text-collapse expectation; the data dictionary types it as a number). Flat per §Q6a.",
+      "definition": "The compass heading, in degrees, of the Google Street View camera position for a Property's map locator.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8488,6 +8670,7 @@
       "localName": "headLeaseholderControlled",
       "label": "head leaseholder controlled",
       "comment": "Whether the head lease is leaseholder-controlled. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the head lease of an estate is leaseholder-controlled.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8516,6 +8699,7 @@
       "localName": "heatingLastServicedDate",
       "label": "heating last serviced date",
       "comment": "Date the Property's central-heating system was last serviced. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a Property's central-heating system was last serviced.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8544,6 +8728,7 @@
       "localName": "isConnectedToNationalGrid",
       "label": "is connected to national grid",
       "comment": "Whether the Property's solar panels are connected to the national grid. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property's solar panels are connected to the national grid.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8572,6 +8757,7 @@
       "localName": "isFirstRegistration",
       "label": "is first registration",
       "comment": "Whether the sale is a first registration of the title. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a sale constitutes the first registration of the title.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8600,6 +8786,7 @@
       "localName": "isHMO",
       "label": "is HMO",
       "comment": "Whether the Property is a House in Multiple Occupation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property is a House in Multiple Occupation.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8628,6 +8815,7 @@
       "localName": "isLeaseQualifying",
       "label": "is lease qualifying",
       "comment": "Whether the lease is a qualifying lease under the Building Safety Act. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a lease is a qualifying lease under the Building Safety Act.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8656,6 +8844,7 @@
       "localName": "isLimitedCompanySale",
       "label": "is limited company sale",
       "comment": "Whether the seller is a limited company. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the seller in a sale is a limited company.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8684,6 +8873,7 @@
       "localName": "isManagingAgentEmployed",
       "label": "is managing agent employed",
       "comment": "Whether a managing agent is employed for the estate. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a managing agent is employed to manage an estate.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8712,6 +8902,7 @@
       "localName": "isPIIBearing",
       "label": "is PII bearing",
       "comment": "Flag marking a class as a bearer of personally identifiable information under the ODR-0012 Phase-1 floor. A class asserted opda:isPIIBearing true is in scope for the Phase-1 PII-co-annotation discipline (ODR-0018 §Rule 1): it MUST carry a class-level dpv-pd:hasPersonalDataCategory baseline in opda-<module>-annotations.ttl. The cross-cutting SHACL-AF rule PIIWithoutDPVCoAnnotationRule flags any opda:isPIIBearing true class lacking that co-annotation as a sh:Warning breach. Range xsd:boolean; emitted true on exactly the baseline PII-bearing Kinds (Person, Property, Address, RegisteredTitle, Claim, EPCCertificate) — Organisation is intentionally unmarked (ODR-0006 §Q6: not a data subject).",
+      "definition": "Asserts whether a class bears personally identifiable information under the Phase-1 floor, placing it in scope for the mandatory data-protection category co-annotation discipline.",
       "kind": "datatype",
       "module": "foundation",
       "subjects": [],
@@ -8734,6 +8925,7 @@
       "localName": "isStudentAccommodation",
       "label": "is student accommodation",
       "comment": "Whether the Property is student accommodation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property is student accommodation.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8762,6 +8954,7 @@
       "localName": "kitchens",
       "label": "kitchens",
       "comment": "Number of kitchens in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of kitchens in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8790,6 +8983,7 @@
       "localName": "landlordInsuresIfFlat",
       "label": "landlord insures if flat",
       "comment": "Whether the landlord arranges buildings insurance (flat). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the landlord arranges buildings insurance for a flat.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8818,6 +9012,7 @@
       "localName": "landlordNotifiedOfSale",
       "label": "landlord notified of sale",
       "comment": "Whether the landlord has been notified of the sale (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the landlord has been notified of a sale under the Building Safety Act.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8846,6 +9041,7 @@
       "localName": "lastMaintained",
       "label": "last maintained",
       "comment": "Date the Property's solar-panel system was last maintained. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a Property's solar-panel system was last maintained.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8874,6 +9070,7 @@
       "localName": "leaveKeys",
       "label": "leave keys",
       "comment": "Completion undertaking: will the seller leave the keys? xsd:boolean. Flat per §Q6a. A sale-Transaction completion attribute (ODR-0007).",
+      "definition": "Records a seller's undertaking to leave keys for all door and window locks, with any alarm codes, for the buyer on the day of completion.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -8902,6 +9099,7 @@
       "localName": "length",
       "label": "length",
       "comment": "Length of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (NO opda:UnitOfLengthScheme — session-030 / ODR-0024 R10, reusing the opda:area no-unit-scheme precedent). Flat per ODR-0008 §Q6a.",
+      "definition": "The length of a room in metres, recorded as a field of an opda:RoomDimension value structure.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8942,6 +9140,7 @@
       "localName": "lengthOfLeaseInYears",
       "label": "length of lease in years",
       "comment": "Length of the leasehold term in years (the granted term). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements opda:LeaseTerm (the OWL-Time interval) with the headline term-length figure.",
+      "definition": "The length in years of the term granted on a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -8970,6 +9169,7 @@
       "localName": "listedDate",
       "label": "listed date",
       "comment": "Date a comparable property was listed for sale. xsd:date. Flat per §Q6a.",
+      "definition": "The date a comparable property was listed for sale, as recorded in valuation comparable listing information.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -8998,6 +9198,7 @@
       "localName": "localAuthorityName",
       "label": "local authority name",
       "comment": "Name of the local authority that issued / governs a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the local authority that issued or governs a search.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9026,6 +9227,7 @@
       "localName": "localAuthorityReference",
       "label": "local authority reference",
       "comment": "Reference identifying a Search within the local authority's system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The reference identifying a search within its local authority's record system.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9054,6 +9256,7 @@
       "localName": "location",
       "label": "location",
       "comment": "Physical-location description of a Property fixture or measurement point — electricity / gas / water meter, stopcock, or survey/charge locus (typed as a free-form string in the data dictionary). ONE shared location-description property reused across those points. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: `propertyPack.location` is itself a structured geo block, not this leaf-level string; the structured locator is opda:Address territory — ODR-0015 — and is out of this leaf's scope.)",
+      "definition": "A free-text description of the physical position of a Property fixture or measurement point, such as a meter or stopcock.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9085,6 +9288,7 @@
       "localName": "loftBoarded",
       "label": "loft boarded",
       "comment": "Whether the Property's loft is boarded. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property's loft is boarded.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9113,6 +9317,7 @@
       "localName": "loftInsulated",
       "label": "loft insulated",
       "comment": "Whether the Property's loft is insulated. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a property's loft is insulated.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9141,6 +9346,7 @@
       "localName": "logbookProvider",
       "label": "logbook provider",
       "comment": "Name of the digital-property-logbook provider for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the provider of a Property's digital property logbook.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9169,6 +9375,7 @@
       "localName": "managementPlanInPlace",
       "label": "management plan in place",
       "comment": "Whether a Japanese-knotweed management plan is in place. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a management plan is in place for Japanese knotweed affecting a property.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9197,6 +9404,7 @@
       "localName": "mediaUrl",
       "label": "media URL",
       "comment": "URL of a media item (property image / floorplan / etc.). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a.",
+      "definition": "The web address locating a media item such as a property image or floorplan.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [],
@@ -9232,6 +9440,7 @@
       "localName": "middleNames",
       "label": "middle names",
       "comment": "Middle name(s) of a Person legal owner. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The middle name or names of a Person, between the given name and the surname, as recorded for a legal owner.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9260,6 +9469,7 @@
       "localName": "mpan",
       "label": "MPAN",
       "comment": "Meter Point Administration Number — the electricity supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier whose leading zeros are significant — the same convention opda:hasUPRN follows, NOT xsd:integer despite the data-dictionary typing). Flat per §Q6a.",
+      "definition": "The Meter Point Administration Number identifying a Property's electricity supply point.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9288,6 +9498,7 @@
       "localName": "mprn",
       "label": "MPRN",
       "comment": "Meter Point Reference Number — the gas supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier, per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). Flat per §Q6a.",
+      "definition": "The Meter Point Reference Number identifying a Property's gas supply point.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9316,6 +9527,7 @@
       "localName": "name",
       "label": "name",
       "comment": "Generic name/label of a named entity — a participant, school, road, contract template, health-care facility, transport node, or planning designation. ONE shared naming property with NO rdfs:domain: it recurs across 46 polysemous occurrences with no single rigid bearer Kind (the domain-less shared-property convention opda:price / opda:inclusionStatus follow). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous; left domain-less by design rather than forcing one bearer.)",
+      "definition": "The proper name or label of a named entity — used across polysemous contexts (participant, school, road, contract template, health-care facility, transport node, or planning designation) as a shared naming property with no single bearer kind.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [],
@@ -9342,6 +9554,7 @@
       "localName": "numberOfFloors",
       "label": "number of floors",
       "comment": "Number of floors (storeys) the Property comprises. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of floors (storeys) a Property comprises.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9370,6 +9583,7 @@
       "localName": "numberOfNonUkResidentSellers",
       "label": "number of non-UK-resident sellers",
       "comment": "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)",
+      "definition": "The number of selling parties in the ownership who are not resident in the UK — a subset of the owner-set bearing on tax and withholding obligations.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9398,6 +9612,7 @@
       "localName": "numberOfPropertiesSharing",
       "label": "number of properties sharing",
       "comment": "Number of other properties sharing the Property's off-mains drainage system. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of other properties sharing a Property's off-mains drainage system.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9426,6 +9641,7 @@
       "localName": "numberOfSellers",
       "label": "number of sellers",
       "comment": "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)",
+      "definition": "The number of selling parties in the ownership — the cardinality of the owner-set the Proprietorship mediates.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9454,6 +9670,7 @@
       "localName": "occurredAtTime",
       "label": "occurred at time",
       "comment": "Actual completion instant of an event (informational alias for prov:atTime on opda:Milestone Activities where the consumer prefers an opda-namespaced predicate). PROV-O prov:atTime is the canonical W3C form; this predicate sits alongside for round-trip convenience with PDTF v3 schemas that use 'occurredAt' naming.",
+      "definition": "Records the actual instant at which a transaction milestone event took place.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [],
@@ -9488,6 +9705,7 @@
       "localName": "orderDate",
       "label": "order date",
       "comment": "Date a Search was ordered. xsd:date. Flat per §Q6a.",
+      "definition": "The date a search was ordered.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9516,6 +9734,7 @@
       "localName": "organisationName",
       "label": "organisation name",
       "comment": "Name of an Organisation — a legal owner's registered/trading name, or the organisation a participant is acting for / belongs to. ONE shared property: the same opda:organisationName serves both leaves (Linked-Data shared-property pattern; supersedes the former opda:organisation, renamed-by-merge per ADR-0044 to remove the case-clash with the opda:Organisation class). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The registered or trading name of an Organisation — whether a legal owner or the organisation a participant acts for or belongs to.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9545,6 +9764,7 @@
       "localName": "organisationReference",
       "label": "organisation reference",
       "comment": "Reference identifying an Organisation participant within an external system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An identifier by which an Organisation participant is referenced within an external system.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -9573,6 +9793,7 @@
       "localName": "organisesBuildingInsurance",
       "label": "organises building insurance",
       "comment": "Whether the service contact organises buildings insurance. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a service contact organises buildings insurance for an estate.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9601,6 +9822,7 @@
       "localName": "otherCentralHeatingFuelType",
       "label": "other central heating fuel type",
       "comment": "Free-text fuel classifier captured when the central-heating fuel is 'Other' (the open-ended companion to opda:centralHeatingFuelType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The free-text fuel classifier captured for a Property whose central-heating fuel is recorded as 'Other'.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9629,6 +9851,7 @@
       "localName": "otherHeatingFeatures",
       "label": "other heating features",
       "comment": "Additional heating features of the Property (a multi-valued list in the data dictionary — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An additional heating feature of a Property beyond its primary heating system.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9657,6 +9880,7 @@
       "localName": "otherOwnershipDetails",
       "label": "other ownership details",
       "comment": "Free-text ownership details captured when the ownership type is 'Other' for the LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The free-text ownership details captured for a LegalEstate whose ownership type is recorded as 'Other'.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9685,6 +9909,7 @@
       "localName": "otherPropertiesInManagedArea",
       "label": "other properties in managed area",
       "comment": "Count of other properties in the managed area sharing the leasehold LegalEstate's service arrangements. xsd:decimal (typed as a number in the data dictionary). Flat per §Q6a.",
+      "definition": "The count of other properties in the managed area sharing a leasehold LegalEstate's service arrangements.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9713,6 +9938,7 @@
       "localName": "otherRating",
       "label": "other rating",
       "comment": "Other (non-Ofsted) rating of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The rating of a nearby school awarded by a body other than Ofsted.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9741,6 +9967,7 @@
       "localName": "otherType",
       "label": "other type",
       "comment": "Free-text classifier captured when the Property's built-form / property-type is 'Other' (the open-ended companion to opda:propertyType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The free-text property-type classifier captured for a Property whose property type is recorded as 'Other'.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9769,6 +9996,7 @@
       "localName": "outsideAreas",
       "label": "outside areas",
       "comment": "Outside areas of the Property — garden / yard / balcony / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An outside area belonging to a Property, such as a garden, yard, or balcony.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9797,6 +10025,7 @@
       "localName": "outstandingEnforcementAction",
       "label": "outstanding enforcement action",
       "comment": "Whether there is outstanding enforcement action (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether there is outstanding enforcement action recorded in a managed-area risk assessment.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9825,6 +10054,7 @@
       "localName": "parkingArrangements",
       "label": "parking arrangements",
       "comment": "Parking arrangements for the Property — allocated / on-street / garage / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A parking arrangement available to a Property, such as allocated, on-street, or garage parking.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9853,6 +10083,7 @@
       "localName": "personWhoDealsWithTheDeedOfCovenant",
       "label": "person who deals with the deed of covenant",
       "comment": "Name/role of the person who deals with the deed of covenant for the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name or role of the person who deals with the deed of covenant on a leasehold or managed-freehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9882,6 +10113,7 @@
       "localName": "pitch",
       "label": "pitch",
       "comment": "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a.",
+      "definition": "The vertical pitch, in degrees, of the Google Street View camera position for a Property's map locator.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -9910,6 +10142,7 @@
       "localName": "plannedAtTime",
       "label": "planned at time",
       "comment": "Expected completion timestamp on a prov:Plan companion to an opda:Milestone Activity. Per S007 Q6 PROV-O Plan-vs-Activity reification, the planned time lives on the Plan resource and the actual time lives on the Activity; the Plan is linked from the Activity via prov:qualifiedAssociation → prov:Association → prov:hadPlan. The Cagle opda:MilestoneVarianceRule (ADR-0012) materialises variance into the validation report at sh:Info (under 14 days) or sh:Warning (over 14 days).",
+      "definition": "Records the expected instant at which a planned transaction milestone is forecast to occur, carried on the plan companion to the milestone for expected-versus-actual variance.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -9950,6 +10183,7 @@
       "localName": "planningStartDate",
       "label": "planning start date",
       "comment": "Start date of a planning matter in a local-authority Search result. xsd:date. Flat per §Q6a.",
+      "definition": "The date a planning matter commenced, as recorded in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -9978,6 +10212,7 @@
       "localName": "price",
       "label": "price",
       "comment": "Monetary amount asked for a fixtures-and-fittings item included in a sale (a number in the data dictionary). A single shared fixtures monetary amount reused across all fixtures items — ODR-0022 §4 forbids minting one price property per item. Bound on the transaction-scoped fixtures-list node alongside opda:inclusionStatus. The Category-D fixtures amount ONLY — the Category-G headline / recurring / refundable monetary leaves (asking price, ground rent, deposit, service charge, fee …) do NOT reuse it (ODR-0022 §1 / G1). The value-structured opda:MonetaryAmount value type now EXISTS (the Category-G monetary walk, ODR-0024 R3); opda:price deliberately remains a single-currency interim decimal for the fixtures amount and is NOT migrated to it.",
+      "definition": "The amount asked for a fixtures-and-fittings item included in a sale: a single shared single-currency monetary figure scoped to fixtures-and-fittings only, distinct from the headline and recurring monetary leaves.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [],
@@ -10012,6 +10247,7 @@
       "localName": "pricingMethodology",
       "label": "pricing methodology",
       "comment": "Methodology used to derive a Valuation's price estimate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The method used to derive a valuation's price estimate.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10040,6 +10276,7 @@
       "localName": "procedureForObtainingCertificate",
       "label": "procedure for obtaining certificate",
       "comment": "Procedure for obtaining a transfer/registration certificate on the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The procedure for obtaining a transfer or registration certificate on a leasehold or managed-freehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10069,6 +10306,7 @@
       "localName": "productCode",
       "label": "product code",
       "comment": "Provider product code identifying a Search product. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The provider's product code identifying a particular search product.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10097,6 +10335,7 @@
       "localName": "propertiesContributingToMaintenanceOfManagedArea",
       "label": "properties contributing to maintenance of managed area",
       "comment": "Count of properties contributing to maintenance of the managed area for the leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a.",
+      "definition": "The count of properties contributing to maintenance of the managed area for a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10125,6 +10364,7 @@
       "localName": "providerName",
       "label": "provider name",
       "comment": "Name of the Search provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the organisation that supplied a search.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10153,6 +10393,7 @@
       "localName": "providerReference",
       "label": "provider reference",
       "comment": "Provider's reference for a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The provider's own reference for a search.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10181,6 +10422,7 @@
       "localName": "publicSewerMapAttached",
       "label": "public sewer map attached",
       "comment": "Whether the public-sewer map is attached for the Property (a Yes/No-style string response in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An indicator of whether the public-sewer map is attached for a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10209,6 +10451,7 @@
       "localName": "pupils",
       "label": "pupils",
       "comment": "Number of pupils at a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The number of pupils enrolled at a nearby school.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10237,6 +10480,7 @@
       "localName": "receptions",
       "label": "receptions",
       "comment": "Number of reception rooms in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The count of reception rooms in a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10265,6 +10509,7 @@
       "localName": "reference",
       "label": "reference",
       "comment": "Payment reference for a contact organisation's bank account. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: bank-details domain.)",
+      "definition": "The payment reference to quote when remitting funds to a contact Organisation's bank account.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -10300,6 +10545,7 @@
       "localName": "refNumber",
       "label": "reference number",
       "comment": "Application/case reference number on a planning / building-control result. ONE shared property; flat per §Q6a.",
+      "definition": "The application or case reference identifying a planning or building-control matter in a search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10329,6 +10575,7 @@
       "localName": "regulatedSearchTurnaroundTimeInWorkingDays",
       "label": "regulated search turnaround time in working days",
       "comment": "Quoted turnaround time (working days) for a regulated search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The quoted turnaround time, in working days, for a regulated search.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10357,6 +10604,7 @@
       "localName": "religiousCharacter",
       "label": "religious character",
       "comment": "Religious character of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The religious affiliation, if any, of a nearby school.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10385,6 +10633,7 @@
       "localName": "removeRubbish",
       "label": "remove rubbish",
       "comment": "Completion undertaking: will the seller remove rubbish? xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a seller's undertaking to remove all rubbish and items not included in the sale and to leave the property in a clean and tidy condition on completion.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -10413,6 +10662,7 @@
       "localName": "rentIncreaseCalculated",
       "label": "rent increase calculated",
       "comment": "How a ground-rent increase is calculated on the leasehold LegalEstate (e.g. RPI-linked, doubling). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "How a ground-rent increase is calculated on a leasehold LegalEstate, such as by RPI-linking or doubling.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10441,6 +10691,7 @@
       "localName": "rentReviewFrequency",
       "label": "rent review frequency",
       "comment": "Frequency at which ground rent is reviewed on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The frequency at which ground rent is reviewed on a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10469,6 +10720,7 @@
       "localName": "replaceLightFittings",
       "label": "replace light fittings",
       "comment": "Completion undertaking: will the seller replace removed light fittings? xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a seller's undertaking to replace any removed light fittings with a ceiling rose, flex, bulb holder and bulb on completion.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -10497,6 +10749,7 @@
       "localName": "reportDate",
       "label": "report date",
       "comment": "Date a Search / survey report was produced. xsd:date. ONE shared property reused across search and survey reports; flat per §Q6a.",
+      "definition": "The date a search or survey report was produced.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10526,6 +10779,7 @@
       "localName": "requirements",
       "label": "requirements",
       "comment": "Requirements stated for a licence-to-assign on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The requirements stated for a licence to assign a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10554,6 +10808,7 @@
       "localName": "response",
       "label": "response",
       "comment": "Response flag on a managed-freehold / commonhold confirmation. xsd:boolean (a confirmation response; the data dictionary leaves the type unset — it is a yes/no confirmation by structure). Flat per §Q6a.",
+      "definition": "Records a declarant's affirmation, on a managed-freehold or commonhold confirmation, of authority to provide the information on behalf of the selected parties and that a buyer may rely on it.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -10582,6 +10837,7 @@
       "localName": "retrievedOn",
       "label": "retrieved on",
       "comment": "Date a title / additional document was retrieved from the registry. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a.",
+      "definition": "The date a title or additional document was retrieved from the registry.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10610,6 +10866,7 @@
       "localName": "roomName",
       "label": "room name",
       "comment": "Name of a room (xsd:string) — a NON-RIGID label on the opda:RoomDimension value structure, NOT an identity principle and never a key (ODR-0024 R10 / session-030). Flat per ODR-0008 §Q6a.",
+      "definition": "The non-rigid label naming a room within an opda:RoomDimension value structure, never an identity principle or key.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10650,6 +10907,7 @@
       "localName": "saleAtUndervalue",
       "label": "sale at undervalue",
       "comment": "Whether the sale is at undervalue. Yes/No disclosure (price information); xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether a sale is being made at undervalue.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10678,6 +10936,7 @@
       "localName": "schoolType",
       "label": "school type",
       "comment": "Band of a nearby school per opda:SchoolTypeScheme (College / Nursery / Primary / Secondary / Private). Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). ONE shared datatype property over the SchoolTypeScheme value-space — replaces the five range-less generic object properties (opda:college / nursery / primary / secondary / private) the council rejected as permanent-namespace landmines (session-028 Q1). Constrained by SHACL sh:in to the scheme members in the overlay profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The educational stage of a nearby school: its band within the opda:SchoolTypeScheme value-space (College, Nursery, Primary, Secondary, or Private).",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10710,6 +10969,7 @@
       "localName": "sellerCompletedDeedOfCertificate",
       "label": "seller completed deed of certificate",
       "comment": "Whether the seller completed a deed of certificate (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the seller completed a deed of certificate under the Building Safety Act.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10738,6 +10998,7 @@
       "localName": "sellerOwnedProperty",
       "label": "seller owned property",
       "comment": "Whether the seller owned the property for enfranchisement qualification. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether the seller has owned the property long enough to satisfy enfranchisement qualification.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10766,6 +11027,7 @@
       "localName": "sellersCapacityDetails",
       "label": "sellers capacity details",
       "comment": "Free-text detail elaborating a Seller's asserted capacity (companion to opda:hasAssertedCapacity, ODR-0006 §Q4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "Free-text narrative elaborating the capacity in which a Seller is selling, supplementing the coded value carried by opda:hasAssertedCapacity.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -10794,6 +11056,7 @@
       "localName": "sellingAgent",
       "label": "selling agent",
       "comment": "Name of the selling agent on an onward-purchase link in the transaction chain. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "Names the estate agent selling the property on an onward-purchase link of a transaction chain.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -10822,6 +11085,7 @@
       "localName": "sewerageBills",
       "label": "sewerage bills",
       "comment": "Free-text sewerage-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A description of the sewerage-billing arrangements for a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10850,6 +11114,7 @@
       "localName": "sewerageProvider",
       "label": "sewerage provider",
       "comment": "Name of the Property's sewerage provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the undertaker providing sewerage services to a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10878,6 +11143,7 @@
       "localName": "sharedOwnershipPercentage",
       "label": "shared ownership percentage",
       "comment": "Percentage of the Property owned under a shared-ownership leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a.",
+      "definition": "The percentage of a Property owned under a shared-ownership leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -10906,6 +11172,7 @@
       "localName": "signedOn",
       "label": "signed on",
       "comment": "Date a contract / sale-ready declaration was signed. xsd:date. ONE shared property reused across contract and seller signatures; flat per §Q6a.",
+      "definition": "Records the date on which a contract or sale-ready declaration was signed.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -10935,6 +11202,7 @@
       "localName": "soldDate",
       "label": "sold date",
       "comment": "Date a comparable property was sold (valuation comparable listing info). xsd:date. Flat per §Q6a.",
+      "definition": "The date a comparable property was sold, as recorded in valuation comparable listing information.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -10963,6 +11231,7 @@
       "localName": "sortCode",
       "label": "sort code",
       "comment": "Bank sort code of a contact organisation. xsd:string. ONE shared property; flat per §Q6a. (FLAG: bank-details domain.)",
+      "definition": "The six-digit UK bank sort code identifying the branch holding a contact Organisation's bank account.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
@@ -10998,6 +11267,7 @@
       "localName": "specialties",
       "label": "specialties",
       "comment": "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The clinical specialties offered by a nearby health-care facility.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11026,6 +11296,7 @@
       "localName": "startYearOfLease",
       "label": "start year of lease",
       "comment": "Calendar year the leasehold term commenced. xsd:gYear (a year value in the data dictionary). Flat per §Q6a.",
+      "definition": "The calendar year in which the term of a leasehold LegalEstate commenced.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11054,6 +11325,7 @@
       "localName": "status",
       "label": "status",
       "comment": "Status of a search-derived result item — planning permission, designation plan, road-adoption status, or search-order status. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous across those contexts; placed on opda:Search; the data dictionary's three context-specific status enums are sh:in-restricted per-context in the overlay profile, not unified into one value-space.)",
+      "definition": "The current state of a search-derived item — a planning permission, designation plan, road-adoption entry, or search order.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11084,6 +11356,7 @@
       "localName": "statusDate",
       "label": "status date",
       "comment": "Date a designation plan's status was set in a local-authority Search result. xsd:date. Flat per §Q6a.",
+      "definition": "The date on which a designation plan's status was set in a local-authority search result.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11112,6 +11385,7 @@
       "localName": "subCategory",
       "label": "sub-category",
       "comment": "Sub-category of an environmental-peril RiskAssessment (riskSubcategories[] across the climate / coal-mining / flooding / ground-stability / radon / etc. peril blocks). ONE shared property on opda:RiskAssessment. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The named sub-division of an environmental-peril risk assessment, drawn from the peril's riskSubcategories list.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11141,6 +11415,7 @@
       "localName": "supplier",
       "label": "supplier",
       "comment": "Name of the supplier for a Property utility / service (electricity, gas-fuel, heat-pump, solar, water, drainage, telephone, cable/satellite TV). ONE shared supplier-name property reused across the utility blocks (the data dictionary repeats the same `supplier` leaf under each). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the supplier of a Property utility or service, such as electricity, gas, water, drainage, telephone, or television.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11177,6 +11452,7 @@
       "localName": "supplyClassification",
       "label": "supply classification",
       "comment": "Classification of the Property's water supply (e.g. metered / unmetered / rateable). A UFO Quale-in-Region of the physical Property. Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a.",
+      "definition": "The classification of a Property's water supply, such as metered, unmetered, or rateable.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11205,6 +11481,7 @@
       "localName": "takeReasonableCare",
       "label": "take reasonable care",
       "comment": "Completion undertaking: will the seller take reasonable care of the Property until completion? xsd:boolean. Flat per §Q6a.",
+      "definition": "Records a seller's undertaking to take reasonable care when removing fittings or contents from the property before completion.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -11233,6 +11510,7 @@
       "localName": "titleExtents",
       "label": "title extents",
       "comment": "Statement of the extents covered by a title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A statement of the extents covered by a title to be sold.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11261,6 +11539,7 @@
       "localName": "titleNumber",
       "label": "title number",
       "comment": "HMLR title number — identifies the registered-title RECORD (opda:RegisteredTitle), not the legal estate (ODR-0024 R8 / session-028 Q6). The estate has no title number; the record does — reach the estate via opda:recordsEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The HM Land Registry title number identifying a RegisteredTitle record (not the legal estate it documents), unique within the register.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11291,6 +11570,7 @@
       "localName": "titlePropertyDescription",
       "label": "title property description",
       "comment": "The property description as recorded on the title for the LegalEstate to be transferred. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The property description recorded on the title for a LegalEstate to be transferred.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11319,6 +11599,7 @@
       "localName": "to",
       "label": "to",
       "comment": "End date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (mirror of opda:from). xsd:date. ONE shared period-end property reused across those periods; flat per §Q6a. (FLAG: `to` is a generic period-boundary name; reused across the estate's recurring date-range blocks.)",
+      "definition": "The end date of a demand or decoration period on a leasehold or managed-freehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11355,6 +11636,7 @@
       "localName": "transactionId",
       "label": "transaction ID",
       "comment": "External transaction identifier (the PDTF transaction id; also carried on onward-purchase chain links). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Complements the opda:Transaction IC's transaction-id-lineage (ODR-0007 §Q1) — the notation surface for the identifier.",
+      "definition": "Identifies a property transaction by its externally assigned PDTF identifier, a UUID also carried on onward-purchase chain links.",
       "kind": "datatype",
       "module": "transaction",
       "subjects": [
@@ -11384,6 +11666,7 @@
       "localName": "typeOfFlooding",
       "label": "type of flooding",
       "comment": "Type(s) of historical flooding the Property has experienced (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT is opda:RiskAssessment territory; this is the factual historical-flooding-type attribute.)",
+      "definition": "A type of historical flooding a Property has experienced, such as river, surface-water, or groundwater flooding.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11412,6 +11695,7 @@
       "localName": "typeOfHealthCare",
       "label": "type of health care",
       "comment": "Type of a nearby health-care facility. Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a.",
+      "definition": "The category of a nearby health-care facility.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11440,6 +11724,7 @@
       "localName": "unitaryAuthority",
       "label": "unitary authority",
       "comment": "Name of the unitary authority for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the unitary authority for the locality of the property searched.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11468,6 +11753,7 @@
       "localName": "urgentWorksCarriedOut",
       "label": "urgent works carried out",
       "comment": "Whether urgent works were carried out (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether urgent works were carried out, as recorded in a managed-area risk assessment.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11496,6 +11782,7 @@
       "localName": "urgentWorksRecommended",
       "label": "urgent works recommended",
       "comment": "Whether urgent works were recommended (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether urgent works were recommended, as recorded in a managed-area risk assessment.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11524,6 +11811,7 @@
       "localName": "url",
       "label": "URL",
       "comment": "URL of an external artefact (contract template, planning-permission page). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a.",
+      "definition": "The web address locating an external artefact such as a contract template or planning-permission page.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [],
@@ -11559,6 +11847,7 @@
       "localName": "waterBills",
       "label": "water bills",
       "comment": "Free-text water-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "A description of the water-billing arrangements for a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11587,6 +11876,7 @@
       "localName": "waterProvider",
       "label": "water provider",
       "comment": "Name of the Property's water-supply provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The name of the undertaker supplying water to a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11615,6 +11905,7 @@
       "localName": "waterworksMapAttached",
       "label": "waterworks map attached",
       "comment": "Whether the waterworks map is attached for the Property (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "An indicator of whether the waterworks map is attached for a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11643,6 +11934,7 @@
       "localName": "width",
       "label": "width",
       "comment": "Width of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (no opda:UnitOfLengthScheme). Flat per ODR-0008 §Q6a.",
+      "definition": "The width of a room in metres, recorded as a field of an opda:RoomDimension value structure.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11683,6 +11975,7 @@
       "localName": "willHandoverLogbook",
       "label": "will handover logbook",
       "comment": "Whether the seller will hand over the digital property logbook on completion. xsd:boolean. Flat per §Q6a.",
+      "definition": "A boolean recording whether the seller will hand over a Property's digital property logbook on completion.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11711,6 +12004,7 @@
       "localName": "willingToInsure",
       "label": "willing to insure",
       "comment": "Whether an insurer is willing to insure against an unresolved planning issue. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a.",
+      "definition": "Whether an insurer is willing to insure against an unresolved planning issue affecting a property.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11739,6 +12033,7 @@
       "localName": "year",
       "label": "year",
       "comment": "Calendar year of a service-charge last-decorated period (externally / internally) on the leasehold LegalEstate. xsd:gYear. Flat per §Q6a.",
+      "definition": "The calendar year of a service-charge last-decorated period on a leasehold LegalEstate.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11768,6 +12063,7 @@
       "localName": "yearCompleted",
       "label": "year completed",
       "comment": "Calendar year a Property alteration / change was completed (change of use, conservatory addition, window replacement since 2002). xsd:gYear. Flat per §Q6a.",
+      "definition": "The calendar year in which an alteration or change to a Property, such as a change of use, conservatory addition, or window replacement, was completed.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11798,6 +12094,7 @@
       "localName": "yearInstalled",
       "label": "year installed",
       "comment": "Calendar year the Property's solar-panel system was installed. xsd:gYear (a year value in the data dictionary). Flat per §Q6a.",
+      "definition": "The calendar year in which a Property's solar-panel system was installed.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11826,6 +12123,7 @@
       "localName": "yearOfBuild",
       "label": "year of build",
       "comment": "Calendar year the Property was built. xsd:gYear — the data dictionary types it as a year value; plain datatype per ODR-0008 §Q5a, flat per §Q6a.",
+      "definition": "The calendar year in which a Property was built.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11855,6 +12153,7 @@
       "localName": "yearTested",
       "label": "year tested",
       "comment": "Calendar year the Property's electrical installation was last tested by a qualified electrician. xsd:gYear. Flat per §Q6a.",
+      "definition": "The calendar year in which a Property's electrical installation was last tested by a qualified electrician.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11883,6 +12182,7 @@
       "localName": "yearWorkCarriedOut",
       "label": "year work carried out",
       "comment": "Calendar year electrical work was carried out on the Property (since 2005). xsd:gYear. Flat per §Q6a.",
+      "definition": "The calendar year in which electrical work was carried out on a Property.",
       "kind": "datatype",
       "module": "property",
       "subjects": [
@@ -11911,6 +12211,7 @@
       "localName": "yield",
       "label": "yield",
       "comment": "Rental yield in a Valuation's pricing analysis. xsd:decimal. Flat per §Q6a.",
+      "definition": "The rental yield computed in a valuation's pricing analysis.",
       "kind": "datatype",
       "module": "descriptive",
       "subjects": [
@@ -11939,6 +12240,7 @@
       "localName": "zoom",
       "label": "zoom",
       "comment": "Google Street View point-of-view zoom level for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a.",
+      "definition": "The zoom level of the Google Street View camera position for a Property's map locator.",
       "kind": "datatype",
       "module": "property",
       "subjects": [

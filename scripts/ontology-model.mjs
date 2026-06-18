@@ -120,31 +120,36 @@ async function main() {
   console.log(`[ontology-model] querying ${ENDPOINT}`);
 
   // 1. Classes -------------------------------------------------------------
+  // skos:definition (ADR-0049 decision-4) is the PRIMARY meaning of every term;
+  // it lives in the class graph ?cg alongside rdfs:comment (the short hint).
   const classRows = await select(`
-    SELECT ?cls ?g ?label ?comment ?scope ?ufo WHERE {
+    SELECT ?cls ?g ?label ?comment ?definition ?scope ?ufo WHERE {
       ${GRAPH('?cls a owl:Class')}
       FILTER(STRSTARTS(STR(?cls), "${BASE}"))
       OPTIONAL { GRAPH ?lg { ?cls rdfs:label ?label . FILTER(LANG(?label)="en"||LANG(?label)="") }}
       OPTIONAL { GRAPH ?cg { ?cls rdfs:comment ?comment } }
+      OPTIONAL { GRAPH ?fg { ?cls skos:definition ?definition } }
       OPTIONAL { GRAPH ?sg { ?cls skos:scopeNote ?scope } }
       OPTIONAL { GRAPH ?ug { ?cls opda:ufoCategory ?ufo } }
     }`);
 
   // 2. Object + 3. datatype properties (domain/range/inverse) --------------
   const objRows = await select(`
-    SELECT ?p ?g ?label ?comment ?domain ?range ?inverse WHERE {
+    SELECT ?p ?g ?label ?comment ?definition ?domain ?range ?inverse WHERE {
       ${GRAPH('?p a owl:ObjectProperty')}
       OPTIONAL { GRAPH ?lg { ?p rdfs:label ?label . FILTER(LANG(?label)="en"||LANG(?label)="") }}
       OPTIONAL { GRAPH ?cg { ?p rdfs:comment ?comment } }
+      OPTIONAL { GRAPH ?fg { ?p skos:definition ?definition } }
       OPTIONAL { GRAPH ?dg { ?p rdfs:domain ?domain } }
       OPTIONAL { GRAPH ?rg { ?p rdfs:range ?range } }
       OPTIONAL { GRAPH ?ig { ?p owl:inverseOf ?inverse } }
     }`);
   const dataRows = await select(`
-    SELECT ?p ?g ?label ?comment ?domain ?range WHERE {
+    SELECT ?p ?g ?label ?comment ?definition ?domain ?range WHERE {
       ${GRAPH('?p a owl:DatatypeProperty')}
       OPTIONAL { GRAPH ?lg { ?p rdfs:label ?label . FILTER(LANG(?label)="en"||LANG(?label)="") }}
       OPTIONAL { GRAPH ?cg { ?p rdfs:comment ?comment } }
+      OPTIONAL { GRAPH ?fg { ?p skos:definition ?definition } }
       OPTIONAL { GRAPH ?dg { ?p rdfs:domain ?domain } }
       OPTIONAL { GRAPH ?rg { ?p rdfs:range ?range } }
     }`);
@@ -265,9 +270,10 @@ async function main() {
   // Index properties (collapsing the OPTIONAL row-fan into one record each).
   const collectProp = {
     init: (r) => ({ uri: r.p, id: id(r.p), localName: local(r.p),
-      label: r.label || local(r.p), comment: r.comment || '',
+      label: r.label || local(r.p), comment: r.comment || '', definition: r.definition || '',
       module: moduleOf(r.g), domain: new Set(), range: new Set(), inverse: r.inverse || null }),
     add: (o, r) => { if (r.domain) o.domain.add(r.domain); if (r.range) o.range.add(r.range);
+      if (r.definition) o.definition = r.definition;
       if (r.inverse) o.inverse = r.inverse; },
   };
   const objProps = index(objRows, (r) => r.p, collectProp);
@@ -341,10 +347,26 @@ async function main() {
     shapesByTarget.get(s.target).push({ id: s.id, localName: s.localName });
   }
 
+  // A class can fan into several rows (rdfs:comment lives in BOTH the main and
+  // the -annotations graph for some classes), and any single row may leave an
+  // OPTIONAL var unbound. Collapse the optional literals across every row first
+  // so first-row ordering can't drop a class's definition / comment / scopeNote.
+  const classMeta = new Map();
+  for (const r of classRows) {
+    const m = classMeta.get(r.cls) || {};
+    if (r.definition && !m.definition) m.definition = r.definition;
+    if (r.comment && !m.comment) m.comment = r.comment;
+    if (r.scope && !m.scope) m.scope = r.scope;
+    if (r.ufo && !m.ufo) m.ufo = r.ufo;
+    if (r.label && !m.label) m.label = r.label;
+    classMeta.set(r.cls, m);
+  }
+
   const classes = new Map();
   for (const r of classRows) {
     if (classes.has(r.cls)) continue;
     const uri = r.cls;
+    const meta = classMeta.get(uri) || {};
     const outgoing = [...objProps.values()].filter((p) => p.domain.has(uri))
       .map((p) => ({ predicate: p.id, predicateLabel: p.label, predicateLocal: p.localName,
         targets: [...p.range].map((t) => ({ id: id(t), localName: local(t),
@@ -368,8 +390,8 @@ async function main() {
     }
 
     classes.set(uri, {
-      uri, id: id(uri), localName: local(uri), label: r.label || local(uri),
-      comment: r.comment || '', scopeNote: r.scope || '', ufoCategory: r.ufo || '',
+      uri, id: id(uri), localName: local(uri), label: meta.label || local(uri),
+      comment: meta.comment || '', definition: meta.definition || '', scopeNote: meta.scope || '', ufoCategory: meta.ufo || '',
       module: moduleOf(r.g), context: moduleOf(r.g),
       attributes: attributes.sort((a, b) => a.localName.localeCompare(b.localName)),
       outgoing: outgoing.sort((a, b) => a.predicate.localeCompare(b.predicate)),
@@ -390,7 +412,7 @@ async function main() {
   function finishProp(p, kind) {
     return {
       uri: p.uri, id: p.id, localName: p.localName, label: p.label, comment: p.comment,
-      kind, module: p.module,
+      definition: p.definition || '', kind, module: p.module,
       subjects: [...p.domain].map((d) => ({ id: id(d), localName: local(d),
         kind: classSet.has(d) ? 'class' : 'external' })).sort((a, b) => a.id.localeCompare(b.id)),
       objects: [...p.range].map((rg) => ({ id: id(rg), localName: local(rg),
