@@ -295,7 +295,11 @@ async function main() {
       constraints: [] }),
     add: (o, r) => {
       if (r.target) o.target = r.target;
-      if (r.targetSOf) o.targetSubjectsOf = r.targetSOf;
+      // A shape may carry several sh:targetSubjectsOf (e.g. RelatorSpineSubjectShape
+      // → founds, mediates). The field is scalar, so pick deterministically — the
+      // lexicographically smallest — otherwise the kept value follows SPARQL row
+      // order and drifts between environments (ADR-0044 doc-drift gate).
+      if (r.targetSOf && (o.targetSubjectsOf == null || r.targetSOf < o.targetSubjectsOf)) o.targetSubjectsOf = r.targetSOf;
       if (r.path) o.constraints.push({ path: r.path, pathLocal: local(r.path),
         datatype: r.datatype ? local(r.datatype) : null, class: r.clazz || null,
         minCount: r.min ?? null, maxCount: r.max ?? null,
