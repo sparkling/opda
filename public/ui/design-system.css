@@ -1433,12 +1433,13 @@ a.card:hover .card-arrow { transform: translateX(3px); }
      escape hatch for inspection. */
   max-height: 750px;
   height: auto;
-  /* Override Mermaid's inline `max-width: <Npx>` — Mermaid bakes the
-     initially-measured container width into the SVG, which is wrong for
-     Gantt charts in particular (often measured at 300px before the grid
-     has settled). The !important is required because Mermaid sets the
-     value as inline style. */
-  max-width: 100% !important;
+  /* Cap inline diagrams at 50% of the column — the fullscreen lightbox
+     (zoom icon top-right of every diagram) is the escape hatch for full-size
+     inspection. The !important overrides Mermaid's inline `max-width: <Npx>`
+     (Mermaid bakes the initially-measured container width into the SVG, which
+     is wrong for Gantt charts in particular, often measured at 300px before
+     the grid has settled). */
+  max-width: 50% !important;
   width: auto;
 }
 /* Compact variant for supporting/illustrative diagrams that don't need
@@ -1475,90 +1476,90 @@ a.card:hover .card-arrow { transform: translateX(3px); }
    Cagle Dark companion (Council Sessions 162 + 163, WCAG 2.2 + CVD audited). */
 
 /* --- Status colours ------------------------------------------------------ */
-.diagram .mermaid g.node.success rect,
-.diagram .mermaid g.node.success polygon,
-.diagram .mermaid g.node.success path { fill: #C8E6C9 !important; stroke: #2E7D32 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.success rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.success polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.success path { fill: #0D2818 !important; stroke: #66BB6A !important; }
+.mermaid g.node.success rect,
+.mermaid g.node.success polygon,
+.mermaid g.node.success path { fill: #C8E6C9 !important; stroke: #2E7D32 !important; }
+:root[data-theme="dark"] .mermaid g.node.success rect,
+:root[data-theme="dark"] .mermaid g.node.success polygon,
+:root[data-theme="dark"] .mermaid g.node.success path { fill: #0D2818 !important; stroke: #66BB6A !important; }
 
-.diagram .mermaid g.node.warning rect,
-.diagram .mermaid g.node.warning polygon,
-.diagram .mermaid g.node.warning path { fill: #FFF9C4 !important; stroke: #F9A825 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.warning rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.warning polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.warning path { fill: #2E2400 !important; stroke: #FFEE58 !important; }
+.mermaid g.node.warning rect,
+.mermaid g.node.warning polygon,
+.mermaid g.node.warning path { fill: #FFF9C4 !important; stroke: #F9A825 !important; }
+:root[data-theme="dark"] .mermaid g.node.warning rect,
+:root[data-theme="dark"] .mermaid g.node.warning polygon,
+:root[data-theme="dark"] .mermaid g.node.warning path { fill: #2E2400 !important; stroke: #FFEE58 !important; }
 
-.diagram .mermaid g.node.error rect,
-.diagram .mermaid g.node.error polygon,
-.diagram .mermaid g.node.error path { fill: #FFCDD2 !important; stroke: #C62828 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.error rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.error polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.error path { fill: #2A0A0A !important; stroke: #EF5350 !important; }
+.mermaid g.node.error rect,
+.mermaid g.node.error polygon,
+.mermaid g.node.error path { fill: #FFCDD2 !important; stroke: #C62828 !important; }
+:root[data-theme="dark"] .mermaid g.node.error rect,
+:root[data-theme="dark"] .mermaid g.node.error polygon,
+:root[data-theme="dark"] .mermaid g.node.error path { fill: #2A0A0A !important; stroke: #EF5350 !important; }
 
-.diagram .mermaid g.node.info rect,
-.diagram .mermaid g.node.info polygon,
-.diagram .mermaid g.node.info path { fill: #BBDEFB !important; stroke: #1565C0 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.info rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.info polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.info path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
+.mermaid g.node.info rect,
+.mermaid g.node.info polygon,
+.mermaid g.node.info path { fill: #BBDEFB !important; stroke: #1565C0 !important; }
+:root[data-theme="dark"] .mermaid g.node.info rect,
+:root[data-theme="dark"] .mermaid g.node.info polygon,
+:root[data-theme="dark"] .mermaid g.node.info path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
 
-.diagram .mermaid g.node.neutral rect,
-.diagram .mermaid g.node.neutral polygon,
-.diagram .mermaid g.node.neutral path { fill: #F5F5F5 !important; stroke: #757575 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.neutral rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.neutral polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.neutral path { fill: #1E1E1E !important; stroke: #9E9E9E !important; }
+.mermaid g.node.neutral rect,
+.mermaid g.node.neutral polygon,
+.mermaid g.node.neutral path { fill: #F5F5F5 !important; stroke: #757575 !important; }
+:root[data-theme="dark"] .mermaid g.node.neutral rect,
+:root[data-theme="dark"] .mermaid g.node.neutral polygon,
+:root[data-theme="dark"] .mermaid g.node.neutral path { fill: #1E1E1E !important; stroke: #9E9E9E !important; }
 
 /* --- Architecture types --------------------------------------------------- */
-.diagram .mermaid g.node.infra rect,
-.diagram .mermaid g.node.infra polygon,
-.diagram .mermaid g.node.infra path { fill: #E3F2FD !important; stroke: #1565C0 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.infra rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.infra polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.infra path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
+.mermaid g.node.infra rect,
+.mermaid g.node.infra polygon,
+.mermaid g.node.infra path { fill: #E3F2FD !important; stroke: #1565C0 !important; }
+:root[data-theme="dark"] .mermaid g.node.infra rect,
+:root[data-theme="dark"] .mermaid g.node.infra polygon,
+:root[data-theme="dark"] .mermaid g.node.infra path { fill: #0D2137 !important; stroke: #42A5F5 !important; }
 
-.diagram .mermaid g.node.service rect,
-.diagram .mermaid g.node.service polygon,
-.diagram .mermaid g.node.service path { fill: #E8F5E9 !important; stroke: #2E7D32 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.service rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.service polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.service path { fill: #0D2818 !important; stroke: #66BB6A !important; }
+.mermaid g.node.service rect,
+.mermaid g.node.service polygon,
+.mermaid g.node.service path { fill: #E8F5E9 !important; stroke: #2E7D32 !important; }
+:root[data-theme="dark"] .mermaid g.node.service rect,
+:root[data-theme="dark"] .mermaid g.node.service polygon,
+:root[data-theme="dark"] .mermaid g.node.service path { fill: #0D2818 !important; stroke: #66BB6A !important; }
 
-.diagram .mermaid g.node.data rect,
-.diagram .mermaid g.node.data polygon,
-.diagram .mermaid g.node.data path { fill: #FFF8E1 !important; stroke: #F57F17 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.data rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.data polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.data path { fill: #2E1500 !important; stroke: #FFA726 !important; }
+.mermaid g.node.data rect,
+.mermaid g.node.data polygon,
+.mermaid g.node.data path { fill: #FFF8E1 !important; stroke: #F57F17 !important; }
+:root[data-theme="dark"] .mermaid g.node.data rect,
+:root[data-theme="dark"] .mermaid g.node.data polygon,
+:root[data-theme="dark"] .mermaid g.node.data path { fill: #2E1500 !important; stroke: #FFA726 !important; }
 
-.diagram .mermaid g.node.user rect,
-.diagram .mermaid g.node.user polygon,
-.diagram .mermaid g.node.user path { fill: #F3E5F5 !important; stroke: #7B1FA2 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.user rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.user polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.user path { fill: #1A0A2E !important; stroke: #BA68C8 !important; }
+.mermaid g.node.user rect,
+.mermaid g.node.user polygon,
+.mermaid g.node.user path { fill: #F3E5F5 !important; stroke: #7B1FA2 !important; }
+:root[data-theme="dark"] .mermaid g.node.user rect,
+:root[data-theme="dark"] .mermaid g.node.user polygon,
+:root[data-theme="dark"] .mermaid g.node.user path { fill: #1A0A2E !important; stroke: #BA68C8 !important; }
 
-.diagram .mermaid g.node.process rect,
-.diagram .mermaid g.node.process polygon,
-.diagram .mermaid g.node.process path { fill: #E1F5FE !important; stroke: #0277BD !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.process rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.process polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.process path { fill: #012830 !important; stroke: #4DD0E1 !important; }
+.mermaid g.node.process rect,
+.mermaid g.node.process polygon,
+.mermaid g.node.process path { fill: #E1F5FE !important; stroke: #0277BD !important; }
+:root[data-theme="dark"] .mermaid g.node.process rect,
+:root[data-theme="dark"] .mermaid g.node.process polygon,
+:root[data-theme="dark"] .mermaid g.node.process path { fill: #012830 !important; stroke: #4DD0E1 !important; }
 
-.diagram .mermaid g.node.security rect,
-.diagram .mermaid g.node.security polygon,
-.diagram .mermaid g.node.security path { fill: #E0F2F1 !important; stroke: #00695C !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.security rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.security polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.security path { fill: #002A22 !important; stroke: #4DB6AC !important; }
+.mermaid g.node.security rect,
+.mermaid g.node.security polygon,
+.mermaid g.node.security path { fill: #E0F2F1 !important; stroke: #00695C !important; }
+:root[data-theme="dark"] .mermaid g.node.security rect,
+:root[data-theme="dark"] .mermaid g.node.security polygon,
+:root[data-theme="dark"] .mermaid g.node.security path { fill: #002A22 !important; stroke: #4DB6AC !important; }
 
-.diagram .mermaid g.node.external rect,
-.diagram .mermaid g.node.external polygon,
-.diagram .mermaid g.node.external path { fill: #ECEFF1 !important; stroke: #455A64 !important; }
-:root[data-theme="dark"] .diagram .mermaid g.node.external rect,
-:root[data-theme="dark"] .diagram .mermaid g.node.external polygon,
-:root[data-theme="dark"] .diagram .mermaid g.node.external path { fill: #211A17 !important; stroke: #D7CCC8 !important; }
+.mermaid g.node.external rect,
+.mermaid g.node.external polygon,
+.mermaid g.node.external path { fill: #ECEFF1 !important; stroke: #455A64 !important; }
+:root[data-theme="dark"] .mermaid g.node.external rect,
+:root[data-theme="dark"] .mermaid g.node.external polygon,
+:root[data-theme="dark"] .mermaid g.node.external path { fill: #211A17 !important; stroke: #D7CCC8 !important; }
 /* Same cap for inline content images in articles (icons / screenshots
    / illustrations). */
 .prose img,
