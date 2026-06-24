@@ -64,6 +64,12 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      # The ADR-0048 gate below invokes the opda-gen CLI — needs Python + the
+      # package installed, same as the ontology-byte-identity / baspi5 workflows.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
       - run: pnpm install --frozen-lockfile
 
       # Build-time GRLC API's own deps (express, js-yaml).
@@ -75,6 +81,12 @@ jobs:
       # build-exclusive + ephemeral — only dist/ (static HTML) is deployed;
       # production never runs, reaches, or exposes them.
       - run: npm run build:data
+
+      # ADR-0048 gate needs the opda-gen CLI on PATH (mirrors the sibling
+      # ontology workflows' `pip install -e .[dev]`).
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
 
       # ADR-0048 — relationship-layer object-property coverage gate. Fail the
       # deploy if any owl:ObjectProperty is rangeless-AND-shapeless, a
