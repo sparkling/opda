@@ -19,8 +19,14 @@ import Diagram from '@/components/Diagram.astro';
         <div class="callout__label">Published positioning</div>
         <p>
           From propdata.org.uk's About page, PDTF lists five "Strategic Alignment" partners:
-          HMLR Strategy 2022+, DSIT National Data Strategy, DIATF, W3C Verifiable
+          HMLR Strategy 2022+, DSIT National Data Strategy, DVSTF, W3C Verifiable
           Credentials, and the Trust Over IP Foundation.
+        </p>
+        <p style="font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-2);">
+          <strong>Provenance:</strong> <code>propdata.org.uk</code> is a legacy developer site that carries OPDA
+          copyright but was <strong>not authored or approved by OPDA</strong> (OPDA has no editing access). Its
+          positioning is recorded here for reference; specific technical approaches it presents — notably
+          <strong>Decentralised Identifiers (DIDs)</strong> — are exploratory, not yet OPDA / MHCLG / DPMSG-ratified.
         </p>
       </div>
 
@@ -33,8 +39,9 @@ Trust Framework`"]:::infra
 
   HMLR[HMLR Strategy 2022+]:::service
   DSIT[DSIT National Data Strategy]:::service
-  DIATF["`DIATF
-Digital Identity Trust Framework`"]:::service
+  DIATF["`DVSTF
+Digital Verification
+Services Trust Framework`"]:::service
   VC[W3C Verifiable Credentials]:::data
   ToIP[Trust Over IP Foundation]:::data
 
@@ -68,26 +75,27 @@ Digital Identity Trust Framework`"]:::service
         and trusted data sharing across organisational boundaries.
       </p>
 
-      <h2 id="diatf">DIATF — Digital Identity and Attributes Trust Framework</h2>
+      <h2 id="dvstf">DVSTF — Digital Verification Services Trust Framework</h2>
       <p>
-        UK government's published trust framework for identity verification services.
-        Run by DSIT. Property transactions involve heavy ID checks (estate agent,
-        conveyancer, lender — each currently does their own). DIATF's stated goal is
-        to enable "verify once, use many times" identity proofing.
+        UK government's published trust framework for digital verification services
+        (the rename of the former DIATF). Run by DSIT. Property transactions involve
+        heavy ID checks (estate agent, conveyancer, lender — each currently does their
+        own). DVSTF's stated goal is to enable "verify once, use many times" identity
+        proofing.
       </p>
       <p>
         PDTF aligns by:
       </p>
       <ul>
         <li>Using W3C VCs / DIDs for participant identity — compatible model</li>
-        <li>The PDTF DID Auth OAuth 2 Specification (in trust-framework/docs/) draws on DIATF concepts</li>
-        <li>Future: PDTF accreditation could recognise DIATF-certified IDPs</li>
+        <li>The PDTF DID Auth OAuth 2 Specification (in trust-framework/docs/) draws on DVSTF concepts</li>
+        <li>Future: PDTF accreditation could recognise DVSTF-certified IDPs</li>
       </ul>
 
       <h2 id="vc">W3C Verifiable Credentials Data Model</h2>
       <p>
-        The W3C standard for cryptographically verifiable claims about subjects. PDTF
-        v2.0 is being structured around VCs — every property data point is a claim,
+        The W3C standard for cryptographically verifiable claims about subjects. The
+        SPDTF (Smart Property Data Trust Framework) is being structured around VCs — every property data point is a claim,
         with provenance, issued by an accredited participant, presented to relying
         parties.
       </p>
@@ -148,8 +156,8 @@ Digital Identity Trust Framework`"]:::service
       <ul>
         <li><strong>HMLR</strong> — every HMLR-published form has a PDTF overlay; LLC1 / OC1 conformance test suite passes.</li>
         <li><strong>National Data Strategy</strong> — public data assets in PDTF have <code>dcat:</code> metadata for discoverability.</li>
-        <li><strong>DIATF</strong> — PDTF accreditation cross-recognises at least one DIATF-certified IDP.</li>
-        <li><strong>W3C VC</strong> — PDTF v2.0 conforms to VCDM 2.0 test suite.</li>
+        <li><strong>DVSTF</strong> — PDTF accreditation cross-recognises at least one DVSTF-certified IDP.</li>
+        <li><strong>W3C VC</strong> — SPDTF conforms to VCDM 2.0 test suite.</li>
         <li><strong>ToIP</strong> — published governance documents for all 4 layers + cross-cutting docs (per <a href="/governance/toip-governance">ToIP page</a>).</li>
       </ul>
 </Layout>

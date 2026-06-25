@@ -47,7 +47,7 @@ import Diagram from '@/components/Diagram.astro';
       </p>
 
       <p>
-        The PDTF v2.0 spec rewrite makes this gap structural. As the model moves from
+        The SPDTF (Smart Property Data Trust Framework) spec rewrite makes this gap structural. As the model moves from
         JSON Schema overlays towards W3C Verifiable Credentials and DIDs, the question
         of who authorises issuance and who attests to claim semantics becomes
         load-bearing. Without named domain accountability, every claim flowing through
@@ -135,14 +135,16 @@ vacant`"]:::process
       <h2 id="domainStewards">Proposed: Domain Data Stewards</h2>
 
       <div class="callout callout--warn">
-        <div class="callout__label">Surveying steward seat is structurally unfillable today</div>
+        <div class="callout__label">Surveying steward seat — a tier-eligibility question, not a coverage gap</div>
         <p>
-          No Founder or Certified Member operates in Surveying. Survey Shack is
-          Associate-tier only; the eligibility rules below require Founder or
-          Certified. Before the stewardship model goes live, the Executive Committee
-          will need to either: (a) recruit a surveying firm to Certified, (b) relax
-          eligibility for under-represented contexts, or (c) deputise an external
-          advisor (e.g., a RICS representative) pending recruitment. See
+          OPDA <strong>does</strong> have RICS-regulated surveying capability in membership —
+          Survey Shack, plus Countrywide Surveyors (within Connells Group) and Pinnacle
+          Surveyors (within MAB). What it lacks is a surveying firm at <em>Founder or Certified</em>
+          tier, which the eligibility rules below require. Before the stewardship model goes live,
+          the Executive Committee will need to either: (a) draw the steward from one of these
+          existing member surveying firms (recruiting it to Certified if needed), (b) relax
+          eligibility for under-represented contexts, or (c) deputise an external advisor
+          (e.g., a RICS representative) pending that. See
           <a href="#openQuestions">Open Question 4</a>.
         </p>
       </div>
@@ -181,7 +183,7 @@ vacant`"]:::process
           <tr>
             <td><strong>Surveying / Valuation</strong></td>
             <td><code>piq</code></td>
-            <td><strong>Vacant.</strong> No founding member; recruit from Survey Shack (association member) or via RICS introduction.</td>
+            <td><strong>No founding member</strong>, but RICS-regulated surveying is present through association members: Survey Shack, plus the surveying firms inside Connells Group (Connells, Countrywide Surveyors) and MAB (Pinnacle Surveyors). A domain-steward seat can be drawn from these rather than recruited cold.</td>
           </tr>
           <tr>
             <td><strong>Property Data Services</strong></td>
@@ -191,7 +193,7 @@ vacant`"]:::process
           <tr>
             <td><strong>Property Technology</strong> (orchestration)</td>
             <td>Base <code>pdtf-transaction.json</code> + VC wrapper (no overlays of its own)</td>
-            <td>Founders: Moverly, Coadjute, PEXA.</td>
+            <td>Founders: Moverly <em>(former member — no longer an OPDA steward)</em>, Coadjute, PEXA.</td>
           </tr>
         </tbody>
       </table>

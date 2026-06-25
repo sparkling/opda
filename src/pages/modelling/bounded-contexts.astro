@@ -103,7 +103,8 @@ import Diagram from '@/components/Diagram.astro';
             <td><strong>Surveying / Valuation</strong></td>
             <td>RICS</td>
             <td>
-              <strong>No founding members.</strong> <em>Gap.</em><br>
+              <strong>No founding members.</strong><br>
+              <strong>Association (RICS-regulated surveying):</strong> Survey Shack; Countrywide Surveyors (within Connells Group); Pinnacle Surveyors (within MAB).<br>
               <strong>Association (AVM-adjacent):</strong> Hometrack, Experian.
             </td>
             <td>PIQ, condition surveys (Levels 1–3), AVMs, RICS Red Book valuations</td>
@@ -121,7 +122,7 @@ import Diagram from '@/components/Diagram.astro';
             <td><strong>Property Technology</strong> (orchestration)</td>
             <td>—</td>
             <td>
-              <strong>Founders:</strong> Moverly, Coadjute, PEXA.<br>
+              <strong>Founders:</strong> Moverly <em>(former member)</em>, Coadjute, PEXA.<br>
               <strong>Association:</strong> HSP, VMC, Clozy, C2C, e4, Novus Strategy.
             </td>
             <td>System-to-system messages; orchestration; UX surfaces for each above context</td>
@@ -132,12 +133,14 @@ import Diagram from '@/components/Diagram.astro';
       <div class="callout callout--warn">
         <div class="callout__label">Gap</div>
         <p>
-          <strong>Surveying / Valuation has no founding OPDA member.</strong> RICS is on
-          the DPMSG steering board but doesn't have a member-firm on OPDA's roster.
-          Worth flagging: the surveying overlay (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>) currently lacks an
+          <strong>Surveying / Valuation has no <em>founding</em> OPDA member</strong>, though
+          RICS-regulated surveying <em>is</em> present in association membership — Survey Shack,
+          plus Countrywide Surveyors (within Connells Group) and Pinnacle Surveyors (within MAB).
+          RICS itself is on the DPMSG steering board.
+          Worth flagging: the surveying overlay (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>) still lacks an
           OPDA member with practical implementation skin in the game. Stakeholder
-          engagement for the linked-data project should prioritise bringing a surveying
-          firm into membership.
+          engagement for the linked-data project should activate one of these surveying
+          firms as an implementer (or recruit a dedicated surveying member).
         </p>
       </div>
 
@@ -158,8 +161,8 @@ import Diagram from '@/components/Diagram.astro';
           <tr><td><strong>Land Registry</strong></td><td>HMLR</td><td>Title register, charges, official copies (OC1), local land charges (LLC1)</td></tr>
           <tr><td><strong>Local Authority</strong></td><td>308 LAs in England + Wales</td><td>CON29R search data, planning permissions, building control, council tax band — being progressively migrated into HMLR's national LLC service</td></tr>
           <tr><td><strong>Material Information</strong></td><td>MHCLG (replacing withdrawn NTS rules)</td><td>The minimum disclosures a listing must contain — under the DMCC Act 2024</td></tr>
-          <tr><td><strong>Identity &amp; Verification</strong></td><td>DSIT (DIATF); regulated by ICO; MLR 2017</td><td>Identity proofing, AML / KYC, attribute exchange</td></tr>
-          <tr><td><strong>Trust &amp; Verifiable Claims</strong></td><td>W3C (VC + DID specs); ToIP Foundation; PDTF v2.0 spec</td><td>Cryptographic provenance: who issued what claim, when, with what evidence</td></tr>
+          <tr><td><strong>Identity &amp; Verification</strong></td><td>DSIT (DVSTF); regulated by ICO; MLR 2017</td><td>Identity proofing, AML / KYC, attribute exchange</td></tr>
+          <tr><td><strong>Trust &amp; Verifiable Claims</strong></td><td>W3C (VC + DID specs); ToIP Foundation; SPDTF spec</td><td>Cryptographic provenance: who issued what claim, when, with what evidence</td></tr>
         </tbody>
       </table>
 
@@ -221,7 +224,7 @@ JSON Schema + OpenAPI + VC + DID
   HMLR["Land Registry (HMLR)"]:::external
   LA["Local Authority"]:::external
   MI["Material Information (MHCLG)"]:::external
-  ID["Identity & Verification (DIATF)"]:::external
+  ID["Identity & Verification (DVSTF)"]:::external
   TV["Trust & Verifiable Claims (W3C)"]:::security
 
   EA  &lt;-->|PL via OPDA accreditation| PDTF
@@ -273,7 +276,7 @@ JSON Schema + OpenAPI + VC + DID
           <tr>
             <td>PDTF → W3C VC / DID</td>
             <td><strong>Conformist</strong> (technical)</td>
-            <td>PDTF v2.0 uses W3C VC Data Model verbatim for the claim structure. DID for participant identity.</td>
+            <td>The SPDTF (Smart Property Data Trust Framework) uses W3C VC Data Model verbatim for the claim structure. DID for participant identity.</td>
           </tr>
           <tr>
             <td>Estate Agency ↔ Property Data</td>

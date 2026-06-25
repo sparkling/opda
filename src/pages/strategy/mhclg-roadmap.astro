@@ -1,0 +1,55 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+
+const roadmapPdf = '/resource.html?path=source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf';
+const govUk = 'https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap';
+---
+<Layout
+  title="MHCLG Home Buying and Selling Reform Roadmap"
+  description="The MHCLG Home Buying and Selling Reform Roadmap — the UK government's plan to make buying and selling a home quicker, cheaper and less stressful."
+>
+<PageMeta category="Strategy" variant="brand" updated="Updated 2026-06-25" />
+
+      <h1>MHCLG Home Buying and Selling Reform Roadmap</h1>
+      <p class="lead">
+        The Ministry of Housing, Communities and Local Government (MHCLG) has published
+        its <strong>Home Buying and Selling Reform Roadmap</strong> — the government's
+        plan to make buying and selling a home quicker, cheaper and less stressful. It
+        is the most authoritative current anchor for the property Smart Data initiative
+        OPDA's standards work supports.
+      </p>
+
+      <div class="callout callout--key">
+        <div class="callout__label">Primary source</div>
+        <p>
+          The roadmap is the published outcome of the MHCLG <em>Home buying and selling
+          reform</em> consultation. Read the full document below, or on gov.uk.
+        </p>
+        <p>
+          <a class="resource-link" href={roadmapPdf}><code>MHCLG Home Buying and Selling Reform Roadmap (PDF, 62pp)</code></a>
+          &nbsp;·&nbsp;
+          <a href={govUk} target="_blank" rel="noopener">gov.uk — Home buying and selling reform roadmap</a>
+        </p>
+      </div>
+
+      <h2 id="whyItMatters">Why it matters for OPDA</h2>
+      <p>
+        The roadmap sets the policy direction for digitising and de-risking the home
+        buying and selling process. It reinforces the case for the data standards OPDA
+        is authoring — the Property Data Trust Framework and its Smart Property evolution
+        (SPDTF) — and for the wider UK Smart Data programme the property sector sits inside.
+      </p>
+      <ul>
+        <li><strong>Upfront information.</strong> Standardised, machine-readable property data made available early in the transaction — exactly the gap OPDA's overlays (BASPI, the Law Society TA forms, HMLR searches) are designed to fill.</li>
+        <li><strong>Data sharing and reuse.</strong> Trusted, provenance-bearing claims that move between parties without re-keying — the verifiable-claims model OPDA's standards adopt.</li>
+        <li><strong>Digital identity.</strong> "Verify once, use many times" identity proofing aligned to the DVSTF (Digital Verification Services Trust Framework).</li>
+      </ul>
+
+      <h2 id="related">Related context</h2>
+      <ul>
+        <li><a href="/strategy/industrial-strategy">UK Industrial Strategy &amp; Smart Data</a> — the policy backdrop that names property as a priority Smart Data sector.</li>
+        <li><a href="/strategy/reading-list">Strategy reading list</a> — the government and industry source documents, including this roadmap and the MHCLG consultation response.</li>
+        <li><a href="/governance/uk-initiative">The UK government's Smart Property Data initiative</a> — how the five-tier initiative fits together.</li>
+      </ul>
+</Layout>

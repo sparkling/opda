@@ -52,7 +52,7 @@ import Diagram from '@/components/Diagram.astro';
           <tr><th>#</th><th>Firm</th><th>Primary bounded context</th><th>Sector / focus</th><th>Cert.</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td><strong>Moverly</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Digital home-moving platform. Co-won the SDC Innovators prize with OPDA.</td><td>—</td></tr>
+          <tr><td>1</td><td><strong>Moverly</strong> <em>(former member)</em></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Digital home-moving platform; a founding member (2023) and key author of the original schema. Co-won the SDC Innovators prize with OPDA in 2025. Has since left OPDA — no longer part of its membership, accreditation/approvals, or the sandbox project.</td><td>—</td></tr>
           <tr><td>2</td><td><strong>OnTheMarket</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Estate Agency</a></td><td>UK property portal.</td><td>—</td></tr>
           <tr><td>3</td><td><strong>Sprift</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Data Services</a></td><td>Property data aggregator.</td><td><span class="pill pill--success">✓</span></td></tr>
           <tr><td>4</td><td><strong>Coadjute</strong></td><td><a href="/modelling/bounded-contexts#primaryIndustries">Property Technology</a></td><td>Decentralised property-transaction network. Spans all contexts as orchestration.</td><td>—</td></tr>
@@ -80,13 +80,27 @@ import Diagram from '@/components/Diagram.astro';
         <li><strong>Estate Agency</strong> — 2 firms (OnTheMarket, Homely)</li>
         <li><strong>Mortgage Lending</strong> — 2 firms (OMS, United Trust Bank)</li>
         <li><strong>Conveyancing (Legal)</strong> — 1 firm (LMS)</li>
-        <li><strong>Surveying / Valuation</strong> — 0 founding members <em>(the most under-represented context — RICS is on DPMSG but no surveyor was an OPDA founder)</em></li>
+        <li><strong>Surveying / Valuation</strong> — 0 <em>founding</em> members <em>(no surveyor was among the 2023 founding cohort, though RICS is on DPMSG)</em></li>
       </ul>
+      <div class="callout callout--note">
+        <div class="callout__label">Surveying is covered through association members</div>
+        <p>
+          The "0 founders" count is about the 2023 founding cohort only — it is <strong>not</strong>
+          a claim that OPDA lacks RICS-approved surveying. Regulated surveying capability is
+          present through association members whose groups include RICS-regulated surveying firms:
+          <strong>Connells Group</strong> (which includes <strong>Connells</strong> and
+          <strong>Countrywide Surveyors</strong>) and <strong>Mortgage Advice Bureau</strong>
+          (whose group includes <strong>Pinnacle Surveyors</strong>), alongside the dedicated
+          surveying member <strong>Survey Shack</strong>. These are listed at group level on the
+          logo wall, which can make the surveying coverage look thinner than it is.
+        </p>
+      </div>
       <p>
-        The shape of the founding coalition explains a lot about what's well-covered in
-        PDTF today (data services, listing data, lending integration) and where the
-        gaps will need new members: <strong>surveying</strong> in particular, and
-        <strong>letting-specific use cases</strong>.
+        The shape of the founding coalition still explains a lot about what's well-covered in
+        PDTF today (data services, listing data, lending integration) and where the founding
+        cohort was thin: <strong>surveying</strong> in particular, and
+        <strong>letting-specific use cases</strong> — gaps that later association membership
+        has begun to fill.
       </p>
 
       <h2 id="sectoralShape">The shape of the founding coalition</h2>
@@ -163,7 +177,7 @@ flowchart LR
 
       <h3 id="intermediariesAndTech">Intermediaries and tech</h3>
       <ul>
-        <li><strong>Mortgage Advice Bureau</strong> (MAB) — joined as the first intermediary network member</li>
+        <li><strong>Mortgage Advice Bureau</strong> (MAB) — joined as the first intermediary network member. The MAB group includes <strong>Pinnacle Surveyors</strong>, an RICS-regulated surveying firm — so the group contributes regulated surveying capability, not just mortgage intermediation.</li>
         <li><strong>Smoove</strong></li>
         <li><strong>Finova</strong></li>
         <li><strong>Phoebus</strong></li>
@@ -178,7 +192,7 @@ flowchart LR
         <li><strong>Open Property</strong> — proptech platform (<a href="https://openproperty.io/" target="_blank" rel="noopener">openproperty.io</a>)</li>
         <li><strong>Simply Conveyancing</strong> — conveyancing firm (<a href="https://www.simplyconveyancing.co.uk/" target="_blank" rel="noopener">simplyconveyancing.co.uk</a>)</li>
         <li><strong>Survey Shack</strong> — surveying member (<a href="https://www.survey-shack.com/" target="_blank" rel="noopener">survey-shack.com</a>); fills the surveying gap noted in the founders' context distribution</li>
-        <li><strong>Connells Group</strong> — "Digital Sale Ready" pilot on propdata.org.uk</li>
+        <li><strong>Connells Group</strong> — large estate-agency and property-services group; ran the "Digital Sale Ready" pilot. The group trades through many brands, including <strong>Connells</strong> and <strong>Countrywide Surveyors</strong> — the latter an RICS-regulated surveying firm, so Connells Group also contributes regulated surveying capability.</li>
         <li><strong>L&amp;C Mortgages</strong></li>
         <li><strong>Novus Strategy</strong></li>
         <li><strong>Armalytix</strong></li>
@@ -223,7 +237,9 @@ flowchart LR
         The other 9 founders + all association members appear as logos on the
         <code>/our-members/</code> page but don't have dedicated <code>/member/&lt;slug&gt;/</code>
         URLs. This is a publishing decision (probably to feature key partners), not a
-        statement about membership status.
+        statement about membership status. (Note: <strong>Moverly</strong> is a founding
+        member that has since left OPDA — its presence here reflects the legacy WP index,
+        not current membership.)
       </p>
 
       <h2 id="implications">Implications for the linked-data project</h2>

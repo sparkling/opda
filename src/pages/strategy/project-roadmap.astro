@@ -112,7 +112,7 @@ import Diagram from '@/components/Diagram.astro';
 
       <ol>
         <li><strong>L4 Ecosystem Governance Framework</strong> (consolidates existing governance.md, plan.md, proposal.md, etc.)</li>
-        <li><strong>L3 Credential Trust Framework</strong> (PDTF v2.0 VC spec + issuer rules)</li>
+        <li><strong>L3 Credential Trust Framework</strong> (SPDTF VC spec + issuer rules)</li>
         <li><strong>L2 Communication Governance</strong> (HTTPS profile, DIDComm version, security audit cadence)</li>
         <li><strong>L1 Utility Governance</strong> (DID methods allowed, trust-registry data structures, key rotation)</li>
         <li><strong>Conformance &amp; Certification scheme</strong> (Open Banking-style)</li>
@@ -229,7 +229,8 @@ BASPI v5 · 7d`"]:::neutral
         <ul style="margin: 0;">
           <li><strong>NTS overlay drift</strong> — <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a> implements withdrawn guidance. Needs explicit retirement/replacement plan once MHCLG publishes successor.</li>
           <li><strong>Two glossaries</strong> — Technical WG and Trust Framework PoC both have <code>Glossary.xlsx</code>. May contain conflicting definitions.</li>
-          <li><strong>Schema v3 vs v3.6 vs v2 coexistence</strong> — multiple versions live in repos and dependencies. Need clear sunset dates.</li>
+          <li><strong>Schema v3 vs v3.6 vs v2 coexistence</strong> — multiple versions live in repos and dependencies. Need clear sunset dates. The recommended mitigation is <strong>transition-bridging tooling</strong> (current→new schema bridges plus implementation tooling for industry) so members can migrate without a hard cut-over.</li>
+          <li><strong>Transition-tooling funding</strong> — the bridging tooling and industry implementation tooling above need delivery resource. The <strong>funding / resource requirement should be surfaced to the stakeholder</strong>, since existing project funding may have scope to cover it. Tracked as item F7 in the <a href="/governance/deferred-work#open-in-other-adrs">deferred-work register</a>.</li>
           <li><strong>Open Banking-style funding</strong> — long-run sustainability of OPDA isn't settled. Cost-recovery participant fees model worth proposing in governance docs.</li>
           <li><strong>Government department reorganisations</strong> — DLUHC → MHCLG; DCMS → DSIT. Names change; relationships need to be person-resilient.</li>
         </ul>

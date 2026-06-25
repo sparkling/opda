@@ -72,6 +72,8 @@ export const SECTIONS: Record<string, Section> = {
       ]},
       { heading: 'Wider context', items: [
         { url: '/strategy/industrial-strategy', title: 'UK Industrial Strategy' },
+        { url: '/strategy/mhclg-roadmap',       title: 'MHCLG Reform Roadmap' },
+        { url: '/strategy/reading-list',        title: 'Reading list' },
       ]},
     ],
   },

@@ -29,7 +29,7 @@ import Layout from '@/layouts/Layout.astro';
           <tr><td class="term">NTS</td><td>National Trading Standards</td><td>UK trading standards body.</td></tr>
           <tr><td class="term">NTSELAT</td><td>National Trading Standards Estate and Letting Agency Team</td><td>Owned (now-withdrawn) Material Information rules.</td></tr>
           <tr><td class="term">DBT</td><td>Department for Business and Trade</td><td>Hosts the Smart Data Council; sponsors Smart Data Challenge; published Smart Data Roadmap.</td></tr>
-          <tr><td class="term">DSIT</td><td>Department for Science, Innovation and Technology</td><td>Owns the Smart Data scheme under DMCC Act + DIATF.</td></tr>
+          <tr><td class="term">DSIT</td><td>Department for Science, Innovation and Technology</td><td>Owns the Smart Data scheme under DMCC Act + DVSTF.</td></tr>
           <tr><td class="term">DCMS</td><td>Department for Culture, Media and Sport</td><td>Predecessor to DSIT for the data brief.</td></tr>
           <tr><td class="term">MHCLG</td><td>Ministry of Housing, Communities and Local Government</td><td>Policy lead for housing/property.</td></tr>
           <tr><td class="term">DLUHC</td><td>Department for Levelling Up, Housing and Communities</td><td>Predecessor to current MHCLG.</td></tr>
@@ -71,12 +71,13 @@ import Layout from '@/layouts/Layout.astro';
         <tbody>
           <tr><td class="term">PDTF</td><td>Property Data Trust Framework</td><td>OPDA's umbrella standard — JSON Schemas + OpenAPI + Trust Framework spec.</td></tr>
           <tr><td class="term">ToIP</td><td>Trust Over IP Foundation</td><td>Linux Foundation project. 4-layer governance model PDTF follows.</td></tr>
-          <tr><td class="term">DIATF</td><td>Digital Identity and Attributes Trust Framework</td><td>UK government identity trust framework. DSIT-owned.</td></tr>
-          <tr><td class="term">IDP</td><td>Identity Provider (plural IDPs)</td><td>Entity that authenticates users and issues identity claims/credentials. In OPDA context, typically a DIATF-certified Identity Provider.</td></tr>
-          <tr><td class="term">VC</td><td>Verifiable Credentials</td><td>W3C data model for cryptographically verifiable claims. PDTF v2.0 is VC-based.</td></tr>
-          <tr><td class="term">DID</td><td>Decentralized Identifier</td><td>W3C standard for self-sovereign identifiers. Used for PDTF participants.</td></tr>
+          <tr><td class="term">DVSTF</td><td>Digital Verification Services Trust Framework</td><td>UK government trust framework for digital verification services (the rename of the former DIATF). DSIT-owned.</td></tr>
+          <tr><td class="term">IDP</td><td>Identity Provider (plural IDPs)</td><td>Entity that authenticates users and issues identity claims/credentials. In OPDA context, typically a DVSTF-certified Identity Provider.</td></tr>
+          <tr><td class="term">SPDTF</td><td>Smart Property Data Trust Framework</td><td>The Smart Property evolution of the Property Data Trust Framework (formerly referred to as the versioned "v2.0" spec). Consistent with the Smart Property Data Trust Framework Sandbox naming.</td></tr>
+          <tr><td class="term">VC</td><td>Verifiable Credentials</td><td>W3C data model for cryptographically verifiable claims. SPDTF is VC-based.</td></tr>
+          <tr><td class="term">DID</td><td>Decentralized Identifier</td><td>W3C standard for self-sovereign identifiers. Explored for PDTF participants on the legacy <code>propdata.org.uk</code> site, but <strong>not an OPDA / MHCLG / DPMSG-ratified approach</strong> — still to be tested and certified against the emerging Smart Data Guidebook and DSIT Digital Verification Services.</td></tr>
           <tr><td class="term">VCDM</td><td>Verifiable Credentials Data Model</td><td>W3C VC spec, versions 1.1 and 2.0 archived locally.</td></tr>
-          <tr><td class="term">DIDComm</td><td>DID Communication</td><td>Secure-messaging protocol used between DID-identified parties.</td></tr>
+          <tr><td class="term">DIDComm</td><td>DID Communication</td><td>Secure-messaging protocol used between DID-identified parties. Like DID, an exploratory approach inherited from <code>propdata.org.uk</code> — not yet OPDA/MHCLG/DPMSG-ratified.</td></tr>
           <tr><td class="term">OIDC</td><td>OpenID Connect</td><td>Identity layer over OAuth 2.0. Used in PDTF Auth pattern.</td></tr>
           <tr><td class="term">FAPI</td><td>Financial-grade API</td><td>OpenID Foundation profile of OAuth 2.0 used by Open Banking and adopted as a baseline for high-assurance API authorisation.</td></tr>
           <tr><td class="term">DCAM</td><td>Data Management Capability Assessment Model</td><td>EDM Council framework. <strong>Not</strong> the framework OPDA has chosen (ToIP is).</td></tr>
@@ -144,6 +145,9 @@ import Layout from '@/layouts/Layout.astro';
         Original sources for the glossary entries: OPDA website, gov.uk announcements,
         DPMSG founding statement, propdata.org.uk About page, W3C and Trust Over IP
         Foundation specs — all archived in <code>source/</code>.
+        Note: <code>propdata.org.uk</code> is a legacy developer site carrying OPDA copyright but
+        <strong>not authored or approved by OPDA</strong> (OPDA has no editing access); the technical
+        approaches it presents — notably DIDs — are exploratory, not OPDA/MHCLG/DPMSG-ratified.
       </p>
 </Layout>
 

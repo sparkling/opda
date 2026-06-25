@@ -15,6 +15,19 @@ import Diagram from '@/components/Diagram.astro';
         UK-form-specific schema overlays.
       </p>
 
+      <div class="callout callout--warn">
+        <div class="callout__label">Provenance</div>
+        <p>
+          Several artefacts referenced here live on <code>propdata.org.uk</code> / <code>trust.propdata.org.uk</code>,
+          a legacy developer site that carries OPDA copyright but was <strong>not authored or approved by OPDA</strong>
+          (OPDA has no editing access). Its content is not necessarily wrong, but specific technical approaches it
+          presents — notably <strong>Decentralised Identifiers (DIDs)</strong> and DIDComm — are
+          <strong>not an OPDA / MHCLG / DPMSG-ratified approach</strong>. Such decisions still need to be explored,
+          tested, and certified against the emerging <strong>Smart Data Guidebook</strong> and aligned to the
+          <strong>DSIT Digital Verification Services</strong> standards before they can be treated as canonical.
+        </p>
+      </div>
+
       <h2 id="stackDiagram">The full stack</h2>
 
       <Diagram caption="The PDTF standards stack. Blue boxes = OPDA-owned; light boxes = external standards; amber = UK industry forms.">
@@ -27,13 +40,13 @@ HTTPS · DIDComm`"]:::external
   DID["`**W3C DID Core 1.0**
 identifier methods
 did:key · did:jwk · did:web`"]:::external
-  DIATF["`**DIATF**
-UK Digital Identity &
-Attributes Trust Framework`"]:::external
+  DVSTF["`**DVSTF**
+UK Digital Verification
+Services Trust Framework`"]:::external
 
   VC["`**W3C VC Data Model**
 verifiable credentials 1.1 + 2.0`"]:::external
-  PDTF_V2["`**PDTF v2.0 spec**
+  PDTF_V2["`**SPDTF spec**
 VC-based property data`"]:::infra
 
   PDTF_API["`**PDTF OpenAPI**
@@ -52,9 +65,9 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::data
 
   L1 --> L2
   L2 --> DID
-  L2 --> DIATF
+  L2 --> DVSTF
   DID --> VC
-  DIATF --> VC
+  DVSTF --> VC
   VC --> PDTF_V2
   PDTF_V2 --> PDTF_API
   PDTF_V2 --> SCHEMAS
@@ -96,7 +109,7 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::data
           <tr>
             <td><code>smart-data-challenge-2025</code></td>
             <td><code>main</code></td>
-            <td>Moverly + OPDA SDC entry. Frontend + Firebase backend.</td>
+            <td>Moverly + OPDA SDC entry (2025). Frontend + Firebase backend. Moverly is since a former member.</td>
             <td>—</td>
           </tr>
         </tbody>
@@ -200,8 +213,8 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::data
         </div>
         <div class="card">
           <div class="pill pill--info">UK Gov</div>
-          <h3>DIATF</h3>
-          <p>Digital Identity and Attributes Trust Framework. Strategic alignment partner.</p>
+          <h3>DVSTF</h3>
+          <p>Digital Verification Services Trust Framework (the rename of the former DIATF). Strategic alignment partner.</p>
         </div>
         <div class="card">
           <div class="pill pill--info">Linux Foundation</div>
