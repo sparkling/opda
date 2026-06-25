@@ -23,6 +23,8 @@
     "test": "node --test tests/lib/remark/*.test.mjs",
     "test:smoke": "npx playwright test scripts/smoke-test.mjs",
     "clean": "rm -rf dist .astro",
+    "resources:manifest": "node scripts/resources-manifest.mjs",
+    "publish:resources": "bash scripts/publish-resources.sh",
     "deploy": "bash deploy.sh",
     "deploy:ci": "git push origin main"
   },

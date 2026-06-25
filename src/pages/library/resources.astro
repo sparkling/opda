@@ -1,0 +1,136 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import manifest from '@/data/resources-manifest.json';
+
+// The manifest is generated locally by `make resources-manifest` (which walks
+// the ~557 MB gitignored source/ archive) and committed. This page reads ONLY
+// the committed JSON — it never touches the filesystem — so it builds in CI
+// where source/ is absent. See scripts/resources-manifest.mjs.
+
+type Entry = {
+  path: string;
+  name: string;
+  ext: string;
+  sizeBytes: number;
+  category: string;
+};
+
+const entries = manifest as Entry[];
+
+/** Kebab slug for category anchors — must match scripts/resources-manifest.mjs labels. */
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+/** Human-readable byte size (1024-based). */
+function fmtSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  const units = ['KB', 'MB', 'GB'];
+  let v = bytes / 1024;
+  let i = 0;
+  while (v >= 1024 && i < units.length - 1) {
+    v /= 1024;
+    i++;
+  }
+  return `${v < 10 ? v.toFixed(1) : Math.round(v)} ${units[i]}`;
+}
+
+// Group entries by category (manifest is already sorted by category, then path).
+const groups = new Map<string, Entry[]>();
+for (const e of entries) {
+  if (!groups.has(e.category)) groups.set(e.category, []);
+  groups.get(e.category)!.push(e);
+}
+const groupList = [...groups.entries()].sort(([a], [b]) => a.localeCompare(b, 'en'));
+
+const totalCount = entries.length;
+const totalBytes = entries.reduce((sum, e) => sum + e.sizeBytes, 0);
+---
+<Layout
+  title="Resource index"
+  description="Every individual file in the OPDA source archive — all of it published, each one directly linkable via the resource viewer."
+>
+<PageMeta category="Library" variant="brand" updated="Updated 2026-06-25" damaKa={["Document & Content Management"]} />
+
+      <h1>Resource index</h1>
+      <p class="lead">
+        Every individual file in <code>source/</code> — all <strong>{totalCount}</strong>
+        of them ({fmtSize(totalBytes)} in total), each one directly linkable. OPDA is
+        an open project: the whole archive is published to the public bucket
+        (ADR-0054) and served under <code>/resources/*</code>, so every link here
+        resolves on the live site. Grouped by section; jump to a section below.
+      </p>
+
+      <p>
+        This is the complete, machine-generated index — for the curated, annotated
+        reading lists see <a href="/library/document-archive">Document archive</a>,
+        <a href="/library/transcript-archive">Transcript archive</a> and
+        <a href="/library/external-references">External references</a>.
+      </p>
+
+      <nav class="res-toc" aria-label="Jump to section">
+        <ul>
+          {groupList.map(([category, items]) => (
+            <li>
+              <a href={`#cat-${slug(category)}`}>{category}</a>
+              <span class="muted tiny">({items.length})</span>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {groupList.map(([category, items]) => (
+        <section>
+          <h2 id={`cat-${slug(category)}`}>
+            {category} <span class="muted tiny">— {items.length} {items.length === 1 ? 'file' : 'files'}</span>
+          </h2>
+          <ul class="res-list">
+            {items.map((e) => (
+              <li>
+                <a class="resource-link" href={`/resource.html?path=${encodeURI(e.path)}`}>
+                  <code>{e.name}</code>
+                </a>
+                <span class="muted tiny res-list__meta">{e.ext.toUpperCase()} · {fmtSize(e.sizeBytes)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+</Layout>
+
+<style>
+  .res-toc {
+    margin: 1.25rem 0 2rem;
+  }
+  .res-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+  .res-toc li {
+    margin: 0;
+  }
+  .res-list {
+    list-style: none;
+    margin: 0 0 0.5rem;
+    padding: 0;
+  }
+  .res-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.15rem 0;
+    margin: 0;
+  }
+  .res-list__meta {
+    white-space: nowrap;
+  }
+</style>

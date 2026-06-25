@@ -27,6 +27,74 @@ import Layout from '@/layouts/Layout.astro';
       <div id="res-body">
         <div class="muted">Loading…</div>
       </div>
+
+<script>
+  // Resource viewer — resolves ?path=… to a fetchable URL and renders it.
+  //
+  // Path resolution (ADR-0054): source/ is served two different ways.
+  //   • DEV  — astro.config.mjs's serveProjectRoots Vite plugin exposes the
+  //            archive at /source/… , so source/a/b.pdf → /source/a/b.pdf.
+  //   • PROD — source/ is NOT in dist/. Its mirror lives in the public S3
+  //            bucket, served by CloudFront under /resources/* with the leading
+  //            "source/" stripped (the bucket mirrors source/ at its root). So
+  //            source/a/b.pdf → /resources/a/b.pdf. This is why all the existing
+  //            /resource.html?path=source/… links work in prod with no rewrite.
+  // Non-source paths (e.g. docs/…) are served from the site root as-is in both.
+  function resolveResourceUrl(p) {
+    if (p.startsWith('source/')) {
+      return import.meta.env.PROD
+        ? '/resources/' + p.slice('source/'.length)  // prod: S3-mirror, strip prefix
+        : '/' + p;                                    // dev: Vite plugin at /source/…
+    }
+    return '/' + p.replace(/^\/+/, '');               // other roots: served as-is
+  }
+
+  function renderResource() {
+    const $ = (id) => document.getElementById(id);
+    const body = $('res-body');
+    if (!body) return; // not the resource page
+
+    const raw = new URLSearchParams(window.location.search).get('path') || '';
+    const path = raw.replace(/^\/+/, '').replace(/\.\.(?:\/|$)/g, ''); // strip leading / and any ..
+    const modeLabel = $('res-mode-label');
+
+    if (!path) {
+      if (modeLabel) modeLabel.textContent = 'no path';
+      $('res-title').textContent = 'No resource selected';
+      $('res-path').textContent = '—';
+      body.innerHTML = '<div class="res-error">Add <code>?path=…</code> to the URL, '
+        + 'e.g. <code>?path=source/INVENTORY.md</code>.</div>';
+      return;
+    }
+
+    const url = resolveResourceUrl(path);
+    const name = path.replace(/\/$/, '').split('/').pop() || path;
+    const ext = (name.includes('.') ? name.split('.').pop() : '').toLowerCase();
+
+    if (modeLabel) modeLabel.textContent = import.meta.env.PROD ? 'resources' : 'dev source';
+    $('res-title').textContent = name;
+    $('res-path').textContent = path;
+    $('res-type').textContent = ext ? '.' + ext : '—';
+    $('res-rendered').textContent = 'inline frame';
+
+    const open = $('res-open'), dl = $('res-download');
+    if (open) open.setAttribute('href', url);
+    if (dl)   dl.setAttribute('href', url);
+
+    const frame = document.createElement('iframe');
+    frame.className = 'res-frame';
+    frame.src = url;
+    frame.setAttribute('title', name);
+    body.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'res-frame-wrap';
+    wrap.appendChild(frame);
+    body.appendChild(wrap);
+  }
+
+  // Run on first load and after each view-transition navigation (ClientRouter).
+  document.addEventListener('astro:page-load', renderResource);
+</script>
 </Layout>
 
 <style is:global>

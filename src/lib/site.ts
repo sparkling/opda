@@ -494,6 +494,7 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/library/library-overview',     title: 'Overview' },
         { url: '/library/document-archive',     title: 'Document archive' },
         { url: '/library/transcript-archive',   title: 'Transcript archive' },
+        { url: '/library/resources',            title: 'Resource index' },
       ]},
       { heading: 'External', items: [
         { url: '/library/external-references', title: 'External references' },

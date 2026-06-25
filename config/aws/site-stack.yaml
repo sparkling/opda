@@ -93,6 +93,41 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
 
+  # Public resources bucket — fronted by the SAME distribution under
+  # /resources/* but, unlike the site, served WITHOUT the viewer-request gate
+  # (its behavior below carries no LambdaFunctionAssociations). Kept SEPARATE
+  # from SiteBucket on purpose: the deploy syncs dist/ → SiteBucket with
+  # --delete, which would wipe any shared prefix. Still private to direct S3
+  # access (PublicAccessBlock all-true); CloudFront reads it via OAC.
+  ResourcesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  ResourcesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ResourcesBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CloudFrontOacRead
+            Effect: Allow
+            Principal: { Service: cloudfront.amazonaws.com }
+            Action: s3:GetObject
+            Resource: !Sub '${ResourcesBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+
   # Artalk authenticates via the Authorization header and uses no cookies —
   # and MUST NOT receive the viewer's cookie jar: the gate tokens plus any
   # legacy cookies push the Cookie header past fasthttp's 4 KB request-header
@@ -119,6 +154,15 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
+  ResourcesOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: opda-resources-oac
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -139,6 +183,12 @@ Resources:
             OriginAccessControlId: !Ref OriginAccessControl
             S3OriginConfig:
               OriginAccessIdentity: ''
+          # Public resources origin (served ungated under /resources/* below).
+          - Id: resources-s3
+            DomainName: !GetAtt ResourcesBucket.RegionalDomainName
+            OriginAccessControlId: !Ref ResourcesOriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ''
           # Artalk comments origin — the comments stack maintains this DNS
           # name (single Fargate task's public IP). Resolution happens at
           # request time, so the origin may predate the record; /api/v2/*
@@ -157,6 +207,15 @@ Resources:
             - EventType: viewer-request
               LambdaFunctionARN: !Ref GateFunctionVersionArn
         CacheBehaviors:
+          # Public static assets — NO gate (no LambdaFunctionAssociations), so
+          # /resources/* is reachable without authenticating. Long-TTL via the
+          # same managed CachingOptimized policy the default behavior uses.
+          # Ordered ahead of the gated default behavior.
+          - PathPattern: '/resources/*'
+            TargetOriginId: resources-s3
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
             ViewerProtocolPolicy: redirect-to-https
@@ -196,6 +255,12 @@ Resources:
 Outputs:
   SiteBucketName:
     Value: !Ref SiteBucket
+  ResourcesBucketName:
+    Description: Public resources bucket — publish step syncs assets here (served at /resources/*).
+    Value: !Ref ResourcesBucket
+  ResourcesBucketDomainName:
+    Description: Regional domain name of the public resources bucket.
+    Value: !GetAtt ResourcesBucket.RegionalDomainName
   DistributionId:
     Value: !Ref Distribution
   DistributionDomainName:

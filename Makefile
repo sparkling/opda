@@ -148,6 +148,20 @@ deploy-manual:	## Build + wrangler deploy directly (bypasses CI — avoid; CI-on
 data:	## Regenerate the JSON resource bundles → public/data/resources/
 	python3 scripts/build-json-bundles.py
 
+# LOCAL/out-of-band — walks the gitignored source/ archive (absent in CI) and
+# regenerates the committed src/data/resources-manifest.json that drives the
+# /library/resources index. Re-run after any change to source/ (ADR-0054).
+.PHONY: resources-manifest
+resources-manifest:	## Regenerate src/data/resources-manifest.json from local source/ (local-only; powers /library/resources)
+	npm run resources:manifest
+
+# LOCAL/out-of-band publish — NOT a CI step. CI checkouts lack the ~500 MB of
+# gitignored source/ binaries, so the maintainer runs this from a working tree
+# that has the full archive. Re-run after any change to source/ (ADR-0054).
+.PHONY: publish-resources
+publish-resources:	## Mirror source/ → public opda-resources S3 bucket (served at /resources/*); local-only, re-run after source/ changes
+	npm run publish:resources
+
 .PHONY: clean
 clean:	## Remove build artefacts (dist/, .astro/)
 	npm run clean

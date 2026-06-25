@@ -1,0 +1,5056 @@
+[
+  {
+    "path": "source/INVENTORY.md",
+    "name": "INVENTORY.md",
+    "ext": "md",
+    "sizeBytes": 21393,
+    "category": "Archive root"
+  },
+  {
+    "path": "source/Materials for the AI.eml",
+    "name": "Materials for the AI.eml",
+    "ext": "eml",
+    "sizeBytes": 37279,
+    "category": "Archive root"
+  },
+  {
+    "path": "source/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 5828,
+    "category": "Archive root"
+  },
+  {
+    "path": "source/_content/schema/35-transaction-participants.md",
+    "name": "35-transaction-participants.md",
+    "ext": "md",
+    "sizeBytes": 3808,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/36-chain-milestones-contracts.md",
+    "name": "36-chain-milestones-contracts.md",
+    "ext": "md",
+    "sizeBytes": 4453,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/37-property.md",
+    "name": "37-property.md",
+    "ext": "md",
+    "sizeBytes": 2917,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/38-legal-estate-title.md",
+    "name": "38-legal-estate-title.md",
+    "ext": "md",
+    "sizeBytes": 3975,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/39-built-form-condition-valuation.md",
+    "name": "39-built-form-condition-valuation.md",
+    "ext": "md",
+    "sizeBytes": 6240,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/45-utilities-energy.md",
+    "name": "45-utilities-energy.md",
+    "ext": "md",
+    "sizeBytes": 4307,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/46-local-context-searches.md",
+    "name": "46-local-context-searches.md",
+    "ext": "md",
+    "sizeBytes": 3850,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/47-encumbrances-completion.md",
+    "name": "47-encumbrances-completion.md",
+    "ext": "md",
+    "sizeBytes": 5417,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/_content/schema/48-evidence-documents-declarations.md",
+    "name": "48-evidence-documents-declarations.md",
+    "ext": "md",
+    "sizeBytes": 4874,
+    "category": "Content (working)"
+  },
+  {
+    "path": "source/00-deliverables/Draft Statement of Work - schema.docx",
+    "name": "Draft Statement of Work - schema.docx",
+    "ext": "docx",
+    "sizeBytes": 28825,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/audit.json",
+    "name": "audit.json",
+    "ext": "json",
+    "sizeBytes": 1790,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/business-glossary.md",
+    "name": "business-glossary.md",
+    "ext": "md",
+    "sizeBytes": 23714,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/business-glossary.ttl",
+    "name": "business-glossary.ttl",
+    "ext": "ttl",
+    "sizeBytes": 168159,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/data-dictionary-canonical.json",
+    "name": "data-dictionary-canonical.json",
+    "ext": "json",
+    "sizeBytes": 1752680,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/data-dictionary.json",
+    "name": "data-dictionary.json",
+    "ext": "json",
+    "sizeBytes": 3027998,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/data-dictionary.md",
+    "name": "data-dictionary.md",
+    "ext": "md",
+    "sizeBytes": 101896,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/descriptive-category-binning.json",
+    "name": "descriptive-category-binning.json",
+    "ext": "json",
+    "sizeBytes": 318113,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/glossary-merged.json",
+    "name": "glossary-merged.json",
+    "ext": "json",
+    "sizeBytes": 20416,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/00-deliverables/semantic-models/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 3264,
+    "category": "Deliverables"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/FINAL MERGED SURVEY DATA AND REGIONAL DATA 18.11.24.xlsx",
+    "name": "FINAL MERGED SURVEY DATA AND REGIONAL DATA 18.11.24.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 235638,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/First survey press release.docx",
+    "name": "First survey press release.docx",
+    "ext": "docx",
+    "sizeBytes": 2092372,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/Front cover.png",
+    "name": "Front cover.png",
+    "ext": "png",
+    "sizeBytes": 2299485,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/OPDA Report - Social Graphic.png",
+    "name": "OPDA Report - Social Graphic.png",
+    "ext": "png",
+    "sizeBytes": 2335761,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/OPDA Report Announcement.mp4",
+    "name": "OPDA Report Announcement.mp4",
+    "ext": "mp4",
+    "sizeBytes": 3406797,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/OPDA transaction days_FINAL_07.04.25.docx",
+    "name": "OPDA transaction days_FINAL_07.04.25.docx",
+    "ext": "docx",
+    "sizeBytes": 2718700,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/OPDA transaction days_v4 DRAFT_19.03.25.docx",
+    "name": "OPDA transaction days_v4 DRAFT_19.03.25.docx",
+    "ext": "docx",
+    "sizeBytes": 2719440,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/The Future of Homebuying Report_FINAL (COPY ONLY)_13.03.25.docx",
+    "name": "The Future of Homebuying Report_FINAL (COPY ONLY)_13.03.25.docx",
+    "ext": "docx",
+    "sizeBytes": 42968,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2025/The Future of Homebuying Report_v1 DRAFT_07.03.25.docx",
+    "name": "The Future of Homebuying Report_v1 DRAFT_07.03.25.docx",
+    "ext": "docx",
+    "sizeBytes": 42467,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/consumer-campaign/2026/OPDA report 2026 MASTER v1.1.docx",
+    "name": "OPDA report 2026 MASTER v1.1.docx",
+    "ext": "docx",
+    "sizeBytes": 54610,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/BSA event.pptx",
+    "name": "BSA event.pptx",
+    "ext": "pptx",
+    "sizeBytes": 16557942,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/LMS Podcast Smart Data June 2025.pptx",
+    "name": "LMS Podcast Smart Data June 2025.pptx",
+    "ext": "pptx",
+    "sizeBytes": 24889734,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA conference slides 2024.pptx",
+    "name": "OPDA conference slides 2024.pptx",
+    "ext": "pptx",
+    "sizeBytes": 33775254,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA intro HSBC 9.4.25.pdf",
+    "name": "OPDA intro HSBC 9.4.25.pdf",
+    "ext": "pdf",
+    "sizeBytes": 2880356,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA intro slides 2024.pptx",
+    "name": "OPDA intro slides 2024.pptx",
+    "ext": "pptx",
+    "sizeBytes": 34610557,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA intro slides May 2025.pptx",
+    "name": "OPDA intro slides May 2025.pptx",
+    "ext": "pptx",
+    "sizeBytes": 36314919,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA overview 2025.pptx",
+    "name": "OPDA overview 2025.pptx",
+    "ext": "pptx",
+    "sizeBytes": 36141258,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/OPDA overview 2026.pptx",
+    "name": "OPDA overview 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 25659909,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/RICS slides for BSA event.pptx",
+    "name": "RICS slides for BSA event.pptx",
+    "ext": "pptx",
+    "sizeBytes": 17751915,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/presentations/Smart Data and Legislation.pptx",
+    "name": "Smart Data and Legislation.pptx",
+    "ext": "pptx",
+    "sizeBytes": 23259440,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Adhoc exec - please attend. This meeting is private + confidential-20260209_180357-Meeting Transcript.en-US.vtt",
+    "name": "Adhoc exec - please attend. This meeting is private + confidential-20260209_180357-Meeting Transcript.en-US.vtt",
+    "ext": "vtt",
+    "sizeBytes": 179892,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Adhoc exec - please attend. This meeting is private + confidential-20260216_180238-Meeting Transcript.en-US.vtt",
+    "name": "Adhoc exec - please attend. This meeting is private + confidential-20260216_180238-Meeting Transcript.en-US.vtt",
+    "ext": "vtt",
+    "sizeBytes": 217183,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Call with Paul Albone-20260326_113829-Meeting Recording.en-US.vtt",
+    "name": "Call with Paul Albone-20260326_113829-Meeting Recording.en-US.vtt",
+    "ext": "vtt",
+    "sizeBytes": 8574,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/HBSG Tech Proof of Concept walk through.en-GB.vtt",
+    "name": "HBSG Tech Proof of Concept walk through.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 27266,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Property Pack cx and data walk through-20251007_090445-Meeting Recording.en-GB.vtt",
+    "name": "Property Pack cx and data walk through-20251007_090445-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 89657,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Smart Data Challenge - mortgage and survey workstream-20250730_150148-Meeting Recording.en-GB.vtt",
+    "name": "Smart Data Challenge - mortgage and survey workstream-20250730_150148-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 93769,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Smart Data Challenge - mortgage and survey workstream-20250827_150410-Meeting Recording.en-GB.vtt",
+    "name": "Smart Data Challenge - mortgage and survey workstream-20250827_150410-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 55626,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Smart Data Challenge briefing session-20250626_130135-Meeting Recording.en-GB.vtt",
+    "name": "Smart Data Challenge briefing session-20250626_130135-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 135974,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Smart Data project plan and member engagement follow up-20250702_110328-Meeting Recording.en-GB.vtt",
+    "name": "Smart Data project plan and member engagement follow up-20250702_110328-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 50683,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-internal/transcripts/Smart Property Data sandbox intro-20260217_140307-Meeting Recording.en-US.vtt",
+    "name": "Smart Property Data sandbox intro-20260217_140307-Meeting Recording.en-US.vtt",
+    "ext": "vtt",
+    "sizeBytes": 114153,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/-mDL6U5sXL8.txt",
+    "name": "-mDL6U5sXL8.txt",
+    "ext": "txt",
+    "sizeBytes": 31194,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20191104_w9ZBruK5xCU.en-orig.vtt",
+    "name": "20191104_w9ZBruK5xCU.en-orig.vtt",
+    "ext": "vtt",
+    "sizeBytes": 40941,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20191104_w9ZBruK5xCU.en.srt",
+    "name": "20191104_w9ZBruK5xCU.en.srt",
+    "ext": "srt",
+    "sizeBytes": 22634,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20191104_w9ZBruK5xCU.en.vtt",
+    "name": "20191104_w9ZBruK5xCU.en.vtt",
+    "ext": "vtt",
+    "sizeBytes": 40941,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20191104_w9ZBruK5xCU.info.json",
+    "name": "20191104_w9ZBruK5xCU.info.json",
+    "ext": "json",
+    "sizeBytes": 1529850,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20220217_6oNL_HZyyj4.en-orig.srt",
+    "name": "20220217_6oNL_HZyyj4.en-orig.srt",
+    "ext": "srt",
+    "sizeBytes": 18741,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20220217_6oNL_HZyyj4.en.srt",
+    "name": "20220217_6oNL_HZyyj4.en.srt",
+    "ext": "srt",
+    "sizeBytes": 18741,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20220217_6oNL_HZyyj4.info.json",
+    "name": "20220217_6oNL_HZyyj4.info.json",
+    "ext": "json",
+    "sizeBytes": 490827,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20221104_6Xt13g0_nwE.en-orig.vtt",
+    "name": "20221104_6Xt13g0_nwE.en-orig.vtt",
+    "ext": "vtt",
+    "sizeBytes": 8232,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20221104_6Xt13g0_nwE.en.srt",
+    "name": "20221104_6Xt13g0_nwE.en.srt",
+    "ext": "srt",
+    "sizeBytes": 4434,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20221104_6Xt13g0_nwE.en.vtt",
+    "name": "20221104_6Xt13g0_nwE.en.vtt",
+    "ext": "vtt",
+    "sizeBytes": 8232,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20221104_6Xt13g0_nwE.info.json",
+    "name": "20221104_6Xt13g0_nwE.info.json",
+    "ext": "json",
+    "sizeBytes": 991503,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240819_-mDL6U5sXL8.en-orig.srt",
+    "name": "20240819_-mDL6U5sXL8.en-orig.srt",
+    "ext": "srt",
+    "sizeBytes": 154972,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240819_-mDL6U5sXL8.en.srt",
+    "name": "20240819_-mDL6U5sXL8.en.srt",
+    "ext": "srt",
+    "sizeBytes": 154972,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240819_-mDL6U5sXL8.info.json",
+    "name": "20240819_-mDL6U5sXL8.info.json",
+    "ext": "json",
+    "sizeBytes": 506658,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240911_otY4uTbBbjQ.en-orig.srt",
+    "name": "20240911_otY4uTbBbjQ.en-orig.srt",
+    "ext": "srt",
+    "sizeBytes": 80823,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240911_otY4uTbBbjQ.en.srt",
+    "name": "20240911_otY4uTbBbjQ.en.srt",
+    "ext": "srt",
+    "sizeBytes": 80823,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/20240911_otY4uTbBbjQ.info.json",
+    "name": "20240911_otY4uTbBbjQ.info.json",
+    "ext": "json",
+    "sizeBytes": 512195,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/6oNL_HZyyj4.txt",
+    "name": "6oNL_HZyyj4.txt",
+    "ext": "txt",
+    "sizeBytes": 3577,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/6Xt13g0_nwE.txt",
+    "name": "6Xt13g0_nwE.txt",
+    "ext": "txt",
+    "sizeBytes": 912,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/otY4uTbBbjQ.txt",
+    "name": "otY4uTbBbjQ.txt",
+    "ext": "txt",
+    "sizeBytes": 16207,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/vimeo_1140770692.info.json",
+    "name": "vimeo_1140770692.info.json",
+    "ext": "json",
+    "sizeBytes": 1644,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/vimeo_1140770692.txt",
+    "name": "vimeo_1140770692.txt",
+    "ext": "txt",
+    "sizeBytes": 6578,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/embedded/w9ZBruK5xCU.txt",
+    "name": "w9ZBruK5xCU.txt",
+    "ext": "txt",
+    "sizeBytes": 4616,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20240716_cszkTsudQEs.info.json",
+    "name": "20240716_cszkTsudQEs.info.json",
+    "ext": "json",
+    "sizeBytes": 504348,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250306_EycfvPP-8vo.info.json",
+    "name": "20250306_EycfvPP-8vo.info.json",
+    "ext": "json",
+    "sizeBytes": 516121,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250306_HwpRCzeBPzc.info.json",
+    "name": "20250306_HwpRCzeBPzc.info.json",
+    "ext": "json",
+    "sizeBytes": 504958,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250306_X-_HWVQT4OY.info.json",
+    "name": "20250306_X-_HWVQT4OY.info.json",
+    "ext": "json",
+    "sizeBytes": 517458,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250307_TMaHZaIRnN4.info.json",
+    "name": "20250307_TMaHZaIRnN4.info.json",
+    "ext": "json",
+    "sizeBytes": 518163,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250701_UhLZmPdbAI0.info.json",
+    "name": "20250701_UhLZmPdbAI0.info.json",
+    "ext": "json",
+    "sizeBytes": 499418,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250720_URDw_42G_uk.info.json",
+    "name": "20250720_URDw_42G_uk.info.json",
+    "ext": "json",
+    "sizeBytes": 506089,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250721_Q0vbphnd694.info.json",
+    "name": "20250721_Q0vbphnd694.info.json",
+    "ext": "json",
+    "sizeBytes": 510433,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250801_QoJnN_VkWfI.info.json",
+    "name": "20250801_QoJnN_VkWfI.info.json",
+    "ext": "json",
+    "sizeBytes": 508671,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250802_6_x9-Rj6sLg.info.json",
+    "name": "20250802_6_x9-Rj6sLg.info.json",
+    "ext": "json",
+    "sizeBytes": 508424,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250802_6h2ybqoDe_A.info.json",
+    "name": "20250802_6h2ybqoDe_A.info.json",
+    "ext": "json",
+    "sizeBytes": 508595,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250802_bCkIb0Hys1A.info.json",
+    "name": "20250802_bCkIb0Hys1A.info.json",
+    "ext": "json",
+    "sizeBytes": 508215,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20250802_guBvIsXQnzo.info.json",
+    "name": "20250802_guBvIsXQnzo.info.json",
+    "ext": "json",
+    "sizeBytes": 508932,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20251213_CO1uLzQTiSc.info.json",
+    "name": "20251213_CO1uLzQTiSc.info.json",
+    "ext": "json",
+    "sizeBytes": 506594,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/20260129_eQ44lr5aiTE.info.json",
+    "name": "20260129_eQ44lr5aiTE.info.json",
+    "ext": "json",
+    "sizeBytes": 516247,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/metadata/NA_UCjFZlCuGOqkXm4GL4xoWa-g.info.json",
+    "name": "NA_UCjFZlCuGOqkXm4GL4xoWa-g.info.json",
+    "ext": "json",
+    "sizeBytes": 3940,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20240716_cszkTsudQEs.en.srt",
+    "name": "20240716_cszkTsudQEs.en.srt",
+    "ext": "srt",
+    "sizeBytes": 163665,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250306_EycfvPP-8vo.en.srt",
+    "name": "20250306_EycfvPP-8vo.en.srt",
+    "ext": "srt",
+    "sizeBytes": 68341,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250306_HwpRCzeBPzc.en.srt",
+    "name": "20250306_HwpRCzeBPzc.en.srt",
+    "ext": "srt",
+    "sizeBytes": 178072,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250306_X-_HWVQT4OY.en.srt",
+    "name": "20250306_X-_HWVQT4OY.en.srt",
+    "ext": "srt",
+    "sizeBytes": 16427,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250307_TMaHZaIRnN4.en.srt",
+    "name": "20250307_TMaHZaIRnN4.en.srt",
+    "ext": "srt",
+    "sizeBytes": 39743,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250701_UhLZmPdbAI0.en.srt",
+    "name": "20250701_UhLZmPdbAI0.en.srt",
+    "ext": "srt",
+    "sizeBytes": 79459,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250720_URDw_42G_uk.en.srt",
+    "name": "20250720_URDw_42G_uk.en.srt",
+    "ext": "srt",
+    "sizeBytes": 5089,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250721_Q0vbphnd694.en.srt",
+    "name": "20250721_Q0vbphnd694.en.srt",
+    "ext": "srt",
+    "sizeBytes": 21921,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250801_QoJnN_VkWfI.en.srt",
+    "name": "20250801_QoJnN_VkWfI.en.srt",
+    "ext": "srt",
+    "sizeBytes": 17945,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250802_6_x9-Rj6sLg.en.srt",
+    "name": "20250802_6_x9-Rj6sLg.en.srt",
+    "ext": "srt",
+    "sizeBytes": 16572,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250802_6h2ybqoDe_A.en.srt",
+    "name": "20250802_6h2ybqoDe_A.en.srt",
+    "ext": "srt",
+    "sizeBytes": 17457,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250802_bCkIb0Hys1A.en.srt",
+    "name": "20250802_bCkIb0Hys1A.en.srt",
+    "ext": "srt",
+    "sizeBytes": 16911,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20250802_guBvIsXQnzo.en.srt",
+    "name": "20250802_guBvIsXQnzo.en.srt",
+    "ext": "srt",
+    "sizeBytes": 18238,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20251213_CO1uLzQTiSc.en.srt",
+    "name": "20251213_CO1uLzQTiSc.en.srt",
+    "ext": "srt",
+    "sizeBytes": 28013,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/20260129_eQ44lr5aiTE.en.srt",
+    "name": "20260129_eQ44lr5aiTE.en.srt",
+    "ext": "srt",
+    "sizeBytes": 173320,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/6_x9-Rj6sLg.txt",
+    "name": "6_x9-Rj6sLg.txt",
+    "ext": "txt",
+    "sizeBytes": 3308,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/6h2ybqoDe_A.txt",
+    "name": "6h2ybqoDe_A.txt",
+    "ext": "txt",
+    "sizeBytes": 3503,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/bCkIb0Hys1A.txt",
+    "name": "bCkIb0Hys1A.txt",
+    "ext": "txt",
+    "sizeBytes": 3437,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/CO1uLzQTiSc.txt",
+    "name": "CO1uLzQTiSc.txt",
+    "ext": "txt",
+    "sizeBytes": 5567,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/cszkTsudQEs.txt",
+    "name": "cszkTsudQEs.txt",
+    "ext": "txt",
+    "sizeBytes": 32981,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/eQ44lr5aiTE.txt",
+    "name": "eQ44lr5aiTE.txt",
+    "ext": "txt",
+    "sizeBytes": 34660,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/EycfvPP-8vo.txt",
+    "name": "EycfvPP-8vo.txt",
+    "ext": "txt",
+    "sizeBytes": 13525,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/guBvIsXQnzo.txt",
+    "name": "guBvIsXQnzo.txt",
+    "ext": "txt",
+    "sizeBytes": 3680,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/HwpRCzeBPzc.txt",
+    "name": "HwpRCzeBPzc.txt",
+    "ext": "txt",
+    "sizeBytes": 35686,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/Q0vbphnd694.txt",
+    "name": "Q0vbphnd694.txt",
+    "ext": "txt",
+    "sizeBytes": 4415,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/QoJnN_VkWfI.txt",
+    "name": "QoJnN_VkWfI.txt",
+    "ext": "txt",
+    "sizeBytes": 3645,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/TMaHZaIRnN4.txt",
+    "name": "TMaHZaIRnN4.txt",
+    "ext": "txt",
+    "sizeBytes": 7975,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/UhLZmPdbAI0.txt",
+    "name": "UhLZmPdbAI0.txt",
+    "ext": "txt",
+    "sizeBytes": 15951,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/URDw_42G_uk.txt",
+    "name": "URDw_42G_uk.txt",
+    "ext": "txt",
+    "sizeBytes": 1061,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/transcripts/X-_HWVQT4OY.txt",
+    "name": "X-_HWVQT4OY.txt",
+    "ext": "txt",
+    "sizeBytes": 3241,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/videos-index.json",
+    "name": "videos-index.json",
+    "ext": "json",
+    "sizeBytes": 9740,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/05-engagement/videos-youtube/videos-index.md",
+    "name": "videos-index.md",
+    "ext": "md",
+    "sizeBytes": 2199,
+    "category": "Engagement"
+  },
+  {
+    "path": "source/_examples/flat-london.json",
+    "name": "flat-london.json",
+    "ext": "json",
+    "sizeBytes": 9284,
+    "category": "Examples (working)"
+  },
+  {
+    "path": "source/_examples/semi-manchester.json",
+    "name": "semi-manchester.json",
+    "ext": "json",
+    "sizeBytes": 10711,
+    "category": "Examples (working)"
+  },
+  {
+    "path": "source/08-external-references/nts/Industry guidance for material information on property listings - July 2022.pdf",
+    "name": "Industry guidance for material information on property listings - July 2022.pdf",
+    "ext": "pdf",
+    "sizeBytes": 384954,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Material Information in Property Listings (Lettings) v1.0.pdf",
+    "name": "Material Information in Property Listings (Lettings) v1.0.pdf",
+    "ext": "pdf",
+    "sizeBytes": 4284333,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Material Information in Property Listings (Sales) v1.0.pdf",
+    "name": "Material Information in Property Listings (Sales) v1.0.pdf",
+    "ext": "pdf",
+    "sizeBytes": 4383791,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Material-information-QG-for-Agents-v1.0.pdf",
+    "name": "Material-information-QG-for-Agents-v1.0.pdf",
+    "ext": "pdf",
+    "sizeBytes": 140350,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Material-information-QG-for-Buyers-and-Tenants-v1.0.pdf",
+    "name": "Material-information-QG-for-Buyers-and-Tenants-v1.0.pdf",
+    "ext": "pdf",
+    "sizeBytes": 142676,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Material-information-QG-for-Sellers-and-LLs-v1.0.pdf",
+    "name": "Material-information-QG-for-Sellers-and-LLs-v1.0.pdf",
+    "ext": "pdf",
+    "sizeBytes": 164882,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/news-full-material-information-guidance-published.html",
+    "name": "news-full-material-information-guidance-published.html",
+    "ext": "html",
+    "sizeBytes": 29725,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/NTS Material Information landing page (withdrawn).html",
+    "name": "NTS Material Information landing page (withdrawn).html",
+    "ext": "html",
+    "sizeBytes": 22473,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/Part A FAQs.pdf",
+    "name": "Part A FAQs.pdf",
+    "ext": "pdf",
+    "sizeBytes": 168332,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/nts/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 3515,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/redfoundation-housing-data.pdf",
+    "name": "redfoundation-housing-data.pdf",
+    "ext": "pdf",
+    "sizeBytes": 578271,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/related-w3c-specs/did-core.html",
+    "name": "did-core.html",
+    "ext": "html",
+    "sizeBytes": 730300,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/related-w3c-specs/vc-data-model-2.0.html",
+    "name": "vc-data-model-2.0.html",
+    "ext": "html",
+    "sizeBytes": 1023165,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/related-w3c-specs/vc-data-model.html",
+    "name": "vc-data-model.html",
+    "ext": "html",
+    "sizeBytes": 1023165,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/data_standards_for_smart_data.pdf",
+    "name": "data_standards_for_smart_data.pdf",
+    "ext": "pdf",
+    "sizeBytes": 982258,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/material-information-in-property-listings-consultation.html",
+    "name": "material-information-in-property-listings-consultation.html",
+    "ext": "html",
+    "sizeBytes": 161274,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf",
+    "name": "MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf",
+    "ext": "pdf",
+    "sizeBytes": 9659818,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/news/home-buying-and-selling-to-become-quicker-and-cheaper.html",
+    "name": "home-buying-and-selling-to-become-quicker-and-cheaper.html",
+    "ext": "html",
+    "sizeBytes": 86357,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/news/local-land-charges-programme.html",
+    "name": "local-land-charges-programme.html",
+    "ext": "html",
+    "sizeBytes": 152928,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/news/new-digital-property-market-steering-group-formed-to-drive-crucial-digital-transformation-in-the-land-and-property-market.html",
+    "name": "new-digital-property-market-steering-group-formed-to-drive-crucial-digital-transformation-in-the-land-and-property-market.html",
+    "ext": "html",
+    "sizeBytes": 78512,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/news/our-first-steps-for-change.html",
+    "name": "our-first-steps-for-change.html",
+    "ext": "html",
+    "sizeBytes": 71556,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-government/understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf",
+    "name": "understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1956563,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-property-forms/TA6 Law Society Property Information Form - 6th edition 2025 (1).pdf",
+    "name": "TA6 Law Society Property Information Form - 6th edition 2025 (1).pdf",
+    "ext": "pdf",
+    "sizeBytes": 671839,
+    "category": "External references"
+  },
+  {
+    "path": "source/08-external-references/uk-property-forms/TA7 Law Society Leasehold Information Form - 5th edition 2025.pdf",
+    "name": "TA7 Law Society Leasehold Information Form - 5th edition 2025.pdf",
+    "ext": "pdf",
+    "sizeBytes": 598912,
+    "category": "External references"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/18_Dec_2025/DPMSG Trust & Interoperability Steering Group.msg",
+    "name": "DPMSG Trust & Interoperability Steering Group.msg",
+    "ext": "msg",
+    "sizeBytes": 397312,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/26_Feb_2026/DPMSG Trust & Interoperability Steering Group.eml",
+    "name": "DPMSG Trust & Interoperability Steering Group.eml",
+    "ext": "eml",
+    "sizeBytes": 3010948,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/26_Feb_2026/Re_ DPMSG Trust & Interoperability Steering Group.eml",
+    "name": "Re_ DPMSG Trust & Interoperability Steering Group.eml",
+    "ext": "eml",
+    "sizeBytes": 42716,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/26_Mar_2026/DPMSG Trust & Interoperability Steering Group.eml",
+    "name": "DPMSG Trust & Interoperability Steering Group.eml",
+    "ext": "eml",
+    "sizeBytes": 27109,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/27_Nov_2025/27 Nov 2025.msg",
+    "name": "27 Nov 2025.msg",
+    "ext": "msg",
+    "sizeBytes": 561664,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/29_Jan_2026/DPMSG Trust & Interoperability Steering Group.eml",
+    "name": "DPMSG Trust & Interoperability Steering Group.eml",
+    "ext": "eml",
+    "sizeBytes": 786372,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/30_Apr_2026/DPMSG Trust & Interoperability Steering Group.eml",
+    "name": "DPMSG Trust & Interoperability Steering Group.eml",
+    "ext": "eml",
+    "sizeBytes": 40132,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/30_Oct_2025/30 Oct 2025.msg",
+    "name": "30 Oct 2025.msg",
+    "ext": "msg",
+    "sizeBytes": 387072,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/Launch_meeting_25_Sept_2025/DPMSG Trust Framework Workstream_321976301.eml",
+    "name": "DPMSG Trust Framework Workstream_321976301.eml",
+    "ext": "eml",
+    "sizeBytes": 3976866,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/materials/Launch_meeting_25_Sept_2025/DPMSG Trust Framework_321976301.pptx",
+    "name": "DPMSG Trust Framework_321976301.pptx",
+    "ext": "pptx",
+    "sizeBytes": 2885655,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust & Interoperability Steering Group-20251127_160241-Meeting Recording.en-GB.vtt",
+    "name": "DPMSG Trust & Interoperability Steering Group-20251127_160241-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 62496,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust & Interoperability Steering Group-20260129_160348-Meeting Recording.en-GB.vtt",
+    "name": "DPMSG Trust & Interoperability Steering Group-20260129_160348-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 91173,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust & Interoperability Steering Group-20260226_160154-Meeting Recording.en-GB.vtt",
+    "name": "DPMSG Trust & Interoperability Steering Group-20260226_160154-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 94433,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust Framework intro-20250925_110315-Meeting Recording.en-GB.vtt",
+    "name": "DPMSG Trust Framework intro-20250925_110315-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 192811,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust Framework Intro.en-GB.vtt",
+    "name": "DPMSG Trust Framework Intro.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 77662,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/comms-pr/data_standards_for_smart_data.pdf",
+    "name": "data_standards_for_smart_data.pdf",
+    "ext": "pdf",
+    "sizeBytes": 982258,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf",
+    "name": "DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1235440,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/comms-pr/DRAFT Data Trust Framework comms plan.docx",
+    "name": "DRAFT Data Trust Framework comms plan.docx",
+    "ext": "docx",
+    "sizeBytes": 48297,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/BSA event.pptx",
+    "name": "BSA event.pptx",
+    "ext": "pptx",
+    "sizeBytes": 16558788,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update Apr 2026.pdf",
+    "name": "OPDA all member update Apr 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 630977,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update Apr 2026.pptx",
+    "name": "OPDA all member update Apr 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 6501731,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update Feb 2026.pdf",
+    "name": "OPDA all member update Feb 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1088065,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update Feb 2026.pptx",
+    "name": "OPDA all member update Feb 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 8508578,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update Mar 2026.pptx",
+    "name": "OPDA all member update Mar 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 14322871,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update May 2026.pdf",
+    "name": "OPDA all member update May 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 577392,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/OPDA all member update May 2026.pptx",
+    "name": "OPDA all member update May 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 5507137,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/transcripts/OPDA all member update - sandbox project-20260204_133151-Meeting Recording.en-GB.vtt",
+    "name": "OPDA all member update - sandbox project-20260204_133151-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 111499,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/transcripts/OPDA all member update - sandbox project-20260304_133159-Meeting Recording.en-GB.vtt",
+    "name": "OPDA all member update - sandbox project-20260304_133159-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 125363,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/transcripts/OPDA all member update - sandbox project-20260401_153255-Meeting Recording.en-GB.vtt",
+    "name": "OPDA all member update - sandbox project-20260401_153255-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 109380,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/engagement/transcripts/OPDA all member update - sandbox project-20260507_123324-Meeting Recording.en-GB.vtt",
+    "name": "OPDA all member update - sandbox project-20260507_123324-Meeting Recording.en-GB.vtt",
+    "ext": "vtt",
+    "sizeBytes": 76593,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/regulator/CLC volunteer intro Feb 2026.pptx",
+    "name": "CLC volunteer intro Feb 2026.pptx",
+    "ext": "pptx",
+    "sizeBytes": 8764688,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/regulator/CLC volunteers.xlsx",
+    "name": "CLC volunteers.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 19733,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/regulator/PDTF base schema.xlsx",
+    "name": "PDTF base schema.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 91003,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/technical/Glossary.xlsx",
+    "name": "Glossary.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 20904,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/technical/Smart Property Data Trust Framework Project Plan.md",
+    "name": "Smart Property Data Trust Framework Project Plan.md",
+    "ext": "md",
+    "sizeBytes": 362,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/04-governance-bodies/working-groups/technical/Tech working group participants.xlsx",
+    "name": "Tech working group participants.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 32833,
+    "category": "Governance bodies"
+  },
+  {
+    "path": "source/_inbox/cookies/articles_policy.txt",
+    "name": "articles_policy.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/consumer_campaign.txt",
+    "name": "consumer_campaign.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/dpmsg.txt",
+    "name": "dpmsg.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/execteam.txt",
+    "name": "execteam.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/govt_briefing.txt",
+    "name": "govt_briefing.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/presentations.txt",
+    "name": "presentations.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/rd.txt",
+    "name": "rd.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/recordings.txt",
+    "name": "recordings.txt",
+    "ext": "txt",
+    "sizeBytes": 1438,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/steering_folders.txt",
+    "name": "steering_folders.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/steering_recordings.txt",
+    "name": "steering_recordings.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/cookies/transcripts_session.txt",
+    "name": "transcripts_session.txt",
+    "ext": "txt",
+    "sizeBytes": 1432,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/download-helper.html",
+    "name": "download-helper.html",
+    "ext": "html",
+    "sizeBytes": 22969,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/link-index.json",
+    "name": "link-index.json",
+    "ext": "json",
+    "sizeBytes": 53477,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/pending-resources.md",
+    "name": "pending-resources.md",
+    "ext": "md",
+    "sizeBytes": 1580,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/steering_group_dates.json",
+    "name": "steering_group_dates.json",
+    "ext": "json",
+    "sizeBytes": 3484,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/subfolders.json",
+    "name": "subfolders.json",
+    "ext": "json",
+    "sizeBytes": 20339,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/_inbox/tasks.json",
+    "name": "tasks.json",
+    "ext": "json",
+    "sizeBytes": 19037,
+    "category": "Inbox (working)"
+  },
+  {
+    "path": "source/01-organisation/_archive/Articles of Association.docx",
+    "name": "Articles of Association.docx",
+    "ext": "docx",
+    "sizeBytes": 30980,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/Articles of Association.pdf",
+    "name": "Articles of Association.pdf",
+    "ext": "pdf",
+    "sizeBytes": 349770,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/Articles-of-Association-2023.pdf",
+    "name": "Articles-of-Association-2023.pdf",
+    "ext": "pdf",
+    "sizeBytes": 315415,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/Code of Conduct.docx",
+    "name": "Code of Conduct.docx",
+    "ext": "docx",
+    "sizeBytes": 30989,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/OPDA Code of Conduct.pdf",
+    "name": "OPDA Code of Conduct.pdf",
+    "ext": "pdf",
+    "sizeBytes": 103500,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/OPDA Constitution.docx",
+    "name": "OPDA Constitution.docx",
+    "ext": "docx",
+    "sizeBytes": 1554979,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/_archive/OPDA Constitution.pdf",
+    "name": "OPDA Constitution.pdf",
+    "ext": "pdf",
+    "sizeBytes": 293472,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/accreditation/Accreditation Policy - OPDA.docx",
+    "name": "Accreditation Policy - OPDA.docx",
+    "ext": "docx",
+    "sizeBytes": 261742,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/accreditation/Non-Compliant Member Policy - OPDA.docx",
+    "name": "Non-Compliant Member Policy - OPDA.docx",
+    "ext": "docx",
+    "sizeBytes": 27812,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/accreditation/Open Property Data Association (OPDA) Accreditation Scheme.docx",
+    "name": "Open Property Data Association (OPDA) Accreditation Scheme.docx",
+    "ext": "docx",
+    "sizeBytes": 548310,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Articles of Association 2026.docx",
+    "name": "Articles of Association 2026.docx",
+    "ext": "docx",
+    "sizeBytes": 1571816,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf",
+    "name": "Articles of Association 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 437735,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Articles-of-Association-2026-WP.pdf",
+    "name": "Articles-of-Association-2026-WP.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1419120,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Code of Conduct 2026.docx",
+    "name": "Code of Conduct 2026.docx",
+    "ext": "docx",
+    "sizeBytes": 30981,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Code of Conduct 2026.pdf",
+    "name": "Code of Conduct 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 121775,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Competition Compliance Policy.docx",
+    "name": "Competition Compliance Policy.docx",
+    "ext": "docx",
+    "sizeBytes": 31486,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Conflict of interest register.xlsx",
+    "name": "Conflict of interest register.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 20198,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Data and GDPR Policy.docx",
+    "name": "Data and GDPR Policy.docx",
+    "ext": "docx",
+    "sizeBytes": 30579,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Diversity Statement.docx",
+    "name": "Diversity Statement.docx",
+    "ext": "docx",
+    "sizeBytes": 29225,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Finance and Procurement Policy.docx",
+    "name": "Finance and Procurement Policy.docx",
+    "ext": "docx",
+    "sizeBytes": 31096,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Membership benefits and fee structure.docx",
+    "name": "Membership benefits and fee structure.docx",
+    "ext": "docx",
+    "sizeBytes": 24994,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Membership benefits and fee structure.pdf",
+    "name": "Membership benefits and fee structure.pdf",
+    "ext": "pdf",
+    "sizeBytes": 91697,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/OPDA Constitution 2026.docx",
+    "name": "OPDA Constitution 2026.docx",
+    "ext": "docx",
+    "sizeBytes": 1556897,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/OPDA Constitution 2026.pdf",
+    "name": "OPDA Constitution 2026.pdf",
+    "ext": "pdf",
+    "sizeBytes": 398131,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Privacy Policy.docx",
+    "name": "Privacy Policy.docx",
+    "ext": "docx",
+    "sizeBytes": 34386,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/01-organisation/constitution-and-policies/Social Media Protocol.docx",
+    "name": "Social Media Protocol.docx",
+    "ext": "docx",
+    "sizeBytes": 65210,
+    "category": "Organisation"
+  },
+  {
+    "path": "source/02-policy-and-positioning/briefings-to-government/Draft briefing note SR edits 05.11.docx",
+    "name": "Draft briefing note SR edits 05.11.docx",
+    "ext": "docx",
+    "sizeBytes": 146045,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/briefings-to-government/Draft briefing note.docx",
+    "name": "Draft briefing note.docx",
+    "ext": "docx",
+    "sizeBytes": 74881,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/briefings-to-government/OPDA Briefing Pack.pdf",
+    "name": "OPDA Briefing Pack.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1871460,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/briefings-to-government/OPDA Select Committee Inquiry Response.docx",
+    "name": "OPDA Select Committee Inquiry Response.docx",
+    "ext": "docx",
+    "sizeBytes": 2065238,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/_archive/OPDA Report-compressed_1_EW AH edits marked up.pdf",
+    "name": "OPDA Report-compressed_1_EW AH edits marked up.pdf",
+    "ext": "pdf",
+    "sizeBytes": 3320754,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/2025 PropTech Report.pdf",
+    "name": "2025 PropTech Report.pdf",
+    "ext": "pdf",
+    "sizeBytes": 16926774,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/Equity Release Council and FF report 250509.pdf",
+    "name": "Equity Release Council and FF report 250509.pdf",
+    "ext": "pdf",
+    "sizeBytes": 10820386,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/From+Fintech+to+Ubiquitech+-+Accelerating+the+wider+UK+Digital+Economy+1.15.pdf",
+    "name": "From+Fintech+to+Ubiquitech+-+Accelerating+the+wider+UK+Digital+Economy+1.15.pdf",
+    "ext": "pdf",
+    "sizeBytes": 1925569,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/OPDA Report.pdf",
+    "name": "OPDA Report.pdf",
+    "ext": "pdf",
+    "sizeBytes": 3660795,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/Santander Fixing the Broken Chain.pdf",
+    "name": "Santander Fixing the Broken Chain.pdf",
+    "ext": "pdf",
+    "sizeBytes": 4229319,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/Startup Coalition X TBI Smart Data Report_Second Draft.pdf",
+    "name": "Startup Coalition X TBI Smart Data Report_Second Draft.pdf",
+    "ext": "pdf",
+    "sizeBytes": 760520,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/press-coverage/2024--08--hsbc-joins-opda-to-drive-digitisation-in-the-home-buying-process.html",
+    "name": "2024--08--hsbc-joins-opda-to-drive-digitisation-in-the-home-buying-process.html",
+    "ext": "html",
+    "sizeBytes": 359322,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/press-coverage/2025--05--most-homebuyers-frustrated-by-delays-and-poor-communication-opda.html",
+    "name": "2025--05--most-homebuyers-frustrated-by-delays-and-poor-communication-opda.html",
+    "ext": "html",
+    "sizeBytes": 287295,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/press-coverage/news-insights--early-onboarding-solution-for-sellers-slashes-conveyancing-time.html",
+    "name": "news-insights--early-onboarding-solution-for-sellers-slashes-conveyancing-time.html",
+    "ext": "html",
+    "sizeBytes": 90312,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/strategic-papers/DPMSG roadmap.pdf",
+    "name": "DPMSG roadmap.pdf",
+    "ext": "pdf",
+    "sizeBytes": 101336,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/strategic-papers/DPMSG-Smart-Property-Data-Trust-v2.pdf",
+    "name": "DPMSG-Smart-Property-Data-Trust-v2.pdf",
+    "ext": "pdf",
+    "sizeBytes": 557431,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/strategic-papers/One page summary.pptx",
+    "name": "One page summary.pptx",
+    "ext": "pptx",
+    "sizeBytes": 2356047,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/06-research/consumer-survey/Consumer survey highlight video.mp4",
+    "name": "Consumer survey highlight video.mp4",
+    "ext": "mp4",
+    "sizeBytes": 976530,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/consumer-survey/Consumer survey highlights slides.pptx",
+    "name": "Consumer survey highlights slides.pptx",
+    "ext": "pptx",
+    "sizeBytes": 5726207,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/innovate-uk/OPDA Task list (live).xlsx",
+    "name": "OPDA Task list (live).xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 36937,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/OPDA Digital Property Packs.pptx",
+    "name": "OPDA Digital Property Packs.pptx",
+    "ext": "pptx",
+    "sizeBytes": 5647088,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/reports-third-party/smart-data-roadmap-action-the-government-is-taking-in-2024-to-2025.pdf",
+    "name": "smart-data-roadmap-action-the-government-is-taking-in-2024-to-2025.pdf",
+    "ext": "pdf",
+    "sizeBytes": 714836,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/20240726 DPMSG DSIT presentation.pptx",
+    "name": "20240726 DPMSG DSIT presentation.pptx",
+    "ext": "pptx",
+    "sizeBytes": 6520667,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/CLAUDE.md",
+    "name": "CLAUDE.md",
+    "ext": "md",
+    "sizeBytes": 10617,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/completed.md",
+    "name": "completed.md",
+    "ext": "md",
+    "sizeBytes": 13313,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/demo-script.md",
+    "name": "demo-script.md",
+    "ext": "md",
+    "sizeBytes": 274,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/firebase.json",
+    "name": "firebase.json",
+    "ext": "json",
+    "sizeBytes": 759,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/components.json",
+    "name": "components.json",
+    "ext": "json",
+    "sizeBytes": 414,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 374,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/jsconfig.json",
+    "name": "jsconfig.json",
+    "ext": "json",
+    "sizeBytes": 96,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 1370,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/91_South_Hill_Avenue/image-0-1024x1024.webp",
+    "name": "image-0-1024x1024.webp",
+    "ext": "webp",
+    "sizeBytes": 179982,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/91_South_Hill_Avenue/image-1-1024x1024.webp",
+    "name": "image-1-1024x1024.webp",
+    "ext": "webp",
+    "sizeBytes": 89270,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/91_South_Hill_Avenue/image-3-1024x1024.webp",
+    "name": "image-3-1024x1024.webp",
+    "ext": "webp",
+    "sizeBytes": 67928,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/91_South_Hill_Avenue/image-4-1024x1024.webp",
+    "name": "image-4-1024x1024.webp",
+    "ext": "webp",
+    "sizeBytes": 93120,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/Atom_Bank.png",
+    "name": "Atom_Bank.png",
+    "ext": "png",
+    "sizeBytes": 47428,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/HomeTrack-Logo_RGB.png",
+    "name": "HomeTrack-Logo_RGB.png",
+    "ext": "png",
+    "sizeBytes": 13848,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/logo-on-graphic_ZWdAnt.webp",
+    "name": "logo-on-graphic_ZWdAnt.webp",
+    "ext": "webp",
+    "sizeBytes": 14610,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/nationwide.png",
+    "name": "nationwide.png",
+    "ext": "png",
+    "sizeBytes": 92946,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/OTM-logo_final_full-col.png",
+    "name": "OTM-logo_final_full-col.png",
+    "ext": "png",
+    "sizeBytes": 127769,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/Screenshot_2025_08_06_at_08_24_59_9890604c-1c78-4372-b0a0-1cfa15ec5085.png",
+    "name": "Screenshot_2025_08_06_at_08_24_59_9890604c-1c78-4372-b0a0-1cfa15ec5085.png",
+    "ext": "png",
+    "sizeBytes": 238592,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/simply-conveyancing.png",
+    "name": "simply-conveyancing.png",
+    "ext": "png",
+    "sizeBytes": 7799,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/public/vite.svg",
+    "name": "vite.svg",
+    "ext": "svg",
+    "sizeBytes": 1497,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 856,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/frontend/src/assets/react.svg",
+    "name": "react.svg",
+    "ext": "svg",
+    "sizeBytes": 4126,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/101 Broadbridge.json",
+    "name": "101 Broadbridge.json",
+    "ext": "json",
+    "sizeBytes": 2300,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/107 Sunbeam Crescent.json",
+    "name": "107 Sunbeam Crescent.json",
+    "ext": "json",
+    "sizeBytes": 2221,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/14 Pinfold Place.json",
+    "name": "14 Pinfold Place.json",
+    "ext": "json",
+    "sizeBytes": 140026,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/47 Park Mount.json",
+    "name": "47 Park Mount.json",
+    "ext": "json",
+    "sizeBytes": 38641,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/91 South Hill Avenue2.json",
+    "name": "91 South Hill Avenue2.json",
+    "ext": "json",
+    "sizeBytes": 160499,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/91 South Hill Avenue3.json",
+    "name": "91 South Hill Avenue3.json",
+    "ext": "json",
+    "sizeBytes": 184582,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/participants-conveyancer.json",
+    "name": "participants-conveyancer.json",
+    "ext": "json",
+    "sizeBytes": 1194,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/moverly-properties/valuation.json",
+    "name": "valuation.json",
+    "ext": "json",
+    "sizeBytes": 1533,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-claims-v3/101-broadbridge-close-manchester-claims.json",
+    "name": "101-broadbridge-close-manchester-claims.json",
+    "ext": "json",
+    "sizeBytes": 103795,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-claims-v3/107-sunbeam-crescent-910358-claims.json",
+    "name": "107-sunbeam-crescent-910358-claims.json",
+    "ext": "json",
+    "sizeBytes": 104273,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-claims-v3/59-hawkley-gardens-claims.json",
+    "name": "59-hawkley-gardens-claims.json",
+    "ext": "json",
+    "sizeBytes": 105084,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-claims-v3/91-south-hill-avenue-142222-claims.json",
+    "name": "91-south-hill-avenue-142222-claims.json",
+    "ext": "json",
+    "sizeBytes": 104489,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-data-production-report.md",
+    "name": "sandbox-data-production-report.md",
+    "ext": "md",
+    "sizeBytes": 14816,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-properties/101-broadbridge-close-manchester.json",
+    "name": "101-broadbridge-close-manchester.json",
+    "ext": "json",
+    "sizeBytes": 2922,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-properties/107-sunbeam-crescent-910358.json",
+    "name": "107-sunbeam-crescent-910358.json",
+    "ext": "json",
+    "sizeBytes": 4889,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-properties/59-hawkley-gardens.json",
+    "name": "59-hawkley-gardens.json",
+    "ext": "json",
+    "sizeBytes": 4884,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/sandbox-properties/91-south-hill-avenue-142222.json",
+    "name": "91-south-hill-avenue-142222.json",
+    "ext": "json",
+    "sizeBytes": 4831,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/data/schemas/pdtf-transaction-v3.json",
+    "name": "pdtf-transaction-v3.json",
+    "ext": "json",
+    "sizeBytes": 1466445,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/functions/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 854,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 58,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/code/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 14448,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/DPMSG roadmap.jpg",
+    "name": "DPMSG roadmap.jpg",
+    "ext": "jpg",
+    "sizeBytes": 195224,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Industry costs and timings.xlsx",
+    "name": "Industry costs and timings.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 93738,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Lender costs and timings.xlsx",
+    "name": "Lender costs and timings.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 18754,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart Data Report Comments.docx",
+    "name": "Smart Data Report Comments.docx",
+    "ext": "docx",
+    "sizeBytes": 24617,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart Data Table Structure with member insights.xlsx",
+    "name": "Smart Data Table Structure with member insights.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 60263,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart Data Table Structure.xlsx",
+    "name": "Smart Data Table Structure.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 60263,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Challenge-Prize-Identity Feb 25 - submitted.docx",
+    "name": "Smart-Data-Challenge-Prize-Identity Feb 25 - submitted.docx",
+    "ext": "docx",
+    "sizeBytes": 913285,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Challenge-Prize-Identity Feb 25.docx",
+    "name": "Smart-Data-Challenge-Prize-Identity Feb 25.docx",
+    "ext": "docx",
+    "sizeBytes": 427818,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Challenge-Prize-Property Pack Feb 25.docx",
+    "name": "Smart-Data-Challenge-Prize-Property Pack Feb 25.docx",
+    "ext": "docx",
+    "sizeBytes": 426315,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Open-Call-entry-form-FINAL - Digital ID.docx",
+    "name": "Smart-Data-Open-Call-entry-form-FINAL - Digital ID.docx",
+    "ext": "docx",
+    "sizeBytes": 175938,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Open-Call-entry-form-FINAL Digital Property Pack.docx",
+    "name": "Smart-Data-Open-Call-entry-form-FINAL Digital Property Pack.docx",
+    "ext": "docx",
+    "sizeBytes": 186792,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/smart-data-challenge/Smart-Data-Open-Call-entry-form-FINAL.docx",
+    "name": "Smart-Data-Open-Call-entry-form-FINAL.docx",
+    "ext": "docx",
+    "sizeBytes": 165751,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Building Trust in Property Data - article.docx",
+    "name": "Building Trust in Property Data - article.docx",
+    "ext": "docx",
+    "sizeBytes": 26668,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Buyer mortgage journey.png",
+    "name": "Buyer mortgage journey.png",
+    "ext": "png",
+    "sizeBytes": 2078831,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/DPMSG Smart Property Data Trustv2.pdf",
+    "name": "DPMSG Smart Property Data Trustv2.pdf",
+    "ext": "pdf",
+    "sizeBytes": 557431,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx",
+    "name": "DPMSG trust framework explainer.docx",
+    "ext": "docx",
+    "sizeBytes": 1846645,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Glossary.xlsx",
+    "name": "Glossary.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 22862,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Setup-Guide.pdf",
+    "name": "Introduction-to-the-Sandbox-Setup-Guide.pdf",
+    "ext": "pdf",
+    "sizeBytes": 603724,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Technical-Guide.pdf",
+    "name": "Introduction-to-the-Sandbox-Technical-Guide.pdf",
+    "ext": "pdf",
+    "sizeBytes": 2669228,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/OPDA Detailed Project Plan.xlsx",
+    "name": "OPDA Detailed Project Plan.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 56980,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/ParticipantKickOff_19112025.pdf",
+    "name": "ParticipantKickOff_19112025.pdf",
+    "ext": "pdf",
+    "sizeBytes": 6439626,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Raidiam slides Open Property sandbox.pdf",
+    "name": "Raidiam slides Open Property sandbox.pdf",
+    "ext": "pdf",
+    "sizeBytes": 2363877,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Raidiam slides Open Property sandbox.pptx",
+    "name": "Raidiam slides Open Property sandbox.pptx",
+    "ext": "pptx",
+    "sizeBytes": 15389271,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Sandbox onboarding.xlsx",
+    "name": "Sandbox onboarding.xlsx",
+    "ext": "xlsx",
+    "sizeBytes": 29436,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Smart Property Data Trust Framework Project Plan.pdf",
+    "name": "Smart Property Data Trust Framework Project Plan.pdf",
+    "ext": "pdf",
+    "sizeBytes": 117478,
+    "category": "Research"
+  },
+  {
+    "path": "source/06-research/trust-framework-poc/Smart Property Data Trust Framework Sandbox Co-operation Agreement.docx",
+    "name": "Smart Property Data Trust Framework Sandbox Co-operation Agreement.docx",
+    "ext": "docx",
+    "sizeBytes": 2333916,
+    "category": "Research"
+  },
+  {
+    "path": "source/03-standards/api/pdtf-api-1.1.0.json",
+    "name": "pdtf-api-1.1.0.json",
+    "ext": "json",
+    "sizeBytes": 6393,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/api/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 811,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/baspi5-transaction-conformant-expected-report.ttl",
+    "name": "baspi5-transaction-conformant-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1006,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/baspi5-transaction-conformant.ttl",
+    "name": "baspi5-transaction-conformant.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3838,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/baspi5-transaction-nonconformant-expected-report.ttl",
+    "name": "baspi5-transaction-nonconformant-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1012,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/baspi5-transaction-nonconformant.ttl",
+    "name": "baspi5-transaction-nonconformant.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3171,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/chain-of-transactions-expected-report.ttl",
+    "name": "chain-of-transactions-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 990,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/chain-of-transactions.ttl",
+    "name": "chain-of-transactions.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4228,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-document-evidence-expected-report.ttl",
+    "name": "claim-with-document-evidence-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1719,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-document-evidence.ttl",
+    "name": "claim-with-document-evidence.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4371,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-electronic-record-evidence-expected-report.ttl",
+    "name": "claim-with-electronic-record-evidence-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1746,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-electronic-record-evidence.ttl",
+    "name": "claim-with-electronic-record-evidence.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3950,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-vouch-evidence-expected-report.ttl",
+    "name": "claim-with-vouch-evidence-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 998,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/claim-with-vouch-evidence.ttl",
+    "name": "claim-with-vouch-evidence.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4294,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/flat-no-uprn-newly-converted-expected-report.ttl",
+    "name": "flat-no-uprn-newly-converted-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1004,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/flat-no-uprn-newly-converted.ttl",
+    "name": "flat-no-uprn-newly-converted.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4180,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/flat-with-split-uprn-expected-report.ttl",
+    "name": "flat-with-split-uprn-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 988,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/flat-with-split-uprn.ttl",
+    "name": "flat-with-split-uprn.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3768,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/lease-extension-transaction-expected-report.ttl",
+    "name": "lease-extension-transaction-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1002,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/lease-extension-transaction.ttl",
+    "name": "lease-extension-transaction.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4545,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/listed-building-divergent-addresses-expected-report.ttl",
+    "name": "listed-building-divergent-addresses-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1018,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/listed-building-divergent-addresses.ttl",
+    "name": "listed-building-divergent-addresses.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4504,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/organisation-with-merger-expected-report.ttl",
+    "name": "organisation-with-merger-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 996,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/organisation-with-merger.ttl",
+    "name": "organisation-with-merger.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3286,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/person-with-name-change-expected-report.ttl",
+    "name": "person-with-name-change-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 994,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/person-with-name-change.ttl",
+    "name": "person-with-name-change.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2658,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/proprietorship-relator-multi-proprietor-expected-report.ttl",
+    "name": "proprietorship-relator-multi-proprietor-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1026,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/proprietorship-relator-multi-proprietor.ttl",
+    "name": "proprietorship-relator-multi-proprietor.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3504,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 8012,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/registered-freehold-house-expected-report.ttl",
+    "name": "registered-freehold-house-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 998,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/registered-freehold-house.ttl",
+    "name": "registered-freehold-house.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2753,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/rural-plot-inspire-no-uprn-expected-report.ttl",
+    "name": "rural-plot-inspire-no-uprn-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1000,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/rural-plot-inspire-no-uprn.ttl",
+    "name": "rural-plot-inspire-no-uprn.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4585,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/simple-transaction-with-milestones-expected-report.ttl",
+    "name": "simple-transaction-with-milestones-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1016,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/simple-transaction-with-milestones.ttl",
+    "name": "simple-transaction-with-milestones.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9163,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/unregistered-pre-first-registration-house-expected-report.ttl",
+    "name": "unregistered-pre-first-registration-house-expected-report.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1030,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/exemplars/unregistered-pre-first-registration-house.ttl",
+    "name": "unregistered-pre-first-registration-house.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3566,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/foundation.ttl",
+    "name": "foundation.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1932,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-agent-annotations.ttl",
+    "name": "opda-agent-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2108,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-agent-shapes.ttl",
+    "name": "opda-agent-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 14126,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-agent.ttl",
+    "name": "opda-agent.ttl",
+    "ext": "ttl",
+    "sizeBytes": 38427,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-annotations.ttl",
+    "name": "opda-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 12329,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-claim-annotations.ttl",
+    "name": "opda-claim-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2690,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-claim-shapes.ttl",
+    "name": "opda-claim-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 6717,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-claim.ttl",
+    "name": "opda-claim.ttl",
+    "ext": "ttl",
+    "sizeBytes": 11954,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-classes.ttl",
+    "name": "opda-classes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 10319,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-contexts.ttl",
+    "name": "opda-contexts.ttl",
+    "ext": "ttl",
+    "sizeBytes": 5497,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-descriptive-annotations.ttl",
+    "name": "opda-descriptive-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4462,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-descriptive-shapes.ttl",
+    "name": "opda-descriptive-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 29606,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-descriptive.ttl",
+    "name": "opda-descriptive.ttl",
+    "ext": "ttl",
+    "sizeBytes": 99554,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-governance-annotations.ttl",
+    "name": "opda-governance-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1739,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-governance-shapes.ttl",
+    "name": "opda-governance-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1700,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-governance.ttl",
+    "name": "opda-governance.ttl",
+    "ext": "ttl",
+    "sizeBytes": 5515,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-property-annotations.ttl",
+    "name": "opda-property-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3108,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-property-shapes.ttl",
+    "name": "opda-property-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 6754,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-property.ttl",
+    "name": "opda-property.ttl",
+    "ext": "ttl",
+    "sizeBytes": 86115,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-shapes.ttl",
+    "name": "opda-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 170088,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-transaction-annotations.ttl",
+    "name": "opda-transaction-annotations.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1650,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-transaction-shapes.ttl",
+    "name": "opda-transaction-shapes.ttl",
+    "ext": "ttl",
+    "sizeBytes": 5648,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-transaction.ttl",
+    "name": "opda-transaction.ttl",
+    "ext": "ttl",
+    "sizeBytes": 20031,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/opda-vocabularies.ttl",
+    "name": "opda-vocabularies.ttl",
+    "ext": "ttl",
+    "sizeBytes": 189862,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/as.ttl",
+    "name": "as.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2342,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/baspi5.ttl",
+    "name": "baspi5.ttl",
+    "ext": "ttl",
+    "sizeBytes": 27256,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/con29DW.ttl",
+    "name": "con29DW.ttl",
+    "ext": "ttl",
+    "sizeBytes": 5366,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/con29R.ttl",
+    "name": "con29R.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2376,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/dr.ttl",
+    "name": "dr.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2360,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/er.ttl",
+    "name": "er.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2351,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/fd.ttl",
+    "name": "fd.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2849,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/fme1.ttl",
+    "name": "fme1.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2308,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/hi.ttl",
+    "name": "hi.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2333,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/hs.ttl",
+    "name": "hs.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2360,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/jk.ttl",
+    "name": "jk.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2871,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/la.ttl",
+    "name": "la.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3106,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/llc1.ttl",
+    "name": "llc1.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1857,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/lpe1.ttl",
+    "name": "lpe1.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2309,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/ma.ttl",
+    "name": "ma.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2355,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/mc.ttl",
+    "name": "mc.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2345,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/nts2.ttl",
+    "name": "nts2.ttl",
+    "ext": "ttl",
+    "sizeBytes": 19186,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/ntsl2.ttl",
+    "name": "ntsl2.ttl",
+    "ext": "ttl",
+    "sizeBytes": 14207,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/oa.ttl",
+    "name": "oa.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2830,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/oc.ttl",
+    "name": "oc.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2346,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/oc1.ttl",
+    "name": "oc1.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1881,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/piq.ttl",
+    "name": "piq.ttl",
+    "ext": "ttl",
+    "sizeBytes": 8241,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/rds.ttl",
+    "name": "rds.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3887,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/sb.ttl",
+    "name": "sb.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2386,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/sf.ttl",
+    "name": "sf.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2847,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/sl.ttl",
+    "name": "sl.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2327,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/sr24.ttl",
+    "name": "sr24.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3345,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/ta10.ttl",
+    "name": "ta10.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2884,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/ta6.ttl",
+    "name": "ta6.ttl",
+    "ext": "ttl",
+    "sizeBytes": 15313,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/ta7.ttl",
+    "name": "ta7.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9723,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology/profiles/tf.ttl",
+    "name": "tf.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2321,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/CLAUDE.md",
+    "name": "CLAUDE.md",
+    "ext": "md",
+    "sizeBytes": 2202,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 911,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 11672,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v1/exampleAddParticipantVouch.json",
+    "name": "exampleAddParticipantVouch.json",
+    "ext": "json",
+    "sizeBytes": 686,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v1/exampleDocumentedVouch.json",
+    "name": "exampleDocumentedVouch.json",
+    "ext": "json",
+    "sizeBytes": 1101,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v1/exampleElectronicRecord.json",
+    "name": "exampleElectronicRecord.json",
+    "ext": "json",
+    "sizeBytes": 701,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v1/exampleTransaction.json",
+    "name": "exampleTransaction.json",
+    "ext": "json",
+    "sizeBytes": 29789,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v1/exampleVouch.json",
+    "name": "exampleVouch.json",
+    "ext": "json",
+    "sizeBytes": 493,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v2/exampleTransaction.json",
+    "name": "exampleTransaction.json",
+    "ext": "json",
+    "sizeBytes": 31475,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleAddParticipantVouch.json",
+    "name": "exampleAddParticipantVouch.json",
+    "ext": "json",
+    "sizeBytes": 793,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleCustomOverlay.json",
+    "name": "exampleCustomOverlay.json",
+    "ext": "json",
+    "sizeBytes": 1591,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleCustomOverlay2.json",
+    "name": "exampleCustomOverlay2.json",
+    "ext": "json",
+    "sizeBytes": 3932,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleDocumentedVouch.json",
+    "name": "exampleDocumentedVouch.json",
+    "ext": "json",
+    "sizeBytes": 1224,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleElectronicRecord.json",
+    "name": "exampleElectronicRecord.json",
+    "ext": "json",
+    "sizeBytes": 794,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleTransaction.json",
+    "name": "exampleTransaction.json",
+    "ext": "json",
+    "sizeBytes": 34673,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/examples/v3/exampleVouch.json",
+    "name": "exampleVouch.json",
+    "ext": "json",
+    "sizeBytes": 616,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/mappings/SendPropertyDetailsRequestSchema.json",
+    "name": "SendPropertyDetailsRequestSchema.json",
+    "ext": "json",
+    "sizeBytes": 52112,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/baspiNotes.html",
+    "name": "baspiNotes.html",
+    "ext": "html",
+    "sizeBytes": 4317,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/energy-performance-certificate.json",
+    "name": "energy-performance-certificate.json",
+    "ext": "json",
+    "sizeBytes": 5819,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/freehold-information.json",
+    "name": "freehold-information.json",
+    "ext": "json",
+    "sizeBytes": 65426,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/GeoJSON.json",
+    "name": "GeoJSON.json",
+    "ext": "json",
+    "sizeBytes": 41779,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/leasehold-information.json",
+    "name": "leasehold-information.json",
+    "ext": "json",
+    "sizeBytes": 64334,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/legal-information.json",
+    "name": "legal-information.json",
+    "ext": "json",
+    "sizeBytes": 38475,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/material-facts.json",
+    "name": "material-facts.json",
+    "ext": "json",
+    "sizeBytes": 82924,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/pdtf-transaction-search-results.json",
+    "name": "pdtf-transaction-search-results.json",
+    "ext": "json",
+    "sizeBytes": 1002,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/pdtf-transaction.json",
+    "name": "pdtf-transaction.json",
+    "ext": "json",
+    "sizeBytes": 5475,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/searches.json",
+    "name": "searches.json",
+    "ext": "json",
+    "sizeBytes": 7435,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/searches/drainage-and-water.json",
+    "name": "drainage-and-water.json",
+    "ext": "json",
+    "sizeBytes": 9021,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/searches/local-land-charges.json",
+    "name": "local-land-charges.json",
+    "ext": "json",
+    "sizeBytes": 2464,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/searches/local-searches-required.json",
+    "name": "local-searches-required.json",
+    "ext": "json",
+    "sizeBytes": 36976,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v1/title-deed.json",
+    "name": "title-deed.json",
+    "ext": "json",
+    "sizeBytes": 27393,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/baspiNotes.html",
+    "name": "baspiNotes.html",
+    "ext": "html",
+    "sizeBytes": 4317,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/combined.json",
+    "name": "combined.json",
+    "ext": "json",
+    "sizeBytes": 1842451,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/baspi.json",
+    "name": "baspi.json",
+    "ext": "json",
+    "sizeBytes": 291739,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/con29DW.json",
+    "name": "con29DW.json",
+    "ext": "json",
+    "sizeBytes": 24342,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/con29R.json",
+    "name": "con29R.json",
+    "ext": "json",
+    "sizeBytes": 115803,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/fme1.json",
+    "name": "fme1.json",
+    "ext": "json",
+    "sizeBytes": 63792,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/llc1.json",
+    "name": "llc1.json",
+    "ext": "json",
+    "sizeBytes": 601,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/lpe1.json",
+    "name": "lpe1.json",
+    "ext": "json",
+    "sizeBytes": 111985,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/nts.json",
+    "name": "nts.json",
+    "ext": "json",
+    "sizeBytes": 13184,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/oc1.json",
+    "name": "oc1.json",
+    "ext": "json",
+    "sizeBytes": 151137,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/piq.json",
+    "name": "piq.json",
+    "ext": "json",
+    "sizeBytes": 112669,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/rds.json",
+    "name": "rds.json",
+    "ext": "json",
+    "sizeBytes": 129056,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/ta10.json",
+    "name": "ta10.json",
+    "ext": "json",
+    "sizeBytes": 204612,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/ta6.json",
+    "name": "ta6.json",
+    "ext": "json",
+    "sizeBytes": 153633,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/overlays/ta7.json",
+    "name": "ta7.json",
+    "ext": "json",
+    "sizeBytes": 51641,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/pdtf-transaction.json",
+    "name": "pdtf-transaction.json",
+    "ext": "json",
+    "sizeBytes": 1594246,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v2/skeleton.json",
+    "name": "skeleton.json",
+    "ext": "json",
+    "sizeBytes": 115718,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/combined.json",
+    "name": "combined.json",
+    "ext": "json",
+    "sizeBytes": 1927640,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/compactSkeleton.txt",
+    "name": "compactSkeleton.txt",
+    "ext": "txt",
+    "sizeBytes": 83528,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json",
+    "name": "baspi4.json",
+    "ext": "json",
+    "sizeBytes": 254207,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json",
+    "name": "baspi5.json",
+    "ext": "json",
+    "sizeBytes": 258762,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json",
+    "name": "con29DW.json",
+    "ext": "json",
+    "sizeBytes": 22079,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/con29R.json",
+    "name": "con29R.json",
+    "ext": "json",
+    "sizeBytes": 116904,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/as.json",
+    "name": "as.json",
+    "ext": "json",
+    "sizeBytes": 1888,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/dr.json",
+    "name": "dr.json",
+    "ext": "json",
+    "sizeBytes": 1941,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/er.json",
+    "name": "er.json",
+    "ext": "json",
+    "sizeBytes": 2667,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/fd.json",
+    "name": "fd.json",
+    "ext": "json",
+    "sizeBytes": 2059,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/hi.json",
+    "name": "hi.json",
+    "ext": "json",
+    "sizeBytes": 1288,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/hs.json",
+    "name": "hs.json",
+    "ext": "json",
+    "sizeBytes": 1875,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/jk.json",
+    "name": "jk.json",
+    "ext": "json",
+    "sizeBytes": 2036,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/la.json",
+    "name": "la.json",
+    "ext": "json",
+    "sizeBytes": 2261,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/ma.json",
+    "name": "ma.json",
+    "ext": "json",
+    "sizeBytes": 3275,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/mc.json",
+    "name": "mc.json",
+    "ext": "json",
+    "sizeBytes": 897,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/oa.json",
+    "name": "oa.json",
+    "ext": "json",
+    "sizeBytes": 528,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/oc.json",
+    "name": "oc.json",
+    "ext": "json",
+    "sizeBytes": 1488,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/sb.json",
+    "name": "sb.json",
+    "ext": "json",
+    "sizeBytes": 1890,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/sf.json",
+    "name": "sf.json",
+    "ext": "json",
+    "sizeBytes": 1986,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/sl.json",
+    "name": "sl.json",
+    "ext": "json",
+    "sizeBytes": 1881,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/extensions/tf.json",
+    "name": "tf.json",
+    "ext": "json",
+    "sizeBytes": 3827,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/fme1.json",
+    "name": "fme1.json",
+    "ext": "json",
+    "sizeBytes": 59174,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/llc1.json",
+    "name": "llc1.json",
+    "ext": "json",
+    "sizeBytes": 601,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json",
+    "name": "lpe1.json",
+    "ext": "json",
+    "sizeBytes": 105796,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/nts.json",
+    "name": "nts.json",
+    "ext": "json",
+    "sizeBytes": 64722,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/nts2.json",
+    "name": "nts2.json",
+    "ext": "json",
+    "sizeBytes": 83204,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json",
+    "name": "ntsl.json",
+    "ext": "json",
+    "sizeBytes": 50683,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json",
+    "name": "ntsl2.json",
+    "ext": "json",
+    "sizeBytes": 62315,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/oc1.json",
+    "name": "oc1.json",
+    "ext": "json",
+    "sizeBytes": 151836,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/piq.json",
+    "name": "piq.json",
+    "ext": "json",
+    "sizeBytes": 94597,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/rds.json",
+    "name": "rds.json",
+    "ext": "json",
+    "sizeBytes": 109026,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 10253,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/sr24.json",
+    "name": "sr24.json",
+    "ext": "json",
+    "sizeBytes": 976,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/ta10.json",
+    "name": "ta10.json",
+    "ext": "json",
+    "sizeBytes": 155931,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/ta6.json",
+    "name": "ta6.json",
+    "ext": "json",
+    "sizeBytes": 136892,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/overlays/ta7.json",
+    "name": "ta7.json",
+    "ext": "json",
+    "sizeBytes": 65122,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json",
+    "name": "pdtf-transaction.json",
+    "ext": "json",
+    "sizeBytes": 1607940,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/v3/skeleton.json",
+    "name": "skeleton.json",
+    "ext": "json",
+    "sizeBytes": 135573,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/verifiedClaims/pdtf-verified-claims.json",
+    "name": "pdtf-verified-claims.json",
+    "ext": "json",
+    "sizeBytes": 11665,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/schemas/verifiedClaims/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 833,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/src/utils/pathList.csv",
+    "name": "pathList.csv",
+    "ext": "csv",
+    "sizeBytes": 100838,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/CLAUDE.md",
+    "name": "CLAUDE.md",
+    "ext": "md",
+    "sizeBytes": 2387,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs.mintlify.json",
+    "name": "docs.mintlify.json",
+    "ext": "json",
+    "sizeBytes": 2794,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/access-specification.md",
+    "name": "access-specification.md",
+    "ext": "md",
+    "sizeBytes": 15576,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/breaking-change-notification-template.md",
+    "name": "breaking-change-notification-template.md",
+    "ext": "md",
+    "sizeBytes": 2454,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/change-notification-template.md",
+    "name": "change-notification-template.md",
+    "ext": "md",
+    "sizeBytes": 1742,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md",
+    "name": "compliance-and-policy-checklist.md",
+    "ext": "md",
+    "sizeBytes": 3596,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/Draft_ PDTF Participant DID Auth OAuth 2 Specification.md",
+    "name": "Draft_ PDTF Participant DID Auth OAuth 2 Specification.md",
+    "ext": "md",
+    "sizeBytes": 4417,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/Draft_ Property Data Trust Framework 2 Specification.md",
+    "name": "Draft_ Property Data Trust Framework 2 Specification.md",
+    "ext": "md",
+    "sizeBytes": 36147,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/governance.md",
+    "name": "governance.md",
+    "ext": "md",
+    "sizeBytes": 13191,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/plan.md",
+    "name": "plan.md",
+    "ext": "md",
+    "sizeBytes": 8765,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/proposal-impact-assessment-form.md",
+    "name": "proposal-impact-assessment-form.md",
+    "ext": "md",
+    "sizeBytes": 2435,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/proposal.md",
+    "name": "proposal.md",
+    "ext": "md",
+    "sizeBytes": 12119,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 2996,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/docs/release-version-register.md",
+    "name": "release-version-register.md",
+    "ext": "md",
+    "sizeBytes": 1399,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/examples/templates/navigation.html",
+    "name": "navigation.html",
+    "ext": "html",
+    "sizeBytes": 595,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 1269,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/.well-known/did.json",
+    "name": "did.json",
+    "ext": "json",
+    "sizeBytes": 330,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/examples/participant-vc.json",
+    "name": "participant-vc.json",
+    "ext": "json",
+    "sizeBytes": 1701,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/examples/person-credential.json",
+    "name": "person-credential.json",
+    "ext": "json",
+    "sizeBytes": 2035,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/examples/property-credential.json",
+    "name": "property-credential.json",
+    "ext": "json",
+    "sizeBytes": 2017,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 7436,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/registry.json",
+    "name": "registry.json",
+    "ext": "json",
+    "sizeBytes": 2874,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/schemas/PDTF-VerifiableCredential.json",
+    "name": "PDTF-VerifiableCredential.json",
+    "ext": "json",
+    "sizeBytes": 7127,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/status/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 1909,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/status/test-2024-revocation-list.json",
+    "name": "test-2024-revocation-list.json",
+    "ext": "json",
+    "sizeBytes": 932,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/trusted-issuers-registry.json",
+    "name": "trusted-issuers-registry.json",
+    "ext": "json",
+    "sizeBytes": 3234,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/access-specification.html",
+    "name": "access-specification.html",
+    "ext": "html",
+    "sizeBytes": 20559,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/breaking-change-notification-template.html",
+    "name": "breaking-change-notification-template.html",
+    "ext": "html",
+    "sizeBytes": 5442,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/change-notification-template.html",
+    "name": "change-notification-template.html",
+    "ext": "html",
+    "sizeBytes": 4445,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/compliance-and-policy-checklist.html",
+    "name": "compliance-and-policy-checklist.html",
+    "ext": "html",
+    "sizeBytes": 6921,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/Draft_ PDTF Participant DID Auth OAuth 2 Specification.html",
+    "name": "Draft_ PDTF Participant DID Auth OAuth 2 Specification.html",
+    "ext": "html",
+    "sizeBytes": 8361,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/Draft_ Property Data Trust Framework 2 Specification.html",
+    "name": "Draft_ Property Data Trust Framework 2 Specification.html",
+    "ext": "html",
+    "sizeBytes": 41072,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/governance.html",
+    "name": "governance.html",
+    "ext": "html",
+    "sizeBytes": 18117,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 8015,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/plan.html",
+    "name": "plan.html",
+    "ext": "html",
+    "sizeBytes": 18025,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/proposal-impact-assessment-form.html",
+    "name": "proposal-impact-assessment-form.html",
+    "ext": "html",
+    "sizeBytes": 5288,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/proposal.html",
+    "name": "proposal.html",
+    "ext": "html",
+    "sizeBytes": 17277,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/README.html",
+    "name": "README.html",
+    "ext": "html",
+    "sizeBytes": 6085,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/public/web/release-version-register.html",
+    "name": "release-version-register.html",
+    "ext": "html",
+    "sizeBytes": 3836,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 5081,
+    "category": "Standards"
+  },
+  {
+    "path": "source/_taxonomy/v1-critique.md",
+    "name": "v1-critique.md",
+    "ext": "md",
+    "sizeBytes": 3967,
+    "category": "Taxonomy (working)"
+  },
+  {
+    "path": "source/_taxonomy/v1-draft.md",
+    "name": "v1-draft.md",
+    "ext": "md",
+    "sizeBytes": 4646,
+    "category": "Taxonomy (working)"
+  },
+  {
+    "path": "source/_taxonomy/v2-final.md",
+    "name": "v2-final.md",
+    "ext": "md",
+    "sizeBytes": 5328,
+    "category": "Taxonomy (working)"
+  },
+  {
+    "path": "source/07-website/all-urls.txt",
+    "name": "all-urls.txt",
+    "ext": "txt",
+    "sizeBytes": 6157,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk.html",
+    "name": "propdata.org.uk.html",
+    "ext": "html",
+    "sizeBytes": 14546,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/about.html",
+    "name": "about.html",
+    "ext": "html",
+    "sizeBytes": 20250,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/for-developers.html",
+    "name": "for-developers.html",
+    "ext": "html",
+    "sizeBytes": 34993,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/for-industry.html",
+    "name": "for-industry.html",
+    "ext": "html",
+    "sizeBytes": 21208,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/how-it-works.html",
+    "name": "how-it-works.html",
+    "ext": "html",
+    "sizeBytes": 23488,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 14546,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/propdata.org.uk/why.html",
+    "name": "why.html",
+    "ext": "html",
+    "sizeBytes": 16010,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/related-domains/trust.propdata.org.uk/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 9379,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/_dead-urls.md",
+    "name": "_dead-urls.md",
+    "ext": "md",
+    "sizeBytes": 1748,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/about-us.html",
+    "name": "about-us.html",
+    "ext": "html",
+    "sizeBytes": 135746,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/about.html",
+    "name": "about.html",
+    "ext": "html",
+    "sizeBytes": 135746,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/become-a-member.html",
+    "name": "become-a-member.html",
+    "ext": "html",
+    "sizeBytes": 171053,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/blog.html",
+    "name": "blog.html",
+    "ext": "html",
+    "sizeBytes": 117386,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/code-of-conduct.html",
+    "name": "code-of-conduct.html",
+    "ext": "html",
+    "sizeBytes": 115755,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/data-and-gdpr-policy.html",
+    "name": "data-and-gdpr-policy.html",
+    "ext": "html",
+    "sizeBytes": 92637,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/events-and-workshops.html",
+    "name": "events-and-workshops.html",
+    "ext": "html",
+    "sizeBytes": 89270,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/for-developers.html",
+    "name": "for-developers.html",
+    "ext": "html",
+    "sizeBytes": 94432,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/frequently-asked-questions.html",
+    "name": "frequently-asked-questions.html",
+    "ext": "html",
+    "sizeBytes": 99059,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/get-in-touch.html",
+    "name": "get-in-touch.html",
+    "ext": "html",
+    "sizeBytes": 95805,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/index.html",
+    "name": "index.html",
+    "ext": "html",
+    "sizeBytes": 175317,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/join-the-sandbox.html",
+    "name": "join-the-sandbox.html",
+    "ext": "html",
+    "sizeBytes": 110496,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/members/moverly.html",
+    "name": "moverly.html",
+    "ext": "html",
+    "sizeBytes": 111441,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/members/onthemarket.html",
+    "name": "onthemarket.html",
+    "ext": "html",
+    "sizeBytes": 108005,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/members/pexa.html",
+    "name": "pexa.html",
+    "ext": "html",
+    "sizeBytes": 110997,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/members/sprift.html",
+    "name": "sprift.html",
+    "ext": "html",
+    "sizeBytes": 111947,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/membership.html",
+    "name": "membership.html",
+    "ext": "html",
+    "sizeBytes": 171053,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/our-members.html",
+    "name": "our-members.html",
+    "ext": "html",
+    "sizeBytes": 179871,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/a-huge-step-forward-for-open-property-data.html",
+    "name": "a-huge-step-forward-for-open-property-data.html",
+    "ext": "html",
+    "sizeBytes": 119491,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/at-64-ill-never-downsize-from-my-four-bed-because-moving-home-is-horrendous.html",
+    "name": "at-64-ill-never-downsize-from-my-four-bed-because-moving-home-is-horrendous.html",
+    "ext": "html",
+    "sizeBytes": 114379,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/blog-reforming-the-homebuying-process-through-open-data.html",
+    "name": "blog-reforming-the-homebuying-process-through-open-data.html",
+    "ext": "html",
+    "sizeBytes": 121494,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/connected-future-for-property-data-vision-2026.html",
+    "name": "connected-future-for-property-data-vision-2026.html",
+    "ext": "html",
+    "sizeBytes": 134098,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/copso-and-opda-pledge-to-work-together-on-digitising-homebuying.html",
+    "name": "copso-and-opda-pledge-to-work-together-on-digitising-homebuying.html",
+    "ext": "html",
+    "sizeBytes": 118942,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/data-standards-for-smart-data.html",
+    "name": "data-standards-for-smart-data.html",
+    "ext": "html",
+    "sizeBytes": 117139,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/digital-disruption-newsletter.html",
+    "name": "digital-disruption-newsletter.html",
+    "ext": "html",
+    "sizeBytes": 118214,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/digital-property-market-steering-group-publish-priority-roadmap-for-2025-26.html",
+    "name": "digital-property-market-steering-group-publish-priority-roadmap-for-2025-26.html",
+    "ext": "html",
+    "sizeBytes": 116139,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/dpmsg-5-promises.html",
+    "name": "dpmsg-5-promises.html",
+    "ext": "html",
+    "sizeBytes": 116694,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/driving-industry-adoption-on-open-property-data-standards.html",
+    "name": "driving-industry-adoption-on-open-property-data-standards.html",
+    "ext": "html",
+    "sizeBytes": 115329,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/early-onboarding-solution-for-sellers-slashes-conveyancing-time.html",
+    "name": "early-onboarding-solution-for-sellers-slashes-conveyancing-time.html",
+    "ext": "html",
+    "sizeBytes": 124616,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/first-opda-consumer-survey-report-published.html",
+    "name": "first-opda-consumer-survey-report-published.html",
+    "ext": "html",
+    "sizeBytes": 116865,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/full-property-market-digitisation-will-achieve-the-customer-experience-everyone-craves.html",
+    "name": "full-property-market-digitisation-will-achieve-the-customer-experience-everyone-craves.html",
+    "ext": "html",
+    "sizeBytes": 121408,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/government-announce-commitment-to-digitising-the-homebuying-process.html",
+    "name": "government-announce-commitment-to-digitising-the-homebuying-process.html",
+    "ext": "html",
+    "sizeBytes": 118317,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/government-sets-out-strategy-for-data-transformation.html",
+    "name": "government-sets-out-strategy-for-data-transformation.html",
+    "ext": "html",
+    "sizeBytes": 120494,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/homely-is-proud-to-be-a-founder-member-of-the-open-property-data-association.html",
+    "name": "homely-is-proud-to-be-a-founder-member-of-the-open-property-data-association.html",
+    "ext": "html",
+    "sizeBytes": 119354,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/how-digital-and-data-can-provide-the-homebuying-experience-customers-want.html",
+    "name": "how-digital-and-data-can-provide-the-homebuying-experience-customers-want.html",
+    "ext": "html",
+    "sizeBytes": 120947,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/how-digital-innovation-will-improve-and-speed-up-buying-a-home.html",
+    "name": "how-digital-innovation-will-improve-and-speed-up-buying-a-home.html",
+    "ext": "html",
+    "sizeBytes": 116275,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/hsbc-uk-joins-forces-with-opda.html",
+    "name": "hsbc-uk-joins-forces-with-opda.html",
+    "ext": "html",
+    "sizeBytes": 119731,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/in-the-spotlight-with-tma-mortgage-club.html",
+    "name": "in-the-spotlight-with-tma-mortgage-club.html",
+    "ext": "html",
+    "sizeBytes": 116437,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/introductory-guide-to-the-smart-property-data-trust-framework-sandbox.html",
+    "name": "introductory-guide-to-the-smart-property-data-trust-framework-sandbox.html",
+    "ext": "html",
+    "sizeBytes": 114206,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/inventory-base.html",
+    "name": "inventory-base.html",
+    "ext": "html",
+    "sizeBytes": 121157,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/kotini-why-opda-membership-matters.html",
+    "name": "kotini-why-opda-membership-matters.html",
+    "ext": "html",
+    "sizeBytes": 119990,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/latest-news-from-the-economy-world.html",
+    "name": "latest-news-from-the-economy-world.html",
+    "ext": "html",
+    "sizeBytes": 120223,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/levelling-up-select-committee-inquiry.html",
+    "name": "levelling-up-select-committee-inquiry.html",
+    "ext": "html",
+    "sizeBytes": 118392,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/lloyds-banking-group-joins-opda.html",
+    "name": "lloyds-banking-group-joins-opda.html",
+    "ext": "html",
+    "sizeBytes": 120934,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/mab-becomes-first-intermediary-network-member-of-opda.html",
+    "name": "mab-becomes-first-intermediary-network-member-of-opda.html",
+    "ext": "html",
+    "sizeBytes": 118494,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/mortgage-strategy-tech-watch-the-data-bill-is-huge-for-us.html",
+    "name": "mortgage-strategy-tech-watch-the-data-bill-is-huge-for-us.html",
+    "ext": "html",
+    "sizeBytes": 120258,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/move-iq-podcast-phil-spencer-talks-with-maria-harris.html",
+    "name": "move-iq-podcast-phil-spencer-talks-with-maria-harris.html",
+    "ext": "html",
+    "sizeBytes": 117759,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/movemnt-joins-opda-to-streamline-homebuying.html",
+    "name": "movemnt-joins-opda-to-streamline-homebuying.html",
+    "ext": "html",
+    "sizeBytes": 118283,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/national-trading-standards-material-info.html",
+    "name": "national-trading-standards-material-info.html",
+    "ext": "html",
+    "sizeBytes": 117678,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/nationwide-joins-opda-campaign-to-transform-homebuying-process-through-digitised-property-information.html",
+    "name": "nationwide-joins-opda-campaign-to-transform-homebuying-process-through-digitised-property-information.html",
+    "ext": "html",
+    "sizeBytes": 120048,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/natwest-group-joins-opda-campaign-to-transform-homebuying.html",
+    "name": "natwest-group-joins-opda-campaign-to-transform-homebuying.html",
+    "ext": "html",
+    "sizeBytes": 118631,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/new-data-law-will-speed-up-homebuying.html",
+    "name": "new-data-law-will-speed-up-homebuying.html",
+    "ext": "html",
+    "sizeBytes": 118149,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-accreditation-scheme-opens-to-all-members.html",
+    "name": "opda-accreditation-scheme-opens-to-all-members.html",
+    "ext": "html",
+    "sizeBytes": 116595,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-announces-4-new-member-firms.html",
+    "name": "opda-announces-4-new-member-firms.html",
+    "ext": "html",
+    "sizeBytes": 118256,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-chair-wins-outstanding-achievement-award.html",
+    "name": "opda-chair-wins-outstanding-achievement-award.html",
+    "ext": "html",
+    "sizeBytes": 117633,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-joins-industry-in-calling-for-uprn-adoption.html",
+    "name": "opda-joins-industry-in-calling-for-uprn-adoption.html",
+    "ext": "html",
+    "sizeBytes": 117471,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-launches-first-consumer-survey-copy.html",
+    "name": "opda-launches-first-consumer-survey-copy.html",
+    "ext": "html",
+    "sizeBytes": 119770,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-launches-first-consumer-survey.html",
+    "name": "opda-launches-first-consumer-survey.html",
+    "ext": "html",
+    "sizeBytes": 119361,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-launches-v3-5-schema-new-functionality-streamline-transactions.html",
+    "name": "opda-launches-v3-5-schema-new-functionality-streamline-transactions.html",
+    "ext": "html",
+    "sizeBytes": 120064,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-launches-youtube-channel.html",
+    "name": "opda-launches-youtube-channel.html",
+    "ext": "html",
+    "sizeBytes": 117401,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-makes-free-data-tools-available-across-property-industry-through-new-framework.html",
+    "name": "opda-makes-free-data-tools-available-across-property-industry-through-new-framework.html",
+    "ext": "html",
+    "sizeBytes": 118360,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-research-featured-in-this-is-money.html",
+    "name": "opda-research-featured-in-this-is-money.html",
+    "ext": "html",
+    "sizeBytes": 117275,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-research-highlights-gap-in-consumer-perception-of-digital-property-transactions.html",
+    "name": "opda-research-highlights-gap-in-consumer-perception-of-digital-property-transactions.html",
+    "ext": "html",
+    "sizeBytes": 120416,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/opda-research-referenced-by-the-times-again.html",
+    "name": "opda-research-referenced-by-the-times-again.html",
+    "ext": "html",
+    "sizeBytes": 114449,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/pexa-uk-forms-future-property-transaction-group.html",
+    "name": "pexa-uk-forms-future-property-transaction-group.html",
+    "ext": "html",
+    "sizeBytes": 118519,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-agents-urged-to-help-shape-the-future-of-the-property-market.html",
+    "name": "property-agents-urged-to-help-shape-the-future-of-the-property-market.html",
+    "ext": "html",
+    "sizeBytes": 120176,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-data-trust-framework-2.html",
+    "name": "property-data-trust-framework-2.html",
+    "ext": "html",
+    "sizeBytes": 120037,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-data-trust-framework-3.html",
+    "name": "property-data-trust-framework-3.html",
+    "ext": "html",
+    "sizeBytes": 119446,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-data-trust-framework-v2-2.html",
+    "name": "property-data-trust-framework-v2-2.html",
+    "ext": "html",
+    "sizeBytes": 116615,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-data-trust-framework.html",
+    "name": "property-data-trust-framework.html",
+    "ext": "html",
+    "sizeBytes": 121858,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-solvers-podcast.html",
+    "name": "property-solvers-podcast.html",
+    "ext": "html",
+    "sizeBytes": 116789,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/property-with-a-view-podcast.html",
+    "name": "property-with-a-view-podcast.html",
+    "ext": "html",
+    "sizeBytes": 116563,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/queries-lenders-pvqs-stalling-completions-how-to-break-the-cycle.html",
+    "name": "queries-lenders-pvqs-stalling-completions-how-to-break-the-cycle.html",
+    "ext": "html",
+    "sizeBytes": 120407,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/smart-data-homebuying-reforms-could-unlock-billions-for-the-uk-economy.html",
+    "name": "smart-data-homebuying-reforms-could-unlock-billions-for-the-uk-economy.html",
+    "ext": "html",
+    "sizeBytes": 119991,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/society-matters-winter-2024-transforming-the-homebuying-process.html",
+    "name": "society-matters-winter-2024-transforming-the-homebuying-process.html",
+    "ext": "html",
+    "sizeBytes": 118068,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/solidatus-highlight-20-women-shaping-the-future-of-data.html",
+    "name": "solidatus-highlight-20-women-shaping-the-future-of-data.html",
+    "ext": "html",
+    "sizeBytes": 117162,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/sprift-traditional-challenges-property-transactions.html",
+    "name": "sprift-traditional-challenges-property-transactions.html",
+    "ext": "html",
+    "sizeBytes": 120629,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/technology-in-focus-with-the-intermediary.html",
+    "name": "technology-in-focus-with-the-intermediary.html",
+    "ext": "html",
+    "sizeBytes": 119235,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/the-digital-property-market-steering-group.html",
+    "name": "the-digital-property-market-steering-group.html",
+    "ext": "html",
+    "sizeBytes": 115748,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/the-homebuying-process-is-failing-customers-needs.html",
+    "name": "the-homebuying-process-is-failing-customers-needs.html",
+    "ext": "html",
+    "sizeBytes": 117989,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/the-intermediary-interview-with-maria-harris.html",
+    "name": "the-intermediary-interview-with-maria-harris.html",
+    "ext": "html",
+    "sizeBytes": 116766,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/the-three-pin-plug-approach.html",
+    "name": "the-three-pin-plug-approach.html",
+    "ext": "html",
+    "sizeBytes": 121210,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/the-uk-has-the-slowest-home-moving-timeline-of-12-countries.html",
+    "name": "the-uk-has-the-slowest-home-moving-timeline-of-12-countries.html",
+    "ext": "html",
+    "sizeBytes": 122248,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/we-wont-ever-move-house-again-how-an-18-month-nightmare-put-one-family-off-for-life.html",
+    "name": "we-wont-ever-move-house-again-how-an-18-month-nightmare-put-one-family-off-for-life.html",
+    "ext": "html",
+    "sizeBytes": 115580,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/what-exactly-do-we-mean-by-open-standards.html",
+    "name": "what-exactly-do-we-mean-by-open-standards.html",
+    "ext": "html",
+    "sizeBytes": 122828,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/what-is-the-property-data-trust-framework.html",
+    "name": "what-is-the-property-data-trust-framework.html",
+    "ext": "html",
+    "sizeBytes": 119380,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/posts/why-opda-membership-matters-more-than-ever.html",
+    "name": "why-opda-membership-matters-more-than-ever.html",
+    "ext": "html",
+    "sizeBytes": 119458,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/press.html",
+    "name": "press.html",
+    "ext": "html",
+    "sizeBytes": 124577,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/privacy-policy.html",
+    "name": "privacy-policy.html",
+    "ext": "html",
+    "sizeBytes": 104399,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/report.html",
+    "name": "report.html",
+    "ext": "html",
+    "sizeBytes": 188420,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/smart-property-data-trust-framework.html",
+    "name": "smart-property-data-trust-framework.html",
+    "ext": "html",
+    "sizeBytes": 158350,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/subscribe.html",
+    "name": "subscribe.html",
+    "ext": "html",
+    "sizeBytes": 95906,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/rendered/why.html",
+    "name": "why.html",
+    "ext": "html",
+    "sizeBytes": 119458,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 491,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/.well-known/did-configuration.json",
+    "name": "did-configuration.json",
+    "ext": "json",
+    "sizeBytes": 2187,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/favicon.png",
+    "name": "favicon.png",
+    "ext": "png",
+    "sizeBytes": 13471,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/pdtf.json",
+    "name": "pdtf.json",
+    "ext": "json",
+    "sizeBytes": 307,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/baspiNotes.html",
+    "name": "baspiNotes.html",
+    "ext": "html",
+    "sizeBytes": 4317,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/energy-performance-certificate.json",
+    "name": "energy-performance-certificate.json",
+    "ext": "json",
+    "sizeBytes": 5819,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/freehold-information.json",
+    "name": "freehold-information.json",
+    "ext": "json",
+    "sizeBytes": 65426,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/GeoJSON.json",
+    "name": "GeoJSON.json",
+    "ext": "json",
+    "sizeBytes": 41779,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/leasehold-information.json",
+    "name": "leasehold-information.json",
+    "ext": "json",
+    "sizeBytes": 64334,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/legal-information.json",
+    "name": "legal-information.json",
+    "ext": "json",
+    "sizeBytes": 38475,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/material-facts.json",
+    "name": "material-facts.json",
+    "ext": "json",
+    "sizeBytes": 82924,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/pdtf-transaction-search-results.json",
+    "name": "pdtf-transaction-search-results.json",
+    "ext": "json",
+    "sizeBytes": 1002,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/pdtf-transaction.json",
+    "name": "pdtf-transaction.json",
+    "ext": "json",
+    "sizeBytes": 5475,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/pdtf-verified-claims.json",
+    "name": "pdtf-verified-claims.json",
+    "ext": "json",
+    "sizeBytes": 11020,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/searches.json",
+    "name": "searches.json",
+    "ext": "json",
+    "sizeBytes": 7435,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/searches/drainage-and-water.json",
+    "name": "drainage-and-water.json",
+    "ext": "json",
+    "sizeBytes": 9021,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/searches/local-land-charges.json",
+    "name": "local-land-charges.json",
+    "ext": "json",
+    "sizeBytes": 2464,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/searches/local-searches-required.json",
+    "name": "local-searches-required.json",
+    "ext": "json",
+    "sizeBytes": 36976,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v1/title-deed.json",
+    "name": "title-deed.json",
+    "ext": "json",
+    "sizeBytes": 27393,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/baspiNotes.html",
+    "name": "baspiNotes.html",
+    "ext": "html",
+    "sizeBytes": 4317,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/combined.json",
+    "name": "combined.json",
+    "ext": "json",
+    "sizeBytes": 1842112,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/baspi.json",
+    "name": "baspi.json",
+    "ext": "json",
+    "sizeBytes": 390203,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/con29DW.json",
+    "name": "con29DW.json",
+    "ext": "json",
+    "sizeBytes": 29934,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/con29R.json",
+    "name": "con29R.json",
+    "ext": "json",
+    "sizeBytes": 129430,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/fme1.json",
+    "name": "fme1.json",
+    "ext": "json",
+    "sizeBytes": 78744,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/llc1.json",
+    "name": "llc1.json",
+    "ext": "json",
+    "sizeBytes": 601,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/lpe1.json",
+    "name": "lpe1.json",
+    "ext": "json",
+    "sizeBytes": 135416,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/nts.json",
+    "name": "nts.json",
+    "ext": "json",
+    "sizeBytes": 17747,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/oc1.json",
+    "name": "oc1.json",
+    "ext": "json",
+    "sizeBytes": 151137,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/piq.json",
+    "name": "piq.json",
+    "ext": "json",
+    "sizeBytes": 142753,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/rds.json",
+    "name": "rds.json",
+    "ext": "json",
+    "sizeBytes": 152174,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/ta10.json",
+    "name": "ta10.json",
+    "ext": "json",
+    "sizeBytes": 261483,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/ta6.json",
+    "name": "ta6.json",
+    "ext": "json",
+    "sizeBytes": 202330,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/overlays/ta7.json",
+    "name": "ta7.json",
+    "ext": "json",
+    "sizeBytes": 74210,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/pdtf-transaction.json",
+    "name": "pdtf-transaction.json",
+    "ext": "json",
+    "sizeBytes": 1594282,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/schemas/src/schemas/v2/skeleton.json",
+    "name": "skeleton.json",
+    "ext": "json",
+    "sizeBytes": 115688,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 4705,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:jwk:eyJhbGciOiJFUzI1NksiLCJjcnYiOiJzZWNwMjU2azEiLCJrdHkiOiJFQyIsInVzZSI6InNpZyIsIngiOiI1bE9Id1AtVldCN1IwV2VlRU9TMWMwdlN3TkpLVk5XckRVVktMZl9KNUJvIiwieSI6InRtLXRwMkpKV3FFZFMwQ0o0LXlTYno3QVdZZnhkWjJMLXVCTWRkcnhubWMifQ/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 553,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:jwk:eyJhbGciOiJFUzI1NksiLCJjcnYiOiJzZWNwMjU2azEiLCJrdHkiOiJFQyIsInVzZSI6InNpZyIsIngiOiJFRDRLZlYxemZ6Sllfb1Bmb2JCODl5R24xWEZQN2JoWHNUZGpHVFFDR0NNIiwieSI6IkJtMlYwbkxmYWYzbEgxcFhJZGtrY0k1T2s1WHdaeHJydGkzR3NibVZ6ancifQ/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 555,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:key:z6Mkn2ZyTjHJSCBC8y2DAJ4HYGK9es4K7eWvzL9bj3qErGuS/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 254,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:key:z6MksN2Er8W43KG8KJmPZBm1bvCzD7r5n41fb1hriEnmB9gi.json",
+    "name": "did:key:z6MksN2Er8W43KG8KJmPZBm1bvCzD7r5n41fb1hriEnmB9gi.json",
+    "ext": "json",
+    "sizeBytes": 158,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:key:z6MksN2Er8W43KG8KJmPZBm1bvCzD7r5n41fb1hriEnmB9gi/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 158,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:key:z6Mkt254rXxhKanMTiEGiNhrdsoTiV8TFw4aj6bkC9FSMAku/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 376,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/members/did:key:z6Mktw5UQ26FHmyJWKjjaoLEcDpvbeyx67wzuwbafsqYN8cL/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 260,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/schemas/ExampleCredential.json",
+    "name": "ExampleCredential.json",
+    "ext": "json",
+    "sizeBytes": 140,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/schemas/ExampleCredential/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 1510,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/test.json",
+    "name": "test.json",
+    "ext": "json",
+    "sizeBytes": 22,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/api/test/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 20,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/index.json",
+    "name": "index.json",
+    "ext": "json",
+    "sizeBytes": 525,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/pdtf-key.json",
+    "name": "pdtf-key.json",
+    "ext": "json",
+    "sizeBytes": 173,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/pdtf.json",
+    "name": "pdtf.json",
+    "ext": "json",
+    "sizeBytes": 4051,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/pdtfCredentials.json",
+    "name": "pdtfCredentials.json",
+    "ext": "json",
+    "sizeBytes": 631,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/roles/pdtfIssuer.json",
+    "name": "pdtfIssuer.json",
+    "ext": "json",
+    "sizeBytes": 573,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/roles/pdtfParticipant.json",
+    "name": "pdtfParticipant.json",
+    "ext": "json",
+    "sizeBytes": 391,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/roles/pdtfVerifier.json",
+    "name": "pdtfVerifier.json",
+    "ext": "json",
+    "sizeBytes": 577,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/trustframework/schemas/example.json",
+    "name": "example.json",
+    "ext": "json",
+    "sizeBytes": 561,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/public/userSchema.json",
+    "name": "userSchema.json",
+    "ext": "json",
+    "sizeBytes": 310,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 2517,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/data-flows.png",
+    "name": "data-flows.png",
+    "ext": "png",
+    "sizeBytes": 61644,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/houston.webp",
+    "name": "houston.webp",
+    "ext": "webp",
+    "sizeBytes": 98506,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/loader.svg",
+    "name": "loader.svg",
+    "ext": "svg",
+    "sizeBytes": 564,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/opda_logo_cropped.png",
+    "name": "opda_logo_cropped.png",
+    "ext": "png",
+    "sizeBytes": 16648,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/opda_logo_text_black_cropped.png",
+    "name": "opda_logo_text_black_cropped.png",
+    "ext": "png",
+    "sizeBytes": 14919,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/opda_logo_text_white_cropped.png",
+    "name": "opda_logo_text_white_cropped.png",
+    "ext": "png",
+    "sizeBytes": 20080,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/opda_logo.png",
+    "name": "opda_logo.png",
+    "ext": "png",
+    "sizeBytes": 8156,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/orange-logo.png",
+    "name": "orange-logo.png",
+    "ext": "png",
+    "sizeBytes": 6201,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/property-pack.png",
+    "name": "property-pack.png",
+    "ext": "png",
+    "sizeBytes": 55654,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/stakeholders-transparent.png",
+    "name": "stakeholders-transparent.png",
+    "ext": "png",
+    "sizeBytes": 180819,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/src/assets/stakeholders.png",
+    "name": "stakeholders.png",
+    "ext": "png",
+    "sizeBytes": 177633,
+    "category": "Website"
+  },
+  {
+    "path": "source/07-website/source/tsconfig.json",
+    "name": "tsconfig.json",
+    "ext": "json",
+    "sizeBytes": 160,
+    "category": "Website"
+  },
+  {
+    "path": "source/_working/project-glossary.md",
+    "name": "project-glossary.md",
+    "ext": "md",
+    "sizeBytes": 3576,
+    "category": "Working notes"
+  },
+  {
+    "path": "source/_working/schema-content-generation-spec.md",
+    "name": "schema-content-generation-spec.md",
+    "ext": "md",
+    "sizeBytes": 23559,
+    "category": "Working notes"
+  },
+  {
+    "path": "source/_working/schema-section-ia.md",
+    "name": "schema-section-ia.md",
+    "ext": "md",
+    "sizeBytes": 4693,
+    "category": "Working notes"
+  }
+]
