@@ -45,7 +45,9 @@ Parameters:
     Description: >-
       Comma-separated member e-mail allowlist, enforced by the edge gate
       (ADR-0038: Auth0's shared dev keys authenticate any Google account, so
-      membership is a gate-side check).
+      membership is a gate-side check). Sourced by the infra workflow from the
+      committed config/aws/members.txt (one e-mail per line) — edit that file to
+      change who has access.
 
 Resources:
   # The edge gate's runtime config (read at cold start from eu-west-2;

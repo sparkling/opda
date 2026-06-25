@@ -1,0 +1,20 @@
+# OPDA site access allowlist — the Lambda@Edge gate admits only these e-mails.
+#
+# One e-mail per line. Lines starting with '#' and blank lines are ignored.
+# Match the Google / Auth0 sign-in e-mail exactly (the gate lower-cases before
+# comparing, so case does not matter).
+#
+# HOW IT REACHES THE LIVE GATE:
+#   Editing this file and pushing to main auto-triggers
+#   .github/workflows/infra.yml, which joins these addresses comma-separated and
+#   writes them into the site stack's SSM parameter /opda/gate/config (the
+#   `members` field). Warm edge instances pick up the change within ~5 min
+#   (the gate's SSM cache TTL). No GitHub Actions variable and no repo-admin
+#   rights are needed — just commit access to this file. (Supersedes the former
+#   OPDA_MEMBER_EMAILS Actions variable.)
+
+henrik@sparklingideas.co.uk
+contact@openpropdata.org.uk
+paul@openpropdata.org.uk
+techsupport@openpropdata.org.uk
+paul.e.albone@gmail.com

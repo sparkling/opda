@@ -14,7 +14,8 @@ name: Infrastructure (CloudFormation)
 #   vars.OPDA_SITE_DEPLOY_ROLE_ARN — from the bootstrap stack outputs
 #   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain (IdP, retained)
 #   vars.OPDA_AUTH0_CLIENT_ID      — Auth0 SPA app (public, PKCE — no secret)
-#   vars.OPDA_MEMBER_EMAILS        — comma-separated gate allowlist
+# Gate allowlist: config/aws/members.txt (committed; one e-mail per line) —
+#   replaces the former vars.OPDA_MEMBER_EMAILS Actions variable.
 
 on:
   push:
@@ -102,6 +103,11 @@ jobs:
           GATE_VERSION_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
             --stack-name opda-edge \
             --query "Stacks[0].Outputs[?OutputKey=='GateFunctionVersionArn'].OutputValue" --output text)
+          # Gate allowlist is sourced from the committed config/aws/members.txt
+          # (one e-mail per line; '#' comments + blank lines ignored), joined
+          # comma-separated. Supersedes the OPDA_MEMBER_EMAILS Actions variable.
+          MEMBER_EMAILS=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' config/aws/members.txt | paste -sd, -)
+          if [ -z "$MEMBER_EMAILS" ]; then echo "config/aws/members.txt has no addresses — refusing to lock everyone out" >&2; exit 1; fi
           aws cloudformation deploy --region eu-west-2 \
             --stack-name opda-site \
             --template-file config/aws/site-stack.yaml \
@@ -112,7 +118,7 @@ jobs:
               GateFunctionVersionArn="$GATE_VERSION_ARN" \
               Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
               Auth0ClientId="${{ vars.OPDA_AUTH0_CLIENT_ID }}" \
-              MemberEmails="${{ vars.OPDA_MEMBER_EMAILS || 'henrik@sparklingideas.co.uk' }}"
+              MemberEmails="$MEMBER_EMAILS"
 
       # ---- eu-west-2: comments stack (Artalk runtime; independent of edge/site) ----
       - name: Deploy comments stack (eu-west-2)
