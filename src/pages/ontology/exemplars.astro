@@ -84,7 +84,7 @@ const customRendering = exists('tools/custom/index.html');
     renders. Each is a worked instance graph (an ABox) that pressure-tests one named hard case,
     paired with the <code>sh:ValidationReport</code> it must produce against the ratified shapes
     graph ({paired} of {total} carry their expected-report companion). The pairing turns each
-    exemplar into a CI regression test, not just documentation (ODR-0004 §8a). The set is read at
+    exemplar into a CI regression test, not just documentation (<a href="/modelling/odr/odr-0004">ODR-0004</a> §8a). The set is read at
     build time from <code>source/03-standards/ontology/exemplars/</code>.
   </p>
 
@@ -144,7 +144,7 @@ const customRendering = exists('tools/custom/index.html');
       SHACL-AF-capable validator (pyshacl <code>advanced=True</code>), which is what the
       <code>ci-baspi5-roundtrip</code> gate runs. The conformant exemplar guards the vacuous-pass
       direction. See the <a href="/ontology/shapes#asserted-entailed">SHACL-AF note</a> and
-      known-issue ii on the <a href="/ontology#known-issues">section reference</a>.
+      known-issue ii on the <a href="/ontology/known-issues#register">section reference</a>.
     </p>
   </div>
 
@@ -192,8 +192,8 @@ const customRendering = exists('tools/custom/index.html');
     The shapes the exemplars validate against are on <a href="/ontology/shapes">SHACL shapes</a>;
     the overlay profiles they load are on <a href="/ontology/profiles">Overlay profiles &amp;
     gaps</a>; the claims/evidence exemplars exercise the model on
-    <a href="/ontology/claims">Claims, evidence &amp; provenance</a>. Governing record: ODR-0004
-    §8a (diagnostic exemplar policy + expected-report pairing); the BASPI5 round-trip is ODR-0010
-    §Q7 + ADR-0014.
+    <a href="/ontology/claims">Claims, evidence &amp; provenance</a>. Governing record: <a href="/modelling/odr/odr-0004">ODR-0004</a>
+    §8a (diagnostic exemplar policy + expected-report pairing); the BASPI5 round-trip is <a href="/modelling/odr/odr-0010">ODR-0010</a>
+    §Q7 + <a href="/modelling/adr/adr-0014">ADR-0014</a>.
   </p>
 </Layout>

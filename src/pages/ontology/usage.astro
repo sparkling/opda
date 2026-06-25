@@ -57,7 +57,7 @@ const sourceIdx = exists('artefacts/source/index.html');
   <h2 id="namespaces">Prefix &amp; namespace map</h2>
   <p>
     Bind these prefixes to read or query the ontology. The OPDA terms split across four
-    <strong>kind-keyed</strong> namespaces (ADR-0006, as-built): terms, schemes, shapes, and
+    <strong>kind-keyed</strong> namespaces (<a href="/modelling/adr/adr-0006">ADR-0006</a>, as-built): terms, schemes, shapes, and
     the named graphs each live under their own path beneath <code>opda.org.uk/pdtf/</code>.
     The remaining prefixes are the standard external vocabularies the model reuses
     (referenced, not imported — see <a href="/ontology/provenance#lineage">Decision
@@ -84,7 +84,7 @@ const sourceIdx = exists('artefacts/source/index.html');
 
   <p class="muted tiny">
     The kind-split (separate <code>/</code>, <code>/scheme/</code>, <code>/shape/</code>,
-    <code>/graph/</code>, <code>/harness/</code> paths) is the ADR-0006 as-built decision; it
+    <code>/graph/</code>, <code>/harness/</code> paths) is the <a href="/modelling/adr/adr-0006">ADR-0006</a> as-built decision; it
     is what keeps a class IRI, the SKOS scheme that types its values, and the SHACL shape that
     constrains it from colliding in one flat namespace.
   </p>
@@ -148,7 +148,7 @@ ORDER BY ?targetClass ?path</code></pre>
     Until the production endpoint serves negotiated representations, the authoritative
     machine artefacts are the committed Turtle bundles linked under
     <a href="#downloads">TTL downloads</a> below — load those into your own store and the
-    IRIs resolve locally. Note the one open caveat: the ODR-0004 <em>prose</em> still cites
+    IRIs resolve locally. Note the one open caveat: the <a href="/modelling/odr/odr-0004">ODR-0004</a> <em>prose</em> still cites
     the old <code>w3id.org/opda/#</code> namespace, but the <strong>emitted TTL uses
     <code>opda.org.uk/pdtf/</code></strong> (the as-built namespace in the map above) — see
     <a href="/ontology/known-issues">Known issues</a>.

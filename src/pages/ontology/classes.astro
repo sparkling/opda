@@ -95,7 +95,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
   <p class="lead">
     The <strong>{total} OWL classes</strong> of the OPDA PDTF ontology, grouped by bounded-context module and
     listed with each class's <code>rdfs:comment</code> — sourced from the SPARQL-extracted
-    <a href="/ontology/provenance">ontology model</a> (ADR-0044). The classes are kept deliberately few and
+    <a href="/ontology/provenance">ontology model</a> (<a href="/modelling/adr/adr-0044">ADR-0044</a>). The classes are kept deliberately few and
     rigid (every type that merely <em>varies</em> is a coded SKOS value, not a subclass — see
     <a href="/ontology/identity#doctrine">the classification doctrine</a>). <strong>Each class links to its own
     page</strong> at <code>/pdtf/{'{'}LocalName{'}'}</code> — the canonical, dereferenceable reference with its
@@ -141,7 +141,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
   <h2 id="by-category">Browse by UFO meta-category</h2>
   <p>
     The classes also group by their UFO foundational meta-category — the structured
-    <code>opda:ufoCategory</code> facet (ODR-0011 §8a), the "facets, not subclass trees" view of
+    <code>opda:ufoCategory</code> facet (<a href="/modelling/odr/odr-0011">ODR-0011</a> §8a), the "facets, not subclass trees" view of
     <a href="/ontology/identity#doctrine">the classification doctrine</a>.
   </p>
   <ul class="ufo-cat-list">
@@ -152,7 +152,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
 
   <h2 id="reference">Comparison renderings</h2>
   <p>
-    The native per-class pages above are the authoritative reference (ADR-0044). The bake-off
+    The native per-class pages above are the authoritative reference (<a href="/modelling/adr/adr-0044">ADR-0044</a>). The bake-off
     (<a href="/ontology/bake-off">ADR-0041</a>) OWL tools remain available as comparison extras — pyLODE as the
     best single-file term reference, WIDOCO as the richest publishable shell with VOWL diagrams.
   </p>

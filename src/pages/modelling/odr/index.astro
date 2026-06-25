@@ -28,7 +28,7 @@ const statusPillClass = {
 ---
 <Layout
   title="ODR Corpus"
-  description="The Linked Data Council's 18 Ontology Decision Records — the deliberation audit trail behind the OPDA ontology."
+  description={`The Linked Data Council's ${ODR_REGISTRY.length} Ontology Decision Records — the deliberation audit trail behind the OPDA ontology.`}
 >
   <h1>ODR Corpus</h1>
   <p class="lead">
@@ -39,7 +39,7 @@ const statusPillClass = {
     downstream consequences.
   </p>
   <p>
-    18 records in total — every one is a live page rendered from its markdown.
+    {ODR_REGISTRY.length} records in total — every one is a live page rendered from its markdown.
     Records marked <em>✓ diagrams</em> have been enriched with illustrative Mermaid
     diagrams per <a href="/modelling">ADR-0024</a>; the rest render as text until
     their enrichment wave lands.

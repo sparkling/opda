@@ -1,0 +1,60 @@
+---
+/**
+ * ADR detail page — mirrors the ODR detail page (src/pages/modelling/odr/[id].astro).
+ * Renders the ADR markdown through the SAME Astro content-collection pipeline as
+ * the manual and ODRs (render(entry) → <Content/>), so ADR pages inherit identical
+ * .prose styling and theme-aware diagrams. ADRs are MADR-format (no `kind` facet),
+ * so the meta strip shows status + date only.
+ */
+import { getCollection, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import { ADR_REGISTRY } from '@/lib/adr-pages.mjs';
+
+const STATUS_PILL = {
+  accepted: 'pill--ok', proposed: 'pill--warn',
+  superseded: 'pill--info', rejected: 'pill--error',
+};
+
+export async function getStaticPaths() {
+  const entries = await getCollection('adr');
+  return entries.map((entry) => {
+    const num = (String(entry.id).match(/(\d{4}[a-z]?)/) || [])[1] || '';
+    const meta = ADR_REGISTRY.find((a) => a.number === num)
+      || { id: `adr-${num}`, number: num, title: '', status: '' };
+    return { params: { id: meta.id }, props: { entry, adr: meta } };
+  });
+}
+
+const { entry, adr } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data || {};
+const dateStr = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : (data.date || adr.date || '');
+const status = adr.status || data.status || '';
+---
+<Layout
+  title={`ADR-${adr.number} — ${adr.title}`}
+  description={`Architecture Decision Record ${adr.number}: ${adr.title} (${status})`}
+  proseClass="prose wide odr-detail"
+>
+  <nav class="breadcrumb-override" aria-label="ADR breadcrumb">
+    <a href="/modelling/adr">ADR Corpus</a>
+    <span aria-hidden="true"> / </span>
+    <span>ADR-{adr.number}</span>
+  </nav>
+  <div class="odr-meta">
+    {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}
+    {dateStr && <time datetime={dateStr}>{dateStr}</time>}
+  </div>
+  <Content />
+  <footer class="odr-footer">
+    <p>
+      <a href="/modelling/adr">← Back to ADR Corpus</a>
+      &ensp;|&ensp;
+      <a href="https://github.com/sparkling/opda/tree/main/docs/adr" rel="noopener noreferrer">View source</a>
+    </p>
+    <p class="muted">
+      ADRs are MADR-format architecture decisions. A superseded ADR is replaced by a
+      later record rather than edited in place.
+    </p>
+  </footer>
+</Layout>

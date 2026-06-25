@@ -53,7 +53,7 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
   <p class="lead">
     PDTF carries its assurance story in a separate OIDC4IDA / eIDAS-shaped envelope
     (<code>pdtf-verified-claims.json</code>). OPDA re-expresses it as a <strong>PROV-O backbone
-    plus a separate assurance layer</strong> (ODR-0009): PROV-O carries the
+    plus a separate assurance layer</strong> (<a href="/modelling/odr/odr-0009">ODR-0009</a>): PROV-O carries the
     who / what-process / from-what-evidence skeleton (≈80% of the envelope, native), and the
     residual eIDAS elements PROV deliberately does not model — signatures, trust framework,
     assurance tier — are modelled <em>around</em> PROV with <code>dct:</code>, SKOS and a few
@@ -126,7 +126,7 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
   </table>
   <p class="muted">
     <code>opda:digest</code> and <code>opda:AssuranceLevel</code> are among the only bespoke
-    <code>opda:</code> terms in this layer (the eIDAS "5-residue" per ODR-0009); everything else
+    <code>opda:</code> terms in this layer (the eIDAS "5-residue" per <a href="/modelling/odr/odr-0009">ODR-0009</a>); everything else
     reuses PROV-O, <code>dct:</code> or SKOS.
   </p>
 
@@ -135,14 +135,14 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
   <p>
     <code>opda:AssuranceLevelScheme</code> is a SKOS scheme (UFO Quality Value) whose members
     inherit verbatim from <strong>eIDAS Regulation (EU) 910/2014 Article 8</strong>, plus one
-    OPDA-specific intermediate level ratified by ODR-0009 §Q3. Members read live from
+    OPDA-specific intermediate level ratified by <a href="/modelling/odr/odr-0009">ODR-0009</a> §Q3. Members read live from
     <code>opda-vocabularies.ttl</code>:
   </p>
   <table>
     <thead><tr><th>Level</th><th>Source</th><th>Note</th></tr></thead>
     <tbody>
       <tr><td><code>Low</code></td><td>eIDAS Art. 8(2)(a)</td><td>Limited confidence. A vouch-only evidence chain caps here, regardless of voucher quality.</td></tr>
-      <tr><td><code>PDTF-Standard</code></td><td>ODR-0009 §Q3</td><td>OPDA-specific intermediate level, for PDTF transactions where a direct eIDAS LoA mapping is not available.</td></tr>
+      <tr><td><code>PDTF-Standard</code></td><td><a href="/modelling/odr/odr-0009">ODR-0009</a> §Q3</td><td>OPDA-specific intermediate level, for PDTF transactions where a direct eIDAS LoA mapping is not available.</td></tr>
       <tr><td><code>Substantial</code></td><td>eIDAS Art. 8(2)(b)</td><td>Substantial confidence — e.g. a court-issued instrument or an authoritative electronic record.</td></tr>
       <tr><td><code>High</code></td><td>eIDAS Art. 8(2)(c)</td><td>High confidence in the claimed identity.</td></tr>
     </tbody>
@@ -155,7 +155,7 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
   <!-- ───────────────────────────  4 — EVIDENCE  ─────────────────────────── -->
   <h2 id="evidence">4 · Evidence as a RoleMixin + <code>evidenceType</code> facet</h2>
   <p>
-    Evidence is the sharpest application of the classification doctrine (ODR-0027). It is
+    Evidence is the sharpest application of the classification doctrine (<a href="/modelling/odr/odr-0027">ODR-0027</a>). It is
     <strong>not</strong> a subclass tree. <code>opda:Evidence</code> is a UFO
     <strong>RoleMixin</strong> (anti-rigid, cross-categorial): a bearer is evidence only
     <em>qua</em> a <code>VerificationActivity</code> using it — "evidence is a role a document
@@ -183,7 +183,7 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
     implication (e.g. <code>attestedBy</code> is required only when
     <code>evidenceType = "Vouch"</code>), never by a class-keyed shape that would require a
     reasoner to first entail a subtype. <code>rdfs:domain</code>/<code>range</code> on these
-    properties are documentary (ODR-0026 §R2); the real constraint is the SHACL.
+    properties are documentary (<a href="/modelling/odr/odr-0026">ODR-0026</a> §R2); the real constraint is the SHACL.
   </p>
   {evidenceMembers.length > 0 && (
     <p class="muted">Live <code>opda:EvidenceMethodScheme</code> members:
@@ -196,7 +196,7 @@ const backbonePresent = PROV_BACKBONE.filter((b) => {
     <a href="/ontology/exemplars">Exemplars</a>; the <code>sh:Violation</code> on an unprovenanced
     Claim and the <code>EvidenceFacetShape</code> are on <a href="/ontology/shapes">SHACL shapes</a>;
     PII on the <code>opda:Claim</code> Kind is on <a href="/ontology/governance">Governance &amp;
-    PII</a>. Governing records: ODR-0009 (claims/evidence/provenance), ODR-0027
+    PII</a>. Governing records: <a href="/modelling/odr/odr-0009">ODR-0009</a> (claims/evidence/provenance), <a href="/modelling/odr/odr-0027">ODR-0027</a>
     (RoleMixin + facet, retiring the evidence subclass tree).
   </p>
 </Layout>

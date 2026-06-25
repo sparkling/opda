@@ -59,17 +59,17 @@ const DOCTRINE = [
   <nav class="callout callout--note" aria-label="On this page">
     <p class="callout__label">On this page</p>
     <ul>
-      <li><a href="#crux">The implicit-Property crux</a> — the three-class split (ODR-0005)</li>
+      <li><a href="#crux">The implicit-Property crux</a> — the three-class split (<a href="/modelling/odr/odr-0005">ODR-0005</a>)</li>
       <li><a href="#uprn">UPRN is a contingent Quality</a> — never the IC, never owl:sameAs</li>
       <li><a href="#hard-cases">The named hard cases</a> — how Property identity behaves</li>
-      <li><a href="#doctrine">Classification doctrine</a> — facets, not subclass trees (ODR-0027)</li>
+      <li><a href="#doctrine">Classification doctrine</a> — facets, not subclass trees (<a href="/modelling/odr/odr-0027">ODR-0027</a>)</li>
     </ul>
   </nav>
 
-  <h2 id="crux">The implicit-Property crux (ODR-0005)</h2>
+  <h2 id="crux">The implicit-Property crux (<a href="/modelling/odr/odr-0005">ODR-0005</a>)</h2>
   <p>
     PDTF JSON has no first-class "property" object, yet an RDF consumer needs a rigid, identity-bearing
-    subject to attach everything to. ODR-0005 (Council session-005; Queen Guarino) splits the conflated
+    subject to attach everything to. <a href="/modelling/odr/odr-0005">ODR-0005</a> (Council session-005; Queen Guarino) splits the conflated
     notion into <strong>three UFO Substance Kinds</strong>, each committed to a DOLCE Endurant, each with
     its <em>own</em> identity criterion — not one conflated entity:
   </p>
@@ -114,7 +114,7 @@ const DOCTRINE = [
   <ul>
     <li><code>owl:sameAs</code> between any two UPRN-bearing nodes — propagates every context's properties onto every other, irreversibly under inference.</li>
     <li>Treating UPRN <em>or</em> address as the identity criterion — both are administratively contingent (UPRN) or a mode of presentation (address).</li>
-    <li>Keying a Role — a Role borrows identity from its bearer and never supplies its own (ODR-0005 anti-pattern §3).</li>
+    <li>Keying a Role — a Role borrows identity from its bearer and never supplies its own (<a href="/modelling/odr/odr-0005">ODR-0005</a> anti-pattern §3).</li>
   </ul>
   <p class="muted">
     Worked exemplars exercise exactly these surfaces: <code>flat-with-split-uprn</code>,
@@ -124,7 +124,7 @@ const DOCTRINE = [
 
   <h2 id="hard-cases">The named hard cases (how <code>opda:Property</code> identity behaves)</h2>
   <p>
-    Per ODR-0001's per-<code>kind:&nbsp;pattern</code> discipline, each identity criterion is exercised over
+    Per <a href="/modelling/odr/odr-0001">ODR-0001</a>'s per-<code>kind:&nbsp;pattern</code> discipline, each identity criterion is exercised over
     <strong>five named hard cases</strong> rather than asserted abstractly. For <code>opda:Property</code>:
   </p>
   <table>
@@ -138,12 +138,12 @@ const DOCTRINE = [
   <p>
     The unifying rule: <strong>physical-material continuity governs, with a legal-record discontinuity
     override</strong>. <code>opda:LegalEstate</code> and <code>opda:RegisteredTitle</code> each carry their own
-    five-hard-case walk in ODR-0005 §3b/§3c.
+    five-hard-case walk in <a href="/modelling/odr/odr-0005">ODR-0005</a> §3b/§3c.
   </p>
 
-  <h2 id="doctrine">Classification doctrine — facets, not subclass trees (ODR-0027)</h2>
+  <h2 id="doctrine">Classification doctrine — facets, not subclass trees (<a href="/modelling/odr/odr-0027">ODR-0027</a>)</h2>
   <p>
-    ODR-0027 adopts wholesale the sibling corpus's decade-stable
+    <a href="/modelling/odr/odr-0027">ODR-0027</a> adopts wholesale the sibling corpus's decade-stable
     <strong>classification-over-inheritance</strong> doctrine, grounded in ISO 25964 faceted classification,
     W3C SKOS, FIBO, and OntoClean/UFO. The doctrine is six rules:
   </p>
@@ -156,7 +156,7 @@ const DOCTRINE = [
     </tbody>
   </table>
   <p>
-    The OntoClean cascade behind R1 (ODR-0011 §8a): <em>anti-rigid → never a subclass</em>;
+    The OntoClean cascade behind R1 (<a href="/modelling/odr/odr-0011">ODR-0011</a> §8a): <em>anti-rigid → never a subclass</em>;
     <em>+R∧−I → classify (coded)</em>; <em>+R∧+I∧+D → Relator</em>; <em>+R∧+I∧−D → subclass</em>. The net effect:
     the ~{40} OWL classes are kept deliberately few and rigid, while the <strong>47 SKOS concept schemes</strong>
     carry all the varying classification — see <a href="/ontology/vocabularies">Vocabularies (SKOS)</a>.

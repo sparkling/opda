@@ -53,7 +53,7 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   <h1>Overlay profiles &amp; gaps</h1>
 
   <p class="lead">
-    A PDTF form <em>is</em> its SHACL overlay (ODR-0010 / ADR-0029). The {total} overlay
+    A PDTF form <em>is</em> its SHACL overlay (<a href="/modelling/odr/odr-0010">ODR-0010</a> / <a href="/modelling/adr/adr-0029">ADR-0029</a>). The {total} overlay
     profiles each constrain — never declare — over one fixed class TBox. Most are
     <strong>thin by design</strong> (session-034): a profile binds per-leaf shapes only for the
     Category-G substantive attributes; the A/B/C/D/E/F leaves are carried by
@@ -77,17 +77,17 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   <h2 id="doctrine">1 · "A form IS its SHACL overlay"</h2>
   <p>
     A class per overlay (<code>baspi:PropertyPack</code>, <code>ta6:PropertyPack</code>) was
-    rejected unanimously (ODR-0010 / session-001 Q3): that nesting is form ergonomics, not
+    rejected unanimously (<a href="/modelling/odr/odr-0010">ODR-0010</a> / session-001 Q3): that nesting is form ergonomics, not
     ontology, and would let overlays <em>declare</em> rather than <em>constrain</em>, inviting
     identity drift across near-duplicate classes. Instead each overlay is a named, dereferenceable
     <strong>SHACL profile graph over the fixed TBox</strong>; composition is a documented
     build-step graph-union. Three interface rules bind every profile against the base shapes
-    (ODR-0010 ↔ ODR-0013):
+    (<a href="/modelling/odr/odr-0010">ODR-0010</a> ↔ <a href="/modelling/odr/odr-0013">ODR-0013</a>):
   </p>
   <ol>
     <li><strong><code>sh:in</code> semantics</strong> — enum members are <em>merged</em> (set-union of base + overlay), at build time, never by entailment.</li>
     <li><strong>Severity floor</strong> — no overlay shape may relax a property the base shape declared <code>sh:Violation</code> down to <code>sh:Warning</code> / <code>sh:Info</code> (enforced by a meta-shape carrying <code>opda:metaShapeJustification</code>).</li>
-    <li><strong>No identity override</strong> — a profile may add presence and vocabulary constraints; it may never restate or alter a Kind's identity criterion or key (ODR-0005). Identity belongs to the rigid Kind, not to a form context.</li>
+    <li><strong>No identity override</strong> — a profile may add presence and vocabulary constraints; it may never restate or alter a Kind's identity criterion or key (<a href="/modelling/odr/odr-0005">ODR-0005</a>). Identity belongs to the rigid Kind, not to a form context.</li>
   </ol>
 
   <!-- ───────────────────────────  2 — GAP REGISTER  ─────────────────────────── -->
@@ -122,10 +122,10 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   </p>
 
   <!-- ───────────────────────────  3 — HELD THIN  ─────────────────────────── -->
-  <h2 id="held-thin">3 · oc1 / llc1 — held thin (ODR-0008d)</h2>
+  <h2 id="held-thin">3 · oc1 / llc1 — held thin (<a href="/modelling/odr/odr-0008d">ODR-0008d</a>)</h2>
   <p>
     <code>oc1</code> (Official Copy of Register and Title Plan) and <code>llc1</code> (Local Land
-    Charges Search) are held thin under a recorded re-open trigger (ODR-0008d / session-034 Q2):
+    Charges Search) are held thin under a recorded re-open trigger (<a href="/modelling/odr/odr-0008d">ODR-0008d</a> / session-034 Q2):
     they are <strong>authority-register extracts, not human-filled forms</strong>. Binding their
     leaves as per-leaf shapes would assert a closed-world obligation on data whose shape the
     register — not the OPDA model — owns. They stay thin until a named consumer issues a worked
@@ -137,7 +137,7 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   <h2 id="table">4 · All {total} profiles</h2>
   <p>
     Every emitted profile, ordered by binding (most-bound first). <code>baspi5</code> is the
-    most-bound profile (the ODR-0010 round-trip MVP); the NTS2 specialist-issue extensions
+    most-bound profile (the <a href="/modelling/odr/odr-0010">ODR-0010</a> round-trip MVP); the NTS2 specialist-issue extensions
     (<code>as</code>, <code>dr</code>, <code>hs</code>, …) are thin single-disclosure overlays.
     Binding and form name are read live; the source instrument is the form-question / ADR
     authority the profile's bound shapes cite via <code>dct:source</code>.
@@ -159,7 +159,7 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   <p class="muted">
     {total} profiles · {boundCount} bound · {thinCount} thin. The bound profiles cite their
     form-question anchors (e.g. <code>baspi5</code> → <code>basp.uk/forms/baspi5#B1.3.2</code>);
-    the NTS2-family extensions cite ADR-0029 (overlay-emitter rollout). The shapes the profiles
+    the NTS2-family extensions cite <a href="/modelling/adr/adr-0029">ADR-0029</a> (overlay-emitter rollout). The shapes the profiles
     carry are resolved per-shape in the
     {shaclPlay ? (<a href="/ontology/tools/shaclplay/index.html">SHACL Play! rendering ↗</a>) : (<span>SHACL Play! rendering</span>)}.
   </p>
@@ -168,8 +168,8 @@ const shaclPlay = exists('tools/shaclplay/index.html');
   <p>
     The base shapes these profiles compose over are on <a href="/ontology/shapes">SHACL shapes</a>;
     the round-trip exemplars that exercise a loaded profile (conformant + non-conformant) are on
-    <a href="/ontology/exemplars">Exemplars</a>. Governing records: ODR-0010 (overlay mechanism),
-    ADR-0029 (emitter generalisation + rollout), session-034 (gap register + thin ruling),
-    ODR-0008d (oc1 / llc1 held thin).
+    <a href="/ontology/exemplars">Exemplars</a>. Governing records: <a href="/modelling/odr/odr-0010">ODR-0010</a> (overlay mechanism),
+    <a href="/modelling/adr/adr-0029">ADR-0029</a> (emitter generalisation + rollout), session-034 (gap register + thin ruling),
+    <a href="/modelling/odr/odr-0008d">ODR-0008d</a> (oc1 / llc1 held thin).
   </p>
 </Layout>

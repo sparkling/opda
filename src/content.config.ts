@@ -48,4 +48,20 @@ const odr = defineCollection({
   }).passthrough(),
 });
 
-export const collections = { manual, odr };
+// ADRs (MADR-format) render through the SAME content-collection + markdown
+// pipeline as ODRs and the manual, inheriting identical .prose styling and
+// theme-aware diagram handling. No `kind` facet (MADR has none); lenient
+// .passthrough() keeps supersedes/depends-on/implements.
+const adr = defineCollection({
+  loader: glob({
+    pattern: 'ADR-[0-9]*.md',
+    base: './docs/adr',
+  }),
+  schema: z.object({
+    status: z.string().optional(),
+    date: z.coerce.date().optional(),
+    tags: z.array(z.string()).optional(),
+  }).passthrough(),
+});
+
+export const collections = { manual, odr, adr };

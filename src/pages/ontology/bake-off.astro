@@ -53,7 +53,7 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
   <p class="lead">
     No single off-the-shelf tool documents the whole OPDA ontology — the OWL generators skip
     SHACL and treat SKOS unevenly, and none of them render the OPDA-specific layers at all.
-    So the bake-off (ADR-0041 §Amendments) <strong>installs and runs every tool</strong>, embeds
+    So the bake-off (<a href="/modelling/adr/adr-0041">ADR-0041</a> §Amendments) <strong>installs and runs every tool</strong>, embeds
     each rendering for personal inspection, scores them per layer against the M6 rubric, and
     adopts the best method per layer into one woven reference. This page is the bake-off home;
     the adopted composition is the <a href="/ontology">/ontology</a> section itself.
@@ -71,7 +71,7 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
 
   <h2 id="tools">The bake-off — all tools</h2>
   <p>
-    Per ADR-0041 (rev-3 M2, operator direction), the bake-off installs and runs every tool so
+    Per <a href="/modelling/adr/adr-0041">ADR-0041</a> (rev-3 M2, operator direction), the bake-off installs and runs every tool so
     each rendering can be inspected personally before settling the composition. The adopted
     artefact combines tool renderings where they win, custom <code>opda-gen</code> scripts for
     the OPDA-specific layers, and LLM-authored prose for the conceptual layer.
@@ -129,7 +129,7 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
 
   <h2 id="rubric">M6 rubric scorecard</h2>
   <p>
-    The decider is the operator, on inspection (ADR-0041 rev-3 M2 / rev-4 M6); the rubric
+    The decider is the operator, on inspection (<a href="/modelling/adr/adr-0041">ADR-0041</a> rev-3 M2 / rev-4 M6); the rubric
     structures the inspection and the per-layer pick. Each tool is scored
     <strong>Full / Partial / None</strong> per coverage-matrix layer, plus fidelity (does it
     misrepresent — raw blank nodes, asserted-as-entailed, SHACL ignored) and integration cost
@@ -194,6 +194,6 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
 
   <p class="muted">
     Related: the adopted composition is the <a href="/ontology">Ontology overview</a>; the
-    decision record is in the <a href="/modelling/odr">ODR / ADR corpus</a> (ADR-0041).
+    decision record is in the <a href="/modelling/odr">ODR / ADR corpus</a> (<a href="/modelling/adr/adr-0041">ADR-0041</a>).
   </p>
 </Layout>

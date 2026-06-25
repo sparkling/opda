@@ -92,9 +92,9 @@ const EXCLUDED = [
     <p class="callout__label">On this page</p>
     <ul>
       <li><a href="#ufo">UFO meta-category legend</a> — the stereotype each class commits to</li>
-      <li><a href="#three-graph">Three-graph separation</a> — classes ⊥ shapes ⊥ annotations (ODR-0004 §3a)</li>
+      <li><a href="#three-graph">Three-graph separation</a> — classes ⊥ shapes ⊥ annotations (<a href="/modelling/odr/odr-0004">ODR-0004</a> §3a)</li>
       <li><a href="#contexts">Six bounded contexts</a> — how the industry is partitioned</li>
-      <li><a href="#boundary">Inference / validation boundary</a> — the 7 frozen rules (ODR-0029)</li>
+      <li><a href="#boundary">Inference / validation boundary</a> — the 7 frozen rules (<a href="/modelling/odr/odr-0029">ODR-0029</a>)</li>
     </ul>
   </nav>
 
@@ -153,7 +153,7 @@ const EXCLUDED = [
     record the Guizzardi 2005 and DOLCE (Masolo et al. 2003) provenance per class.
   </p>
 
-  <h2 id="three-graph">Three-graph separation (ODR-0004 §3a)</h2>
+  <h2 id="three-graph">Three-graph separation (<a href="/modelling/odr/odr-0004">ODR-0004</a> §3a)</h2>
   <p>
     The ontology keeps three artefacts <strong>strictly orthogonal</strong> —
     <strong>OWL classes ⊥ SHACL shapes ⊥ annotations</strong> — and the separation is CI-enforced.
@@ -213,7 +213,7 @@ const EXCLUDED = [
   </table>
   <p class="muted">Read live from <code>opda-contexts.ttl</code> ({counts.contexts} concepts in the scheme).</p>
 
-  <h2 id="boundary">Inference / validation boundary (ODR-0029)</h2>
+  <h2 id="boundary">Inference / validation boundary (<a href="/modelling/odr/odr-0029">ODR-0029</a>)</h2>
   <p>
     The governing principle (<a href="/modelling/odr/odr-0029">ODR-0029</a>, Council session-039):
     <strong>infer the relations whose closure the author wants materialised</strong> (subclass / subproperty
@@ -233,7 +233,7 @@ const EXCLUDED = [
     <strong>not</strong> an OWL 2 RL reasoner.
   </p>
 
-  <h3>The 7 frozen rules — the "Safe Group" (ODR-0025 §R1)</h3>
+  <h3>The 7 frozen rules — the "Safe Group" (<a href="/modelling/odr/odr-0025">ODR-0025</a> §R1)</h3>
   <table>
     <thead><tr><th>#</th><th>Construct</th><th>Entailment</th></tr></thead>
     <tbody>
@@ -256,7 +256,7 @@ const EXCLUDED = [
     This is what makes the regime <em>RL-safe</em> rather than RL or DL: no identity merging, no equivalence,
     no domain/range classification, no restriction reasoning. The corresponding <strong>domain / range
     constraints are validated</strong> by the ~273 <code>sh:targetSubjectsOf → sh:class</code> SHACL shapes
-    (ODR-0029 R3) — see <a href="/ontology/shapes">SHACL shapes</a>.
+    (<a href="/modelling/odr/odr-0029">ODR-0029</a> R3) — see <a href="/ontology/shapes">SHACL shapes</a>.
   </p>
 
   <h2 id="related">Related</h2>

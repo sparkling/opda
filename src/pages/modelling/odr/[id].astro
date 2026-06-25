@@ -18,7 +18,10 @@ const STATUS_PILL = { accepted: 'pill--ok', proposed: 'pill--warn', rejected: 'p
 export async function getStaticPaths() {
   const entries = await getCollection('odr');
   return entries.map((entry) => {
-    const num = (String(entry.id).match(/(\d{4})/) || [])[1] || '';
+    // Capture the 4-digit number AND any letter suffix (e.g. 0008d), so spawned
+    // ODRs like ODR-0008d get their own page id (odr-0008d) and don't collide
+    // with their parent (odr-0008) in getStaticPaths.
+    const num = (String(entry.id).match(/(\d{4}[a-z]?)/) || [])[1] || '';
     const meta = ODR_REGISTRY.find((o) => o.number === num)
       || { id: `odr-${num}`, number: num, title: '', kind: '', status: '' };
     return { params: { id: meta.id }, props: { entry, odr: meta } };

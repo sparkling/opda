@@ -46,7 +46,7 @@ const EXT_NS = [
     The OPDA PDTF ontology is published under <code>{BASE}</code> with a deliberate
     <strong>kind-split</strong> (<a href="/governance">ADR-0006</a>): each kind of resource — term, SKOS scheme,
     SHACL shape, named graph, governance record — lives in its own namespace segment so local names cannot
-    collide. Every IRI below <strong>dereferences</strong> to a page (ADR-0044): <code>{BASE}Property</code>
+    collide. Every IRI below <strong>dereferences</strong> to a page (<a href="/modelling/adr/adr-0044">ADR-0044</a>): <code>{BASE}Property</code>
     resolves to <a href="/pdtf/Property">/pdtf/Property</a>.
   </p>
 
@@ -65,7 +65,7 @@ const EXT_NS = [
     </tbody>
   </table>
 
-  <h2 id="rationale">Why the kind-split (ADR-0006)</h2>
+  <h2 id="rationale">Why the kind-split (<a href="/modelling/adr/adr-0006">ADR-0006</a>)</h2>
   <p>
     The ruling (directing authority, 2026-06-02) is <strong>collision-avoidance under a flat term namespace</strong>.
     A property such as <code>opda:role</code> at <code>{BASE}role</code> must not collide with the

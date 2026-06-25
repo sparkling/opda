@@ -15,6 +15,7 @@
 // registered for navigation (drives the left sidebar via getActiveSection →
 // findPage). Adding an ODR to ODR_REGISTRY surfaces it in the nav automatically.
 import { ODR_REGISTRY } from './odr-pages.mjs';
+import { ADR_REGISTRY } from './adr-pages.mjs';
 
 export type Item = {
   /** Canonical URL — matches Astro.url.pathname (no trailing slash). */
@@ -172,6 +173,13 @@ export const SECTIONS: Record<string, Section> = {
         ...ODR_REGISTRY.map((o) => ({
           url: `/modelling/odr/${o.id}`,
           title: `ODR-${o.number} · ${o.title}`,
+        })),
+      ]},
+      { heading: 'ADR corpus', items: [
+        { url: '/modelling/adr', title: 'All ADRs (index)' },
+        ...ADR_REGISTRY.map((a) => ({
+          url: `/modelling/adr/${a.id}`,
+          title: `ADR-${a.number} · ${a.title}`,
         })),
       ]},
     ],

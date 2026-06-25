@@ -429,7 +429,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Before any emitter branches on <code>tier == 3</code> semantics (no caller does today)</td>
             <td>Doc amended 2026-05-27 (ADR&nbsp;0007); code change in lockstep at ADR&nbsp;0012 worker</td>
             <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0007-ontology-generator-specification.md"><code>ADR-0007 §"Term-sourcing five-line precedence"</code></a></td>
-            <td>Discrepancy between ratified Council rule (regulators at tier 3, contextual) and engineering pseudocode (glossary at tier 3, regulator at 5). Amendment aligns ADR-0007 pseudocode + prose to ODR-0004 §7a's slot ordering.</td>
+            <td>Discrepancy between ratified Council rule (regulators at tier 3, contextual) and engineering pseudocode (glossary at tier 3, regulator at 5). Amendment aligns <a href="/modelling/adr/adr-0007">ADR-0007</a> pseudocode + prose to <a href="/modelling/odr/odr-0004">ODR-0004</a> §7a's slot ordering.</td>
           </tr>
           <tr>
             <td>G2</td>
@@ -438,7 +438,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0009 implementation start</td>
             <td>Closed 2026-05-27 (commit <code>c5629e7</code>)</td>
             <td><code>tools/opda-gen/src/opda_gen/serialiser/canonical.py:143-148</code></td>
-            <td>Literal lexical values scanned for IRI-shaped strings; two regression tests added. Verified by ADR-0009 validator.</td>
+            <td>Literal lexical values scanned for IRI-shaped strings; two regression tests added. Verified by <a href="/modelling/adr/adr-0009">ADR-0009</a> validator.</td>
           </tr>
           <tr>
             <td>G3</td>
@@ -474,7 +474,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Opportunistic</td>
             <td>Closed 2026-05-27 (this commit)</td>
             <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0009-foundation-ttl-emission.md"><code>ADR-0009 §"foundation.ttl"</code></a> prose preamble</td>
-            <td>Angle-bracket placeholders (<code>&lt;git-sha&gt;</code>, <code>&lt;emission-date&gt;</code>) are illustrative, not live-substitution directives; sentinel-pinned to satisfy byte-identity CI per ODR-0004 §6a.</td>
+            <td>Angle-bracket placeholders (<code>&lt;git-sha&gt;</code>, <code>&lt;emission-date&gt;</code>) are illustrative, not live-substitution directives; sentinel-pinned to satisfy byte-identity CI per <a href="/modelling/odr/odr-0004">ODR-0004</a> §6a.</td>
           </tr>
           <tr>
             <td>G7</td>
@@ -501,7 +501,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Before ADR&nbsp;0014 BASPI5 round-trip MVP</td>
             <td>Bundled with ADR&nbsp;0013 worker brief</td>
             <td>(forthcoming via ADR&nbsp;0013 commit)</td>
-            <td>Four schemes emitted with PLACEHOLDER warnings; real per-member data from eIDAS / OIDC4IDA / ODR-0015 §S015 Q1 / PDTF process docs.</td>
+            <td>Four schemes emitted with PLACEHOLDER warnings; real per-member data from eIDAS / OIDC4IDA / <a href="/modelling/odr/odr-0015">ODR-0015</a> §S015 Q1 / PDTF process docs.</td>
           </tr>
           <tr>
             <td>G10</td>
@@ -510,22 +510,22 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>MUST land before ADR&nbsp;0014 BASPI5 round-trip</td>
             <td>Bundled with ADR&nbsp;0014 worker brief</td>
             <td>(forthcoming via ADR&nbsp;0014 commit)</td>
-            <td>5 TransactionStatus members emit fabricated <code>&lt;...#status.Listed&gt;</code> fragments; remediation per validator option (a) — cite ODR-0011 §8a instead.</td>
+            <td>5 TransactionStatus members emit fabricated <code>&lt;...#status.Listed&gt;</code> fragments; remediation per validator option (a) — cite <a href="/modelling/odr/odr-0011">ODR-0011</a> §8a instead.</td>
           </tr>
           <tr>
             <td>G11</td>
             <td>ADR&nbsp;0011 Q5a binding table completion — remaining ~44 descriptive-attribute leaves</td>
             <td>ADR&nbsp;0013 worker (bundled with overlay profile emission)</td>
             <td>Before ADR&nbsp;0014 BASPI5 round-trip MVP</td>
-            <td>Closed 2026-05-28 (ADR-0013 implementation)</td>
-            <td>17 + 2 = 19 DatatypeProperties emitted in opda-property.ttl / opda-agent.ttl per ODR-0008 §Q5a; (G16 correction: 18 + 2 = 20 by direct enumeration).</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0013">ADR-0013</a> implementation)</td>
+            <td>17 + 2 = 19 DatatypeProperties emitted in opda-property.ttl / opda-agent.ttl per <a href="/modelling/odr/odr-0008">ODR-0008</a> §Q5a; (G16 correction: 18 + 2 = 20 by direct enumeration).</td>
           </tr>
           <tr>
             <td>G12</td>
             <td>Canonical serialiser blank-node deduplication for multi-target shared blank nodes</td>
             <td>ADR&nbsp;0013 worker (bundled)</td>
             <td>Cosmetic; opportunistic</td>
-            <td>Closed 2026-05-28 (ADR-0013 implementation)</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0013">ADR-0013</a> implementation)</td>
             <td>Resolved beyond cosmetic scope: fixed latent byte-identity bug where multi-object sort used non-deterministic rdflib BNode labels.</td>
           </tr>
           <tr>
@@ -539,33 +539,33 @@ import PageMeta from '@/components/PageMeta.astro';
           <tr>
             <td>G14</td>
             <td>Cat 4 SHACL shape activation trigger — declare opda:hasSpecialCategoryData OR route Council S012 Q3</td>
-            <td>Council Author-only session + ADR-0014 worker engineering closure</td>
-            <td>Before MVP gate (ADR-0014)</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation; Council route preserved)</td>
+            <td>Council Author-only session + <a href="/modelling/adr/adr-0014">ADR-0014</a> worker engineering closure</td>
+            <td>Before MVP gate (<a href="/modelling/adr/adr-0014">ADR-0014</a>)</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation; Council route preserved)</td>
             <td>opda:hasSpecialCategoryData declared as foundation owl:DatatypeProperty with xsd:boolean range; skos:scopeNote preserves the S012 Q3 Council ratification route.</td>
           </tr>
           <tr>
             <td>G15</td>
-            <td>Cosmetic ADR-0007 amendment — document __version__ vs owl:versionIRI decoupling rule</td>
+            <td>Cosmetic <a href="/modelling/adr/adr-0007">ADR-0007</a> amendment — document __version__ vs owl:versionIRI decoupling rule</td>
             <td>Author / opportunistic</td>
             <td>Opportunistic</td>
             <td>Closed 2026-05-27</td>
-            <td>ADR-0007 §"A9 per-kind discipline output" amended to document the decoupling rule.</td>
+            <td><a href="/modelling/adr/adr-0007">ADR-0007</a> §"A9 per-kind discipline output" amended to document the decoupling rule.</td>
           </tr>
           <tr>
             <td>G16</td>
-            <td>ADR-0013 implementation report DatatypeProperty count: 19 → 20 (worker under-counted)</td>
+            <td><a href="/modelling/adr/adr-0013">ADR-0013</a> implementation report DatatypeProperty count: 19 → 20 (worker under-counted)</td>
             <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
             <td>Opportunistic</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
-            <td>ADR-0013 report § G11 updated 19 → 20 (18 property + 2 agent).</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation)</td>
+            <td><a href="/modelling/adr/adr-0013">ADR-0013</a> report § G11 updated 19 → 20 (18 property + 2 agent).</td>
           </tr>
           <tr>
             <td>G17</td>
             <td>Stale "five foundation classes" doc-comments in foundation.py + opda-classes.ttl header</td>
             <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
             <td>Opportunistic</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation)</td>
             <td>Foundation generator docstrings + extra_lines now name the six foundation classes; opda-classes.ttl + opda-annotations.ttl headers regenerated.</td>
           </tr>
           <tr>
@@ -573,7 +573,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Declare opda:role as DatatypeProperty in opda-agent.ttl for DASH editor ergonomics</td>
             <td>ADR&nbsp;0014 worker (bundled)</td>
             <td>Before MVP gate</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation)</td>
             <td>opda:role declared with rdfs:domain opda:RoleMixin + rdfs:range xsd:string + A9 metadata; typed encoding (a opda:Seller) remains canonical.</td>
           </tr>
           <tr>
@@ -581,16 +581,16 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Fix 4 BASPI5 profile anchor URL mismatches (A1.8.7, A7.5.1, B1.2, A1)</td>
             <td>ADR&nbsp;0014 worker (bundled)</td>
             <td>Before MVP gate (form-question IRI resolution)</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation)</td>
             <td>A1 → A1.1; A1.8.7 → A1.8.4.1; A7.5.1 → B4.6.2; B1.2 → B1.1. All four now exact-match a baspi5Ref value in baspi5.json.</td>
           </tr>
           <tr>
             <td>G20</td>
-            <td>ADR-0013 implementation report anchor count: 36 → 28 (worker over-counted)</td>
+            <td><a href="/modelling/adr/adr-0013">ADR-0013</a> implementation report anchor count: 36 → 28 (worker over-counted)</td>
             <td>ADR&nbsp;0014 worker (bundled, cosmetic)</td>
             <td>Opportunistic</td>
-            <td>Closed 2026-05-28 (ADR-0014 implementation)</td>
-            <td>ADR-0013 report anchor counts updated to 28 distinct anchors (validator's canonical count).</td>
+            <td>Closed 2026-05-28 (<a href="/modelling/adr/adr-0014">ADR-0014</a> implementation)</td>
+            <td><a href="/modelling/adr/adr-0013">ADR-0013</a> report anchor counts updated to 28 distinct anchors (validator's canonical count).</td>
           </tr>
         </tbody>
       </table>

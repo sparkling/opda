@@ -114,7 +114,7 @@ import PageMeta from '@/components/PageMeta.astro';
       <strong>VC / DID compatibility waived.</strong> The Verifiable Credentials / DID
       compatibility layer (<a href="/modelling/odr/odr-0016">ODR-0016</a>) is held as
       proposed and waived for this cut — claims provenance is delivered through PROV-O
-      (ODR-0009), not a VC envelope, in the current reference.
+      (<a href="/modelling/odr/odr-0009">ODR-0009</a>), not a VC envelope, in the current reference.
     </li>
   </ul>
 
@@ -125,7 +125,7 @@ import PageMeta from '@/components/PageMeta.astro';
   </p>
   <ul>
     <li>
-      <strong>ADR-0041 (session-038) — this reference is the generation model.</strong>
+      <strong><a href="/modelling/adr/adr-0041">ADR-0041</a> (session-038) — this reference is the generation model.</strong>
       The Ontology Reference Document decision: <code>/ontology</code> is the published,
       authoritative reference, generated from the committed TTL corpus and guarded by the
       doc-drift CI gate, with the multi-tool bake-off scored per layer and the best method
@@ -134,7 +134,7 @@ import PageMeta from '@/components/PageMeta.astro';
       <a href="/ontology/bake-off">Tool bake-off</a> page.
     </li>
     <li>
-      <strong>ODR-0029 (session-039) — the inference / validation boundary.</strong>
+      <strong><a href="/modelling/odr/odr-0029">ODR-0029</a> (session-039) — the inference / validation boundary.</strong>
       <a href="/modelling/odr/odr-0029">ODR-0029</a> disposes of the entailment regime: infer
       the relations whose closure the author wants (the seven frozen rules — subclass,
       subproperty, inverse, symmetric, transitive and their kin); validate the constraints
@@ -143,7 +143,7 @@ import PageMeta from '@/components/PageMeta.astro';
       so a single rendering per tool is correct (entailed ≡ asserted here).
     </li>
     <li>
-      <strong>ADR-0042 — the rename.</strong> The <code>/manual</code> section was renamed
+      <strong><a href="/modelling/adr/adr-0042">ADR-0042</a> — the rename.</strong> The <code>/manual</code> section was renamed
       to <code>/model</code> (the DAMA four-tier reader presentation). This reference links
       out to <a href="/model">/model</a> for the tiered reader view; the rename is recorded
       so old <code>/manual</code> references resolve to the decision.

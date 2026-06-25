@@ -63,6 +63,14 @@ api: node_modules	## Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031
 ontology-model: node_modules	## Extract src/data/ontology-model.json from a running Fuseki (ADR-0044 Phase 1; needs `make serve-data`)
 	npm run ontology:model
 
+.PHONY: gen-adr
+gen-adr: node_modules	## Regenerate src/lib/adr-pages.mjs (ADR registry) from docs/adr/ADR-*.md
+	node scripts/gen-adr-registry.mjs
+
+.PHONY: check-adr
+check-adr: node_modules	## ADR-registry drift gate: fail if src/lib/adr-pages.mjs is stale vs docs/adr/
+	node scripts/gen-adr-registry.mjs --check
+
 .PHONY: skosmos
 skosmos: ## Browse the SKOS vocabularies in Skosmos over the local Fuseki (needs `make serve-data`) → http://localhost:9090/
 	@docker rm -f opda-skosmos >/dev/null 2>&1 || true
@@ -131,7 +139,7 @@ check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: test ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+ci: test check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy

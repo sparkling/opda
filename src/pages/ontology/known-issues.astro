@@ -51,7 +51,7 @@ import PageMeta from '@/components/PageMeta.astro';
           A naive full-RDFS/OWL consumer mis-infers <code>EPCCertificate ⊑ Property</code>
           (because <code>currentEnergyRating</code> has <code>rdfs:domain</code>
           <code>Property</code>). <strong>OPDA's own Safe-Group closure excludes domain/range
-          rules and does NOT produce this</strong> (ODR-0025 §R7); the round-trip exemplars
+          rules and does NOT produce this</strong> (<a href="/modelling/odr/odr-0025">ODR-0025</a> §R7); the round-trip exemplars
           validate against the Safe-Group closure. The model is correct — this is a trap a
           naive consumer sets for itself.
         </td>
@@ -110,11 +110,11 @@ import PageMeta from '@/components/PageMeta.astro';
         </td>
       </tr>
       <tr>
-        <td><strong>ODR-0004 namespace prose drift</strong></td>
+        <td><strong><a href="/modelling/odr/odr-0004">ODR-0004</a> namespace prose drift</strong></td>
         <td><a href="/modelling/odr/odr-0004">ODR-0004</a></td>
         <td><span class="pill pill--warn">Open (prose cleanup)</span></td>
         <td>
-          The ODR-0004 prose still cites the old <code>w3id.org/opda/#</code> namespace; the
+          The <a href="/modelling/odr/odr-0004">ODR-0004</a> prose still cites the old <code>w3id.org/opda/#</code> namespace; the
           emitted TTL correctly uses <code>opda.org.uk/pdtf/</code> (the as-built namespace —
           see <a href="/ontology/usage#namespaces">the prefix map</a>). Prose-only cleanup.
         </td>

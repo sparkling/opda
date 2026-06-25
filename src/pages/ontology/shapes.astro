@@ -109,7 +109,7 @@ const totalShapePages = allShapeEntries.length;
     carry the per-Kind resource shapes that compose with the overlay profiles. Shapes
     <strong>target</strong> classes via <code>sh:targetClass</code> / <code>sh:targetNode</code>
     / <code>sh:targetSubjectsOf</code> — they never <code>owl:imports</code> the class graph
-    (ODR-0004 §3a three-graph separation; ODR-0010 §Q3).
+    (<a href="/modelling/odr/odr-0004">ODR-0004</a> §3a three-graph separation; <a href="/modelling/odr/odr-0010">ODR-0010</a> §Q3).
   </p>
   <table>
     <thead><tr><th>Shapes file</th><th>Module / scope</th><th>Node shapes</th></tr></thead>
@@ -152,9 +152,9 @@ const totalShapePages = allShapeEntries.length;
   ))}
 
   <!-- ───────────────────────────  2 — SEVERITY  ─────────────────────────── -->
-  <h2 id="severity">2 · The severity scheme — regulatory weight (ODR-0013)</h2>
+  <h2 id="severity">2 · The severity scheme — regulatory weight (<a href="/modelling/odr/odr-0013">ODR-0013</a>)</h2>
   <p>
-    Flat pass/fail buries the loudest error under noise. ODR-0013 (Guizzardi) ties the three
+    Flat pass/fail buries the loudest error under noise. <a href="/modelling/odr/odr-0013">ODR-0013</a> (Guizzardi) ties the three
     SHACL severities to <strong>regulatory weight, not schema nesting</strong>: the rarest, most
     damaging error (identity loss) must be the loudest; the routine omission must be the
     quietest. Enforcement is a review rule — every <code>sh:Violation</code> shape must guard a
@@ -171,14 +171,14 @@ const totalShapePages = allShapeEntries.length;
           <code>RegisteredTitle</code> with no title number; a Role with no founding Relator
           (a <code>Seller</code> with no <code>Transaction</code>); an <code>opda:Claim</code>
           with no <code>prov:wasDerivedFrom</code> and no explicit "unverified" marker
-          (Moreau, ODR-0009).</td>
+          (Moreau, <a href="/modelling/odr/odr-0009">ODR-0009</a>).</td>
         <td>{totals.violation}</td>
       </tr>
       <tr>
         <td><code>sh:Warning</code></td>
         <td>Missing profile / disclosure constraint, or a sensitivity-marker gap</td>
         <td>An overlay-profile gap; a special-category or personal-data marker absent on a
-          PII-bearing class (Pandit, ODR-0012 sensitivity gate — e.g. the
+          PII-bearing class (Pandit, <a href="/modelling/odr/odr-0012">ODR-0012</a> sensitivity gate — e.g. the
           <code>PIIWithoutDPVCoAnnotationRule</code>).</td>
         <td>{totals.warning}</td>
       </tr>
@@ -186,7 +186,7 @@ const totalShapePages = allShapeEntries.length;
         <td><code>sh:Info</code></td>
         <td>Absent optional attribute</td>
         <td>A non-blocking quality rule's status materialisation (e.g. the UPRN- / lease-term- /
-          milestone-variance succession rules, held at <code>sh:Info</code> per ODR-0017 §1a).</td>
+          milestone-variance succession rules, held at <code>sh:Info</code> per <a href="/modelling/odr/odr-0017">ODR-0017</a> §1a).</td>
         <td>{totals.info}</td>
       </tr>
     </tbody>
@@ -198,12 +198,12 @@ const totalShapePages = allShapeEntries.length;
   </p>
 
   <!-- ───────────────────────────  3 — DOMAIN/RANGE  ─────────────────────────── -->
-  <h2 id="domain-range">3 · Domain/range as constraint — {drShapes} shapes (ODR-0029 R3)</h2>
+  <h2 id="domain-range">3 · Domain/range as constraint — {drShapes} shapes (<a href="/modelling/odr/odr-0029">ODR-0029</a> R3)</h2>
   <p>
-    ODR-0029 R3 drew the inference/validation boundary sharply: <code>rdfs:domain</code> /
+    <a href="/modelling/odr/odr-0029">ODR-0029</a> R3 drew the inference/validation boundary sharply: <code>rdfs:domain</code> /
     <code>rdfs:range</code> on the OWL properties are <strong>documentary</strong>, never
     materialised by OPDA's Safe-Group closure (which deliberately excludes the domain/range
-    rules — ODR-0025 §R7, so a naive consumer's <code>EPCCertificate ⊑ Property</code> mis-inference
+    rules — <a href="/modelling/odr/odr-0025">ODR-0025</a> §R7, so a naive consumer's <code>EPCCertificate ⊑ Property</code> mis-inference
     is a consumer-side trap, not a fact in OPDA's graph). The <em>enforceable</em> typing is
     carried instead as SHACL: <code>sh:targetSubjectsOf</code> a property →
     <code>sh:class</code> on the subject (domain-as-constraint), and
@@ -218,10 +218,10 @@ const totalShapePages = allShapeEntries.length;
     </tbody>
   </table>
   <p>
-    This is the same value-keyed enforcement doctrine the classification layer uses (ODR-0027):
+    This is the same value-keyed enforcement doctrine the classification layer uses (<a href="/modelling/odr/odr-0027">ODR-0027</a>):
     constraints are keyed to the <em>property in use</em>, not to a class membership a reasoner
     must first entail. It keeps the closure at zero added triples over the flat schema while the
-    SHACL graph carries every real obligation. ODR-0029 R3 records 273 such shapes; the live
+    SHACL graph carries every real obligation. <a href="/modelling/odr/odr-0029">ODR-0029</a> R3 records 273 such shapes; the live
     count above re-reads them from the committed corpus on every build.
   </p>
 
@@ -244,7 +244,7 @@ const totalShapePages = allShapeEntries.length;
       <strong>Inference (the frozen rule fragment, open-world).</strong> What the author wants
       in the <em>closure</em> — subclass / subproperty / inverse / symmetric / transitive (the 7
       sound-but-RL-incomplete rules of <code>config/opda-rdfs-plus.rules</code>; <strong>not</strong>
-      an OWL 2 RL reasoner, ODR-0029 R5). It materialises into a separate
+      an OWL 2 RL reasoner, <a href="/modelling/odr/odr-0029">ODR-0029</a> R5). It materialises into a separate
       <em>derived</em> graph and adds 0 triples over the flat schema today.
     </li>
   </ul>
@@ -254,14 +254,14 @@ const totalShapePages = allShapeEntries.length;
       {totals.afRules} <code>sh:rule</code> and {totals.afSparql} <code>sh:sparql</code>
       constructs in the shapes graph are <strong>SHACL Advanced Features</strong>: the
       non-blocking quality-rule status materialisations (UPRN / lease-term / milestone-variance /
-      capacity-authority / identifier succession, ODR-0017), the PII-without-DPV-co-annotation
+      capacity-authority / identifier succession, <a href="/modelling/odr/odr-0017">ODR-0017</a>), the PII-without-DPV-co-annotation
       meta-rule, and — critically — the <code>sellersCapacity</code> <code>sh:xone</code>
-      discrimination (ODR-0010 Rule 3). A <strong>SHACL-Core-only</strong> processor passes the
+      discrimination (<a href="/modelling/odr/odr-0010">ODR-0010</a> Rule 3). A <strong>SHACL-Core-only</strong> processor passes the
       <code>sh:xone</code>-of-property-shapes <em>vacuously</em> (it reads
       <code>conforms true</code>); the BASPI5 non-conformant exemplar only trips its
       B1.3.2 violation under a SHACL-AF-capable validator — pyshacl with
       <code>advanced=True</code> (known-issue ii on the
-      <a href="/ontology#known-issues">section reference</a>; a conformant-Legal-Owner exemplar
+      <a href="/ontology/known-issues#register">section reference</a>; a conformant-Legal-Owner exemplar
       guards the vacuous-pass direction).
     </p>
   </div>
@@ -269,7 +269,7 @@ const totalShapePages = allShapeEntries.length;
   <!-- ───────────────────────────  5 — SHACL PLAY!  ─────────────────────────── -->
   <h2 id="shaclplay">5 · SHACL Play! — the SHACL reference rendering</h2>
   <p>
-    Of the bake-off tools (ADR-0041), the OWL generators (pyLODE, WIDOCO, Ontospy) all score
+    Of the bake-off tools (<a href="/modelling/adr/adr-0041">ADR-0041</a>), the OWL generators (pyLODE, WIDOCO, Ontospy) all score
     <strong>None</strong> on SHACL — they document the class graph and skip the shapes. Sparna's
     <strong>SHACL Play!</strong> is the only one that documents SHACL: it resolves all the blank
     nodes (the nested <code>sh:property</code> shapes that the inventory above counts but cannot
@@ -295,8 +295,8 @@ const totalShapePages = allShapeEntries.length;
     <a href="/ontology/exemplars">Exemplars</a>. The merged shapes graph download and the 24
     per-module TTLs are linked from the
     {sourceIdx ? (<a href="/ontology/artefacts/source/index.html">artefacts index</a>) : (<span>artefacts index</span>)}
-    on the <a href="/ontology">section overview</a>. Governing records: ODR-0013 (severity),
-    ODR-0029 (domain/range-as-constraint + inference boundary), ODR-0017 (SHACL-AF quality rules),
-    ODR-0010 (overlay <code>sh:xone</code>).
+    on the <a href="/ontology">section overview</a>. Governing records: <a href="/modelling/odr/odr-0013">ODR-0013</a> (severity),
+    <a href="/modelling/odr/odr-0029">ODR-0029</a> (domain/range-as-constraint + inference boundary), <a href="/modelling/odr/odr-0017">ODR-0017</a> (SHACL-AF quality rules),
+    <a href="/modelling/odr/odr-0010">ODR-0010</a> (overlay <code>sh:xone</code>).
   </p>
 </Layout>

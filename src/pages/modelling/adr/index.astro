@@ -1,0 +1,77 @@
+---
+/**
+ * ADR corpus listing page — mirrors the ODR corpus index
+ * (src/pages/modelling/odr/index.astro).
+ *
+ * Lists every Architecture Decision Record (MADR-format) from the generated
+ * ADR_REGISTRY (scripts/gen-adr-registry.mjs). Each row links to its
+ * /modelling/adr/<id> detail page, rendered from the ADR markdown via the Astro
+ * `adr` content collection. This page generates nothing at request time — it
+ * serves the registry.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { ADR_REGISTRY } from '@/lib/adr-pages.mjs';
+
+const statusPillClass = {
+  accepted:   'pill--ok',
+  proposed:   'pill--warn',
+  superseded: 'pill--info',
+  rejected:   'pill--error',
+};
+---
+<Layout
+  title="ADR Corpus"
+  description={`The OPDA programme's ${ADR_REGISTRY.length} Architecture Decision Records — the engineering & infrastructure decision trail behind the site, generator, and ontology toolchain.`}
+>
+  <h1>ADR Corpus</h1>
+  <p class="lead">
+    The <strong>Architecture Decision Records (ADRs)</strong> capture the
+    <em>engineering</em> decisions behind the OPDA programme — the site
+    architecture, the ontology generator and CI gates, the modelling toolchain,
+    and the hosting/deployment pipeline. Each record states the context, the
+    options weighed, and the decision taken.
+  </p>
+  <p>
+    {ADR_REGISTRY.length} records in total — every one is a live page rendered from its
+    <a href="https://github.com/sparkling/opda/tree/main/docs/adr" rel="noopener noreferrer">MADR markdown</a>.
+    ADRs are the counterpart to the <a href="/modelling/odr">Ontology Decision Records (ODRs)</a>:
+    ADRs decide <em>how we build</em>; ODRs decide <em>what the model means</em>.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ADR_REGISTRY.map((adr) => (
+        <tr>
+          <td><code>{adr.number}</code></td>
+          <td><a href={`/modelling/adr/${adr.id}`}>{adr.title}</a></td>
+          <td><span class={`pill ${statusPillClass[adr.status] ?? ''}`}>{adr.status}</span></td>
+          <td><a href={`/modelling/adr/${adr.id}`}>view</a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>About ADRs</h2>
+  <p>
+    An <strong>ADR</strong> records a single architecture decision in
+    <a href="https://adr.github.io/madr/" rel="noopener noreferrer">MADR</a> format:
+    a short context-and-problem statement, the options considered, the decision
+    outcome, and its consequences. ADRs are immutable once accepted — a later
+    decision <em>supersedes</em> an earlier one with a new record rather than
+    editing it in place.
+  </p>
+  <p>
+    The corpus spans application and infrastructure concerns (site build, AWS
+    hosting and CI/CD, source-archive publishing) as well as the ontology
+    engineering pipeline. The semantic-modelling rationale — what the ontology
+    asserts and why — lives in the <a href="/modelling/odr">ODR corpus</a>.
+  </p>
+</Layout>

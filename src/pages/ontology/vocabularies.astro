@@ -35,7 +35,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
     The <strong>{schemes.length} SKOS concept schemes</strong> ({totalConcepts} concepts in total) that carry
     every coded value-space in the ontology — from the SPARQL-extracted
     <a href="/ontology/provenance">ontology model</a>. Under the
-    <a href="/ontology/identity#doctrine">classification doctrine</a> (ODR-0027), these schemes do the work that
+    <a href="/ontology/identity#doctrine">classification doctrine</a> (<a href="/modelling/odr/odr-0027">ODR-0027</a>), these schemes do the work that
     subclass trees do in lesser models: every enumeration, status set, and kind-discriminator is a
     <code>skos:ConceptScheme</code> referenced by a coded value — <em>never</em> an <code>owl:oneOf</code> bag
     and never a subclass enumeration. <strong>Each scheme links to its own page</strong> with its full concept
@@ -45,14 +45,14 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
   <nav class="callout callout--note" aria-label="On this page">
     <p class="callout__label">On this page</p>
     <ul>
-      <li><a href="#kind-split">The <code>/pdtf/scheme/</code> kind-split</a> — why schemes live in their own namespace (ADR-0006)</li>
+      <li><a href="#kind-split">The <code>/pdtf/scheme/</code> kind-split</a> — why schemes live in their own namespace (<a href="/modelling/adr/adr-0006">ADR-0006</a>)</li>
       <li><a href="#ufo">UFO-category roll-up</a> — the seven-category framework</li>
       <li><a href="#index">Scheme index</a> — all {schemes.length}, linked, with concept counts</li>
       <li><a href="#browse">Browse per-concept</a> — Skosmos &amp; Ontospy</li>
     </ul>
   </nav>
 
-  <h2 id="kind-split">The <code>/pdtf/scheme/</code> kind-split (ADR-0006)</h2>
+  <h2 id="kind-split">The <code>/pdtf/scheme/</code> kind-split (<a href="/modelling/adr/adr-0006">ADR-0006</a>)</h2>
   <p>
     The concept schemes deliberately live under a <strong>separate namespace segment</strong>,
     <code>https://opda.org.uk/pdtf/scheme/</code> (prefix <code>opda-v:</code>), distinct from the flat term

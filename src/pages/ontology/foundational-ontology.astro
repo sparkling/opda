@@ -114,17 +114,17 @@ const REALSTACKS = [
   </p>
   <ul>
     <li><strong>gUFO advisory annotations.</strong> {gufoEmitted ? 'A handful of' : 'A gated set of'} <code>rdf:type gufo:Quality</code>
-      markers sit in the descriptive <em>annotation</em> graph (ADR-0034), quarantined from the class and
+      markers sit in the descriptive <em>annotation</em> graph (<a href="/modelling/adr/adr-0034">ADR-0034</a>), quarantined from the class and
       shapes graphs and never reasoned over. gUFO is the "gentle", lightweight OWL implementation of UFO.</li>
     <li><strong>The seven-category framework as SKOS tags.</strong> Each enum scheme carries one
-      <code>opda:ufoCategory</code> label (ODR-0011 §8a) — an advisory classification, dual-sourced to
+      <code>opda:ufoCategory</code> label (<a href="/modelling/odr/odr-0011">ODR-0011</a> §8a) — an advisory classification, dual-sourced to
       Guizzardi&nbsp;2005 / DOLCE and the OPDA council that bound it.</li>
     <li><strong>OntoClean as a decision procedure.</strong> The rigidity / identity / dependence tests
       decide one thing: whether a distinction earns an OWL subclass or stays a coded SKOS facet
       (the classification-over-inheritance doctrine, <a href="/modelling/odr/odr-0027">ODR-0027</a>).</li>
   </ul>
   <div class="callout callout--note">
-    <p class="callout__label">It was a UFO+DOLCE hybrid — and ODR-0031 acted on it</p>
+    <p class="callout__label">It was a UFO+DOLCE hybrid — and <a href="/modelling/odr/odr-0031">ODR-0031</a> acted on it</p>
     <p>
       At session-040 the facet was a UFO+DOLCE hybrid: <strong>35 of 47</strong> scheme-level
       <code>opda:ufoCategory</code> tags read <code>Quale-in-Region</code> — a <strong>DOLCE</strong> construct
@@ -240,7 +240,7 @@ const REALSTACKS = [
       </tr>
       <tr>
         <td>Descriptive (cognition / language-respecting) register suits socially-constructed artefacts (titles, charges, obligations) better than BFO's realism.</td>
-        <td>Needs linked-data / formal-ontology skills "less common than JSON tooling" across member firms (ADR-0039) — mitigated by generating JSON Schema / OpenAPI from the model.</td>
+        <td>Needs linked-data / formal-ontology skills "less common than JSON tooling" across member firms (<a href="/modelling/adr/adr-0039">ADR-0039</a>) — mitigated by generating JSON Schema / OpenAPI from the model.</td>
       </tr>
       <tr>
         <td>OntoClean is a principled, reusable rule for the subclass-vs-facet decision the standard makes constantly.</td>
