@@ -29,7 +29,7 @@
 import { spawn } from 'node:child_process';
 import { execSync } from 'node:child_process';
 import { createWriteStream, existsSync, mkdirSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { readFile, rm } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import crypto from 'node:crypto';
@@ -101,14 +101,30 @@ async function ensureFuseki() {
 
   mkdirSync(CACHE_DIR, { recursive: true });
   const tarball = path.join(CACHE_DIR, FUSEKI_TARBALL);
-  console.log(`  [provision] downloading Apache Jena Fuseki ${FUSEKI_VERSION}`);
-  const res = await fetch(FUSEKI_DOWNLOAD);
-  if (!res.ok) throw new Error(`Fuseki download failed: ${res.status}`);
-  await pipeline(Readable.fromWeb(res.body), createWriteStream(tarball));
 
-  const digest = crypto.createHash('sha512').update(await readFile(tarball)).digest('hex');
-  if (digest !== FUSEKI_SHA512) {
-    throw new Error(`Fuseki ${FUSEKI_TARBALL} sha512 mismatch — refusing to use`);
+  // The Apache mirror download is the flakiest step in CI — a transient
+  // `fetch failed` here fails the whole deploy. Retry with backoff, treating a
+  // truncated download (sha512 mismatch) as a retryable failure and clearing
+  // the partial file between attempts.
+  const ATTEMPTS = 4;
+  let downloaded = false;
+  for (let attempt = 1; attempt <= ATTEMPTS && !downloaded; attempt++) {
+    try {
+      const suffix = attempt > 1 ? ` (attempt ${attempt}/${ATTEMPTS})` : '';
+      console.log(`  [provision] downloading Apache Jena Fuseki ${FUSEKI_VERSION}${suffix}`);
+      const res = await fetch(FUSEKI_DOWNLOAD);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      await pipeline(Readable.fromWeb(res.body), createWriteStream(tarball));
+      const digest = crypto.createHash('sha512').update(await readFile(tarball)).digest('hex');
+      if (digest !== FUSEKI_SHA512) throw new Error('sha512 mismatch (truncated download?)');
+      downloaded = true;
+    } catch (err) {
+      await rm(tarball, { force: true });
+      if (attempt === ATTEMPTS) throw new Error(`Fuseki download failed after ${ATTEMPTS} attempts: ${err.message}`);
+      const delayMs = 3000 * attempt;
+      console.log(`  [provision] download failed (${err.message}); retrying in ${delayMs / 1000}s`);
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
   }
   execSync(`tar xzf "${FUSEKI_TARBALL}" -C .`, { cwd: CACHE_DIR, stdio: 'inherit' });
   if (!existsSync(jar)) throw new Error(`fuseki-server.jar missing after extract: ${jar}`);
