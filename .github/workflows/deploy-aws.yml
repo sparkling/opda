@@ -64,6 +64,18 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      # Cache the self-provisioned Fuseki dist (.fuseki/ — the 49 MB tarball +
+      # extracted tree). archive.apache.org throttles to ~80 KB/s, so the
+      # download alone is ~600s — 94% of build:data and the deploy's single
+      # biggest cost (profiled in ADR-0053). On a cache hit, ensureFuseki() finds
+      # the extracted jar and skips the download + extract entirely. Keyed on the
+      # Fuseki version so a bump (build-with-data.mjs FUSEKI_VERSION) re-primes it.
+      - name: Cache Apache Jena Fuseki dist
+        uses: actions/cache@v4
+        with:
+          path: .fuseki
+          key: fuseki-6.1.0
+
       # The ADR-0048 gate below invokes the opda-gen CLI — needs Python + the
       # package installed, same as the ontology-byte-identity / baspi5 workflows.
       - uses: actions/setup-python@v6
