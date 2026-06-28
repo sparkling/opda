@@ -163,6 +163,27 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
+  # Rewrites /resources/<path> → /<path> before the resources-s3 origin fetch.
+  # The bucket mirrors source/ at its root, so the object key carries no
+  # `resources/` prefix; CloudFront otherwise forwards the full URI and every
+  # /resources/* request 404s. A CloudFront Function (viewer-request) is the
+  # cheapest, lowest-latency way to do this — no Lambda@Edge needed.
+  ResourcesPrefixStripFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: opda-resources-prefix-strip
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Strip the /resources prefix for the resources-s3 origin
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          request.uri = request.uri.replace(/^\/resources/, '');
+          if (request.uri === '') { request.uri = '/'; }
+          return request;
+        }
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -216,6 +237,12 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
             Compress: true
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
+            # Strip the /resources prefix so the request maps to the bucket key
+            # (the bucket mirrors source/ at its root, e.g. 08-foo/bar.pdf —
+            # NOT resources/08-foo/bar.pdf). Without this every /resources/* 404s.
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt ResourcesPrefixStripFunction.FunctionARN
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
             ViewerProtocolPolicy: redirect-to-https

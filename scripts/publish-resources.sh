@@ -40,13 +40,23 @@ AWS_REGION="eu-west-2"     # region the opda-site stack lives in (see infra.yml)
 # EXCLUSIONS — files held back from the public mirror.
 #
 # The project owner has confirmed the whole source/ archive is public (ADR-0054
-# — OPDA is an open project; all source material already exists publicly), so
-# there are NO exclusions: the entire tree is published.
+# — OPDA is an open project; all source material already exists publicly). The
+# only exclusions are build/VCS junk that must never be published: the nested
+# repos' (trust-framework, schemas) node_modules/ and .git/ histories, plus OS
+# cruft. These match the resources-manifest.mjs exclusions, so the bucket
+# mirrors exactly what /library/resources links.
 #
-# To hold a file back: add an `--exclude "<glob>"` line below. Globs are
+# To hold a content file back: add an `--exclude "<glob>"` line below. Globs are
 # relative to source/ (the sync root), so they carry NO leading "source/".
 # ─────────────────────────────────────────────────────────────────────────
 EXCLUDES=(
+  --exclude "*/node_modules/*"
+  --exclude "node_modules/*"
+  --exclude "*/.git/*"
+  --exclude ".git/*"
+  --exclude "*/.DS_Store"
+  --exclude ".DS_Store"
+  --exclude "*.log"
 )
 
 # ── 1. Prereqs ────────────────────────────────────────────────────────────
