@@ -49,7 +49,80 @@ import Layout from '@/layouts/Layout.astro';
     return '/' + p.replace(/^\/+/, '');               // other roots: served as-is
   }
 
-  function renderResource() {
+  // Extension → render strategy. Covers every type present in the S3 archive
+  // plus common siblings, so the viewer degrades gracefully for anything.
+  const IMAGE  = new Set(['png','jpg','jpeg','webp','gif','avif','bmp','ico','svg']);
+  const VIDEO  = new Set(['mp4','webm','mov','m4v','ogv']);
+  const AUDIO  = new Set(['mp3','wav','ogg','oga','m4a','flac','aac']);
+  const FRAME  = new Set(['pdf','html','htm']);                 // browser renders natively
+  const OFFICE = new Set(['docx','xlsx','pptx','doc','xls','ppt']); // Office Online preview
+  const TEXT   = new Set(['txt','md','markdown','mdx','ttl','rdf','n3','nt','nq','trig',
+    'json','jsonld','geojson','xml','yaml','yml','toml','ini','env','cfg','conf','properties',
+    'csv','tsv','js','mjs','cjs','jsx','ts','tsx','css','scss','less','sh','bash','zsh','py',
+    'rb','sql','log','patch','diff','vtt','srt','gitignore','nvmrc','prettierrc','firebaserc',
+    'editorconfig','iml','graphql','gql','map']);
+  const TEXT_MAX = 2 * 1024 * 1024; // 2 MB cap for inline text fetch
+
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+  function fmtSize(n) {
+    if (!Number.isFinite(n)) return '';
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1048576).toFixed(1) + ' MB';
+  }
+
+  function downloadCard(body, url, name, ext, reason) {
+    body.innerHTML =
+      '<div class="res-binary">' +
+      '<p><strong>' + esc(name) + '</strong>' + (ext ? ' <code>.' + esc(ext) + '</code>' : '') + '</p>' +
+      '<p class="muted">' + esc(reason || 'This file type can’t be previewed inline.') + '</p>' +
+      '<p><a class="res-folder-up" href="' + url + '" download>Download</a> ' +
+      '<a class="res-folder-up" href="' + url + '" target="_blank" rel="noopener">Open in new tab ↗</a></p>' +
+      '</div>';
+  }
+
+  function csvTable(text, sep) {
+    // Minimal CSV/TSV parse with quoted-field support.
+    const rows = []; let row = [], field = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) {
+        if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+        else if (c === '"') q = false;
+        else field += c;
+      } else if (c === '"') q = true;
+      else if (c === sep) { row.push(field); field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c !== '\r') field += c;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    if (!rows.length) return '<div class="res-binary muted">Empty file.</div>';
+    const head = rows[0], bodyRows = rows.slice(1);
+    return '<div class="res-csv-wrap"><table><thead><tr>' +
+      head.map((h) => '<th>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>' +
+      bodyRows.map((r) => '<tr>' + head.map((_, i) => '<td>' + esc(r[i] ?? '') + '</td>').join('') + '</tr>').join('') +
+      '</tbody></table></div>';
+  }
+
+  async function renderText(body, url, ext) {
+    let res;
+    try { res = await fetch(url); } catch { return false; }
+    if (!res.ok) return false;
+    const len = Number(res.headers.get('content-length'));
+    if (Number.isFinite(len) && len > TEXT_MAX) return false; // too big → caller falls back to download
+    const text = await res.text();
+    if (text.length > TEXT_MAX) return false;
+    if (ext === 'csv' || ext === 'tsv') { body.innerHTML = csvTable(text, ext === 'tsv' ? '\t' : ','); return true; }
+    let out = text;
+    if (ext === 'json' || ext === 'jsonld' || ext === 'geojson') {
+      try { out = JSON.stringify(JSON.parse(text), null, 2); } catch { /* show raw */ }
+    }
+    body.innerHTML = '<div class="res-code-wrap"><pre><code>' + esc(out) + '</code></pre></div>';
+    return true;
+  }
+
+  async function renderResource() {
     const $ = (id) => document.getElementById(id);
     const body = $('res-body');
     if (!body) return; // not the resource page
@@ -75,21 +148,67 @@ import Layout from '@/layouts/Layout.astro';
     $('res-title').textContent = name;
     $('res-path').textContent = path;
     $('res-type').textContent = ext ? '.' + ext : '—';
-    $('res-rendered').textContent = 'inline frame';
 
     const open = $('res-open'), dl = $('res-download');
     if (open) open.setAttribute('href', url);
     if (dl)   dl.setAttribute('href', url);
 
-    const frame = document.createElement('iframe');
-    frame.className = 'res-frame';
-    frame.src = url;
-    frame.setAttribute('title', name);
-    body.innerHTML = '';
-    const wrap = document.createElement('div');
-    wrap.className = 'res-frame-wrap';
-    wrap.appendChild(frame);
-    body.appendChild(wrap);
+    const setRendered = (s) => { const e = $('res-rendered'); if (e) e.textContent = s; };
+    body.innerHTML = '<div class="muted">Loading…</div>';
+
+    // 1. Images
+    if (IMAGE.has(ext)) {
+      setRendered('image');
+      body.innerHTML = '<div class="res-image-wrap"><img src="' + url + '" alt="' + esc(name) + '" /></div>';
+      return;
+    }
+    // 2. Video / audio
+    if (VIDEO.has(ext)) {
+      setRendered('video');
+      body.innerHTML = '<div class="res-frame-wrap"><video class="res-frame" controls src="' + url + '"></video></div>';
+      return;
+    }
+    if (AUDIO.has(ext)) {
+      setRendered('audio');
+      body.innerHTML = '<div class="res-binary"><audio controls src="' + url + '" style="width:100%"></audio></div>';
+      return;
+    }
+    // 3. PDF / HTML — native iframe
+    if (FRAME.has(ext)) {
+      setRendered(ext === 'pdf' ? 'PDF frame' : 'HTML frame');
+      const frame = document.createElement('iframe');
+      frame.className = 'res-frame'; frame.src = url; frame.setAttribute('title', name);
+      const wrap = document.createElement('div'); wrap.className = 'res-frame-wrap'; wrap.appendChild(frame);
+      body.innerHTML = ''; body.appendChild(wrap);
+      return;
+    }
+    // 4. Office (docx/xlsx/pptx) — Microsoft Office Online viewer. Needs a public
+    //    URL, which only exists in prod (/resources/* is ungated); in dev the file
+    //    isn't publicly reachable, so fall back to download.
+    if (OFFICE.has(ext)) {
+      if (import.meta.env.PROD) {
+        setRendered('Office Online preview');
+        const abs = location.origin + url;
+        const src = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(abs);
+        body.innerHTML = '<div class="res-frame-wrap"><iframe class="res-frame" src="' + src +
+          '" title="' + esc(name) + '"></iframe></div>' +
+          '<p class="muted tiny">Preview rendered by Microsoft Office Online. Use Download for the original.</p>';
+      } else {
+        setRendered('download (preview in prod)');
+        downloadCard(body, url, name, ext, 'Office preview needs the public production URL — download to open locally.');
+      }
+      return;
+    }
+    // 5. Text / code / data — fetch + render (pre, or table for CSV/TSV)
+    if (TEXT.has(ext) || !ext) {
+      setRendered(ext === 'csv' || ext === 'tsv' ? 'table' : 'text');
+      const ok = await renderText(body, url, ext);
+      if (!ok) { setRendered('download'); downloadCard(body, url, name, ext, 'File is too large or unavailable to preview inline.'); }
+      return;
+    }
+    // 6. Everything else (eml, msg, zip, binaries…) — download only
+    setRendered('download');
+    downloadCard(body, url, name, ext, 'This file type can’t be previewed in the browser.');
   }
 
   // Run on first load and after each view-transition navigation (ClientRouter).
