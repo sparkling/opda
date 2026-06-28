@@ -58,8 +58,8 @@ For every `opda:Milestone` instance, `opda:plannedAtTime` MUST be at most one xs
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q6](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q6](/modelling/odr/odr-0007)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:TransactionIdentityKeyShape
 
@@ -92,8 +92,8 @@ For every `opda:Transaction` instance, `opda:occurredAtTime` MUST be at most one
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q1](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q1](/modelling/odr/odr-0007)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:LeaseTermSuccessionRule
 
@@ -117,7 +117,7 @@ _:b6dbc2616d1c0
 
 #### Citing site
 
-[ODR-0007 §Q5 — Lease term as interval](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) (citing site #7)
+[ODR-0007 §Q5 — Lease term as interval](/modelling/odr/odr-0007) (citing site #7)
 
 #### Severity
 
@@ -125,10 +125,10 @@ _:b6dbc2616d1c0
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q5](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ODR-0005 §3b — LeaseExtensionEvent](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q5](/modelling/odr/odr-0007)
+- [ODR-0005 §3b — LeaseExtensionEvent](/modelling/odr/odr-0005)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:MilestoneVarianceRule
 
@@ -152,7 +152,7 @@ _:b55cf070b367d
 
 #### Citing site
 
-[ODR-0007 §Q6 — Expected-vs-actual variance](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) (citing site #8)
+[ODR-0007 §Q6 — Expected-vs-actual variance](/modelling/odr/odr-0007) (citing site #8)
 
 #### Severity
 
@@ -160,6 +160,6 @@ _:b55cf070b367d
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q6](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q6](/modelling/odr/odr-0007)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)

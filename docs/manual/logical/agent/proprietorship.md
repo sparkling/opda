@@ -56,5 +56,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q3 Proprietorship Relator
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0006 — Agent + Roles + Relators](/modelling/odr/odr-0006), §Q3 Proprietorship Relator
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

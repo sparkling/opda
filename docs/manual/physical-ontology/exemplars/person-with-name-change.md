@@ -147,6 +147,6 @@ The SHACL-AF rules materialise:
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0006 §Q1 — Person IC over name-change](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0006 §Q1 — Person IC over name-change](/modelling/odr/odr-0006)
+- [ADR-0014](/modelling/adr/adr-0014)

@@ -25,7 +25,7 @@ The Governance module is the smallest business module by triple count (54 across
 | `https://opda.org.uk/pdtf/graph/governance-shapes` | `opda-governance-shapes.ttl` | 13 | — |
 | `https://opda.org.uk/pdtf/graph/governance-annotations` | `opda-governance-annotations.ttl` | 6 | — |
 
-**Load order:** TBox graph imports foundation + vocabularies. Governance mapping records reference DPV terms via `dct:references` per [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) (reference-not-import).
+**Load order:** TBox graph imports foundation + vocabularies. Governance mapping records reference DPV terms via `dct:references` per [ADR-0012](/modelling/adr/adr-0012) (reference-not-import).
 
 ## Derived-profile membership
 

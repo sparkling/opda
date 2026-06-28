@@ -14,7 +14,7 @@ The round-trip gate is the **MVP gate** for the OPDA ontology-implementation pro
 
 ## What the gate enforces
 
-Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md) + [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md):
+Per [ADR-0013](/modelling/adr/adr-0013) + [ADR-0014](/modelling/adr/adr-0014):
 
 1. **Three-rule interface contract** (`ci-profile-contract`):
    - `sh:in` semantics — overlay enum subsets are subset-of-foundation.
@@ -224,7 +224,7 @@ The expected-report TTL serialiser became non-deterministic, or a fresh pyshacl 
 
 ## Source ADR + ODR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) §"Three-rule interface contract — CI enforcement".
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) §"CI integration" + §Confirmation #3..#5.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Three-rule interface contract — CI enforcement".
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014) §"CI integration" + §Confirmation #3..#5.
 - [ODR-0010 — Overlay profile mechanism](../../../ontology/odr/) §Q6 (no-identity-override) + §Q7 (BASPI5 MVP gate).
 - [ODR-0003 — PDTF ontology programme](../../../ontology/odr/) §"Programme retirement criterion" condition (i).

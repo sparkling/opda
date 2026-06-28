@@ -182,7 +182,7 @@ opda-x:extension-activity
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0007 §Q1 + §Q5 — Transactions and lifecycle (lease term + Transaction-vs-Event)](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ODR-0005 §3b Rule 1 + §3c Rule 1 — LegalEstate / RegisteredTitle persistence](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0007 §Q1 + §Q5 — Transactions and lifecycle (lease term + Transaction-vs-Event)](/modelling/odr/odr-0007)
+- [ODR-0005 §3b Rule 1 + §3c Rule 1 — LegalEstate / RegisteredTitle persistence](/modelling/odr/odr-0005)
+- [ADR-0014](/modelling/adr/adr-0014)

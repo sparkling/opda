@@ -107,5 +107,5 @@ Property shapes referencing this scheme (via `_:bbfbbd5886345` Yes/No list):
 
 ## Source ODR + ADR
 
-- [ODR-0011 §1a — one-scheme-per-enum discipline](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0011 §1a — one-scheme-per-enum discipline](/modelling/odr/odr-0011)
+- [ADR-0010](/modelling/adr/adr-0010)

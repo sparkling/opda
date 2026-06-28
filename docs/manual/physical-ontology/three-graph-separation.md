@@ -13,7 +13,7 @@ title: Three-graph separation
 
 # Three-graph separation
 
-Per [ODR-0004 §3a](../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md): every module emits **three files** (classes / shapes / annotations) with strict isolation between class declarations, SHACL shapes, and advisory annotations.
+Per [ODR-0004 §3a](/modelling/odr/odr-0004): every module emits **three files** (classes / shapes / annotations) with strict isolation between class declarations, SHACL shapes, and advisory annotations.
 
 This is not a stylistic preference — it is a model-theoretic discipline. Mixing the three graphs collapses Tarski-grade extensional semantics into the implementation soup that PDTF v3 (untyped JSON) cannot avoid.
 
@@ -122,10 +122,10 @@ If any check returns `true`, the CI gate fails and the offending file is named i
 
 ## Source ADR + ODR
 
-- [ODR-0004 §3a — PDTF ontology foundation (three-graph separation)](../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ADR-0011 — Module TBox emission](../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
+- [ODR-0004 §3a — PDTF ontology foundation (three-graph separation)](/modelling/odr/odr-0004)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
+- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](/modelling/odr/odr-0018)
 
 ## Headers
 

@@ -207,7 +207,7 @@ EPCCertificate carries `dpv-pd:PostalAddress` baseline (the EPC includes the pro
 
 ## Source ODR + ADR
 
-- [ODR-0008 §Q4a — Descriptive attributes (three-criterion class-promotion test)](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ODR-0018 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a — Descriptive attributes (three-criterion class-promotion test)](/modelling/odr/odr-0008)
+- [ODR-0018 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

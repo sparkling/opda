@@ -36,7 +36,7 @@ opda:Milestone
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2>` | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2>` | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
 | `skos:scopeNote @en` | "UFO: Event particular. DOLCE: Achievement (instant) or Accomplishment (interval). PROV-O: Activity." | Guizzardi 2005 / Masolo D18 §4.4 / W3C PROV-O |
 | `rdfs:comment @en` | "Hybrid PROV-O typing per S007 Q2 (instant vs interval milestones)." | ODR-0007 §Q2 + §Q6 |
 
@@ -57,8 +57,8 @@ opda:Milestone
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q2 + §Q6](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0007 §Q2 + §Q6](/modelling/odr/odr-0007)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Transaction
 
@@ -76,7 +76,7 @@ opda:Transaction
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1>` | [ODR-0007 §Q1](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1>` | [ODR-0007 §Q1](/modelling/odr/odr-0007) |
 | `skos:scopeNote @en` | "UFO: Relator. FIBO: Arrangement precedent." | Guizzardi 2005 Ch. 4 §4.4 / FIBO-FND |
 | `rdfs:comment @en` | "Property-transaction Relator. IC: 5-tuple (estate, sellers, buyers, id-lineage, founding-event)." | ODR-0007 §Q1 |
 
@@ -96,8 +96,8 @@ opda:Transaction
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q1](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0007 §Q1](/modelling/odr/odr-0007)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:TransactionChain
 
@@ -114,7 +114,7 @@ opda:TransactionChain
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4>` | [ODR-0007 §Q4](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4>` | [ODR-0007 §Q4](/modelling/odr/odr-0007) |
 | `skos:scopeNote @en` | "UFO: Aggregate (collective of Relator instances). Dual modelling per S007 Q4." | Guizzardi 2005 Ch. 4 §4.6 |
 | `rdfs:comment @en` | "Aggregate of dependent Transactions linked by buyer-also-seller participant overlap. Chain cap 7." | ODR-0007 §Q4 |
 
@@ -130,5 +130,5 @@ None directly at the TBox; chain-length cap (`sh:maxInclusive 7`) emitted as par
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q4](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0007 §Q4](/modelling/odr/odr-0007)
+- [ADR-0011](/modelling/adr/adr-0011)

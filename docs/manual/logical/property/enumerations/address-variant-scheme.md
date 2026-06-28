@@ -18,10 +18,10 @@ Quality Values for the variant under which an Address is presented (`marketing`,
 
 | Notation | Label | Definition | Source |
 |---|---|---|---|
-| `inspire` | inspire | INSPIRE Directive variant — the regulated postal address structure published by INSPIRE-aligned registers (administrative boundary alignment) | [ODR-0015 §2a](../../../ontology/odr/ODR-0015-address.md) |
-| `marketing` | marketing | Marketing-presentation variant (estate-agent advertising format; typically de-formalised street name + town) | [ODR-0015 §2a](../../../ontology/odr/ODR-0015-address.md) |
-| `postal` | postal | Royal Mail PAF-formatted variant (the address as recognised by Royal Mail's Postcode Address File) | [ODR-0015 §2a](../../../ontology/odr/ODR-0015-address.md) |
-| `title` | title | HM Land Registry registered-title variant (the address as recorded against the title at HMLR) | [ODR-0015 §2a](../../../ontology/odr/ODR-0015-address.md) |
+| `inspire` | inspire | INSPIRE Directive variant — the regulated postal address structure published by INSPIRE-aligned registers (administrative boundary alignment) | [ODR-0015 §2a](/modelling/odr/odr-0015) |
+| `marketing` | marketing | Marketing-presentation variant (estate-agent advertising format; typically de-formalised street name + town) | [ODR-0015 §2a](/modelling/odr/odr-0015) |
+| `postal` | postal | Royal Mail PAF-formatted variant (the address as recognised by Royal Mail's Postcode Address File) | [ODR-0015 §2a](/modelling/odr/odr-0015) |
+| `title` | title | HM Land Registry registered-title variant (the address as recorded against the title at HMLR) | [ODR-0015 §2a](/modelling/odr/odr-0015) |
 
 ## Cardinality discipline
 
@@ -59,5 +59,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0015 — Address](../../../ontology/odr/ODR-0015-address.md), §2a Address variant
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0015 — Address](/modelling/odr/odr-0015), §2a Address variant
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

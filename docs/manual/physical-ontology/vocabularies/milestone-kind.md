@@ -135,5 +135,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0007 §Q2 — Transactions and lifecycle](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0007 §Q2 — Transactions and lifecycle](/modelling/odr/odr-0007)
+- [ADR-0010](/modelling/adr/adr-0010)

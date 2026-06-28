@@ -58,6 +58,6 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0007 — Transaction lifecycle](../../../ontology/odr/ODR-0007-transaction-lifecycle.md), §Q4 Chain dual modelling
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — chain-length cap
+- [ODR-0007 — Transaction lifecycle](/modelling/odr/odr-0007), §Q4 Chain dual modelling
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — chain-length cap

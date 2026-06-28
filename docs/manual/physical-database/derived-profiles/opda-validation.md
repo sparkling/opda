@@ -111,6 +111,6 @@ flowchart LR
 
 ## Source ADR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) §"Module pluralism" — three derived profiles spec.
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) §"Annotation reference-not-import" — DPV exclusion rationale.
-- [ODR-0004 — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) §3a — three-graph separation invariant the composer preserves.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Module pluralism" — three derived profiles spec.
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) §"Annotation reference-not-import" — DPV exclusion rationale.
+- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a — three-graph separation invariant the composer preserves.

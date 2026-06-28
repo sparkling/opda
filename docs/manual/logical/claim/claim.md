@@ -66,7 +66,7 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q1 Claim IC
-- [ODR-0013 — Severity tiering](../../../ontology/odr/ODR-0013-severity-tiering.md), Cat 2 unprovenanced-claim
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — shapes
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q1 Claim IC
+- [ODR-0013 — Severity tiering](/modelling/odr/odr-0013), Cat 2 unprovenanced-claim
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — shapes

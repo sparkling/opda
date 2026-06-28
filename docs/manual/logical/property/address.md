@@ -62,6 +62,6 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0015 — Address](../../../ontology/odr/ODR-0015-address.md), §2a Address IC; §Rule 6 variant discipline
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — shapes
+- [ODR-0015 — Address](/modelling/odr/odr-0015), §2a Address IC; §Rule 6 variant discipline
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — shapes

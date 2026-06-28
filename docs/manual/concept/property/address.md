@@ -64,4 +64,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0015 — Address and geography §2a](../../../ontology/odr/ODR-0015-address-and-geography.md)
+[ODR-0015 — Address and geography §2a](/modelling/odr/odr-0015)

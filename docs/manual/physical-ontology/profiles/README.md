@@ -61,6 +61,6 @@ Overlay profiles MAY declare `sh:PropertyGroup` instances to group related prope
 
 ## Source ADR + ODR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md)
-- [ODR-0010 — Overlay profile mechanism (three-rule interface contract)](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ODR-0011 — Enumeration vocabularies (scheme-subset alignment)](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013)
+- [ODR-0010 — Overlay profile mechanism (three-rule interface contract)](/modelling/odr/odr-0010)
+- [ODR-0011 — Enumeration vocabularies (scheme-subset alignment)](/modelling/odr/odr-0011)

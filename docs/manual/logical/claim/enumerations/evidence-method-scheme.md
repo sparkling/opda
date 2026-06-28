@@ -56,6 +56,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), Rule 5 three-subtype discipline
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §4a regulator-citation discipline
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), Rule 5 three-subtype discipline
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §4a regulator-citation discipline
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

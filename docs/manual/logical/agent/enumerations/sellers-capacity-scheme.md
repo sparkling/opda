@@ -65,5 +65,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q4 Capacity/Authority split
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0006 — Agent + Roles + Relators](/modelling/odr/odr-0006), §Q4 Capacity/Authority split
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

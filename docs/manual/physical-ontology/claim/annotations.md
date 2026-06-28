@@ -89,6 +89,6 @@ Vouch evidence (regulated-professional attestation) uses `dpv:Consent` lawful ba
 
 ## Source ODR + ADR
 
-- [ODR-0009 §Q6 — DPV co-annotation per evidence type](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0018 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q6 — DPV co-annotation per evidence type](/modelling/odr/odr-0009)
+- [ODR-0018 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

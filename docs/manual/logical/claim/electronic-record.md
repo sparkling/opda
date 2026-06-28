@@ -54,5 +54,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q1 + ADR-0011 short-name alias pattern (option b)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q1 + ADR-0011 short-name alias pattern (option b)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

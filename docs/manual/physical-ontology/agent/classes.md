@@ -36,7 +36,7 @@ opda:Buyer
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: RoleMixin. Mirror of opda:Seller founded by the same Transaction." | Guizzardi 2005 Ch. 4 §4.4 |
 | `rdfs:comment @en` | "Anti-rigid; cross-sortal — borne by Person OR Organisation. Founded by an opda:Transaction Relator." | ODR-0006 §Q2 |
 
@@ -56,8 +56,8 @@ None directly; identity-key shapes apply to the bearer Kind (Person / Organisati
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q2](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:NameChangeEvent
 
@@ -75,7 +75,7 @@ opda:NameChangeEvent
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1>` | [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1>` | [ODR-0006 §Q1](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: Event particular. DOLCE: Achievement." | Guizzardi 2005 Ch. 4 §4.7 / Masolo D18 §4.4 |
 | `rdfs:comment @en` | "Reified PROV-O activity recording a Person's name change…" | ODR-0006 §Q1 |
 
@@ -95,8 +95,8 @@ opda:NameChangeEvent
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q1](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Organisation
 
@@ -114,7 +114,7 @@ opda:Organisation
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q6>` | [ODR-0006 §Q6](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q6>` | [ODR-0006 §Q6](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "DOLCE: NonPhysicalEndurant. UFO: Substance Kind. W3C Org Ontology alignment." | Masolo D18 §4.2 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "Corporate or unincorporated organisation. IC over merger / demerger / dissolution hard cases." | ODR-0006 §Q6 |
 
@@ -134,8 +134,8 @@ opda:Organisation
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q6](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q6](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Person
 
@@ -152,7 +152,7 @@ opda:Person
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1>` | [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q1>` | [ODR-0006 §Q1](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "DOLCE: Endurant / Agent. UFO: Substance Kind (Sortal, Rigid)." | Masolo D18 §4.1 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "Natural person. IC: FIBO-style multi-identifier persistence (DOB + state-issued ID + name)." | ODR-0006 §Q1 |
 
@@ -171,8 +171,8 @@ opda:Person
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q1](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Proprietor
 
@@ -190,7 +190,7 @@ opda:Proprietor
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: Role (anti-rigid, externally founded, sortal)." | Guizzardi 2005 Ch. 4 §4.4 |
 | `rdfs:comment @en` | "Founded by opda:Proprietorship Relator. NEVER keyed (Anti-pattern §3)." | ODR-0006 §Q2 + ODR-0005 Anti-pattern §3 |
 
@@ -210,9 +210,9 @@ None directly (Anti-pattern §3 — NEVER key a Role).
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0005 Anti-pattern §3](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q2](/modelling/odr/odr-0006)
+- [ODR-0005 Anti-pattern §3](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Proprietorship
 
@@ -230,7 +230,7 @@ opda:Proprietorship
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3>` | [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3>` | [ODR-0006 §Q3](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: Relator. HMLR Practice Guide 24." | Guizzardi 2005 Ch. 4 §4.4 |
 | `rdfs:comment @en` | "Mediates Property + Proprietor instances against a RegisteredTitle. IC: the (Title, Persons-set) tuple." | ODR-0006 §Q3 |
 
@@ -250,8 +250,8 @@ None directly (Relator's IC enforced by foundation `opda:Relator` discipline).
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q3](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Seller
 
@@ -269,7 +269,7 @@ opda:Seller
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: RoleMixin (anti-rigid, externally founded, cross-sortal)." | Guizzardi 2005 Ch. 4 §4.4 |
 | `rdfs:comment @en` | "Founded by opda:Transaction Relator. Role identity parasitic on (Transaction, bearer) tuple." | ODR-0006 §Q2 + ODR-0007 §Q1 |
 
@@ -289,5 +289,5 @@ None directly at TBox; the BASPI5 overlay [`opda:Baspi5_SellerShape`](../profile
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q2 + ODR-0007 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q2 + ODR-0007 §Q1](/modelling/odr/odr-0006)
+- [ADR-0011](/modelling/adr/adr-0011)

@@ -147,7 +147,7 @@ opda-v:CurrentEnergyRatingScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Current Energy Rating"@en ;
     skos:definition "EPC current energy rating banding (A–G) published by DESNZ (Department for Energy Security and Net Zero) for residential properties in England & Wales."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     dct:title "Energy Performance Certificate (EPC) current energy rating"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Verbatim source: DESNZ Energy Performance Certificate guidance."@en ;
     opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed)"@en .
@@ -983,7 +983,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "A"@en ;
     skos:definition "EPC current energy rating band A as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "A" .
 
@@ -991,7 +991,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "B"@en ;
     skos:definition "EPC current energy rating band B as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "B" .
 
@@ -999,7 +999,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "C"@en ;
     skos:definition "EPC current energy rating band C as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "C" .
 
@@ -1007,7 +1007,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "D"@en ;
     skos:definition "EPC current energy rating band D as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "D" .
 
@@ -1015,7 +1015,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "E"@en ;
     skos:definition "EPC current energy rating band E as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "E" .
 
@@ -1023,7 +1023,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "F"@en ;
     skos:definition "EPC current energy rating band F as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "F" .
 
@@ -1031,7 +1031,7 @@ opda-v:YesNoScheme
     rdf:type skos:Concept ;
     skos:prefLabel "G"@en ;
     skos:definition "EPC current energy rating band G as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda-v:CurrentEnergyRatingScheme ;
     skos:notation "G" .
 

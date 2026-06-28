@@ -58,8 +58,8 @@ For every `opda:Address` instance, pyshacl checks that `opda:addressVariant` is 
 
 #### Source ODR + ADR
 
-- [ODR-0015 §Rule 6 — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0015 §Rule 6 — Address and geography](/modelling/odr/odr-0015)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 
 ### opda:LegalEstateIdentityKeyShape
 
@@ -92,8 +92,8 @@ For every `opda:LegalEstate` instance, `opda:tenureKind` MUST be at most one xsd
 
 #### Source ODR + ADR
 
-- [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0005 §3b](/modelling/odr/odr-0005)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PropertyIdentityKeyShape
 
@@ -126,8 +126,8 @@ For every `opda:Property` instance, `opda:hasUPRN` MUST be at most one xsd:strin
 
 #### Source ODR + ADR
 
-- [ODR-0005 §6a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0005 §6a](/modelling/odr/odr-0005)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PropertyICBreachShape
 
@@ -159,8 +159,8 @@ For every `opda:Property` instance, `opda:identifiesSameProperty` MUST be IRI-va
 
 #### Source ODR + ADR
 
-- [ODR-0005 §Rule 5 — Anti-pattern §5 (NEVER `owl:sameAs`)](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0005 §Rule 5 — Anti-pattern §5 (NEVER `owl:sameAs`)](/modelling/odr/odr-0005)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:UPRNSuccessionRule
 
@@ -184,7 +184,7 @@ _:b16e82da2b31c
 
 #### Citing site
 
-[ODR-0005 §6a — UPRN as contingent identifier](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) (citing site #1)
+[ODR-0005 §6a — UPRN as contingent identifier](/modelling/odr/odr-0005) (citing site #1)
 
 #### Severity
 
@@ -192,9 +192,9 @@ _:b16e82da2b31c
 
 #### Source ODR + ADR
 
-- [ODR-0005 §6a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0005 §6a](/modelling/odr/odr-0005)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:INSPIRESuccessionRule
 
@@ -218,7 +218,7 @@ _:becbeff0baa17
 
 #### Citing site
 
-[ODR-0015 §4a — INSPIRE Identifier succession](../../../ontology/odr/ODR-0015-address-and-geography.md) (citing site #3)
+[ODR-0015 §4a — INSPIRE Identifier succession](/modelling/odr/odr-0015) (citing site #3)
 
 #### Severity
 
@@ -226,6 +226,6 @@ _:becbeff0baa17
 
 #### Source ODR + ADR
 
-- [ODR-0015 §4a](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0015 §4a](/modelling/odr/odr-0015)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)

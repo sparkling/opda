@@ -13,7 +13,7 @@ title: Severity tiers
 
 # Severity tiers
 
-Per [ODR-0013 §Q1](../../ontology/odr/ODR-0013-shacl-validation-and-severity.md), every emitted SHACL shape carries an explicit `sh:severity`. The framework has four tiers; `sh:Violation` is further partitioned into 5 named subcategories.
+Per [ODR-0013 §Q1](/modelling/odr/odr-0013), every emitted SHACL shape carries an explicit `sh:severity`. The framework has four tiers; `sh:Violation` is further partitioned into 5 named subcategories.
 
 ## Severity-tier landscape
 
@@ -178,6 +178,6 @@ The BASPI5 profile shapes inherit the Violation floor per the three-rule interfa
 
 ## Source ADR + ODR
 
-- [ODR-0013 §Q1 — SHACL validation and severity (4-tier framework + 5 Violation categories)](../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ODR-0017 — SHACL-AF quality rules pattern (`sh:Info` default)](../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0013 §Q1 — SHACL validation and severity (4-tier framework + 5 Violation categories)](/modelling/odr/odr-0013)
+- [ODR-0017 — SHACL-AF quality rules pattern (`sh:Info` default)](/modelling/odr/odr-0017)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

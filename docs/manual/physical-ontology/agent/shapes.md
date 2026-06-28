@@ -58,8 +58,8 @@ For every `opda:Organisation` instance, `opda:hasAssertedCapacity` MUST be at mo
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q4 + §Q6](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q4 + §Q6](/modelling/odr/odr-0006)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PersonIdentityKeyShape
 
@@ -92,8 +92,8 @@ For every `opda:Person` instance, `opda:hasAssertedCapacity` MUST be at most one
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q1](/modelling/odr/odr-0006)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:SpecialCategoryPIIWithoutLawfulBasisShape
 
@@ -124,9 +124,9 @@ For every `opda:Person` instance carrying `opda:hasSpecialCategoryData true`, py
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Q3 — Special-category PII discipline](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0013 §Q1 Category 4](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness (G14)](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0012 §Q3 — Special-category PII discipline](/modelling/odr/odr-0012)
+- [ODR-0013 §Q1 Category 4](/modelling/odr/odr-0013)
+- [ADR-0014 — BASPI5 round-trip MVP harness (G14)](/modelling/adr/adr-0014)
 
 ### opda:IdentifierSuccessionRule
 
@@ -150,7 +150,7 @@ _:b04ddc2ae8a10
 
 #### Citing site
 
-[ODR-0006 §Q1 — Person IC over name-change](../../../ontology/odr/ODR-0006-agents-and-roles.md) (citing site #5)
+[ODR-0006 §Q1 — Person IC over name-change](/modelling/odr/odr-0006) (citing site #5)
 
 #### Severity
 
@@ -158,9 +158,9 @@ _:b04ddc2ae8a10
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q1](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q1](/modelling/odr/odr-0006)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:CapacityAuthorityMatchRule
 
@@ -184,7 +184,7 @@ _:bcd856a2c693b
 
 #### Citing site
 
-[ODR-0006 §Q4 — Capacity / authority split](../../../ontology/odr/ODR-0006-agents-and-roles.md) (citing site #6)
+[ODR-0006 §Q4 — Capacity / authority split](/modelling/odr/odr-0006) (citing site #6)
 
 #### Severity
 
@@ -192,6 +192,6 @@ _:bcd856a2c693b
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q4](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0017 §1a + §2a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q4](/modelling/odr/odr-0006)
+- [ODR-0017 §1a + §2a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)

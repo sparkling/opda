@@ -49,7 +49,7 @@ This manual is **generated** from the source TTLs only — not authored by hand:
 
 | Tier | Generated from |
 |---|---|
-| Concept | `opda-<module>.ttl` `rdfs:comment` ("IC:" + "Hard cases:" verbatim per A9 per-kind discipline; [ADR-0007](../adr/ADR-0007-ontology-generator-specification.md)) |
+| Concept | `opda-<module>.ttl` `rdfs:comment` ("IC:" + "Hard cases:" verbatim per A9 per-kind discipline; [ADR-0007](/modelling/adr/adr-0007)) |
 | Logical | `opda-<module>.ttl` + `opda-<module>-shapes.ttl` (cardinalities from `sh:minCount`/`sh:maxCount`) + `opda-vocabularies.ttl` |
 | Physical — database | source TTLs' `owl:Ontology` headers (named graph IRIs) + composer plan + CI workflow YAML |
 | Physical — ontology | the 24 TTLs verbatim + 15 exemplar pairs + 30 expected-report files |
@@ -60,7 +60,7 @@ The ODR corpus (`docs/ontology/odr/`) is **not** a content source — only a lin
 
 - **IA blueprint:** [`docs/information-architecture/`](../information-architecture/) — accepted 2026-05-28
 - **Generation date:** 2026-05-28
-- **Ontology version:** `opda-gen-1.0.0` (programme retired 2026-05-28 per [ODR-0003 §"Programme retirement criterion"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md))
+- **Ontology version:** `opda-gen-1.0.0` (programme retired 2026-05-28 per [ODR-0003 §"Programme retirement criterion"](/modelling/odr/odr-0003))
 - **Validation status:** PASS-WITH-FOLLOW-UPS (all 4 items closed inline at commit `b93deb2`); see [`VALIDATION-REPORT.md`](./VALIDATION-REPORT.md)
 - **Worker commits:** `6328d03` (Concept) · `0c3619d` (Logical) · `fbf8d85` (Physical-DB) · `4c16c58` (Physical-Ontology) · `b93deb2` (remediation)
 

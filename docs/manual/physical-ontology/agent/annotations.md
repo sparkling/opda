@@ -84,6 +84,6 @@ Person email refinement — `dpv-pd:EmailAddress` category (ICO guidance).
 
 ## Source ODR + ADR
 
-- [ODR-0006 §Q1 + §Q6 — Agents and roles](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0018 §3a + §Rule 4 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q1 + §Q6 — Agents and roles](/modelling/odr/odr-0006)
+- [ODR-0018 §3a + §Rule 4 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

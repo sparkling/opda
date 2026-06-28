@@ -113,6 +113,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0009 §Q3 — Claims, evidence and provenance](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0011 §4a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0009 §Q3 — Claims, evidence and provenance](/modelling/odr/odr-0009)
+- [ODR-0011 §4a](/modelling/odr/odr-0011)
+- [ADR-0010](/modelling/adr/adr-0010)

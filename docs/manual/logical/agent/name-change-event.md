@@ -55,6 +55,6 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q1 Person IC + name-change discipline
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — IdentifierSuccessionRule
+- [ODR-0006 — Agent + Roles + Relators](/modelling/odr/odr-0006), §Q1 Person IC + name-change discipline
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — IdentifierSuccessionRule

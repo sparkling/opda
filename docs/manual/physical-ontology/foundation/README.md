@@ -173,11 +173,11 @@ owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org
 
 ## Source ADR + ODR
 
-- [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) (G14)
-- [ODR-0004 — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0010 — Overlay profile mechanism](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md) (ValidationContext)
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (UFO meta-classes)
-- [ODR-0012 §Q5 — Special-category PII](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0017 §2a — Meta-shape justification](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
+- [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014) (G14)
+- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004)
+- [ODR-0010 — Overlay profile mechanism](/modelling/odr/odr-0010) (ValidationContext)
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011) (UFO meta-classes)
+- [ODR-0012 §Q5 — Special-category PII](/modelling/odr/odr-0012)
+- [ODR-0017 §2a — Meta-shape justification](/modelling/odr/odr-0017)

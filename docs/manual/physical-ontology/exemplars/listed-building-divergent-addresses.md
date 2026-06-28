@@ -123,6 +123,6 @@ opda-x:property opda:hasAddress opda-x:title-address , opda-x:marketing-address 
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0015 §3a + §3b (Q1 + Q3 + Q6)](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0015 §3a + §3b (Q1 + Q3 + Q6)](/modelling/odr/odr-0015)
+- [ADR-0014](/modelling/adr/adr-0014)

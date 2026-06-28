@@ -55,6 +55,6 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q3 AssuranceLevel
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — scheme implementation
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — class declaration
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q3 AssuranceLevel
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — scheme implementation
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — class declaration

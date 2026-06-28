@@ -10,7 +10,7 @@ OPDA serves a **single canonical JSON-LD `@context`** across every `Accept: appl
 
 ## Why one context
 
-Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), JSON-LD consumers need stable predicate names that work the same way regardless of which graph the data came from. If the foundation namespace served one context and the BASPI5 overlay served another, a consumer aggregating both would have to reconcile naming differences. The canonical-context discipline pushes that complexity to build time: every JSON-LD payload speaks the same vocabulary.
+Per [ADR-0013](/modelling/adr/adr-0013), JSON-LD consumers need stable predicate names that work the same way regardless of which graph the data came from. If the foundation namespace served one context and the BASPI5 overlay served another, a consumer aggregating both would have to reconcile naming differences. The canonical-context discipline pushes that complexity to build time: every JSON-LD payload speaks the same vocabulary.
 
 ## Context specification
 
@@ -22,7 +22,7 @@ The canonical `@context` carries three sets of mappings.
 "@vocab": "https://opda.org.uk/pdtf/"
 ```
 
-Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's flat term namespace without explicit prefix. Per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md), the slash-based scheme means `opda:Property` serialises as `https://opda.org.uk/pdtf/Property` — the `@vocab` setting honours this.
+Unqualified terms (e.g. `"Property"`, `"hasSpecialCategoryData"`) resolve to OPDA's flat term namespace without explicit prefix. Per [ADR-0006](/modelling/adr/adr-0006), the slash-based scheme means `opda:Property` serialises as `https://opda.org.uk/pdtf/Property` — the `@vocab` setting honours this.
 
 ### 2. Standard ontology prefixes
 
@@ -87,5 +87,5 @@ The `@context` itself is versioned. A breaking change (e.g. adding a new type-co
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — slash-based namespace the `@vocab` honours.
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — derived-profile composition that feeds JSON-LD serialisation.
+- [ADR-0006 — w3id.org/opda ontology namespace](/modelling/adr/adr-0006) — slash-based namespace the `@vocab` honours.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) — derived-profile composition that feeds JSON-LD serialisation.

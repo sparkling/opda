@@ -64,4 +64,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0007 — Transactions and lifecycle §Q4](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
+[ODR-0007 — Transactions and lifecycle §Q4](/modelling/odr/odr-0007)

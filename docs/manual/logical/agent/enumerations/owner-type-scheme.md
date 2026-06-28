@@ -53,5 +53,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §8a UFO meta-category
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

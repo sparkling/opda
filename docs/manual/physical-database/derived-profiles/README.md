@@ -1,6 +1,6 @@
 # Derived consumer profiles
 
-The build-step composer ([ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), [ODR-0004 §3a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)) projects the 24 source TTLs into **three derived consumer profiles**, each optimised for a specific consumer scenario. Consumers can fetch the per-module source TTLs and compose locally, but most will fetch a derived profile to avoid the load-order and projection-rule logic.
+The build-step composer ([ADR-0013](/modelling/adr/adr-0013), [ODR-0004 §3a](/modelling/odr/odr-0004)) projects the 24 source TTLs into **three derived consumer profiles**, each optimised for a specific consumer scenario. Consumers can fetch the per-module source TTLs and compose locally, but most will fetch a derived profile to avoid the load-order and projection-rule logic.
 
 ## Activation status
 
@@ -70,7 +70,7 @@ flowchart LR
 
 </details>
 
-The composer enforces three invariants per [ODR-0004 §3a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md):
+The composer enforces three invariants per [ODR-0004 §3a](/modelling/odr/odr-0004):
 
 1. **No `owl:Class` triples in `opda-validation.ttl`'s shape projection** (three-graph separation preserved across composition).
 2. **No `sh:NodeShape` triples in `opda-inference.ttl`** (classes-alone — reasoner input must be pure TBox).
@@ -80,7 +80,7 @@ The byte-identity CI gate ([operations/byte-identity-ci.md](../operations/byte-i
 
 ## Why three profiles, not one merged graph?
 
-Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md) §"Module pluralism": different consumers have orthogonal needs:
+Per [ADR-0013](/modelling/adr/adr-0013) §"Module pluralism": different consumers have orthogonal needs:
 
 - **SHACL validators** want classes (for `sh:targetClass` resolution) + shapes (for constraints), but DPV annotations would slow validation without contributing constraint logic.
 - **DASH UI renderers** want classes + shapes + DPV annotations (the latter drive consent / data-category disclosures in forms).
@@ -90,6 +90,6 @@ A single merged graph would force every consumer to filter at load time, defeati
 
 ## Source ADR + ODR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) §"Module pluralism".
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) §"Annotation reference-not-import".
-- [ODR-0004 — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) §3a five-part separation contract.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Module pluralism".
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) §"Annotation reference-not-import".
+- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a five-part separation contract.

@@ -156,6 +156,6 @@ opda-x:title-leasehold opda:identifiesSameProperty opda-x:property .
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0005 §6a + Rule 6 + Anti-pattern §5](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0005 §6a + Rule 6 + Anti-pattern §5](/modelling/odr/odr-0005)
+- [ADR-0014](/modelling/adr/adr-0014)

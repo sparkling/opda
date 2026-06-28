@@ -59,5 +59,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q1 + §Q2 qualified-form; Rule 5 three-subtype discipline
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q1 + §Q2 qualified-form; Rule 5 three-subtype discipline
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

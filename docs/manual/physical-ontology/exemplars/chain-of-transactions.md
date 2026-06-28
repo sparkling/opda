@@ -182,6 +182,6 @@ opda-x:chain
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0007 §Q4 — Transactions and lifecycle (TransactionChain modelling)](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0007 §Q4 — Transactions and lifecycle (TransactionChain modelling)](/modelling/odr/odr-0007)
+- [ADR-0014](/modelling/adr/adr-0014)

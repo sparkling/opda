@@ -35,7 +35,7 @@ opda:DiagnosticExemplar
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-8a-diagnostic-exemplars>` | [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-8a-diagnostic-exemplars>` | [ODR-0004 §8a](/modelling/odr/odr-0004) |
 | `skos:scopeNote @en` | "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational)." | Masolo D18 / Guizzardi 2005 |
 | `rdfs:comment @en` | "IC: the named hard case — minimal Turtle exposing one IC-bearing surface…" | ODR-0004 §8a |
 
@@ -54,8 +54,8 @@ None.
 
 #### Source ODR + ADR
 
-- [ODR-0004 §8a — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md)
+- [ODR-0004 §8a — PDTF ontology foundation](/modelling/odr/odr-0004)
+- [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009)
 
 ### opda:GeneratorRun
 
@@ -72,7 +72,7 @@ opda:GeneratorRun
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-6a-generator-first>` | [ODR-0004 §6a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0004/section-6a-generator-first>` | [ODR-0004 §6a](/modelling/odr/odr-0004) |
 | `skos:scopeNote @en` | "UFO: Information Particular. Provenance unit for byte-identity CI…" | Guizzardi 2005 Ch. 4 |
 | `rdfs:comment @en` | "IC: a single execution of the opda-gen pipeline that produced a specific set of emitted TTL artefacts." | ODR-0004 §6a |
 
@@ -87,8 +87,8 @@ None (instances minted by build pipeline; no SHACL gate at TBox).
 
 #### Source ODR + ADR
 
-- [ODR-0004 §6a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md)
+- [ODR-0004 §6a](/modelling/odr/odr-0004)
+- [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009)
 
 ### opda:Relator
 
@@ -105,7 +105,7 @@ opda:Relator
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3>` | [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q3>` | [ODR-0006 §Q3](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6)." | Guizzardi 2005 / Masolo D18 |
 | `rdfs:comment @en` | "UFO Relator — a relational endurant that mediates two or more bearers…" | ODR-0006 §Q3 |
 
@@ -124,8 +124,8 @@ Superclass of `opda:Transaction` (transaction module) + `opda:Proprietorship` (a
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q3](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q3](/modelling/odr/odr-0006)
+- [ADR-0011 — Module TBox emission (UFO meta-class)](/modelling/adr/adr-0011)
 
 ### opda:Role
 
@@ -142,7 +142,7 @@ opda:Role
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal)." | Guizzardi 2005 Ch. 4 §4.4 |
 | `rdfs:comment @en` | "UFO Role — anti-rigid, sortal role. An instance of a Role is borne by a bearer drawn from a single substantial Kind…" | ODR-0006 §Q2 / ODR-0005 Anti-pattern §3 |
 
@@ -161,8 +161,8 @@ Superclass of `opda:Proprietor` (agent module).
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q2](/modelling/odr/odr-0006)
+- [ADR-0011 — Module TBox emission (UFO meta-class)](/modelling/adr/adr-0011)
 
 ### opda:RoleMixin
 
@@ -179,7 +179,7 @@ opda:RoleMixin
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0006/section-Q2>` | [ODR-0006 §Q2](/modelling/odr/odr-0006) |
 | `skos:scopeNote @en` | "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal)." | Guizzardi 2005 / Masolo D18 §4.5 |
 | `rdfs:comment @en` | "UFO RoleMixin — anti-rigid, cross-sortal role pattern…" | ODR-0006 §Q2 |
 
@@ -198,8 +198,8 @@ Superclass of `opda:Seller` + `opda:Buyer` (agent module).
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0011 — Module TBox emission (UFO meta-class)](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0006 §Q2](/modelling/odr/odr-0006)
+- [ADR-0011 — Module TBox emission (UFO meta-class)](/modelling/adr/adr-0011)
 
 ### opda:ValidationContext
 
@@ -216,7 +216,7 @@ opda:ValidationContext
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1>` | [ODR-0010 §Q1](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0010/section-Q1>` | [ODR-0010 §Q1](/modelling/odr/odr-0010) |
 | `skos:scopeNote @en` | "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject…" | Guizzardi 2005 Ch. 4 |
 | `rdfs:comment @en` | "Reification of an overlay-profile validation context per ODR-0010 §Q1 (Guarino withdrawal condition)…" | ODR-0010 §Q1 |
 
@@ -231,8 +231,8 @@ None directly — instances (e.g. `opda:Baspi5ValidationContext`) are reified pe
 
 #### Source ODR + ADR
 
-- [ODR-0010 §Q1 — Overlay profile mechanism](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md)
+- [ODR-0010 §Q1 — Overlay profile mechanism](/modelling/odr/odr-0010)
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013)
 
 ### opda:hasSpecialCategoryData
 
@@ -250,7 +250,7 @@ opda:hasSpecialCategoryData
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5>` | [ODR-0012 §Q5](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5>` | [ODR-0012 §Q5](/modelling/odr/odr-0012) |
 | `skos:scopeNote @en` | "Placeholder predicate — Cat 4 SHACL shape (SpecialCategoryPIIWithoutLawfulBasisShape) targets this predicate per ADR-0012." | ADR-0012 |
 | `rdfs:comment @en` | "Flag indicating that a record carries GDPR Article 9 / 10 special-category personal data…" | ODR-0012 §Q5 |
 
@@ -264,5 +264,5 @@ opda:hasSpecialCategoryData
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Q5 — Special-category PII](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness (G14)](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0012 §Q5 — Special-category PII](/modelling/odr/odr-0012)
+- [ADR-0014 — BASPI5 round-trip MVP harness (G14)](/modelling/adr/adr-0014)

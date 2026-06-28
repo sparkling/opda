@@ -58,8 +58,8 @@ For every `opda:Claim` instance, `opda:digest` MUST be at most one xsd:string wh
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:EvidenceIdentityKeyShape
 
@@ -92,8 +92,8 @@ For every `opda:Evidence` instance (including subtypes), `opda:digest` MUST be a
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:UnprovenancedClaimShape
 
@@ -125,9 +125,9 @@ For every `opda:Claim` instance, at least one `prov:wasDerivedFrom` triple MUST 
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0013 §Q1 Cat 2](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ODR-0013 §Q1 Cat 2](/modelling/odr/odr-0013)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PROVOClaimsRule
 
@@ -151,7 +151,7 @@ _:bb11b45f9d7c0
 
 #### Citing site
 
-[ODR-0009 §Q7 — claims provenance chain](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) (citing site #4)
+[ODR-0009 §Q7 — claims provenance chain](/modelling/odr/odr-0009) (citing site #4)
 
 #### Severity
 
@@ -159,9 +159,9 @@ _:bb11b45f9d7c0
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q7](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q7](/modelling/odr/odr-0009)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:VerificationActivitySuccessionRule
 
@@ -185,7 +185,7 @@ _:b28ba9d05939d
 
 #### Citing site
 
-[ODR-0009 §Q7 — re-verification chains](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) (citing site #9)
+[ODR-0009 §Q7 — re-verification chains](/modelling/odr/odr-0009) (citing site #9)
 
 #### Severity
 
@@ -193,6 +193,6 @@ _:b28ba9d05939d
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q7](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0017 §1a](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q7](/modelling/odr/odr-0009)
+- [ODR-0017 §1a](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)

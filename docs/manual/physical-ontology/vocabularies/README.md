@@ -80,7 +80,7 @@ Per ODR-0011 §5a + ODR-0017, deprecated members carry `owl:deprecated true` + `
 
 ## Source ADR + ODR
 
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md)
-- [ODR-0011 — Enumeration vocabularies (7-category UFO framework)](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ODR-0005 Anti-pattern §5 — NEVER owl:sameAs](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ODR-0017 — SHACL-AF quality rules pattern (deprecation lifecycle)](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010)
+- [ODR-0011 — Enumeration vocabularies (7-category UFO framework)](/modelling/odr/odr-0011)
+- [ODR-0005 Anti-pattern §5 — NEVER owl:sameAs](/modelling/odr/odr-0005)
+- [ODR-0017 — SHACL-AF quality rules pattern (deprecation lifecycle)](/modelling/odr/odr-0017)

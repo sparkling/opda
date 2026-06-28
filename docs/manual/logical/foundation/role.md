@@ -59,5 +59,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q2
-- [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md) — implementation
+- [ODR-0006 — Agent + Roles + Relators](/modelling/odr/odr-0006), §Q2
+- [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009) — implementation

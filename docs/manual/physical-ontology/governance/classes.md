@@ -35,7 +35,7 @@ opda:DPVMappingRecord
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4>` | [ODR-0018 §Rule 4](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4>` | [ODR-0018 §Rule 4](/modelling/odr/odr-0018) |
 | `skos:scopeNote @en` | "UFO: Information Particular. Mapping-record-as-resource pattern per ODR-0018 §3a." | Guizzardi 2005 |
 | `rdfs:comment @en` | "Mapping record from an OPDA Kind class to its DPV baseline personal-data category…" | ODR-0018 §Rule 4 + ODR-0012 |
 
@@ -51,9 +51,9 @@ opda:DPVMappingRecord
 
 #### Source ODR + ADR
 
-- [ODR-0018 §Rule 4](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ODR-0012 — Evidence co-annotation](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0018 §Rule 4](/modelling/odr/odr-0018)
+- [ODR-0012 — Evidence co-annotation](/modelling/odr/odr-0012)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 
 ### opda:SpecialCategoryScheme
 
@@ -89,10 +89,10 @@ None (class declaration only; member emission deferred).
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Q3 (Baker)](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0011 §Operational specifications (member emission deferral)](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0012 §Q3 (Baker)](/modelling/odr/odr-0012)
+- [ODR-0011 §Operational specifications (member emission deferral)](/modelling/odr/odr-0011)
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
 
 ## DPVMappingRecord instances (3)
 

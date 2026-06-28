@@ -23,6 +23,17 @@ const { entityUri, tier, module: mod, entityName } = Astro.props;
 // Without a URI or module, there is nothing useful to link — render nothing.
 if (!entityUri && !mod) return;
 
+// The physical-ontology TBox documentation pages (`<module>/classes`,
+// `/shapes`, `/annotations`, `foundation/meta-shapes`) carry synthetic entity
+// URIs (opda:Classes / opda:Shapes / opda:Annotations / opda:MetaShapes) and
+// fall through deriveKind() to kind="entity", so they reach this component —
+// but they are aggregate docs, not entities, and have NO per-entity page in any
+// other tier. Synthesising cross-tier links for them only produces 404s, so
+// render nothing (their bodies already carry hand-authored tier links).
+const AGGREGATE_DOCS = new Set(['Classes', 'Shapes', 'Annotations', 'MetaShapes']);
+const aggLocalName = entityUri ? entityUri.split(/[/#:]/).pop() : null;
+if (aggLocalName && AGGREGATE_DOCS.has(aggLocalName)) return;
+
 const tiers = [
   { key: 'concept', label: 'Concept', path: '/model/concept' },
   { key: 'logical', label: 'Logical', path: '/model/logical' },
@@ -30,8 +41,45 @@ const tiers = [
   { key: 'physical-ontology', label: 'Physical — ontology', path: '/model/physical-ontology' },
 ] as const;
 
-// Build tier links using module + entityName as best-effort path when entityUri absent.
-const name = entityName ?? (entityUri ? entityUri.split(/[/#]/).pop() : null);
+// Best-effort identity keys. `localName` is the camel/PascalCase URI local
+// name (e.g. "NameChangeEvent"); `name` is the human title (e.g. "Name Change
+// Event"). Either yields the same kebab page slug.
+const localName: string | null = entityUri ? (entityUri.split(/[/#:]/).pop() ?? null) : null;
+const name = entityName ?? localName;
+
+// Kebab slug used by the concept/logical entity routes — slugify the title the
+// same way the manual content collection derives a page slug from its filename
+// (lowercase, non-alphanumerics → "-"). "Name Change Event" → "name-change-event".
+const slug = name
+  ? name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  : null;
+
+// Per-tier URL builder mirroring src/lib/cross-tier.ts's scheme. The concept and
+// logical tiers expose one page per entity (kebab slug). The physical tiers do
+// NOT — they expose one page per module, with the entity addressed by fragment.
+// Building the right shape per tier is what keeps these links resolving when the
+// API-less build falls back to this component (a flat /<tier>/<module>/<name>
+// path 404s on the physical tiers and breaks on un-slugified names).
+function tierHref(key: string, path: string): string {
+  if (!mod) return path;
+  switch (key) {
+    case 'concept':
+    case 'logical':
+      return slug ? `${path}/${mod}/${slug}` : path;
+    case 'physical-database':
+      // The per-module deployment page has no per-entity anchors — link bare.
+      return `${path}/modules/${mod}`;
+    case 'physical-ontology':
+      // The classes page emits one anchor per term as id="opda<lowercased-localName>"
+      // (e.g. opda:NameChangeEvent → "opdanamechangeevent"). Match it so the link
+      // lands on the term; fall back to the bare page when localName is unknown.
+      return localName
+        ? `${path}/${mod}/classes#opda${localName.toLowerCase()}`
+        : `${path}/${mod}/classes`;
+    default:
+      return path;
+  }
+}
 ---
 
 {(entityUri || mod) && (
@@ -40,9 +88,7 @@ const name = entityName ?? (entityUri ? entityUri.split(/[/#]/).pop() : null);
     <ul class="cross-tier-links__list">
       {tiers.map((t) => {
         const isCurrent = t.key === tier;
-        const href = mod && name
-          ? `${t.path}/${mod}/${name.toLowerCase()}`
-          : t.path;
+        const href = tierHref(t.key, t.path);
         return (
           <li>
             {isCurrent

@@ -36,7 +36,7 @@ opda:Address
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a>` | [ODR-0015 §2a](../../../ontology/odr/ODR-0015-address-and-geography.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a>` | [ODR-0015 §2a](/modelling/odr/odr-0015) |
 | `skos:scopeNote @en` | "DOLCE: NonPhysicalEndurant. UFO: Substance Kind." | Masolo D18 §4.2 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "Socially-recognised locator constructed by an authority… IC over five hard cases per ODR-0015 §3a" | ODR-0015 §3a |
 
@@ -57,8 +57,8 @@ opda:Address
 
 #### Source ODR + ADR
 
-- [ODR-0015 §2a — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0015 §2a — Address and geography](/modelling/odr/odr-0015)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
 
 ### opda:LeaseExtensionEvent
 
@@ -76,7 +76,7 @@ opda:LeaseExtensionEvent
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b>` | [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b>` | [ODR-0005 §3b](/modelling/odr/odr-0005) |
 | `skos:scopeNote @en` | "UFO: Event particular. DOLCE: Accomplishment." | Guizzardi 2005 Ch. 4 §4.7 / Masolo D18 §4.4 |
 | `rdfs:comment @en` | "Reified PROV-O activity recording a statutory lease extension (LRHUDA 1993)…" | ODR-0005 §3b Rule 1 |
 
@@ -96,8 +96,8 @@ None directly (lifecycle attaches to `opda:LegalEstate` via successor LeaseTerm 
 
 #### Source ODR + ADR
 
-- [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0005 §3b](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:LeaseTerm
 
@@ -115,7 +115,7 @@ opda:LeaseTerm
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-lease-term>` | [ODR-0007 §Q5](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-lease-term>` | [ODR-0007 §Q5](/modelling/odr/odr-0007) |
 | `skos:scopeNote @en` | "OWL-Time: ProperInterval (W3C Time Ontology REC §4.2)." | W3C Time Ontology REC §4.2 |
 | `rdfs:comment @en` | "OWL-Time ProperInterval representing a leasehold term." | ODR-0007 §Q5 |
 
@@ -135,8 +135,8 @@ opda:LeaseTerm
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q5](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0007 §Q5](/modelling/odr/odr-0007)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:LegalEstate
 
@@ -153,7 +153,7 @@ opda:LegalEstate
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b>` | [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b>` | [ODR-0005 §3b](/modelling/odr/odr-0005) |
 | `skos:scopeNote @en` | "DOLCE: NonPhysicalEndurant. UFO: Substance Kind." | Masolo D18 §4.2 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "Legal rights-bundle vested in a Property… IC: rights-bundle persistence." | ODR-0005 §3b |
 
@@ -169,8 +169,8 @@ opda:LegalEstate
 
 #### Source ODR + ADR
 
-- [ODR-0005 §3b](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0005 §3b](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Property
 
@@ -187,7 +187,7 @@ opda:Property
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a>` | [ODR-0005 §2a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-2a>` | [ODR-0005 §2a](/modelling/odr/odr-0005) |
 | `skos:scopeNote @en` | "DOLCE: Endurant / PhysicalObject. UFO: Substance Kind (Sortal, Rigid, supplies own IC)." | Masolo D18 §4.1 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "Physical property. IC: spatial-material continuity with Kendall+Davis legal-record-discontinuity-override hybrid." | ODR-0005 §3a |
 
@@ -206,8 +206,8 @@ opda:Property
 
 #### Source ODR + ADR
 
-- [ODR-0005 §2a + §3a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0005 §2a + §3a](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:RegisteredTitle
 
@@ -224,7 +224,7 @@ opda:RegisteredTitle
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c>` | [ODR-0005 §3c](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3c>` | [ODR-0005 §3c](/modelling/odr/odr-0005) |
 | `skos:scopeNote @en` | "DOLCE: NonPhysicalEndurant. UFO: Substance Kind, informational." | Masolo D18 §4.2 / Guizzardi 2005 Ch. 4 §4.2 |
 | `rdfs:comment @en` | "HMLR title-register record. IC: title-number lineage + registry-event history…" | ODR-0005 §3c |
 
@@ -240,8 +240,8 @@ None directly at TBox level (identity-key shape lives at `opda:LegalEstate` per 
 
 #### Source ODR + ADR
 
-- [ODR-0005 §3c](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0005 §3c](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:UPRNSuccessionEvent
 
@@ -259,7 +259,7 @@ opda:UPRNSuccessionEvent
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a>` | [ODR-0005 §6a](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a>` | [ODR-0005 §6a](/modelling/odr/odr-0005) |
 | `skos:scopeNote @en` | "UFO: Event particular. DOLCE: Achievement / Accomplishment." | Guizzardi 2005 Ch. 4 §4.7 / Masolo D18 §4.4 |
 | `rdfs:comment @en` | "Reified PROV-O activity recording an administrative re-numbering of UPRN…" | ODR-0005 §6a Rule 6 |
 
@@ -279,5 +279,5 @@ opda:UPRNSuccessionEvent
 
 #### Source ODR + ADR
 
-- [ODR-0005 §6a + Rule 6](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0005 §6a + Rule 6](/modelling/odr/odr-0005)
+- [ADR-0011](/modelling/adr/adr-0011)

@@ -111,7 +111,7 @@ Title-variant Addresses use `dpv:PublicTask` lawful basis (HMLR public register)
 
 ## Source ODR + ADR
 
-- [ODR-0015 §7a — Address PII per-variant refinement](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ODR-0005 §3c — RegisteredTitle as PublicData](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0015 §7a — Address PII per-variant refinement](/modelling/odr/odr-0015)
+- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](/modelling/odr/odr-0018)
+- [ODR-0005 §3c — RegisteredTitle as PublicData](/modelling/odr/odr-0005)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

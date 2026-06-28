@@ -117,6 +117,6 @@ opda-x:property opda:hasAddress opda-x:address-inspire .
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0015 §3b (Q5 GeoSPARQL deferral) + §4a (INSPIRE succession) + §7a (Q7 PII regime)](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0015 §3b (Q5 GeoSPARQL deferral) + §4a (INSPIRE succession) + §7a (Q7 PII regime)](/modelling/odr/odr-0015)
+- [ADR-0014](/modelling/adr/adr-0014)

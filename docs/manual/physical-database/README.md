@@ -12,9 +12,9 @@ If you have ever asked questions like:
 
 then this tier is for you. It is operational, not deliberative — the Physical-Ontology tier owns the source TTLs; this tier owns the deployment.
 
-OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://opda.org.uk/pdtf/*` namespace via the W3C PICG redirect ratified by [ADR-0006](../../adr/ADR-0006-w3id-opda-ontology-namespace.md).
+OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://opda.org.uk/pdtf/*` namespace via the W3C PICG redirect ratified by [ADR-0006](/modelling/adr/adr-0006).
 
-A build-step composer ([ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md)) projects the 24 source TTLs into **three derived consumer profiles** — `opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl` — and the deployment serves each via HTTP content negotiation.
+A build-step composer ([ADR-0013](/modelling/adr/adr-0013)) projects the 24 source TTLs into **three derived consumer profiles** — `opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl` — and the deployment serves each via HTTP content negotiation.
 
 ## See also: Modelling section
 
@@ -241,7 +241,7 @@ The 25 named graphs the deployment exposes, grouped by role. Triple counts measu
 
 ## Derived consumer profiles
 
-The composer projects the source TTLs into three deployable consumer profiles. The directory `source/03-standards/ontology/derived/` does not yet exist (composer body activation pending per [ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md)); each profile below documents the planned composition.
+The composer projects the source TTLs into three deployable consumer profiles. The directory `source/03-standards/ontology/derived/` does not yet exist (composer body activation pending per [ADR-0013](/modelling/adr/adr-0013)); each profile below documents the planned composition.
 
 | Profile | Composition | Audience | Artefact path |
 |---|---|---|---|
@@ -286,8 +286,8 @@ This documentation is generated from:
 
 - The 24 emitted TTL files at `source/03-standards/ontology/` (`foundation.ttl`, `opda-classes.ttl`, `opda-shapes.ttl`, `opda-annotations.ttl`, `opda-vocabularies.ttl`, six `opda-<module>.ttl`, six `opda-<module>-shapes.ttl`, six `opda-<module>-annotations.ttl`)
 - The BASPI5 overlay profile at `source/03-standards/ontology/profiles/baspi5.ttl`
-- The build-step composer stub at `tools/opda-gen/src/opda_gen/composer.py` (activation pending per [ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md))
+- The build-step composer stub at `tools/opda-gen/src/opda_gen/composer.py` (activation pending per [ADR-0013](/modelling/adr/adr-0013))
 - The two CI workflows at `.github/workflows/ontology-byte-identity.yml` and `.github/workflows/baspi5-round-trip.yml`
 - The round-trip MVP harness at `tests/baspi5_round_trip/`
 
-The `source/03-standards/ontology/derived/` directory does **not yet exist** in the repository. This tier documents the three derived profiles per [ADR-0013 §"Module pluralism"](../../adr/ADR-0013-overlay-profile-emission.md) as their specification — each profile file is marked "spec only; composer activation pending" until the composer body lands.
+The `source/03-standards/ontology/derived/` directory does **not yet exist** in the repository. This tier documents the three derived profiles per [ADR-0013 §"Module pluralism"](/modelling/adr/adr-0013) as their specification — each profile file is marked "spec only; composer activation pending" until the composer body lands.

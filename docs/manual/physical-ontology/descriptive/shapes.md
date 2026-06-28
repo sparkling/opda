@@ -65,8 +65,8 @@ Every `opda:Comparable` instance MUST carry at least one `prov:wasGeneratedBy` t
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:EPCCertificateIdentityKeyShape
 
@@ -92,8 +92,8 @@ Every `opda:EPCCertificate` instance MUST carry at least one `prov:wasGeneratedB
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:SearchIdentityKeyShape
 
@@ -119,8 +119,8 @@ Every `opda:Search` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:SurveyIdentityKeyShape
 
@@ -146,8 +146,8 @@ Every `opda:Survey` instance MUST carry at least one `prov:wasGeneratedBy` tripl
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:ValuationIdentityKeyShape
 
@@ -173,5 +173,5 @@ Every `opda:Valuation` instance MUST carry at least one `prov:wasGeneratedBy` tr
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0012](/modelling/adr/adr-0012)

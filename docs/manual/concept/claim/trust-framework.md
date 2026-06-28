@@ -63,4 +63,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0009 — Claims, evidence, provenance §Q5](../../../ontology/odr/ODR-0009-claims-evidence-provenance.md)
+[ODR-0009 — Claims, evidence, provenance §Q5](/modelling/odr/odr-0009)

@@ -61,5 +61,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0010 — overlay profile architecture](../../../ontology/odr/ODR-0010-overlay-profile-architecture.md), §Q1 Guarino withdrawal condition
-- [ADR-0013 — overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — implementation
+- [ODR-0010 — overlay profile architecture](/modelling/odr/odr-0010), §Q1 Guarino withdrawal condition
+- [ADR-0013 — overlay profile emission](/modelling/adr/adr-0013) — implementation

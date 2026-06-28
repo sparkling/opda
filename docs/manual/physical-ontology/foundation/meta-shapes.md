@@ -57,9 +57,9 @@ For any candidate overlay shape, pyshacl runs the SPARQL select. If the overlay 
 
 #### Source ODR + ADR
 
-- [ODR-0010 §Q6 — Overlay profile mechanism (three-rule interface contract)](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ODR-0013 §Q1 — SHACL validation and severity (Cat 3)](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0010 §Q6 — Overlay profile mechanism (three-rule interface contract)](/modelling/odr/odr-0010)
+- [ODR-0013 §Q1 — SHACL validation and severity (Cat 3)](/modelling/odr/odr-0013)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 
 ### opda:ShInSemantics_MetaShape
 
@@ -91,9 +91,9 @@ For every overlay shape with `sh:in` constraints, pyshacl checks each enumerated
 
 #### Source ODR + ADR
 
-- [ODR-0010 §Rule-sh-in — Three-rule interface contract Rule 1](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0010 §Rule-sh-in — Three-rule interface contract Rule 1](/modelling/odr/odr-0010)
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:ShViolationFloor_MetaShape
 
@@ -125,9 +125,9 @@ For every overlay shape, pyshacl looks for `sh:property` blocks with severity le
 
 #### Source ODR + ADR
 
-- [ODR-0010 §Rule-violation-floor — Three-rule interface contract Rule 2](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ODR-0013 §Q1 — SHACL validation and severity](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0010 §Rule-violation-floor — Three-rule interface contract Rule 2](/modelling/odr/odr-0010)
+- [ODR-0013 §Q1 — SHACL validation and severity](/modelling/odr/odr-0013)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:MetaShapeOverShapeGraphMetaShape
 
@@ -159,9 +159,9 @@ For every meta-shape (i.e. shape targeting `sh:NodeShape`) declaring `sh:severit
 
 #### Source ODR + ADR
 
-- [ODR-0017 §2a — SHACL-AF quality rules pattern (meta-shape justification amendment)](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ODR-0013 §Q1 Category 5](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0017 §2a — SHACL-AF quality rules pattern (meta-shape justification amendment)](/modelling/odr/odr-0017)
+- [ODR-0013 §Q1 Category 5](/modelling/odr/odr-0013)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### SHACL-AF rule: opda:DeprecationChainRule
 
@@ -183,7 +183,7 @@ opda:DeprecationChainRule
 
 #### Citing site
 
-[ODR-0011 §5a — SKOS deprecation lifecycle](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
+[ODR-0011 §5a — SKOS deprecation lifecycle](/modelling/odr/odr-0011)
 
 #### Severity
 
@@ -191,9 +191,9 @@ opda:DeprecationChainRule
 
 #### Source ODR + ADR
 
-- [ODR-0011 §5a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ODR-0017 §2a — escalation note](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0011 §5a](/modelling/odr/odr-0011)
+- [ODR-0017 §2a — escalation note](/modelling/odr/odr-0017)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### SHACL-AF rule: opda:PIIWithoutDPVCoAnnotationRule
 
@@ -215,7 +215,7 @@ opda:PIIWithoutDPVCoAnnotationRule
 
 #### Citing site
 
-[ODR-0012 §Q5 — DPV co-annotation discipline](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
+[ODR-0012 §Q5 — DPV co-annotation discipline](/modelling/odr/odr-0012)
 
 #### Severity
 
@@ -223,6 +223,6 @@ opda:PIIWithoutDPVCoAnnotationRule
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Q5](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0018 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0012 §Q5](/modelling/odr/odr-0012)
+- [ODR-0018 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ADR-0012](/modelling/adr/adr-0012)

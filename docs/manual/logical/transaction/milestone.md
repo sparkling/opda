@@ -86,6 +86,6 @@ stateDiagram-v2
 
 ## Source ODR + ADR
 
-- [ODR-0007 — Transaction lifecycle](../../../ontology/odr/ODR-0007-transaction-lifecycle.md), §Q2 Milestone hybrid typing; §Q6 Plan-vs-Activity reification
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — MilestoneVarianceRule
+- [ODR-0007 — Transaction lifecycle](/modelling/odr/odr-0007), §Q2 Milestone hybrid typing; §Q6 Plan-vs-Activity reification
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — MilestoneVarianceRule

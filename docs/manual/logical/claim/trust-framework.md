@@ -54,5 +54,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q5 TrustFramework
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q5 TrustFramework
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

@@ -102,6 +102,6 @@ The exclusion list is short by design: this is the maximal-information derived p
 
 ## Source ADR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) §"Module pluralism".
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — DPV co-annotation surface that this profile exposes to UI consumers.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Module pluralism".
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — DPV co-annotation surface that this profile exposes to UI consumers.
 - [ODR-0010 — Overlay profile mechanism](../../../ontology/odr/) §Q4 — DASH UI predicates ride on shape graphs (consumed by this profile through the per-module shape inclusions).

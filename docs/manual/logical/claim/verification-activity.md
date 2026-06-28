@@ -58,6 +58,6 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q1 PROV-O mapping; §Q2 qualified-form; §Q7 succession rule
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — VerificationActivitySuccessionRule
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q1 PROV-O mapping; §Q2 qualified-form; §Q7 succession rule
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — VerificationActivitySuccessionRule

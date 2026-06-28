@@ -26,7 +26,7 @@ opda:CurrentEnergyRatingScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Current Energy Rating"@en ;
     skos:definition "EPC current energy rating banding (A–G) published by DESNZ (Department for Energy Security and Net Zero) for residential properties in England & Wales."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     dct:title "Energy Performance Certificate (EPC) current energy rating"@en ;
     skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: Quality-Region (Masolo D18 §4.3). Verbatim source: DESNZ Energy Performance Certificate guidance."@en ;
     opda:hasSteward "Baker (regulator-cited per ODR-0011 §4a; DESNZ-governed)"@en ;
@@ -52,7 +52,7 @@ opda:CurrentEnergyRatingScheme
     rdf:type skos:Concept ;
     skos:prefLabel "A"@en ;
     skos:definition "EPC current energy rating band A as defined by DESNZ."@en ;
-    dct:source <https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
+    dct:source <https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings> ;
     skos:inScheme opda:CurrentEnergyRatingScheme ;
     skos:notation "A" .
 
@@ -112,5 +112,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0011 §4a — regulator-citation discipline](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0011 §4a — regulator-citation discipline](/modelling/odr/odr-0011)
+- [ADR-0010](/modelling/adr/adr-0010)

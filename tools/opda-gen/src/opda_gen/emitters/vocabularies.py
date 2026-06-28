@@ -167,7 +167,7 @@ _SAA_COUNCIL_TAX_BANDS = URIRef(
 )
 _DESNZ_EPC_BANDS = URIRef(
     "https://www.gov.uk/government/publications/"
-    "guide-to-energy-performance-certificates-for-the-construction-sale-and-"
+    "energy-performance-certificates-for-the-construction-sale-and-"
     "let-of-dwellings"
 )
 

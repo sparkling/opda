@@ -6,7 +6,7 @@ tags: [physical-ontology, exemplars]
 
 # Diagnostic exemplars
 
-15 IC-only diagnostic exemplars per [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md), each paired with an `expected-report.ttl` SHACL validation report. The pair drives a CI regression test (semantic-equivalence comparison via `tests/baspi5_round_trip/compare_reports.py`).
+15 IC-only diagnostic exemplars per [ODR-0004 §8a](/modelling/odr/odr-0004), each paired with an `expected-report.ttl` SHACL validation report. The pair drives a CI regression test (semantic-equivalence comparison via `tests/baspi5_round_trip/compare_reports.py`).
 
 ## What an exemplar is
 
@@ -72,5 +72,5 @@ Per ODR-0004 §8a:
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a — Diagnostic exemplar policy](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a — Diagnostic exemplar policy](/modelling/odr/odr-0004)
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014)

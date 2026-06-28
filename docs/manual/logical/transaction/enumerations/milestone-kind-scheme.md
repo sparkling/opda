@@ -18,11 +18,11 @@ Method/plan codes for the procedural milestones authorising stages of a Transact
 
 | Notation | Label | Definition | Source |
 |---|---|---|---|
-| `completion` | completion | Completion; legal title transfers; keys handed over | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transaction-lifecycle.md) |
-| `exchange` | exchange | Contracts exchanged; transaction binding on both parties | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transaction-lifecycle.md) |
-| `instruction` | instruction | Property instructed to market by Seller; transaction lifecycle begins | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transaction-lifecycle.md) |
-| `offerAccepted` | offerAccepted | Offer accepted by Seller; transaction enters Under Offer phase | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transaction-lifecycle.md) |
-| `registration` | registration | Registration completed at HM Land Registry | [ODR-0007 §Q2](../../../ontology/odr/ODR-0007-transaction-lifecycle.md) |
+| `completion` | completion | Completion; legal title transfers; keys handed over | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
+| `exchange` | exchange | Contracts exchanged; transaction binding on both parties | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
+| `instruction` | instruction | Property instructed to market by Seller; transaction lifecycle begins | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
+| `offerAccepted` | offerAccepted | Offer accepted by Seller; transaction enters Under Offer phase | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
+| `registration` | registration | Registration completed at HM Land Registry | [ODR-0007 §Q2](/modelling/odr/odr-0007) |
 
 ## Cardinality discipline
 
@@ -62,5 +62,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0007 — Transaction lifecycle](../../../ontology/odr/ODR-0007-transaction-lifecycle.md), §Q2 Milestone hybrid typing
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0007 — Transaction lifecycle](/modelling/odr/odr-0007), §Q2 Milestone hybrid typing
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

@@ -34,5 +34,5 @@ No class-level baselines emitted in this module.
 
 ## Source ODR + ADR
 
-- [ODR-0012 §Phase-1 — SHACL + DPV annotation emission](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0012 §Phase-1 — SHACL + DPV annotation emission](/modelling/odr/odr-0012)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

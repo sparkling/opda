@@ -122,7 +122,7 @@ opda-x:property-5b opda:hasAddress opda-x:address-5b-marketing .
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0015 §3a + §3b (Q1 Kind commitment)](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ODR-0005 §3a Rule 2 (subdivision)](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0015 §3a + §3b (Q1 Kind commitment)](/modelling/odr/odr-0015)
+- [ODR-0005 §3a Rule 2 (subdivision)](/modelling/odr/odr-0005)
+- [ADR-0014](/modelling/adr/adr-0014)

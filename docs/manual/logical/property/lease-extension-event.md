@@ -56,5 +56,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0005 — Property + LegalEstate + RegisteredTitle](../../../ontology/odr/ODR-0005-property-legal-estate-registered-title.md), §3b Rule 1 (LegalEstate identity persistence through extension)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0005 — Property + LegalEstate + RegisteredTitle](/modelling/odr/odr-0005), §3b Rule 1 (LegalEstate identity persistence through extension)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

@@ -10,13 +10,13 @@ The byte-identity gate guarantees the 24 committed TTLs at `source/03-standards/
 
 ## What the gate enforces
 
-Per [ADR-0009](../../../adr/ADR-0009-foundation-ttl-emission.md) §Confirmation #2, [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md) §Confirmation #1, [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md), [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md), [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), and [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md):
+Per [ADR-0009](/modelling/adr/adr-0009) §Confirmation #2, [ADR-0010](/modelling/adr/adr-0010) §Confirmation #1, [ADR-0011](/modelling/adr/adr-0011), [ADR-0012](/modelling/adr/adr-0012), [ADR-0013](/modelling/adr/adr-0013), and [ADR-0014](/modelling/adr/adr-0014):
 
 - Every emitter (`emit-foundation`, `emit-vocabularies`, `emit-module`, `emit-shapes`, `emit-annotations`, `emit-profile`) MUST produce byte-identical output on second invocation.
 - The umbrella `opda-gen emit` MUST regenerate the full committed corpus byte-for-byte.
 - The expected-report TTLs at `source/03-standards/ontology/exemplars/*-expected-report.ttl` MUST regenerate byte-for-byte via `opda-gen emit-exemplar-reports`.
 
-The canonical serialiser ([`tools/opda-gen/src/opda_gen/serialiser/canonical.py`](../../../../tools/opda-gen/src/opda_gen/serialiser/canonical.py)) enforces deterministic blank-node naming, predicate ordering, and prefix declarations per [ADR-0007](../../../adr/ADR-0007-ontology-generator-specification.md) §"Deterministic emission rules".
+The canonical serialiser ([`tools/opda-gen/src/opda_gen/serialiser/canonical.py`](../../../../tools/opda-gen/src/opda_gen/serialiser/canonical.py)) enforces deterministic blank-node naming, predicate ordering, and prefix declarations per [ADR-0007](/modelling/adr/adr-0007) §"Deterministic emission rules".
 
 ## Commands
 
@@ -135,7 +135,7 @@ Never silently regenerate-and-commit without understanding the diff — the byte
 
 ## Source ADR
 
-- [ADR-0007 — Ontology generator specification](../../../adr/ADR-0007-ontology-generator-specification.md) §"Deterministic emission rules".
-- [ADR-0009 — Foundation TTL emission](../../../adr/ADR-0009-foundation-ttl-emission.md) §Confirmation #2 — second-run byte-identity gate.
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) §Confirmation #1 — per-emitter byte-identity contract.
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md), [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md), [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) — extend the byte-identity discipline to modules, shapes, annotations, overlays, and expected-report TTLs respectively.
+- [ADR-0007 — Ontology generator specification](/modelling/adr/adr-0007) §"Deterministic emission rules".
+- [ADR-0009 — Foundation TTL emission](/modelling/adr/adr-0009) §Confirmation #2 — second-run byte-identity gate.
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) §Confirmation #1 — per-emitter byte-identity contract.
+- [ADR-0011](/modelling/adr/adr-0011), [ADR-0012](/modelling/adr/adr-0012), [ADR-0013](/modelling/adr/adr-0013), [ADR-0014](/modelling/adr/adr-0014) — extend the byte-identity discipline to modules, shapes, annotations, overlays, and expected-report TTLs respectively.

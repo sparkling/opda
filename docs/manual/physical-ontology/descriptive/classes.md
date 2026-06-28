@@ -36,7 +36,7 @@ opda:Comparable
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](/modelling/odr/odr-0008) |
 | `skos:scopeNote @en` | "UFO: Substance Kind, informational. Land Registry Price Paid + VOA records." | Guizzardi 2005 / regulator citation |
 | `rdfs:comment @en` | "Comparable-sale or rental record. Class-promoted per S008 Q4 three-criterion test." | ODR-0008 §Q4a |
 
@@ -56,8 +56,8 @@ opda:Comparable
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:EPCCertificate
 
@@ -75,7 +75,7 @@ opda:EPCCertificate
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](/modelling/odr/odr-0008) |
 | `skos:scopeNote @en` | "UFO: Substance Kind, informational. DESNZ Energy Performance Certificate Guidance." | Guizzardi 2005 / DESNZ |
 | `rdfs:comment @en` | "Energy Performance Certificate — DESNZ-governed authority-retrieved artefact. 10-year validity." | ODR-0008 §Q4a + ODR-0018 |
 
@@ -96,8 +96,8 @@ opda:EPCCertificate
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Search
 
@@ -115,7 +115,7 @@ opda:Search
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](/modelling/odr/odr-0008) |
 | `skos:scopeNote @en` | "UFO: Substance Kind, informational. Covers CON29R / LLC1 / environmental searches per PDTF v3." | Guizzardi 2005 / PDTF v3 |
 | `rdfs:comment @en` | "Local-authority or environmental search result. Class-promoted per S008 Q4." | ODR-0008 §Q4a |
 
@@ -135,8 +135,8 @@ opda:Search
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Survey
 
@@ -154,7 +154,7 @@ opda:Survey
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](/modelling/odr/odr-0008) |
 | `skos:scopeNote @en` | "UFO: Substance Kind, informational. DOLCE: NonPhysicalEndurant. PROV-O: Entity." | Guizzardi 2005 / Masolo D18 / W3C PROV-O |
 | `rdfs:comment @en` | "Authority-retrieved professional survey report. Distinct lifecycle: issued / superseded / re-issued / withdrawn." | ODR-0008 §Q4a |
 
@@ -174,8 +174,8 @@ opda:Survey
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Valuation
 
@@ -193,7 +193,7 @@ opda:Valuation
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q4a>` | [ODR-0008 §Q4a](/modelling/odr/odr-0008) |
 | `skos:scopeNote @en` | "UFO: Substance Kind, informational. RICS Red Book." | Guizzardi 2005 / RICS Red Book |
 | `rdfs:comment @en` | "Property valuation — RICS-regulated professional or automated-model output. Lifecycle: instructed / delivered / superseded." | ODR-0008 §Q4a |
 
@@ -213,5 +213,5 @@ opda:Valuation
 
 #### Source ODR + ADR
 
-- [ODR-0008 §Q4a](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0008 §Q4a](/modelling/odr/odr-0008)
+- [ADR-0011](/modelling/adr/adr-0011)

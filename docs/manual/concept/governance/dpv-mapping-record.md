@@ -69,4 +69,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0018 — DPV class-level co-annotation pattern §Rule 4](../../../ontology/odr/ODR-0018-dpv-class-level-coannotation-pattern.md)
+[ODR-0018 — DPV class-level co-annotation pattern §Rule 4](/modelling/odr/odr-0018)

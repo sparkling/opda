@@ -13,7 +13,7 @@ title: SHACL-AF rules
 
 # SHACL-AF rules
 
-Per [ODR-0017](../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md) §1a, OPDA emits 11 non-blocking quality rules as SHACL Advanced Features (SHACL-AF) `sh:SPARQLRule` constructions. Each rule materialises a derived predicate at `sh:Info` severity (one exception: PII rule at `sh:Warning`); consumers can route on the materialised predicate without the rule itself blocking conformance.
+Per [ODR-0017](/modelling/odr/odr-0017) §1a, OPDA emits 11 non-blocking quality rules as SHACL Advanced Features (SHACL-AF) `sh:SPARQLRule` constructions. Each rule materialises a derived predicate at `sh:Info` severity (one exception: PII rule at `sh:Warning`); consumers can route on the materialised predicate without the rule itself blocking conformance.
 
 ## Rule-to-ODR citation graph
 
@@ -117,16 +117,16 @@ Per ODR-0017 §1a, 11 ODRs cite the SHACL-AF pattern as their non-blocking-quali
 
 | # | Rule | Citing ODR | Module |
 |---|---|---|---|
-| 1 | `opda:UPRNSuccessionRule` | [ODR-0005 §6a](../../ontology/odr/ODR-0005-property-and-land-identity-crux.md) | property |
-| 2 | `opda:DeprecationChainRule` | [ODR-0011 §5a](../../ontology/odr/ODR-0011-enumeration-vocabularies.md) | foundation |
-| 3 | `opda:INSPIRESuccessionRule` | [ODR-0015 §4a](../../ontology/odr/ODR-0015-address-and-geography.md) | property |
-| 4 | `opda:PROVOClaimsRule` | [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) | claim |
-| 5 | `opda:IdentifierSuccessionRule` | [ODR-0006 §Q1](../../ontology/odr/ODR-0006-agents-and-roles.md) | agent |
-| 6 | `opda:CapacityAuthorityMatchRule` | [ODR-0006 §Q4](../../ontology/odr/ODR-0006-agents-and-roles.md) | agent |
-| 7 | `opda:LeaseTermSuccessionRule` | [ODR-0007 §Q5](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) | transaction |
-| 8 | `opda:MilestoneVarianceRule` | [ODR-0007 §Q6](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md) | transaction |
-| 9 | `opda:VerificationActivitySuccessionRule` | [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) | claim |
-| 10 | `opda:PIIWithoutDPVCoAnnotationRule` | [ODR-0012 §Q5](../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md) | foundation (cross-cutting) |
+| 1 | `opda:UPRNSuccessionRule` | [ODR-0005 §6a](/modelling/odr/odr-0005) | property |
+| 2 | `opda:DeprecationChainRule` | [ODR-0011 §5a](/modelling/odr/odr-0011) | foundation |
+| 3 | `opda:INSPIRESuccessionRule` | [ODR-0015 §4a](/modelling/odr/odr-0015) | property |
+| 4 | `opda:PROVOClaimsRule` | [ODR-0009 §Q7](/modelling/odr/odr-0009) | claim |
+| 5 | `opda:IdentifierSuccessionRule` | [ODR-0006 §Q1](/modelling/odr/odr-0006) | agent |
+| 6 | `opda:CapacityAuthorityMatchRule` | [ODR-0006 §Q4](/modelling/odr/odr-0006) | agent |
+| 7 | `opda:LeaseTermSuccessionRule` | [ODR-0007 §Q5](/modelling/odr/odr-0007) | transaction |
+| 8 | `opda:MilestoneVarianceRule` | [ODR-0007 §Q6](/modelling/odr/odr-0007) | transaction |
+| 9 | `opda:VerificationActivitySuccessionRule` | [ODR-0009 §Q7](/modelling/odr/odr-0009) | claim |
+| 10 | `opda:PIIWithoutDPVCoAnnotationRule` | [ODR-0012 §Q5](/modelling/odr/odr-0012) | foundation (cross-cutting) |
 | 11 | (placeholder for future emission) | — | — |
 
 ### opda:UPRNSuccessionRule
@@ -151,7 +151,7 @@ _:b16e82da2b31c
 
 #### Citing site
 
-[ODR-0005 §6a — UPRN as contingent identifier](../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
+[ODR-0005 §6a — UPRN as contingent identifier](/modelling/odr/odr-0005)
 
 #### Severity
 
@@ -159,9 +159,9 @@ _:b16e82da2b31c
 
 #### Source ODR + ADR
 
-- [ODR-0005 §6a](../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0017 §1a — SHACL-AF quality rules pattern](../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
+- [ODR-0005 §6a](/modelling/odr/odr-0005)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
+- [ODR-0017 §1a — SHACL-AF quality rules pattern](/modelling/odr/odr-0017)
 
 ### opda:DeprecationChainRule
 
@@ -185,7 +185,7 @@ _:be6b6213de607
 
 #### Citing site
 
-[ODR-0011 §5a — SKOS deprecation lifecycle](../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
+[ODR-0011 §5a — SKOS deprecation lifecycle](/modelling/odr/odr-0011)
 
 #### Severity
 
@@ -193,8 +193,8 @@ _:be6b6213de607
 
 #### Source ODR + ADR
 
-- [ODR-0011 §5a](../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0011 §5a](/modelling/odr/odr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 
 ### opda:INSPIRESuccessionRule
 
@@ -218,7 +218,7 @@ _:becbeff0baa17
 
 #### Citing site
 
-[ODR-0015 §4a — INSPIRE Identifier succession](../../ontology/odr/ODR-0015-address-and-geography.md)
+[ODR-0015 §4a — INSPIRE Identifier succession](/modelling/odr/odr-0015)
 
 #### Severity
 
@@ -226,8 +226,8 @@ _:becbeff0baa17
 
 #### Source ODR + ADR
 
-- [ODR-0015 §4a](../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0015 §4a](/modelling/odr/odr-0015)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PROVOClaimsRule
 
@@ -251,7 +251,7 @@ _:bb11b45f9d7c0
 
 #### Citing site
 
-[ODR-0009 §Q7 — claims provenance chain](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
+[ODR-0009 §Q7 — claims provenance chain](/modelling/odr/odr-0009)
 
 #### Severity
 
@@ -259,8 +259,8 @@ _:bb11b45f9d7c0
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q7](/modelling/odr/odr-0009)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:IdentifierSuccessionRule
 
@@ -284,7 +284,7 @@ _:b04ddc2ae8a10
 
 #### Citing site
 
-[ODR-0006 §Q1 — Person IC over name-change](../../ontology/odr/ODR-0006-agents-and-roles.md)
+[ODR-0006 §Q1 — Person IC over name-change](/modelling/odr/odr-0006)
 
 #### Severity
 
@@ -292,8 +292,8 @@ _:b04ddc2ae8a10
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q1](../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q1](/modelling/odr/odr-0006)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:CapacityAuthorityMatchRule
 
@@ -317,7 +317,7 @@ _:bcd856a2c693b
 
 #### Citing site
 
-[ODR-0006 §Q4 — Capacity / authority split](../../ontology/odr/ODR-0006-agents-and-roles.md)
+[ODR-0006 §Q4 — Capacity / authority split](/modelling/odr/odr-0006)
 
 #### Severity
 
@@ -325,8 +325,8 @@ _:bcd856a2c693b
 
 #### Source ODR + ADR
 
-- [ODR-0006 §Q4](../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 §Q4](/modelling/odr/odr-0006)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:LeaseTermSuccessionRule
 
@@ -350,7 +350,7 @@ _:b6dbc2616d1c0
 
 #### Citing site
 
-[ODR-0007 §Q5 — Lease term as interval](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
+[ODR-0007 §Q5 — Lease term as interval](/modelling/odr/odr-0007)
 
 #### Severity
 
@@ -358,8 +358,8 @@ _:b6dbc2616d1c0
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q5](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q5](/modelling/odr/odr-0007)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:MilestoneVarianceRule
 
@@ -383,7 +383,7 @@ _:b55cf070b367d
 
 #### Citing site
 
-[ODR-0007 §Q6 — Expected-vs-actual variance](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
+[ODR-0007 §Q6 — Expected-vs-actual variance](/modelling/odr/odr-0007)
 
 #### Severity
 
@@ -391,8 +391,8 @@ _:b55cf070b367d
 
 #### Source ODR + ADR
 
-- [ODR-0007 §Q6](../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0007 §Q6](/modelling/odr/odr-0007)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:VerificationActivitySuccessionRule
 
@@ -416,7 +416,7 @@ _:b28ba9d05939d
 
 #### Citing site
 
-[ODR-0009 §Q7 — Re-verification chains](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
+[ODR-0009 §Q7 — Re-verification chains](/modelling/odr/odr-0009)
 
 #### Severity
 
@@ -424,8 +424,8 @@ _:b28ba9d05939d
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q7](../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 §Q7](/modelling/odr/odr-0009)
+- [ADR-0012](/modelling/adr/adr-0012)
 
 ### opda:PIIWithoutDPVCoAnnotationRule
 
@@ -449,7 +449,7 @@ _:b3f168211e733
 
 #### Citing site
 
-[ODR-0012 §Q5 — DPV co-annotation discipline](../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
+[ODR-0012 §Q5 — DPV co-annotation discipline](/modelling/odr/odr-0012)
 
 #### Severity
 
@@ -457,5 +457,5 @@ _:b3f168211e733
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Q5](../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0012 §Q5](/modelling/odr/odr-0012)
+- [ADR-0012](/modelling/adr/adr-0012)

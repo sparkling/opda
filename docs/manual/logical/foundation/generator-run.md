@@ -58,5 +58,5 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0004 — generator-first discipline](../../../ontology/odr/ODR-0004-generator-first-discipline.md), §6a generator-first reproducibility
-- [ADR-0009 — Foundation TBox emission](../../../adr/ADR-0009-foundation-tbox-emission.md) — implementation
+- [ODR-0004 — generator-first discipline](/modelling/odr/odr-0004), §6a generator-first reproducibility
+- [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009) — implementation

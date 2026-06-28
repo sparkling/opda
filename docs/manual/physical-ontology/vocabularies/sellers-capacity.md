@@ -146,6 +146,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0006 §Q4 — Capacity/Authority split](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0006 §Q4 — Capacity/Authority split](/modelling/odr/odr-0006)
+- [ODR-0011 §8a](/modelling/odr/odr-0011)
+- [ADR-0010](/modelling/adr/adr-0010)

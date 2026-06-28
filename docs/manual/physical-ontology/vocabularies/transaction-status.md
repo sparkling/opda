@@ -140,7 +140,7 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0007 §Q3 — Transactions and lifecycle (5-phase canonical set)](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
-- [ADR-0013 G10 closure — per-member `prov:wasDerivedFrom`](../../../adr/ADR-0013-overlay-profile-emission.md)
+- [ODR-0007 §Q3 — Transactions and lifecycle (5-phase canonical set)](/modelling/odr/odr-0007)
+- [ODR-0011 §8a](/modelling/odr/odr-0011)
+- [ADR-0010](/modelling/adr/adr-0010)
+- [ADR-0013 G10 closure — per-member `prov:wasDerivedFrom`](/modelling/adr/adr-0013)

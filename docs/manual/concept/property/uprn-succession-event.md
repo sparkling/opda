@@ -60,4 +60,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0005 — Property/Land identity crux §6a](../../../ontology/odr/ODR-0005-property-land-identity-crux.md)
+[ODR-0005 — Property/Land identity crux §6a](/modelling/odr/odr-0005)

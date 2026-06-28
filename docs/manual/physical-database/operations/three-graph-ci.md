@@ -6,7 +6,7 @@ title: Three-graph CI gate
 
 # Three-graph CI gate
 
-The three-graph gate enforces [ODR-0004 §3a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)'s **five-part class / shape / annotation separation contract** across the committed corpus. The contract says: classes, shapes, and annotations live in different graphs; no graph contains material that belongs to another. The gate runs five SHACL-AF queries against the emitted directory and fails on any violation.
+The three-graph gate enforces [ODR-0004 §3a](/modelling/odr/odr-0004)'s **five-part class / shape / annotation separation contract** across the committed corpus. The contract says: classes, shapes, and annotations live in different graphs; no graph contains material that belongs to another. The gate runs five SHACL-AF queries against the emitted directory and fails on any violation.
 
 ## What the gate enforces
 
@@ -15,7 +15,7 @@ The five separation rules per ODR-0004 §3a:
 1. **No `sh:NodeShape` triples in class graphs** — `opda-classes.ttl`, `opda-<module>.ttl` × 6, and `opda-vocabularies.ttl` MUST NOT carry SHACL shape declarations.
 2. **No `owl:Class` triples in shape graphs** — `opda-shapes.ttl` and `opda-<module>-shapes.ttl` × 6 MUST NOT carry class declarations.
 3. **No `owl:imports` triples in shape graphs** — shape graphs are pure constraint material; imports live in the TBox graphs.
-4. **No `dct:references <https://w3id.org/dpv/…>` triples in class graphs** — DPV co-annotation is a reference-not-import concern (per [ADR-0012](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)) confined to `-annotations.ttl` files.
+4. **No `dct:references <https://w3id.org/dpv/…>` triples in class graphs** — DPV co-annotation is a reference-not-import concern (per [ADR-0012](/modelling/adr/adr-0012)) confined to `-annotations.ttl` files.
 5. **Foundation meta-shapes only in `opda-shapes.ttl`** — Cat 3 NoIdentityOverride, Cat 5 MetaShapeOverShapeGraph, and the three-rule interface contract meta-shapes live in the foundation shape graph; per-module shape graphs carry per-module shapes only.
 
 ## Command
@@ -77,6 +77,6 @@ The three-graph gate is the ontology-engineering analogue of a "no `import * fro
 
 ## Source ODR + ADR
 
-- [ODR-0004 — PDTF ontology foundation](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) §3a — five-part separation contract.
-- [ADR-0009 — Foundation TTL emission](../../../adr/ADR-0009-foundation-ttl-emission.md) — initial three-graph gate activation.
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — extends the separation contract to per-module shape + annotation graphs.
+- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a — five-part separation contract.
+- [ADR-0009 — Foundation TTL emission](/modelling/adr/adr-0009) — initial three-graph gate activation.
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — extends the separation contract to per-module shape + annotation graphs.

@@ -18,13 +18,13 @@ EPC current energy rating banding (A–G) published by DESNZ (Department for Ene
 
 | Notation | Label | Definition | Source |
 |---|---|---|---|
-| `A` | A | EPC current energy rating band A as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `B` | B | EPC current energy rating band B as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `C` | C | EPC current energy rating band C as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `D` | D | EPC current energy rating band D as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `E` | E | EPC current energy rating band E as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `F` | F | EPC current energy rating band F as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
-| `G` | G | EPC current energy rating band G as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/guide-to-energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `A` | A | EPC current energy rating band A as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `B` | B | EPC current energy rating band B as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `C` | C | EPC current energy rating band C as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `D` | D | EPC current energy rating band D as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `E` | E | EPC current energy rating band E as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `F` | F | EPC current energy rating band F as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
+| `G` | G | EPC current energy rating band G as defined by DESNZ | [gov.uk EPC guidance](https://www.gov.uk/government/publications/energy-performance-certificates-for-the-construction-sale-and-let-of-dwellings) |
 
 ## Cardinality discipline
 
@@ -68,5 +68,5 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §4a regulator-citation discipline
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §4a regulator-citation discipline
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

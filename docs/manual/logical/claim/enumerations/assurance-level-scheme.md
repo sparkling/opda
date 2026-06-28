@@ -20,7 +20,7 @@ Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus t
 |---|---|---|---|
 | `High` | High | High degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(c) High) | [eIDAS Article 8](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910) |
 | `Low` | Low | Limited degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(a) Low) | [eIDAS Article 8](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910) |
-| `PDTF-Standard` | PDTF-Standard | OPDA-specific intermediate assurance level per ODR-0009 §Q3, applicable to PDTF transactions where eIDAS LoA mapping is not directly available | [ODR-0009 §Q3](../../../ontology/odr/ODR-0009-claims-evidence-verification.md) |
+| `PDTF-Standard` | PDTF-Standard | OPDA-specific intermediate assurance level per ODR-0009 §Q3, applicable to PDTF transactions where eIDAS LoA mapping is not directly available | [ODR-0009 §Q3](/modelling/odr/odr-0009) |
 | `Substantial` | Substantial | Substantial degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(b) Substantial) | [eIDAS Article 8](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910) |
 
 ## Cardinality discipline
@@ -59,6 +59,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims + Evidence + Verification](../../../ontology/odr/ODR-0009-claims-evidence-verification.md), §Q3 PDTF-Standard
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §4a regulator-citation discipline
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
+- [ODR-0009 — Claims + Evidence + Verification](/modelling/odr/odr-0009), §Q3 PDTF-Standard
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §4a regulator-citation discipline
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation

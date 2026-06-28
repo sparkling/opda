@@ -231,9 +231,9 @@ Class-level + 3 evidence refinements. See [`annotations.md`](./annotations.md).
 
 ## Source ODR + ADR
 
-- [ODR-0009 — Claims, evidence and provenance](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0013 — SHACL validation and severity](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ODR-0017 — SHACL-AF quality rules pattern](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ODR-0018 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0009 — Claims, evidence and provenance](/modelling/odr/odr-0009)
+- [ODR-0013 — SHACL validation and severity](/modelling/odr/odr-0013)
+- [ODR-0017 — SHACL-AF quality rules pattern](/modelling/odr/odr-0017)
+- [ODR-0018 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

@@ -63,4 +63,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0008 — Property descriptive attributes §Q4a](../../../ontology/odr/ODR-0008-property-descriptive-attributes.md)
+[ODR-0008 — Property descriptive attributes §Q4a](/modelling/odr/odr-0008)

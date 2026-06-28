@@ -35,7 +35,7 @@ opda:AssuranceLevel
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3>` | [ODR-0009 §Q3](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3>` | [ODR-0009 §Q3](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "UFO: Quale-in-Region. eIDAS Regulation 910/2014 Article 8." | Guizzardi 2005 / eIDAS |
 | `rdfs:comment @en` | "eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering." | ODR-0009 §Q3 |
 
@@ -51,8 +51,8 @@ None directly; values bound to `opda:AssuranceLevelScheme` via SKOS in `opda-voc
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q3](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q3](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Claim
 
@@ -70,7 +70,7 @@ opda:Claim
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "UFO: Information particular. PROV-O: Entity." | Guizzardi 2005 / W3C PROV-O |
 | `rdfs:comment @en` | "Verifiable claim entity. Per S009 Q1 80%-PROV-O mapping." | ODR-0009 §Q1 |
 
@@ -92,8 +92,8 @@ opda:Claim
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Document
 
@@ -110,7 +110,7 @@ opda:Document
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "Short-name alias per ADR-0011 within-engineering option (b)." | ADR-0011 |
 | `rdfs:comment @en` | "Alias for opda:DocumentEvidence retained for exemplar compatibility." | ADR-0011 |
 
@@ -124,8 +124,8 @@ opda:Document
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011 — within-engineering alias option (b)](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011 — within-engineering alias option (b)](/modelling/adr/adr-0011)
 
 ### opda:DocumentEvidence
 
@@ -144,7 +144,7 @@ opda:DocumentEvidence
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "PROV-O: Entity. OIDC4IDA / eIDAS document-evidence category." | W3C PROV-O / OIDC4IDA |
 | `rdfs:comment @en` | "Document-evidence subtype — paper or scanned artefacts. eIDAS Substantial-tier for court-issued instruments." | ODR-0009 §Q1 |
 
@@ -165,8 +165,8 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:ElectronicRecord
 
@@ -183,7 +183,7 @@ opda:ElectronicRecord
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "Short-name alias for opda:ElectronicRecordEvidence per ADR-0011 within-engineering option (b)." | ADR-0011 |
 | `rdfs:comment @en` | "Alias for opda:ElectronicRecordEvidence retained for exemplar compatibility." | ADR-0011 |
 
@@ -197,8 +197,8 @@ opda:ElectronicRecord
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:ElectronicRecordEvidence
 
@@ -217,7 +217,7 @@ opda:ElectronicRecordEvidence
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "PROV-O: Entity. OIDC4IDA electronic-record evidence category." | W3C PROV-O / OIDC4IDA |
 | `rdfs:comment @en` | "Electronic-record evidence subtype — API-retrieved structured records. eIDAS Substantial-tier." | ODR-0009 §Q1 |
 
@@ -238,8 +238,8 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Evidence
 
@@ -257,7 +257,7 @@ opda:Evidence
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "PROV-O: Entity. Three subtypes correspond to OIDC4IDA / eIDAS evidence categories." | W3C PROV-O / OIDC4IDA |
 | `rdfs:comment @en` | "Generic evidence supertype. Three named subtypes per S009 Rule 5 (do NOT collapse)." | ODR-0009 §Q1 |
 
@@ -278,8 +278,8 @@ opda:Evidence
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1 + Rule 5](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1 + Rule 5](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:TrustFramework
 
@@ -296,7 +296,7 @@ opda:TrustFramework
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q5>` | [ODR-0009 §Q5](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q5>` | [ODR-0009 §Q5](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "UFO: Information Particular. dct:conformsTo binding per S009 Rule 5." | Guizzardi 2005 / S009 Rule 5 |
 | `rdfs:comment @en` | "Trust framework citation — governance regime scoping claim validity. PDTF authoritative." | ODR-0009 §Q5 |
 
@@ -312,8 +312,8 @@ None directly (citation pattern; `dct:conformsTo` carries the binding).
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q5](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q5](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:VerificationActivity
 
@@ -331,7 +331,7 @@ opda:VerificationActivity
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "PROV-O: Activity. UFO: Event particular." | W3C PROV-O / Guizzardi 2005 |
 | `rdfs:comment @en` | "Verification activity recording production of a verified claim from evidence. Qualified form for method preservation." | ODR-0009 §Q1 + §Q2 |
 
@@ -351,8 +351,8 @@ opda:VerificationActivity
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1 + §Q2 + §Q7](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1 + §Q2 + §Q7](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:Vouch
 
@@ -369,7 +369,7 @@ opda:Vouch
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "Short-name alias for opda:VouchEvidence per ADR-0011 within-engineering option (b)." | ADR-0011 |
 | `rdfs:comment @en` | "Alias for opda:VouchEvidence retained for exemplar compatibility." | ADR-0011 |
 
@@ -383,8 +383,8 @@ opda:Vouch
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)
 
 ### opda:VouchEvidence
 
@@ -403,7 +403,7 @@ opda:VouchEvidence
 
 | Triple | Value | Source |
 |---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md) |
+| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1>` | [ODR-0009 §Q1](/modelling/odr/odr-0009) |
 | `skos:scopeNote @en` | "PROV-O: Entity. OIDC4IDA / eIDAS vouch-evidence category. Vouch is prov:wasAttributedTo an Agent." | W3C PROV-O / OIDC4IDA |
 | `rdfs:comment @en` | "Vouch evidence subtype — formal attestation by regulated professional. eIDAS Low regardless of voucher quality." | ODR-0009 §Q1 + §Q3 |
 
@@ -424,5 +424,5 @@ Inherited from [`opda:EvidenceIdentityKeyShape`](./shapes.md#opdaevidenceidentit
 
 #### Source ODR + ADR
 
-- [ODR-0009 §Q1 + §Q3](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ADR-0011](../../../adr/ADR-0011-module-tbox-emission.md)
+- [ODR-0009 §Q1 + §Q3](/modelling/odr/odr-0009)
+- [ADR-0011](/modelling/adr/adr-0011)

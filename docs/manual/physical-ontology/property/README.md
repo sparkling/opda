@@ -215,9 +215,9 @@ See [`shapes.md`](./shapes.md) for per-shape blocks.
 
 ## Source ODR + ADR
 
-- [ODR-0005 — Property and land identity crux](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ODR-0015 — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ODR-0007 §Q5 — Lease term as interval](../../../ontology/odr/ODR-0007-transactions-and-lifecycle.md)
-- [ODR-0008 §Q5a — BASPI5 attribute discipline](../../../ontology/odr/ODR-0008-descriptive-attributes.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0005 — Property and land identity crux](/modelling/odr/odr-0005)
+- [ODR-0015 — Address and geography](/modelling/odr/odr-0015)
+- [ODR-0007 §Q5 — Lease term as interval](/modelling/odr/odr-0007)
+- [ODR-0008 §Q5a — BASPI5 attribute discipline](/modelling/odr/odr-0008)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

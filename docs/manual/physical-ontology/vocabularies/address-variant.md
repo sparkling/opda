@@ -126,6 +126,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0015 §2a — Address and geography](../../../ontology/odr/ODR-0015-address-and-geography.md)
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md)
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
+- [ODR-0015 §2a — Address and geography](/modelling/odr/odr-0015)
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010)
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011)

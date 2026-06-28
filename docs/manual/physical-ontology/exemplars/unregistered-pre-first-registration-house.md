@@ -145,6 +145,6 @@ opda-x:estate opda:identifiesSameProperty opda-x:property .
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0005 §3a (Rule 3, Rule 6) + §3b + Anti-patterns](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0005 §3a (Rule 3, Rule 6) + §3b + Anti-patterns](/modelling/odr/odr-0005)
+- [ADR-0014](/modelling/adr/adr-0014)

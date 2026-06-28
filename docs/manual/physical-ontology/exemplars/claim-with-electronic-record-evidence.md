@@ -125,7 +125,7 @@ opda-x:claim
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0009 §Q1 + §Q3 + §Q7 — Claims (electronic-record evidence type)](../../../ontology/odr/ODR-0009-claims-evidence-and-provenance.md)
-- [ODR-0013 §Q1 Cat 2](../../../ontology/odr/ODR-0013-shacl-validation-and-severity.md)
-- [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a](/modelling/odr/odr-0004)
+- [ODR-0009 §Q1 + §Q3 + §Q7 — Claims (electronic-record evidence type)](/modelling/odr/odr-0009)
+- [ODR-0013 §Q1 Cat 2](/modelling/odr/odr-0013)
+- [ADR-0014](/modelling/adr/adr-0014)

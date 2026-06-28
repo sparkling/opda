@@ -60,7 +60,7 @@ erDiagram
 
 ## Source ODR + ADR
 
-- [ODR-0018 — DPV co-annotation](../../../ontology/odr/ODR-0018-dpv-co-annotation.md), §Rule 4 baseline; §3a mapping-record-as-resource
-- [ODR-0012 — SHACL + DPV annotation](../../../ontology/odr/ODR-0012-shacl-dpv-annotation.md), §Phase 1 reference-not-import discipline
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — co-annotation triples
+- [ODR-0018 — DPV co-annotation](/modelling/odr/odr-0018), §Rule 4 baseline; §3a mapping-record-as-resource
+- [ODR-0012 — SHACL + DPV annotation](/modelling/odr/odr-0012), §Phase 1 reference-not-import discipline
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — co-annotation triples

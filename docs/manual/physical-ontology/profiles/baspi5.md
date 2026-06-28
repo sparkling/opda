@@ -331,6 +331,6 @@ Every BASPI5 property shape carries DASH editor + viewer predicates:
 
 ## Source ADR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md)
-- [ODR-0010 — Overlay profile mechanism (§Q1 ValidationContext; §Q3 dct:source IRIs; §Q4 DASH UI; §Q5 oneOf-as-xone; §Q6 no-identity-override; §Q7 BASPI5 MVP gate)](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013)
+- [ODR-0010 — Overlay profile mechanism (§Q1 ValidationContext; §Q3 dct:source IRIs; §Q4 DASH UI; §Q5 oneOf-as-xone; §Q6 no-identity-override; §Q7 BASPI5 MVP gate)](/modelling/odr/odr-0010)
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014)

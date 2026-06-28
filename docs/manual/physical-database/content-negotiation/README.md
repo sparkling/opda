@@ -1,6 +1,6 @@
 # Content negotiation
 
-OPDA's persistent namespace is `https://opda.org.uk/pdtf/*` (per [ADR-0006](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md)). These IRIs are **identifiers first** — graph-node names a consumer cites and compares. Dereferenceability is **optional and aspirational**, not required for the standard to be valid: a consumer never has to fetch an IRI to use the ontology (the council ranked resolution "aspirational, not required").
+OPDA's persistent namespace is `https://opda.org.uk/pdtf/*` (per [ADR-0006](/modelling/adr/adr-0006)). These IRIs are **identifiers first** — graph-node names a consumer cites and compares. Dereferenceability is **optional and aspirational**, not required for the standard to be valid: a consumer never has to fetch an IRI to use the ontology (the council ranked resolution "aspirational, not required").
 
 When resolution **is** offered, it is served **directly from opda-controlled hosting** — `opda.org.uk` DNS + origin under OPDA's control. There is **no W3C PICG redirect**: ADR-0006 dropped the `w3id.org/opda → openpropdata.org.uk` redirect chain when the base moved to `opda.org.uk`, because opda now owns the domain and serves RDF from it directly. The serving model below describes that **planned** behaviour; DNS for the per-term endpoints is not yet configured.
 
@@ -56,7 +56,7 @@ Per-resource availability is documented in the [format matrix](./format-matrix.m
 
 A **single canonical `@context`** applies to every JSON-LD response, regardless of which resource the consumer requests. The context is documented in [jsonld-context.md](./jsonld-context.md) and is served at `https://opda.org.uk/pdtf/context.jsonld`.
 
-Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md), the canonical context preserves:
+Per [ADR-0013](/modelling/adr/adr-0013), the canonical context preserves:
 
 - `@vocab` → `https://opda.org.uk/pdtf/` (so all unqualified terms resolve to OPDA's flat term namespace)
 - Standard ontology prefixes: `dct:`, `dpv:`, `owl:`, `rdf:`, `rdfs:`, `skos:`, `sh:`, `dash:`, `xsd:`, `vann:`, `prov:`
@@ -78,5 +78,5 @@ See [format-matrix.md](./format-matrix.md) for the per-resource table:
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace scheme + opda-direct serving (the original w3id/PICG redirect was dropped when the base moved to `opda.org.uk`).
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — derived-profile composition feeding content negotiation.
+- [ADR-0006 — w3id.org/opda ontology namespace](/modelling/adr/adr-0006) — namespace scheme + opda-direct serving (the original w3id/PICG redirect was dropped when the base moved to `opda.org.uk`).
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) — derived-profile composition feeding content negotiation.

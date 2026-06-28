@@ -46,5 +46,5 @@ Origin server honours `If-None-Match` (`ETag`-based) and `If-Modified-Since` (`L
 
 ## Source ADR
 
-- [ADR-0006 — w3id.org/opda ontology namespace](../../../adr/ADR-0006-w3id-opda-ontology-namespace.md) — namespace scheme + opda-direct (optional) resolution.
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — BASPI5 + derived-profile URLs.
+- [ADR-0006 — w3id.org/opda ontology namespace](/modelling/adr/adr-0006) — namespace scheme + opda-direct (optional) resolution.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) — BASPI5 + derived-profile URLs.

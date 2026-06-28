@@ -60,4 +60,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0004 — PDTF ontology foundation §8a](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+[ODR-0004 — PDTF ontology foundation §8a](/modelling/odr/odr-0004)

@@ -177,8 +177,8 @@ Header-only. Governance classes (`DPVMappingRecord`, `SpecialCategoryScheme`) ar
 
 ## Source ODR + ADR
 
-- [ODR-0012 — SHACL + DPV annotation emission](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0018 — DPV co-annotation pattern](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ODR-0011 — Enumeration vocabularies (SpecialCategoryScheme deferral)](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0012 — SHACL + DPV annotation emission](/modelling/odr/odr-0012)
+- [ODR-0018 — DPV co-annotation pattern](/modelling/odr/odr-0018)
+- [ODR-0011 — Enumeration vocabularies (SpecialCategoryScheme deferral)](/modelling/odr/odr-0011)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

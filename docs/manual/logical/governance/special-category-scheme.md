@@ -56,5 +56,5 @@ erDiagram
 ## Source ODR + ADR
 
 - GDPR Article 10 (regulator-cited source)
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §Operational specifications (deferred member emission)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §Operational specifications (deferred member emission)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation

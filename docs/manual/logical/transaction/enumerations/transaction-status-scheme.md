@@ -18,11 +18,11 @@ Phase labels for the lifecycle of a Transaction Substance Kind, tracking the fiv
 
 | Notation | Label | Definition | Source |
 |---|---|---|---|
-| `Accepted` | Accepted | An offer has been accepted, transaction is in progress | [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (derived from data-dictionary `Sold subject to contract`) |
-| `Completed` | Completed | Transaction has completed; legal title has transferred | [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (derived from data-dictionary `Completed`) |
-| `Exchanged` | Exchanged | Contracts have been exchanged | [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (derived from data-dictionary `Contracts exchanged`) |
-| `Listed` | Listed | Property is listed for sale | [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (derived from data-dictionary `For sale`) |
-| `Offered` | Offered | An offer has been made on the property | [ODR-0011 §8a](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md) (derived from data-dictionary `Under offer`) |
+| `Accepted` | Accepted | An offer has been accepted, transaction is in progress | [ODR-0011 §8a](/modelling/odr/odr-0011) (derived from data-dictionary `Sold subject to contract`) |
+| `Completed` | Completed | Transaction has completed; legal title has transferred | [ODR-0011 §8a](/modelling/odr/odr-0011) (derived from data-dictionary `Completed`) |
+| `Exchanged` | Exchanged | Contracts have been exchanged | [ODR-0011 §8a](/modelling/odr/odr-0011) (derived from data-dictionary `Contracts exchanged`) |
+| `Listed` | Listed | Property is listed for sale | [ODR-0011 §8a](/modelling/odr/odr-0011) (derived from data-dictionary `For sale`) |
+| `Offered` | Offered | An offer has been made on the property | [ODR-0011 §8a](/modelling/odr/odr-0011) (derived from data-dictionary `Under offer`) |
 
 ## Cardinality discipline
 
@@ -62,7 +62,7 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0007 — Transaction lifecycle](../../../ontology/odr/ODR-0007-transaction-lifecycle.md), §Q3 Transaction status
-- [ODR-0011 — Enumeration vocabularies](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md), §8a UFO meta-category
-- [ADR-0010 — SKOS vocabulary emission](../../../adr/ADR-0010-skos-vocabulary-emission.md) — implementation
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — G10 closure
+- [ODR-0007 — Transaction lifecycle](/modelling/odr/odr-0007), §Q3 Transaction status
+- [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011), §8a UFO meta-category
+- [ADR-0010 — SKOS vocabulary emission](/modelling/adr/adr-0010) — implementation
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) — G10 closure

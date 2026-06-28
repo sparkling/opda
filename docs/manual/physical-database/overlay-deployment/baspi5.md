@@ -10,7 +10,7 @@ title: BASPI5
 
 **Authority:** British Association of Surveyors Property Information (BASPI).
 **Form version:** 5.0.3 (per `opda:Baspi5ValidationContext` in the profile TTL).
-**Production status:** deployed; **MVP gate active**. BASPI5 round-trip success closes the ontology-implementation programme's MVP gate per [ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) + [ODR-0010 §Q7](../../../ontology/odr/) + [ODR-0003 §"Programme retirement criterion" condition (i)](../../../ontology/odr/).
+**Production status:** deployed; **MVP gate active**. BASPI5 round-trip success closes the ontology-implementation programme's MVP gate per [ADR-0014](/modelling/adr/adr-0014) + [ODR-0010 §Q7](../../../ontology/odr/) + [ODR-0003 §"Programme retirement criterion" condition (i)](../../../ontology/odr/).
 
 ## Source profile TTL
 
@@ -127,7 +127,7 @@ The composer (pending; see [derived-profiles/README.md](../derived-profiles/READ
 
 ## Round-trip status
 
-Per the three-layer harness ([ADR-0014](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md), [`tests/baspi5_round_trip/`](../../../../tests/baspi5_round_trip/)):
+Per the three-layer harness ([ADR-0014](/modelling/adr/adr-0014), [`tests/baspi5_round_trip/`](../../../../tests/baspi5_round_trip/)):
 
 **Last measured 2026-05-28: 27 of 27 tests passing.**
 
@@ -154,7 +154,7 @@ Expected tail: `27 passed`.
 
 ## Three-rule interface contract status
 
-Per [ADR-0013](../../../adr/ADR-0013-overlay-profile-emission.md) §"Three-rule interface contract — CI enforcement":
+Per [ADR-0013](/modelling/adr/adr-0013) §"Three-rule interface contract — CI enforcement":
 
 | Rule | CI test | Status |
 |---|---|---|
@@ -175,6 +175,6 @@ See [operations/round-trip-ci.md](../operations/round-trip-ci.md) for end-to-end
 
 ## Source ADR + ODR
 
-- [ADR-0013 — Overlay profile emission](../../../adr/ADR-0013-overlay-profile-emission.md) — per-overlay emission template, BASPI5-first sequencing, three-rule interface contract.
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md) — three-layer harness; MVP gate operational signal.
+- [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) — per-overlay emission template, BASPI5-first sequencing, three-rule interface contract.
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014) — three-layer harness; MVP gate operational signal.
 - [ODR-0010 — Overlay profile mechanism](../../../ontology/odr/) §Q1 (ValidationContext reification), §Q3 (`dct:source` form-question IRIs), §Q4 (DASH UI), §Q5 (oneOf → `sh:xone`), §Q6 (no-identity-override), §Q7 (BASPI5 MVP gate).

@@ -214,8 +214,8 @@ Class-level + 2 variant refinements. See [`annotations.md`](./annotations.md).
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agents and roles](../../../ontology/odr/ODR-0006-agents-and-roles.md)
-- [ODR-0012 — SHACL + DPV annotation emission](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md) (Cat 4)
-- [ODR-0017 — SHACL-AF quality rules pattern](../../../ontology/odr/ODR-0017-shacl-af-quality-rules-pattern.md)
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0006 — Agents and roles](/modelling/odr/odr-0006)
+- [ODR-0012 — SHACL + DPV annotation emission](/modelling/odr/odr-0012) (Cat 4)
+- [ODR-0017 — SHACL-AF quality rules pattern](/modelling/odr/odr-0017)
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

@@ -109,7 +109,7 @@ stateDiagram-v2
 
 ## Source ODR + ADR
 
-- [ODR-0005 — Property + LegalEstate + RegisteredTitle](../../../ontology/odr/ODR-0005-property-legal-estate-registered-title.md), §2a Property IC; §6a UPRN succession
-- [ODR-0008 — Descriptive attributes](../../../ontology/odr/ODR-0008-descriptive-attributes.md), §Q5a BASPI5 Yes/No discriminators
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — shapes
+- [ODR-0005 — Property + LegalEstate + RegisteredTitle](/modelling/odr/odr-0005), §2a Property IC; §6a UPRN succession
+- [ODR-0008 — Descriptive attributes](/modelling/odr/odr-0008), §Q5a BASPI5 Yes/No discriminators
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — shapes

@@ -74,4 +74,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0006 — Agents and roles §Q2](../../../ontology/odr/ODR-0006-agents-and-roles.md)
+[ODR-0006 — Agents and roles §Q2](/modelling/odr/odr-0006)

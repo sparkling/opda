@@ -207,7 +207,7 @@ Default-graph entry point. Carries the `owl:Ontology` declaration for the OPDA n
 
 #### Version IRI
 
-`https://opda.org.uk/pdtf/harness/release/1.0.0/`. Bumped on every module-TBox or vocabulary release per [ADR-0013](../../adr/ADR-0013-overlay-profile-emission.md). Last bump: 1.0.0 (foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData — ADR-0009..ADR-0014).
+`https://opda.org.uk/pdtf/harness/release/1.0.0/`. Bumped on every module-TBox or vocabulary release per [ADR-0013](/modelling/adr/adr-0013). Last bump: 1.0.0 (foundation + SKOS vocabularies + UFO meta-classes + module shapes + DPV annotations + overlay profiles + ValidationContext + hasSpecialCategoryData — ADR-0009..ADR-0014).
 
 ### (no ontology IRI — class graph)
 
@@ -217,7 +217,7 @@ Default-graph entry point. Carries the `owl:Ontology` declaration for the OPDA n
 
 #### Purpose
 
-The class graph carries the six foundation `owl:Class` declarations (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator, ValidationContext) plus the single ADR-0014 G14 `opda:hasSpecialCategoryData` `owl:DatatypeProperty`. Three-graph separation per [ODR-0004 §3a](../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md) requires this file MUST NOT contain `sh:NodeShape` triples; those live in the matching `-shapes.ttl`.
+The class graph carries the six foundation `owl:Class` declarations (DiagnosticExemplar, GeneratorRun, RoleMixin, Role, Relator, ValidationContext) plus the single ADR-0014 G14 `opda:hasSpecialCategoryData` `owl:DatatypeProperty`. Three-graph separation per [ODR-0004 §3a](/modelling/odr/odr-0004) requires this file MUST NOT contain `sh:NodeShape` triples; those live in the matching `-shapes.ttl`.
 
 #### Load order
 
@@ -285,7 +285,7 @@ None at file level.
 
 #### Purpose
 
-The 23 SKOS Concept Schemes per [ODR-0011 §1a + §8a](../../ontology/odr/) seven-category UFO framework: AddressVariantScheme, AssuranceLevelScheme, and 21 others. References DPV via `dct:references` (reference-not-import per [ADR-0010](../../adr/ADR-0010-skos-vocabulary-emission.md)). The lifecycle SHACL-AF rule body for deprecated concepts lives in `opda-shapes.ttl`.
+The 23 SKOS Concept Schemes per [ODR-0011 §1a + §8a](../../ontology/odr/) seven-category UFO framework: AddressVariantScheme, AssuranceLevelScheme, and 21 others. References DPV via `dct:references` (reference-not-import per [ADR-0010](/modelling/adr/adr-0010)). The lifecycle SHACL-AF rule body for deprecated concepts lives in `opda-shapes.ttl`.
 
 #### Load order
 
@@ -579,7 +579,7 @@ None at file level.
 
 ## Module-annotation graphs
 
-Each per-module annotation graph carries DPV class-level baselines + variant-conditional refinement maps per [ODR-0018](../../ontology/odr/). Reference-not-import for DPV: DPV terms cited via `dct:references` and URIRef triples; no `owl:imports <https://w3id.org/dpv/pd>` per [ADR-0012](../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md).
+Each per-module annotation graph carries DPV class-level baselines + variant-conditional refinement maps per [ODR-0018](../../ontology/odr/). Reference-not-import for DPV: DPV terms cited via `dct:references` and URIRef triples; no `owl:imports <https://w3id.org/dpv/pd>` per [ADR-0012](/modelling/adr/adr-0012).
 
 ### https://opda.org.uk/pdtf/graph/property-annotations
 
@@ -723,7 +723,7 @@ None at file level.
 
 #### Purpose
 
-BASPI5 (British Association of Surveyors Property Information, version 5) overlay profile. Per-form cardinality, enum subsets, DASH UI rendering. Composes over the foundation + module TBox + base shapes per [ODR-0010](../../ontology/odr/). MVP gate per [ADR-0014](../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md).
+BASPI5 (British Association of Surveyors Property Information, version 5) overlay profile. Per-form cardinality, enum subsets, DASH UI rendering. Composes over the foundation + module TBox + base shapes per [ODR-0010](../../ontology/odr/). MVP gate per [ADR-0014](/modelling/adr/adr-0014).
 
 #### Load order
 

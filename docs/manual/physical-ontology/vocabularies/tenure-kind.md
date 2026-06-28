@@ -114,6 +114,6 @@ flowchart LR
 
 ## Source ODR + ADR
 
-- [ODR-0011 §8a — Substance Kind label cross-scheme consistency](../../../ontology/odr/ODR-0011-enumeration-vocabularies.md)
-- [ODR-0005 §3b + Anti-pattern §5](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0010](../../../adr/ADR-0010-skos-vocabulary-emission.md)
+- [ODR-0011 §8a — Substance Kind label cross-scheme consistency](/modelling/odr/odr-0011)
+- [ODR-0005 §3b + Anti-pattern §5](/modelling/odr/odr-0005)
+- [ADR-0010](/modelling/adr/adr-0010)

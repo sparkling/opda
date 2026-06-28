@@ -60,4 +60,4 @@ flowchart LR
 
 ## Source ODR
 
-[ODR-0010 — Overlay profile mechanism §Q1](../../../ontology/odr/ODR-0010-overlay-profile-mechanism.md)
+[ODR-0010 — Overlay profile mechanism §Q1](/modelling/odr/odr-0010)

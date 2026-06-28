@@ -59,6 +59,6 @@ For every `opda:DPVMappingRecord` instance, `opda:targetsKind` MUST be exactly o
 
 #### Source ODR + ADR
 
-- [ODR-0012 §Phase 1 — Governance discipline](../../../ontology/odr/ODR-0012-shacl-and-dpv-annotation-emission.md)
-- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](../../../ontology/odr/ODR-0018-dpv-co-annotation-pattern.md)
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md)
+- [ODR-0012 §Phase 1 — Governance discipline](/modelling/odr/odr-0012)
+- [ODR-0018 — DPV co-annotation pattern (reference-not-import)](/modelling/odr/odr-0018)
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)

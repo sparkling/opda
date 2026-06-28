@@ -90,7 +90,7 @@ stateDiagram-v2
 
 ## Source ODR + ADR
 
-- [ODR-0006 — Agent + Roles + Relators](../../../ontology/odr/ODR-0006-agent-roles-relators.md), §Q1 Person IC
-- [ODR-0018 — DPV co-annotation](../../../ontology/odr/ODR-0018-dpv-co-annotation.md), §Rule 4 baseline
-- [ADR-0011 — Module TBox emission](../../../adr/ADR-0011-module-tbox-emission.md) — implementation
-- [ADR-0012 — SHACL + DPV annotation emission](../../../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) — Cat 4 lawful-basis shape
+- [ODR-0006 — Agent + Roles + Relators](/modelling/odr/odr-0006), §Q1 Person IC
+- [ODR-0018 — DPV co-annotation](/modelling/odr/odr-0018), §Rule 4 baseline
+- [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011) — implementation
+- [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — Cat 4 lawful-basis shape

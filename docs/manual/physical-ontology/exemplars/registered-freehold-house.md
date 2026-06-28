@@ -150,6 +150,6 @@ opda-x:title opda:recordsEstate opda-x:estate .
 
 ## Source ODR + ADR
 
-- [ODR-0004 §8a — Diagnostic exemplar policy](../../../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
-- [ODR-0005 §2a + §3b + §3c — Property and land identity crux](../../../ontology/odr/ODR-0005-property-and-land-identity-crux.md)
-- [ADR-0014 — BASPI5 round-trip MVP harness](../../../adr/ADR-0014-baspi5-round-trip-mvp-harness.md)
+- [ODR-0004 §8a — Diagnostic exemplar policy](/modelling/odr/odr-0004)
+- [ODR-0005 §2a + §3b + §3c — Property and land identity crux](/modelling/odr/odr-0005)
+- [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014)
