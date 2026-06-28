@@ -45,7 +45,7 @@ import Diagram from '@/components/Diagram.astro';
           with its own language and rules (Estate Agency, Conveyancing, …). A
           <strong>PDTF overlay</strong> is a schema-layer artefact — a single JSON-Schema
           file that adds one form, search or document to the base transaction
-          (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>, <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a>, …). They map cleanly onto each
+          (<a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>, <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a>, …). They map cleanly onto each
           other (many overlays per context) but they're not the same thing. See the
           dedicated <a href="/modelling/overlays">PDTF overlays</a> page for the full
           catalogue and merge mechanics.
@@ -137,7 +137,7 @@ import Diagram from '@/components/Diagram.astro';
           RICS-regulated surveying <em>is</em> present in association membership — Survey Shack,
           plus Countrywide Surveyors (within Connells Group) and Pinnacle Surveyors (within MAB).
           RICS itself is on the DPMSG steering board.
-          Worth flagging: the surveying overlay (<a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>) still lacks an
+          Worth flagging: the surveying overlay (<a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a>) still lacks an
           OPDA member with practical implementation skin in the game. Stakeholder
           engagement for the linked-data project should activate one of these surveying
           firms as an implementer (or recruit a dedicated surveying member).
@@ -180,7 +180,7 @@ import Diagram from '@/components/Diagram.astro';
           <p>
             The end-to-end journey from listing → offer → instruction → searches →
             valuation → mortgage offer → exchange → completion → registration.
-            PDTF's <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> is the spine. State transitions
+            PDTF's <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> is the spine. State transitions
             are the events different contexts care about.
           </p>
         </div>
@@ -271,7 +271,7 @@ JSON Schema + OpenAPI + VC + DID
           <tr>
             <td>PDTF → MHCLG Material Information</td>
             <td><strong>Conformist</strong> (regulatory)</td>
-            <td>Whatever MHCLG defines, PDTF's <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a>-successor overlay must implement. No design discretion on what counts as material.</td>
+            <td>Whatever MHCLG defines, PDTF's <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a>-successor overlay must implement. No design discretion on what counts as material.</td>
           </tr>
           <tr>
             <td>PDTF → W3C VC / DID</td>
@@ -338,7 +338,7 @@ JSON Schema + OpenAPI + VC + DID
           </tr>
           <tr>
             <td>Property Tech</td>
-            <td>The base <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper — no overlays of its own</td>
+            <td>The base <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper — no overlays of its own</td>
           </tr>
         </tbody>
       </table>
@@ -380,7 +380,7 @@ JSON Schema + OpenAPI + VC + DID
 
       <p>
         Each future extension would be a new overlay (preserving the base
-        <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a>), with its own bounded-context owner who
+        <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a>), with its own bounded-context owner who
         stewards the wording.
       </p>
 

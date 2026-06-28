@@ -38,7 +38,7 @@ import Layout from '@/layouts/Layout.astro';
   //            bucket, served by CloudFront under /resources/* with the leading
   //            "source/" stripped (the bucket mirrors source/ at its root). So
   //            source/a/b.pdf → /resources/a/b.pdf. This is why all the existing
-  //            /resource.html?path=source/… links work in prod with no rewrite.
+  //            /resource?path=source/… links work in prod with no rewrite.
   // Non-source paths (e.g. docs/…) are served from the site root as-is in both.
   function resolveResourceUrl(p) {
     if (p.startsWith('source/')) {

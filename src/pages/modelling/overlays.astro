@@ -31,13 +31,13 @@ import Diagram from '@/components/Diagram.astro';
       <div class="callout callout--key">
         <div class="callout__label">Headline numbers</div>
         <ul style="margin: 0;">
-          <li><strong>1</strong> base transaction schema — <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> (not an overlay)</li>
+          <li><strong>1</strong> base transaction schema — <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> (not an overlay)</li>
           <li><strong>18</strong> main overlays in <code>v3/overlays/*.json</code></li>
           <li><strong>16</strong> extension overlays in <code>v3/overlays/extensions/*.json</code> (modular NTS2 pieces)</li>
           <li><strong>34</strong> overlay files total in PDTF v3</li>
         </ul>
         <p class="muted tiny" style="margin-top: var(--space-2);">
-          <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/combined.json" title="source/03-standards/schemas/src/schemas/v3/combined.json"><code>combined.json</code></a> and <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/skeleton.json" title="source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>skeleton.json</code></a> at the v3 root aren't
+          <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/combined.json" title="source/03-standards/schemas/src/schemas/v3/combined.json"><code>combined.json</code></a> and <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/skeleton.json" title="source/03-standards/schemas/src/schemas/v3/skeleton.json"><code>skeleton.json</code></a> at the v3 root aren't
           overlays — the first is a pre-merged convenience view, the second is a starter
           template for empty transactions.
         </p>
@@ -55,7 +55,7 @@ import Diagram from '@/components/Diagram.astro';
       <ol>
         <li>
           <strong>Base schema</strong> — the single
-          <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a>
+          <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a>
           that every overlay layers onto.
         </li>
         <li>
@@ -230,13 +230,13 @@ flowchart LR
           <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>v5.0</td><td>Estate Agency</td><td>active</td></tr>
-          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td><td>v4.0</td><td>Estate Agency</td><td>superseded by <code>baspi5</code></td></tr>
-          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
-          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>nts2</code></td></tr>
-          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
-          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>ntsl2</code></td></tr>
-          <tr><td>Property Information Questionnaire</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>v3</td><td>Surveying</td><td>active</td></tr>
+          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td><td>v5.0</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>Buyers and Sellers Property Information</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td><td>v4.0</td><td>Estate Agency</td><td>superseded by <code>baspi5</code></td></tr>
+          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>NTS Material Information (Sales)</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>nts2</code></td></tr>
+          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td><td>2025</td><td>Estate Agency</td><td>active</td></tr>
+          <tr><td>NTS Material Information (Lettings)</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td><td>2023</td><td>Estate Agency</td><td>legacy — superseded by <code>ntsl2</code></td></tr>
+          <tr><td>Property Information Questionnaire</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td><td>v3</td><td>Surveying</td><td>active</td></tr>
         </tbody>
       </table>
 
@@ -254,9 +254,9 @@ flowchart LR
           <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td>Property Information Form</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
-          <tr><td>Leasehold Information Form</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
-          <tr><td>Fittings and Contents Form</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Property Information Form</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Leasehold Information Form</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Fittings and Contents Form</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td><td>Edition 3</td><td>Conveyancing</td><td>active</td></tr>
         </tbody>
       </table>
 
@@ -274,12 +274,12 @@ flowchart LR
           <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td>Local Authority Search</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>2019</td><td>Property Data Services</td><td>active</td></tr>
-          <tr><td>Drainage and Water Search</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>current</td><td>Property Data Services</td><td>active</td></tr>
-          <tr><td>Leasehold Property Enquiries</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
-          <tr><td>Freehold Management Enquiries</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Edition 2</td><td>Mortgage Lending</td><td>active</td></tr>
-          <tr><td>Local Land Charges Search</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>v2</td><td>Property Data Services</td><td>active</td></tr>
-          <tr><td>HMLR Official Copies of the Register</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>v21</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Local Authority Search</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td><td>2019</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Drainage and Water Search</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td><td>current</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Leasehold Property Enquiries</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td><td>Edition 4</td><td>Conveyancing</td><td>active</td></tr>
+          <tr><td>Freehold Management Enquiries</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td><td>Edition 2</td><td>Mortgage Lending</td><td>active</td></tr>
+          <tr><td>Local Land Charges Search</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td><td>v2</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>HMLR Official Copies of the Register</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td><td>v21</td><td>Property Data Services</td><td>active</td></tr>
         </tbody>
       </table>
 
@@ -297,8 +297,8 @@ flowchart LR
           <tr><th>Form</th><th>File</th><th>Version</th><th>Bounded context</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td>Residential Development Survey</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>v3.3.3</td><td>Property Data Services</td><td>active</td></tr>
-          <tr><td>Sustainability Report 2024</td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>2024</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Residential Development Survey</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td><td>v3.3.3</td><td>Property Data Services</td><td>active</td></tr>
+          <tr><td>Sustainability Report 2024</td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td><td>2024</td><td>Property Data Services</td><td>active</td></tr>
         </tbody>
       </table>
 
@@ -481,7 +481,7 @@ full NTS2 2025`"]:::success
           </tr>
           <tr>
             <td><strong>Property Tech</strong></td>
-            <td>The base <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper (no overlays of its own)</td>
+            <td>The base <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json" title="source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json"><code>pdtf-transaction.json</code></a> + verified-claims wrapper (no overlays of its own)</td>
           </tr>
         </tbody>
       </table>
@@ -531,7 +531,7 @@ full NTS2 2025`"]:::success
 
       <p>
         Composition happens via the library entrypoint
-        <code>getTransactionSchema(schemaId, overlays[])</code> in <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a>:
+        <code>getTransactionSchema(schemaId, overlays[])</code> in <a class="resource-link" href="/resource?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a>:
       </p>
 
       <pre><code>const &lbrace; getTransactionSchema &rbrace; = require('@pdtf/schemas');
@@ -583,7 +583,7 @@ required & oneOf`"]:::process
       <h3 id="aliases">Names and aliases</h3>
 
       <p>
-        Overlays are registered in <code>overlaysMap[schemaId]</code> in <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a> under versioned aliases as well as the plain filename stem. Both work:
+        Overlays are registered in <code>overlaysMap[schemaId]</code> in <a class="resource-link" href="/resource?path=source/03-standards/schemas/index.js" title="source/03-standards/schemas/index.js"><code>index.js</code></a> under versioned aliases as well as the plain filename stem. Both work:
       </p>
 
       <table>
@@ -591,24 +591,24 @@ required & oneOf`"]:::process
           <tr><th>Form / search</th><th>Alias in overlaysMap</th><th>File</th></tr>
         </thead>
         <tbody>
-          <tr><td>Buyers and Sellers Property Information (BASPI v4)</td><td><code>baspiV4</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td></tr>
-          <tr><td>Buyers and Sellers Property Information (BASPI v5)</td><td><code>baspiV5</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td></tr>
-          <tr><td>Property Information Form (TA6, Edition 4)</td><td><code>ta6ed4</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td></tr>
-          <tr><td>Leasehold Information Form (TA7, Edition 3)</td><td><code>ta7ed3</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td></tr>
-          <tr><td>Fittings and Contents Form (TA10, Edition 3)</td><td><code>ta10ed3</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td></tr>
-          <tr><td>Leasehold Property Enquiries (LPE1, Edition 4)</td><td><code>lpe1ed4</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td></tr>
-          <tr><td>Freehold Management Enquiries (FME1, Edition 2)</td><td><code>fme1ed2</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td></tr>
-          <tr><td>Local Land Charges Search (LLC1)</td><td><code>llc1v2</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td></tr>
-          <tr><td>NTS Material Information — Sales (2023)</td><td><code>nts2023</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td></tr>
-          <tr><td>NTS Material Information — Lettings (2023)</td><td><code>ntsl2023</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td></tr>
-          <tr><td>NTS Material Information — Sales (2025)</td><td><code>nts2025</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td></tr>
-          <tr><td>NTS Material Information — Lettings (2025)</td><td><code>ntsl2025</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td></tr>
-          <tr><td>Local Authority Search (CON29R, 2019)</td><td><code>con29R2019</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td></tr>
-          <tr><td>Drainage and Water Search (CON29DW)</td><td><code>con29DW</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td></tr>
-          <tr><td>Residential Development Survey (RDS v3.3.3)</td><td><code>rdsV333</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td></tr>
-          <tr><td>HMLR Official Copies of the Register (OC1 v21)</td><td><code>oc1v21</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td></tr>
-          <tr><td>Property Information Questionnaire (PIQ v3)</td><td><code>piqV3</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td></tr>
-          <tr><td>Sustainability Report 2024 (SR24)</td><td><code>sr24</code></td><td><a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td></tr>
+          <tr><td>Buyers and Sellers Property Information (BASPI v4)</td><td><code>baspiV4</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi4.json"><code>baspi4.json</code></a></td></tr>
+          <tr><td>Buyers and Sellers Property Information (BASPI v5)</td><td><code>baspiV5</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a></td></tr>
+          <tr><td>Property Information Form (TA6, Edition 4)</td><td><code>ta6ed4</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta6.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta6.json"><code>ta6.json</code></a></td></tr>
+          <tr><td>Leasehold Information Form (TA7, Edition 3)</td><td><code>ta7ed3</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta7.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta7.json"><code>ta7.json</code></a></td></tr>
+          <tr><td>Fittings and Contents Form (TA10, Edition 3)</td><td><code>ta10ed3</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ta10.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ta10.json"><code>ta10.json</code></a></td></tr>
+          <tr><td>Leasehold Property Enquiries (LPE1, Edition 4)</td><td><code>lpe1ed4</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/lpe1.json"><code>lpe1.json</code></a></td></tr>
+          <tr><td>Freehold Management Enquiries (FME1, Edition 2)</td><td><code>fme1ed2</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/fme1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/fme1.json"><code>fme1.json</code></a></td></tr>
+          <tr><td>Local Land Charges Search (LLC1)</td><td><code>llc1v2</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/llc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/llc1.json"><code>llc1.json</code></a></td></tr>
+          <tr><td>NTS Material Information — Sales (2023)</td><td><code>nts2023</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/nts.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts.json"><code>nts.json</code></a></td></tr>
+          <tr><td>NTS Material Information — Lettings (2023)</td><td><code>ntsl2023</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl.json"><code>ntsl.json</code></a></td></tr>
+          <tr><td>NTS Material Information — Sales (2025)</td><td><code>nts2025</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/nts2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/nts2.json"><code>nts2.json</code></a></td></tr>
+          <tr><td>NTS Material Information — Lettings (2025)</td><td><code>ntsl2025</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json" title="source/03-standards/schemas/src/schemas/v3/overlays/ntsl2.json"><code>ntsl2.json</code></a></td></tr>
+          <tr><td>Local Authority Search (CON29R, 2019)</td><td><code>con29R2019</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/con29R.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29R.json"><code>con29R.json</code></a></td></tr>
+          <tr><td>Drainage and Water Search (CON29DW)</td><td><code>con29DW</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json" title="source/03-standards/schemas/src/schemas/v3/overlays/con29DW.json"><code>con29DW.json</code></a></td></tr>
+          <tr><td>Residential Development Survey (RDS v3.3.3)</td><td><code>rdsV333</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/rds.json" title="source/03-standards/schemas/src/schemas/v3/overlays/rds.json"><code>rds.json</code></a></td></tr>
+          <tr><td>HMLR Official Copies of the Register (OC1 v21)</td><td><code>oc1v21</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/oc1.json" title="source/03-standards/schemas/src/schemas/v3/overlays/oc1.json"><code>oc1.json</code></a></td></tr>
+          <tr><td>Property Information Questionnaire (PIQ v3)</td><td><code>piqV3</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/piq.json" title="source/03-standards/schemas/src/schemas/v3/overlays/piq.json"><code>piq.json</code></a></td></tr>
+          <tr><td>Sustainability Report 2024 (SR24)</td><td><code>sr24</code></td><td><a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/sr24.json" title="source/03-standards/schemas/src/schemas/v3/overlays/sr24.json"><code>sr24.json</code></a></td></tr>
         </tbody>
       </table>
 
@@ -617,8 +617,8 @@ required & oneOf`"]:::process
       <ul>
         <li>Overlay JSON files: <a class="resource-link" href="/library/resources#cat-standards"><code>source/03-standards/schemas/src/schemas/v3/overlays/</code></a></li>
         <li>Extension overlays: <a class="resource-link" href="/library/resources#cat-standards"><code>source/03-standards/schemas/src/schemas/v3/overlays/extensions/</code></a></li>
-        <li>Upstream README: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/src/schemas/v3/overlays/README.md"><code>source/03-standards/schemas/src/schemas/v3/overlays/README.md</code></a></li>
-        <li>Merge entrypoint: <a class="resource-link" href="/resource.html?path=source/03-standards/schemas/index.js"><code>source/03-standards/schemas/index.js</code></a> (function <code>getTransactionSchema</code> at line 170)</li>
+        <li>Upstream README: <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/README.md"><code>source/03-standards/schemas/src/schemas/v3/overlays/README.md</code></a></li>
+        <li>Merge entrypoint: <a class="resource-link" href="/resource?path=source/03-standards/schemas/index.js"><code>source/03-standards/schemas/index.js</code></a> (function <code>getTransactionSchema</code> at line 170)</li>
         <li>Bounded-context mapping rationale: <a href="/modelling/bounded-contexts">Bounded contexts (DDD)</a></li>
       </ul>
 </Layout>

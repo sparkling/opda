@@ -94,7 +94,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Engagement WG</td>
             <td>Before A1/A2/A3 kickoff (per ADR&nbsp;0001 Q3 pre-condition)</td>
             <td>Recruitment brief drafted · 2026-05-18</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/cr-wg-candidate-firms.md"><code>docs/recruitment/cr-wg-candidate-firms.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/recruitment/cr-wg-candidate-firms.md"><code>docs/recruitment/cr-wg-candidate-firms.md</code></a></td>
             <td>Target firms with mature internal DQ / Security functions (large lenders, surveyors, conveyancing platforms).</td>
           </tr>
         </tbody>
@@ -125,7 +125,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Whoever picks up the Wave 1 leftovers</td>
             <td>Opportunistic</td>
             <td>Completed 2026-05-18</td>
-            <td><a class="resource-link" href="/resource.html?path=scripts/dama-ka-mapping.json"><code>scripts/dama-ka-mapping.json</code></a> + PageMeta <code>damaKa</code> prop</td>
+            <td><a class="resource-link" href="/resource?path=scripts/dama-ka-mapping.json"><code>scripts/dama-ka-mapping.json</code></a> + PageMeta <code>damaKa</code> prop</td>
             <td>For each existing page, tag the DAMA KA(s) it serves. KAs out of scope (DW/BI, Storage &amp; Ops, Document &amp; Content) explicitly disclaimed once each. ~24+ pages.</td>
           </tr>
           <tr>
@@ -134,7 +134,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Same</td>
             <td>Opportunistic</td>
             <td>Template ready · WG to apply incrementally</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/templates/per-ka-section-template.md"><code>docs/templates/per-ka-section-template.md</code></a> (rubric scaffold appended to A1–A4 stubs)</td>
+            <td><a class="resource-link" href="/resource?path=docs/templates/per-ka-section-template.md"><code>docs/templates/per-ka-section-template.md</code></a> (rubric scaffold appended to A1–A4 stubs)</td>
             <td>Consistent rubric: <em>Purpose · Activities · Deliverables · Roles · Metrics · Maturity</em>. Apply incrementally; not all pages need every section filled.</td>
           </tr>
         </tbody>
@@ -165,7 +165,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Technical WG</td>
             <td>Member firms ready to submit first VCs (downstream of A1–A4 shipping capability bundles)</td>
             <td>Stub ready (parses, throws on main)</td>
-            <td><a class="resource-link" href="/resource.html?path=scripts/build-accreditation-directory.mjs"><code>scripts/build-accreditation-directory.mjs</code></a></td>
+            <td><a class="resource-link" href="/resource?path=scripts/build-accreditation-directory.mjs"><code>scripts/build-accreditation-directory.mjs</code></a></td>
             <td>Build-time aggregator: reads all current-quarter VCs from <code>source/04-governance-bodies/accreditation/credentials/</code>, validates signatures against Trust Registry, emits <code>src/data/accreditation/current.json</code> for the Directory page render.</td>
           </tr>
           <tr>
@@ -174,7 +174,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Technical WG + Engagement WG</td>
             <td>After C1 ships</td>
             <td>Draft spec · pending C1 + first firm</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/templates/vc-submission-spec.md"><code>docs/templates/vc-submission-spec.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/templates/vc-submission-spec.md"><code>docs/templates/vc-submission-spec.md</code></a></td>
             <td>Firms need a clear way to mint and submit their quarterly VCs. CLI helper? Web form? Out of scope for the script itself.</td>
           </tr>
           <tr>
@@ -183,7 +183,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>C&amp;R WG + Technical WG</td>
             <td>After A1–A4 + C1 + C2</td>
             <td>Checklist template ready</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/templates/first-quarterly-publish-checklist.md"><code>docs/templates/first-quarterly-publish-checklist.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/templates/first-quarterly-publish-checklist.md"><code>docs/templates/first-quarterly-publish-checklist.md</code></a></td>
             <td>End-of-quarter milestone for the first time the Directory has real data.</td>
           </tr>
           <tr>
@@ -192,7 +192,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Engagement WG</td>
             <td>Before any firm claims an evidence-tier score 5–6</td>
             <td>Candidate list drafted (= F1)</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
             <td>Initial list likely Big&nbsp;4 + property-data specialists (KPMG, Deloitte, BDO + Hometrack / Land Insight / etc.). Out of scope for this register beyond noting the dependency.</td>
           </tr>
         </tbody>
@@ -259,7 +259,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>EC</td>
             <td>Every AGM-adjacent EC meeting</td>
             <td>Agenda template ready · annual</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/templates/agm-adjacent-ec-wave3-agenda.md"><code>docs/templates/agm-adjacent-ec-wave3-agenda.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/templates/agm-adjacent-ec-wave3-agenda.md"><code>docs/templates/agm-adjacent-ec-wave3-agenda.md</code></a></td>
             <td>~15-min agenda item walking D1–D4 (and successors): trigger fired? rotted? watching brief continues?</td>
           </tr>
         </tbody>
@@ -290,7 +290,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Henrik (next session)</td>
             <td>Before push to production</td>
             <td>Scaffold ready · manual run</td>
-            <td><a class="resource-link" href="/resource.html?path=scripts/smoke-test.mjs"><code>scripts/smoke-test.mjs</code></a> (install <code>@playwright/test</code> to run)</td>
+            <td><a class="resource-link" href="/resource?path=scripts/smoke-test.mjs"><code>scripts/smoke-test.mjs</code></a> (install <code>@playwright/test</code> to run)</td>
             <td>Theme toggle, sidebar collapse, tree-folder toggle, mobile menu, Mermaid diagrams across sections, data tables on <a href="/modelling/data-dictionary"><code>/modelling/data-dictionary</code></a> + <a href="/modelling/business-glossary"><code>/modelling/business-glossary</code></a>.</td>
           </tr>
           <tr>
@@ -299,7 +299,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Engagement WG</td>
             <td>Before announcing the URL change</td>
             <td>Runbook drafted · Engagement WG to execute</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/external-materials-audit-checklist.md"><code>docs/external-materials-audit-checklist.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/external-materials-audit-checklist.md"><code>docs/external-materials-audit-checklist.md</code></a></td>
             <td>OPDA-controlled materials pointing to old <code>/pages/NN-…html</code> URLs will hard-break. Scan briefings PDFs in <code>source/02-policy-and-positioning/briefings-to-government/</code>, openpropdata.org.uk content, propdata.org.uk content, DPMSG decks, member-firm comms, regulator submissions.</td>
           </tr>
           <tr>
@@ -308,7 +308,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Technical WG</td>
             <td>When time allows</td>
             <td>Completed 2026-05-18</td>
-            <td><a class="resource-link" href="/resource.html?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a> §"Framework lineage and attribution"</td>
+            <td><a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a> §"Framework lineage and attribution"</td>
             <td>Per ADR&nbsp;0001 newly-resolved Q2 (permissive): one-paragraph note in <code>source/03-standards/trust-framework/docs/governance.md</code> defining the "name freely, no verbatim" boundary so future contributors don't re-litigate.</td>
           </tr>
         </tbody>
@@ -339,7 +339,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0004 Q1</td>
             <td>See ADR&nbsp;0004 Q1</td>
             <td>Candidate list drafted (= C4)</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/recruitment/opda-listed-audit-partners.md"><code>docs/recruitment/opda-listed-audit-partners.md</code></a></td>
             <td>Same as C4 above; cross-listed.</td>
           </tr>
           <tr>
@@ -357,7 +357,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0004 Q3</td>
             <td>See ADR&nbsp;0004 Q3</td>
             <td>Stub · open questions only</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/specs/member-firm-portal-requirements.md"><code>docs/specs/member-firm-portal-requirements.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/specs/member-firm-portal-requirements.md"><code>docs/specs/member-firm-portal-requirements.md</code></a></td>
             <td>Private detailed view for firms + OPDA. Triggers on first member-firm request.</td>
           </tr>
           <tr>
@@ -366,7 +366,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0004 Q4</td>
             <td>See ADR&nbsp;0004 Q4</td>
             <td>Example workflow (<code>.example</code> — not active)</td>
-            <td><a class="resource-link" href="/resource.html?path=.github/workflows/accreditation-quarterly.yml.example"><code>.github/workflows/accreditation-quarterly.yml.example</code></a></td>
+            <td><a class="resource-link" href="/resource?path=.github/workflows/accreditation-quarterly.yml.example"><code>.github/workflows/accreditation-quarterly.yml.example</code></a></td>
             <td>Cron / GitHub Action to refresh the Directory; tooling decision deferred.</td>
           </tr>
           <tr>
@@ -375,7 +375,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0004 Q5</td>
             <td>See ADR&nbsp;0004 Q5</td>
             <td>ADR stub · awaiting promotion trigger</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/adr/_drafts/membership-lifecycle.md"><code>docs/adr/_drafts/membership-lifecycle.md</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/adr/_drafts/membership-lifecycle.md"><code>docs/adr/_drafts/membership-lifecycle.md</code></a></td>
             <td>"Former member, last data YYYY-Qn" vs immediate drop-out. Membership ADR territory.</td>
           </tr>
           <tr>
@@ -402,11 +402,11 @@ import PageMeta from '@/components/PageMeta.astro';
       <h2 id="ontology-programme">G. Ontology implementation programme</h2>
       <p>
         Surfaced by the ontology-implementation programme's per-ADR validation
-        discipline (see <a href="/resource.html?path=docs/plan/ontology-implementation.md"><code>docs/plan/ontology-implementation.md</code></a> §9.3 +
+        discipline (see <a href="/resource?path=docs/plan/ontology-implementation.md"><code>docs/plan/ontology-implementation.md</code></a> §9.3 +
         §9.4). Validation may surface (a) genuine ratified-rules ambiguity needing
         a Council Author-only amendment, or (b) named follow-ups that are not
         blockers but must be explicitly queued. Items below are queued from per-ADR
-        validation reports under <a class="resource-link" href="/resource.html?path=docs/adr/validation/"><code>docs/adr/validation/</code></a>.
+        validation reports under <a class="resource-link" href="/resource?path=docs/adr/validation/"><code>docs/adr/validation/</code></a>.
       </p>
 
       <table>
@@ -428,7 +428,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>OPDA Author (per ODR&nbsp;0001 §"Self-amendment process")</td>
             <td>Before any emitter branches on <code>tier == 3</code> semantics (no caller does today)</td>
             <td>Doc amended 2026-05-27 (ADR&nbsp;0007); code change in lockstep at ADR&nbsp;0012 worker</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0007-ontology-generator-specification.md"><code>ADR-0007 §"Term-sourcing five-line precedence"</code></a></td>
+            <td><a class="resource-link" href="/resource?path=docs/adr/ADR-0007-ontology-generator-specification.md"><code>ADR-0007 §"Term-sourcing five-line precedence"</code></a></td>
             <td>Discrepancy between ratified Council rule (regulators at tier 3, contextual) and engineering pseudocode (glossary at tier 3, regulator at 5). Amendment aligns <a href="/modelling/adr/adr-0007">ADR-0007</a> pseudocode + prose to <a href="/modelling/odr/odr-0004">ODR-0004</a> §7a's slot ordering.</td>
           </tr>
           <tr>
@@ -455,7 +455,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0009 worker (cosmetic)</td>
             <td>Opportunistic</td>
             <td>Closed 2026-05-27 (commit <code>c5629e7</code>)</td>
-            <td><a class="resource-link" href="/resource.html?path=.github/workflows/ontology-byte-identity.yml"><code>.github/workflows/ontology-byte-identity.yml</code></a> lines 31–52</td>
+            <td><a class="resource-link" href="/resource?path=.github/workflows/ontology-byte-identity.yml"><code>.github/workflows/ontology-byte-identity.yml</code></a> lines 31–52</td>
             <td>Two distinct activation markers: ADR-0009-activated steps and the ADR-0014-activated <code>validate-exemplar</code> step.</td>
           </tr>
           <tr>
@@ -464,7 +464,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Technical WG / next contributor touching the mirror</td>
             <td>Before next quarterly publish</td>
             <td>Closed 2026-05-27 (this commit)</td>
-            <td>This table (<a class="resource-link" href="/resource.html?path=src/pages/governance/deferred-work.astro"><code>src/pages/governance/deferred-work.astro</code></a>)</td>
+            <td>This table (<a class="resource-link" href="/resource?path=src/pages/governance/deferred-work.astro"><code>src/pages/governance/deferred-work.astro</code></a>)</td>
             <td>Astro mirror now carries the G1–G11 table with Status + Linked-artefact columns matching the other sections.</td>
           </tr>
           <tr>
@@ -473,7 +473,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Author / opportunistic</td>
             <td>Opportunistic</td>
             <td>Closed 2026-05-27 (this commit)</td>
-            <td><a class="resource-link" href="/resource.html?path=docs/adr/ADR-0009-foundation-ttl-emission.md"><code>ADR-0009 §"foundation.ttl"</code></a> prose preamble</td>
+            <td><a class="resource-link" href="/resource?path=docs/adr/ADR-0009-foundation-ttl-emission.md"><code>ADR-0009 §"foundation.ttl"</code></a> prose preamble</td>
             <td>Angle-bracket placeholders (<code>&lt;git-sha&gt;</code>, <code>&lt;emission-date&gt;</code>) are illustrative, not live-substitution directives; sentinel-pinned to satisfy byte-identity CI per <a href="/modelling/odr/odr-0004">ODR-0004</a> §6a.</td>
           </tr>
           <tr>

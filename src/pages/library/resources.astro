@@ -91,7 +91,7 @@ const totalBytes = entries.reduce((sum, e) => sum + e.sizeBytes, 0);
           <ul class="res-list">
             {items.map((e) => (
               <li>
-                <a class="resource-link" href={`/resource.html?path=${encodeURI(e.path)}`}>
+                <a class="resource-link" href={`/resource?path=${encodeURI(e.path)}`}>
                   <code>{e.name}</code>
                 </a>
                 <span class="muted tiny res-list__meta">{e.ext.toUpperCase()} · {fmtSize(e.sizeBytes)}</span>
