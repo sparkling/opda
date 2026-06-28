@@ -33,7 +33,7 @@ jobs:
           java-version: 21
 
       - name: Cache Apache Jena dist
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .jena
           key: jena-6.1.0
@@ -100,7 +100,7 @@ jobs:
           java-version: 21
 
       - name: Cache Apache Jena dist
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .jena
           key: jena-6.1.0
@@ -135,7 +135,7 @@ jobs:
           java-version: 21
 
       - name: Cache Apache Jena dist
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .jena
           key: jena-6.1.0

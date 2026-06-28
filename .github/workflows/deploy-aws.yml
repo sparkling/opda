@@ -71,7 +71,7 @@ jobs:
       # the extracted jar and skips the download + extract entirely. Keyed on the
       # Fuseki version so a bump (build-with-data.mjs FUSEKI_VERSION) re-primes it.
       - name: Cache Apache Jena Fuseki dist
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .fuseki
           key: fuseki-6.1.0

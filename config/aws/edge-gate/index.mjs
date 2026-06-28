@@ -49,7 +49,11 @@ const PUBLIC_EXACT = new Set([
   '/favicon.ico',
   '/coming-soon.jpg', // the homepage hero/og image
 ]);
-const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/favicon'];
+// `/sitemap-` covers the @astrojs/sitemap output (/sitemap-index.xml +
+// /sitemap-0.xml, and any future /sitemap-N.xml) so search engines can fetch
+// the sitemap without hitting the auth gate — the listed URLs stay gated, only
+// the index of them is public.
+const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/favicon', '/sitemap-'];
 
 // Cold-start caches (per edge-PoP execution environment). Config is
 // re-fetched after a TTL so allowlist/IdP changes in SSM reach warm
