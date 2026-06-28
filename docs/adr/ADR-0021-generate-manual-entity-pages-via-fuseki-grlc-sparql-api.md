@@ -93,7 +93,7 @@ neither block nor are blocked by the Fuseki/GRLC entity-page work.
 
 Editorial meta-pages that embed an existing markdown document MUST serve
 **generator-produced static HTML** — NOT a `.md` link through the dev-only
-`/resource.html?path=…` viewer (which never ships to production). A build-time
+`/resource?path=…` viewer (which never ships to production). A build-time
 report generator (the `opda-report-generator` Astro integration,
 `src/integrations/generate-report-html.mjs`, on the `astro:config:setup` hook so
 it fires for `astro dev`/`astro build` incl. the Cloudflare deploy) converts the

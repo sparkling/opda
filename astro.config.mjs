@@ -19,6 +19,7 @@ import { reportGenerator } from './src/integrations/generate-report-html.mjs';
 import { diagramLinksGenerator } from './src/integrations/generate-diagram-links.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 // Dev-only Vite plugin: expose project sub-trees (source/, _build/) that
 // live OUTSIDE publicDir so the resource viewer can fetch them at
@@ -158,7 +159,13 @@ export default defineConfig({
   outDir:  './dist',
   // ADR-0021 §"Separate task": the report generator emits static HTML for
   // embedded meta-reports before build/dev resolves the page imports.
-  integrations: [reportGenerator(), diagramLinksGenerator()],
+  // @astrojs/sitemap auto-generates /sitemap-index.xml (+ /sitemap-0.xml) from
+  // every built route, using `site` above for absolute URLs — replaces the
+  // former hand-maintained src/pages/sitemap.xml.js (stale page list + the dead
+  // opda-kb.pages.dev domain). Drop the utility 404/resource-viewer routes.
+  integrations: [reportGenerator(), diagramLinksGenerator(), sitemap({
+    filter: (page) => !/\/(404|resource)\/?$/.test(page),
+  })],
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.

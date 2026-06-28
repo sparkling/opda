@@ -13,7 +13,7 @@ implements: []
 
 `source/` is the project's research and working archive: **557 MB** total, **455 MB of which is binary** across 148 files (the bulk being `05-engagement/` videos at **269 MB**). It is gitignored by design — `.gitignore` carries `/source/*` with text-file exceptions, so only ~106 text files are tracked and none of the binaries are in git history.
 
-The webapp links *into* this archive. The resource viewer is reached as `/resource.html?path=source/…`, and the content references **191 distinct `source/`-targeted links** pointing at ~36 MB of on-disk material (of which **48 are already broken** — dangling paths predating this decision).
+The webapp links *into* this archive. The resource viewer is reached as `/resource?path=source/…`, and the content references **191 distinct `source/`-targeted links** pointing at ~36 MB of on-disk material (of which **48 are already broken** — dangling paths predating this decision).
 
 The problem: `astro.config.mjs` exposes `source/` **only through a dev-only Vite plugin**. Production builds ship `src/` and `public/` into `dist/`; they do **not** ship `source/`. So every one of those `source/` resource links **404s in production**. The archive is reachable while developing and invisible once deployed.
 
