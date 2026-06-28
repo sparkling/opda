@@ -1,0 +1,2039 @@
+[
+  {
+    "path": "council/adoption.md",
+    "name": "adoption.md",
+    "type": "file",
+    "ext": "md",
+    "size": 86552
+  },
+  {
+    "path": "council/scope-check-1-programme.md",
+    "name": "scope-check-1-programme.md",
+    "type": "file",
+    "ext": "md",
+    "size": 34779
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm",
+    "name": "scope-check-2-hive-vs-swarm",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm.md",
+    "name": "scope-check-2-hive-vs-swarm.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33625
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm/cagle-knublauch.md",
+    "name": "cagle-knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26917
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 15764
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm/gandon-allemang.md",
+    "name": "gandon-allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 34081
+  },
+  {
+    "path": "council/scope-check-2-hive-vs-swarm/kendall-queen.md",
+    "name": "kendall-queen.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24069
+  },
+  {
+    "path": "council/scope-check-programme",
+    "name": "scope-check-programme",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/scope-check-programme/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17744
+  },
+  {
+    "path": "council/scope-check-programme/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18026
+  },
+  {
+    "path": "council/scope-check-programme/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20428
+  },
+  {
+    "path": "council/scope-check-programme/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20057
+  },
+  {
+    "path": "council/scope-check-programme/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22681
+  },
+  {
+    "path": "council/scope-check-programme/kendall-queen.md",
+    "name": "kendall-queen.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16619
+  },
+  {
+    "path": "council/session-001-pdtf-schema-to-ontology.md",
+    "name": "session-001-pdtf-schema-to-ontology.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22822
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue",
+    "name": "session-002-vocabulary-catalogue",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue.md",
+    "name": "session-002-vocabulary-catalogue.md",
+    "type": "file",
+    "ext": "md",
+    "size": 47908
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19392
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32408
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 51814
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22138
+  },
+  {
+    "path": "council/session-002-vocabulary-catalogue/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26571
+  },
+  {
+    "path": "council/session-003-pdtf-ontology-programme.md",
+    "name": "session-003-pdtf-ontology-programme.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20886
+  },
+  {
+    "path": "council/session-003b-namespace-wg-decision.md",
+    "name": "session-003b-namespace-wg-decision.md",
+    "type": "file",
+    "ext": "md",
+    "size": 13741
+  },
+  {
+    "path": "council/session-003c-wg-housekeeping-decisions.md",
+    "name": "session-003c-wg-housekeeping-decisions.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9233
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation",
+    "name": "session-004-pdtf-ontology-foundation",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation.md",
+    "name": "session-004-pdtf-ontology-foundation.md",
+    "type": "file",
+    "ext": "md",
+    "size": 37621
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18064
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 21378
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16540
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 35641
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 41010
+  },
+  {
+    "path": "council/session-004-pdtf-ontology-foundation/knublauch-da.md",
+    "name": "knublauch-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 50542
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux",
+    "name": "session-005-property-land-identity-crux",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux.md",
+    "name": "session-005-property-land-identity-crux.md",
+    "type": "file",
+    "ext": "md",
+    "size": 55685
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/allemang-da.md",
+    "name": "allemang-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32061
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27976
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23847
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 57472
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/hendler-solo.md",
+    "name": "hendler-solo.md",
+    "type": "file",
+    "ext": "md",
+    "size": 14099
+  },
+  {
+    "path": "council/session-005-property-land-identity-crux/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 38243
+  },
+  {
+    "path": "council/session-006-agents-and-roles",
+    "name": "session-006-agents-and-roles",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-006-agents-and-roles.md",
+    "name": "session-006-agents-and-roles.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22320
+  },
+  {
+    "path": "council/session-006-agents-and-roles/allemang-da.md",
+    "name": "allemang-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 21007
+  },
+  {
+    "path": "council/session-006-agents-and-roles/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27413
+  },
+  {
+    "path": "council/session-006-agents-and-roles/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19721
+  },
+  {
+    "path": "council/session-006-agents-and-roles/evans-vernon.md",
+    "name": "evans-vernon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17164
+  },
+  {
+    "path": "council/session-006-agents-and-roles/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 55746
+  },
+  {
+    "path": "council/session-006-agents-and-roles/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 49299
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle",
+    "name": "session-007-transactions-and-lifecycle",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle.md",
+    "name": "session-007-transactions-and-lifecycle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11472
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20561
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22116
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 48509
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle/kendall-solo.md",
+    "name": "kendall-solo.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23641
+  },
+  {
+    "path": "council/session-007-transactions-and-lifecycle/moreau-prov-time.md",
+    "name": "moreau-prov-time.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19914
+  },
+  {
+    "path": "council/session-008-property-descriptive-attributes.md",
+    "name": "session-008-property-descriptive-attributes.md",
+    "type": "file",
+    "ext": "md",
+    "size": 28494
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance",
+    "name": "session-009-claims-evidence-provenance",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance.md",
+    "name": "session-009-claims-evidence-provenance.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12043
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27620
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 48944
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance/guarino-da.md",
+    "name": "guarino-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23842
+  },
+  {
+    "path": "council/session-009-claims-evidence-provenance/pandit-iannella.md",
+    "name": "pandit-iannella.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19846
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism",
+    "name": "session-010-overlay-profile-mechanism",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism.md",
+    "name": "session-010-overlay-profile-mechanism.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9196
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19160
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27101
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism/guarino-da.md",
+    "name": "guarino-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27531
+  },
+  {
+    "path": "council/session-010-overlay-profile-mechanism/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18424
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies",
+    "name": "session-011-enumeration-vocabularies",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies.md",
+    "name": "session-011-enumeration-vocabularies.md",
+    "type": "file",
+    "ext": "md",
+    "size": 35522
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies/baker-pandit.md",
+    "name": "baker-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25583
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20108
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies/gandon-da.md",
+    "name": "gandon-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19159
+  },
+  {
+    "path": "council/session-011-enumeration-vocabularies/guizzardi-solo.md",
+    "name": "guizzardi-solo.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20842
+  },
+  {
+    "path": "council/session-012-data-governance-layer",
+    "name": "session-012-data-governance-layer",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-012-data-governance-layer.md",
+    "name": "session-012-data-governance-layer.md",
+    "type": "file",
+    "ext": "md",
+    "size": 10389
+  },
+  {
+    "path": "council/session-012-data-governance-layer/baker-solo.md",
+    "name": "baker-solo.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8809
+  },
+  {
+    "path": "council/session-012-data-governance-layer/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 15166
+  },
+  {
+    "path": "council/session-012-data-governance-layer/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27326
+  },
+  {
+    "path": "council/session-012-data-governance-layer/iannella-solo.md",
+    "name": "iannella-solo.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9324
+  },
+  {
+    "path": "council/session-012-data-governance-layer/kendall-da.md",
+    "name": "kendall-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20836
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity",
+    "name": "session-013-shacl-validation-and-severity",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity.md",
+    "name": "session-013-shacl-validation-and-severity.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12920
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20406
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19352
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23987
+  },
+  {
+    "path": "council/session-013-shacl-validation-and-severity/moreau-prov-time.md",
+    "name": "moreau-prov-time.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24938
+  },
+  {
+    "path": "council/session-015-address-and-geography",
+    "name": "session-015-address-and-geography",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-015-address-and-geography.md",
+    "name": "session-015-address-and-geography.md",
+    "type": "file",
+    "ext": "md",
+    "size": 34272
+  },
+  {
+    "path": "council/session-015-address-and-geography/allemang-da.md",
+    "name": "allemang-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23450
+  },
+  {
+    "path": "council/session-015-address-and-geography/gandon-guizzardi.md",
+    "name": "gandon-guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 53537
+  },
+  {
+    "path": "council/session-019-bounded-context-representation.md",
+    "name": "session-019-bounded-context-representation.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8899
+  },
+  {
+    "path": "council/session-020-bounded-context-scheme-and-mapping.md",
+    "name": "session-020-bounded-context-scheme-and-mapping.md",
+    "type": "file",
+    "ext": "md",
+    "size": 6754
+  },
+  {
+    "path": "council/session-021-bounded-context-implementation-plan.md",
+    "name": "session-021-bounded-context-implementation-plan.md",
+    "type": "file",
+    "ext": "md",
+    "size": 37379
+  },
+  {
+    "path": "council/session-022-form-shacl-profile-convention.md",
+    "name": "session-022-form-shacl-profile-convention.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33569
+  },
+  {
+    "path": "council/session-023-descriptive-layer-import-strategy.md",
+    "name": "session-023-descriptive-layer-import-strategy.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32980
+  },
+  {
+    "path": "council/session-024-authority-retrieved-artefacts.md",
+    "name": "session-024-authority-retrieved-artefacts.md",
+    "type": "file",
+    "ext": "md",
+    "size": 10502
+  },
+  {
+    "path": "council/session-025-ufo-axis-submodules.md",
+    "name": "session-025-ufo-axis-submodules.md",
+    "type": "file",
+    "ext": "md",
+    "size": 4906
+  },
+  {
+    "path": "council/session-026-building-room-promotion.md",
+    "name": "session-026-building-room-promotion.md",
+    "type": "file",
+    "ext": "md",
+    "size": 4144
+  },
+  {
+    "path": "council/session-027-fixtures-inclusion-mode.md",
+    "name": "session-027-fixtures-inclusion-mode.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3301
+  },
+  {
+    "path": "council/session-028-category-g-walk-review.md",
+    "name": "session-028-category-g-walk-review.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18610
+  },
+  {
+    "path": "council/session-029-r2-ufo-axis-load-bearing.md",
+    "name": "session-029-r2-ufo-axis-load-bearing.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26189
+  },
+  {
+    "path": "council/session-030-room-building-modelling.md",
+    "name": "session-030-room-building-modelling.md",
+    "type": "file",
+    "ext": "md",
+    "size": 14917
+  },
+  {
+    "path": "council/session-032-status-scheme-grain.md",
+    "name": "session-032-status-scheme-grain.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11657
+  },
+  {
+    "path": "council/session-033-governance-class-vocab.md",
+    "name": "session-033-governance-class-vocab.md",
+    "type": "file",
+    "ext": "md",
+    "size": 13446
+  },
+  {
+    "path": "council/session-034-overlay-leaf-enumeration-discipline.md",
+    "name": "session-034-overlay-leaf-enumeration-discipline.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23415
+  },
+  {
+    "path": "council/session-035-evidence-alias-retirement-and-faceted-typing.md",
+    "name": "session-035-evidence-alias-retirement-and-faceted-typing.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22946
+  },
+  {
+    "path": "council/session-036-classification-over-inheritance.md",
+    "name": "session-036-classification-over-inheritance.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16373
+  },
+  {
+    "path": "council/session-037-url-scheme.md",
+    "name": "session-037-url-scheme.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24127
+  },
+  {
+    "path": "council/session-038-ontology-reference-document-outline.md",
+    "name": "session-038-ontology-reference-document-outline.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22353
+  },
+  {
+    "path": "council/session-039-entailment-regime-and-epc-modelling.md",
+    "name": "session-039-entailment-regime-and-epc-modelling.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18688
+  },
+  {
+    "path": "council/session-040-foundational-ontology-choice.md",
+    "name": "session-040-foundational-ontology-choice.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25033
+  },
+  {
+    "path": "council/session-041-ufocategory-upper-ontology-representation.md",
+    "name": "session-041-ufocategory-upper-ontology-representation.md",
+    "type": "file",
+    "ext": "md",
+    "size": 37417
+  },
+  {
+    "path": "council/session-042-ontoclean-meta-property-markup.md",
+    "name": "session-042-ontoclean-meta-property-markup.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16201
+  },
+  {
+    "path": "council/session-043-transaction-phase-and-ufocategory-dereferenceability.md",
+    "name": "session-043-transaction-phase-and-ufocategory-dereferenceability.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22603
+  },
+  {
+    "path": "council/session-044-foundational-ontology-validation.md",
+    "name": "session-044-foundational-ontology-validation.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17394
+  },
+  {
+    "path": "council/session-045-graph-observations-bridge-layers-mass.md",
+    "name": "session-045-graph-observations-bridge-layers-mass.md",
+    "type": "file",
+    "ext": "md",
+    "size": 30588
+  },
+  {
+    "path": "council/session-046-currency-peril-range-and-scheme-binding.md",
+    "name": "session-046-currency-peril-range-and-scheme-binding.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18468
+  },
+  {
+    "path": "council/session-047-relationship-layer-object-properties.md",
+    "name": "session-047-relationship-layer-object-properties.md",
+    "type": "file",
+    "ext": "md",
+    "size": 30857
+  },
+  {
+    "path": "council/session-048-owl-documentary-domain-range-r2-set.md",
+    "name": "session-048-owl-documentary-domain-range-r2-set.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8049
+  },
+  {
+    "path": "council/session-049-single-canonical-ufo-typing-axis.md",
+    "name": "session-049-single-canonical-ufo-typing-axis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 7366
+  },
+  {
+    "path": "council/session-050-adopt-semantic-modelling-owl-coverage.md",
+    "name": "session-050-adopt-semantic-modelling-owl-coverage.md",
+    "type": "file",
+    "ext": "md",
+    "size": 14920
+  },
+  {
+    "path": "council/session-a9-gandon-guizzardi-methodology-gap",
+    "name": "session-a9-gandon-guizzardi-methodology-gap",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/session-a9-gandon-guizzardi-methodology-gap.md",
+    "name": "session-a9-gandon-guizzardi-methodology-gap.md",
+    "type": "file",
+    "ext": "md",
+    "size": 37335
+  },
+  {
+    "path": "council/session-a9-gandon-guizzardi-methodology-gap/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26405
+  },
+  {
+    "path": "council/session-a9-gandon-guizzardi-methodology-gap/guarino-da.md",
+    "name": "guarino-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26591
+  },
+  {
+    "path": "council/session-a9-gandon-guizzardi-methodology-gap/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24561
+  },
+  {
+    "path": "council/session-phase-3.5-audit-cross-vocabulary-mapping.md",
+    "name": "session-phase-3.5-audit-cross-vocabulary-mapping.md",
+    "type": "file",
+    "ext": "md",
+    "size": 10152
+  },
+  {
+    "path": "council/working",
+    "name": "working",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25381
+  },
+  {
+    "path": "council/working/guarino-da.md",
+    "name": "guarino-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17731
+  },
+  {
+    "path": "council/working/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 13444
+  },
+  {
+    "path": "council/working/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26805
+  },
+  {
+    "path": "council/working/provenance-trio.md",
+    "name": "provenance-trio.md",
+    "type": "file",
+    "ext": "md",
+    "size": 21421
+  },
+  {
+    "path": "council/working/session-008",
+    "name": "session-008",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-008/allemang-hendler.md",
+    "name": "allemang-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17680
+  },
+  {
+    "path": "council/working/session-008/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25407
+  },
+  {
+    "path": "council/working/session-008/guizzardi-baker.md",
+    "name": "guizzardi-baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24900
+  },
+  {
+    "path": "council/working/session-008/kendall-davis.md",
+    "name": "kendall-davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 35992
+  },
+  {
+    "path": "council/working/session-008/knublauch-pandit.md",
+    "name": "knublauch-pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17417
+  },
+  {
+    "path": "council/working/session-021",
+    "name": "session-021",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-021/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 29243
+  },
+  {
+    "path": "council/working/session-021/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32760
+  },
+  {
+    "path": "council/working/session-021/cagle-knublauch.md",
+    "name": "cagle-knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 34101
+  },
+  {
+    "path": "council/working/session-021/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26385
+  },
+  {
+    "path": "council/working/session-021/evans-vernon.md",
+    "name": "evans-vernon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23948
+  },
+  {
+    "path": "council/working/session-021/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33265
+  },
+  {
+    "path": "council/working/session-022",
+    "name": "session-022",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-022/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 36971
+  },
+  {
+    "path": "council/working/session-022/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 47744
+  },
+  {
+    "path": "council/working/session-022/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 40841
+  },
+  {
+    "path": "council/working/session-022/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 43592
+  },
+  {
+    "path": "council/working/session-022/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26998
+  },
+  {
+    "path": "council/working/session-022/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 30227
+  },
+  {
+    "path": "council/working/session-023",
+    "name": "session-023",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-023/EVIDENCE.md",
+    "name": "EVIDENCE.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11075
+  },
+  {
+    "path": "council/working/session-023/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22505
+  },
+  {
+    "path": "council/working/session-023/baker-isaac.md",
+    "name": "baker-isaac.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22226
+  },
+  {
+    "path": "council/working/session-023/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20965
+  },
+  {
+    "path": "council/working/session-023/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32968
+  },
+  {
+    "path": "council/working/session-023/gandon-hendler.md",
+    "name": "gandon-hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18700
+  },
+  {
+    "path": "council/working/session-023/guizzardi-guarino.md",
+    "name": "guizzardi-guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24783
+  },
+  {
+    "path": "council/working/session-023/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25110
+  },
+  {
+    "path": "council/working/session-023/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23335
+  },
+  {
+    "path": "council/working/session-024",
+    "name": "session-024",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-024/EVIDENCE.md",
+    "name": "EVIDENCE.md",
+    "type": "file",
+    "ext": "md",
+    "size": 4026
+  },
+  {
+    "path": "council/working/session-024/baker-isaac-r1.md",
+    "name": "baker-isaac-r1.md",
+    "type": "file",
+    "ext": "md",
+    "size": 31408
+  },
+  {
+    "path": "council/working/session-024/cagle-da-r1.md",
+    "name": "cagle-da-r1.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23128
+  },
+  {
+    "path": "council/working/session-024/guizzardi-guarino-r1.md",
+    "name": "guizzardi-guarino-r1.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33016
+  },
+  {
+    "path": "council/working/session-024/knublauch-r1.md",
+    "name": "knublauch-r1.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26090
+  },
+  {
+    "path": "council/working/session-024/moreau-r1.md",
+    "name": "moreau-r1.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16201
+  },
+  {
+    "path": "council/working/session-025",
+    "name": "session-025",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-025/allemang-r2.md",
+    "name": "allemang-r2.md",
+    "type": "file",
+    "ext": "md",
+    "size": 10539
+  },
+  {
+    "path": "council/working/session-025/davis-da-r2.md",
+    "name": "davis-da-r2.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24414
+  },
+  {
+    "path": "council/working/session-026",
+    "name": "session-026",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-026/davis-da-r3.md",
+    "name": "davis-da-r3.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12883
+  },
+  {
+    "path": "council/working/session-026/guarino-r3.md",
+    "name": "guarino-r3.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17214
+  },
+  {
+    "path": "council/working/session-029",
+    "name": "session-029",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-029/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8145
+  },
+  {
+    "path": "council/working/session-029/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9060
+  },
+  {
+    "path": "council/working/session-029/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11051
+  },
+  {
+    "path": "council/working/session-029/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9320
+  },
+  {
+    "path": "council/working/session-029/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8902
+  },
+  {
+    "path": "council/working/session-029/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11175
+  },
+  {
+    "path": "council/working/session-030",
+    "name": "session-030",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-030/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 13373
+  },
+  {
+    "path": "council/working/session-030/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18004
+  },
+  {
+    "path": "council/working/session-030/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12495
+  },
+  {
+    "path": "council/working/session-030/davis.md",
+    "name": "davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9492
+  },
+  {
+    "path": "council/working/session-030/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11727
+  },
+  {
+    "path": "council/working/session-030/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 15003
+  },
+  {
+    "path": "council/working/session-030/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12924
+  },
+  {
+    "path": "council/working/session-030/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19585
+  },
+  {
+    "path": "council/working/session-032",
+    "name": "session-032",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-032/kendall-da.md",
+    "name": "kendall-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16980
+  },
+  {
+    "path": "council/working/session-034",
+    "name": "session-034",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-034/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12268
+  },
+  {
+    "path": "council/working/session-034/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 17362
+  },
+  {
+    "path": "council/working/session-034/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 22043
+  },
+  {
+    "path": "council/working/session-034/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16460
+  },
+  {
+    "path": "council/working/session-034/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11592
+  },
+  {
+    "path": "council/working/session-034/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24467
+  },
+  {
+    "path": "council/working/session-035",
+    "name": "session-035",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-035/Baker.md",
+    "name": "Baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 38880
+  },
+  {
+    "path": "council/working/session-035/Cagle.md",
+    "name": "Cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 34919
+  },
+  {
+    "path": "council/working/session-035/Davis.md",
+    "name": "Davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 37656
+  },
+  {
+    "path": "council/working/session-035/Guarino.md",
+    "name": "Guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 42777
+  },
+  {
+    "path": "council/working/session-035/Guizzardi.md",
+    "name": "Guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 38996
+  },
+  {
+    "path": "council/working/session-035/IsaacMiles.md",
+    "name": "IsaacMiles.md",
+    "type": "file",
+    "ext": "md",
+    "size": 42474
+  },
+  {
+    "path": "council/working/session-035/Knublauch.md",
+    "name": "Knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23331
+  },
+  {
+    "path": "council/working/session-036",
+    "name": "session-036",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-036/Allemang.md",
+    "name": "Allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27836
+  },
+  {
+    "path": "council/working/session-036/Baker.md",
+    "name": "Baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33125
+  },
+  {
+    "path": "council/working/session-036/Cagle.md",
+    "name": "Cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 42965
+  },
+  {
+    "path": "council/working/session-036/Guarino.md",
+    "name": "Guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 38896
+  },
+  {
+    "path": "council/working/session-036/Guizzardi.md",
+    "name": "Guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 38505
+  },
+  {
+    "path": "council/working/session-036/IsaacMiles.md",
+    "name": "IsaacMiles.md",
+    "type": "file",
+    "ext": "md",
+    "size": 33773
+  },
+  {
+    "path": "council/working/session-036/Kendall.md",
+    "name": "Kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 67417
+  },
+  {
+    "path": "council/working/session-036/Knublauch.md",
+    "name": "Knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24346
+  },
+  {
+    "path": "council/working/session-037",
+    "name": "session-037",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-037/EVIDENCE.md",
+    "name": "EVIDENCE.md",
+    "type": "file",
+    "ext": "md",
+    "size": 5960
+  },
+  {
+    "path": "council/working/session-037/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19331
+  },
+  {
+    "path": "council/working/session-037/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19276
+  },
+  {
+    "path": "council/working/session-037/davis-DA.md",
+    "name": "davis-DA.md",
+    "type": "file",
+    "ext": "md",
+    "size": 31405
+  },
+  {
+    "path": "council/working/session-037/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24165
+  },
+  {
+    "path": "council/working/session-037/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19340
+  },
+  {
+    "path": "council/working/session-037/pandit.md",
+    "name": "pandit.md",
+    "type": "file",
+    "ext": "md",
+    "size": 26339
+  },
+  {
+    "path": "council/working/session-041",
+    "name": "session-041",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-041/BRIEF.md",
+    "name": "BRIEF.md",
+    "type": "file",
+    "ext": "md",
+    "size": 9266
+  },
+  {
+    "path": "council/working/session-041/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24410
+  },
+  {
+    "path": "council/working/session-041/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19656
+  },
+  {
+    "path": "council/working/session-041/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 32143
+  },
+  {
+    "path": "council/working/session-041/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 20689
+  },
+  {
+    "path": "council/working/session-041/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 35786
+  },
+  {
+    "path": "council/working/session-041/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 25220
+  },
+  {
+    "path": "council/working/session-042",
+    "name": "session-042",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-042/BRIEF.md",
+    "name": "BRIEF.md",
+    "type": "file",
+    "ext": "md",
+    "size": 6760
+  },
+  {
+    "path": "council/working/session-042/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19089
+  },
+  {
+    "path": "council/working/session-042/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 23886
+  },
+  {
+    "path": "council/working/session-042/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 27267
+  },
+  {
+    "path": "council/working/session-042/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16854
+  },
+  {
+    "path": "council/working/session-043",
+    "name": "session-043",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-043/BRIEF.md",
+    "name": "BRIEF.md",
+    "type": "file",
+    "ext": "md",
+    "size": 5320
+  },
+  {
+    "path": "council/working/session-043/baker.md",
+    "name": "baker.md",
+    "type": "file",
+    "ext": "md",
+    "size": 13144
+  },
+  {
+    "path": "council/working/session-043/davis-da.md",
+    "name": "davis-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16643
+  },
+  {
+    "path": "council/working/session-043/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 12667
+  },
+  {
+    "path": "council/working/session-043/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 14697
+  },
+  {
+    "path": "council/working/session-043/moreau.md",
+    "name": "moreau.md",
+    "type": "file",
+    "ext": "md",
+    "size": 10370
+  },
+  {
+    "path": "council/working/session-045",
+    "name": "session-045",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-045/EVIDENCE.md",
+    "name": "EVIDENCE.md",
+    "type": "file",
+    "ext": "md",
+    "size": 8783
+  },
+  {
+    "path": "council/working/session-045/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 63793
+  },
+  {
+    "path": "council/working/session-045/davis.md",
+    "name": "davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 36627
+  },
+  {
+    "path": "council/working/session-045/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 61902
+  },
+  {
+    "path": "council/working/session-045/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 62098
+  },
+  {
+    "path": "council/working/session-045/hendler.md",
+    "name": "hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 62009
+  },
+  {
+    "path": "council/working/session-045/isaac.md",
+    "name": "isaac.md",
+    "type": "file",
+    "ext": "md",
+    "size": 43132
+  },
+  {
+    "path": "council/working/session-045/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 44850
+  },
+  {
+    "path": "council/working/session-046",
+    "name": "session-046",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-046/EVIDENCE.md",
+    "name": "EVIDENCE.md",
+    "type": "file",
+    "ext": "md",
+    "size": 6563
+  },
+  {
+    "path": "council/working/session-046/cagle-da.md",
+    "name": "cagle-da.md",
+    "type": "file",
+    "ext": "md",
+    "size": 75432
+  },
+  {
+    "path": "council/working/session-046/hendler.md",
+    "name": "hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 45237
+  },
+  {
+    "path": "council/working/session-046/isaac.md",
+    "name": "isaac.md",
+    "type": "file",
+    "ext": "md",
+    "size": 40466
+  },
+  {
+    "path": "council/working/session-046/knublauch.md",
+    "name": "knublauch.md",
+    "type": "file",
+    "ext": "md",
+    "size": 46817
+  },
+  {
+    "path": "council/working/session-047",
+    "name": "session-047",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-047/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 39526
+  },
+  {
+    "path": "council/working/session-047/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 56780
+  },
+  {
+    "path": "council/working/session-047/davis.md",
+    "name": "davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 58081
+  },
+  {
+    "path": "council/working/session-047/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 61122
+  },
+  {
+    "path": "council/working/session-047/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 51475
+  },
+  {
+    "path": "council/working/session-047/hendler.md",
+    "name": "hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 48699
+  },
+  {
+    "path": "council/working/session-047/impl-emitter.md",
+    "name": "impl-emitter.md",
+    "type": "file",
+    "ext": "md",
+    "size": 11020
+  },
+  {
+    "path": "council/working/session-047/impl-gate.md",
+    "name": "impl-gate.md",
+    "type": "file",
+    "ext": "md",
+    "size": 18625
+  },
+  {
+    "path": "council/working/session-047/impl-review.md",
+    "name": "impl-review.md",
+    "type": "file",
+    "ext": "md",
+    "size": 24218
+  },
+  {
+    "path": "council/working/session-047/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 55693
+  },
+  {
+    "path": "council/working/session-048",
+    "name": "session-048",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-048/allemang-a.md",
+    "name": "allemang-a.md",
+    "type": "file",
+    "ext": "md",
+    "size": 79760
+  },
+  {
+    "path": "council/working/session-048/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 52436
+  },
+  {
+    "path": "council/working/session-048/gandon.md",
+    "name": "gandon.md",
+    "type": "file",
+    "ext": "md",
+    "size": 59312
+  },
+  {
+    "path": "council/working/session-048/hendler.md",
+    "name": "hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 62867
+  },
+  {
+    "path": "council/working/session-049",
+    "name": "session-049",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-049/allemang-b.md",
+    "name": "allemang-b.md",
+    "type": "file",
+    "ext": "md",
+    "size": 45802
+  },
+  {
+    "path": "council/working/session-049/davis.md",
+    "name": "davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 54325
+  },
+  {
+    "path": "council/working/session-049/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 69621
+  },
+  {
+    "path": "council/working/session-050",
+    "name": "session-050",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-050/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 113032
+  },
+  {
+    "path": "council/working/session-050/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 80411
+  },
+  {
+    "path": "council/working/session-050/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 83543
+  },
+  {
+    "path": "council/working/session-050/hendler.md",
+    "name": "hendler.md",
+    "type": "file",
+    "ext": "md",
+    "size": 94262
+  },
+  {
+    "path": "council/working/shacl-trio.md",
+    "name": "shacl-trio.md",
+    "type": "file",
+    "ext": "md",
+    "size": 19340
+  }
+]

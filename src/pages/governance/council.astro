@@ -1,0 +1,198 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import councilManifest from '@/data/council-manifest.json';
+
+/**
+ * Council sessions index — surfaces the council-session corpus
+ * (docs/ontology/odr/council/, mirrored to /council/* by generate-council.mjs).
+ *
+ * Every top-level session record (.md), its sibling per-persona verdict folder,
+ * the scope-checks, and the cross-session adoption ledger get a row linking into
+ * the resource viewer (?path=council/…). Records open the markdown; folders open
+ * the viewer's folder listing.
+ */
+type Entry = { path: string; name: string; type: 'file' | 'dir'; ext: string; size: number };
+const manifest = councilManifest as Entry[];
+
+const totalFiles = manifest.filter((e) => e.type === 'file').length;
+const totalDirs = manifest.filter((e) => e.type === 'dir').length;
+
+// Top-level entries only (council/<name>) — exactly two path segments.
+const top = manifest.filter((e) => e.path.split('/').length === 2);
+
+const href = (path: string) => `/resource?path=${encodeURIComponent(path)}`;
+const stem = (name: string) => name.replace(/\.md$/, '');
+
+/**
+ * Pair each record (.md) with its sibling verdict folder (same stem) into one row.
+ * `key` drives ordering; `record`/`folder` are the manifest entries (either may be
+ * absent — a folder with no top-level record, or a record with no verdict folder).
+ */
+type Row = { key: string; label: string; record?: Entry; folder?: Entry; verdicts: number };
+
+function buildRows(entries: Entry[]): Row[] {
+  const byStem = new Map<string, Row>();
+  for (const e of entries) {
+    const s = stem(e.name);
+    let row = byStem.get(s);
+    if (!row) { row = { key: s, label: s, verdicts: 0 }; byStem.set(s, row); }
+    if (e.type === 'file') row.record = e;
+    else row.folder = e;
+  }
+  // Count verdict children per folder (manifest files one level under the folder path).
+  for (const row of byStem.values()) {
+    if (!row.folder) continue;
+    const prefix = row.folder.path + '/';
+    row.verdicts = manifest.filter(
+      (e) => e.type === 'file' && e.path.startsWith(prefix)
+        && e.path.split('/').length === row.folder!.path.split('/').length + 1,
+    ).length;
+  }
+  return [...byStem.values()];
+}
+
+/** Sortable numeric key from a session stem (session-001…, 003b, a9, phase-3.5). */
+function sessionSortKey(s: string): number {
+  const m = s.match(/^session-0*(\d+)/);
+  if (m) return Number(m[1]);
+  if (/^session-phase-3\.5/.test(s)) return 14.5; // sits between 14 and 15
+  if (/^session-a9/.test(s)) return 999;          // the lettered side-session, last
+  return 1000;
+}
+
+const sessions = buildRows(top.filter((e) => /^session-/.test(e.name)))
+  .sort((a, b) => sessionSortKey(a.key) - sessionSortKey(b.key) || (a.key < b.key ? -1 : 1));
+
+const scopeChecks = buildRows(top.filter((e) => /^scope-check/.test(e.name)))
+  .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
+
+// Standalone top-level entries that aren't sessions or scope-checks
+// (the adoption ledger + the working/ scratch folder).
+const standalone = top
+  .filter((e) => !/^session-/.test(e.name) && !/^scope-check/.test(e.name))
+  .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+
+const sessionRecordCount = sessions.filter((r) => r.record).length;
+const sessionFolderCount = sessions.filter((r) => r.folder).length;
+---
+<Layout
+  title="Council sessions"
+  description="Index of the OPDA ontology council-session corpus — every session record, per-persona verdict folder, scope-check, and the cross-session adoption ledger, each linking into the resource viewer."
+>
+<PageMeta category="Modelling provenance" variant="info" updated="Council corpus · generated from docs/ontology/odr/council/" />
+
+      <h1>Council sessions</h1>
+      <p class="lead">
+        The OPDA ontology was designed through a series of expert-persona
+        <strong>council sessions</strong> — adversarial design reviews where named
+        modelling personas (Allemang–Hendler, Cagle, Guizzardi, Gandon, Kendall–Davis,
+        and others) debate each decision. This page surfaces the full corpus: every
+        <em>session record</em>, the per-persona <em>verdict folders</em> that back them,
+        the early <em>scope-checks</em>, and the cross-session <em>adoption ledger</em>.
+        Each entry opens in the <a href="/resource?path=council/adoption.md">resource viewer</a>;
+        records render as markdown, folders as a browsable listing.
+      </p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">What's here</div>
+        <p>
+          <strong>{sessionRecordCount}</strong> session records ·
+          <strong>{sessionFolderCount}</strong> session verdict folders ·
+          <strong>{scopeChecks.length}</strong> scope-check entries ·
+          <strong>{totalFiles}</strong> markdown documents across
+          <strong>{totalDirs}</strong> folders in total. The decisions ratified here are
+          the canonical source for the <a href="/modelling/odr">ODR corpus</a> and the
+          published <a href="/ontology/provenance">ontology decision provenance</a>.
+        </p>
+      </div>
+
+      <h2 id="sessions">Sessions</h2>
+      <p>
+        Numbered design sessions, in order. The <strong>record</strong> link is the
+        session writeup; the <strong>verdicts</strong> link (when present) opens the
+        folder of per-persona verdict documents that fed into it.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Session</th>
+            <th>Record</th>
+            <th>Verdicts</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sessions.map((row) => (
+            <tr>
+              <td><code>{row.key}</code></td>
+              <td>
+                {row.record
+                  ? <a href={href(row.record.path)}>{row.record.name}</a>
+                  : <span class="muted">—</span>}
+              </td>
+              <td>
+                {row.folder
+                  ? <a href={href(row.folder.path)}>{row.verdicts} verdict{row.verdicts === 1 ? '' : 's'} ↗</a>
+                  : <span class="muted">—</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2 id="scope-checks">Scope checks</h2>
+      <p>
+        Programme-level scope reviews that bracketed the session series — what to
+        model, and how the council itself should run.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Scope check</th>
+            <th>Record</th>
+            <th>Verdicts</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scopeChecks.map((row) => (
+            <tr>
+              <td><code>{row.key}</code></td>
+              <td>
+                {row.record
+                  ? <a href={href(row.record.path)}>{row.record.name}</a>
+                  : <span class="muted">—</span>}
+              </td>
+              <td>
+                {row.folder
+                  ? <a href={href(row.folder.path)}>{row.verdicts} verdict{row.verdicts === 1 ? '' : 's'} ↗</a>
+                  : <span class="muted">—</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2 id="other">Cross-session & working</h2>
+      <p>
+        The cross-session adoption ledger and the working scratch folder of
+        in-progress verdicts.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Entry</th>
+            <th>Type</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          {standalone.map((e) => (
+            <tr>
+              <td><a href={href(e.path)}>{e.name}{e.type === 'dir' ? '/' : ''}</a></td>
+              <td>{e.type === 'dir' ? 'folder' : (e.ext ? '.' + e.ext : 'file')}</td>
+              <td>{e.type === 'dir' ? '' : (e.size < 1024 ? e.size + ' B' : (e.size / 1024).toFixed(1) + ' KB')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+</Layout>
