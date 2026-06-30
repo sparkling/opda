@@ -133,6 +133,25 @@ async function main() {
       OPTIONAL { GRAPH ?ug { ?cls opda:ufoCategory ?ufo } }
     }`);
 
+  // 1b. rdfs:subClassOf — the class hierarchy (ADR-0055 Part 2; Council
+  // session-051 Q6, 7–0 FOR rendering subClassOf). Read from the asserted graphs
+  // only — documentary, NEVER entailed (ODR-0026/0029; ADR-0035). Supers are
+  // mostly EXTERNAL upper classes (prov:Activity/Entity, time:ProperInterval,
+  // vcard:Address, org:Organization, skos:ConceptScheme) — the disconnected
+  // orphans' real connective tissue. IRI supers only (skip owl:Restriction
+  // blank nodes); a class is never its own super.
+  const subClassRows = await select(`
+    SELECT DISTINCT ?cls ?super WHERE {
+      ${GRAPH('?cls rdfs:subClassOf ?super')}
+      FILTER(STRSTARTS(STR(?cls), "${BASE}"))
+      FILTER(isIRI(?super) && ?super != ?cls)
+    }`);
+  const superClassesOf = new Map();
+  for (const r of subClassRows) {
+    if (!superClassesOf.has(r.cls)) superClassesOf.set(r.cls, new Set());
+    superClassesOf.get(r.cls).add(r.super);
+  }
+
   // 2. Object + 3. datatype properties (domain/range/inverse) --------------
   const objRows = await select(`
     SELECT ?p ?g ?label ?comment ?definition ?domain ?range ?inverse WHERE {
@@ -396,6 +415,9 @@ async function main() {
     classes.set(uri, {
       uri, id: id(uri), localName: local(uri), label: meta.label || local(uri),
       comment: meta.comment || '', definition: meta.definition || '', scopeNote: meta.scope || '', ufoCategory: meta.ufo || '',
+      superClasses: [...(superClassesOf.get(uri) || [])]
+        .map((s) => ({ id: id(s), localName: local(s), external: !isOpda(s) }))
+        .sort((a, b) => a.id.localeCompare(b.id)),
       module: moduleOf(r.g), context: moduleOf(r.g),
       attributes: attributes.sort((a, b) => a.localName.localeCompare(b.localName)),
       outgoing: outgoing.sort((a, b) => a.predicate.localeCompare(b.predicate)),

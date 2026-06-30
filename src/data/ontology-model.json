@@ -2,9 +2,9 @@
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
     "classes": 40,
-    "objectProperties": 69,
+    "objectProperties": 71,
     "datatypeProperties": 193,
-    "shapes": 378,
+    "shapes": 382,
     "concepts": 323,
     "schemes": 49,
     "contexts": 8
@@ -19,6 +19,13 @@
       "definition": "A socially-recognised locator constructed and stewarded by an addressing authority (Royal Mail, OS AddressBase, HM Land Registry, or INSPIRE) as a record entity, whose identity persists through cosmetic re-formatting and authority-internal succession and never collapses across variants stewarded by different authorities.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). Subclass of vcard:Address for structural compatibility with vCard consumers.",
       "ufoCategory": "Substance Kind",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/2006/vcard/ns#Address",
+          "localName": "Address",
+          "external": true
+        }
+      ],
       "module": "property",
       "context": "property",
       "attributes": [
@@ -79,6 +86,7 @@
       "definition": "A graded quality judgement on a claim's verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and governed by the assurance-level concept scheme.",
       "scopeNote": "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8.",
       "ufoCategory": "Quality",
+      "superClasses": [],
       "module": "claim",
       "context": "claim",
       "attributes": [],
@@ -99,6 +107,13 @@
       "definition": "A document filed against a transaction record, individuated by its content and issuing activity, that bears filing metadata without itself carrying the assurance commitment of evidence until it plays the evidence role.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact). PROV-O: Entity (W3C PROV-O REC §3.2). The neutral document bearer per ODR-0024 R7 — the one genuine Kind in the evidence family (ODR-0027 §R6); a document plays the evidence role (opda:evidenceType), it is not sub-classed into it.",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "claim",
       "context": "claim",
       "attributes": [
@@ -148,6 +163,13 @@
       "definition": "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party acquiring the interest in the Property; in a TransactionChain its bearer may bear the Seller role of the next transaction.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4). Mirror of opda:Seller founded by the same Transaction.",
       "ufoCategory": "RoleMixin",
+      "superClasses": [
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "external": false
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [],
@@ -207,6 +229,13 @@
       "definition": "An assertion about a property transaction subject whose truth is backed by attached evidence and a recorded verification, such that the asserted fact and its provenance can be re-checked.",
       "scopeNote": "UFO: Information particular (Guizzardi 2005 Ch. 4 §4.7). PROV-O: Entity (W3C PROV-O REC §3.2). The verified claim (claim plus verification bundle) is a derived entity per S009 Rule 1.",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "claim",
       "context": "claim",
       "attributes": [],
@@ -270,6 +299,13 @@
       "definition": "An information artefact recording a sale or rental of a comparable property that supports a Valuation, sourced from Land Registry or VOA data and individuated by that market-data provenance feeding the valuation's derivation chain.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Land Registry Price Paid Data + VOA records (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [],
@@ -300,6 +336,7 @@
       "definition": "A named hard case, expressed as minimal Turtle, that exposes one identity-criterion-bearing surface for adjudication in a Council modelling session.",
       "scopeNote": "DOLCE: NonPhysicalEndurant. UFO: Substance Kind (informational).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -320,6 +357,7 @@
       "definition": "A data-bearing record that maps an OPDA Kind class to its default DPV personal-data category and any variant-conditional refinements, from which the data-protection co-annotation triples are emitted.",
       "scopeNote": "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a.",
       "ufoCategory": "Information Object",
+      "superClasses": [],
       "module": "governance",
       "context": "governance",
       "attributes": [],
@@ -368,6 +406,13 @@
       "definition": "An information artefact certifying the energy-efficiency rating of a dwelling, issued under the DESNZ register and individuated by a ten-year validity lifecycle, supersession on re-assessment, and an address-and-owner-identifiable PII regime.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 — corrected from \"Substance Kind\" per ODR-0008d Rule 3). DESNZ Energy Performance Certificate Guidance (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [],
@@ -412,6 +457,13 @@
       "definition": "A role a bearer plays when a verification activity draws on it to support a claim, whose acquisition kind (Document, Electronic-Record or Vouch) is stated by a coded evidence-type value rather than by subclassing.",
       "scopeNote": "PROV-O: Entity (W3C PROV-O REC §3.2). The three evidence kinds (Document / Electronic-Record / Vouch) are OIDC4IDA / eIDAS evidence.type concepts in opda:EvidenceMethodScheme (S009 Rule 5), carried as the coded opda:evidenceType value (ODR-0027 §R6).",
       "ufoCategory": "RoleMixin",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "claim",
       "context": "claim",
       "attributes": [],
@@ -485,6 +537,7 @@
       "definition": "A single execution of the opda-gen pipeline that emitted a specific set of TTL artefacts, recording the generator version, source commit and timestamp needed to reproduce them.",
       "scopeNote": "UFO: Information Particular. Provenance unit for byte-identity CI; instances are minted by the build pipeline, not by hand.",
       "ufoCategory": "Information Object",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -505,6 +558,13 @@
       "definition": "A reified provenance activity recording a statutory extension of a leasehold term, which produces a successor lease term and updates the registered title while the leasehold legal estate retains its identity.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Accomplishment (Masolo et al. 2003 D18 §4.4 — temporally extended with culmination at the registry-event timestamp). Hendler S005 Q5 'lease extension' consumer-fails case — the property of being-extended attaches to the registry-event lifecycle, not to the LegalEstate (which retains identity) and not to the Property.",
       "ufoCategory": "Event",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Activity",
+          "localName": "Activity",
+          "external": true
+        }
+      ],
       "module": "property",
       "context": "property",
       "attributes": [],
@@ -525,6 +585,13 @@
       "definition": "A bounded time interval defining the duration of a leasehold legal estate, carrying a beginning and either a duration or an end, and succeeded by a derived interval when the lease is statutorily extended.",
       "scopeNote": "OWL-Time: ProperInterval (W3C Time Ontology REC §4.2). UFO: Information particular bounding a leasehold tenure perdurant.",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/2006/time#ProperInterval",
+          "localName": "ProperInterval",
+          "external": true
+        }
+      ],
       "module": "property",
       "context": "property",
       "attributes": [],
@@ -550,6 +617,7 @@
       "definition": "A bundle of legal rights in land (such as a freehold or leasehold estate) vested in a physical property, whose identity persists through grant, transfer, registration, and discharge and is distinguished from any coexisting registered title and the physical property by the extent of the property rights it confers.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2; Searle 1995 institutional fact grounding). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "property",
       "context": "property",
       "attributes": [
@@ -943,6 +1011,19 @@
       ],
       "incoming": [
         {
+          "predicate": "concerns",
+          "predicateLabel": "concerns",
+          "predicateLocal": "concerns",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → legal-interest join: the legal interest the transaction conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). rdfs:domain opda:Transaction (single, universally true) + documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read DISJUNCTIVELY per the module-header convention, NEVER entailed — ADR-0035). The authoritative co-domain disjunction is SHACL sh:or (opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from opda:concernsProperty (→ the physical opda:Property)."
+        },
+        {
           "predicate": "recordsEstate",
           "predicateLabel": "records estate",
           "predicateLocal": "recordsEstate",
@@ -976,10 +1057,32 @@
       "definition": "Lifecycle event marking a significant point or stage in the progression of a property transaction, occurring either at a single instant or over a bounded interval.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (instant) or Accomplishment (interval) per Masolo et al. 2003 D18 §4.4. PROV-O: Activity (W3C PROV-O REC §3.2).",
       "ufoCategory": "Event",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Activity",
+          "localName": "Activity",
+          "external": true
+        }
+      ],
       "module": "transaction",
       "context": "transaction",
       "attributes": [],
-      "outgoing": [],
+      "outgoing": [
+        {
+          "predicate": "partOfTransaction",
+          "predicateLabel": "part of transaction",
+          "predicateLocal": "partOfTransaction",
+          "targets": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Milestone → Transaction join: the perdurant milestone is a part of the Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). Single-domain edge, no never-reasoned commitment: rdfs:domain opda:Milestone + rdfs:range opda:Transaction both asserted as documentary AI-signal, NEVER entailed (ADR-0035). PROV-O carries no part-of-activity relation (PROV-DM §5.3), so this is a bespoke partonomic predicate, not a prov: reuse."
+        }
+      ],
       "incoming": [],
       "shapes": [
         {
@@ -1005,6 +1108,7 @@
       "definition": "A sum of money as a value structure: a numeric magnitude paired with an ISO-4217 currency, individuated by-value (equal magnitude and equal currency) and reused as the range of the per-economic-kind monetary properties.",
       "scopeNote": "UFO: quality value / abstract individual (Guizzardi 2005 — a value in a quality structure, not an endurant). DOLCE: Abstract / Quality-Region (Masolo et al. 2003 D18). Value identity is structural (magnitude + currency); the currency value-space is governed by ISO 4217 (opda:CurrencyScheme).",
       "ufoCategory": "Quality Value",
+      "superClasses": [],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -1267,6 +1371,13 @@
       "definition": "A reified provenance activity (PROV-O Activity) recording a change to a Person's name — by deed poll, marriage, gender recognition, or the like — through which the Person's identity persists; it relates former and current name attributes by prov:wasRevisionOf rather than asserting two distinct persons.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7). DOLCE: Achievement (Masolo et al. 2003 D18 §4.4 — instantaneous administrative event).",
       "ufoCategory": "Event",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Activity",
+          "localName": "Activity",
+          "external": true
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [],
@@ -1287,6 +1398,7 @@
       "definition": "A mind-independent social-physical endurant near a property — a school, health-care facility, or transport node — listed for amenity context and bearing its own identity criterion independent of the property being transacted, since the same facility neighbours many properties.",
       "scopeNote": "UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — a Sortal, Rigid social-physical endurant supplying its own IC). Warranted per ODR-0024 R4 on that UFO basis (NOT ODR-0008 §Q4a — §Q4a's object-promotion test licenses Information Objects, not mind-independent facilities).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -1402,6 +1514,13 @@
       "definition": "A corporate or unincorporated organisation — a legal-institutional object party to a property transaction — whose identity is fixed by jurisdiction-issued registration identifiers (e.g. CRN, LEI) and persists through merger, demerger, and dissolution, a new individual arising on entity-merger via prov:wasDerivedFrom.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2). W3C Org Ontology alignment per S006 Q6 9-1 verdict (Allemang held-as-live).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/org#Organization",
+          "localName": "Organization",
+          "external": true
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [
@@ -1548,6 +1667,7 @@
       "definition": "A natural person — a human individual party to a property transaction — whose identity persists rigidly through name change, gender recognition, and death, and is fixed by a multi-identifier criterion (date of birth, state-issued identifier, and name) rather than by any single attribute.",
       "scopeNote": "DOLCE: Endurant / Agent (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "agent",
       "context": "agent",
       "attributes": [
@@ -1678,6 +1798,7 @@
       "definition": "A physical immovable property whose identity is fixed by spatial-material continuity (with a legal-record-discontinuity override) and persists through re-numbering, repair, and re-registration, as distinct from the legal estate vested in it and the registered title that records it.",
       "scopeNote": "DOLCE: Endurant / PhysicalObject (Masolo et al. 2003 D18 §4.1). UFO: Substance Kind (Guizzardi 2005 Ch. 4 §4.2 — Sortal, Rigid, supplies own IC).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "property",
       "context": "property",
       "attributes": [
@@ -2647,6 +2768,13 @@
       "definition": "An anti-rigid, sortal ownership role — borne by a Person — that is founded by a Proprietorship Relator and identifies a registered legal owner of the Property; it carries no identity of its own (it borrows identity from its bearer) and is never independently keyed.",
       "scopeNote": "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single bearer Kind.",
       "ufoCategory": "Role",
+      "superClasses": [
+        {
+          "id": "Role",
+          "localName": "Role",
+          "external": false
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [],
@@ -2705,6 +2833,13 @@
       "definition": "A relational endurant (UFO Relator) that binds one or more Proprietor roles to a Property against a RegisteredTitle, founded by the registration event and identified by the (Title, owner-set) tuple; the holding type — joint tenancy or tenancy in common — is a property of this relator, not of the roles it mediates.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). HMLR Practice Guide 24 (joint tenancy / tenants in common).",
       "ufoCategory": "Relator",
+      "superClasses": [
+        {
+          "id": "Relator",
+          "localName": "Relator",
+          "external": false
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [
@@ -2774,6 +2909,7 @@
       "definition": "An informational record entity maintained in the HM Land Registry title register, whose identity is fixed by its title-number lineage and registry-event history, as distinct from the legal estate it documents and the physical property it identifies.",
       "scopeNote": "DOLCE: NonPhysicalEndurant (HMLR record-entity per Masolo et al. 2003 D18 §4.2). UFO: Substance Kind, informational (Guizzardi 2005 Ch. 4 §4.2).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "property",
       "context": "property",
       "attributes": [
@@ -2803,6 +2939,19 @@
       ],
       "incoming": [
         {
+          "predicate": "concerns",
+          "predicateLabel": "concerns",
+          "predicateLocal": "concerns",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → legal-interest join: the legal interest the transaction conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). rdfs:domain opda:Transaction (single, universally true) + documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read DISJUNCTIVELY per the module-header convention, NEVER entailed — ADR-0035). The authoritative co-domain disjunction is SHACL sh:or (opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from opda:concernsProperty (→ the physical opda:Property)."
+        },
+        {
           "predicate": "hasRegisteredTitle",
           "predicateLabel": "has registered title",
           "predicateLocal": "hasRegisteredTitle",
@@ -2831,6 +2980,7 @@
       "definition": "A relational endurant, founded by an external event, that mediates two or more bearers and carries its own identity together with the properties belonging to none of the mediated Kinds singly.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4 — relational endurant; founded by an event; mediates two or more bearers). DOLCE: Relation as Universal (Masolo et al. 2003 D18 §4.6).",
       "ufoCategory": "Relator",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -2885,6 +3035,13 @@
       "definition": "An information artefact reporting the authority-retrieved result for one environmental or search peril against a property (its indicator, alert rating, result, summary, recommendations, and attribution), individuated by the tuple of generating activity, source peril/dataset, subject property, and generation time rather than by its result values.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 — an information artefact existentially dependent on its generating activity). DOLCE: Non-Physical Object (Masolo et al. 2003 D18). gUFO: gufo:Object (artefact). PROV-O: Entity (W3C PROV-O REC §3.2). Hangs off the ODR-0009 PROV-O backbone (prov:wasGeneratedBy / wasAttributedTo / generatedAtTime / wasDerivedFrom).",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -2998,6 +3155,7 @@
       "definition": "An anti-rigid, sortal role universal whose instances are borne by entities of a single substantial Kind and which borrows its identity from that bearer rather than supplying its own.",
       "scopeNote": "UFO: Role (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, sortal). Distinguished from RoleMixin by sortal commitment to a single Kind.",
       "ufoCategory": "Role",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -3069,6 +3227,7 @@
       "definition": "An anti-rigid, cross-sortal role universal whose instances may be borne by entities from more than one substantial Kind, contrasted with a Role that commits to a single Kind.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). DOLCE: Role qua Universal without sortal commitment (Masolo et al. 2003 D18 §4.5).",
       "ufoCategory": "RoleMixin",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -3154,6 +3313,7 @@
       "definition": "The dimensions of a single room as a value structure: a length and width in metres together with a non-rigid room name, individuated by-value and characterising a property without asserting any room individual.",
       "scopeNote": "UFO: a quality-value structure (a bundle of Quale-in-Region values), not an endurant (Guizzardi 2005); the dimensions are Qualities of a room-feature of the Property (DOLCE feature). Value identity is structural (by-value); no instance identity is claimed (session-030).",
       "ufoCategory": "Quality Value",
+      "superClasses": [],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -3215,6 +3375,13 @@
       "definition": "An information artefact returning the result of a local-authority or environmental enquiry against a property (CON29R, LLC1, flood, coal-mining, and similar), individuated by its issuing-authority provenance chain and an ordered/returned/superseded lifecycle, and carrying the per-peril risk assessments its generating activity produces.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per PDTF v3 propertyPack.localSearches.",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -3407,6 +3574,13 @@
       "definition": "An anti-rigid, cross-sortal party role — borne by a Person or an Organisation — that is founded by a specific Transaction and identifies the party disposing of the interest in the Property, the role's identity being parasitic on the (Transaction, bearer) tuple.",
       "scopeNote": "UFO: RoleMixin (Guizzardi 2005 Ch. 4 §4.4 — anti-rigid, externally founded, cross-sortal). Sub-Roles PersonSeller / OrganisationSeller may sortalise the RoleMixin where downstream use requires (per ODR-0006 §Role layer).",
       "ufoCategory": "RoleMixin",
+      "superClasses": [
+        {
+          "id": "RoleMixin",
+          "localName": "RoleMixin",
+          "external": false
+        }
+      ],
       "module": "agent",
       "context": "agent",
       "attributes": [
@@ -3516,6 +3690,13 @@
       "definition": "A concept scheme enumerating the GDPR Article 10 / DPA 2018 special-category personal-data classes that attract elevated lawful-basis discipline.",
       "scopeNote": "Subclass of skos:ConceptScheme (W3C SKOS REC §3.1). Members enumerated per GDPR Article 10 special-category list when ADR-0010 scope-expansion activates the scheme.",
       "ufoCategory": "",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+          "localName": "ConceptScheme",
+          "external": true
+        }
+      ],
       "module": "governance",
       "context": "governance",
       "attributes": [],
@@ -3536,6 +3717,13 @@
       "definition": "An information artefact recording the findings of a professional physical inspection of a property, retrieved from its issuing authority and individuated by a distinct provenance chain back to the professional-issued generating activity and a lifecycle of issue, supersession, re-issue, and withdrawal.",
       "scopeNote": "UFO: Information Object (Guizzardi 2005 Ch. 4 §4.2 — an information artefact, corrected from \"Substance Kind\" per ODR-0008d Rule 3). DOLCE: NonPhysicalEndurant (Masolo et al. 2003 D18 §4.2). PROV-O: Entity (W3C PROV-O REC §3.2).",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [],
@@ -3566,6 +3754,13 @@
       "definition": "Relational endurant binding the seller and buyer parties to the conveyance of a single legal estate, persisting and accumulating identity across the lifecycle of a property sale.",
       "scopeNote": "UFO: Relator (Guizzardi 2005 Ch. 4 §4.4). FIBO: Arrangement precedent (FIBO-FND Arrangements module).",
       "ufoCategory": "Relator",
+      "superClasses": [
+        {
+          "id": "Relator",
+          "localName": "Relator",
+          "external": false
+        }
+      ],
       "module": "transaction",
       "context": "transaction",
       "attributes": [
@@ -3670,6 +3865,25 @@
       ],
       "outgoing": [
         {
+          "predicate": "concerns",
+          "predicateLabel": "concerns",
+          "predicateLocal": "concerns",
+          "targets": [
+            {
+              "id": "LegalEstate",
+              "localName": "LegalEstate",
+              "kind": "class"
+            },
+            {
+              "id": "RegisteredTitle",
+              "localName": "RegisteredTitle",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Transaction → legal-interest join: the legal interest the transaction conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). rdfs:domain opda:Transaction (single, universally true) + documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read DISJUNCTIVELY per the module-header convention, NEVER entailed — ADR-0035). The authoritative co-domain disjunction is SHACL sh:or (opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from opda:concernsProperty (→ the physical opda:Property)."
+        },
+        {
           "predicate": "concernsProperty",
           "predicateLabel": "concerns property",
           "predicateLocal": "concernsProperty",
@@ -3759,7 +3973,21 @@
           "description": "Whether a fixtures-and-fittings item is Included in, Excluded from, or absent (None) from a sale. A UFO Mode/Relator of the sale TRANSACTION (ODR-0007), confirmed by session-027 R4 — NOT a Quality of opda:Property (the same item is included in one sale and absent from the next, so inclusion has no rigid bearer in the brick-and-mortar). Bound on a transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property), ranging over the opda:InclusionStatusScheme value-space (Included / Excluded / None). The full sale-transaction Relator identity criterion is owned by ODR-0007."
         }
       ],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "partOfTransaction",
+          "predicateLabel": "part of transaction",
+          "predicateLocal": "partOfTransaction",
+          "sources": [
+            {
+              "id": "Milestone",
+              "localName": "Milestone"
+            }
+          ],
+          "inverse": null,
+          "description": "Milestone → Transaction join: the perdurant milestone is a part of the Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). Single-domain edge, no never-reasoned commitment: rdfs:domain opda:Milestone + rdfs:range opda:Transaction both asserted as documentary AI-signal, NEVER entailed (ADR-0035). PROV-O carries no part-of-activity relation (PROV-DM §5.3), so this is a bespoke partonomic predicate, not a prov: reuse."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/FixturesListShape",
@@ -3789,6 +4017,7 @@
       "definition": "Aggregate of interdependent property transactions linked where a buyer in one is concurrently a seller in the next, such that the completion of each is contingent on completion of the others.",
       "scopeNote": "UFO: Aggregate (Guizzardi 2005 Ch. 4 §4.6 — collective of Relator instances). Dual modelling per S007 Q4 (recursive predicate + Aggregate) chosen because both shapes appear in real-world chain queries.",
       "ufoCategory": "Collective",
+      "superClasses": [],
       "module": "transaction",
       "context": "transaction",
       "attributes": [],
@@ -3823,6 +4052,7 @@
       "definition": "A cited governance regime of agreements, rules and technical standards that scopes the validity of a claim and is authoritative within its declared remit, such as the UK Property Data Trust Framework.",
       "scopeNote": "UFO: Information Particular (governance regime as informational artefact). dct:conformsTo binding per S009 Rule 5 (PROV-O residue).",
       "ufoCategory": "Information Object",
+      "superClasses": [],
       "module": "claim",
       "context": "claim",
       "attributes": [],
@@ -3843,6 +4073,13 @@
       "definition": "A reified provenance activity recording the administrative re-numbering of the UPRN for a single physical property, through which the property's identity persists, captured with its own dereferenceable identifier and audit trail.",
       "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance).",
       "ufoCategory": "Event",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Activity",
+          "localName": "Activity",
+          "external": true
+        }
+      ],
       "module": "property",
       "context": "property",
       "attributes": [],
@@ -3863,6 +4100,7 @@
       "definition": "A reified overlay profile that anchors per-profile cardinality and enumeration constraints to a named, dereferenceable context, so a constraint holds relative to that context rather than as a free-floating axiom.",
       "scopeNote": "UFO: Substance Kind (informational). Reifies a SHACL profile as a first-class subject so its constraints have determinate model theory (Guarino's withdrawal condition discharged at S010).",
       "ufoCategory": "Substance Kind",
+      "superClasses": [],
       "module": "foundation",
       "context": "foundation",
       "attributes": [],
@@ -3883,6 +4121,13 @@
       "definition": "An information artefact stating an estimate of a property's market or rental value, produced by a RICS-regulated professional or an automated model and individuated by a regulated provenance chain and an instructed/delivered/superseded lifecycle.",
       "scopeNote": "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 §4a).",
       "ufoCategory": "Information Object",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Entity",
+          "localName": "Entity",
+          "external": true
+        }
+      ],
       "module": "descriptive",
       "context": "descriptive",
       "attributes": [
@@ -4006,6 +4251,13 @@
       "definition": "An activity that derives a verified claim from evidence, completing at a recorded instant and attributing the validation and verification methods to the agents that performed them.",
       "scopeNote": "PROV-O: Activity (W3C PROV-O REC §3.2). UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7).",
       "ufoCategory": "Event",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Activity",
+          "localName": "Activity",
+          "external": true
+        }
+      ],
       "module": "claim",
       "context": "claim",
       "attributes": [],
@@ -4280,6 +4532,40 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee"
+      ]
+    },
+    "concerns": {
+      "uri": "https://opda.org.uk/pdtf/concerns",
+      "id": "concerns",
+      "localName": "concerns",
+      "label": "concerns",
+      "comment": "Transaction → legal-interest join: the legal interest the transaction conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). rdfs:domain opda:Transaction (single, universally true) + documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read DISJUNCTIVELY per the module-header convention, NEVER entailed — ADR-0035). The authoritative co-domain disjunction is SHACL sh:or (opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from opda:concernsProperty (→ the physical opda:Property).",
+      "definition": "Relates a property transaction to the legal estate — the legal interest in land — that it conveys.",
+      "kind": "object",
+      "module": "transaction",
+      "subjects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        },
+        {
+          "id": "RegisteredTitle",
+          "localName": "RegisteredTitle",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0034/section-R1"
       ]
     },
     "concernsProperty": {
@@ -5634,6 +5920,35 @@
       ],
       "dctSource": [
         "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "partOfTransaction": {
+      "uri": "https://opda.org.uk/pdtf/partOfTransaction",
+      "id": "partOfTransaction",
+      "localName": "partOfTransaction",
+      "label": "part of transaction",
+      "comment": "Milestone → Transaction join: the perdurant milestone is a part of the Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). Single-domain edge, no never-reasoned commitment: rdfs:domain opda:Milestone + rdfs:range opda:Transaction both asserted as documentary AI-signal, NEVER entailed (ADR-0035). PROV-O carries no part-of-activity relation (PROV-DM §5.3), so this is a bespoke partonomic predicate, not a prov: reuse.",
+      "definition": "Relates a transaction milestone to the property transaction it is a part of.",
+      "kind": "object",
+      "module": "transaction",
+      "subjects": [
+        {
+          "id": "Milestone",
+          "localName": "Milestone",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0034/section-R1"
       ]
     },
     "peril": {
@@ -12765,6 +13080,15 @@
         }
       ]
     },
+    "shape/concernsDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/concernsDomainShape",
+      "id": "shape/concernsDomainShape",
+      "localName": "concernsDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/concerns",
+      "constraints": []
+    },
     "shape/concernsPropertyDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/concernsPropertyDomainShape",
       "id": "shape/concernsPropertyDomainShape",
@@ -12779,6 +13103,15 @@
       "id": "shape/concernsPropertyRangeShape",
       "localName": "concernsPropertyRangeShape",
       "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/ConcernsRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/ConcernsRangeShape",
+      "id": "shape/ConcernsRangeShape",
+      "localName": "ConcernsRangeShape",
+      "module": "transaction",
       "target": null,
       "targetSubjectsOf": null,
       "constraints": []
@@ -14802,6 +15135,24 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/parkingArrangements",
+      "constraints": []
+    },
+    "shape/partOfTransactionDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/partOfTransactionDomainShape",
+      "id": "shape/partOfTransactionDomainShape",
+      "localName": "partOfTransactionDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/partOfTransaction",
+      "constraints": []
+    },
+    "shape/partOfTransactionRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/partOfTransactionRangeShape",
+      "id": "shape/partOfTransactionRangeShape",
+      "localName": "partOfTransactionRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/perilDomainShape": {
@@ -26006,6 +26357,10 @@
       ],
       "objectProperties": [
         {
+          "id": "concerns",
+          "localName": "concerns"
+        },
+        {
           "id": "concernsProperty",
           "localName": "concernsProperty"
         },
@@ -26016,6 +26371,10 @@
         {
           "id": "hasParticipant",
           "localName": "hasParticipant"
+        },
+        {
+          "id": "partOfTransaction",
+          "localName": "partOfTransaction"
         }
       ],
       "datatypeProperties": [
@@ -26085,6 +26444,10 @@
         }
       ],
       "shapes": [
+        {
+          "id": "shape/ConcernsRangeShape",
+          "localName": "ConcernsRangeShape"
+        },
         {
           "id": "shape/HasParticipantRangeShape",
           "localName": "HasParticipantRangeShape"

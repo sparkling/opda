@@ -4,7 +4,7 @@
     "name": "adoption.md",
     "type": "file",
     "ext": "md",
-    "size": 86552
+    "size": 88040
   },
   {
     "path": "council/scope-check-1-programme.md",
@@ -866,6 +866,13 @@
     "type": "file",
     "ext": "md",
     "size": 14920
+  },
+  {
+    "path": "council/session-051-relationship-residue-completion.md",
+    "name": "session-051-relationship-residue-completion.md",
+    "type": "file",
+    "ext": "md",
+    "size": 16685
   },
   {
     "path": "council/session-a9-gandon-guizzardi-methodology-gap",
@@ -2028,6 +2035,62 @@
     "type": "file",
     "ext": "md",
     "size": 94262
+  },
+  {
+    "path": "council/working/session-051",
+    "name": "session-051",
+    "type": "dir",
+    "ext": "",
+    "size": 0
+  },
+  {
+    "path": "council/working/session-051/allemang.md",
+    "name": "allemang.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3365
+  },
+  {
+    "path": "council/working/session-051/cagle.md",
+    "name": "cagle.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3193
+  },
+  {
+    "path": "council/working/session-051/davis.md",
+    "name": "davis.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3584
+  },
+  {
+    "path": "council/working/session-051/guarino.md",
+    "name": "guarino.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3692
+  },
+  {
+    "path": "council/working/session-051/guizzardi.md",
+    "name": "guizzardi.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3128
+  },
+  {
+    "path": "council/working/session-051/kendall.md",
+    "name": "kendall.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3801
+  },
+  {
+    "path": "council/working/session-051/moreau.md",
+    "name": "moreau.md",
+    "type": "file",
+    "ext": "md",
+    "size": 3774
   },
   {
     "path": "council/working/shacl-trio.md",

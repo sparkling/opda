@@ -74,6 +74,8 @@ R2_GATED_INVENTORY: frozenset[str] = frozenset(
         "hasRegisteredTitle",
         "hasParticipant",
         "concernsProperty",
+        "concerns",
+        "partOfTransaction",
         "hasEvidencedAuthority",
         "hasAddress",
         # The chain pair is in §R2 but DEFERRED (residue register) — listed so
@@ -117,6 +119,10 @@ WORKED_QUERIES: dict[str, str] = {
     + "SELECT ?s ?o WHERE { ?s a opda:Transaction ; opda:hasParticipant ?o . }",
     "concernsProperty": _PFX
     + "SELECT ?s ?o WHERE { ?s a opda:Transaction ; opda:concernsProperty ?o . }",
+    "concerns": _PFX
+    + "SELECT ?s ?o WHERE { ?s a opda:Transaction ; opda:concerns ?o . }",
+    "partOfTransaction": _PFX
+    + "SELECT ?s ?o WHERE { ?s a opda:Milestone ; opda:partOfTransaction ?o . }",
     "hasRegisteredTitle": _PFX
     + "SELECT ?s ?o WHERE { ?s a opda:Proprietorship ; opda:hasRegisteredTitle ?o . }",
     "hasAddress": _PFX + "SELECT ?s ?o WHERE { ?s opda:hasAddress ?o . }",

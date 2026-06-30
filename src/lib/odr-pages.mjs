@@ -62,4 +62,5 @@ export const ODR_REGISTRY = [
   { id: 'odr-0031', number: '0031', title: 'opda:ufoCategory and the Upper-Ontology Layer',          kind: 'architecture', status: 'accepted', enriched: false },
   { id: 'odr-0032', number: '0032', title: 'Relationship Layer — Reify Inter-Entity Associations as OWL Object Properties', kind: 'pattern', status: 'proposed', enriched: false },
   { id: 'odr-0033', number: '0033', title: 'OWL/RDFS Axioms as Documentary AI-Signal — the Consolidated Doctrine', kind: 'architecture', status: 'proposed', enriched: false },
+  { id: 'odr-0034', number: '0034', title: 'Relationship-Residue Completion — Events, Information Objects, and the Aboutness/Provenance Boundary', kind: 'pattern', status: 'proposed', enriched: false },
 ];

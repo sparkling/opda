@@ -211,6 +211,16 @@ opda:transactionId
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range xsd:string .
 
+opda:concerns
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "concerns"@en ;
+    rdfs:comment "Transaction → legal-interest join: the legal interest the transaction conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). rdfs:domain opda:Transaction (single, universally true) + documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read DISJUNCTIVELY per the module-header convention, NEVER entailed — ADR-0035). The authoritative co-domain disjunction is SHACL sh:or (opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from opda:concernsProperty (→ the physical opda:Property)."@en ;
+    skos:definition "Relates a property transaction to the legal estate — the legal interest in land — that it conveys."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0034/section-R1> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
+    rdfs:range opda:LegalEstate, opda:RegisteredTitle .
+
 opda:concernsProperty
     rdf:type owl:ObjectProperty ;
     rdfs:label "concerns property"@en ;
@@ -240,3 +250,13 @@ opda:hasParticipant
     rdfs:domain opda:Transaction ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range opda:Buyer, opda:Seller .
+
+opda:partOfTransaction
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "part of transaction"@en ;
+    rdfs:comment "Milestone → Transaction join: the perdurant milestone is a part of the Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED 7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the predicate the diagnostic exemplars already use (ADR-0048 §As-built \"left as-is\"). Single-domain edge, no never-reasoned commitment: rdfs:domain opda:Milestone + rdfs:range opda:Transaction both asserted as documentary AI-signal, NEVER entailed (ADR-0035). PROV-O carries no part-of-activity relation (PROV-DM §5.3), so this is a bespoke partonomic predicate, not a prov: reuse."@en ;
+    skos:definition "Relates a transaction milestone to the property transaction it is a part of."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0034/section-R1> ;
+    rdfs:domain opda:Milestone ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
+    rdfs:range opda:Transaction .

@@ -10,7 +10,7 @@
     "edges": {
       "constrainedByScheme": 12,
       "inScheme": 323,
-      "objectProperty": 85
+      "objectProperty": 88
     }
   },
   "modules": [
@@ -7430,6 +7430,15 @@
     },
     {
       "data": {
+        "id": "op:partOfTransaction:Milestone->Transaction",
+        "source": "class:Milestone",
+        "target": "class:Transaction",
+        "label": "partOfTransaction",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:currency:MonetaryAmount->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:MonetaryAmount",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
@@ -7970,6 +7979,15 @@
     },
     {
       "data": {
+        "id": "op:concerns:Transaction->LegalEstate",
+        "source": "class:Transaction",
+        "target": "class:LegalEstate",
+        "label": "concerns",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:costsApplicableToTheDeed:Transaction->MonetaryAmount",
         "source": "class:Transaction",
         "target": "class:MonetaryAmount",
@@ -7992,6 +8010,15 @@
         "source": "class:Transaction",
         "target": "class:Property",
         "label": "concernsProperty",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:concerns:Transaction->RegisteredTitle",
+        "source": "class:Transaction",
+        "target": "class:RegisteredTitle",
+        "label": "concerns",
         "kind": "objectProperty"
       }
     },

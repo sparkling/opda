@@ -36,6 +36,7 @@ _ODR_0007_Q2 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q2"
 _ODR_0007_Q4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4")
 _ODR_0007_Q6 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q6")
 _ODR_0008_Q5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
+_ODR_0034_R1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0034/section-R1")
 
 
 # Data-dictionary schema-leaf-path dct:source (ODR-0022 G2); same form as the
@@ -53,9 +54,11 @@ CLASSES = (
 )
 
 OBJECT_PROPERTIES = (
+    OPDA.concerns,
     OPDA.concernsProperty,
     OPDA.hasChainPosition,
     OPDA.hasParticipant,
+    OPDA.partOfTransaction,
 )
 
 DATATYPE_PROPERTIES = (
@@ -353,6 +356,87 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.concernsProperty, RDFS.isDefinedBy, module_iri))
+
+    # --- ObjectProperty: opda:partOfTransaction (ODR-0034 §R1; session-051) --
+    # Milestone → Transaction: the perdurant milestone is a part of the
+    # Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED 7–0 by
+    # Council session-051 (ODR-0034 §R1) — declared here to GOVERN the predicate
+    # the diagnostic exemplars already use but which was TBox-undeclared
+    # (ADR-0048 §As-built "left as-is"). Single-domain edge, no never-reasoned
+    # commitment: rdfs:domain opda:Milestone + rdfs:range opda:Transaction both
+    # asserted as documentary AI-signal, NEVER entailed (ADR-0035 zero-triple
+    # proof). PROV-O carries no part-of-activity relation (PROV-DM §5.3), so
+    # this is a bespoke partonomic predicate, NOT a prov: reuse (session-051 Q1,
+    # Moreau). Worked competency query: "the milestones of transaction T".
+    g.add((OPDA.partOfTransaction, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.partOfTransaction, RDFS.domain, OPDA.Milestone))
+    g.add((OPDA.partOfTransaction, RDFS.range, OPDA.Transaction))
+    g.add((OPDA.partOfTransaction, RDFS.label,
+           Literal("part of transaction", lang="en")))
+    g.add((OPDA.partOfTransaction, RDFS.comment, Literal(
+        "Milestone → Transaction join: the perdurant milestone is a part of "
+        "the Transaction-event (event-mereology; Guizzardi ER 2013 §4). GATED "
+        "7–0 by Council session-051 (ODR-0034 §R1) — declared to govern the "
+        "predicate the diagnostic exemplars already use (ADR-0048 §As-built "
+        "\"left as-is\"). Single-domain edge, no never-reasoned commitment: "
+        "rdfs:domain opda:Milestone + rdfs:range opda:Transaction both asserted "
+        "as documentary AI-signal, NEVER entailed (ADR-0035). PROV-O carries no "
+        "part-of-activity relation (PROV-DM §5.3), so this is a bespoke "
+        "partonomic predicate, not a prov: reuse.",
+        lang="en",
+    )))
+    g.add((OPDA.partOfTransaction, DCTERMS.source, _ODR_0034_R1))
+    g.add((OPDA.partOfTransaction, SKOS.definition, Literal(
+        "Relates a transaction milestone to the property transaction it is a "
+        "part of.",
+        lang="en",
+    )))
+    g.add((OPDA.partOfTransaction, RDFS.isDefinedBy, module_iri))
+
+    # --- ObjectProperty: opda:concerns (ODR-0034 §R1; session-051) -----------
+    # Transaction → LegalEstate: the legal interest the transaction conveys
+    # (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by Council
+    # session-051 (ODR-0034 §R1) — declared to govern the existing-but-TBox-
+    # undeclared exemplar predicate (ADR-0048 §As-built). Documentary single
+    # rdfs:range opda:LegalEstate, NEVER entailed (ADR-0035); like
+    # opda:concernsProperty, the range type-pins it so NO SHACL shape is needed.
+    # The registered-title arm is reached via opda:RegisteredTitle
+    # opda:recordsEstate opda:LegalEstate; the chain exemplar's title-level
+    # concerns views the SAME legal interest through its RegisteredTitle.
+    # Distinct from opda:concernsProperty (→ the physical opda:Property). Worked
+    # competency query: "the legal estate transaction T conveys".
+    g.add((OPDA.concerns, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.concerns, RDFS.domain, OPDA.Transaction))
+    # Documentary "any-of" co-domain — the legal-interest arm: the LegalEstate
+    # conveyed AND/OR the RegisteredTitle that records it (both +I non-physical
+    # endurants; the diagnostic exemplars exercise BOTH — simple-transaction
+    # concerns the estate, the chain concerns the titles). Multi-range → excluded
+    # from the single-sh:class auto-derivation; the authoritative disjunction is
+    # the hand-authored opda:ConcernsRangeShape sh:or (shapes.py).
+    g.add((OPDA.concerns, RDFS.range, OPDA.LegalEstate))
+    g.add((OPDA.concerns, RDFS.range, OPDA.RegisteredTitle))
+    g.add((OPDA.concerns, RDFS.label, Literal("concerns", lang="en")))
+    g.add((OPDA.concerns, RDFS.comment, Literal(
+        "Transaction → legal-interest join: the legal interest the transaction "
+        "conveys — the opda:LegalEstate and/or the opda:RegisteredTitle that "
+        "records it (founded participation; Guizzardi 2005 §4.3.2). GATED 7–0 by "
+        "Council session-051 (ODR-0034 §R1) — declared to govern the predicate "
+        "the diagnostic exemplars already use (ADR-0048 §As-built \"left "
+        "as-is\"). rdfs:domain opda:Transaction (single, universally true) + "
+        "documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle "
+        "(read DISJUNCTIVELY per the module-header convention, NEVER entailed — "
+        "ADR-0035). The authoritative co-domain disjunction is SHACL sh:or "
+        "(opda:ConcernsRangeShape), NOT owl:unionOf. Distinct from "
+        "opda:concernsProperty (→ the physical opda:Property).",
+        lang="en",
+    )))
+    g.add((OPDA.concerns, DCTERMS.source, _ODR_0034_R1))
+    g.add((OPDA.concerns, SKOS.definition, Literal(
+        "Relates a property transaction to the legal estate — the legal "
+        "interest in land — that it conveys.",
+        lang="en",
+    )))
+    g.add((OPDA.concerns, RDFS.isDefinedBy, module_iri))
 
     # ==== Category-G curated walk — Family E: sale / completion / moving / ==
     # chain / sale-ready-declaration attributes (ADR-0031 work-item 2). Each

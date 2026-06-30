@@ -60,6 +60,8 @@ export interface ClassEntry {
   definition: string;
   scopeNote: string;
   ufoCategory: string;
+  /** rdfs:subClassOf supers (ADR-0055 Part 2) — mostly EXTERNAL upper classes. */
+  superClasses: { id: string; localName: string; external: boolean }[];
   module: string | null;
   context: string | null;
   attributes: Attribute[];

@@ -150,17 +150,42 @@ RESIDUE_REGISTER: dict[str, ResidueEntry] = {
     # to GATED when a chain exemplar + worked query is ratified.
     "dependsOnTransaction": ResidueEntry(
         Disposition.DEFERRED,
-        "no GATED chain exemplar + worked competency query yet — ODR-0007 "
-        "§S007-Q4 comment-ware; deferred until a concrete chain consumer lands "
-        "(Council session-047 Q2 defers the chain pair only).",
+        "exemplar EXISTS (chain-of-transactions.ttl carries the ABox) — Council "
+        "session-051 (ODR-0034 §R3) corrected the stale session-047 'no exemplar "
+        "yet' framing to RESIDUE-PENDING; the sole remaining bar is a committed "
+        "worked chain-recursion query, on which it graduates to GATED (ODR-0007 "
+        "§S007-Q4 origin).",
         blocking_record="ODR-0007",
     ),
     "chainMembers": ResidueEntry(
         Disposition.DEFERRED,
-        "no GATED chain exemplar + worked competency query yet — ODR-0007 "
-        "§S007-Q4 comment-ware; deferred until a concrete chain consumer lands "
-        "(Council session-047 Q2 defers the chain pair only).",
+        "exemplar EXISTS (chain-of-transactions.ttl carries the ABox) — Council "
+        "session-051 (ODR-0034 §R3) corrected the stale session-047 'no exemplar "
+        "yet' framing to RESIDUE-PENDING; the sole remaining bar is a committed "
+        "worked chain-recursion query, on which it graduates to GATED (ODR-0007 "
+        "§S007-Q4 origin).",
         blocking_record="ODR-0007",
+    ),
+    # --- DEFERRED (Council session-051 RESIDUE-PENDING): warranted aboutness --
+    # opda:aboutProperty (Survey/Search/Comparable/NearbyFacility → Property) is
+    # the topical "is-about" edge Council session-051 (ODR-0034 §R3) ratified as
+    # warranted — PROV-O is SILENT on aboutness (ODR-0034 §R5: prov:wasDerivedFrom
+    # is derivation, not subject-hood; substituting it is a false provenance
+    # claim) — but bar (b) is unmet: the four Information-Object subject classes
+    # appear in ZERO committed exemplars, so there is no instance to write the
+    # worked query over. Registered DEFERRED (the generator's "GATED-in-principle,
+    # no exemplar+query yet" disposition; the gate must NOT manufacture data),
+    # auto-promoting to GATED on the first committed exemplar instantiating an
+    # info-object subject + a worked "the surveys/searches about Property P"
+    # query. Not in the §R2 inventory — a session-051 addition.
+    "aboutProperty": ResidueEntry(
+        Disposition.DEFERRED,
+        "warranted topical aboutness edge (PROV-O is silent on aboutness, "
+        "ODR-0034 §R5); bar (b) unmet — Survey/Search/Comparable/NearbyFacility "
+        "appear in ZERO committed exemplars, so no worked query yet. Auto-promote "
+        "to GATED on first info-object exemplar + worked query (Council "
+        "session-051, ODR-0034 §R3).",
+        blocking_record="session-051",
     ),
     # --- REFERENCE: external co-domain cited reference-not-import ------------
     # opda:baselineCategory references a DPV-PD personal-data category that is

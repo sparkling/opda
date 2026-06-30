@@ -172,6 +172,7 @@ _ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a
 # ODR-0029 R3 — domain/range-as-SHACL-constraint layer (the inference/validation
 # boundary: rdfs:domain / rdfs:range are VALIDATED closed-world, never inferred).
 _ODR_0029_R3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3")
+_ODR_0034_R1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0034/section-R1")
 # ADR-0049 Q3 (Council session-050) — the SHACL dual of the one standing class
 # disjointness pair opda:Person owl:disjointWith opda:Organisation.
 _ADR_0049 = URIRef("https://opda.org.uk/pdtf/harness/adr/ADR-0049")
@@ -1579,6 +1580,32 @@ def build_transaction_shapes() -> Graph:
         "never entailed — ADR-0035; Council session-047 Q5 / session-050). The "
         "navigable parties-of-transaction edge; distinct from the opda:founds "
         "design-time relator spine.",
+        lang="en",
+    )))
+
+    # --- opda:concerns co-domain: LegalEstate∪RegisteredTitle (session-051) ---
+    # opda:concerns carries rdfs:domain opda:Transaction (single, universally
+    # true) and documentary "any-of" rdfs:range opda:LegalEstate ,
+    # opda:RegisteredTitle (read disjunctively, never entailed — ADR-0035). This
+    # sh:or is the AUTHORITATIVE co-domain dual; the multi-range any-of is
+    # excluded from the single-sh:class auto-derivation. The legal-interest arm:
+    # the LegalEstate conveyed and/or the RegisteredTitle recording it (the chain
+    # exemplar concerns the titles; simple-transaction concerns the estate).
+    # sh:Violation per ODR-0013 §Q1. (Council session-051 / ODR-0034 §R1.)
+    g.add((OPDA_SHAPE.ConcernsRangeShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.ConcernsRangeShape, SH.targetObjectsOf, OPDA.concerns))
+    g.add((OPDA_SHAPE.ConcernsRangeShape, SH["or"],
+           _sh_class_or(g, [OPDA.LegalEstate, OPDA.RegisteredTitle])))
+    g.add((OPDA_SHAPE.ConcernsRangeShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.ConcernsRangeShape, DCTERMS.source, _ODR_0034_R1))
+    g.add((OPDA_SHAPE.ConcernsRangeShape, SH.message, Literal(
+        "opda:concerns MUST point at an opda:LegalEstate OR an "
+        "opda:RegisteredTitle (the legal interest the transaction conveys — the "
+        "estate and/or the title recording it). This sh:or is the AUTHORITATIVE "
+        "co-domain disjunction; opda:concerns also carries documentary \"any-of\" "
+        "rdfs:range opda:LegalEstate , opda:RegisteredTitle (read disjunctively, "
+        "never entailed — ADR-0035; Council session-051 / ODR-0034 §R1). Distinct "
+        "from opda:concernsProperty (→ the physical opda:Property).",
         lang="en",
     )))
 

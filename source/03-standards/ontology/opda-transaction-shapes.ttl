@@ -22,6 +22,14 @@
     dct:title "OPDA Transaction Shapes"@en ;
     opda:targetsClassGraph <https://opda.org.uk/pdtf/> .
 
+<https://opda.org.uk/pdtf/shape/ConcernsRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0034/section-R1> ;
+    sh:message "opda:concerns MUST point at an opda:LegalEstate OR an opda:RegisteredTitle (the legal interest the transaction conveys — the estate and/or the title recording it). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:concerns also carries documentary \"any-of\" rdfs:range opda:LegalEstate , opda:RegisteredTitle (read disjunctively, never entailed — ADR-0035; Council session-051 / ODR-0034 §R1). Distinct from opda:concernsProperty (→ the physical opda:Property)."@en ;
+    sh:or _:b227ff02f88a5 ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:concerns .
+
 <https://opda.org.uk/pdtf/shape/HasParticipantRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q1> ;
@@ -66,6 +74,13 @@ _:b9693dbb894d9
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX time: <http://www.w3.org/2006/time#>\nCONSTRUCT {\n  ?term opda:hasLeaseTermSuccessionStatus ?status .\n}\nWHERE {\n  ?term a opda:LeaseTerm .\n  OPTIONAL { ?term prov:wasDerivedFrom ?prior .\n             ?prior a opda:LeaseTerm }\n  BIND (IF(BOUND(?prior), \"extended-from-predecessor\", \"primary-term\") AS ?status)\n}" .
 
+_:b227ff02f88a5
+    rdf:first _:b34c8fed2b830 ;
+    rdf:rest _:bcaee6209e0aa .
+
+_:b34c8fed2b830
+    sh:class opda:LegalEstate .
+
 _:b6dd4a846b75d
     sh:class opda:Buyer .
 
@@ -87,9 +102,16 @@ _:bafd906088a64
 _:bca320fc02390
     sh:class opda:Seller .
 
+_:bcaee6209e0aa
+    rdf:first _:be3ff2f496857 ;
+    rdf:rest rdf:nil .
+
 _:bd026f2e7a193
     sh:datatype xsd:dateTime ;
     sh:maxCount "1"^^xsd:integer ;
     sh:message "Milestone plannedAtTime MUST be a single xsd:dateTime value when present. The variance against occurredAtTime is tracked by the MilestoneVarianceRule SHACL-AF rule below."@en ;
     sh:path opda:plannedAtTime ;
     sh:severity sh:Violation .
+
+_:be3ff2f496857
+    sh:class opda:RegisteredTitle .

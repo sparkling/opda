@@ -38,45 +38,102 @@ const total = allClasses.length;
 const cats = ufoCategories();
 
 // Per-section class diagram (diagramming skill 17-LINKED-DATA-GUIDE: flowchart LR
-// + ELK, Subject -->|predicate| Object). The context's own classes are :::user;
-// classes in OTHER contexts that they link to are pulled in as :::external (a
-// distinct, muted border + colour). Authored bare — client.js owns the theme +
-// Cagle palette (ODR diagram convention), so no classDef / %%init%% here.
+// + ELK, Subject -->|predicate| Object). The context's own classes are :::user.
+// Object properties to/from classes in OTHER sections are ALSO drawn — we walk
+// each class's `incoming` as well as its `outgoing`, so a cross-section link
+// appears in BOTH endpoints' sections. The foreign class is pulled in as a
+// :::xsection node (dashed border + muted fill) with its owning "(Section)" on a
+// second line, and its connector is dashed (-.->) to mark the boundary. Authored
+// bare — client.js owns the theme + Cagle palette (ODR diagram convention), so no
+// classDef / %%init%% here (the :::xsection palette entry lives in client.js).
 function sectionDiagram(g: { heading: string; classes: any[] }): string {
   const safe = (s: string) => 'c_' + String(s).replace(/[^A-Za-z0-9]/g, '_');
+  const esc = (s: string) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  const ctxHeading: Record<string, string> = Object.fromEntries(GROUPS.map((x) => [x.ctx, x.heading]));
   const inCtx = new Set(g.classes.map((c) => c.id));
   const nodes = new Map<string, { sid: string; label: string; cls: string }>();
-  for (const c of g.classes) nodes.set(c.id, { sid: safe(c.id), label: c.label || c.localName, cls: 'user' });
+  // Ensure a node for an opda class id (datatype/scheme/external non-classes are
+  // skipped — they are attribute-like, not class graph nodes). In-context classes
+  // are :::user; a class owned by another section is :::xsection with a
+  // "Name<br/>(Section)" two-line label so the boundary is explicit in every view.
+  const ensureNode = (id: string): { sid: string; label: string; cls: string } | null => {
+    const hit = nodes.get(id);
+    if (hit) return hit;
+    const c = (model.classes as Record<string, any>)[id];
+    if (!c) return null;
+    const isIn = inCtx.has(id);
+    const name = esc(c.label || c.localName);
+    const heading = esc(ctxHeading[c.context] || c.context || 'other');
+    const n = {
+      sid: safe(id),
+      label: isIn ? name : `${name}<br/>(${heading})`,
+      cls: isIn ? 'user' : 'xsection',
+    };
+    nodes.set(id, n);
+    return n;
+  };
+  for (const c of g.classes) ensureNode(c.id);
   // One edge per (source,target) class pair; collapse the parallel object
   // properties (e.g. Property's six monetary predicates → MonetaryAmount) so the
-  // diagram reads as a class graph rather than a hairball.
-  const pairs = new Map<string, { s: string; t: string; preds: string[] }>();
+  // diagram reads as a class graph rather than a hairball. `xsec` marks a pair
+  // that touches another section → dashed connector + dashed node.
+  const pairs = new Map<string, { s: string; t: string; preds: string[]; xsec: boolean }>();
+  const addPair = (sId: string, tId: string, predLocal?: string) => {
+    const s = ensureNode(sId), t = ensureNode(tId);
+    if (!s || !t) return;
+    const key = s.sid + '>>' + t.sid;
+    if (!pairs.has(key)) pairs.set(key, { s: s.sid, t: t.sid, preds: [], xsec: s.cls === 'xsection' || t.cls === 'xsection' });
+    const p = pairs.get(key)!;
+    if (predLocal && !p.preds.includes(predLocal)) p.preds.push(predLocal);
+  };
   for (const c of g.classes) {
-    for (const e of c.outgoing || []) {
-      for (const t of e.targets || []) {
-        const tc = (model.classes as Record<string, any>)[t.id];
-        if (!tc) continue; // class→class object properties only (skip datatype/scheme/external)
-        if (!nodes.has(t.id)) {
-          nodes.set(t.id, { sid: safe(t.id), label: tc.label || tc.localName, cls: inCtx.has(t.id) ? 'user' : 'external' });
-        }
-        const sid = safe(c.id), tid = safe(t.id), key = sid + '>>' + tid;
-        if (!pairs.has(key)) pairs.set(key, { s: sid, t: tid, preds: [] });
-        const p = pairs.get(key)!;
-        if (e.predicateLocal && !p.preds.includes(e.predicateLocal)) p.preds.push(e.predicateLocal);
+    for (const e of c.outgoing || []) for (const t of e.targets || []) addPair(c.id, t.id, e.predicateLocal);
+    for (const e of c.incoming || []) for (const s of e.sources || []) addPair(s.id, c.id, e.predicateLocal);
+  }
+  // Hierarchy (ADR-0055 Part 2; Council session-051 Q6, 7–0 FOR): draw each
+  // class's rdfs:subClassOf as a muted dotted "isA" edge. EXTERNAL upper classes
+  // (prov:Activity/Entity, time:, vcard:, org:, skos:) render as a distinct
+  // :::upper node (prefixed label) — this is what groups the otherwise-disconnected
+  // events under prov:Activity and the Information Objects under prov:Entity.
+  // Internal opda supers (RoleMixin/Role/Relator) are ordinary class nodes
+  // (user/xsection). Documentary depiction, NOT a subclass-tree commitment
+  // (ODR-0027 classification-over-inheritance); never entailed (ADR-0035).
+  const NS_PREFIX: Record<string, string> = {
+    'http://www.w3.org/ns/prov#': 'prov:', 'http://www.w3.org/2006/time#': 'time:',
+    'http://www.w3.org/2006/vcard/ns#': 'vcard:', 'http://www.w3.org/ns/org#': 'org:',
+    'http://www.w3.org/2004/02/skos/core#': 'skos:', 'http://www.w3.org/2002/07/owl#': 'owl:',
+  };
+  const prefixed = (sup: { id: string; localName: string }) => {
+    for (const ns in NS_PREFIX) if (String(sup.id).startsWith(ns)) return NS_PREFIX[ns] + sup.localName;
+    return sup.localName;
+  };
+  const isa: { s: string; t: string }[] = [];
+  for (const c of g.classes) {
+    for (const sup of ((c as any).superClasses || [])) {
+      let sid: string | null = null;
+      if (sup.external) {
+        const uid = 'u_' + safe(sup.id);
+        if (!nodes.has(uid)) nodes.set(uid, { sid: uid, label: esc(prefixed(sup)), cls: 'upper' });
+        sid = uid;
+      } else {
+        sid = ensureNode(sup.id)?.sid ?? null;
       }
+      if (sid) isa.push({ s: safe(c.id), t: sid });
     }
   }
   const lines = [
     '---', 'config:', '  layout: elk', '  elk:', '    mergeEdges: false',
     '    nodePlacementStrategy: BRANDES_KOEPF', '---', 'flowchart LR',
     `    accTitle: ${g.heading} — class diagram`,
-    `    accDescr: The classes of the ${g.heading} context and the object properties relating them; classes from other contexts they reference are shown with a muted border.`,
+    `    accDescr: The classes of the ${g.heading} context, the object properties relating them (cross-context links dashed to a muted "(section)" node), and each class's rdfs:subClassOf hierarchy as a muted dotted "isA" edge to its super (external upper classes such as prov:Activity shown as muted nodes).`,
   ];
-  for (const n of nodes.values()) lines.push(`    ${n.sid}["${String(n.label).replace(/"/g, '&quot;')}"]:::${n.cls}`);
+  for (const n of nodes.values()) lines.push(`    ${n.sid}["${n.label}"]:::${n.cls}`);
   for (const p of pairs.values()) {
     const label = p.preds.length === 1 ? p.preds[0] : p.preds.length > 1 ? `${p.preds.length} properties` : '';
-    lines.push(label ? `    ${p.s} -->|${label}| ${p.t}` : `    ${p.s} --> ${p.t}`);
+    const arrow = p.xsec ? '-.->' : '-->';
+    lines.push(label ? `    ${p.s} ${arrow}|${label}| ${p.t}` : `    ${p.s} ${arrow} ${p.t}`);
   }
+  for (const p of isa) lines.push(`    ${p.s} -.->|isA| ${p.t}`);
   return lines.join('\n');
 }
 

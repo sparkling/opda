@@ -404,6 +404,14 @@
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:certificateOfComplianceFee .
 
+<https://opda.org.uk/pdtf/shape/concernsDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:concerns is used off its declared rdfs:domain: every subject of opda:concerns MUST be an instance of Transaction (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:concerns .
+
 <https://opda.org.uk/pdtf/shape/concernsPropertyDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
@@ -1747,6 +1755,22 @@
     sh:message "opda:parkingArrangements is used off its declared rdfs:domain: every subject of opda:parkingArrangements MUST be an instance of Property (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:parkingArrangements .
+
+<https://opda.org.uk/pdtf/shape/partOfTransactionDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Milestone ;
+    sh:message "opda:partOfTransaction is used off its declared rdfs:domain: every subject of opda:partOfTransaction MUST be an instance of Milestone (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:partOfTransaction .
+
+<https://opda.org.uk/pdtf/shape/partOfTransactionRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Transaction ;
+    sh:message "opda:partOfTransaction has an object outside its declared rdfs:range: every object of opda:partOfTransaction MUST be an instance of Transaction (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:partOfTransaction .
 
 <https://opda.org.uk/pdtf/shape/perilDomainShape>
     rdf:type sh:NodeShape ;

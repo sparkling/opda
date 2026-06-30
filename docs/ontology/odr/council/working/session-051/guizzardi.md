@@ -1,0 +1,15 @@
+# Guizzardi (UFO) — session-051 working file
+
+Citations: Guizzardi 2005, *Ontological Foundations for Conceptual Modeling with Applications* §4.2 (qualities/quality-structures project to regions), §4.3.2 (relator mediation is type-constrained); Guizzardi et al., "Towards Ontological Foundations for the Conceptual Modeling of Events", ER 2013, §3 (events identified by participation structure + temporal extent), §4 (event mereology), §5 (objects participate-in events grounding their content).
+
+## Opening (position held into synthesis — aligned with the GATE-majority; no rebuttal required)
+
+- **Q1** Events ARE first-class perdurants with identity (ER 2013 §3), so they pass §R1(a). Milestone's `partOfTransaction` is genuine event-mereology (ER 2013 §4) — a Milestone is part of the Transaction-perdurant — exemplar-attested + obvious query, so bar (b) met. **Milestone→Transaction GATED.** LeaseExtensionEvent RESIDUE-PENDING; UPRNSuccessionEvent RESIDUE-PENDING; NameChangeEvent VALUE-SLOT (payload is −I name literals).
+- **Q2** Information Objects are +I endurants (ODR-0008d), so they clear §R1(a); the tie to Property is historical/PROV dependence but still an inter-entity edge between IC-bearers, GATEable where a query exists. Survey→Property GATED; Search→Property GATED; Comparable RESIDUE-PENDING (endpoint is a Property-reference — confirm it dereferences); NearbyFacility RESIDUE-PENDING. *(Convener note: cross-talk majority moved these to RESIDUE-PENDING on the zero-exemplars bar-(b) ground; Guizzardi's "legitimate endpoint" holds, the gate defers.)*
+- **Q3** LeaseTerm VALUE-SLOT — `time:ProperInterval` is a −I quality region (2005 §4.2); §R1 names `time:Interval` a value path.
+- **Q4** VerificationActivity is a perdurant with participation-identity (ER 2013 §3) — legitimate endpoint, tie is participation; AttachedDocument a +I Information Object, characterising tie. Both GATEable on a worked query. *(Cross-talk converged on USE-EXISTING-PROV `prov:used` — no opda mint.)*
+- **Q5** Strongest material relation: Transaction is a Relator, LegalEstate a Substance-Kind (ODR-0005), so `concerns` is founded participation between two +I entities (2005 §4.3.2) — clears §R1(a); "what estate does this transaction concern?" is the worked query. **concerns GATED.** Chain DEFERRED (no exemplar+query at opening; convener later verified the exemplar exists → RESIDUE-PENDING).
+- **Q6** FOR — a perdurant-vs-endurant taxonomy IS ontological structure; drawing only object-property edges hides the real backbone (every Event `subClassOf prov:Activity`, every Info-Object `subClassOf prov:Entity`); documentary, never entailed (ODR-0026 §R2), so it cannot distort the closure.
+
+## Final votes
+Q1 Milestone→Transaction GATED; LeaseExtension/UPRNSuccession RESIDUE-PENDING; NameChangeEvent VALUE-SLOT. Q2 Survey/Search/Comparable/NearbyFacility→Property RESIDUE-PENDING (legitimate +I endpoints; gate on exemplar+query). Q3 LeaseTerm VALUE-SLOT. Q4 VerificationActivity / AttachedDocument USE-EXISTING-PROV. Q5 `concerns` GATED; chain RESIDUE-PENDING. Q6 FOR.

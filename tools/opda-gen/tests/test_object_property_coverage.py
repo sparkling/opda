@@ -481,14 +481,16 @@ def test_live_residue_register_is_well_formed() -> None:
 
 def test_live_residue_register_seeded_per_council() -> None:
     """The register is seeded with the Council session-047 dispositions: hasName
-    VALUE-SLOT, Address PENDING-upstream-IC, chain pair DEFERRED."""
+    VALUE-SLOT, Address PENDING-upstream-IC, chain pair DEFERRED — plus the
+    Council session-051 addition: aboutProperty DEFERRED (ODR-0034 §R3, the
+    info-object aboutness edge, warranted but exemplar-less)."""
     assert RESIDUE_REGISTER["hasName"].disposition is Disposition.VALUE_SLOT
     assert (
         RESIDUE_REGISTER["Address"].disposition is Disposition.PENDING_UPSTREAM_IC
     )
     assert RESIDUE_REGISTER["Address"].blocking_record == "ODR-0015"
     assert deferred_predicates() == frozenset(
-        {"dependsOnTransaction", "chainMembers"}
+        {"dependsOnTransaction", "chainMembers", "aboutProperty"}
     )
 
 
