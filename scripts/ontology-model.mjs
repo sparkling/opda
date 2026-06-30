@@ -393,11 +393,13 @@ async function main() {
     const outgoing = [...objProps.values()].filter((p) => p.domain.has(uri))
       .map((p) => ({ predicate: p.id, predicateLabel: p.label, predicateLocal: p.localName,
         targets: [...p.range].map((t) => ({ id: id(t), localName: local(t),
-          kind: classSet.has(t) ? 'class' : schemeSet.has(t) ? 'scheme' : 'external' })),
+          kind: classSet.has(t) ? 'class' : schemeSet.has(t) ? 'scheme' : 'external' }))
+          .sort((a, b) => a.id.localeCompare(b.id)),
         inverse: p.inverse ? id(p.inverse) : null, description: p.comment }));
     const incoming = [...objProps.values()].filter((p) => p.range.has(uri))
       .map((p) => ({ predicate: p.id, predicateLabel: p.label, predicateLocal: p.localName,
-        sources: [...p.domain].map((s) => ({ id: id(s), localName: local(s) })),
+        sources: [...p.domain].map((s) => ({ id: id(s), localName: local(s) }))
+          .sort((a, b) => a.id.localeCompare(b.id)),
         inverse: p.inverse ? id(p.inverse) : null, description: p.comment }));
     const attributes = [...dataProps.values()].filter((p) => p.domain.has(uri))
       .map((p) => ({ localName: p.localName, id: p.id, label: p.label,

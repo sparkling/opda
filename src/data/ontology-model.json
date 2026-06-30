@@ -1602,13 +1602,13 @@
           "predicateLocal": "plays",
           "targets": [
             {
-              "id": "RoleMixin",
-              "localName": "RoleMixin",
+              "id": "Role",
+              "localName": "Role",
               "kind": "class"
             },
             {
-              "id": "Role",
-              "localName": "Role",
+              "id": "RoleMixin",
+              "localName": "RoleMixin",
               "kind": "class"
             }
           ],
@@ -1623,16 +1623,16 @@
           "predicateLocal": "playedBy",
           "sources": [
             {
-              "id": "RoleMixin",
-              "localName": "RoleMixin"
+              "id": "Buyer",
+              "localName": "Buyer"
             },
             {
               "id": "Role",
               "localName": "Role"
             },
             {
-              "id": "Buyer",
-              "localName": "Buyer"
+              "id": "RoleMixin",
+              "localName": "RoleMixin"
             },
             {
               "id": "Seller",
@@ -1721,13 +1721,13 @@
           "predicateLocal": "plays",
           "targets": [
             {
-              "id": "RoleMixin",
-              "localName": "RoleMixin",
+              "id": "Role",
+              "localName": "Role",
               "kind": "class"
             },
             {
-              "id": "Role",
-              "localName": "Role",
+              "id": "RoleMixin",
+              "localName": "RoleMixin",
               "kind": "class"
             }
           ],
@@ -1742,16 +1742,16 @@
           "predicateLocal": "playedBy",
           "sources": [
             {
-              "id": "RoleMixin",
-              "localName": "RoleMixin"
+              "id": "Buyer",
+              "localName": "Buyer"
             },
             {
               "id": "Role",
               "localName": "Role"
             },
             {
-              "id": "Buyer",
-              "localName": "Buyer"
+              "id": "RoleMixin",
+              "localName": "RoleMixin"
             },
             {
               "id": "Seller",
@@ -2991,13 +2991,13 @@
           "predicateLocal": "founds",
           "targets": [
             {
-              "id": "RoleMixin",
-              "localName": "RoleMixin",
+              "id": "Role",
+              "localName": "Role",
               "kind": "class"
             },
             {
-              "id": "Role",
-              "localName": "Role",
+              "id": "RoleMixin",
+              "localName": "RoleMixin",
               "kind": "class"
             }
           ],
