@@ -1,5 +1,9 @@
 // @ts-check
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig, passthroughImageService, logHandlers } from 'astro/config';
+// Astro 7 makes the Rust "Sätteri" processor the default for Markdown. This
+// site's build relies on custom remark/rehype plugins (below), so opt back into
+// the unified (remark/rehype) pipeline via @astrojs/markdown-remark.
+import { unified } from '@astrojs/markdown-remark';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -178,8 +182,14 @@ export default defineConfig({
   // rewrite relative .md cross-links to /model/ routes, and extract OPDA
   // entity URIs from markdown body into frontmatter.
   markdown: {
-    remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks, remarkMermaidFence],
-    rehypePlugins: [rehypeFrontmatterUriExtraction],
+    // Astro 7: opt back into the unified remark/rehype pipeline (default is now
+    // the Rust "Sätteri" processor, which does not run these plugins). The
+    // plugins are passed to `unified({...})` directly — the top-level
+    // `markdown.remarkPlugins`/`rehypePlugins` keys are deprecated in Astro 7.
+    processor: unified({
+      remarkPlugins: [remarkUnwrapMermaidDetails, remarkRewriteManualLinks, remarkMermaidFence],
+      rehypePlugins: [rehypeFrontmatterUriExtraction],
+    }),
   },
   // Directory format + bare-slug URLs per docs/adr/ADR-0002 (folder hierarchy).
   // `format: 'directory'` outputs `foo/index.html` so URLs canonicalise to
@@ -190,6 +200,19 @@ export default defineConfig({
     format: 'directory',
   },
   trailingSlash: 'never',
+  // Astro 7 changed the default to 'jsx' (strips whitespace between inline
+  // elements JSX-style). Pin to the Astro 6 behaviour to avoid output drift.
+  compressHTML: true,
+  // Astro 7 AI/structured logging (https://astro.build/blog/astro-7/#ai-enhancements).
+  // Console stays human-readable; set OPDA_JSON_LOGS=1 to ALSO emit machine-
+  // parseable JSON (for agents / log aggregators). Gated, not unconditional:
+  // the JSON handler writes to the SAME stdout/stderr as the console handler, so
+  // an always-on `compose()` would double every line of `make build` / CI output
+  // (~1600 lines). Agents already get JSON automatically for `astro dev` (Astro
+  // detects the agentic env), so this only matters for builds / human dev.
+  ...(process.env.OPDA_JSON_LOGS === '1'
+    ? { logger: logHandlers.compose(logHandlers.console(), logHandlers.json()) }
+    : {}),
   // ADR-0042: the `/manual` section was renamed to `/model` (URL-only). Keep old
   // external `/manual/*` links alive by redirecting them to their `/model/*` route.
   // Astro requires each redirect destination to match an existing route pattern,
