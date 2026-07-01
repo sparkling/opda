@@ -40,6 +40,36 @@ function loadMermaid() {
 
 const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
 
+// ── diagram-links click-navigation (ported from public/ui/client.js) ─────────
+// A build-time manifest (ADR-0022) maps node/entity names → routes. Nodes carry
+// no `click` directive; navigation is resolved from this manifest by entity-id
+// (ER diagrams) or first-line label text (flowchart/class/state).
+let diagramLinks: Record<string, string> | null = null;
+function loadDiagramLinks(): Promise<Record<string, string>> {
+  if (diagramLinks) return Promise.resolve(diagramLinks);
+  const cached = (window as any).__diagramLinks;
+  if (cached) { diagramLinks = cached; return Promise.resolve(cached); }
+  return fetch('/data/diagram-links.json')
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((data) => { diagramLinks = (data && typeof data === 'object') ? data : {}; (window as any).__diagramLinks = diagramLinks; return diagramLinks!; })
+    .catch(() => { diagramLinks = {}; return diagramLinks!; });
+}
+// PascalCase/camelCase/underscored → all-lowercase, separators stripped.
+const normToManifestKey = (raw: string) => raw.replace(/[\s_]/g, '').toLowerCase();
+// Entity name from a Mermaid 11 ER node id (`…entity-NAME-N`).
+function entityNameFromId(id: string): string | null {
+  const m = (id || '').match(/entity-([A-Za-z][A-Za-z_0-9]*)-\d+$/);
+  return m ? m[1] : null;
+}
+// First visible line of text from an SVG node (flowchart/class/state labels).
+function extractFirstLineText(el: Element): string {
+  const fo = el.querySelector('foreignObject p, foreignObject span');
+  if (fo && fo.textContent) return fo.textContent.trim();
+  const texts = el.querySelectorAll('text, tspan, .label, .nodeLabel');
+  for (let i = 0; i < texts.length; i++) { const t = texts[i].textContent?.trim(); if (t) return t; }
+  return (el.textContent || '').split('\n')[0].trim();
+}
+
 // Inject the Cagle classDef block after the diagram-type line, so a page can
 // author bare `:::user` (client.js's spliceCageClassDefs, ported).
 const CLASSDEF_TYPE_RE = /^\s*(flowchart|graph|classDiagram|stateDiagram(?:-v2)?)\b/i;
@@ -83,6 +113,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   function render() {
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
+    loadDiagramLinks();  // manifest for click-navigation (cached; ready by click time)
     loadMermaid().then((mermaid) => {
       const dark = isDark();
       const src = injectClassDefs(lightSource, dark);
@@ -141,17 +172,29 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       edgeLabels.forEach((el) => { (el as HTMLElement).style.opacity = ''; });
     }
 
-    // Navigation targets: `click NODE "url"` directives the page emits.
+    // Navigation targets: `click NODE "url"` directives (ontology diagrams
+    // emit these) OR the diagram-links manifest (schema/manual diagrams resolve
+    // by ER entity-id or flowchart label text — client.js's attachNodeClicks).
     const urls: Record<string, string> = {};
     const cre = /^\s*click\s+(\w+)\s+"([^"]+)"/gm;
     let cm: RegExpExecArray | null;
     while ((cm = cre.exec(lightSource)) !== null) urls[cm[1]] = cm[2];
+    const isER = (svg.getAttribute('class') || '') === 'erDiagram';
+    function navTarget(nodeEl: Element): string | null {
+      const direct = urls[nameOf(nodeEl)];
+      if (direct) return direct;
+      const manifest = (window as any).__diagramLinks as Record<string, string> | undefined;
+      if (!manifest) return null;
+      const raw = isER ? entityNameFromId((nodeEl as HTMLElement).id) : extractFirstLineText(nodeEl);
+      if (!raw) return null;
+      return manifest[normToManifestKey(raw)] || null;
+    }
 
     svg.addEventListener('click', (evt) => {
       if (didDrag) { didDrag = false; return; }
-      const nodeEl = (evt.target as Element).closest('.node');
+      const nodeEl = (evt.target as Element).closest('.node, g[id*="entity-"]');
       if (mode === 'navigate') {
-        if (nodeEl) { const url = urls[nameOf(nodeEl)]; if (url) { evt.preventDefault(); evt.stopPropagation(); window.location.href = url; } }
+        if (nodeEl) { const url = navTarget(nodeEl); if (url) { evt.preventDefault(); evt.stopPropagation(); window.location.href = url; } }
         return;
       }
       if (nodeEl) {
@@ -163,7 +206,8 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
 
     nodes.forEach((node) => {
       const n = nameOf(node);
-      (node as HTMLElement).style.cursor = (mode === 'navigate' && urls[n]) || mode === 'explore' ? 'pointer' : 'default';
+      (node as HTMLElement).style.cursor = (mode === 'navigate' && navTarget(node)) || mode === 'explore' ? 'pointer' : 'default';
+      if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
       node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
       node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });
     });

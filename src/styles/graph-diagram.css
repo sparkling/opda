@@ -1,0 +1,62 @@
+/* GraphDiagram island — Claude cream/terracotta box + segmented toolbar.
+   Loaded globally by src/layouts/Layout.astro so both the <GraphDiagram>
+   component AND the site-wide bare-.mermaid adoption (adoptBareMermaid) get the
+   shell styling on every page. Dark-mode via html[data-theme="dark"]. */
+.graph-diagram-wrapper { margin: 1.25rem 0; }
+.gd-actionbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.gd-actionbar-spacer { flex: 1 1 auto; }
+.gd-icon { height: 0.9rem; width: 0.9rem; }
+.gd-ctrl > svg { height: 0.85rem; width: 0.85rem; }
+
+.diagram-toolbar { display: inline-flex; isolation: isolate; }
+.gd-seg-btn {
+  position: relative; display: inline-flex; align-items: center; gap: 0.3rem;
+  margin-left: -1px; border: 1px solid #E6DFD0; background: #FAF9F5; color: #6C6A64;
+  padding: 0.28rem 0.55rem; font-size: 11px; font-weight: 500; line-height: 1.3;
+  cursor: pointer; transition: background .12s ease, color .12s ease;
+}
+.gd-seg-btn:first-child { margin-left: 0; border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+.gd-seg-btn:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+.gd-seg-btn:hover { z-index: 1; background: #EFE9DE; color: #141413; }
+.gd-seg-label { justify-content: center; min-width: 2.8rem; color: #8A8780; cursor: default; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.gd-seg-label:hover { background: #FAF9F5; color: #8A8780; }
+.diagram-mode-toggle.gd-mode-on { background: #FBF3EE; border-color: #CC785C; color: #B5533A; }
+
+.gd-ctrl {
+  display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid #E6DFD0; border-radius: 6px;
+  background: #FAF9F5; color: #6C6A64; padding: 0.28rem 0.55rem; line-height: 1.3;
+  font-size: 11px; font-weight: 500; cursor: default; user-select: none;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.graph-diagram-wrapper.zoom-active .gd-ctrl { background: #FBF3EE; border-color: #CC785C; color: #B5533A; }
+.graph-diagram-wrapper.zoom-nudge .gd-ctrl { background: #FCF6D9; border-color: #E0C56A; color: #8A6D1A; }
+.graph-diagram-wrapper.zoom-active .diagram-viewport { cursor: zoom-in !important; }
+
+.gd-box { position: relative; border: 1px solid #E6DFD0; border-radius: 0.5rem; background: #FAF9F5; }
+.diagram-viewport { overflow: hidden; padding: 1rem; }
+.diagram-canvas { transform-origin: 0 0; }
+.diagram-loading { padding: 3rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
+.gd-mermaid { margin: 0; text-align: center; }
+.gd-mermaid svg { max-width: 100%; }
+.gd-mermaid svg .node, .gd-mermaid svg .edgePaths path.flowchart-link, .gd-mermaid svg .edgeLabels > .edgeLabel {
+  transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+}
+.gd-empty { display: block; padding: 2.5rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
+.gd-caption { margin-top: 0.5rem; font-size: 0.8rem; color: #6C6A64; }
+
+/* Dark mode */
+html[data-theme="dark"] .gd-seg-btn { background: #2B2823; border-color: #3D3935; color: #C4BEB1; }
+html[data-theme="dark"] .gd-seg-btn:hover { background: #36322C; color: #EFE9DE; }
+html[data-theme="dark"] .gd-seg-label, html[data-theme="dark"] .gd-seg-label:hover { background: #2B2823; color: #8A8780; }
+html[data-theme="dark"] .diagram-mode-toggle.gd-mode-on { background: #3D2A22; border-color: #CC785C; color: #E8A98F; }
+html[data-theme="dark"] .gd-ctrl { background: #2B2823; border-color: #3D3935; color: #A8A39B; }
+html[data-theme="dark"] .graph-diagram-wrapper.zoom-active .gd-ctrl { background: #3D2A22; border-color: #CC785C; color: #E8A98F; }
+html[data-theme="dark"] .gd-box { background: #1F1D1A; border-color: #3D3935; }
+
+/* Fullscreen — action line on top, box fills the rest. */
+.diagram-fullscreen { position: fixed !important; inset: 0; z-index: 60; margin: 0 !important; background: #FAF9F5; display: flex; flex-direction: column; padding: 0.75rem; }
+html[data-theme="dark"] .diagram-fullscreen { background: #1F1D1A; }
+.diagram-fullscreen .gd-caption { display: none; }
+.diagram-fullscreen .gd-box { flex: 1 1 auto; border-radius: 0.5rem; display: flex; flex-direction: column; min-height: 0; }
+.diagram-fullscreen .gd-view-mermaid { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.diagram-fullscreen .diagram-viewport { flex: 1 1 auto; height: auto !important; }

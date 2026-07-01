@@ -16,6 +16,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ClientRouter } from 'astro:transitions';
+// Global GraphDiagram island styling — needed on every page because the
+// site-wide bare-.mermaid adoption (adoptBareMermaid) has no component to carry
+// scoped styles. Also serves the <GraphDiagram> component.
+import '../styles/graph-diagram.css';
 import Header from '@/components/Header.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -135,6 +139,15 @@ const showSidebar = !hideSidebar && !!activeSection;
   </div>
 
   <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
+  <script>
+    // Site-wide mermaid: adopt every bare `.mermaid` div (remark fences,
+    // <Diagram>, inline schema pages) into the GraphDiagram pan/zoom island,
+    // so the whole site's diagrams share one engine. Idempotent; re-runs on
+    // ClientRouter view-transition navigation.
+    import { adoptBareMermaid } from '../scripts/graph-diagram';
+    adoptBareMermaid();
+    document.addEventListener('astro:page-load', adoptBareMermaid);
+  </script>
   <slot name="scripts" />
 </body>
 </html>
