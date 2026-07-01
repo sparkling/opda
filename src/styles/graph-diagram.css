@@ -36,7 +36,15 @@
 .diagram-viewport { overflow: hidden; padding: 1rem; }
 .diagram-canvas { transform-origin: 0 0; }
 .diagram-loading { padding: 3rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
-.gd-mermaid { margin: 0; text-align: center; }
+/* .gd-mermaid is a <pre>, so the site's code-block styling (`.prose pre` — a
+   dark background, mono font, padding) leaks onto the diagram container and
+   shows as a dark box in LIGHT mode. Reset it with wrapper-scoped specificity
+   (0,2,0) so it beats `.prose pre` (0,1,1). */
+.graph-diagram-wrapper .gd-mermaid {
+  margin: 0; text-align: center;
+  background: transparent; padding: 0; border: 0; border-radius: 0; overflow: visible;
+  font: inherit; white-space: normal;
+}
 .gd-mermaid svg { max-width: 100%; }
 .gd-mermaid svg .node, .gd-mermaid svg .edgePaths path.flowchart-link, .gd-mermaid svg .edgeLabels > .edgeLabel {
   transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;

@@ -29,6 +29,7 @@ export interface MermaidView {
 }
 
 let mermaidMod: any = null;
+let mermaidRenderId = 0;   // globally-unique id per mermaid.render() call
 function loadMermaid() {
   if (mermaidMod) return Promise.resolve(mermaidMod);
   return Promise.all([import('mermaid'), import('@mermaid-js/layout-elk')]).then((mods) => {
@@ -110,6 +111,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   let mode: 'navigate' | 'explore' = 'navigate';
   let lockedNode: string | null = null;
   let didRender = false;
+  let renderSeq = 0;   // latest-wins guard: a newer render() supersedes older ones
 
   function applyTransform() {
     canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
@@ -132,12 +134,12 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   function render() {
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
+    const seq = ++renderSeq;   // this render's ticket; a later render() bumps it
     loadDiagramLinks();  // manifest for click-navigation (cached; ready by click time)
     loadMermaid().then((mermaid) => {
+      if (seq !== renderSeq) return;                 // superseded before we started
       const dark = isDark();
       const src = injectClassDefs(lightSource, dark);
-      pre.removeAttribute('data-processed');
-      pre.textContent = src;
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: 'loose',   // htmlLabels — the "(Section)" <br/> sublabels
@@ -145,11 +147,21 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         themeVariables: dark ? THEMEVARS_DARK : THEMEVARS_LIGHT,
         flowchart: { htmlLabels: true },
       });
-      mermaid
-        .run({ nodes: [pre] })
-        .then(() => { wrapper.querySelector('.diagram-loading')?.remove(); didRender = true; fixErRowContrast(pre, dark); initHoverHighlight(); })
-        .catch((e: any) => console.error('[graph-diagram] mermaid render', e));
-    });
+      // Use the string-render API (NOT mermaid.run on the <pre>) with a fresh
+      // unique id each time. Re-running the same node on theme toggle left stale
+      // processed-state/ids and raced concurrent toggles → a stale dark render
+      // could land last (dark diagram in light mode) or the diagram went blank on
+      // the 2nd light→dark→light cycle. render() + seq guard makes the LATEST
+      // theme win and never overlaps.
+      return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(({ svg }: { svg: string }) => {
+        if (seq !== renderSeq) return;               // superseded mid-render — drop this SVG
+        pre.innerHTML = svg;
+        wrapper.querySelector('.diagram-loading')?.remove();
+        didRender = true;
+        fixErRowContrast(pre, dark);
+        initHoverHighlight();
+      });
+    }).catch((e: any) => console.error('[graph-diagram] mermaid render', e));
   }
 
   function initHoverHighlight() {
