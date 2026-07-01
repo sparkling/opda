@@ -40,6 +40,25 @@ function loadMermaid() {
 
 const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
 
+// erDiagram row-contrast (ported from client.js's fixErRowContrast). Mermaid 11's
+// ER renderer hardcodes light attribute-row fills (rgb(233,231,228)) and ignores
+// the theme's attributeBackground vars, so in dark mode those rows sit under the
+// theme's light text → white-on-white. Recolour light fills → dark surface in
+// dark mode (and any stray dark fill → light in light mode), keyed by luminance.
+// Gated to erDiagram + the island's own <pre>; re-runs on every (re-)render.
+function fixErRowContrast(pre: HTMLElement, dark: boolean) {
+  const svg = pre.querySelector('svg');
+  if (!svg || (svg.getAttribute('class') || '') !== 'erDiagram') return;
+  svg.querySelectorAll('g.node path').forEach((p) => {
+    const f = getComputedStyle(p as Element).fill;
+    const m = f && f.match(/\d+(?:\.\d+)?/g);
+    if (!m || m.length < 3) return;                 // skip fill:none borders/edges
+    const lum = 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
+    if (dark && lum > 140) (p as HTMLElement).style.setProperty('fill', '#2B2823', 'important');
+    else if (!dark && lum < 100) (p as HTMLElement).style.setProperty('fill', '#FAF9F5', 'important');
+  });
+}
+
 // ── diagram-links click-navigation (ported from public/ui/client.js) ─────────
 // A build-time manifest (ADR-0022) maps node/entity names → routes. Nodes carry
 // no `click` directive; navigation is resolved from this manifest by entity-id
@@ -128,7 +147,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       });
       mermaid
         .run({ nodes: [pre] })
-        .then(() => { wrapper.querySelector('.diagram-loading')?.remove(); didRender = true; initHoverHighlight(); })
+        .then(() => { wrapper.querySelector('.diagram-loading')?.remove(); didRender = true; fixErRowContrast(pre, dark); initHoverHighlight(); })
         .catch((e: any) => console.error('[graph-diagram] mermaid render', e));
     });
   }
