@@ -70,14 +70,19 @@ opda-x:buyer-role
 # spine). opda:hasParticipant — the navigable parties-of-transaction edge
 # (Transaction → Seller/Buyer, ODR-0032 §R2 / ODR-0007; Council session-047
 # GATED). opda:concernsProperty — the physical Property the transaction is about
-# (Transaction → Property). opda:mediates (the relator's existential mediation of
-# its Roles) and opda:concerns (the LegalEstate being conveyed) are retained.
+# (Transaction → Property). opda:concerns names the LegalEstate being conveyed.
+# NB: opda:mediates is deliberately NOT asserted here. Since ADR-0049 / ODR-0032
+# §R2 (Council session-047/050) it is the Proprietorship→Proprietor relator spine
+# (rdfs:domain opda:Proprietorship, rdfs:range opda:Proprietor), not a generic
+# Transaction→Role edge — asserting it over the Seller/Buyer Roles violates
+# mediatesRangeShape (ODR-0029 R3, closed-world). The Transaction's relator
+# mediation of its Roles is carried by opda:founds (ODR-0006 §Q3 relator spine);
+# opda:mediates is exercised by the proprietorship-relator-multi-proprietor exemplar.
 opda-x:transaction
     a opda:Transaction ;
     rdfs:label "Freehold sale of 88 Forest Drive (Foster → Khan, 2024)" ;
     opda:founds opda-x:seller-role , opda-x:buyer-role ;
     opda:hasParticipant opda-x:seller-role , opda-x:buyer-role ;
-    opda:mediates opda-x:seller-role , opda-x:buyer-role ;
     opda:concernsProperty opda-x:property ;
     opda:concerns opda-x:estate .
 
