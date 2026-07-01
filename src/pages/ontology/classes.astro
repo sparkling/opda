@@ -10,6 +10,7 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import GraphDiagram from '@/components/GraphDiagram.astro';
 import { model, ufoCategories } from '@/lib/ontology-model';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -134,6 +135,13 @@ function sectionDiagram(g: { heading: string; classes: any[] }): string {
     lines.push(label ? `    ${p.s} ${arrow}|${label}| ${p.t}` : `    ${p.s} ${arrow} ${p.t}`);
   }
   for (const p of isa) lines.push(`    ${p.s} -.->|isA| ${p.t}`);
+  // Click-navigation: opda class nodes (:::user / :::xsection) open their /pdtf
+  // page; external :::upper supers (prov:Activity …) have no opda page. The
+  // GraphDiagram island parses these `click` directives for its Navigate mode.
+  for (const [id, n] of nodes) {
+    if (n.cls === 'upper') continue;
+    lines.push(`    click ${n.sid} "/pdtf/${id}"`);
+  }
   return lines.join('\n');
 }
 
@@ -180,7 +188,7 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
     <section>
       <h2 id={g.ctx}><a href={`/ontology/context/${g.ctx}`}>{g.heading}</a> <span class="muted">· {g.classes.length} classes</span></h2>
       <p>{g.note}</p>
-      <figure class="diagram section-class-diagram" role="figure"><div class="mermaid">{sectionDiagram(g)}</div></figure>
+      <GraphDiagram source={sectionDiagram(g)} minHeight="440px" />
       <table>
         <thead><tr><th>Class</th><th>Definition (<code>rdfs:comment</code>)</th></tr></thead>
         <tbody>
@@ -242,11 +250,4 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
     Full index: <a href="/ontology/glossary">Index &amp; glossary</a>.
   </p>
 
-  <style is:global>
-    /* Per-section class diagrams render at a quarter of the column width,
-       left-aligned — the LR class graphs get very tall at full width. The
-       fullscreen lightbox (zoom icon, top-right of each diagram) is the escape
-       hatch for reading detail. */
-    .diagram.section-class-diagram { max-width: 1200px !important; margin-right: auto !important; }
-  </style>
 </Layout>

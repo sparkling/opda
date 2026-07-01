@@ -1,0 +1,139 @@
+---
+/**
+ * GraphDiagram — Mermaid diagram widget, ported from hm/semantic-app (ADR-0190)
+ * for the ontology section. Renders a static Mermaid `source` inside a pan/zoom
+ * shell: Ctrl-scroll zoom (with % indicator), drag-pan, Navigate/Explore
+ * (click-to-open-page vs click-to-lock-highlight), reset, fullscreen, and
+ * hover-highlight. The Cagle palette + Claude theme come from
+ * `src/lib/diagram-palette` (injected by the island), so pages author bare
+ * `:::user` and, for click-navigation, emit `click NODE "url"` directives.
+ *
+ * Only the hm `static` mode is ported; `subject`/`concept-graph` (in-browser
+ * RDF-store graph building) are out of scope for opda.
+ */
+interface Props {
+  /** Mermaid source. If omitted, the default slot's text is used (inline authoring). */
+  source?: string;
+  caption?: string;
+  /** Static min-height for the diagram box (e.g. "520px"). */
+  minHeight?: string;
+}
+const { source, caption, minHeight } = Astro.props;
+const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).replace(/</g, '\\u003c');
+---
+
+<div class="graph-diagram-wrapper">
+  <script type="application/json" class="gd-config" set:html={configJson} />
+
+  <div class="gd-actionbar">
+    <button type="button" class="gd-ctrl" aria-pressed="false" tabindex="-1" aria-label="Zoom — hold Ctrl (⌘) and scroll" title="Hold Ctrl (⌘) and scroll to zoom · drag to pan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" /></svg>Ctrl
+    </button>
+
+    <span class="gd-actionbar-spacer"></span>
+
+    <span class="diagram-toolbar" role="group" aria-label="Diagram controls">
+      <button type="button" data-diagram-action="toggle-mode" title="Navigate: click opens the term page. Explore: click locks the highlight." class="gd-seg-btn diagram-mode-toggle">
+        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+        <span class="diagram-mode-label">Navigate</span>
+      </button>
+      <button type="button" data-diagram-action="zoom-in" title="Zoom in" class="gd-seg-btn" aria-label="Zoom in">
+        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" /></svg>
+      </button>
+      <button type="button" data-diagram-action="zoom-out" title="Zoom out" class="gd-seg-btn" aria-label="Zoom out">
+        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" /></svg>
+      </button>
+      <span class="gd-seg-btn gd-seg-label diagram-zoom-label">100%</span>
+      <button type="button" data-diagram-action="reset" title="Reset view (100%)" class="gd-seg-btn" aria-label="Reset view">
+        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992V4.356M2.985 19.644v-4.992h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.99v4.99" /></svg>
+      </button>
+      <button type="button" data-diagram-action="fullscreen" title="Toggle fullscreen" class="gd-seg-btn" aria-label="Toggle fullscreen">
+        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg>
+      </button>
+    </span>
+  </div>
+
+  <div class="gd-box">
+    <div class="gd-view-mermaid">
+      <div class="diagram-viewport" style={`cursor:grab${minHeight ? `;min-height:${minHeight}` : ''}`}>
+        <div class="diagram-canvas">
+          <p class="diagram-loading">Loading diagram…</p>
+          <pre class="gd-mermaid"><slot /></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {caption && <p class="gd-caption" set:html={caption} />}
+  <slot name="legend" />
+</div>
+
+<script>
+  import { mountGraphDiagrams } from '../scripts/graph-diagram';
+  mountGraphDiagrams();
+  // Re-mount after ClientRouter view-transition navigation (idempotent).
+  document.addEventListener('astro:page-load', mountGraphDiagrams);
+</script>
+
+<style is:global>
+  /* GraphDiagram island — Claude cream/terracotta box + segmented toolbar.
+     Dark-mode via html[data-theme="dark"] (opda's convention). */
+  .graph-diagram-wrapper { margin: 1.25rem 0; }
+  .gd-actionbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .gd-actionbar-spacer { flex: 1 1 auto; }
+  .gd-icon { height: 0.9rem; width: 0.9rem; }
+  .gd-ctrl > svg { height: 0.85rem; width: 0.85rem; }
+
+  .diagram-toolbar { display: inline-flex; isolation: isolate; }
+  .gd-seg-btn {
+    position: relative; display: inline-flex; align-items: center; gap: 0.3rem;
+    margin-left: -1px; border: 1px solid #E6DFD0; background: #FAF9F5; color: #6C6A64;
+    padding: 0.28rem 0.55rem; font-size: 11px; font-weight: 500; line-height: 1.3;
+    cursor: pointer; transition: background .12s ease, color .12s ease;
+  }
+  .gd-seg-btn:first-child { margin-left: 0; border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+  .gd-seg-btn:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+  .gd-seg-btn:hover { z-index: 1; background: #EFE9DE; color: #141413; }
+  .gd-seg-label { justify-content: center; min-width: 2.8rem; color: #8A8780; cursor: default; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .gd-seg-label:hover { background: #FAF9F5; color: #8A8780; }
+  .diagram-mode-toggle.gd-mode-on { background: #FBF3EE; border-color: #CC785C; color: #B5533A; }
+
+  .gd-ctrl {
+    display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid #E6DFD0; border-radius: 6px;
+    background: #FAF9F5; color: #6C6A64; padding: 0.28rem 0.55rem; line-height: 1.3;
+    font-size: 11px; font-weight: 500; cursor: default; user-select: none;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .graph-diagram-wrapper.zoom-active .gd-ctrl { background: #FBF3EE; border-color: #CC785C; color: #B5533A; }
+  .graph-diagram-wrapper.zoom-nudge .gd-ctrl { background: #FCF6D9; border-color: #E0C56A; color: #8A6D1A; }
+  .graph-diagram-wrapper.zoom-active .diagram-viewport { cursor: zoom-in !important; }
+
+  .gd-box { position: relative; border: 1px solid #E6DFD0; border-radius: 0.5rem; background: #FAF9F5; }
+  .diagram-viewport { overflow: hidden; padding: 1rem; }
+  .diagram-canvas { transform-origin: 0 0; }
+  .diagram-loading { padding: 3rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
+  .gd-mermaid { margin: 0; text-align: center; }
+  .gd-mermaid svg { max-width: 100%; }
+  .gd-mermaid svg .node, .gd-mermaid svg .edgePaths path.flowchart-link, .gd-mermaid svg .edgeLabels > .edgeLabel {
+    transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+  }
+  .gd-empty { display: block; padding: 2.5rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
+  .gd-caption { margin-top: 0.5rem; font-size: 0.8rem; color: #6C6A64; }
+
+  /* Dark mode */
+  html[data-theme="dark"] .gd-seg-btn { background: #2B2823; border-color: #3D3935; color: #C4BEB1; }
+  html[data-theme="dark"] .gd-seg-btn:hover { background: #36322C; color: #EFE9DE; }
+  html[data-theme="dark"] .gd-seg-label, html[data-theme="dark"] .gd-seg-label:hover { background: #2B2823; color: #8A8780; }
+  html[data-theme="dark"] .diagram-mode-toggle.gd-mode-on { background: #3D2A22; border-color: #CC785C; color: #E8A98F; }
+  html[data-theme="dark"] .gd-ctrl { background: #2B2823; border-color: #3D3935; color: #A8A39B; }
+  html[data-theme="dark"] .graph-diagram-wrapper.zoom-active .gd-ctrl { background: #3D2A22; border-color: #CC785C; color: #E8A98F; }
+  html[data-theme="dark"] .gd-box { background: #1F1D1A; border-color: #3D3935; }
+
+  /* Fullscreen — action line on top, box fills the rest. */
+  .diagram-fullscreen { position: fixed !important; inset: 0; z-index: 60; margin: 0 !important; background: #FAF9F5; display: flex; flex-direction: column; padding: 0.75rem; }
+  html[data-theme="dark"] .diagram-fullscreen { background: #1F1D1A; }
+  .diagram-fullscreen .gd-caption { display: none; }
+  .diagram-fullscreen .gd-box { flex: 1 1 auto; border-radius: 0.5rem; display: flex; flex-direction: column; min-height: 0; }
+  .diagram-fullscreen .gd-view-mermaid { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .diagram-fullscreen .diagram-viewport { flex: 1 1 auto; height: auto !important; }
+</style>

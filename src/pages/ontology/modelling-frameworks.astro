@@ -20,6 +20,7 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import GraphDiagram from '@/components/GraphDiagram.astro';
 ---
 <Layout
   title="Foundational ontology & modelling frameworks in OPDA"
@@ -71,7 +72,7 @@ import PageMeta from '@/components/PageMeta.astro';
     scoping is the whole point.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -91,7 +92,7 @@ flowchart TB
     C --> CR["Rejected as a switch: BFO has no native<br/>relator/deontic apparatus; its one decisive win<br/>(ISO/IEC 21838) is captured by a reserved crosswalk"]:::external
     D --> DR["Rejected (held as live dissent): OntoClean is<br/>separable + the vocabulary is droppable, but the<br/>Relator category is categorially load-bearing"]:::external
     A --> AR["The bounded reason: UFO+UFO-L natively unifies<br/>relational reification with Hohfeldian<br/>claim-right ⇔ duty correlativity — which a<br/>conveyancing domain needs"]:::external
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     The honest account of <em>how</em> we use UFO: <strong>our modelling process is governed by a UFO/OntoClean
@@ -119,7 +120,7 @@ flowchart TB
     third — the <strong>annotation graph</strong>, which is never reasoned over and never validates instances.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -145,7 +146,7 @@ flowchart TB
     GATE -.->|"no sh:* in annotations"| A1
     GATE -.->|"6th gate: no advisory predicate<br/>(incl. ufoCategory) in classes"| C1
     GATE -.->|"no owl:imports from shapes"| S1
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     <strong>What reasons over what.</strong> The reasoner sees only the classes graph, under the deliberately
@@ -169,7 +170,7 @@ flowchart TB
     classification, not a subclass tree.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -196,7 +197,7 @@ flowchart TB
 
     REL -->|"founds (mediates)"| RM
     REL -->|"founds"| RO
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     <strong>The Relator is where UFO does irreducible work.</strong> The strictly irreducible thing is the
@@ -232,7 +233,7 @@ flowchart TB
     that carries the semantics</strong>:
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 flowchart LR
     accTitle: How opda:ufoCategory is represented after ADR-0045
     accDescr: A class carries an inert string tag for its UFO category; the string is keyed by notation to a SKOS concept in opda:UFOCategoryScheme, which carries the OntoClean definition and a closeMatch to the gUFO IRI — all in the annotation graph, never reasoned.
@@ -245,7 +246,7 @@ flowchart LR
     P -->|"opda:ufoCategory"| L
     L -.->|"skos:notation key"| K
     K -->|"skos:closeMatch<br/>(reference-not-import)"| G
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     Everything to the right of <code>opda:Person</code> lives in <code>opda-annotations.ttl</code>. The predicate
@@ -272,7 +273,7 @@ flowchart LR
     <em>exception</em>, admitted only when a type clears the rigidity-plus-distinct-identity bar.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -287,7 +288,7 @@ flowchart TB
     ID -->|"No own IC (a value / label)<br/>+R, -I"| FACET["Code as a SKOS facet (sh:in)<br/>e.g. tenureKind, ownerType"]:::service
     ID -->|"Yes, + mediates 2+ bearers (+D)"| REL["Reify as a Relator<br/>e.g. opda:Proprietorship,<br/>VouchEvidence attestation"]:::data
     ID -->|"Yes, distinct IC + own properties"| SUB["Mint an owl:Class<br/>e.g. opda:RiskAssessment,<br/>opda:Person, opda:Property"]:::user
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     Worked outcomes from the corpus that this cascade produced: <code>tenureKind</code> (+R, −I) → a coded facet,
@@ -318,7 +319,7 @@ flowchart TB
     are <strong>machine-readable</strong>, not just prose.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -341,7 +342,7 @@ flowchart TB
     A --> H1
     A --> H2
     A --> H3
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     Three disclosures ride on the inert layer: we publish <strong>"UFO-informed", not "UFO-grounded with
@@ -362,7 +363,7 @@ flowchart TB
     <em>adoption</em>.
   </p>
 
-  <figure class="diagram" role="figure">  <div class="mermaid">
+  <GraphDiagram>
 ---
 config:
   layout: elk
@@ -381,7 +382,7 @@ flowchart LR
     ODR -->|"realised by"| ADR
     ADR -->|"drives"| EMIT
     EMIT -->|"enforced by"| GATE
-  </div></figure>
+  </GraphDiagram>
 
   <p>
     This is why every term carries a <code>dct:source</code> and every non-trivial choice is traceable: the

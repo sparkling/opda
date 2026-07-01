@@ -245,5 +245,14 @@ export default defineConfig({
         allow: ['..', '.'],
       },
     },
+    // Astro 7 = Vite 8. `mermaid` + `@mermaid-js/layout-elk` are ESM-only and
+    // are dynamically import()ed by the GraphDiagram island (src/scripts/
+    // graph-diagram-mermaid.ts). Pre-bundle them so Vite's on-demand
+    // re-optimisation can't race an already-loaded chunk at runtime — that race
+    // surfaces as a "504 Outdated Optimize Dep" and a broken Mermaid render
+    // (the same pre-bundling the hm/semantic-app config relies on under Vite 5).
+    optimizeDeps: {
+      include: ['mermaid', '@mermaid-js/layout-elk'],
+    },
   },
 });
