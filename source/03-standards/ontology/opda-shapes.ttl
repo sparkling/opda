@@ -548,6 +548,14 @@
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:councilTaxBand .
 
+<https://opda.org.uk/pdtf/shape/countryDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:country is used off its declared rdfs:domain: every subject of opda:country MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:country .
+
 <https://opda.org.uk/pdtf/shape/countyCouncilDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
@@ -1244,6 +1252,14 @@
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:inclusionStatus .
 
+<https://opda.org.uk/pdtf/shape/inspireFeatureIdDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:inspireFeatureId is used off its declared rdfs:domain: every subject of opda:inspireFeatureId MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:inspireFeatureId .
+
 <https://opda.org.uk/pdtf/shape/isConnectedToNationalGridDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
@@ -1451,6 +1467,22 @@
     sh:message "opda:lengthOfLeaseInYears is used off its declared rdfs:domain: every subject of opda:lengthOfLeaseInYears MUST be an instance of LegalEstate (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:lengthOfLeaseInYears .
+
+<https://opda.org.uk/pdtf/shape/line1DomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:line1 is used off its declared rdfs:domain: every subject of opda:line1 MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:line1 .
+
+<https://opda.org.uk/pdtf/shape/line2DomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:line2 is used off its declared rdfs:domain: every subject of opda:line2 MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:line2 .
 
 <https://opda.org.uk/pdtf/shape/listPriceDomainShape>
     rdf:type sh:NodeShape ;
@@ -1851,6 +1883,22 @@
     sh:message "opda:planningStartDate is used off its declared rdfs:domain: every subject of opda:planningStartDate MUST be an instance of Search (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:planningStartDate .
+
+<https://opda.org.uk/pdtf/shape/postTownDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:postTown is used off its declared rdfs:domain: every subject of opda:postTown MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:postTown .
+
+<https://opda.org.uk/pdtf/shape/postcodeDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Address ;
+    sh:message "opda:postcode is used off its declared rdfs:domain: every subject of opda:postcode MUST be an instance of Address (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:postcode .
 
 <https://opda.org.uk/pdtf/shape/potentialCostDomainShape>
     rdf:type sh:NodeShape ;

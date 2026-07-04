@@ -18,11 +18,16 @@
 <https://opda.org.uk/pdtf/shape/profiles/ta6>
     rdf:type owl:Ontology ;
     dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0029-overlay-profile-emitter-generalisation-and-rollout> ;
-    dct:description "SHACL overlay profile for TA6 Property Information Form. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 227 ref leaves; 44 bindable leaves enumerated; 183 GAPped pending their opda: term [no-domain: 35, no-predicate: 114, ref-collision: 34]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
+    dct:description "SHACL overlay profile for TA6 Property Information Form. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 227 ref leaves; 47 bindable leaves enumerated; 180 GAPped pending their opda: term [no-domain: 35, no-predicate: 111, ref-collision: 34]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
     dct:subject opda:ConveyancingContext ;
     dct:title "TA6 Property Information Form overlay profile"@en ;
     owl:imports <https://opda.org.uk/pdtf/> ;
     owl:versionIRI <https://opda.org.uk/pdtf/harness/release/profiles/ta6/0.1.0/> .
+
+<https://opda.org.uk/pdtf/shape/Ta6_AddressShape>
+    rdf:type sh:NodeShape ;
+    sh:property _:b86b3659468b6, _:bef45ae223659, _:bf62eaba19359 ;
+    sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/Ta6_PropertyShape>
     rdf:type sh:NodeShape ;
@@ -149,6 +154,11 @@ _:b8203f184b665
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta6.json#/propertyPack/alterationsAndChanges/windowReplacementsSince2002/yearCompleted> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:yearCompleted ;
+    sh:severity sh:Violation .
+
+_:b86b3659468b6
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta6.json#/propertyPack/address/line2> ;
+    sh:path opda:line2 ;
     sh:severity sh:Violation .
 
 _:b896406afa911
@@ -281,9 +291,21 @@ _:beef07c7ca7c0
     sh:path opda:replaceLightFittings ;
     sh:severity sh:Violation .
 
+_:bef45ae223659
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta6.json#/propertyPack/address/postcode> ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
+
 _:bf5fbd44f2e81
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta6.json#/propertyPack/completionAndMoving/sellerWillEnsure/removeRubbish> ;
     sh:path opda:removeRubbish ;
+    sh:severity sh:Violation .
+
+_:bf62eaba19359
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta6.json#/propertyPack/address/line1> ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:path opda:line1 ;
     sh:severity sh:Violation .
 
 _:bfdd77148ad93

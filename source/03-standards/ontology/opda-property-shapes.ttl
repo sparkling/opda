@@ -28,6 +28,12 @@
     sh:property _:b079937439e1e ;
     sh:targetClass opda:Address .
 
+<https://opda.org.uk/pdtf/shape/AddressStructuralShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    sh:property _:b2af37916ef34, _:b39964e2ac194, _:bce81c4eeff43, _:be33817d12a97, _:bf4bebeb9d482 ;
+    sh:targetClass opda:Address .
+
 <https://opda.org.uk/pdtf/shape/HasAddressBearerShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a> ;
@@ -91,11 +97,27 @@ _:b280ef5eed74d
     sh:path opda:identifiesSameProperty ;
     sh:severity sh:Violation .
 
+_:b2af37916ef34
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:country ;
+    sh:severity sh:Violation .
+
 _:b2f2f8e7d3de1
     sh:maxCount "1"^^xsd:integer ;
     sh:message "LegalEstate identity surface: tenureKind (Freehold / Leasehold / Commonhold) MUST be a single concept IRI when present. The full rights-bundle IC per ODR-0005 §3b is enforced by the registered-title binding via opda:recordsEstate."@en ;
     sh:nodeKind sh:IRI ;
     sh:path opda:tenureKind ;
+    sh:severity sh:Violation .
+
+_:b39964e2ac194
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:line1 ;
     sh:severity sh:Violation .
 
 _:b75bdcb9bc24d
@@ -119,9 +141,33 @@ _:baeadc871cb4d
     sh:path opda:hasUPRN ;
     sh:severity sh:Violation .
 
+_:bce81c4eeff43
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:line2 ;
+    sh:severity sh:Violation .
+
+_:be33817d12a97
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:postTown ;
+    sh:severity sh:Violation .
+
 _:bf27ea7af17aa
     rdf:first _:bf81a81adb71a ;
     rdf:rest _:b75bdcb9bc24d .
+
+_:bf4bebeb9d482
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
 
 _:bf81a81adb71a
     sh:class opda:Property .

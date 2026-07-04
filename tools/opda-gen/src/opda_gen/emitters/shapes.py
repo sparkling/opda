@@ -166,6 +166,7 @@ _ODR_0012_Q3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q3"
 _ODR_0012_Q5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0012/section-Q5")
 _ODR_0013_Q1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0013/section-Q1")
 _ODR_0015_S3A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a")
+_ODR_0015_S3B = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b")
 _ODR_0015_S4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a")
 _ODR_0017_S1A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-1a")
 _ODR_0017_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0017/section-2a")
@@ -945,6 +946,31 @@ def build_property_shapes() -> Graph:
             "https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6"
         ),
     )
+
+    # --- Cat 1: structural-field shape — opda:Address (ODR-0015 §3b) ----
+    # The 5 structural fields ODR-0015's own Decision Outcome names
+    # verbatim (opda:line1/line2/postTown/postcode/country), each
+    # sh:minCount 0 (graceful degradation, e.g. the INSPIRE-only case)
+    # per the ODR's own exact SHACL property shape spec.
+    _address_structural_shape = OPDA_SHAPE.AddressStructuralShape
+    g.add((_address_structural_shape, RDF.type, SH.NodeShape))
+    g.add((_address_structural_shape, SH.targetClass, OPDA.Address))
+    g.add((_address_structural_shape, DCTERMS.source, _ODR_0015_S3B))
+    for _addr_field in (OPDA.line1, OPDA.line2, OPDA.postTown, OPDA.postcode, OPDA.country):
+        _prop_shape = BNode()
+        g.add((_address_structural_shape, SH.property, _prop_shape))
+        g.add((_prop_shape, SH.path, _addr_field))
+        g.add((_prop_shape, SH.datatype, XSD.string))
+        g.add((_prop_shape, SH.minCount, Literal(0)))
+        g.add((_prop_shape, SH.maxCount, Literal(1)))
+        g.add((_prop_shape, SH.severity, SH.Violation))
+        g.add((_prop_shape, SH.message, Literal(
+            f"Address {_addr_field.split('/')[-1]} MUST be at most one "
+            "xsd:string value when present (ODR-0015 §3b, S015 Q3 — "
+            "sh:minCount 0 for graceful degradation, e.g. the "
+            "INSPIRE-only case's sparse structural fields).",
+            lang="en",
+        )))
 
     # --- Cat 2: IC breach shape — opda:identifiesSameProperty -----------
     _add_ic_breach_shape(

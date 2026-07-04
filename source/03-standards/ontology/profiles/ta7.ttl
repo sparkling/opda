@@ -18,11 +18,16 @@
 <https://opda.org.uk/pdtf/shape/profiles/ta7>
     rdf:type owl:Ontology ;
     dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0029-overlay-profile-emitter-generalisation-and-rollout> ;
-    dct:description "SHACL overlay profile for TA7 Leasehold Information Form. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 107 ref leaves; 21 bindable leaves enumerated; 86 GAPped pending their opda: term [no-domain: 10, no-predicate: 70, ref-collision: 6]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
+    dct:description "SHACL overlay profile for TA7 Leasehold Information Form. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 107 ref leaves; 33 bindable leaves enumerated; 74 GAPped pending their opda: term [no-domain: 10, no-predicate: 58, ref-collision: 6]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
     dct:subject opda:ConveyancingContext ;
     dct:title "TA7 Leasehold Information Form overlay profile"@en ;
     owl:imports <https://opda.org.uk/pdtf/> ;
     owl:versionIRI <https://opda.org.uk/pdtf/harness/release/profiles/ta7/0.1.0/> .
+
+<https://opda.org.uk/pdtf/shape/Ta7_AddressShape>
+    rdf:type sh:NodeShape ;
+    sh:property _:b09daff14f41a, _:b1a313105a6e6, _:b5754a5e02f04, _:b5fc2a9cba5bb, _:b6bac0981fbe2, _:b82d4bcde3497, _:b853ede024f07, _:ba6124cffd3b4, _:bb5aaf3898c3e, _:bb87463fcd3f3, _:bb89c6cd15a66, _:bc3ac25366cf9 ;
+    sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/Ta7_LegalEstateShape>
     rdf:type sh:NodeShape ;
@@ -43,6 +48,16 @@ _:b08f883e45658
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/sharedOwnership/isSharedOwnership> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:isSharedOwnership ;
+    sh:severity sh:Violation .
+
+_:b09daff14f41a
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/landlord/contact/address/postcode> ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
+
+_:b1a313105a6e6
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managementCompany/contact/address/line2> ;
+    sh:path opda:line2 ;
     sh:severity sh:Violation .
 
 _:b28b2e8c0acc4
@@ -68,16 +83,31 @@ _:b35aef5022e4e
     sh:path opda:freeholdOwner ;
     sh:severity sh:Violation .
 
+_:b5754a5e02f04
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/address/postcode> ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
+
 _:b5c84a10b2a5e
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/groundRent/rentSubjectToIncrease/rentIncreaseCalculated> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:rentIncreaseCalculated ;
     sh:severity sh:Violation .
 
+_:b5fc2a9cba5bb
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/address/line2> ;
+    sh:path opda:line2 ;
+    sh:severity sh:Violation .
+
 _:b60044f2917e6
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/groundRent/annualGroundRent> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:annualGroundRent ;
+    sh:severity sh:Violation .
+
+_:b6bac0981fbe2
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managingAgent/contact/address/line2> ;
+    sh:path opda:line2 ;
     sh:severity sh:Violation .
 
 _:b6f0c6c72e11a
@@ -90,6 +120,16 @@ _:b80483d136a83
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/buildingSafetyAct/deedOfCertificateServed/sellerCompletedDeedOfCertificate> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:sellerCompletedDeedOfCertificate ;
+    sh:severity sh:Violation .
+
+_:b82d4bcde3497
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managingAgent/contact/address/postcode> ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
+
+_:b853ede024f07
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/landlord/contact/address/line2> ;
+    sh:path opda:line2 ;
     sh:severity sh:Violation .
 
 _:b8eeff187fb7a
@@ -108,6 +148,11 @@ _:b9614be4d56b5
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/groundRent/rentSubjectToIncrease/rentReviewFrequency> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:rentReviewFrequency ;
+    sh:severity sh:Violation .
+
+_:ba6124cffd3b4
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managementCompany/contact/address/line1> ;
+    sh:path opda:line1 ;
     sh:severity sh:Violation .
 
 _:bae190896e2a7
@@ -133,15 +178,35 @@ _:bb0229b636486
     sh:path opda:landlordNotifiedOfSale ;
     sh:severity sh:Violation .
 
+_:bb5aaf3898c3e
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managingAgent/contact/address/line1> ;
+    sh:path opda:line1 ;
+    sh:severity sh:Violation .
+
 _:bb6c565051c46
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/serviceCharge/lastDecoratedPeriod/externally/year> ;
     sh:path opda:year ;
+    sh:severity sh:Violation .
+
+_:bb87463fcd3f3
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/managementCompany/contact/address/postcode> ;
+    sh:path opda:postcode ;
+    sh:severity sh:Violation .
+
+_:bb89c6cd15a66
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/contactDetails/contacts/landlord/contact/address/line1> ;
+    sh:path opda:line1 ;
     sh:severity sh:Violation .
 
 _:bc1b2cae214cd
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/ownership/ownershipsToBeTransferred/leaseholdInformation/confirmationOfAccuracy/confirmation> ;
     sh:minCount "1"^^xsd:integer ;
     sh:path opda:confirmation ;
+    sh:severity sh:Violation .
+
+_:bc3ac25366cf9
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/ta7.json#/propertyPack/address/line1> ;
+    sh:path opda:line1 ;
     sh:severity sh:Violation .
 
 _:bc6820f034fb6

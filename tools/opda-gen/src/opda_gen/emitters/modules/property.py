@@ -100,6 +100,8 @@ _ODR_0007_S5 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-
 _ODR_0008_S5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
 _ODR_0015_S2A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a")
 _ODR_0015_S3A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3a")
+_ODR_0015_S3B = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b")
+_ODR_0015_S4A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a")
 
 
 # Module catalogue — classes + properties this module mints. Tests
@@ -138,6 +140,7 @@ DATATYPE_PROPERTIES = (
     OPDA.centralHeatingInstalled,
     OPDA.consequentialChargingBasis,
     OPDA.councilTaxBand,
+    OPDA.country,
     OPDA.currentChargingBasis,
     OPDA.currentEnergyRating,
     OPDA.dateInstalled,
@@ -159,6 +162,7 @@ DATATYPE_PROPERTIES = (
     OPDA.heading,
     OPDA.heatingLastServicedDate,
     OPDA.heatingType,
+    OPDA.inspireFeatureId,
     OPDA.isGroundRentPayable,
     OPDA.isInsured,
     OPDA.isLocatedOverCommercialPremises,
@@ -167,6 +171,8 @@ DATATYPE_PROPERTIES = (
     OPDA.kitchens,
     OPDA.lastMaintained,
     OPDA.lengthOfLeaseInYears,
+    OPDA.line1,
+    OPDA.line2,
     OPDA.location,
     OPDA.logbookProvider,
     OPDA.mpan,
@@ -184,6 +190,8 @@ DATATYPE_PROPERTIES = (
     OPDA.parkingArrangements,
     OPDA.personWhoDealsWithTheDeedOfCovenant,
     OPDA.pitch,
+    OPDA.postcode,
+    OPDA.postTown,
     OPDA.procedureForObtainingCertificate,
     OPDA.propertiesContributingToMaintenanceOfManagedArea,
     OPDA.propertyType,
@@ -539,6 +547,66 @@ def build_graph() -> Graph:
     g.add((OPDA.addressVariant, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.addressVariant, DCTERMS.source,
            URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6")))
+
+    # --- DatatypeProperties: opda:Address's 5 structural fields ---------
+    # (ODR-0015 §3b, S015 Q3) — ratified alongside addressVariant/
+    # identifiesSameProperty but never previously declared here; all
+    # sh:minCount 0 / sh:maxCount 1 per the ODR's own SHACL property shape
+    # spec (graceful degradation, e.g. the INSPIRE-only case with sparse
+    # structural fields, ODR-0015 §3a Rule 5). Q3's "held-as-live dissent"
+    # (Allemang DA) does NOT block this — the ODR's own Consequences say so
+    # explicitly ("the dissent does not block the verdict... it preserves a
+    # falsifiable re-open path"), and the dissent's own re-open trigger is a
+    # future, conditional one (18 months / zero shared-Address evidence),
+    # not a current implementation blocker.
+    for _local_name, _label in (
+        ("line1", "line 1"),
+        ("line2", "line 2"),
+        ("postTown", "post town"),
+        ("postcode", "postcode"),
+        ("country", "country"),
+    ):
+        _prop = OPDA[_local_name]
+        g.add((_prop, RDF.type, OWL.DatatypeProperty))
+        g.add((_prop, RDFS.domain, OPDA.Address))
+        g.add((_prop, RDFS.range, XSD.string))
+        g.add((_prop, RDFS.label, Literal(_label, lang="en")))
+        g.add((_prop, RDFS.comment, Literal(
+            f"Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — "
+            f"{_label}. sh:minCount 0: absent when the addressing authority "
+            f"has not populated it (e.g. an INSPIRE-only locator's sparse "
+            f"structural fields, ODR-0015 §3a Rule 5).",
+            lang="en",
+        )))
+        g.add((_prop, SKOS.definition, Literal(
+            f"The {_label} component of a structured postal address.",
+            lang="en",
+        )))
+        g.add((_prop, RDFS.isDefinedBy, module_iri))
+        g.add((_prop, DCTERMS.source, _ODR_0015_S3B))
+
+    # --- DatatypeProperty: opda:inspireFeatureId (ODR-0015 §4a, S015 Q4) ---
+    g.add((OPDA.inspireFeatureId, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.inspireFeatureId, RDFS.domain, OPDA.Address))
+    g.add((OPDA.inspireFeatureId, RDFS.range, XSD.string))
+    g.add((OPDA.inspireFeatureId, RDFS.label,
+           Literal("INSPIRE feature ID", lang="en")))
+    g.add((OPDA.inspireFeatureId, RDFS.comment, Literal(
+        "INSPIRE Identifier for an opda:Address of variant 'inspire' — a "
+        "contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-"
+        "Quality pattern), unique per addressVariant 'inspire' individual "
+        "(dash:uniqueValueForClass). Populated for INSPIRE-only locatedness "
+        "(ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE "
+        "polygon feature exists for the Address.",
+        lang="en",
+    )))
+    g.add((OPDA.inspireFeatureId, SKOS.definition, Literal(
+        "The INSPIRE Identifier of the cadastral feature corresponding to "
+        "this address, where one exists.",
+        lang="en",
+    )))
+    g.add((OPDA.inspireFeatureId, RDFS.isDefinedBy, module_iri))
+    g.add((OPDA.inspireFeatureId, DCTERMS.source, _ODR_0015_S4A))
 
     # --- DatatypeProperty: opda:builtForm (ODR-0008 §Q5a) ---------------
     # ADR-0031 register: STANDS on opda:Property; Quale-in-Region; flat

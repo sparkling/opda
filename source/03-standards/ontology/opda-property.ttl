@@ -202,6 +202,16 @@ opda:councilTaxBand
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
+opda:country
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "country"@en ;
+    rdfs:comment "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — country. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."@en ;
+    skos:definition "The country component of a structured postal address."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
+
 opda:currentChargingBasis
     rdf:type owl:DatatypeProperty ;
     rdfs:label "current charging basis"@en ;
@@ -362,6 +372,16 @@ opda:heatingLastServicedDate
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
 
+opda:inspireFeatureId
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "INSPIRE feature ID"@en ;
+    rdfs:comment "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address."@en ;
+    skos:definition "The INSPIRE Identifier of the cadastral feature corresponding to this address, where one exists."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
+
 opda:kitchens
     rdf:type owl:DatatypeProperty ;
     rdfs:label "kitchens"@en ;
@@ -391,6 +411,26 @@ opda:lengthOfLeaseInYears
     rdfs:domain opda:LegalEstate ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:integer .
+
+opda:line1
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "line 1"@en ;
+    rdfs:comment "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 1. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."@en ;
+    skos:definition "The line 1 component of a structured postal address."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
+
+opda:line2
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "line 2"@en ;
+    rdfs:comment "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 2. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."@en ;
+    skos:definition "The line 2 component of a structured postal address."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
 
 opda:location
     rdf:type owl:DatatypeProperty ;
@@ -541,6 +581,26 @@ opda:pitch
     rdfs:domain opda:Property ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:decimal .
+
+opda:postTown
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "post town"@en ;
+    rdfs:comment "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — post town. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."@en ;
+    skos:definition "The post town component of a structured postal address."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
+
+opda:postcode
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "postcode"@en ;
+    rdfs:comment "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — postcode. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."@en ;
+    skos:definition "The postcode component of a structured postal address."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
 
 opda:procedureForObtainingCertificate
     rdf:type owl:DatatypeProperty ;

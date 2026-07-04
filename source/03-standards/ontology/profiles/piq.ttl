@@ -17,11 +17,16 @@
 <https://opda.org.uk/pdtf/shape/profiles/piq>
     rdf:type owl:Ontology ;
     dct:source <https://opda.org.uk/pdtf/harness/adr/ADR-0029-overlay-profile-emitter-generalisation-and-rollout> ;
-    dct:description "SHACL overlay profile for PIQ Property Information Questionnaire. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 139 ref leaves; 21 bindable leaves enumerated; 118 GAPped pending their opda: term [no-domain: 28, no-predicate: 89, ref-collision: 1]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
+    dct:description "SHACL overlay profile for PIQ Property Information Questionnaire. Per S034 (ADR-0029 gap-1) this graph enumerates the form's ref-bearing overlay leaves via the bind-only-what-exists resolver (ODR-0022 G1/G2; ODR-0024 COLLAPSED): a leaf binds to its emitted opda: predicate (with exactly one rdfs:domain as sh:targetClass) or is GAPped (no sh:path, no dct:source). Coverage: 139 ref leaves; 24 bindable leaves enumerated; 115 GAPped pending their opda: term [no-domain: 28, no-predicate: 86, ref-collision: 1]. dct:source on each property shape is the JSON-pointer schema-leaf-path anchor (ODR-0022 §Rules.2 G2, S034-amended). The gap register is internal generator output, not a published DCTAP (ODR-0021 F3 stays deferred); enumeration does NOT discharge G3's worked-query limb (per-consumer, session-034)."@en ;
     dct:subject opda:SurveyingContext ;
     dct:title "PIQ Property Information Questionnaire overlay profile"@en ;
     owl:imports <https://opda.org.uk/pdtf/> ;
     owl:versionIRI <https://opda.org.uk/pdtf/harness/release/profiles/piq/0.1.0/> .
+
+<https://opda.org.uk/pdtf/shape/Piq_AddressShape>
+    rdf:type sh:NodeShape ;
+    sh:property _:b122dc0f8fa14, _:b8d18b99675e1, _:bfc92fffe9f29 ;
+    sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/Piq_LegalEstateShape>
     rdf:type sh:NodeShape ;
@@ -51,6 +56,11 @@
 _:b118449e07324
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/heating/heatingSystem/centralHeatingDetails/centralHeatingInstalled> ;
     sh:path opda:centralHeatingInstalled ;
+    sh:severity sh:Violation .
+
+_:b122dc0f8fa14
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/address/postcode> ;
+    sh:path opda:postcode ;
     sh:severity sh:Violation .
 
 _:b19f48905dbb8
@@ -108,6 +118,11 @@ _:b8b951cc0426c
     sh:path opda:aged17OrOverNames ;
     sh:severity sh:Violation .
 
+_:b8d18b99675e1
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/address/line1> ;
+    sh:path opda:line1 ;
+    sh:severity sh:Violation .
+
 _:b996618db7533
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/parking/parkingArrangements> ;
     sh:path opda:parkingArrangements ;
@@ -146,6 +161,11 @@ _:be85305e8012b
 _:bef746f1fa720
     dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/guaranteesWarrantiesAndIndemnityInsurances/hasValidGuaranteesOrWarranties> ;
     sh:path opda:hasValidGuaranteesOrWarranties ;
+    sh:severity sh:Violation .
+
+_:bfc92fffe9f29
+    dct:source <https://trust.propdata.org.uk/schemas/v3/overlays/piq.json#/propertyPack/address/line2> ;
+    sh:path opda:line2 ;
     sh:severity sh:Violation .
 
 _:bfefae88b227f
