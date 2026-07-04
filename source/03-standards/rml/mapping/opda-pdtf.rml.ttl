@@ -162,7 +162,9 @@
   rr:predicateObjectMap [ rr:predicate opda:costsApplicableToTheDeed ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/costsApplicableToTheDeed-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (MonetaryAmount join, array-projected; see <#CostsApplicableToTheDeedAmount>)
   rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/feeIncludingVAT-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, array-projected; see <#FeeIncludingVATAmount>)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/feeIncludingVAT-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, array-projected; see <#FeeIncludingVATAmount>)
+  rr:predicateObjectMap [ rr:predicate opda:hasChainPosition ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/transactionchain/onwardPurchase/{chain.onwardPurchase[*].transactionId}" ] ] .  # <- chain.onwardPurchase[].transactionId, array-projected (join to M19's minted <#ChainLink> opda:TransactionChain node(s) — see M19's own comment for the full design-decision rationale)
 
 # M1c — Signature record (UNTYPED)  iterator: signatures[*]
 #   Bearer of opda:signedOn (domain opda:Transaction). Kept as its own
@@ -1342,7 +1344,54 @@
 #   documented near M27.
 
 # ---------------------------------------------------------------------------
-# M19 — Chain selling agent (chain.onwardPurchase[*])  domain=Transaction
+# M19 — Chain selling agent + opda:TransactionChain (chain.onwardPurchase[*])
+#   domain=Transaction. Each onwardPurchase[] item is a STUB reference to a
+#   DIFFERENT transaction in the same chain (transactionId/address/uprn/
+#   sellingAgent only — not a full record); minted here as a real, if thin,
+#   opda:Transaction individual (M19's own established pattern, unchanged) —
+#   the honest reading of "real but partial" source data, matching this
+#   mapping's own established idiom of minting sparse-but-real nodes rather
+#   than inventing structure.
+#
+#   opda:TransactionChain design decision (needs sign-off): opda:
+#   TransactionChain's own rdfs:comment names a "dual-mechanism" — (a) a
+#   recursive opda:dependsOnTransaction predicate between Transactions; (b)
+#   opda:chainMembers list-of-Transactions on a TransactionChain parent.
+#   Verified empirically (grepped opda-merged.ttl, opda-shapes-merged.ttl,
+#   every source/03-standards/ontology/*.ttl module): NEITHER predicate was
+#   ever actually declared as a real owl:ObjectProperty — both exist only as
+#   prose in the class comment and as candidate usage in the exemplar
+#   source/03-standards/ontology/exemplars/chain-of-transactions.ttl, whose
+#   own note says "the Council picks the canonical shape" — i.e. this was
+#   never ratified. Per ADR-0057 check 1, this mapping cannot invent or use
+#   an undeclared predicate. The ONLY real, declared predicate reaching
+#   opda:TransactionChain is opda:hasChainPosition (Transaction ->
+#   TransactionChain; its own comment even calls opda:chainMembers a "mirror"
+#   of it, confirming the class was designed for the dual-mechanism but only
+#   half of it was ever built).
+#
+#   Chosen mechanism, using ONLY opda:hasChainPosition: mint ONE
+#   opda:TransactionChain node PER onwardPurchase[] member, keyed on THAT
+#   member's own transactionId (reachable from both this iterator, directly,
+#   and from M1's root iterator via an array-projected object template —
+#   ADR-0057's proven-safe single-array-projected-placeholder idiom). BOTH
+#   the current transaction (M1) and the stub Transaction (this TriplesMap)
+#   assert opda:hasChainPosition to that SAME node, making them chain-mates
+#   without needing chainMembers/dependsOnTransaction. This is a genuine
+#   design call (pairwise chain-link nodes, not one N-ary aggregate) forced
+#   by the missing predicates — verified empirically (dumped triples against
+#   testdata/03, which has one onwardPurchase item) before treating it as
+#   settled; flagged for team sign-off alongside the missing-predicate
+#   finding itself.
+#
+#   chain.buyersSale[] is NOT mapped: verified against both the real v3
+#   schema and the generated canonical data dictionary — buyersSale is a
+#   SIBLING of chain's own "properties" key in the source JSON Schema (a
+#   schema-authoring bug: it sits outside "properties", so opda-gen's own
+#   flattening walker never emits a data-dictionary location for it). Citing
+#   a dct:source path that does not resolve in the canonical dictionary would
+#   fail ADR-0057 check 2; this is a schema-repo defect (source/03-standards/
+#   schemas, a separate nested git repo) out of this mapping's scope to fix.
 # ---------------------------------------------------------------------------
 <#ChainSellingAgent> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1351,7 +1400,39 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ;
                   rr:class opda:Transaction ] ;
   rr:predicateObjectMap [ rr:predicate opda:sellingAgent ;
-      rr:objectMap [ rml:reference "sellingAgent" ; rr:datatype xsd:string ] ] .  # <- chain.onwardPurchase[].sellingAgent
+      rr:objectMap [ rml:reference "sellingAgent" ; rr:datatype xsd:string ] ] ;  # <- chain.onwardPurchase[].sellingAgent
+  rr:predicateObjectMap [ rr:predicate opda:concernsProperty ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ] ;  # <- chain.onwardPurchase[].uprn (join to <#ChainProperty>'s minted opda:Property node)
+  rr:predicateObjectMap [ rr:predicate opda:hasChainPosition ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/transactionchain/onwardPurchase/{transactionId}" ] ] .  # <- chain.onwardPurchase[].transactionId (join to <#ChainLink>'s minted opda:TransactionChain node; see design-decision comment above)
+
+<#ChainProperty> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.chain.onwardPurchase[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ;
+                  rr:class opda:Property ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasUPRN ;
+      rr:objectMap [ rml:reference "uprn" ; rr:datatype xsd:string ] ] .  # <- chain.onwardPurchase[].uprn (address sub-fields are NOT mapped: no opda: predicate exists anywhere in the ontology for a postal address — out of this mapping's scope, would be new ontology design work)
+
+<#ChainLink> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.chain.onwardPurchase[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/transactionchain/onwardPurchase/{transactionId}" ;
+                  rr:class opda:TransactionChain ] .  # <- chain.onwardPurchase[].transactionId (class-instantiating join target; see design-decision comment above)
+
+# opda:hasChainPosition on the CURRENT transaction (M1's own node): asserted
+# from M1's root iterator via an array-projected object template, pointing at
+# the SAME <#ChainLink> node(s) minted above — one triple per onwardPurchase
+# member, safe under RMLMapper because it is the ONLY array-projected
+# placeholder in that single predicateObjectMap (the proven-safe idiom;
+# combining it with a SECOND, independently-varying array-projected
+# placeholder in the same TriplesMap was tested and confirmed to silently
+# cross-product — see M19's own comment, above, and ADR-0057's Amendments).
+# See M1's <#Transaction> TriplesMap for the actual predicateObjectMap (added there,
+# not repeated here, to keep M1 as the single source of the root
+# Transaction's own triples).
 
 # ---------------------------------------------------------------------------
 # M20 — Planning permission record (localSearches[*])  (opda:Search)
