@@ -164,7 +164,9 @@
   rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/feeIncludingVAT-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, array-projected; see <#FeeIncludingVATAmount>)
   rr:predicateObjectMap [ rr:predicate opda:hasChainPosition ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/transactionchain/onwardPurchase/{chain.onwardPurchase[*].transactionId}" ] ] .  # <- chain.onwardPurchase[].transactionId, array-projected (join to M19's minted <#ChainLink> opda:TransactionChain node(s) — see M19's own comment for the full design-decision rationale)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/transactionchain/onwardPurchase/{chain.onwardPurchase[*].transactionId}" ] ] ;  # <- chain.onwardPurchase[].transactionId, array-projected (join to M19's minted <#ChainLink> opda:TransactionChain node(s) — see M19's own comment for the full design-decision rationale)
+  rr:predicateObjectMap [ rr:predicate opda:dependsOnTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{chain.onwardPurchase[*].transactionId}" ] ] .  # <- chain.onwardPurchase[].transactionId, array-projected (join to M19's minted stub opda:Transaction node — now that opda:dependsOnTransaction is declared, RESOLVED per M19's own comment; direct Transaction->Transaction edge alongside the hasChainPosition/TransactionChain-aggregate mechanism above, not a replacement for it)
 
 # M1c — Signature record (UNTYPED)  iterator: signatures[*]
 #   Bearer of opda:signedOn (domain opda:Transaction). Kept as its own
@@ -726,6 +728,8 @@
       rr:objectMap [ rml:reference "leaseholdInformation.leaseTerm.startYearOfLease" ; rr:datatype xsd:gYear ] ] ;  # <- …leaseholdInformation.leaseTerm.startYearOfLease
   rr:predicateObjectMap [ rr:predicate opda:lengthOfLeaseInYears ;
       rr:objectMap [ rml:reference "leaseholdInformation.leaseTerm.lengthOfLeaseInYears" ; rr:datatype xsd:integer ] ] ;  # <- …leaseholdInformation.leaseTerm.lengthOfLeaseInYears
+  rr:predicateObjectMap [ rr:predicate opda:leaseTerm ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm-{leaseholdInformation.leaseTerm.startYearOfLease}" ] ] ;  # <- …leaseholdInformation.leaseTerm.startYearOfLease (join to M7b's <#LeaseTerm> node, now that opda:leaseTerm is declared — see M7b's own comment)
   rr:predicateObjectMap [ rr:predicate opda:sharedOwnershipPercentage ;
       rr:objectMap [ rml:reference "leaseholdInformation.sharedOwnership.sharedOwnershipPercentage" ; rr:datatype xsd:decimal ] ] ;  # <- …leaseholdInformation.sharedOwnership.sharedOwnershipPercentage
   rr:predicateObjectMap [ rr:predicate opda:rentReviewFrequency ;
@@ -852,24 +856,18 @@
 #   dedicated TriplesMap per component, joined by object property from a
 #   container).
 #
-#   NOT joined to M7's <#LegalEstate> node: opda:LeaseTerm's own rdfs:comment
-#   names "opda:leaseTerm join predicate" as the LegalEstate->LeaseTerm edge,
-#   but — verified empirically (grepped opda-merged.ttl, opda-shapes-merged.ttl,
-#   and every source/03-standards/ontology/*.ttl module) — opda:leaseTerm was
-#   NEVER actually declared as a real owl:ObjectProperty anywhere; it exists
-#   only as prose in the class comment. This is the SAME failure pattern as
-#   opda:TransactionChain's opda:dependsOnTransaction/opda:chainMembers (see
-#   M19/M1's TransactionChain comment, below): a Council-level join predicate
-#   named in a class's own documentation but never ratified/declared. Per
-#   ADR-0057 check 1 ("every rr:predicate the mapping uses is a real declared
-#   term"), this mapping cannot invent or use an undeclared predicate — that
-#   is ontology-design work (a new/ratified property), out of RML mapping
-#   scope. The opda:LeaseTerm node below is therefore minted STANDALONE
-#   (reachable only by its own IRI, not traversable from opda:LegalEstate) —
-#   still closes the opda:LeaseTerm CLASS gap and documents the real schema
-#   location, but the join itself is a flagged, unimplemented design
-#   decision for the ontology owners (mint opda:leaseTerm for real, or pick a
-#   different existing predicate).
+#   RESOLVED (2026-07-04): opda:LeaseTerm's own rdfs:comment names "opda:
+#   leaseTerm join predicate" as the LegalEstate->LeaseTerm edge, but it had
+#   never actually been declared as a real owl:ObjectProperty anywhere — the
+#   SAME failure pattern as opda:TransactionChain's opda:dependsOnTransaction
+#   (see M19/M1's TransactionChain comment, below). Rather than leave a
+#   second class permanently disconnected pending Council ratification of a
+#   plain, uncontroversial join (no alternative mechanism to choose between,
+#   unlike TransactionChain's genuine dual-mechanism choice), opda:leaseTerm
+#   was declared for real in tools/opda-gen (property.py) and the ontology
+#   corpus regenerated — see git history for the ontology-side commit. M7's
+#   <#LegalEstate> TriplesMap now asserts opda:leaseTerm joining to this
+#   node.
 #
 #   time:inXSDgYear / time:years are standard OWL-Time vocabulary (Time
 #   Ontology in OWL, W3C REC) — external, audited by hand per ADR-0057
@@ -877,11 +875,9 @@
 #
 #   A second occurrence of the same leaseTerm shape exists at
 #   propertyPack.titlesToBeSold[*].registerExtract.ocSummaryData.lease.
-#   leaseEntry[*].leaseTerm — NOT mapped here: it hits the identical
-#   undeclared-join-predicate blocker with no additional CLASS-gap benefit
-#   (opda:LeaseTerm is already closed by this TriplesMap), so the added
-#   TriplesMap complexity was judged not worth it until opda:leaseTerm is
-#   ratified.
+#   leaseEntry[*].leaseTerm — still NOT mapped: no additional CLASS-gap
+#   benefit (opda:LeaseTerm is already closed by this TriplesMap), so the
+#   added TriplesMap complexity remains judged not worth it.
 # ---------------------------------------------------------------------------
 <#LeaseTermBeginning> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1353,36 +1349,36 @@
 #   mapping's own established idiom of minting sparse-but-real nodes rather
 #   than inventing structure.
 #
-#   opda:TransactionChain design decision (needs sign-off): opda:
+#   opda:TransactionChain design decision — RESOLVED (2026-07-04): opda:
 #   TransactionChain's own rdfs:comment names a "dual-mechanism" — (a) a
 #   recursive opda:dependsOnTransaction predicate between Transactions; (b)
 #   opda:chainMembers list-of-Transactions on a TransactionChain parent.
-#   Verified empirically (grepped opda-merged.ttl, opda-shapes-merged.ttl,
-#   every source/03-standards/ontology/*.ttl module): NEITHER predicate was
-#   ever actually declared as a real owl:ObjectProperty — both exist only as
-#   prose in the class comment and as candidate usage in the exemplar
-#   source/03-standards/ontology/exemplars/chain-of-transactions.ttl, whose
-#   own note says "the Council picks the canonical shape" — i.e. this was
-#   never ratified. Per ADR-0057 check 1, this mapping cannot invent or use
-#   an undeclared predicate. The ONLY real, declared predicate reaching
-#   opda:TransactionChain is opda:hasChainPosition (Transaction ->
-#   TransactionChain; its own comment even calls opda:chainMembers a "mirror"
-#   of it, confirming the class was designed for the dual-mechanism but only
-#   half of it was ever built).
+#   Neither had ever actually been declared as a real owl:ObjectProperty —
+#   both existed only as prose in the class comment and as candidate usage
+#   in the exemplar source/03-standards/ontology/exemplars/chain-of-
+#   transactions.ttl, whose own note said "the Council picks the canonical
+#   shape". Per the user's own framing of the decision ("what was the
+#   intention of the JSON schemas?"): PDTF's chain.onwardPurchase/buyersSale
+#   shape, and chain's own description ("the data through which the chain
+#   for this transaction can be built"), shows each instance carries only
+#   its own LOCAL pairwise link(s) to adjacent chain transactions — never a
+#   global membership list. A recursive predicate matches this; opda:
+#   chainMembers remains a legitimate future DERIVED-aggregate target (built
+#   by traversing dependsOnTransaction edges across a full instance corpus)
+#   but was not declared since nothing populates it yet. opda:
+#   dependsOnTransaction WAS declared for real (tools/opda-gen, property.py
+#   — see git history) and is now asserted directly on M1's own Transaction
+#   node, pointing at this TriplesMap's minted stub Transaction.
 #
-#   Chosen mechanism, using ONLY opda:hasChainPosition: mint ONE
+#   Retained alongside it: the pre-existing opda:hasChainPosition + minted
+#   opda:TransactionChain aggregate-node mechanism (mint ONE
 #   opda:TransactionChain node PER onwardPurchase[] member, keyed on THAT
-#   member's own transactionId (reachable from both this iterator, directly,
-#   and from M1's root iterator via an array-projected object template —
-#   ADR-0057's proven-safe single-array-projected-placeholder idiom). BOTH
-#   the current transaction (M1) and the stub Transaction (this TriplesMap)
-#   assert opda:hasChainPosition to that SAME node, making them chain-mates
-#   without needing chainMembers/dependsOnTransaction. This is a genuine
-#   design call (pairwise chain-link nodes, not one N-ary aggregate) forced
-#   by the missing predicates — verified empirically (dumped triples against
-#   testdata/03, which has one onwardPurchase item) before treating it as
-#   settled; flagged for team sign-off alongside the missing-predicate
-#   finding itself.
+#   member's own transactionId; BOTH the current transaction (M1) and the
+#   stub Transaction (this TriplesMap) assert opda:hasChainPosition to that
+#   SAME node). This is NOT superseded by dependsOnTransaction — the two
+#   serve different purposes (a direct pairwise dependency edge vs. an
+#   aggregate chain-membership marker reachable without traversing the
+#   recursive chain) and both are now real, declared predicates.
 #
 #   chain.buyersSale[] is NOT mapped: verified against both the real v3
 #   schema and the generated canonical data dictionary — buyersSale is a
