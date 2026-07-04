@@ -150,6 +150,14 @@
         "managementPlanInPlace": "Yes"
       }
     },
+    "fixturesAndFittings": {
+      "basicFittings": {
+        "boilerImmersionHeater": {
+          "isIncludedExcludedOrNone": "Excluded",
+          "price": 250
+        }
+      }
+    },
     "smartHomeSystems": {
       "hasSmartHomeSystems": "Yes",
       "handoverOnCompletion": true

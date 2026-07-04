@@ -1750,3 +1750,37 @@
         rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownershipType" ] ] ;
         rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownershipType" ] ] ] ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
 
+# ---------------------------------------------------------------------------
+# M31 — Fixtures-and-fittings item (propertyPack.fixturesAndFittings.
+#   basicFittings.boilerImmersionHeater, representative of ~90 structurally
+#   identical items across basicFittings/kitchen/bathroom/carpets/etc.) —
+#   domain-less opda:price (xsd:decimal) and opda:inclusionStatus
+#   (rdfs:range skos:Concept, opda:InclusionStatusScheme — Included/
+#   Excluded/None). Per ODR-0022's own inclusionStatus comment: "bound on a
+#   transaction-scoped fixtures-list node (NEVER rdfs:domain opda:Property)"
+#   — this item object has no field of its own to key on (no name/id, only
+#   isIncludedExcludedOrNone/comments/price), but it's a SINGLE, non-array
+#   JSON object (one per file), so a genuinely CONSTANT subject IRI (no
+#   template placeholder at all) is honest and correct — the iterator
+#   naturally yields zero rows when the item is absent from an instance,
+#   one row when present; no fabricated identity needed. Same untyped-node
+#   reasoning as M1b/M12 (a bearer exists, deliberately not typed
+#   opda:Property). opda:inclusionStatus uses the M30 FNML mechanism (single-
+#   object context, same as M30's other properties).
+#   Only ONE of the ~90 structurally identical fixturesAndFittings items is
+#   bound here (matching the opda:supplier/opda:location precedent of
+#   tracing a representative real occurrence, not literally all ~90).
+# ---------------------------------------------------------------------------
+<#FixturesBoilerImmersionHeater> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater" ] ;
+  rr:subjectMap [ rr:constant <https://opda.org.uk/pdtf/harness/data/fixtures/boilerImmersionHeater> ] ;
+  rr:predicateObjectMap [ rr:predicate opda:price ;
+      rr:objectMap [ rml:reference "price" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.price
+  rr:predicateObjectMap [ rr:predicate opda:inclusionStatus ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "isIncludedExcludedOrNone" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "inclusionStatus" ] ] ] ] ] .  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone
+
