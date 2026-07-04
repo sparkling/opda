@@ -68,6 +68,7 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
 # RML-FNML: RMLMapper (the engine, since ADR-0057's Amendments) only
 # recognises the classic FNML vocabulary (fnml:functionValue, the
 # semweb.mmlab.be/ns/fnml# namespace + fno:executes) for function execution —
@@ -2480,6 +2481,30 @@
 #   matching the established, accepted precedent used elsewhere in this
 #   mapping (M1's own opda:response comment) for leaves the shipped fixtures
 #   don't exercise.
+#
+#   opda:TrustFramework — CLOSED (2026-07-04): every opda:VerificationActivity
+#   here asserts dct:conformsTo opda:UKPropertyDataTrustFramework (below,
+#   <#UKPropertyDataTrustFramework> mints that IRI as a real opda:TrustFramework
+#   instance). This is a fixed CONSTANT, not data extraction — no PDTF field
+#   states which trust framework governs a transaction — but it is not a
+#   fabrication: the exact same IRI is already used identically in 3 ratified
+#   exemplars (claim-with-{document,electronic-record,vouch}-evidence.ttl),
+#   and Council session-003c Item 3 ("OPDA TF authoritative scope") ratifies
+#   that every transaction processed under this schema is, by definition,
+#   governed by the OPDA/UK Property Data Trust Framework.
+#
+#   opda:AssuranceLevel — DELIBERATELY NOT mapped, a genuine gap, not an
+#   oversight: its value-space (eIDAS Low/Substantial/High) grades the RIGOR
+#   of a verification METHOD, whereas the real field available
+#   (participants[].verification.*.result / reports[].result: pass/fail/
+#   consider) is an OUTCOME judgement on a different axis entirely — a "pass"
+#   from a low-rigor check is not automatically "Substantial" assurance, and
+#   "fail"/"consider" have no eIDAS-level equivalent at all. Mapping
+#   result -> assuranceLevel would assert a compliance-consequential judgement
+#   the source data does not honestly support (unlike TrustFramework's
+#   constant above, which asserts an always-true institutional fact, not a
+#   per-instance judgement). Left unmapped per this session's discipline
+#   (flag, don't fabricate).
 # ---------------------------------------------------------------------------
 
 <#IdentityClaim> a rr:TriplesMap ;
@@ -2507,7 +2532,9 @@
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.participants[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/run" ;
-                  rr:class opda:VerificationActivity ] .  # <- participants[].verification.identity.result (prov:wasGeneratedBy's range is prov:Activity; opda:VerificationActivity is rdfs:subClassOf prov:Activity — type the referenced node, EPC/Search precedent)
+                  rr:class opda:VerificationActivity ] ;  # <- participants[].verification.identity.result (prov:wasGeneratedBy's range is prov:Activity; opda:VerificationActivity is rdfs:subClassOf prov:Activity — type the referenced node, EPC/Search precedent)
+  rr:predicateObjectMap [ rr:predicate dct:conformsTo ;
+      rr:object opda:UKPropertyDataTrustFramework ] .  # constant (see M33's own comment: precedented 3x in ratified exemplars, Session 003c "OPDA TF authoritative scope")
 
 <#AntiMoneyLaunderingClaim> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -2534,5 +2561,12 @@
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.participants[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/run" ;
-                  rr:class opda:VerificationActivity ] .  # <- participants[].verification.antiMoneyLaundering.result (prov:wasGeneratedBy's range is prov:Activity; type the referenced node, EPC/Search precedent)
+                  rr:class opda:VerificationActivity ] ;  # <- participants[].verification.antiMoneyLaundering.result (prov:wasGeneratedBy's range is prov:Activity; type the referenced node, EPC/Search precedent)
+  rr:predicateObjectMap [ rr:predicate dct:conformsTo ;
+      rr:object opda:UKPropertyDataTrustFramework ] .  # constant (see M33's own comment: precedented 3x in ratified exemplars, Session 003c "OPDA TF authoritative scope")
+
+<#UKPropertyDataTrustFramework> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:constant opda:UKPropertyDataTrustFramework ;
+                  rr:class opda:TrustFramework ] .  # closes the opda:TrustFramework CLASS gap — a fixed, always-true institutional fact (every VerificationActivity in this dataset is governed by the OPDA/UK PDTF), not data extraction; the same IRI already used via dct:conformsTo in 3 ratified exemplars (claim-with-{document,electronic-record,vouch}-evidence.ttl)
 
