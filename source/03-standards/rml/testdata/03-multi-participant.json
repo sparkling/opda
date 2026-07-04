@@ -204,6 +204,35 @@
         "waterworksMapAttached": "No"
       }
     },
+    "localSearches": {
+      "localAuthoritySearches": {
+        "planningAndBuildingRegulations": {
+          "decisionsAndPendingApplications": {
+            "planningPermission": [
+              {
+                "refNumber": "23/01234/FUL",
+                "applicationDate": "2023-04-01",
+                "applicationType": "Full planning permission",
+                "decision": "Granted",
+                "decisionDate": "2023-06-15"
+              }
+            ]
+          },
+          "designationsAndProposals": {
+            "plans": [
+              {
+                "name": "Bristol Local Plan",
+                "status": "Adopted",
+                "statusDate": "2019-07-01",
+                "designations": [
+                  { "designationType": "Conservation Area" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
     "lettingInformation": {
       "rent": 1200,
       "rentFrequency": "Monthly",

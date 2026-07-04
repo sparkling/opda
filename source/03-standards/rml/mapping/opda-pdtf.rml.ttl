@@ -937,3 +937,90 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:sellingAgent ;
       rr:objectMap [ rml:reference "sellingAgent" ; rr:datatype xsd:string ] ] .  # <- chain.onwardPurchase[].sellingAgent
+
+# ---------------------------------------------------------------------------
+# M20 — Planning permission record (localSearches[*])  (opda:Search)
+#   iterator: propertyPack.localSearches.localAuthoritySearches
+#     .planningAndBuildingRegulations.decisionsAndPendingApplications
+#     .planningPermission[*]
+#   buildingControlStartDate/planningStartDate (also domain=Search, one level
+#   up in decisionsAndPendingApplications) are NOT mapped: no natural key
+#   exists at that container level, and the only other opda:Search node
+#   (M6, localAuthority.*) is keyed from a different, cross-container field
+#   not accessible from this iterator — same "no clean node to bind onto"
+#   reasoning as the surveys[].constructionType gap above.
+# ---------------------------------------------------------------------------
+<#PlanningPermission> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planning/{refNumber}" ;
+                  rr:class opda:Search ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planning/{refNumber}/run" ] ] ;  # SHACL: class-promoted opda:Search requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:refNumber ;
+      rr:objectMap [ rml:reference "refNumber" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].refNumber
+  rr:predicateObjectMap [ rr:predicate opda:applicationDate ;
+      rr:objectMap [ rml:reference "applicationDate" ; rr:datatype xsd:date ] ] ;  # <- ...planningPermission[].applicationDate
+  rr:predicateObjectMap [ rr:predicate opda:applicationType ;
+      rr:objectMap [ rml:reference "applicationType" ; rr:datatype xsd:string ] ] ;  # <- ...planningPermission[].applicationType
+  rr:predicateObjectMap [ rr:predicate opda:decision ;
+      rr:objectMap [ rml:reference "decision" ; rr:datatype xsd:string ] ] ;  # <- ...planningPermission[].decision
+  rr:predicateObjectMap [ rr:predicate opda:decisionDate ;
+      rr:objectMap [ rml:reference "decisionDate" ; rr:datatype xsd:date ] ] .  # <- ...planningPermission[].decisionDate
+
+<#PlanningPermissionRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planning/{refNumber}/run" ;
+                  rr:class prov:Activity ] .
+
+# ---------------------------------------------------------------------------
+# M21 — Planning designation plan (localSearches[*].designationsAndProposals.plans[*])
+#   (opda:Search)  statusDate on the plan itself.
+# ---------------------------------------------------------------------------
+<#PlanningDesignationPlan> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{name}" ;
+                  rr:class opda:Search ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{name}/run" ] ] ;  # SHACL: class-promoted opda:Search requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:statusDate ;
+      rr:objectMap [ rml:reference "statusDate" ; rr:datatype xsd:date ] ] .  # <- ...designationsAndProposals.plans[].statusDate
+
+<#PlanningDesignationPlanRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{name}/run" ;
+                  rr:class prov:Activity ] .
+
+# ---------------------------------------------------------------------------
+# M22 — Planning designation entry (…plans[*].designations[*])  (opda:Search)
+#   A distinct, independent Search-typed node from M21's plan-level node —
+#   opda:Search is a general class with many valid instances (M5/M6/M9/M20
+#   are all different Search records too); unlike M18's constructionType
+#   (whose domain required THE SPECIFIC Property node), minting a separate
+#   Search node here for the designation entry is semantically sound, not a
+#   domain violation. Two-level array iterator (proven pattern; see M16).
+# ---------------------------------------------------------------------------
+<#PlanningDesignationEntry> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[*].designations[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{designationType}" ;
+                  rr:class opda:Search ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{designationType}/run" ] ] ;  # SHACL: class-promoted opda:Search requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:designationType ;
+      rr:objectMap [ rml:reference "designationType" ; rr:datatype xsd:string ] ] .  # <- ...designationsAndProposals.plans[].designations[].designationType
+
+<#PlanningDesignationEntryRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[*].designations[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{designationType}/run" ;
+                  rr:class prov:Activity ] .
