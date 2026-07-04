@@ -2183,7 +2183,6 @@
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "isIncludedExcludedOrNone" ] ] ;
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "inclusionStatus" ] ] ] ] ] .  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone
 
-
 # ---------------------------------------------------------------------------
 # M32 — Milestone (opda:Milestone)  iterator: root ($, same as M1)
 #   Real JSON: milestones.{listed,legalForms,soldSubjectToContract,searches,
@@ -2397,4 +2396,147 @@
                   rr:class prov:Plan ] ;
   rr:predicateObjectMap [ rr:predicate opda:plannedAtTime ;
       rr:objectMap [ rml:reference "milestones.completion.expected" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.completion.expected
+
+# ---------------------------------------------------------------------------
+# M33 — Claim / Evidence / VerificationActivity (opda-claim.ttl / ODR-0009)
+#   iterator: participants[*] (same as M2/M3/M3b).
+#   Real JSON: participants[].verification.{identity,antiMoneyLaundering} —
+#   each has a top-level .result (pass/fail/consider) AND a .reports[] array
+#   (reportName/result/details per report).
+#
+#   GRANULARITY — a real, empirically-forced design decision, not a
+#   preference: per-REPORT Claim/Evidence nodes (one per reports[] item) were
+#   attempted first and REJECTED after empirical testing exposed a serious
+#   RMLMapper defect, not just a missing feature:
+#     - A genuine per-element TriplesMap at the deep iterator
+#       ($.participants[*].verification.identity.reports[*]) gives correct,
+#       uncorrupted per-report access (reportName/result pair up correctly)
+#       but CANNOT reach the enclosing participant's own "email" — confirmed
+#       empirically (neither a relative "email" nor an absolute "$.email"
+#       reference resolves an ancestor field from within a nested iterator).
+#       Without "email", two different participants' identically-named
+#       reports (plausible in practice — the same automated check service
+#       often reuses the same reportName for every participant) would
+#       collide into the same IRI.
+#     - The obvious workaround — iterate at the shallow $.participants[*]
+#       level (which HAS "email") and reach into reports[*] via
+#       ARRAY-PROJECTED placeholders for both the subject (reportName) and a
+#       property (result) — was tested and found to silently CROSS-PRODUCT:
+#       2 reports produced 4 triples, each report wrongly wasDerivedFrom-
+#       linked to the OTHER report's Evidence too, not just its own (verified
+#       with a minimal scratch mapping + RMLMapper 8.1.0 directly, isolated
+#       from this file). This holds even when every placeholder in the
+#       TriplesMap uses the IDENTICAL JSONPath reference string — RMLMapper
+#       does not deduplicate/zip multiple array-projected slots by position;
+#       it cross-products whenever a TriplesMap has more than one place
+#       where a multi-valued array is projected. This is DIFFERENT from (and
+#       more dangerous than) the single-placeholder array-projection idiom
+#       ADR-0057 already documents as safe (M1's opda:concerns,
+#       opda:hasChainPosition above, etc., each use exactly ONE varying
+#       placeholder per TriplesMap) — silently WRONG data, not just missing
+#       data. Not previously documented in ADR-0057; recorded here and
+#       should be added to its Amendments.
+#   Given neither approach is both correct AND participant-disambiguating,
+#   this cluster is modelled at CATEGORY granularity instead: one
+#   opda:Claim + one opda:Evidence + one opda:VerificationActivity per
+#   participant per verification category (identity / antiMoneyLaundering),
+#   keyed on {email} + the category's own top-level .result (present exactly
+#   when the category was actually assessed — the standard skip-together
+#   technique, ADR-0057 Amendment 1). This is SAFE because every placeholder
+#   in each TriplesMap resolves the SAME single SCALAR (never an array) —
+#   verified empirically (a scalar reused across a subject and multiple
+#   predicateObjectMaps behaves correctly, no cross-product risk applies to
+#   non-array references). Individual reports[].reportName/.result/.details
+#   are NOT separately addressable under this constraint; there is also no
+#   opda: predicate for them regardless (see below), so nothing is lost by
+#   not reaching per-report granularity.
+#
+#   opda:evidenceType / opda:attestedBy / opda:digest are DELIBERATELY NOT
+#   mapped — a genuine, flagged design question, not an oversight:
+#     - opda:evidenceType's value-space (opda:EvidenceMethodScheme:
+#       Document / Electronic-Record / Vouch, per OIDC4IDA) is NOT honestly
+#       derivable from this data. The real field that DOES carry exactly
+#       that 3-way enum is a DIFFERENT, standalone PDTF schema —
+#       source/03-standards/schemas/.../verifiedClaims/pdtf-verified-
+#       claims.json's verification.evidence[].type — confirmed NOT embedded
+#       in a pdtf-transaction.json instance (no $ref from the transaction
+#       schema to it) and therefore out of ODR-0035's single-PDTF-instance
+#       mapping scope. The participants[].verification.*.reports[].
+#       reportName field actually available here is a free-text service
+#       name (e.g. "electoral-roll-check") that does not disclose the
+#       acquisition kind. Guessing a reportName -> evidenceType mapping was
+#       rejected per this session's discipline (flag, don't fabricate).
+#     - opda:attestedBy (Vouch-only, EvidenceFacetShape) and opda:digest
+#       (no cryptographic hash anywhere in this schema's verification
+#       structure) have no real source data regardless of the evidenceType
+#       question.
+#     - The per-report/per-category `result` (pass/fail/consider) itself
+#       ALSO has nowhere to land: no opda: predicate carries a Claim's or a
+#       VerificationActivity's own verdict/outcome value at all — a real,
+#       separate ontology gap (out of this task's scope to fix). The
+#       `.result` field is used ONLY as an existence-gate placeholder here,
+#       its value is not otherwise asserted as a triple (other than being
+#       baked into the node's own IRI, matching the M24 peril/{value}
+#       precedent).
+#
+#   None of testdata/01-04 carry any "verification" data (verified via
+#   direct JSON inspection); path-verified via a scratch instance instead,
+#   matching the established, accepted precedent used elsewhere in this
+#   mapping (M1's own opda:response comment) for leaves the shipped fixtures
+#   don't exercise.
+# ---------------------------------------------------------------------------
+
+<#IdentityClaim> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}" ;
+                  rr:class opda:Claim ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasDerivedFrom ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/evidence" ] ] ;  # <- participants[].verification.identity (container; class-instantiating join). SHACL: UnprovenancedClaimShape requires prov:wasDerivedFrom (minCount 1, Violation)
+  rr:predicateObjectMap [ rr:predicate opda:supportedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/evidence" ] ] ;  # <- participants[].verification.identity (opda-namespaced counterpart to prov:wasDerivedFrom, same target, per its own rdfs:comment)
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/run" ] ] .  # <- participants[].verification.identity.result (existence gate; join to <#IdentityVerificationActivity>)
+
+<#IdentityEvidence> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/evidence" ;
+                  rr:class opda:Evidence ] .  # <- participants[].verification.identity (reports[] bundle; opda:evidenceType/opda:attestedBy/opda:digest deliberately unmapped, see comment above)
+
+<#IdentityVerificationActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/identity-{verification.identity.result}/run" ;
+                  rr:class opda:VerificationActivity ] .  # <- participants[].verification.identity.result (prov:wasGeneratedBy's range is prov:Activity; opda:VerificationActivity is rdfs:subClassOf prov:Activity — type the referenced node, EPC/Search precedent)
+
+<#AntiMoneyLaunderingClaim> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}" ;
+                  rr:class opda:Claim ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasDerivedFrom ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/evidence" ] ] ;  # <- participants[].verification.antiMoneyLaundering (container; class-instantiating join). SHACL: UnprovenancedClaimShape requires prov:wasDerivedFrom (minCount 1, Violation)
+  rr:predicateObjectMap [ rr:predicate opda:supportedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/evidence" ] ] ;  # <- participants[].verification.antiMoneyLaundering (opda-namespaced counterpart to prov:wasDerivedFrom, same target)
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/run" ] ] .  # <- participants[].verification.antiMoneyLaundering.result (existence gate; join to <#AntiMoneyLaunderingVerificationActivity>)
+
+<#AntiMoneyLaunderingEvidence> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/evidence" ;
+                  rr:class opda:Evidence ] .  # <- participants[].verification.antiMoneyLaundering (reports[] bundle; opda:evidenceType/opda:attestedBy/opda:digest deliberately unmapped, see comment above)
+
+<#AntiMoneyLaunderingVerificationActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/antiMoneyLaundering-{verification.antiMoneyLaundering.result}/run" ;
+                  rr:class opda:VerificationActivity ] .  # <- participants[].verification.antiMoneyLaundering.result (prov:wasGeneratedBy's range is prov:Activity; type the referenced node, EPC/Search precedent)
 
