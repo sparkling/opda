@@ -231,6 +231,16 @@ opda:concernsProperty
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
     rdfs:range opda:Property .
 
+opda:dependsOnTransaction
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "depends on transaction"@en ;
+    rdfs:comment "Recursive Transaction → Transaction join (S007 Q4 recursive side, the other half of opda:TransactionChain's stated dual-mechanism, alongside opda:chainMembers). Relates a transaction to another transaction in the same chain whose completion it is directly contingent on — the PDTF chain.onwardPurchase/chain.buyersSale shape (each instance stating only its own immediate chain neighbour(s), not the full chain membership)."@en ;
+    skos:definition "Relates a property transaction to another transaction in the same chain whose completion this transaction is directly contingent on."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q4> ;
+    rdfs:domain opda:Transaction ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/transaction> ;
+    rdfs:range opda:Transaction .
+
 opda:hasChainPosition
     rdf:type owl:ObjectProperty ;
     rdfs:label "has chain position"@en ;

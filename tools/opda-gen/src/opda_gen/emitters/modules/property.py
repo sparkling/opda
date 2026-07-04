@@ -118,6 +118,7 @@ OBJECT_PROPERTIES = (
     OPDA.hasAddress,
     OPDA.hasEPCCertificate,
     OPDA.identifiesSameProperty,
+    OPDA.leaseTerm,
     OPDA.recordsEstate,
 )
 
@@ -452,6 +453,31 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.LeaseTerm, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.LeaseTerm, DCTERMS.source, _ODR_0007_S5))
+
+    # --- ObjectProperty: opda:leaseTerm ----------------------------------
+    # LegalEstate -> LeaseTerm join predicate, named in opda:LeaseTerm's own
+    # rdfs:comment above ("Belongs to opda:LegalEstate of leasehold tenure
+    # (opda:leaseTerm join predicate)") but never actually declared — a
+    # plain oversight (unlike opda:TransactionChain's dependsOnTransaction/
+    # chainMembers, this carries no "Council picks the shape" flag anywhere;
+    # it is a single, uncontroversial join with no alternative mechanism to
+    # choose between).
+    g.add((OPDA.leaseTerm, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.leaseTerm, RDFS.domain, OPDA.LegalEstate))
+    g.add((OPDA.leaseTerm, RDFS.range, OPDA.LeaseTerm))
+    g.add((OPDA.leaseTerm, RDFS.label, Literal("lease term", lang="en")))
+    g.add((OPDA.leaseTerm, RDFS.comment, Literal(
+        "Join from a leasehold opda:LegalEstate to the opda:LeaseTerm "
+        "OWL-Time interval bounding its duration (S007 Q5).",
+        lang="en",
+    )))
+    g.add((OPDA.leaseTerm, DCTERMS.source, _ODR_0007_S5))
+    g.add((OPDA.leaseTerm, SKOS.definition, Literal(
+        "Relates a leasehold legal estate to the bounded time interval "
+        "defining the duration of its lease.",
+        lang="en",
+    )))
+    g.add((OPDA.leaseTerm, RDFS.isDefinedBy, module_iri))
 
     # --- opda:LeaseExtensionEvent — provenance event ---------------------
     # Cross-domain — exemplar uses both opda:Transaction AND opda:

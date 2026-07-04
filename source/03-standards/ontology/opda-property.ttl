@@ -1001,6 +1001,16 @@ opda:isSupplyMetered
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
+opda:leaseTerm
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "lease term"@en ;
+    rdfs:comment "Join from a leasehold opda:LegalEstate to the opda:LeaseTerm OWL-Time interval bounding its duration (S007 Q5)."@en ;
+    skos:definition "Relates a leasehold legal estate to the bounded time interval defining the duration of its lease."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0007/section-Q5-lease-term> ;
+    rdfs:domain opda:LegalEstate ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range opda:LeaseTerm .
+
 opda:offMainsDrainageSystemType
     rdf:type owl:ObjectProperty ;
     rdfs:label "off-mains drainage system type"@en ;

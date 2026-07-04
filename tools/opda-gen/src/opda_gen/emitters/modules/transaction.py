@@ -56,6 +56,7 @@ CLASSES = (
 OBJECT_PROPERTIES = (
     OPDA.concerns,
     OPDA.concernsProperty,
+    OPDA.dependsOnTransaction,
     OPDA.hasChainPosition,
     OPDA.hasParticipant,
     OPDA.partOfTransaction,
@@ -283,6 +284,45 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.hasChainPosition, RDFS.isDefinedBy, module_iri))
+
+    # --- ObjectProperty: opda:dependsOnTransaction ----------------------
+    # S007 Q4's other stated "dual-mechanism" half (opda:TransactionChain's
+    # own rdfs:comment names both this and opda:chainMembers, but only
+    # hasChainPosition/chainMembers were ever declared — this completes it).
+    # Grounded in the PDTF v3 schema's own chain.onwardPurchase/buyersSale
+    # structure and its own description ("the data through which the chain
+    # for this transaction can be built"): each instance carries only its
+    # own LOCAL, pairwise links to the immediately-adjacent transaction(s)
+    # in the chain, not a global membership list — no single instance can
+    # ever populate an aggregate opda:chainMembers list directly. A
+    # recursive Transaction -> Transaction predicate is the mechanism that
+    # actually matches this — opda:chainMembers remains a legitimate
+    # DERIVED-aggregate target (assembled by traversing these pairwise
+    # edges across a full instance corpus, e.g. a future SHACL-AF rule,
+    # analogous to the RiskAssessment acyclicity pattern) but is not
+    # declared here since nothing populates it yet.
+    g.add((OPDA.dependsOnTransaction, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.dependsOnTransaction, RDFS.domain, OPDA.Transaction))
+    g.add((OPDA.dependsOnTransaction, RDFS.range, OPDA.Transaction))
+    g.add((OPDA.dependsOnTransaction, RDFS.label,
+           Literal("depends on transaction", lang="en")))
+    g.add((OPDA.dependsOnTransaction, RDFS.comment, Literal(
+        "Recursive Transaction → Transaction join (S007 Q4 recursive side, "
+        "the other half of opda:TransactionChain's stated dual-mechanism, "
+        "alongside opda:chainMembers). Relates a transaction to another "
+        "transaction in the same chain whose completion it is directly "
+        "contingent on — the PDTF chain.onwardPurchase/chain.buyersSale "
+        "shape (each instance stating only its own immediate chain "
+        "neighbour(s), not the full chain membership).",
+        lang="en",
+    )))
+    g.add((OPDA.dependsOnTransaction, DCTERMS.source, _ODR_0007_Q4))
+    g.add((OPDA.dependsOnTransaction, SKOS.definition, Literal(
+        "Relates a property transaction to another transaction in the same "
+        "chain whose completion this transaction is directly contingent on.",
+        lang="en",
+    )))
+    g.add((OPDA.dependsOnTransaction, RDFS.isDefinedBy, module_iri))
 
     # --- ObjectProperty: opda:hasParticipant (ODR-0007 §Q1; ODR-0032) -------
     # Transaction → Seller/Buyer: the parties to the transaction (Council
