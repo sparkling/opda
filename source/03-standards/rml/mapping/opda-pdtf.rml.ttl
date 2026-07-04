@@ -846,13 +846,16 @@
 
 # ---------------------------------------------------------------------------
 # M12 — Occupiers record (UNTYPED)  iterator: occupiers.othersAged17OrOver
-#   Carries opda:aged17OrOverNames. A1's index gives this leaf domain opda:Seller,
-#   but the occupiers/aged-17+ block is NOT a seller PARTY — typing it opda:Seller
-#   would mint a spurious Seller individual (no capacity) that trips
-#   Baspi5_SellersCapacityShape under the profile. OPDA domains are DOCUMENTARY,
-#   never entailed (ODR-0025/0026), so leaving the bearer untyped is fully
-#   consistent — the predicate is emitted, no false Seller is asserted. Same
-#   untyped-record pattern as the declaration/signature records (M1b/M1c).
+#   Carries opda:aged17OrOverNames and opda:hasOthersAged17OrOver. A1's index
+#   gives these leaves domain opda:Seller, but the occupiers/aged-17+ block
+#   is NOT a seller PARTY — typing it opda:Seller would mint a spurious
+#   Seller individual (no capacity) that trips Baspi5_SellersCapacityShape
+#   under the profile. OPDA domains are DOCUMENTARY, never entailed
+#   (ODR-0025/0026), so leaving the bearer untyped is fully consistent — the
+#   predicate is emitted, no false Seller is asserted. Same untyped-record
+#   pattern as the declaration/signature records (M1b/M1c) — both
+#   predicates are named in validate_shacl.sh's allowlist for the resulting
+#   closed-world domain violation (ODR-0029 R3), same as M1b's leaves.
 # ---------------------------------------------------------------------------
 <#OccupierRecord> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -860,7 +863,9 @@
                       rml:iterator "$.propertyPack.occupiers.othersAged17OrOver" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/occupiers/aged17plus-{hasOthersAged17OrOver}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:aged17OrOverNames ;
-      rr:objectMap [ rml:reference "aged17OrOverNames" ; rr:datatype xsd:string ] ] .  # <- propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames
+      rr:objectMap [ rml:reference "aged17OrOverNames" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames
+  rr:predicateObjectMap [ rr:predicate opda:hasOthersAged17OrOver ;
+      rr:objectMap [ rml:reference "hasOthersAged17OrOver" ; rr:datatype xsd:string ] ] .  # <- propertyPack.occupiers.othersAged17OrOver.hasOthersAged17OrOver
 
 # ---------------------------------------------------------------------------
 # M13 — Contract template  (domain-less opda:name + opda:url)

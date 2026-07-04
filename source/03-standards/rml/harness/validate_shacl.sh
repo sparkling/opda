@@ -108,6 +108,7 @@ REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 # M1b's and M27c's own comments in the mapping file).
 ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:aged17OrOverNames is used off its declared rdfs:domain"
+  "opda:hasOthersAged17OrOver is used off its declared rdfs:domain"
   "opda:confirmInformationIsAccurate is used off its declared rdfs:domain"
   "opda:confirmWillProvideAdditionalDocumentation is used off its declared rdfs:domain"
   "opda:consumerProtectionRegulationsResponse is used off its declared rdfs:domain"
