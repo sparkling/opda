@@ -216,6 +216,32 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/buyer/{email}" ;
                   rr:class opda:Buyer ] .
 
+# opda:hasParticipant (domain opda:Transaction, range opda:Seller/opda:Buyer
+#   disjunctively): NOT mapped — a genuine, confirmed gap, not a guess. The
+#   Transaction node (M1, root iterator, keyed {transactionId}) needs to link
+#   to EACH already-typed Seller/Buyer node above, but every technique tried
+#   fails for a specific, confirmed reason:
+#     - A role-filtered JSONPath bracket embedded INSIDE a template placeholder
+#       or a plain rml:reference (`participants[?(@.role=="Seller")].email`,
+#       tried both ways from M1's root iterator) resolves to nothing —
+#       `[?(...)]` filter brackets only work as the WHOLE iterator (the same
+#       constraint documented in ADR-0057's Amendments for conditional
+#       inclusion), never embedded mid-path in a reference or template.
+#     - rr:parentTriplesMap + rr:joinCondition between M1 and SellerParticipant
+#       needs a real shared column between the two logical sources; none
+#       exists (participants don't carry transactionId). A join condition on
+#       a nonexistent field silently matches zero rows; omitting the join
+#       condition entirely crashes morph-kgc's pandas merge (IndexError).
+#     - The one technique that DOES execute — the unfiltered array-projected
+#       template `participants.email` (proven for opda:concernsProperty/
+#       opda:concerns above) — would bind hasParticipant to EVERY participant
+#       regardless of role (conveyancers, agents, etc.), which is actively
+#       WRONG: it would violate the ontology's own disjoint Seller/Buyer
+#       sh:or range (Baspi5_SellersCapacityShape and friends target Seller/
+#       Buyer specifically) — shipping it would assert something false, worse
+#       than leaving the gap open. Not applied.
+#   Left as a genuine, documented gap; no further workaround attempted.
+
 # M3c — sellersCapacity.capacity -> opda:hasAssertedCapacity as a CONTROLLED
 #   SCHEME IRI. The BASPI5 Baspi5_SellersCapacityShape sh:xone requires
 #   opda:hasAssertedCapacity be sh:nodeKind sh:IRI drawn from
