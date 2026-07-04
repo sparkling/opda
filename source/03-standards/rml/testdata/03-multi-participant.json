@@ -115,6 +115,20 @@
           "hasBeenFlooded": "Yes",
           "typeOfFlooding": ["Surface water"],
           "details": "Minor surface water flooding in 2014"
+        },
+        "floodRisk": {
+          "riskIndicator": "Yes",
+          "riskSubcategories": [
+            { "subCategory": "Surface Water", "riskIndicator": "Yes" }
+          ]
+        }
+      },
+      "climate": {
+        "climateRisk": {
+          "riskIndicator": "Yes",
+          "riskSubcategories": [
+            { "subCategory": "Subsidence", "riskIndicator": "No" }
+          ]
         }
       }
     },

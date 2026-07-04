@@ -153,8 +153,8 @@
                       rml:iterator "$.participants[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{organisationReference}" ;
                   rr:class opda:Organisation ] ;
-  rr:predicateObjectMap [ rr:predicate opda:organisation ;
-      rr:objectMap [ rml:reference "organisation" ; rr:datatype xsd:string ] ] ;  # <- participants[].organisation
+  rr:predicateObjectMap [ rr:predicate opda:organisationName ;
+      rr:objectMap [ rml:reference "organisation" ; rr:datatype xsd:string ] ] ;  # <- participants[].organisation (opda:organisation renamed-by-merge to opda:organisationName; case-clash with opda:Organisation class)
   rr:predicateObjectMap [ rr:predicate opda:organisationReference ;
       rr:objectMap [ rml:reference "organisationReference" ; rr:datatype xsd:string ] ] .  # <- participants[].organisationReference
 
@@ -1170,3 +1170,65 @@
       rr:objectMap [ rml:reference "rentalEstimate.estimatedAmount" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount
   rr:predicateObjectMap [ rr:predicate opda:currency ;
       rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+# ---------------------------------------------------------------------------
+# M24 — RiskAssessment (environmental-peril riskSubcategories[])  (opda:RiskAssessment)
+#   opda:subCategory (domain opda:RiskAssessment) cites TWO real occurrences —
+#   flooding.floodRisk.riskSubcategories[] and climate.climateRisk
+#   .riskSubcategories[] — both bound (ODR-0035: trace every real occurrence,
+#   not just one dct:source citation). Each riskSubcategories[] item carries
+#   its own genuine key (subCategory itself — a per-item distinguishing
+#   name), unlike the parent floodRisk/climateRisk block (which has no key of
+#   its own and is NOT mapped here — same "no clean node to bind onto"
+#   reasoning as M18/M20's documented gaps). Class-promoted (shares
+#   RiskAssessment's identity shape with Comparable/Survey/Valuation, above)
+#   so each sub-assessment node gets its own prov:wasGeneratedBy + RunActivity.
+# ---------------------------------------------------------------------------
+<#FloodRiskSubcategory> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}" ;
+                  rr:class opda:RiskAssessment ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}/run" ] ] ;  # SHACL: class-promoted opda:RiskAssessment requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:subCategory ;
+      rr:objectMap [ rml:reference "subCategory" ; rr:datatype xsd:string ] ] .  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].subCategory
+
+<#FloodRiskSubcategoryRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}/run" ;
+                  rr:class prov:Activity ] .
+
+<#ClimateRiskSubcategory> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}" ;
+                  rr:class opda:RiskAssessment ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}/run" ] ] ;  # SHACL: class-promoted opda:RiskAssessment requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:subCategory ;
+      rr:objectMap [ rml:reference "subCategory" ; rr:datatype xsd:string ] ] .  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory
+
+<#ClimateRiskSubcategoryRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}/run" ;
+                  rr:class prov:Activity ] .
+
+# M25 — typeOfConstruction.buildingSafety.potentialCost: NOT mapped. rdfs:range
+#   is opda:MonetaryAmount, but the real JSON field is free text (type:
+#   string, "What will the potential cost be?" — no numeric constraint at
+#   all). A ratified, pre-existing tension (council session-028 Q3; see the
+#   term's own rdfs:comment), not something RML can bridge without
+#   fabricating a numeric parse of free text. Left as a genuine, documented
+#   gap — same shape as M14/M18/M20's gaps above.
+#
+# M26 — nearbyFacilities.schools[].schoolType, surveys[].misc.constructionType,
+#   localSearches buildingControlStartDate/planningStartDate: already
+#   documented as genuine gaps at M14, M18, M20 respectively (re-verified
+#   this session — still true, no new technique found for any of them).
