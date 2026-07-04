@@ -70,9 +70,30 @@ else
   # follow imports (e.g. <https://opda.org.uk/pdtf/>) to the live network.
   cat "$SHAPES" "${EXTRA_SHAPES[@]}" | grep -v 'owl:imports' >"$SHAPES_GRAPH" || true
 fi
-trap '[[ -n "$CLEANUP" ]] && rm -rf "$CLEANUP"' EXIT
+trap '[[ -n "$CLEANUP" ]] && rm -rf $CLEANUP' EXIT
 
-REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA")"
+# Closed-world domain/range SHACL constraints (ODR-0029 R3, sh:class checks
+# via sh:targetSubjectsOf/targetObjectsOf) need the referenced individual's
+# rdf:type to be PRESENT in the validated graph to resolve — e.g. a correctly
+# bound SKOS concept object (opda:scheme/sellersCapacity/Legal-Owner) is only
+# confirmed `a skos:Concept` in the ontology itself, never restated by the RML
+# mapping's own instance data. Without the ontology loaded alongside the
+# instance graph, every genuinely-correct SKOS-concept-object binding fails
+# this check with a false "range violation" — not a mapping defect, a missing
+# validation-context gap. Load the ontology (opda-merged.ttl) as additional
+# --data context so these individuals' types are actually present to check
+# against.
+ONTOLOGY="$REPO_ROOT/public/ontology/artefacts/opda-merged.ttl"
+TMPDIR_DATA="$(mktemp -d -t opda-shacl-data.XXXXXX)"
+DATA_GRAPH="$TMPDIR_DATA/data.ttl"
+cat "$ONTOLOGY" "$DATA" >"$DATA_GRAPH"
+if [[ -n "$CLEANUP" ]]; then
+  CLEANUP="$CLEANUP $TMPDIR_DATA"
+else
+  CLEANUP="$TMPDIR_DATA"
+fi
+
+REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 
 if grep -q "sh:Violation" <<<"$REPORT"; then
   echo "$REPORT"
