@@ -121,6 +121,7 @@ ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:confirmation is used off its declared rdfs:domain"
   "opda:costsApplicableToTheDeed is used off its declared rdfs:domain"
   "opda:feeIncludingVAT is used off its declared rdfs:domain"
+  "opda:response is used off its declared rdfs:domain"
 )
 
 # NB: the filter script is written to a real temp file, not a heredoc, because

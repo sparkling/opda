@@ -65,6 +65,13 @@
 @prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+# RML-FNML (morph-kgc's function-execution vocabulary) uses a DIFFERENT rml:
+# namespace (RML-core 2.0, http://w3id.org/rml/) than the rml: prefix above
+# (the classic semweb.mmlab.be namespace used throughout this file for
+# logicalSource/referenceFormulation/iterator/reference) — bound separately as
+# rmlf: to avoid colliding with ~100 existing rml: references. See M28/M30's
+# use of rmlf:functionExecution + mapping/opda-udfs.py.
+@prefix rmlf: <http://w3id.org/rml/> .
 
 # ---------------------------------------------------------------------------
 # M1 — Transaction  (opda:Transaction)   iterator: root
@@ -720,7 +727,15 @@
   rr:predicateObjectMap [ rr:predicate opda:urgentWorksRecommended ;
       rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended
   rr:predicateObjectMap [ rr:predicate opda:certificateOfComplianceFee ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/certificateOfComplianceFee-{leaseholdInformation.requiredDocuments.certificateOfComplianceFee}" ] ] .  # <- …leaseholdInformation.requiredDocuments.certificateOfComplianceFee (MonetaryAmount join, see M27a)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/certificateOfComplianceFee-{leaseholdInformation.requiredDocuments.certificateOfComplianceFee}" ] ] ;  # <- …leaseholdInformation.requiredDocuments.certificateOfComplianceFee (MonetaryAmount join, see M27a)
+  rr:predicateObjectMap [ rr:predicate opda:hasFixedRentcharge ;
+      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge
+  rr:predicateObjectMap [ rr:predicate opda:dealsWithDayToDayMaintenanceOfManagedArea ;
+      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea
+  rr:predicateObjectMap [ rr:predicate opda:fromTheOwners ;
+      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners
+  rr:predicateObjectMap [ rr:predicate opda:forTheManagedAreas ;
+      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas" ; rr:datatype xsd:decimal ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas
 
 # M7a — MonetaryAmount value nodes (opda:MonetaryAmount)
 #   Each MUST carry opda:amount (xsd:decimal) + opda:currency (scheme IRI).
@@ -1406,11 +1421,13 @@
 #       SINGLETON risk-assessment block nested in managedAreasCoveredByPolicy
 #       (not an array), keyed on the SAME titleNumber (M27b)
 #     - opda:confirmation / opda:costsApplicableToTheDeed / opda:feeIncludingVAT
-#       (domain opda:Transaction) — the real opda:Transaction node's own
-#       transactionId is unreachable from this nested iterator (same root-
-#       flattening limitation as M1b/M1c), so these are emitted on an UNTYPED
-#       record keyed on titleNumber, exactly the M1b/M12 pattern (untyped =>
-#       no false Transaction identity asserted, no SHACL target) (M27c)
+#       / opda:response (domain opda:Transaction) — the real opda:Transaction
+#       node's own transactionId is unreachable from this nested iterator
+#       (same root-flattening limitation as M1b/M1c), so these are emitted on
+#       an UNTYPED record keyed on titleNumber, exactly the M1b/M12 pattern
+#       (untyped => no false Transaction identity asserted, no SHACL target,
+#       but a closed-world domain violation under ODR-0029 R3 — named and
+#       allowlisted in validate_shacl.sh, same as M1b/M12) (M27c)
 #     - opda:accountName/accountNumber/sortCode/reference (domain
 #       opda:Organisation) — the landlord contact IS a real Organisation,
 #       keyed on its own genuine name (contact.nameOrOrganisation) (M27d)
@@ -1418,12 +1435,27 @@
 #       opda:Proprietorship) — flat under propertyPack.ownership itself (a
 #       singleton, like propertyPricing in M23), keyed on the subject
 #       property's own uprn (reachable: same iterator as M4) (M27e)
-#   NOT mapped in this batch (deliberately deferred, not a documented
-#   permanent gap): the managedFreeholdOrCommonhold oneOf branch's own
-#   exclusive leaves (hasFixedRentcharge, dealsWithDayToDayMaintenanceOfManagedArea,
-#   forTheManagedAreas, fromTheOwners) — leasehold was chosen as the richer,
-#   representative branch per the handover; closing managedFreeholdOrCommonhold
-#   is future work, not a structural gap.
+#     - opda:hasFixedRentcharge/dealsWithDayToDayMaintenanceOfManagedArea/
+#       fromTheOwners/forTheManagedAreas — the managedFreeholdOrCommonhold
+#       oneOf branch's own exclusive leaves (domain opda:LegalEstate, plain
+#       xsd:string/xsd:decimal, no Concept-range issue). The SAME M7
+#       <#LegalEstate> TriplesMap (above) already picks these up (no separate
+#       TriplesMap needed) — verified correct via a standalone scratch
+#       instance (single-item ownershipsToBeTransferred[], managedFreehold
+#       branch only), NOT added as a second item alongside the leasehold one
+#       in testdata/03-multi-participant.json: a real morph-kgc engine
+#       defect (see ADR-0057 Amendments, 2026-07-04 entry 2) makes a 2-item
+#       ownershipsToBeTransferred[] array with heterogeneous top-level keys
+#       across items silently break an UNRELATED sibling reference
+#       (M4's "ownership.isFirstRegistration" etc.) — confirmed empirically,
+#       traced to morph_kgc.utils.normalize_hierarchical_data's cartesian-
+#       product flattening of nested arrays interacting badly with
+#       heterogeneous item shapes. Leasehold remains the sole array item in
+#       the tracked test fixture; this branch's correctness is proven, just
+#       not exercised by the standard 01/02/03/04 regression suite.
+#   NOT mapped in this batch: opda:numberOfSellers/numberOfNonUkResidentSellers
+#   remain a genuine gap pending the Proprietor/Proprietorship Relator design
+#   (see the removed M27f note in git history) — unrelated to this branch.
 # ---------------------------------------------------------------------------
 <#CertificateOfComplianceFeeAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1464,7 +1496,9 @@
   rr:predicateObjectMap [ rr:predicate opda:costsApplicableToTheDeed ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/costsApplicableToTheDeed-{leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ] ] ;  # <- …leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (MonetaryAmount join, see below)
   rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/feeIncludingVAT-{leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] .  # <- …leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, see below)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/feeIncludingVAT-{leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] ;  # <- …leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, see below)
+  rr:predicateObjectMap [ rr:predicate opda:response ;
+      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.confirmation.response" ; rr:datatype xsd:boolean ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response
 
 <#CostsApplicableToTheDeedAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1516,50 +1550,149 @@
 #   genuine, documented gap pending that design (not attempted here to avoid
 #   shipping a node that mechanically fails a hard SHACL constraint).
 
-# M28 — a cluster of gap properties (isInsured, hasBeenFlooded,
-#   hasSmartHomeSystems, isSharedOwnership, isGroundRentPayable,
-#   sellerContributesToServiceCharge, ownerType (Proprietor),
-#   hasSprayFoamInstalled, hasValidGuaranteesOrWarranties,
-#   isLocatedOverCommercialPremises, isSupplyMetered, areBoundariesUniform,
-#   soldWithVacantPossession, offMainsDrainageSystemType) all have REAL,
-#   locatable JSON Schema occurrences (verified — e.g. isInsured is
-#   propertyPack.insurance.isInsured, already present in testdata/03), so
-#   these are NOT the same "no clean node to bind onto" shape as M14/M18/M20.
-#   NOT mapped here because every one of them has rdfs:range skos:Concept —
-#   they need the same per-value-filter + constant-scheme-IRI pattern as M3c
-#   (opda:hasAssertedCapacity), not a plain rml:reference. That is a
-#   distinct, separate unit of work (confirm each scheme's members exist,
-#   then N TriplesMaps per enum value) — the same broader ODR-0029 R3
-#   Concept-typing effort flagged separately (see the RML session's team
-#   report), not a mechanical "add a predicateObjectMap" gap. Deliberately
-#   left open rather than force a plain-literal binding that would violate
-#   the term's own declared range.
-#   opda:tenureKind (also in this dct:source family, ODR-0008 §Q5a) has NO
-#   real JSON occurrence at all (verified: zero matches anywhere in the v3
-#   schema) — a genuinely conceptual, ODR-only term, not a gap of this kind.
+# M30 — the M28/M29 cluster, closed via RML-FNML (mapping/opda-udfs.py).
+#   Every property below has rdfs:range skos:Concept but sits in a single,
+#   always-present JSON object ($.propertyPack, or one leasehold
+#   ownershipsToBeTransferred[] item), not a real array — the per-value-
+#   filter technique that fixed M14's ofstedRating/transportType needs
+#   `[?(...)]` JSONPath filter brackets, which only work on arrays.
+#   Proven empirically this session: a single generic UDF
+#   (opda:scheme_member_iri, value+scheme params) replicates opda_gen's own
+#   `_slugify_for_uri` exactly (verified against real scheme members,
+#   including the punctuation-stripping case "FTTC (Fibre to the Cabinet)"
+#   -> ".../FTTC-Fibre-to-the-Cabinet") and constructs the correct
+#   scheme-member IRI directly — output rr:termType rr:IRI (not the default
+#   literal; morph-kgc's literal-output code path for rmlf:functionExecution
+#   has an internal bug unconditionally touching a 'reference_results'
+#   dataframe column that a bare function execution never populates).
+#
+#   opda:ownerType (domain opda:Proprietor) is NOT included here — Proprietor
+#   is the same deferred Relator-modelling class flagged near M27 above (no
+#   node minted yet; a real design decision, not an FNML gap).
+#   opda:tenureKind (ODR-0008 §Q5a) has NO real JSON occurrence at all
+#   (verified: zero matches anywhere in the v3 schema) — a genuinely
+#   conceptual, ODR-only term, not a gap of this kind.
+<#Property_FNMLEnums> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:isInsured ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "insurance.isInsured" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.insurance.isInsured
+  rr:predicateObjectMap [ rr:predicate opda:hasBeenFlooded ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.hasBeenFlooded" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.hasBeenFlooded
+  rr:predicateObjectMap [ rr:predicate opda:hasSmartHomeSystems ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "smartHomeSystems.hasSmartHomeSystems" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.smartHomeSystems.hasSmartHomeSystems
+  rr:predicateObjectMap [ rr:predicate opda:hasSprayFoamInstalled ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled
+  rr:predicateObjectMap [ rr:predicate opda:hasValidGuaranteesOrWarranties ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties
+  rr:predicateObjectMap [ rr:predicate opda:isLocatedOverCommercialPremises ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises
+  rr:predicateObjectMap [ rr:predicate opda:isSupplyMetered ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered
+  rr:predicateObjectMap [ rr:predicate opda:areBoundariesUniform ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "legalBoundaries.ownership.areBoundariesUniform" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.legalBoundaries.ownership.areBoundariesUniform
+  rr:predicateObjectMap [ rr:predicate opda:soldWithVacantPossession ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession
+  rr:predicateObjectMap [ rr:predicate opda:offMainsDrainageSystemType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "offMainsDrainageSystemType" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType
+  rr:predicateObjectMap [ rr:predicate opda:propertyType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.propertyType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "propertyType" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.propertyType
+  rr:predicateObjectMap [ rr:predicate opda:builtForm ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.builtForm" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "builtForm" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.builtForm
+  rr:predicateObjectMap [ rr:predicate opda:priceQualifier ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "priceInformation.priceQualifier" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "priceQualifier" ] ] ] ] ] ;  # <- propertyPack.priceInformation.priceQualifier
+  rr:predicateObjectMap [ rr:predicate opda:currentEnergyRating ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "energyEfficiency.certificate.currentEnergyRating" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "currentEnergyRating" ] ] ] ] ] ;  # <- propertyPack.energyEfficiency.certificate.currentEnergyRating
+  rr:predicateObjectMap [ rr:predicate opda:typeOfConnection ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "connectivity.broadband.typeOfConnection" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "broadbandConnectionType" ] ] ] ] ] ;  # <- propertyPack.connectivity.broadband.typeOfConnection
+  rr:predicateObjectMap [ rr:predicate opda:centralHeatingFuelType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "centralHeatingFuelType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType
+  rr:predicateObjectMap [ rr:predicate opda:heatingType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "heating.heatingSystem.heatingType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "heatingType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.heatingType
+  rr:predicateObjectMap [ rr:predicate opda:marketingTenure ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "marketingTenure" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "tenureKind" ] ] ] ] ] .  # <- propertyPack.marketingTenure (reuses TenureKindScheme, ODR-0024 R6)
 
-# M29 — a further 9 properties (propertyType, builtForm, priceQualifier,
-#   currentEnergyRating, typeOfConnection, centralHeatingFuelType,
-#   heatingType, marketingTenure, ownershipType) were bound EARLIER this
-#   session as plain xsd:string references on M4 (Property) / M7
-#   (LegalEstate) — genuinely wrong, now REMOVED. Each has rdfs:range
-#   skos:Concept, same as M28's cluster, but these all sit in a single,
-#   always-present JSON OBJECT ($.propertyPack or one ownershipsToBeTransferred[]
-#   item), not a real array — so the per-value-filter technique that fixed
-#   M14's ofstedRating/transportType (M14a/M14b, above) cannot apply here
-#   (JSONPath `[?(...)]` filter brackets only work on arrays; the councilTax/
-#   CouncilTaxAmount amendment in ADR-0057 already documents this same
-#   limitation for a different reason). A correct fix needs either an
-#   RML-FNML Python lookup/slugify UDF (untested in this mapping; a genuinely
-#   new technique) or restructuring/pre-processing the source data — both
-#   out of scope for this pass (team decision, not attempted here). Left as
-#   a documented gap, same shape as M28's cluster, rather than ship a
-#   binding that actively violates the term's own declared range.
-#   Separately, static ontology-internal individuals (opda:AddressVariant*
-#   Refinement, opda:*EvidenceRefinement, typed opda:DPVMappingRefinement)
-#   also fail an opda:targetsKind domain-shape check once the ontology
-#   itself is loaded as SHACL validation context — confirmed these are NOT
-#   emitted by this RML mapping at all (zero references to targetsKind or
-#   DPVMappingRecord anywhere in this file); a pure ontology-authoring
-#   matter (DPVMappingRefinement vs. targetsKind's declared domain
-#   DPVMappingRecord), out of this mapping's scope to fix.
+# M30a — LegalEstate-domain FNML enums (ownershipsToBeTransferred[*], same
+#   iterator/subject as M7's <#LegalEstate>).
+<#LegalEstate_FNMLEnums> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:isSharedOwnership ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.sharedOwnership.isSharedOwnership" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.sharedOwnership.isSharedOwnership
+  rr:predicateObjectMap [ rr:predicate opda:isGroundRentPayable ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.groundRent.isGroundRentPayable" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.groundRent.isGroundRentPayable
+  rr:predicateObjectMap [ rr:predicate opda:sellerContributesToServiceCharge ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.serviceCharge.sellerContributesToServiceCharge" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.serviceCharge.sellerContributesToServiceCharge
+  rr:predicateObjectMap [ rr:predicate opda:ownershipType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownershipType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownershipType" ] ] ] ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
+
