@@ -66,6 +66,7 @@
 @prefix ql:   <http://semweb.mmlab.be/ns/ql#> .
 @prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 # RML-FNML: RMLMapper (the engine, since ADR-0057's Amendments) only
 # recognises the classic FNML vocabulary (fnml:functionValue, the
@@ -840,6 +841,110 @@
       rr:objectMap [ rml:reference "leaseholdInformation.sharedOwnership.sharedOwnershipRent" ; rr:datatype xsd:decimal ] ] ;
   rr:predicateObjectMap [ rr:predicate opda:currency ;
       rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+# ---------------------------------------------------------------------------
+# M7b — LeaseTerm (opda:LeaseTerm, OWL-Time ProperInterval)
+#   iterator: propertyPack.ownership.ownershipsToBeTransferred[*] (same as
+#   M7); keyed on titleNumber + the two leaf values, skip-together technique.
+#   Value-node construction follows the M7a opda:MonetaryAmount idiom (a
+#   dedicated TriplesMap per component, joined by object property from a
+#   container).
+#
+#   NOT joined to M7's <#LegalEstate> node: opda:LeaseTerm's own rdfs:comment
+#   names "opda:leaseTerm join predicate" as the LegalEstate->LeaseTerm edge,
+#   but — verified empirically (grepped opda-merged.ttl, opda-shapes-merged.ttl,
+#   and every source/03-standards/ontology/*.ttl module) — opda:leaseTerm was
+#   NEVER actually declared as a real owl:ObjectProperty anywhere; it exists
+#   only as prose in the class comment. This is the SAME failure pattern as
+#   opda:TransactionChain's opda:dependsOnTransaction/opda:chainMembers (see
+#   M19/M1's TransactionChain comment, below): a Council-level join predicate
+#   named in a class's own documentation but never ratified/declared. Per
+#   ADR-0057 check 1 ("every rr:predicate the mapping uses is a real declared
+#   term"), this mapping cannot invent or use an undeclared predicate — that
+#   is ontology-design work (a new/ratified property), out of RML mapping
+#   scope. The opda:LeaseTerm node below is therefore minted STANDALONE
+#   (reachable only by its own IRI, not traversable from opda:LegalEstate) —
+#   still closes the opda:LeaseTerm CLASS gap and documents the real schema
+#   location, but the join itself is a flagged, unimplemented design
+#   decision for the ontology owners (mint opda:leaseTerm for real, or pick a
+#   different existing predicate).
+#
+#   time:inXSDgYear / time:years are standard OWL-Time vocabulary (Time
+#   Ontology in OWL, W3C REC) — external, audited by hand per ADR-0057
+#   check 1's exemption, not opda: terms.
+#
+#   A second occurrence of the same leaseTerm shape exists at
+#   propertyPack.titlesToBeSold[*].registerExtract.ocSummaryData.lease.
+#   leaseEntry[*].leaseTerm — NOT mapped here: it hits the identical
+#   undeclared-join-predicate blocker with no additional CLASS-gap benefit
+#   (opda:LeaseTerm is already closed by this TriplesMap), so the added
+#   TriplesMap complexity was judged not worth it until opda:leaseTerm is
+#   ratified.
+# ---------------------------------------------------------------------------
+<#LeaseTermBeginning> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm/beginning-{leaseholdInformation.leaseTerm.startYearOfLease}" ;
+                  rr:class time:Instant ] ;
+  rr:predicateObjectMap [ rr:predicate time:inXSDgYear ;
+      rr:objectMap [ rml:reference "leaseholdInformation.leaseTerm.startYearOfLease" ; rr:datatype xsd:gYear ] ] .  # <- …leaseholdInformation.leaseTerm.startYearOfLease
+
+<#LeaseTermDuration> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm/duration-{leaseholdInformation.leaseTerm.lengthOfLeaseInYears}" ;
+                  rr:class time:GeneralDurationDescription ] ;
+  rr:predicateObjectMap [ rr:predicate time:years ;
+      rr:objectMap [ rml:reference "leaseholdInformation.leaseTerm.lengthOfLeaseInYears" ; rr:datatype xsd:decimal ] ] .  # <- …leaseholdInformation.leaseTerm.lengthOfLeaseInYears
+
+<#LeaseTerm> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm-{leaseholdInformation.leaseTerm.startYearOfLease}" ;
+                  rr:class opda:LeaseTerm ] ;
+  rr:predicateObjectMap [ rr:predicate time:hasBeginning ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm/beginning-{leaseholdInformation.leaseTerm.startYearOfLease}" ] ] ;  # <- …leaseholdInformation.leaseTerm.startYearOfLease (join to <#LeaseTermBeginning>)
+  rr:predicateObjectMap [ rr:predicate time:hasDurationDescription ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseterm/duration-{leaseholdInformation.leaseTerm.lengthOfLeaseInYears}" ] ] .  # <- …leaseholdInformation.leaseTerm.lengthOfLeaseInYears (join to <#LeaseTermDuration>)
+
+# ---------------------------------------------------------------------------
+# M7c — opda:tenureKind (LegalEstate -> opda:TenureKindScheme member IRI).
+#   Bonus item alongside opda:ownershipType (M30a, FNML). NOT closed via the
+#   SAME generic scheme_member_iri FNML function: verified opda:
+#   TenureKindScheme (3 members: Freehold/Leasehold/Commonhold) against
+#   opda:OwnershipTypeScheme (5 members: adds Managed-Freehold/Other) — the
+#   schemes do NOT overlap cleanly. FNML's scheme_member_iri has no
+#   conditional/filter capability; it would happily slugify "Managed
+#   Freehold" into a dangling .../scheme/tenureKind/Managed-Freehold IRI with
+#   no corresponding skos:Concept. Per-value filtered TriplesMaps (the
+#   SellerCapacity/M14a/M14b idiom) are used instead, one per GENUINELY
+#   corresponding value; "Managed Freehold" and "Other" are deliberately NOT
+#   mapped onto opda:tenureKind (they have no TenureKindScheme counterpart —
+#   mapping only the values that honestly correspond, not forcing the rest).
+# ---------------------------------------------------------------------------
+<#LegalEstateTenureKindFreehold> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[?(@.ownershipType==\"Freehold\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:tenureKind ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/tenureKind/Freehold> ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType (same source field as opda:ownershipType, M30a; controlled scheme-value mapping, per-value filter — R2RML template percent-encoding rule)
+
+<#LegalEstateTenureKindLeasehold> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[?(@.ownershipType==\"Leasehold\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:tenureKind ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/tenureKind/Leasehold> ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
+
+<#LegalEstateTenureKindCommonhold> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[?(@.ownershipType==\"Commonhold\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:tenureKind ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/tenureKind/Commonhold> ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
 
 # ---------------------------------------------------------------------------
 # M8 — RegisteredTitle (ownershipsToBeTransferred[])  (opda:RegisteredTitle)
