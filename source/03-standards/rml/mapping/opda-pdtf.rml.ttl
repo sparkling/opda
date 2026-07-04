@@ -948,6 +948,11 @@
 
 # ---------------------------------------------------------------------------
 # M8 — RegisteredTitle (ownershipsToBeTransferred[])  (opda:RegisteredTitle)
+#   opda:recordsEstate (domain RegisteredTitle, range LegalEstate — the
+#   title-to-estate join per ODR-0005 §3c) joins to M7's <#LegalEstate> node,
+#   which mints from this SAME array/iterator keyed on the SAME titleNumber —
+#   an unwired join predicate, not new node-minting (found while checking
+#   ADR-0057's quick-win candidates).
 # ---------------------------------------------------------------------------
 <#OwnershipTitle> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -956,12 +961,16 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/title/{titleNumber}" ;
                   rr:class opda:RegisteredTitle ] ;
   rr:predicateObjectMap [ rr:predicate opda:titleNumber ;
-      rr:objectMap [ rml:reference "titleNumber" ; rr:datatype xsd:string ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber
+      rr:objectMap [ rml:reference "titleNumber" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber
+  rr:predicateObjectMap [ rr:predicate opda:recordsEstate ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (join to M7's <#LegalEstate>, same iterator/key)
 
 # ---------------------------------------------------------------------------
 # M9 — RegisteredTitle + LegalEstate (titlesToBeSold[])
 #   titleNumber (RegisteredTitle) and titleExtents (LegalEstate).  IRIs reuse
 #   the title/ and estate/ keys so the estate node gains titleExtents.
+#   opda:recordsEstate wired the same way as M8, above, on the same
+#   titleNumber within this TriplesMap's own iterator.
 # ---------------------------------------------------------------------------
 <#SoldTitle> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -970,7 +979,9 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/title/{titleNumber}" ;
                   rr:class opda:RegisteredTitle ] ;
   rr:predicateObjectMap [ rr:predicate opda:titleNumber ;
-      rr:objectMap [ rml:reference "titleNumber" ; rr:datatype xsd:string ] ] .  # <- propertyPack.titlesToBeSold[].titleNumber
+      rr:objectMap [ rml:reference "titleNumber" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].titleNumber
+  rr:predicateObjectMap [ rr:predicate opda:recordsEstate ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ] .  # <- propertyPack.titlesToBeSold[].titleNumber (join to <#SoldEstate>, same iterator/key)
 
 <#SoldEstate> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
